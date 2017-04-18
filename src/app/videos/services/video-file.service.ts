@@ -1,0 +1,87 @@
+import { Injectable ,OnInit} from '@angular/core';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import {SaveVideoFile} from '../models/save-video-file';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import {Observable} from 'rxjs';
+import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import {Category} from '../models/Category';
+import {Pagination} from '../../core/models/pagination';
+import {User} from '../../core/models/user';
+
+@Injectable()
+export class VideoFileService {
+
+    public actionValue: string;
+    public saveVideoFile: SaveVideoFile;
+    public categories: Category[];
+    public showSave: boolean;
+    public showUpadte: boolean;
+    public pagination: Pagination;
+    public URL: string = this.authenticationService.REST_URL + 'admin/';
+
+    constructor(private http: Http, private authenticationService: AuthenticationService) {
+        console.log("VideoFileService constructor");
+    }
+   
+    processVideoFile(responsePath: any): Observable<any> {
+        console.log("response path in service " + responsePath);
+        var url = this.URL + 'process_video?path=';
+        return this.http.post(url + responsePath + '&access_token=' + this.authenticationService.access_token)
+            .map((response: any) => response.json())
+    }
+
+    saveRecordedVideo(formData:any){
+          var url = this.URL +'saveRecordedVideo?access_token=';
+          return this.http.post(url+this.authenticationService.access_token,formData)
+              .map((response: any) => response.json())
+      }
+    
+    saveVideo(saveVideoFile: SaveVideoFile) {
+        var url = this.URL + 'save?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, saveVideoFile)
+            .map((response: any) => response.json());
+    }
+
+   loadVideoFiles(pagination:Pagination): Observable<SaveVideoFile[]> {
+        if(pagination.filterBy==null)
+           pagination.filterBy=0;
+        pagination.maxResults = 12;
+        console.log(pagination)
+        var url = this.URL + 'listVideosNew/'+pagination.filterBy+'?access_token=' + this.authenticationService.access_token;
+        console.log(url);
+        return this.http.post(url,pagination,"")
+            .map((response: any) => response.json());
+    } 
+
+    getVideo(alias: string): Observable<SaveVideoFile> {
+        console.log(alias);
+        var url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token;
+       // var url = this.URL + 'getMobinar?alias='+alias;
+        return this.http.get(url, "")
+            .map((response: any) => response.json());
+    }
+
+    deleteVideoFile(alias: string): Observable<SaveVideoFile> {
+        console.log("deleted video alias is " + alias);
+        let url = this.URL + 'videoStatusChange/' + alias + '?status=DELETE&' + this.authenticationService.access_token;
+        console.log("delete url is " + url)
+        return this.http.post(url, "", "")
+            .map((response: any) => response.json());
+    }
+    
+    searchVideos(searchKey:string){
+          console.log("search videos " +searchKey);
+          let url = this.URL+'searchVideos?searchKey='+searchKey+'&access_token='+this.authenticationService.access_token;
+          console.log("url is  " + url);
+          return this.http.get(url, "")
+              .map((response: any) => response.json());
+    }
+    saveCalltoActionUser(user:User){
+         console.log(user);
+         let url = this.authenticationService.REST_URL+'register/callAction/user?access_token='+this.authenticationService.access_token;
+         return this.http.post(url,user,"")
+             .map((response: any) => response.json());
+    }
+
+}

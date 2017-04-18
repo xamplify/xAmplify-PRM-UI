@@ -21,13 +21,16 @@ import {TwitterService} from './social/services/twitter.service';
 import {FacebookService} from './social/services/facebook.service';
 import {SocialService} from './social/services/social.service';
 import { UserService } from './core/services/user.service';
+import {VideoFileService} from './videos/services/video-file.service';
+import {UploadCloudvideoService} from './videos/services/upload-cloudvideo.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent],
   imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
-  providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,],
+  providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,
+               VideoFileService,UploadCloudvideoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

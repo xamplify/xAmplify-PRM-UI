@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+video { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+ background: url('https://hls.mobinar.com/vod/images/343/04042016/1459808851764_57_rotate_big.jpg') no-repeat;
+  background-size: cover;
+  transition: 1s opacity;
+}
+.stopfade { 
+   opacity: .5;
+}
+
+#polina { 
+  font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
+  font-weight:100; 
+  background: rgba(0,0,0,0.3);
+  color: white;
+  padding: 2rem;
+  width: 33%;
+  margin:2rem;
+  float: right;
+  font-size: 1.2rem;
+}
+
+#polina button { 
+  display: block;
+  width: 80%;
+  padding: .4rem;
+  border: none; 
+  margin: 1rem auto; 
+  font-size: 1.3rem;
+  background: rgba(255,255,255,0.23);
+  color: #fff;
+  border-radius: 3px; 
+  cursor: pointer;
+  transition: .3s background;
+}
+#polina button:hover { 
+   background: rgba(0,0,0,0.5);
+}
+
+/*@media screen and (max-width: 500px) { 
+  div{width:100%;} 
+}*/
+@media screen and (max-device-width: 800px) {
+  html { background: url('https://hls.mobinar.com/vod/images/343/04042016/1459808851764_57_rotate_big.jpg') #000 no-repeat center center fixed; }
+  #bgvid { display: none; }
+}

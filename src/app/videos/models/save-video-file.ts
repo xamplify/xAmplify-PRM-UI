@@ -1,0 +1,42 @@
+import {Category} from '../models/Category';
+import { FileDropDirective,FileItem } from 'ng2-file-upload';
+export class SaveVideoFile {
+    id: number;
+    title: string;
+    categoryId: number;
+    categories :Category[];
+    viewBy: string;
+    tags: string[];
+    customerId: number;
+    imagePath: string;
+    imageFile: any;
+    gifImagePath: string;
+    description: string;
+    playerColor: string;
+    enableVideoController: boolean
+    controllerColor: string;
+    allowSharing: boolean;
+    enableSettings: boolean;
+    allowFullscreen: boolean;
+    allowComments: boolean;
+    allowLikes: boolean;
+    enableCasting: boolean;
+    allowEmbed: boolean;
+    transparency:number;
+    action: string;
+    name: boolean;
+    skip: boolean;
+    upperText: string;
+    lowerText: string;
+    startOfVideo:boolean;
+    endOfVideo:boolean;
+    imageFiles: string[];
+    error: string;
+    gifFiles: string[];
+    videoLength: number;
+    bitRate: number;
+    videoPath: string;
+    uploadedDate: Date;
+    uploadedBy: string;
+    alias: string;
+}

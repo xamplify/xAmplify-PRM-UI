@@ -1,0 +1,202 @@
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+	<div class="page-content">
+		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+		<div class="modal fade" id="portlet-config" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true"></button>
+						<h4 class="modal-title">Modal title</h4>
+					</div>
+					<div class="modal-body">Widget settings form goes here</div>
+					<div class="modal-footer">
+						<button type="button" class="btn blue">Save changes</button>
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- BEGIN PAGE HEADER-->
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li><i class="fa fa-home"></i> <a routerLink="../../dashboard">Home</a> <i class="fa fa-angle-right"></i></li>
+				<li><a >File Upload</a></li>
+			</ul>
+		</div>
+       		<!-- Modal Start-->
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+           <div class="modal-dialog" role="document">
+             <div class="modal-content" style="width:700px">
+               <div class="modal-header">
+                <button [class.customDisableCss] = "closeModalId ==false" [disabled]="closeModalId ==false" type="button" class="closeModal" data-dismiss="modal"
+						aria-hidden="true" (click)="closeRecordPopup()">×</button>
+                  <h4 class="modal-title" id="myModalLabel"><strong>Record Video from webcam</strong></h4>
+               </div>
+              <div class="modal-body" style="padding: 0px 10px 0px 10px;">
+                <form>
+                   <div class="input-group" style="width: 100%;">
+                   <div id="" style="width: 100%; margin-left: auto;margin-right: auto;text-align: right;display: block;">
+					<div id="script" style="display: block;">
+						<textarea id="script-text" style="width: 100% ;height:50px;line-height:16px;"  [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" 
+						[ngModelOptions]="{standalone:true}" placeholder=" Don't forget what you want to say. Add your script here.">
+						</textarea>
+					</div>
+					
+					<div style="margin-bottom: 5px;" id="scrollSpeedDiv">
+						<p style="display:inline;padding-right: 5px;">Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
+						<input type="range" [class.customDisableCss]="RecordSave==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
+						 style="border: 0px solid #cecece; width: 42%;display:inline;padding-right: 0px;">
+					    <span style="display:inline;color: red;font-weight: bold;">{{changeVolume}}</span>
+					    <input class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true">
+					<input class="btn btn-primary" type="button" value="Stop" (click)="stop()" *ngIf="stopButtonShow" [disabled]="stopButtonDisabled ==true">
+					</div>
+              </div>
+                     <video id="myVideo" class="video-js vjs-default-skin"></video>
+                  </div>
+                        <div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
+                         <p *ngIf="RecordSave" style="background-color:orange;margin-right: 253px;"><img style="display:visible;color:#FFFFFF; background-color: orange;" src="../../assets/images/loading.gif"><strong>Uploading your video please wait and do not refresh the page...!!!</strong></p>
+                          <div *ngIf="hideSaveDiscard">
+                           <button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
+					       <button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
+					      </div>
+					    </div>
+               </form>
+              </div>
+            </div>
+          </div>
+       </div> 	
+     <!-- Modal End-->
+		<!-- BEGIN PAGE CONTENT-->
+		<div class="portlet light">
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="addfiles" style="float: left; width: 113px;">
+						<button type="button" class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" id="openf"
+							(change)="fileChange(input)" [disabled]="loading==true||isDisable == true" #input />
+						</button> </div>
+					 <div style="float: left; width: 113px;">
+					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+							[disabled]="!uploader.getNotUploadedItems().length || loading==true || fileChecked==true">
+							<span class="glyphicon glyphicon-upload"></span> Upload all
+						</button> </div>
+					 <div style="float: left; width: 113px;">
+					 	<button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue();removefileUploadVideo()"
+							[disabled]="!uploader.queue.length || loading==true || fileChecked==true">
+							<span class="glyphicon glyphicon-trash"></span> Remove all
+						</button> </div>
+					</div>
+					<br />
+					<div class="col-md-12" style="margin-top: 25px;">
+	                <div  *ngIf="processing">
+                    <div class="customLoaderBar"> 
+                     <!-- <i class="fa fa-spinner fa-spin" style="font-size:60px"></i> -->
+                      <h4 class="h2text"><img src="/assets/images/default.gif" style="font-size:6px; width: 53px;"> 
+                         Please wait ..!!! your video got uploaded & we are processing..!!!!</h4> </div>
+                    </div> 
+						<table class="table" >
+							<tbody *ngIf="fileChecked==false || isDisable==false">
+								<tr *ngFor="let item of uploader.queue">
+									<td *ngFor="let file_src of file_srcs">
+									     <video id="my-video"  controls preload="auto" width="280" height="180" >
+											<source src='{{file_src}}' type='video/mp4'>
+										</video>
+									</td>
+									<td>{{ item?.file?.name }}</td>
+									<td>
+									  <div style="margin-left: 13px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
+										<div class="progress" style="margin-left: 13px;">
+										  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+										</div>
+									</td>
+									<td class="text-center">
+									<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+									 <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+									 <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span></td>
+									<td nowrap>
+										<button type="button" class="btn btn-success btn-xs" (click)="item.upload()" 
+											[disabled]="item.isReady || item.isUploading || item.isSuccess">
+											<span class="glyphicon glyphicon-upload"></span> Upload
+										</button>
+										<button type="button" class="btn btn-danger btn-xs" [disabled]="loading==true"
+											(click)="item.remove();removefileUploadVideo()">
+											<span class="glyphicon glyphicon-trash"></span> Remove
+										</button>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div>
+					</div>
+					</div>
+				</div>
+			
+				<div class="row">
+					<!--ended the file upload code   -->
+					<div class="col-md-6">
+						<p><span class="label label-danger"> NOTE: </span> &nbsp; This
+							plugins works only on Latest Chrome, Firefox, Safari, Opera &
+							Internet Explorer 10.
+						</p>
+						<div [class.customDisableCss]='isDisable==true || fileChecked==true ||isFileProgress ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+							(fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone" >
+							<h3>Drop Files here</h3>
+						</div>
+					</div>
+					<div class="col-md-6" style="padding-top: 69px;">
+						<div style="float: left; width: 100px;" class="zoomin">
+						 <img src="../../assets/images/record.png" title="Click here To Record from computer acttached camera"
+								(click)="cameraChange()" height="80" width="80" class="camera" style=" border: 5px; margin: 10px;">
+								<small style="margin-left: 18px; font-size: 13px;">Camera</small>
+						</div>
+						<div style="float: left; width: 100px;" class="zoomin">
+				        <img src="../../assets/images/Dropbox.png"  class="dropBox" title="Click here To access videos from your Dropbox account"
+								(click)="dropBoxChange()" height="80" width="80"  style="cursor:pointer; border: 1px; margin: 10px;">
+								<small style="margin-left: 18px;font-size: 13px;">DropBox</small>
+						</div>	
+						<div  style="float: left; width: 100px;" class="zoomin">
+						  <img src="../../assets/images/box.png" class="box" title="Click here To access videos from your Box.com account"
+								(click)="boxChange()" height="80" width="80" style="cursor:pointer; border: 1px; margin: 10px;">
+								<small style=" margin-left: 29px;font-size: 13px;">Box</small>
+					   </div>
+					   <div  style="float: left; width: 100px;" class="zoomin">			
+						<img src="../../assets/images/GoogleDrive.png" class="googleDrive" title="Click here To access videos from your GoogleDrive account"
+								(click)="googleDriveChange()" height="80" width="80" style="cursor: pointer; border: 1px; margin: 10px;">
+								<small style="margin-left: 8px;font-size: 13px;">Google Drive</small>
+								
+					</div>
+					<div  style="float: left; width: 100px;" class="zoomin">			
+					   <img src="../../assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
+								height="80" width="80" style="cursor: pointer; border: 1px; margin: 10px;">
+								<small style=" margin-left: 12px;font-size: 13px;">One Drive</small>
+					</div>			
+					</div>
+				</div>
+				<div class="clearfix" style="margin: 5px;"></div>
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">**Notes</h3>
+					</div>
+					<div class="panel-body">
+						<ul>
+							<li>The maximum video file size allowed for uploads depends
+								on your account.</li>
+							<li>Only Video files (<strong>.mp4, .flv, .mpeg and
+									soon</strong>) are allowed to upload.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+	</div>
+	<!-- END CONTAINER -->
+</div>

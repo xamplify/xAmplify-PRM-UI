@@ -1,0 +1,739 @@
+<div class="portlet light">
+	<div class="portlet-body">
+		<div class="row margin-bottom-30">
+			<!-- video started -->
+			<div class="col-md-6" style="padding-top: 38px">
+				<video id="example_video_11" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{defaultImagePath}}"
+					data-setup='{"example_option":true }' [src]=videoUrl>
+					<source [src]=videoUrl type="video/mp4" />
+				</video>
+             <div id="overlay-modal" class="video-js" style="width: 542px;height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
+               <label style="margin-top: 23px;">         </label>
+                <form #f="ngForm" novalidate>
+                  <div>
+                  <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin: -19px 20px;">{{upperTextValue}}</p>
+                  </div>
+                 <div style="width: 500px;margin-top: 26px;">
+                 <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
+                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group"   (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
+                 </div>  
+                 <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
+                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group"  (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
+                </div> 
+                  <div id="maimessage" [class.emailCustomCss]="isPlayButton==false" style="width: 500px;"> 
+                    <div style=" width: 106px;">
+                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group" (ngModelChange)="checkingCallToActionValues()"
+                   placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;border-left: 0px solid #ffffff;" 
+                   pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+				    #email_id="ngModel">
+				    </div>
+				     <div id="replay-video" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
+                      <a><button type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
+                      <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
+                    </div>
+                 </div> 
+               </div>
+                <div [class.isOffirstname]="isPlayButton==false">
+                 <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
+                </div> 
+                   <div>
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (change)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
+                      <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
+                 </div>  
+                </form>     
+          </div>
+               	 
+               	 
+               	 		
+				<p align="left">127 Views</p>
+				<div *ngIf="likes==true">
+					<span style="float: right">
+						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
+						<button class="fa fa-thumbs-down" style="color: #f3565d;" (click)="disLikesValuesDemo()">{{disLikesValues}}</button>
+					</span>
+				</div>
+				<div>
+					<!-- 	<share-button [button]='twitterButton'  [url]="linkurl" ></share-button> 
+		    <share-button [button]='googleButton'  [url]= "linkurl" ></share-button> 
+		   <share-button [button]='facebookButton'  [url]="linkurl"></share-button>  -->
+
+					<!--  <share-buttons [url]="linkurl" [description]="sdescription" [tags]="stags"></share-buttons> -->
+				</div>
+				<!-- <div  *ngIf="shareVideos">
+					<button ceiboShare [facebook]="{u: repoUrl,media: imgURL}">Facebook</button>
+					<button ceiboShare [linkedIn]="{url:repoUrl}">Linkedin</button>
+					<button ceiboShare [googlePlus]="{url:repoUrl,media: imgURL}">Google
+						Plus</button>
+					<button ceiboShare
+						[twitter]="{url:repoUrl,media: imgURL , text:'Checkout this awesome ng2 social share directive', hashtags:'angular2, social, ceiboIT'}">Twitter</button>
+					<button ceiboShare
+						[pinterest]="{url:repoUrl, media: imgURL, description:'Checkout this awesome angular2 directive'}">Pinterest</button>
+			</div> 
+			 -->
+				<!-- <a class="btn btn-primary" (click)="openWindow()"> -->
+				<div>
+					<a *ngIf="shareValues==true" class="btn btn-primary"
+						[routerLink]="['../../../embed-video', saveVideoFile.alias]">
+						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
+					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
+						data-toggle="modal" data-target="#myModal">
+						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
+					</a>
+				</div>
+
+				<!-- Modal Start-->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel"><strong>Get Embed Code</strong></h4>
+							</div>
+							<div class="modal-body">
+								<form>
+									<div class="input-group" style="width: 100%;">
+										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
+											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{images}}"  {{embedFullScreen}}></iframe><br /><a href="{{images}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
+									</div>
+									<span class="input-group-btn">
+										<div style="margin-top: 4px;">
+											<label style="font-size: 16px;margin-left: 6px;">video size:
+											   <select style="font-size: 12px; margin-top: -6px;" class="videoSizeCss"[(ngModel)]="videosize" [ngModelOptions]="{standalone: true}" (change)="embedVideoSizes()">
+												<option style="font-size:12px" *ngFor="let size of videoSizes" [value]="size">{{size}}</option>
+											</select>  
+											 </label>
+											<label style="font-size: 16px;margin-left: 6px;">allow full screen :
+											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
+											</label>
+											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="margin-left: 17%; background: #194A7E; color: #FFF;"
+												(click)="embedCode('embed_code')">Copy to Clipboard
+											</button>
+										</div>
+									</span>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Modal End-->
+			</div>
+			<!-- video ended  -->
+			<div class="col-md-6">
+				<form class="form-horizontal" role="form" [formGroup]="videoForm" *ngIf="active" (ngSubmit)="saveVideo()">
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right">
+								<div style="float: right">
+									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false">Save</button>
+									<button type="button" class="btn default" (click)="cancelVideo()">Cancel</button>
+								</div>
+							</div>
+						</div>
+						<!-- BEGIN SAMPLE FORM PORTLET-->
+						<div class="portlet box green " style="margin-top: 3px;">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-info-circle"></i>{{titleOfVideo}} Video Info
+								</div>
+								<div class="tools">
+									<a> <ui-switch [(ngModel)]="titleDiv" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" (change)="titleDivChange($event)"></ui-switch>
+									</a> <a href="" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form" *ngIf="titleDiv">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="col-md-3 control-label">Title:</label>
+										<div class="col-md-9">
+											<input type="text" class="form-control"placeholder="Enter Title here" formControlName="title" required> 
+												<span class="help-block">A block of help text.</span>
+											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
+										</div>
+									</div>
+									<input type="hidden" class="form-control" formControlName="id">
+									<div class="form-group">
+										<label class="col-md-3 control-label">Publish to:</label>
+										<div class="col-md-9">
+											<select class="form-control" formControlName="viewBy" required title="If Private is selected,">
+												<option *ngFor="let publish1 of publish" [value]="publish1.name">{{publish1.name}}</option>
+											</select>
+											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">Categories:</label>
+										<div class="col-md-9">
+											<select class="form-control" title="If Private is selected," formControlName="categoryId" required>
+												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}</option>
+											</select>
+											<div *ngIf="formErrors.category" class="alert alert-danger">{{formErrors.category}}
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">Tags:</label>
+										<div class="col-md-9"><tag-input formControlName="tags" required></tag-input>
+											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Thumbnail</label>
+										  <label> <input name="options" ng-control="options" type="radio" [value]="1" (click)="changeThumbRadio()"
+											[(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="margin-top: 12px;" checked="checked">
+										</label>
+										<div class="col-md-12" *ngIf="thumbnailRadioOpen">
+											<!-- <label class="col-md-3 control-label customCss">Thumbnail:</label> -->
+											<label class="col-md-3 control-label customCss"></label>
+											<div class="radio-list">
+												<label class="radio-inline" (click)="changeImgRadio1()">
+													<input type="hidden" value="{{imageValue1}}" name="imagePath" formControlName="imagePath">
+													 <img [ngClass]="{colorImg:imgBoolean1==true ,colorShade :imgBoolean1==false}" src="{{imageFilesfirst}}" class="sizeImg">
+												</label>
+												<label class="radio-inline" (click)="changeImgRadio2()">
+													<input type="hidden" value="{{imageValue2}}" name="imagePath" formControlName="imagePath"> 
+													<img [ngClass]="{colorImg:imgBoolean2==true ,colorShade :imgBoolean2==false}" src="{{imageFilessecond}}" class="sizeImg">
+												</label>
+												 <label class="radio-inline" (click)="changeImgRadio3()">
+													<input type="hidden" value="{{imageValue3}}" name="imagePath" formControlName="imagePath">
+													 <img [ngClass]="{colorImg:imgBoolean3==true ,colorShade :imgBoolean3==false}"src="{{imageFilesthird}}" class="sizeImg">
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">or: </label>
+										<div class="col-md-6" style="margin-left: -19px;">
+											<label class="radio-inline"> 
+											 <input name="options" (click)="changeRadio()" ng-control="options" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
+											 <strong>Upload your own Thumbnail</strong>
+											</label>
+										</div>
+										<div class="col-md-9">
+											<div *ngIf="openOwnThumbnail">
+												<input type="file" ng2FileSelect [uploader]="uploader" (change)="onChange($event)" (change)="fileChangefile(input)" #input>
+												<p class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
+												<div *ngFor="let filesrc of file_srcs">
+													<img src="{{filesrc}}" style="height: 71px; width: 98px">
+												</div>
+												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required</div>
+												<!--  <div *ngIf="formErrors.imageFile" class="alert alert-danger">{{formErrors.imageFile}}</div> -->
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Gif:</label>
+										<div class="col-md-9">
+											<div class="radio-list">
+												<label class="radio-inline" (click)="changeGifRadio1()">
+													<input type="hidden" value="{{gifValue1}}" name="gifImagePath" formControlName="gifImagePath">
+													<img [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
+												</label>
+												 <label class="radio-inline" (click)="changeGifRadio2()">
+													<input type="hidden" value="{{gifValue2}}" name="gifImagePath" formControlName="gifImagePath">
+													<img [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" class="sizeImg">
+												</label> <label class="radio-inline" (click)="changeGifRadio3()">
+													<input type="hidden" value="{{gifValue3}}" name="gifImagePath" formControlName="gifImagePath">
+													<img [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" class="sizeImg">
+												</label>
+												<div *ngIf="formErrors.gifImagePath" class="alert alert-danger">{{formErrors.gifImagePath}}</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">Description:</label>
+										<div class="col-md-9">
+											<textarea class="form-control" rows="3" formControlName="description" required></textarea>
+											<div *ngIf="formErrors.description" class="alert alert-danger">{{formErrors.description}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END SAMPLE FORM PORTLET-->
+
+						<!-- BEGIN Customize FORM PORTLET-->
+						<div class="portlet box blue">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-cogs "></i>Apperance of the player
+								</div>
+								<div class="tools">
+									<a> <ui-switch [(ngModel)]="colorControl" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" (change)="colorControlChange($event)"></ui-switch>
+									</a> <a href="" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form" *ngIf="colorControl">
+								<!-- <form class="form-horizontal" role="form"> -->
+								<div class="portlet-body form" data-initialized="1"
+									style="overflow: hidden; width: auto; height: auto">
+									<div class="form-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
+											<div class="col-md-9">
+												<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
+													(colorPickerChange)="changePlayerColor($event)" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label" style="margin-top:-6px">Enable Video Controller:</label>
+											<div class="col-md-9">
+												<ui-switch color="lightgreen" size="large" formControlName="enableVideoController" (change)="enableVideoControllers($event)"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label" style="margin-top:-6px">Controller Color:</label>
+											<div class="col-md-9">
+												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor" [value]="compControllerColor" />
+											</div>
+										</div>
+										<div class="form-group">
+											 <div>
+											   <label class="col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
+							            	   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 42%;display:inline;"  
+							            	   (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
+										     </div>
+										     <div style="margin-left: 399px;margin-top: -26px;"><label>{{valueRange}}</label></div>
+										 </div>
+									</div>
+								</div>
+								<!-- </form> -->
+							</div>
+						</div>
+						<!-- END SAMPLE FORM PORTLET-->
+						<!-- BEGIN Customize FORM PORTLET-->
+						<div class="portlet box red">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-cogs "></i>Controls of the player
+								</div>
+								<div class="tools">
+									<a> <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
+											size="small" (change)="controlPlayerChange($event)"></ui-switch>
+									</a> <a href="" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form" *ngIf="controlPlayers">
+								<!-- <form class="form-horizontal" role="form" style="margin-left: 25%;"> -->
+								<div class="portlet-body form" data-initialized="1"
+									style="overflow: hidden; width: auto; height: auto">
+									<div class="form-body">
+										<div class="form-group">
+											<label class="col-md-6 control-label">Allow Sharing:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" size="large" formControlName="allowSharing" (change)="allowSharing($event)"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Enable Settings:</label>
+											<div class="col-md-3">
+												<ui-switch color="red" size="large"  formControlName="enableSettings" checked></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Allow Fullscreen:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" size="large" formControlName="allowFullscreen" (change)="changeFullscreen($event)"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Allow Comments:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" size="large" formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Allow Likes:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" size="large" formControlName="allowLikes" (change)="allowLikes($event)"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Enable Casting:</label>
+											<div class="col-md-3">
+												<ui-switch color="orange" size="large" formControlName="enableCasting"></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">Allow Embed:</label>
+											<div class="col-md-3">
+											 <ui-switch color="red" size="large" formControlName="allowEmbed" (change)="allowEmbedVideo($event)"></ui-switch>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- </form> -->
+							</div>
+						</div>
+						<!-- END SAMPLE FORM PORTLET-->
+
+						<!-- BEGIN Customize FORM PORTLET-->
+						<div class="portlet box yellow">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-cogs "></i>Call to Action
+								</div>
+								<div class="tools">
+									<a> <ui-switch [(ngModel)]="callaction" [ngModelOptions]="{standalone: true}" color="lightgreen"
+											size="small" (change)="callToActionChange($event)"></ui-switch>
+									</a> <a href="" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form" *ngIf="callaction" style="padding: 12px !important;">
+								<!-- <form class="form-horizontal" role="form"> -->
+								<div class="form-group">
+									<label class="col-md-3 control-label">Call To Action:</label>
+									<div class="col-md-6">
+										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
+											<label> <ui-switch [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" color="lightgreen"
+													size="large" (change)="enableCallToActionMethod($event)"></ui-switch>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label">Call To Action At:</label>
+									<div class="col-md-6">
+										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
+											<label style="margin-top: 8px;"> start Of the video</label><label style="margin-left: 116px;  margin-top: -29px;">
+											<ui-switch  color="lightgreen"
+												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"	(change)="startCallToactionOverlay($event)"></ui-switch></label>
+									    </div>
+									</div>
+									<div class="col-md-6">
+									    <div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">			
+												<label style="margin-top: 8px;"> end Of the video</label><label  style="margin-left: 116px;  margin-top: -29px;">
+												<ui-switch  color="lightgreen"
+													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"(change)="endCallToactionOverlay($event)"></ui-switch></label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label" style="margin-top:-6px">Names:</label>
+									<div class="col-md-9">
+										<div class="checkbox-list">
+											<label>
+												<div style="float: left;margin-right: 10px;">
+													<span><input id ="asknames" type="checkbox" formControlName="name" (change)="callToActionNames()"></span>
+												</div> Ask for First and Last name
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label" style="margin-top:-6px">Skip:</label>
+									<div class="col-md-9">
+										<div class="checkbox-list">
+											<label>
+												<div style="float: left;margin-right: 10px;"> 
+													<span><input id="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip></span>
+												</div> Allow viewers to skip
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label" style="margin-top:-6px">Upper Text:</label>
+									<div class="col-md-9">
+										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
+											style="width: 316px; height: 52px;"placeholder="Hey I am here!" maxlength="120" #uppertext></textarea>
+											<label>{{characterleft}} character(s) left</label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label" style="margin-top:-6px">Lower Text:</label>
+									<div class="col-md-9">
+										<input type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
+											placeholder="Hey I am here!" #lowertext>
+											<!-- <input type="range"  id="newRange" min="0" max="100"  value="0"
+											placeholder="Hey I am here!">
+												<input type="range"  id="newRange2" min="0" max="100"  value="1"
+											placeholder="Hey I am here!"> -->
+									</div>
+								</div>
+									<!-- <div class="form-actions right"
+									style="padding-bottom: 0px; padding-top: 10px;">
+									<button type="button" class="btn default">Cancel</button>
+									<button type="submit" class="btn green">Save</button>
+								</div> -->
+								<!-- </form> -->
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<!-- END SAMPLE FORM PORTLET-->
+
+		</div>
+	</div>
+	<div class="todo-content">
+		<div class="portlet light">
+			<!-- PROJECT HEAD -->
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i> <span
+						class="caption-helper"></span> &nbsp; <span
+						class="caption-subject font-green-sharp bold uppercase">Lets
+						Tune the Video</span>
+				</div>
+			</div>
+			<!-- end PROJECT HEAD -->
+			<div *ngIf="comments==false">
+				<h2>
+					<pre>Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
+				</h2>
+			</div>
+			<div class="portlet-body" *ngIf="comments ===true">
+				<div class="row">
+					<div class="col-md-5 col-sm-4">
+						<div class="slimScrollDiv"
+							style="position: relative; overflow: hidden; width: auto; height: 800px;">
+							<div class="scroller"
+								style="max-height: 800px; overflow: hidden; width: auto; height: 800px;"
+								data-always-visible="0" data-rail-visible="0"
+								data-handle-color="#dae3e7" data-initialized="1">
+								<div class="todo-tasklist">
+									<div class="todo-tasklist-item todo-tasklist-item-border-green">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar4.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Slider Redesign</div>
+										<div class="todo-tasklist-item-text">Lorem dolor sit
+											amet ipsum dolor sit consectetuer dolore.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 21 Sep 2014 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Urgent</span>
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-red">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar5.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Homepage
+											Alignments to adjust</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor
+											sit amet, consectetuer dolore dolor sit amet.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 14 Sep 2014 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Important</span>
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-green">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar9.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Slider Redesign</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 10 Feb 2015 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar6.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Contact Us Map
+											Location changes</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum amet,
+											consectetuer dolore dolor sit amet.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 04 Oct 2014 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless">Test</span>
+										</div>
+									</div>
+									<div
+										class="todo-tasklist-item todo-tasklist-item-border-purple">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar7.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Projects list new
+											Forms</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor
+											sit amet, consectetuer dolore psum dolor sit.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 19 Dec 2014 </span>
+										</div>
+									</div>
+									<div
+										class="todo-tasklist-item todo-tasklist-item-border-yellow">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar8.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">New Search
+											Keywords</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor
+											sit amet, consectetuer sit amet ipsum dolor, consectetuer
+											ipsum consectetuer sit amet dolore.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 02 Feb 2015 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-green">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar9.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Slider Redesign</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 10 Feb 2015 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-red">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar5.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Homepage
+											Alignments to adjust</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor
+											sit amet, consectetuer dolore psum dolor sit.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 14 Sep 2014 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Important</span>
+										</div>
+									</div>
+									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
+										<img class="todo-userpic pull-left"
+											src="../../assets/admin/layout2/img/avatar6.jpg" width="27px"
+											height="27px">
+										<div class="todo-tasklist-item-title">Contact Us
+											Improvement</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum amet,
+											psum dolor sit consectetuer dolore.</div>
+										<div class="todo-tasklist-controls pull-left">
+											<span class="todo-tasklist-date"><i
+												class="fa fa-calendar"></i> 21 Feb 2015 </span> <span
+												class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless">Primary</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="slimScrollBar"
+								style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 551.248923341947px; background: rgb(218, 227, 231);"></div>
+							<div class="slimScrollRail"
+								style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+						</div>
+					</div>
+					<div class="todo-tasklist-devider"></div>
+					<div class="col-md-7 col-sm-8">
+						<div class="slimScrollDiv"
+							style="position: relative; overflow: hidden; width: auto; height: 800px;">
+							<div class="scroller"
+								style="max-height: 800px; overflow: hidden; width: auto; height: 800px;"
+								data-always-visible="0" data-rail-visible="0"
+								data-handle-color="#dae3e7" data-initialized="1">
+								<form action="#" class="form-horizontal">
+									<!-- TASK HEAD -->
+									<div class="form">
+										<div class="form-group">
+											<div class="col-md-8 col-sm-8">
+												<div class="todo-taskbody-user">
+													<img class="todo-userpic pull-left"
+														src="../../assets/admin/layout2/img/avatar6.jpg"
+														width="50px" height="50px"> <span
+														class="todo-username pull-left">Vanessa Bond</span>
+													<button type="button"
+														class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp;edit&nbsp;</button>
+												</div>
+											</div>
+											<div class="col-md-4 col-sm-4">
+												<div class="todo-taskbody-date pull-right">
+													<button type="button"
+														class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp;
+														Complete &nbsp;</button>
+												</div>
+											</div>
+										</div>
+										<!-- END TASK HEAD -->
+										<!-- TASK TITLE -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<input type="text"
+													class="form-control todo-taskbody-tasktitle"
+													placeholder="Task Title...">
+											</div>
+										</div>
+										<!-- TASK DESC -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<textarea class="form-control todo-taskbody-taskdesc"
+													rows="8" placeholder="Task Description..."></textarea>
+											</div>
+										</div>
+										<!-- END TASK DESC -->
+										<!-- TASK DUE DATE -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<div class="input-icon">
+													<i class="fa fa-calendar"></i> <input type="text"
+														class="form-control todo-taskbody-due"
+														placeholder="Due Date...">
+												</div>
+											</div>
+										</div>
+										<!-- TASK TAGS -->
+										<div class="form-group">
+											<div class="col-md-12">
+												<div
+													class="select2-container select2-container-multi form-control todo-taskbody-tags"
+													id="s2id_autogen1">
+													<ul class="select2-choices">
+														<li class="select2-search-choice">
+															<div>Pending</div> <a href="#"
+															class="select2-search-choice-close" tabindex="-1"></a>
+														</li>
+														<li class="select2-search-choice">
+															<div>Requested</div> <a href="#"
+															class="select2-search-choice-close" tabindex="-1"></a>
+														</li>
+														<li class="select2-search-field"><label
+															for="s2id_autogen2" class="select2-offscreen"></label> <input
+															type="text" autocomplete="off" autocorrect="off"
+															autocapitalize="off" spellcheck="false"
+															class="select2-input" id="s2id_autogen2" placeholder=""
+															style="width: 20px;"></li>
+													</ul>
+													<div
+														class="select2-drop select2-drop-multi select2-display-none">
+														<ul class="select2-results">
+														</ul>
+													</div>
+												</div>
+												<input type="text"
+													class="form-control todo-taskbody-tags select2-offscreen"
+													placeholder="Tags..." value="Pending, Requested"
+													tabindex="-1">
+											</div>
+										</div>
+										<!-- TASK TAGS -->
+										<div class="form-actions right todo-form-actions">
+											<button class="btn btn-circle btn-sm green-haze">Save
+												Changes</button>
+											<button class="btn btn-circle btn-sm btn-default">Cancel</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
