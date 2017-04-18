@@ -1,20 +1,30 @@
+import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { CommonModule} from '@angular/common';
 import { HttpModule } from '@angular/http';
+
+import {ShareButtonsModule} from "ng2-sharebuttons";
+
+import {CoreModule} from './core/core.module';
+import {DashboardModule} from './dashboard/dashboard.module';
+
+import {AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
+import { Logger } from "angular2-logger/core";
+import { LoginComponent } from './login/login.component';
+
+import {TwitterService} from './social/twitter/twitter.service';
+import {FacebookService} from './social/facebook/facebook.service';
+import {SocialService} from './social/social.service';
+import { UserService } from './core/services/user.service';
+
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule
-  ],
-  providers: [],
+    declarations: [AppComponent,LoginComponent],
+  imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot()],
+  providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

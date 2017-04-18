@@ -1,0 +1,289 @@
+<div class="page-header navbar navbar-fixed-top">
+	<!-- BEGIN HEADER INNER -->
+	<div class="page-header-inner">
+		<!-- BEGIN LOGO -->
+		<div class="page-logo">
+			<a routerLink="./dashboard">
+			<img src="../../../assets/admin/layout2/img/logo-default.png" alt="logo" class="logo-default"/>
+			</a>
+			<div class="menu-toggler sidebar-toggler">
+				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+			</div>
+		</div>
+		<!-- END LOGO -->
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		</a>
+		<!-- END PAGE ACTIONS -->
+		<!-- BEGIN PAGE TOP -->
+		<div class="page-top">
+			<!-- BEGIN HEADER SEARCH BOX -->
+			<!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
+			<form class="search-form search-form-expanded" action="extra_search.html" method="GET">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search..." name="query">
+					<span class="input-group-btn">
+					<a href="javascript:;" class="btn submit"><i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
+					</span>
+				</div>
+			</form>
+			<!-- END HEADER SEARCH BOX -->
+			<!-- BEGIN TOP NAVIGATION MENU -->
+			<div class="top-menu">
+				<ul class="nav navbar-nav pull-right">
+					<!-- BEGIN NOTIFICATION DROPDOWN -->
+					<li style="margin-top: 10px;margin-right: 50px;/* color: #ffffff; *//* background-color: #00a6e8; */">
+					<a class="btn btn-warning2" routerLink="./videos" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Upload a Video
+					<i class="fa fa-upload" style="font-size:20px;" data-toggle="tooltip"></i>
+					</a>
+					</li>
+					<li style="margin-top: 10px;margin-right: 50px;">
+						<!-- <button id="global-new-tweet-button" type="button" data-toggle="modal" (click)="openTweetModalWindow()" class="btn btn-default">
+				          <span class="Icon Icon--tweet Icon--large"></span>
+				          <span class="text">Tweet</span>
+				        </button> -->
+				        <a class="btn btn-warning2" routerLink="./social/update-status" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Update Status
+							<i class="fa fa-share" style="font-size:20px;" data-toggle="tooltip"></i>
+					</a>
+					</li>
+					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-bell"></i>
+						<span class="badge badge-default">{{notificationsCount}} </span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="external">
+								<h3><span class="bold">{{notificationsCount}} pending</span> notifications</h3>
+								<a *ngIf="notificationsCount > 0" (click)="markAllAsRead()">Mark All as Read</a>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283" >
+									<li *ngFor="let item of notifications">
+										<a [routerLink]="['social/twitter-user', item.targetUrl]">
+										<span class="time">{{item.createdTime | date: 'shortTime'}}</span>
+										<span class="details">
+										<span class="label label-sm label-icon label-success">
+										<i class="fa fa-twitter"></i>
+										</span>
+										{{item.message}}</span>
+										</a>
+									</li>
+									<li>
+										<a>
+										<span class="time">10: 10 PM</span>
+										<span class="details">
+										<span class="label label-sm label-icon label-success">
+										<i class="fa fa-facebook"></i>
+										</span>
+										Facebook Dummy notification Placeholder</span>
+										</a>
+									</li>
+									
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<!-- END NOTIFICATION DROPDOWN -->
+					<!-- BEGIN INBOX DROPDOWN -->
+					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-envelope-open"></i>
+						<span class="badge badge-default">
+						4 </span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="external">
+								<h3>You have <span class="bold">7 New</span> Messages</h3>
+								<a href="page_inbox.html">view all</a>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo">
+										<img src="../../../assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
+										</span>
+										<span class="subject">
+										<span class="from">
+										Lisa Wong </span>
+										<span class="time">Just Now </span>
+										</span>
+										<span class="message">
+										Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo">
+										<img src="../../../assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
+										</span>
+										<span class="subject">
+										<span class="from">
+										Richard Doe </span>
+										<span class="time">16 mins </span>
+										</span>
+										<span class="message">
+										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo">
+										<img src="../../../assets/admin/layout2/img/avatar1.jpg" class="img-circle" alt="">
+										</span>
+										<span class="subject">
+										<span class="from">
+										Bob Nilson </span>
+										<span class="time">2 hrs </span>
+										</span>
+										<span class="message">
+										Vivamus sed nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo">
+										<img src="../../../assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
+										</span>
+										<span class="subject">
+										<span class="from">
+										Lisa Wong </span>
+										<span class="time">40 mins </span>
+										</span>
+										<span class="message">
+										Vivamus sed auctor 40% nibh congue nibh... </span>
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo">
+										<img src="../../../assets/admin/layout2/img/avatar3.jpg" class="img-circle" alt="">
+										</span>
+										<span class="subject">
+										<span class="from">
+										Richard Doe </span>
+										<span class="time">46 mins </span>
+										</span>
+										<span class="message">
+										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<!-- END INBOX DROPDOWN -->
+					<!-- BEGIN TODO DROPDOWN -->
+					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-info"></i>
+						</a>
+						<ul class="dropdown-menu extended tasks">
+							<li class="external">
+								<h3> <span class="bold">Frequently Asked Questions</span></h3>
+								<a routerLink ="./dashboard/extrafaq">view all</a>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">1. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry ? </span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">2. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry ?</span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">3.Mobile app release</span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">4. Database migration</span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">5.Web server upgrade</span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">6.Mobile development</span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a routerLink="./dashboard/extrafaq">
+										<span class="task">
+										<span class="desc">7. New UI release</span>
+										</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<!-- END TODO DROPDOWN -->
+					<!-- BEGIN USER LOGIN DROPDOWN -->
+					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+					<li class="dropdown dropdown-user">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<img alt="" class="img-circle" src="{{profilePicutrePath}}"/>
+						
+						<span class="username username-hide-on-mobile">
+						{{displayName}}</span>
+						<i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-default">
+							<li>
+								<a routerLink="./dashboard/myprofile">
+								<i class="icon-user"></i> My Profile </a>
+							</li>
+                            <li class="divider">
+							</li>
+							<li>
+								<a routerLink="../userlock">
+								<i class="icon-lock"></i> Lock Screen </a>
+							</li>
+							<li>
+								<a routerLink="/login">
+								<i class="icon-key"></i> Log Out </a>
+							</li>
+						</ul>
+					</li>
+					<!-- END USER LOGIN DROPDOWN -->
+					<!-- BEGIN USER LOGIN DROPDOWN -->
+					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+					<!--<li class="dropdown dropdown-extended quick-sidebar-toggler">
+	                    <span class="sr-only">Toggle Quick Sidebar</span>
+	                    <i class="icon-logout"></i>
+	                </li>-->
+					<!-- END USER LOGIN DROPDOWN -->
+				</ul>
+			</div>
+			<!-- END TOP NAVIGATION MENU -->
+		</div>
+		<!-- END PAGE TOP -->
+	</div>
+	<!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix"></div>

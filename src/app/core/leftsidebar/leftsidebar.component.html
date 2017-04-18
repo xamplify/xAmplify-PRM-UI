@@ -1,0 +1,164 @@
+<!-- BEGIN SIDEBAR -->
+		<div class="page-sidebar-wrapper">
+			<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+			<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+			<div class="page-sidebar navbar-collapse collapse">
+				<!-- BEGIN SIDEBAR MENU -->
+				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+					<li [routerLinkActive]="['start','active']">
+						<a [routerLink]="['./dashboard']" >
+						<i class="icon-home"></i>
+						<span class="title">Account Dashboard</span>
+						<span class="selected"></span>
+						</a>
+					</li>
+					
+					<li [routerLinkActive]="['start','active']">
+						<a>
+						<i class="fa fa-video-camera"></i>
+						<!--  <i class="icon-camcorder"></i>-->
+						<span class="title">Videos</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" style="margin-top:-95px;height:95px;">
+						<li>
+						      <a  [routerLink]="['./videos']">
+								<i class="fa fa-file-video-o"></i>
+								<span class="title">Uplaod videos</span>
+								</a>
+							</li>
+							<li>
+					       <a  [routerLink]="['./videos/manage_videos']">
+								<i class="icon-cloud-upload"></i>
+								<span class="title">Manage Videos</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					
+					
+					<li [routerLinkActive]="['start','active']">
+						<a>
+						<i class="fa fa-list-ul"></i>
+						<span class="title">Contacts</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" style="margin-top:-95px;height:95px;">
+						<li>
+								<a  [routerLink] ="['./contacts']">
+								<i class="fa fa-users"></i>
+								<span class="title">Add Contacts</span>
+								</a>
+							</li>
+							<li>
+								<a  [routerLink]="['./contacts/manageContacts']">
+								<i class="icon-cloud-upload"></i>
+								<span class="title">Manage Contacts</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li [routerLinkActive]="['start','active']">
+						<a>
+						<i class="fa fa-envelope"></i>
+						<span class="title">Email Templates</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						
+						<ul class="sub-menu" style="margin-top:-95px;height:95px;">
+						<li>
+				              <a  [routerLink]="['./emailtemplate']">
+
+								<i class="fa fa-video-camera"></i>
+								<span class="title">Manage Email Templates</span>
+								</a>
+							</li>
+							<li>
+							<a  [routerLink]="['./emailtemplate/selectTemplate']">
+
+								<i class="fa fa-envelope"></i>
+								<span class="title">Create Email Template</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li [routerLinkActive]="['start','active']">
+						<a>
+						<i class="fa fa-bullhorn"></i>
+						<span class="title">Publish</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" style="margin-top:-95px;height:95px;">
+						<li>
+								<a  [routerLink] ="['./campaigns']">
+								<i class="fa fa-file-video-o"></i>
+								<span class="title">Publish Content</span>
+								</a>
+							</li>
+							<li>
+								<a  [routerLink] ="['./campaigns/managepublish']">
+								<i class="icon-cloud-upload"></i>
+								<span class="title">Manage Publish</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					
+					<li [routerLinkActive]="['start','active']">
+						<a>
+						<i class="fa fa-users"></i>
+						<span class="title">Team</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" style="margin-top:-95px;height:95px;">
+						<li>
+								<a [routerLink]="['./team']">
+								<i class="fa fa-user-secret"></i>
+								Manage Team</a>
+							</li>
+							<li>
+								
+								<a  [routerLink]="['./team/tableeditable']">
+								<i class="fa fa-user-plus"></i>
+								Add Member</a>
+							</li>
+						</ul>
+					</li>
+					<li [routerLinkActive]="['start','active']">
+						<a  [routerLink]="['./upgrade']">
+						<i class="fa fa-arrow-circle-up"></i>
+						<span class="title">Upgrade</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+					</li>
+					<li [routerLinkActive]="['start','active']">
+						<a  [routerLink] ="['./videos/page_portfolio']">
+						<i class="fa fa-video-camera"></i>
+						<!--  <i class="icon-camcorder"></i>-->
+						<span class="title">User Videos</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+					</li>
+					
+					<li>
+						<a [routerLink] ="['/login']">
+						<i class="icon-logout"></i>
+						<span class="title">Logout</span>
+						<span class="arrow "></span>
+						</a>
+					</li>
+
+					
+				</ul>
+				<!-- END SIDEBAR MENU -->
+			</div>
+		</div>
