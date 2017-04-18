@@ -1,0 +1,600 @@
+<div class="page-content">
+	<div></div>
+
+	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+	<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title">Modal title</h4>
+				</div>
+				<div class="modal-body">Widget settings form goes here</div>
+				<div class="modal-footer">
+					<button type="button" class="btn blue">Save changes</button>
+					<button type="button" class="btn default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li><a>Add Contacts</a> <i class="fa fa-angle-right"></i>
+			</li>
+			<!-- <li><a>Dropzone File Upload</a></li> -->
+		</ul>
+	</div>
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="portlet light">
+		<div class="portlet-body">
+			<div class="page-bar" style="margin-bottom: 0px;">
+				<ul class="page-breadcrumb">
+					<li><i style="font-size: 16px;">Add your Contacts</i></li>
+
+				</ul>
+				<div class="page-toolbar">
+					<div class="btn-group pull-right">
+						<div class="inputs" align="right"
+							style="display: inline; float: right">
+							<div class="portlet-input input-inline input-small">
+								<div class="input-icon right">
+									<i class="icon-magnifier"></i> <input type="text"
+										class="form-control input-circle" placeholder="search...">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="clearfix" style="margin: 5px;"></div>
+
+			<form #f="ngForm">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row" style="margin-bottom: 8px">
+							<div class="col-xs-0 col-md-6">
+								<div class="col-sm-12" style="margin-left: -28px">
+								<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label> <input class="col-sm-8" type="text"
+									class="form-control" style="width:65%" id="contactListName"
+									(ngModelChange)="changEvent($event)" required
+									[(ngModel)]="model.contactListName" name="contactListName"
+									minlength="4" maxlength="20"
+									placeholder="Please Enter Contact List Name"
+									#contactListName="ngModel">
+								<div style="margin-left: 170px"
+									[hidden]="contactListName.valid || contactListName.pristine"
+									class="alert alert-danger">Name is required</div>
+							</div>
+							</div>
+							<div class="col-xs-0 col-md-6" style="padding-left: 7px;"
+								align="right">
+								<div class="btn-group">
+									<button id="sample_editable_1_new" class="btn green"
+										(click)="saveContacts()">
+										Import &amp; Save <i class="fa fa-save"></i>
+									</button>
+								</div>
+								<div class="btn-group">
+									<button id="cancel_button" class="btn green"
+										(click)="cancelContacts()">
+										Cancel<i class="fa fa-cancel"></i>
+									</button>
+								</div>
+							</div>
+
+						</div>
+						<div class="row fileupload-buttonbar">
+							<div class="col-lg-6"
+								style="border-right: 1px solid #999999; height: 150px;">
+								<p>Add your contacts with given options</p>
+								<div class="row">
+									<div class="col-lg-12">
+										<p>
+											<button class="btn btn-squared-default btn-primary"
+												id="addContacts" style="padding: 10px 40px;"
+												(click)="addRow()">
+												<i class="fa fa-user-plus fa-4x"
+													style="font-size: 50px; padding-top: 15px;"></i> <br>
+												<br> Add a Contact
+											</button>
+											<button class="btn btn-squared-default btn-success"
+												id="copyFromClipBoard" style="padding: 10px 15px;"
+												(click)="copyFromClipboard()">
+												<i class="fa fa-users fa-4x"
+													style="font-size: 50px; padding-top: 15px;"></i> <br>
+												<br> Copy Form ClipBoard
+											</button>
+											<button
+												class="btn btn-squared-default btn-info fileinput-button"
+												id="uploadCSV" style="padding: 10px 40px;">
+												<i class="fa fa-file-excel-o fa-5x"
+													style="font-size: 50px; padding-top: 15px;"></i> <br>
+												<br> Upload a .CSV <input type="file" ng2FileSelect
+													[uploader]="uploader" (change)="fileChange(input)" #input />
+											</button>
+										</p>
+									</div>
+								</div>
+
+								<!-- The global file processing state -->
+								<span class="fileupload-process"> </span>
+
+
+							</div>
+
+							<div class="col-md-6">
+								<p>Import from available cloud service</p>
+								<button id="salesforceContact_button" style="margin: -8px; background-color: white" data-toggle="modal" data-target="#myModal1">
+									<img src="{{salesforceImage}}"
+										title="Click here To access user list from your Salesforce account"
+										height="100" width="100"
+										style="cursor: pointer; border: 1px; margin: 10px;">
+								</button>
+								<button id="googleContact_button" style="margin: -8px; background-color: white" (click) = "googleContacts()">
+									<img src="{{googleImage}}"
+										title="Click here To access user list from your Google contacts"
+										height="100" width="100"
+										style="cursor: pointer; border: 1px; margin: 10px;">
+								</button>
+								<button id="zohoContact_button" style="margin: -8px; background-color: white" data-toggle="modal" data-target="#myModal">
+									<img src="{{zohoImage}}"
+										title="Click here To access user list from your Zoho account"
+										height="100" width="100"
+										style="cursor: pointer; border: 1px; margin: 10px;">
+								</button>
+								<button id="microsoftContact_button" style="margin: -8px; background-color: white">
+									<figure>
+									 <img src="../../assets/images/crm/dynamics_gear.png"
+										title="Click here To access user list from your Microsoft CRM account"
+										height="100" width="100"
+										style="cursor: pointer; border: 1px; margin: 10px;">
+										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
+									</figure>
+								</button>
+							</div>
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div><img src = "../../assets/images/zoho.png"
+        								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
+        							<h4 class="modal-title" id="myModalLabel" align="center"><b>Sign in</b></h4></div>
+     						 </div>
+     					 <div class="modal-body">
+      						<form class="form-horizontal">
+  								  <div class="form-group">
+    									<label class="control-label col-sm-3" for="email">Email:</label>
+    								<div class="col-sm-8">
+     									 <input type="email" style="width: 75%" class="form-control" id="email" placeholder="Enter email" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
+  									</div>
+ 								  </div>
+  								<div class="form-group">
+    								<label class="control-label col-sm-3" for="pwd">Password:</label>
+   									 <div class="col-sm-8"> 
+    									<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="Enter password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+    								 </div>
+  								</div>
+					 		    <div class="form-group">
+    							  <label class="control-label col-sm-3" for="pwd">Import From:</label>
+   									 <div class="col-sm-8"> 
+    									<select class="opts form-control" style="width: 75%">
+    					    				<option selected value="DEFAULT">Select</option>
+    					   	 				<option value="contact"> Contacts </option>
+  						    				<option value="lead"> Leads </option>
+  					       		 		</select>
+  					           		 </div>
+  					            </div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       						<button type="button" class="btn btn-primary" (click) = "zohoContacts()">Authorize</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			<div id="salesforceId">
+			<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div class="col-sm-3">
+        							<img src = "../../assets/images/salesforce-01.png"
+        								 alt = "Picture of a happy monkey" style="height:65px" width="100px" />
+        								 </div>
+        							<div class="col-sm-8">
+        							<h4 class="modal-title" id="myModalLabel">import from salesforce:</h4>
+        							</div>
+     						 </div>
+     					<div class="modal-body">
+      						<form class="form-horizontal">
+  							  <div class="form-group">
+    							<label class="control-label col-sm-3" for="email">Select Option:</label>
+    								<div class="col-sm-8">
+    								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeSalesforceDropdown($event)">
+	    					    		<option selected value="DEFAULT">Select</option>
+	    					   	 		<option value="contact"> Contacts </option>
+	  						    		<option value="lead"> Leads </option>
+	  						    		<option value="contact_listviews"> Contacts_listViews </option>
+	  						    		<option value="lead_listviews"> Leads_listViews </option>
+  					       			</select>
+  								  </div>
+ 								 </div>
+  								<div class="form-group" *ngIf="salesforceListViewsData?.length > 0">
+  					       					<label class="control-label col-sm-3" for="salesforce-dropdown-2">Select Option:</label>
+  					       					  <div class="col-sm-8">
+     					 						<select class="form-control" id="salesforce-dropdown-2" (change)="onChange($event.target.value)" >
+												  <option selected value="DEFAULT">Select</option>
+												  <option *ngFor="let item of salesforceListViewsData" value='{{item.listViewId}}'>{{item.listViewName}}</option>
+												</select>
+    								 </div>
+  								</div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       						<button type="button" class="btn btn-primary" (click)="salesforceContacts()">Submit</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			</div>
+			
+			<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title" id="myModalLabel">Select contacts import from:</h4>
+     						 </div>
+     					 	<div class="modal-body">
+       						<select class="opts">
+    					    	<option selected value="DEFAULT">Select Import from</option>
+    					   	 	<option value="contact"> Contacts </option>
+  						    	<option value="lead"> Leads </option>
+  						    	<option value="contact_listviews"> Contacts_listViews </option>
+  						    	<option value="lead_listviews"> Leads_listViews </option>
+  					       </select>  
+      						</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       						<button type="button" class="btn btn-primary" (click)="salesforceContacts()">Submit</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+								<div
+									style="margin-bottom: -15px; padding-left: 1cm">
+									<table class="table">
+										<thead>
+										</thead>
+										<tbody>
+											<tr *ngFor="let item of uploader.queue">
+												<td width="18%"><strong>{{ item?.file?.name }}</strong></td>
+												<td *ngIf="uploader.isHTML5" nowrap>{{
+													item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+												<td *ngIf="uploader.isHTML5">
+													<div class="progress" style="margin-bottom: 0;">
+														<div class="progress-bar" role="progressbar"
+															[ngStyle]="{ 'width': item.progress + '%' }"></div>
+													</div>
+												</td>
+												<td class="text-center"><span *ngIf="item.isSuccess"><i
+														class="glyphicon glyphicon-ok"></i></span> <span
+													*ngIf="item.isCancel"><i
+														class="glyphicon glyphicon-ban-circle"></i></span> <span
+													*ngIf="item.isError"><i
+														class="glyphicon glyphicon-remove"></i></span></td>
+												<td nowrap>
+													<button type="button" class="btn btn-danger btn-xs"
+														(click)="item.remove();removeCsv()">
+														<span class="glyphicon glyphicon-trash"></span> Remove
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+						</div>
+				<div class="row" *ngIf="clipBoard">
+					<div class="col-sm-12">
+						<h3>Copy from text -- paste below</h3>
+						<div class="col-sm-12 form-group">
+					      <select class="col-sm-2 opts form-control"  style="width:15%">
+    					    <option selected value="DEFAULT">Delimeter Type</option>
+    					    <option value="CommaSeperated"> Comma Seperated </option>
+  						    <option value="TabSeperated"> Tab Seperated </option>
+  					       </select>  
+					      <button class=" col-sm-2 btn btn-default" type="button"
+						   style="background-color: #26a69a; color: white"
+						   (click)="clipboardShowPreview()">SHOW PREVIEW</button>
+						</div>
+								<div class="col-sm-6">
+									<textarea id="copyFromclipTextArea" [(ngModel)]="clipboardTextareaText"
+										placeholder="EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName.."
+										[ngModelOptions]="{standalone: true}"
+										style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
+										required="required">
+									</textarea>
+								</div>
+								<div class="col-sm-6">
+									<span id="clipBoardValidationMessage"></span>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							<!-- The table listing the files available for upload/download -->
+							<table role="presentation" class="table table-striped clearfix">
+								<tbody class="files">
+								</tbody>
+							</table>
+							<!-- </form> -->
+							<!-- BEGIN PAGE CONTENT-->
+							<table class="table table-striped table-hover table-bordered"
+								id="sample_editable_1">
+								<thead>
+									<tr>
+										<th><input type="checkbox" [checked]="isAvailable"
+											(change)="checked($event.target.checked)"></th>
+										<th>EMAIL</th>
+										<th>FIRST NAME</th>
+										<th>LAST NAME</th>
+										<!-- <th>Edit</th>-->
+										<th>CANCEL</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let newContact of newUsers; let i = index"
+										id="row_{{newContact.id}}">
+										<td><input type="checkbox" checked="newContact.checked"></td>
+										<!-- <td></td> -->
+										<td><input type=Text [(ngModel)]="newContact.emailId"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											required
+											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+											#emailId="ngModel">
+											<div
+												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+												class="alert alert-danger">
+												Email is required and format should be <i>john@doe.com</i>.
+											</div></td>
+										<td><input type=Text [(ngModel)]="newContact.firstName"
+											class="form-control" [ngModelOptions]="{standalone: true}">
+											<!-- <div
+												[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
+												class="alert alert-danger">firstName is required.</div> -->
+												</td>
+										<td><input type=Text [(ngModel)]="newContact.lastName"
+											class="form-control" [ngModelOptions]="{standalone: true}">
+												</td>
+										<td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="row" id="Gfile_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+										<div class="tools">
+											<a href="javascript:;" class="collapse"> </a> <a
+												href="#portlet-config" data-toggle="modal" class="config">
+											</a> <a href="javascript:;" class="reload"> </a> <a
+												href="javascript:;" class="remove"> </a>
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="google-contacts-table" *ngIf="gContacts">
+											<thead>
+												<tr>
+												<th><input type="checkbox" id="select_all_google_contacts"
+													(change)="selectAllGoogleContacts($event.target.checked)" checked=true></th>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+													<!-- <th>Edit</th>
+												<th>Delete</th> -->
+												</tr>
+											</thead>
+											<tbody>
+											<tr *ngFor="let user of gContacts;let i = index" >
+												<th><input type="checkbox" name="selectedUserIds" id="row_{{user.id}}" value="{{user.emailId}},{{user.firstName}},{{user.lastName}}" 
+												[(ngModel)]="user.checked" (change)="selectGoogleContact($event.target.checked)"></th>
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
+						
+						<div class="row" id="Zfile_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+										<div class="tools">
+											<a href="javascript:;" class="collapse"> </a> <a
+												href="#portlet-config" data-toggle="modal" class="config">
+											</a> <a href="javascript:;" class="reload"> </a> <a
+												href="javascript:;" class="remove"> </a>
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="google-contacts-table" *ngIf="zContacts">
+											<thead>
+												<tr>
+												<th><input type="checkbox" id="select_all_google_contacts"
+													(change)="selectAllZohoContacts($event.target.checked)" checked=true></th>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+													<!-- <th>Edit</th>
+												<th>Delete</th> -->
+												</tr>
+											</thead>
+											<tbody>
+											<tr *ngFor="let user of zContacts;let i = index" >
+												<th><input type="checkbox" name="selectedUserIds" id="row_{{user.id}}" value="{{user.emailId}},{{user.firstName}},{{user.lastName}}" 
+												[(ngModel)]="user.checked" (change)="selectZohoContact($event.target.checked)"></th>
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
+						
+						
+						<div class="row" id="Sfile_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+										<div class="tools">
+											<a href="javascript:;" class="collapse"> </a> <a
+												href="#portlet-config" data-toggle="modal" class="config">
+											</a> <a href="javascript:;" class="reload"> </a> <a
+												href="javascript:;" class="remove"> </a>
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="google-contacts-table" *ngIf="salesforceContactUsers">
+											<thead>
+												<tr>
+												<th><input type="checkbox" id="select_all_google_contacts"
+													(change)="selectAllSalesforceContacts($event.target.checked)" checked=true></th>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+													<!-- <th>Edit</th>
+												<th>Delete</th> -->
+												</tr>
+											</thead>
+											<tbody>
+											<tr *ngFor="let user of salesforceContactUsers;let i = index" >
+												<th><input type="checkbox" name="selectedUserIds" id="row_{{user.id}}" value="{{user.emailId}},{{user.firstName}},{{user.lastName}}" 
+												[(ngModel)]="user.checked" (change)="selectSalesforceContact($event.target.checked)"></th>
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
+						
+						
+						<div class="row" id="file_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+										<div class="tools">
+											<a href="javascript:;" class="collapse"> </a> <a
+												href="#portlet-config" data-toggle="modal" class="config">
+											</a> <a href="javascript:;" class="reload"> </a> <a
+												href="javascript:;" class="remove"> </a>
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="sample_editable_2">
+											<thead>
+												<tr>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+													<!-- <th>Edit</th>
+												<th>Delete</th> -->
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let user of contacts">
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
+						
+						<!-- END PAGE CONTENT -->
+
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<h3 class="panel-title">**Notes</h3>
+							</div>
+							<div class="panel-body">
+								<ul>
+									<li>The maximum number of users allowed for each uploads
+										depends on your account.</li>
+									<li>Only files with (<strong>.csv</strong>) extension are
+										allowed to upload.
+									</li>
+								</ul>
+							</div>
+						</div>
+
+
+						<!-- END PAGE CONTENT-->
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- END PAGE CONTENT-->
+</div>

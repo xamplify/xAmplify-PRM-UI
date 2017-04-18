@@ -1,0 +1,1194 @@
+import { Component, OnInit ,ChangeDetectorRef } from '@angular/core';
+import { ContactService } from '../contact.service';
+import { ContactList } from '../models/contact-list';
+import { User } from '../../core/models/user';
+import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+//import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Logger } from "angular2-logger/core";
+import { SocialContact } from '../models/social-contact';
+import { ZohoContact } from '../models/zoho-contact';
+import { SalesforceContact } from '../models/salesforce-contact';
+
+declare var Metronic : any;
+declare var Layout : any;
+declare var Demo : any;
+
+declare var swal: any;
+declare var $: any;
+
+@Component({
+  selector: 'app-add-contacts',
+  templateUrl: './add-contacts.component.html',
+  styleUrls: ['../../asserts/css/dropzone.css',
+              '../../asserts/css/jquery.fileupload.css',
+              '../../asserts/css/blueimp-gallery.min.css',
+              '../../asserts/css/jquery.fileupload-ui.css',
+              '../../asserts/css/form.css', '../../asserts/css/numbered-textarea.css'],
+              providers: [SocialContact,ZohoContact,SalesforceContact]
+})
+export class AddContactsComponent implements OnInit {
+
+    public isFlag: boolean = false;
+    public clipBoard: boolean = false;
+    public newUsers: Array<User>;
+    public googleUsers: Array<User>;
+    public clipboardUsers: Array<User>;
+    public googleContactUser : Array<User>;
+    public clipboardTextareaText : string;
+    model: any = {};
+    public gContactsValue : boolean;
+    public zohoContactsValue : boolean;
+    public salesforceContactsValue : boolean;
+    public saveAddCotactsUsers: boolean;
+    public saveClipBoardUsers: boolean;
+    public saveCsvUsers: boolean;
+    public saveGoogleContactUsers: boolean;
+    public saveZohoContactUsers: boolean;
+    public saveSalesforceContactUsers: boolean;
+    public zohoImage : string = '../../assets/images/crm/Zoho_check.png';
+    public googleImage : string;
+    public salesforceImage : string = '../../assets/images/crm/sf_check.png';
+
+
+    public listViewName:string;
+    public uploadvalue = true;
+    public contactListName: string;
+    public userName: string;
+    public password: string;
+    public contactType: string;
+    public salesforceListViewId: string;
+    public salesforceListViewName: string;
+    public socialNetwork:string;
+    csvData: any;
+    public socialContact :SocialContact;
+    public zohoContact :ZohoContact;
+    public getGoogleConatacts :any;
+    public getZohoConatacts :any;
+    public salesforceContact :SalesforceContact;
+    public getSalesforceConatactList :any;
+    public storeLogin :any;
+    public gContacts : Set<SocialContact>;
+    public zContacts:Set<SocialContact>;
+    public salesforceContactUsers:Set<SocialContact>;
+    public salesforceContactslist:Set<SalesforceContact>;
+    public salesforceListViewsData: Array<any> = [];
+    public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"]});
+
+    contacts: User[];
+    
+    private socialContactType:string;
+    constructor(private authenticationService: AuthenticationService, private contactService: ContactService,
+        private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
+        private router: Router,private logger: Logger) {
+        this.contacts = new Array<User>();
+        this.newUsers = new Array<User>();
+        this.googleUsers = new Array<User>();
+        this.clipboardUsers = new Array<User>();
+        this.googleContactUser = new Array<User>();
+        this.socialContact = new SocialContact();
+        /*this.contactService.googleCallBack = false;
+        this.contactService.salesforceContactCallBack = false;*/
+        this.zohoContact = new ZohoContact();
+        this.socialContact.socialNetwork = "GOOGLE";
+        this.uploader.onAfterAddingFile = ( file ) => {
+            file.withCredentials = false;
+        };
+        this.model.contactListName = '';
+        this.userName= '';
+        this.password = '';
+        this.contactType='';
+
+        let self = this;
+        this.uploader.onBuildItemForm = function( fileItem: any, form: FormData ) {
+            this.logger.info( "addContacts.component onBuildItemForm" + self.model.contactListName );
+            form.append( 'userListName', "" + self.model.contactListName );
+            return { fileItem, form }
+        };
+
+        this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
+            var responsePath = response;
+            this.logger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
+            $( "#uploadContactsMessage" ).show();
+            router.navigateByUrl( '/home/contacts/manageContacts' )
+
+        };
+    }
+    checked( event: boolean ) {
+        this.logger.info( "selected check value" + event )
+        this.newUsers.forEach(( contacts ) => {
+            if ( event == true )
+                contacts.isChecked = true;
+            else
+                contacts.isChecked = false;
+        })
+    }
+
+    changEvent( event: any ) {
+
+        this.uploadvalue = false;
+    }
+
+    changEvents( event: any ) {
+
+        this.uploadvalue = false;
+    }
+
+    fileChange( input: any ) {
+        this.saveCsvUsers = true;
+        this.saveAddCotactsUsers = false;
+        this.saveGoogleContactUsers = false;
+        this.saveZohoContactUsers = false;
+        this.saveClipBoardUsers = false;
+        this.saveSalesforceContactUsers = false;
+
+        this.readFiles( input.files );
+        this.logger.info( "coontacts preview" );
+        $( "#file_preview" ).show();
+        $( "button#addContacts" ).prop( 'disabled', true );
+        $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        $( "button#cancel_button" ).prop( 'disabled', true );
+        $( "button#googleContact_button" ).prop( 'disabled', true );
+        $( "button#salesforceContact_button" ).prop( 'disabled', true );
+        $( "button#zohoContact_button" ).prop( 'disabled', true );
+        $( "button#microsoftContact_button" ).prop( 'disabled', true );
+    }
+
+    readFile( file: any, reader: any, callback: any ) {
+        reader.onload = () => {
+            callback( reader.result );
+        }
+
+        reader.readAsText( file );
+    }
+
+    readFiles( files: any, index = 0 ) {
+
+        let reader = new FileReader();
+        reader.readAsText( files[0] );
+        this.logger.info( files[0] );
+        var lines = new Array();
+        var self = this;
+        reader.onload = function( e: any ) {
+            var contents = e.target.result;
+            var allTextLines = contents.split( /\r\n|\n/ );
+            for ( var i = 1; i < allTextLines.length; i++ ) {
+                var data = allTextLines[i].split( ',' );
+                if ( data[0].trim().length > 0 ) {
+                    let user = new User();
+                    user.emailId = data[0];
+                    user.firstName = data[1];
+                    user.lastName = data[2];
+                    self.contacts.push( user );
+                }
+            }
+            console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
+        }
+    }
+
+    clipboardShowPreview(  ) {
+        var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+        var splitValue;
+
+        if ( this.clipboardTextareaText == undefined ) {
+            swal( "value can't be null" );
+        }
+
+        if ( selectedDropDown == "DEFAULT" ) {
+            swal( "Please Select the Delimeter Type" );
+            return false;
+        }
+
+        else {
+            if ( selectedDropDown == "CommaSeperated" )
+                splitValue = ",";
+            else if ( selectedDropDown == "TabSeperated" )
+                splitValue = "\t";
+        }
+
+        this.logger.info( "selectedDropDown:" + selectedDropDown );
+        this.logger.info( splitValue );
+        var startTime = new Date();
+        $( "#clipBoardValidationMessage" ).html( '' );
+        var self = this;
+        var allTextLines = this.clipboardTextareaText.split( "\n" );
+        this.logger.info( "allTextLines: " + allTextLines );
+        this.logger.info( "allTextLines Length: " + allTextLines.length );
+        var isValidData: boolean = true;
+        for ( var i = 0; i < allTextLines.length; i++ ) {
+            var data = allTextLines[i].split( splitValue );
+            if ( !this.validateEmailAddress( data[0] ) ) {
+                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[0] + "</h4>" );
+                isValidData = false;
+            }
+            this.clipboardUsers.length = 0;
+            this.contacts.length = 0;
+        }
+        if ( isValidData ) {
+            for ( var i = 0; i < allTextLines.length; i++ ) {
+                var data = allTextLines[i].split( splitValue );
+                let user = new User();
+
+                switch ( data.length ) {
+                    case 1:
+                        user.emailId = data[0];
+                        break;
+                    case 2:
+                        user.emailId = data[0];
+                        user.firstName = data[1];
+                        break;
+                    case 3:
+                        user.emailId = data[0];
+                        user.firstName = data[1];
+                        user.lastName = data[2];
+                        break;
+                }
+                this.logger.info( user );
+                this.clipboardUsers.push( user );
+                self.contacts.push( user );
+                $( "#file_preview" ).show();
+                $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                $( "#file_preview" ).show();
+            }
+            var endTime = new Date();
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>" );
+        } else {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( "#clipBoardValidationMessage" ).show();
+            $( "#file_preview" ).hide();
+        }
+        this.logger.info( this.clipboardUsers );
+    }
+
+    validateEmailAddress( emailId: string ) {
+        var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return EMAIL_ID_PATTERN.test( emailId );
+    }
+    validateName( name: string ) {
+        return ( name.trim().length > 0 );
+    }
+
+    saveContactList( isValid: boolean ) {
+        if ( this.model.contactListName != '' ) {
+            this.logger.info( this.newUsers[0].emailId );
+            if ( this.newUsers[0].emailId != undefined ) {
+                this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
+                this.contactService.saveContactList( this.model.contactListName, this.newUsers )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.logger.info( "update Contacts ListUsers:" + data );
+                        $( "#uploadContactsMessage" ).show();
+                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                        this.contactService.successMessage = true;
+                    },
+
+                    error => this.logger.info( error ),
+                    () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                    )
+            } else
+                this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
+        }
+        else {
+            this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
+        }
+    }
+
+    saveClipBoardContactList( isclick: boolean ) {
+        this.logger.info( "addclipboardTesting" );
+        $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+        if ( this.model.contactListName.trim().length == 0 ) {
+            $( "#clipBoardValidationMessage > h4" ).empty();
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>Please Enter the Contact List Name</h4>" );
+        } else {
+            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
+            this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.logger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                },
+
+                error => this.logger.error( error ),
+                () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                )
+        }
+    }
+
+    saveCsvContactList( isValid: boolean ) {
+        if ( this.model.contactListName != '' ) {
+            if ( this.contacts.length > 0 ) {
+                this.logger.info( isValid );
+                this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
+                this.contactService.saveContactList( this.model.contactListName, this.contacts )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.logger.info( "update Contacts ListUsers:" + data );
+                        $( "#uploadContactsMessage" ).show();
+                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    },
+
+                    error => this.logger.error( error ),
+                    () => this.logger.info( "addcontactComponent saveCsvContactList() finished" )
+                    )
+            } else
+                this.logger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
+        }
+        else {
+            this.logger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
+        }
+    }
+
+    saveContacts() {
+        if ( this.saveAddCotactsUsers == true && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            this.saveContactList( true );
+        }
+
+        if ( this.saveAddCotactsUsers == false && this.saveCsvUsers == false && this.saveClipBoardUsers == true && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            this.saveClipBoardContactList( true );
+        }
+
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveCsvUsers == true && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            this.saveCsvContactList( true );
+        }
+        
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == true && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            if(this.gContactsValue == true){
+            this.saveGoogleContacts( true );
+            }else
+                this.saveGoogleContactSelectedUsers(true);
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false) {
+            if(this.zohoContactsValue == true){
+            this.saveZohoContacts( true );
+            }else
+                this.saveZohoContactSelectedUsers(true);
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true) {
+            if(this.salesforceContactsValue == true){
+            this.saveSalesforceContacts( true );
+            }else
+                this.saveSalesforceContactSelectedUsers(true);
+        }
+    }
+
+    cancelContacts() {
+        if ( this.saveAddCotactsUsers == true && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false &&  this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            $( "#sample_editable_1" ).hide();
+            $( "button#uploadCSV" ).prop( 'disabled', false );
+            $( "input[type='file']" ).attr( "disabled", false );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', true );
+            $( "button#googleContact_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', false );
+            $( "button#zohoContact_button" ).prop( 'disabled', false );
+            $( "button#microsoftContact_button" ).prop( 'disabled', false );
+            this.newUsers.length = 0;
+            //this.model.contactListName.length = 0;
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == true && this.saveGoogleContactUsers == false &&  this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            this.clipBoard = false;
+            $( "button#uploadCSV" ).prop( 'disabled', false );
+            $( "input[type='file']" ).attr( "disabled", false );
+            $( "button#addContacts" ).prop( 'disabled', false );
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', true );
+            $( "button#googleContact_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', false );
+            $( "button#zohoContact_button" ).prop( 'disabled', false );
+            $( "button#microsoftContact_button" ).prop( 'disabled', false );
+
+            this.clipboardUsers.length = 0;
+            $( "#file_preview" ).hide();
+            $( '#copyFromclipTextArea' ).val( '' );
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == true  &&  this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false) {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#Gfile_preview" ).hide();
+            $( "button#addContacts" ).prop( 'disabled', false );
+            $( "button#uploadCSV" ).prop( 'disabled', false );
+            $( "input[type='file']" ).attr( "disabled", false );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+            $( "button#cancel_button" ).prop( 'disabled', false );
+            $( "button#googleContact_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', false );
+            $( "button#zohoContact_button" ).prop( 'disabled', false );
+            $( "button#microsoftContact_button" ).prop( 'disabled', false );
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false  &&  this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false) {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#Zfile_preview" ).hide();
+            $( "button#addContacts" ).prop( 'disabled', false );
+            $( "button#uploadCSV" ).prop( 'disabled', false );
+            $( "input[type='file']" ).attr( "disabled", false );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+            $( "button#cancel_button" ).prop( 'disabled', false );
+            $( "button#googleContact_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', false );
+            $( "button#zohoContact_button" ).prop( 'disabled', false );
+            $( "button#microsoftContact_button" ).prop( 'disabled', false );
+        }
+        if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false  &&  this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true) {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#Sfile_preview" ).hide();
+            $( "button#addContacts" ).prop( 'disabled', false );
+            $( "button#uploadCSV" ).prop( 'disabled', false );
+            $( "input[type='file']" ).attr( "disabled", false );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+            $( "button#cancel_button" ).prop( 'disabled', false );
+            $( "button#googleContact_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', false );
+            $( "button#zohoContact_button" ).prop( 'disabled', false );
+            $( "button#microsoftContact_button" ).prop( 'disabled', false );
+        }
+    }
+
+    removeCsv() {
+        $( "#file_preview" ).hide();
+        $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+        $( "button#addContacts" ).prop( 'disabled', false );
+        $( "button#googleContact_button" ).prop( 'disabled', false );
+        $( "button#salesforceContact_button" ).prop( 'disabled', false );
+        $( "button#zohoContact_button" ).prop( 'disabled', false );
+        $( "button#microsoftContact_button" ).prop( 'disabled', false );
+
+    }
+    addRow() {
+        this.saveAddCotactsUsers = true;
+        this.saveClipBoardUsers = false;
+        this.saveCsvUsers = false;
+        this.saveGoogleContactUsers = false;
+        this.saveZohoContactUsers = false;
+        this.saveSalesforceContactUsers = false
+        $( "#sample_editable_1" ).show();
+        this.newUsers.push( new User() );
+        $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+        $( "button#uploadCSV" ).prop( 'disabled', true );
+        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        $( "input[type='file']" ).attr( "disabled", true );
+        $( "button#cancel_button" ).prop( 'disabled', false );
+        $( "button#googleContact_button" ).prop( 'disabled', true );
+        $( "button#salesforceContact_button" ).prop( 'disabled', true );
+        $( "button#zohoContact_button" ).prop( 'disabled', true );
+        $( "button#microsoftContact_button" ).prop( 'disabled', true );
+
+    }
+    cancelRow( rowId: number ) {
+        if ( rowId !== -1 ) {
+            this.newUsers.splice( rowId, 1 );
+        }
+
+    }
+
+    copyFromClipboard() {
+        this.clipboardTextareaText = "";
+        this.saveAddCotactsUsers = false;
+        this.saveClipBoardUsers = true;
+        this.saveCsvUsers = false;
+        this.saveGoogleContactUsers = false;
+        this.saveZohoContactUsers = false;
+        this.saveSalesforceContactUsers = false;
+
+        $( "button#addContacts" ).prop( 'disabled', true );
+        $( "button#uploadCSV" ).prop( 'disabled', true );
+        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        $( "input[type='file']" ).attr( "disabled", true );
+        $( "button#cancel_button" ).prop( 'disabled', false );
+        $( "button#googleContact_button" ).prop( 'disabled', true );
+        $( "button#salesforceContact_button" ).prop( 'disabled', true );
+        $( "button#zohoContact_button" ).prop( 'disabled', true );
+        $( "button#microsoftContact_button" ).prop( 'disabled', true );
+        this.clipBoard = true;
+
+    }
+
+ googleContacts(){
+    this.logger.info("addContactComponent googlecontacts() login:");
+    
+        this.socialContact.firstName = '';
+        this.socialContact.lastName = '';
+        this.socialContact.emailId = '';
+        this.socialContact.contactName = '';
+        this.socialContact.showLogin = true;
+        this.socialContact.jsonData = '';
+        this.socialContact.statusCode = 0;
+        this.socialContact.contactType = '';
+        this.socialContact.alias = '';
+        this.socialContact.socialNetwork = "GOOGLE";
+        this.contactService.googleCallBack = true;
+    
+        this.logger.info("socialContacts"+this.socialContact.socialNetwork);
+        this.contactService.googleLogin()
+        .subscribe(
+                data => {
+                     this.storeLogin = data;
+                    console.log(data);
+                    if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
+                        console.log("AddContactComponent googleContacts() Authentication Success");
+                        this.getGoogleContactsUsers();
+                        this.logger.info("called getGoogle contacts method:");
+                    }else{
+                        localStorage.setItem("userAlias", data.userAlias)
+                        console.log(data.redirectUrl);
+                        console.log(data.userAlias);
+                        window.location.href = ""+data.redirectUrl;
+                    }
+                },
+                error => this.logger.error(error),
+                () => this.logger.log("AddContactsComponent googleContacts() finished.")
+            );
+        }
+  getGoogleContactsUsers(){
+      this.saveAddCotactsUsers = false;
+      this.saveClipBoardUsers = false;
+      this.saveCsvUsers = false;
+      this.saveGoogleContactUsers = true;
+      this.saveZohoContactUsers = false;
+      this.saveSalesforceContactUsers = false;
+      this.contactService.googleCallBack = false;
+      this.socialContact.socialNetwork = "GOOGLE";
+      var self = this;
+      this.contactService.getGoogleContacts(this.socialContact)
+      .subscribe(
+        data =>{
+            this.getGoogleConatacts = data;
+            this.gContacts = new Set<SocialContact>();
+            for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                let socialContact = new SocialContact();
+                let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                this.gContacts.add( socialContact );
+            this.logger.info(this.getGoogleConatacts);
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#Gfile_preview" ).show();
+            $( "button#addContacts" ).prop( 'disabled', true );
+            $( "button#uploadCSV" ).prop( 'disabled', true );
+            $( "input[type='file']" ).attr( "disabled", true );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', true );
+            $( "button#zohoContact_button" ).prop( 'disabled', true );
+            $( "button#microsoftContact_button" ).prop( 'disabled', true );
+            }
+         },
+        error => this.logger.error(error),
+        () => this.logger.log("googleContacts data :"+JSON.stringify(this.getGoogleConatacts.contacts))
+      );
+  }
+ 
+  saveGoogleContacts( isValid: boolean ) {
+      
+      this.socialContact.socialNetwork = "GOOGLE";
+      this.socialContact.contactName = this.model.contactListName;
+      this.socialContact.contactType = "CONTACT";
+      
+      this.socialContact.contacts = this.gContacts;
+      
+      if ( this.model.contactListName != '' ) {
+          if ( this.gContacts.size > 0 ) {
+              this.logger.info( isValid );
+              this.contactService.saveSocialContactList(this.socialContact)
+                  .subscribe(
+                  data => {
+                      data = data;
+                      this.logger.info( "update Contacts ListUsers:" + data );
+                      $( "#uploadContactsMessage" ).show();
+                      this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                  },
+
+                  error => this.logger.error( error ),
+                  () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                  )
+          } else
+              this.logger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
+      }
+      else {
+          this.logger.error( "AddContactComponent saveGoogleContacts() ContactListName Error" );
+      }
+  } 
+
+  saveGoogleContactSelectedUsers( isValid: boolean ) {
+      var selectedUserIds = new Array();
+      let selectedUsers = new Array<User>();
+      $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+          var userInformation = $( this ).val().split(',');
+          let user = new User();
+          user.emailId = userInformation[0];
+          user.firstName = userInformation[1];
+          user.lastName = userInformation[2];
+          selectedUsers.push(user);
+      });
+      console.log(selectedUsers);
+      this.logger.info("SelectedUserIDs:"+selectedUserIds);
+      if ( this.model.contactListName != '' ) {
+              this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+              this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+                  .subscribe(
+                  data => {
+                      data = data;
+                      this.logger.info( "update Contacts ListUsers:" + data );
+                      $( "#uploadContactsMessage" ).show();
+                      this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                      this.contactService.successMessage = true;
+                  },
+
+                  error => this.logger.info( error ),
+                  () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                  )
+      }
+      else {
+          this.logger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
+      }
+  }
+  
+  selectAllGoogleContacts( event: boolean ) {
+      this.logger.info( "check value:" + event )
+      this.gContacts.forEach(( gContacts ) => {
+          if ( event == true ){
+              gContacts.checked = true;
+              this.gContactsValue =true ;
+          }
+          else{
+              gContacts.checked = false;
+              this.gContactsValue = false;
+              }
+      })
+  }
+  
+  selectAllZohoContacts( event: boolean ) {
+      this.logger.info( "check value:" + event )
+      this.zContacts.forEach(( zContacts ) => {
+          if ( event == true ){
+              zContacts.checked = true;
+              this.zohoContactsValue =true ;
+          }
+          else{
+              zContacts.checked = false;
+              this.zohoContactsValue = false;
+              }
+      })
+  }
+  selectAllSalesforceContacts( event: boolean ) {
+      this.logger.info( "check value:" + event )
+      this.salesforceContactUsers.forEach(( salesforceContactUsers ) => {
+          if ( event == true ){
+              salesforceContactUsers.checked = true;
+              this.salesforceContactsValue =true ;
+          }
+          else{
+              salesforceContactUsers.checked = false;
+              this.salesforceContactsValue = false;
+              }
+      })
+  }
+  
+  selectGoogleContact(event: boolean) {
+      this.logger.info( "check value:" + event )
+      var all:any = document.getElementById("select_all_google_contacts");
+          if ( event == false ){
+              all.checked = false;
+              this.salesforceContactsValue = false;
+          }
+
+      }
+  
+  selectZohoContact(event: boolean) {
+      this.logger.info( "check value:" + event )
+      var all:any = document.getElementById("select_all_google_contacts");
+          if ( event == false ){
+              all.checked = false;
+              this.zohoContactsValue = false;
+          }
+
+      }
+  
+  selectSalesforceContact(event: boolean) {
+      this.logger.info( "check value:" + event )
+      var all:any = document.getElementById("select_all_google_contacts");
+          if ( event == false ){
+              all.checked = false;
+              this.salesforceContactsValue = false;
+          }
+
+      }
+  
+  zohoContacts(){
+      
+      var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+      if ( selectedDropDown == "DEFAULT" ) {
+          alert( "Please Select the which you like to import from:" );
+          return false;
+      }
+
+      else {
+          if ( selectedDropDown == "contact" ){
+              this.contactType = selectedDropDown;
+              this.logger.log(selectedDropDown);
+          }
+          else if ( selectedDropDown == "lead" ){
+              this.contactType = selectedDropDown;
+              this.logger.log(selectedDropDown);
+          }
+          this.logger.log(this.userName);
+          this.logger.log(this.password);
+          this.getZohoContacts(this.contactType,this.userName,this.password);
+          
+      }  
+      
+  }
+  
+  getZohoContacts(contactType:any,username:string,password:string){
+      this.saveAddCotactsUsers = false;
+      this.saveClipBoardUsers = false;
+      this.saveCsvUsers = false;
+      this.saveGoogleContactUsers = false;
+      this.saveZohoContactUsers = true;
+      this.saveSalesforceContactUsers = false;
+      this.socialContact.socialNetwork = "";
+      var self = this;
+      this.contactService.getZohoContacts(this.userName, this.password, this.contactType)
+      .subscribe(
+        data =>{
+            this.getZohoConatacts = data;
+            this.zContacts = new Set<SocialContact>();
+            for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
+                let socialContact = new SocialContact();
+                let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
+                this.zContacts.add( socialContact );
+            this.logger.info(this.getZohoConatacts);
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#Zfile_preview" ).show();
+            $( "button#addContacts" ).prop( 'disabled', true );
+            $( "button#uploadCSV" ).prop( 'disabled', true );
+            $( "input[type='file']" ).attr( "disabled", true );
+            $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', false );
+            $( "button#salesforceContact_button" ).prop( 'disabled', true );
+            $( "button#googleContact_button" ).prop( 'disabled', true );
+            $( "button#microsoftContact_button" ).prop( 'disabled', true );
+            $("#myModal .close").click()
+            }
+         },
+        error => this.logger.error(error),
+        () => this.logger.log("googleContacts data :"+JSON.stringify(this.getZohoConatacts.contacts))
+      );
+
+  }
+  
+saveZohoContacts( isValid: boolean ) {
+      
+      this.socialContact.socialNetwork = "ZOHO";
+      this.socialContact.contactName = this.model.contactListName;
+      this.socialContact.contactType = this.contactType;
+      
+      this.socialContact.contacts = this.zContacts;
+      
+      if ( this.model.contactListName != '' ) {
+          if ( this.zContacts.size > 0 ) {
+              this.logger.info( isValid );
+              this.contactService.saveSocialContactList(this.socialContact)
+                  .subscribe(
+                  data => {
+                      data = data;
+                      this.logger.info( "update Contacts ListUsers:" + data );
+                      $( "#uploadContactsMessage" ).show();
+                      this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                  },
+
+                  error => this.logger.error( error ),
+                  () => this.logger.info( "addcontactComponent saveZohoContact() finished" )
+                  )
+          } else
+              this.logger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
+      }
+      else {
+          this.logger.error( "AddContactComponent saveZohoContacts() ContactList Name Error" );
+      }
+  } 
+
+saveZohoContactSelectedUsers( isValid: boolean ) {
+    var selectedUserIds = new Array();
+    let selectedUsers = new Array<User>();
+    $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+        var userInformation = $( this ).val().split(',');
+        let user = new User();
+        user.emailId = userInformation[0];
+        user.firstName = userInformation[1];
+        user.lastName = userInformation[2];
+        selectedUsers.push(user);
+    });
+    console.log(selectedUsers);
+    this.logger.info("SelectedUserIDs:"+selectedUserIds);
+    if ( this.model.contactListName != '' ) {
+            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.logger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.contactService.successMessage = true;
+                },
+
+                error => this.logger.info( error ),
+                () => this.logger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                )
+    }
+    else {
+        this.logger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
+    }
+}
+onChange(item:any)
+{
+    this.logger.log(item);
+    this.salesforceListViewId = item;
+    for(var i=0;i< this.salesforceListViewsData.length;i++){
+        this.logger.log(this.salesforceListViewsData[i].listViewId);
+        if(item == this.salesforceListViewsData[i].listViewId){
+           this.salesforceListViewName = this.salesforceListViewsData[i].listViewName;
+        }
+       this.logger.log("listviewNameDROPDOWN"+this.salesforceListViewName);
+    }
+ }
+onChangeSalesforceDropdown(event:Event){
+    this.contactType = event.target["value"];
+    this.socialNetwork = "salesforce";
+    this.salesforceListViewsData = [];
+    
+    if(this.contactType == "contact_listviews" || this.contactType == "lead_listviews"){
+        this.contactService.getSalesforceContacts(this.socialNetwork,this.contactType)
+        .subscribe(
+          data =>{
+              if(data.listViews.length > 0){
+                  for(var i=0; i < data.listViews.length; i++){
+                      this.salesforceListViewsData.push(data.listViews[i]);
+                      this.logger.log(data.listViews[i]);
+                      
+                  }
+              }
+
+          },
+          error => this.logger.error(error),
+          () => this.logger.log("onChangeSalesforceDropdown")
+        );
+    }
+}
+
+salesforceContacts(){
+        this.socialContact.socialNetwork = "salesforce";
+    
+        this.logger.info("socialContacts"+this.socialContact.socialNetwork);
+        this.contactService.salesforceLogin()
+        .subscribe(
+                data => {
+                     this.storeLogin = data;
+                    console.log(data);
+                    if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
+                        console.log("AddContactComponent salesforce() Authentication Success");
+                        if(this.contactType == "contact_listviews" || this.contactType == "lead_listviews"){
+                            this.getSalesforceListViewContacts(this.contactType);
+                        }else{
+                            this.getSalesforceContacts(this.contactType);
+                        }
+                        
+                    }else{
+                        localStorage.setItem("userAlias", data.userAlias)
+                        console.log(data.redirectUrl);
+                        console.log(data.userAlias);
+                        window.location.href = ""+data.redirectUrl;
+                    }
+                },
+                error => this.logger.error(error),
+                () => this.logger.log("addContactComponent salesforceContacts() login finished.")
+            );
+}
+
+getSalesforceContacts(contactType:any){
+    this.saveAddCotactsUsers = false;
+    this.saveClipBoardUsers = false;
+    this.saveCsvUsers = false;
+    this.saveGoogleContactUsers = false;
+    this.saveZohoContactUsers = false;
+    this.saveSalesforceContactUsers = true;
+    this.socialContact.firstName = '';
+    this.socialContact.lastName = '';
+    this.socialContact.emailId = '';
+    this.socialContact.contactName = '';
+    this.socialContact.showLogin = true;
+    this.socialContact.jsonData = '';
+    this.socialContact.statusCode = 0;
+    this.socialContact.contactType = '';
+    this.socialContact.alias = '';
+    
+    this.socialNetwork = "salesforce";
+    var self = this;
+    var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+    if ( selectedDropDown == "DEFAULT" ) {
+        return false;
+    }
+    else {
+        this.contactType = selectedDropDown;
+        this.logger.log("AddContactComponent getSalesforceContacts() selected Dropdown value:"+ this.contactType)
+    }  
+    
+    this.contactService.getSalesforceContacts(this.socialNetwork,this.contactType)
+    .subscribe(
+      data =>{
+          this.getSalesforceConatactList = data;
+          this.salesforceContactUsers = new Set<SocialContact>();
+          for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
+              let socialContact = new SocialContact();
+              let user = new User();
+                  socialContact.id = i;
+                  socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
+                  socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
+                  socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
+              this.salesforceContactUsers.add( socialContact );
+          this.logger.info(this.getSalesforceConatactList);
+          $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+          $( "#Sfile_preview" ).show();
+          $( "button#addContacts" ).prop( 'disabled', true );
+          $( "button#uploadCSV" ).prop( 'disabled', true );
+          $( "input[type='file']" ).attr( "disabled", true );
+          $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+          $( "button#cancel_button" ).prop( 'disabled', false );
+          $( "button#zohoContact_button" ).prop( 'disabled', true );
+          $( "button#googleContact_button" ).prop( 'disabled', true );
+          $( "button#microsoftContact_button" ).prop( 'disabled', true );
+
+          $("#myModal1 .close").click()
+          }
+       },
+      error => this.logger.error(error),
+      () => this.logger.log("addContactComponent getSalesforceContacts() Data:"+JSON.stringify(this.getSalesforceConatactList.contacts))
+    );
+
+}
+
+getSalesforceListViewContacts(contactType:any){
+
+    this.saveAddCotactsUsers = false;
+    this.saveClipBoardUsers = false;
+    this.saveCsvUsers = false;
+    this.saveGoogleContactUsers = false;
+    this.saveZohoContactUsers = false;
+    this.saveSalesforceContactUsers = true;
+    this.socialContact.firstName = '';
+    this.socialContact.lastName = '';
+    this.socialContact.emailId = '';
+    this.socialContact.contactName = '';
+    this.socialContact.showLogin = true;
+    this.socialContact.jsonData = '';
+    this.socialContact.statusCode = 0;
+    this.socialContact.contactType = '';
+    this.socialContact.alias = '';
+    
+    this.socialNetwork = "salesforce";
+    var self = this;
+    var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+    if ( selectedDropDown == "DEFAULT" ) {
+        return false;
+    }
+    else {
+        this.contactType = selectedDropDown;
+        this.logger.log("AddContactComponent getSalesforceContacts() selected Dropdown value:"+ this.contactType)
+    }  
+    this.contactService.getSalesforceListViewContacts(this.socialNetwork,this.contactType,this.salesforceListViewId,this.salesforceListViewName)
+    .subscribe(
+      data =>{
+          this.getSalesforceConatactList = data;
+          this.salesforceContactUsers = new Set<SocialContact>();
+          for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
+              let socialContact = new SocialContact();
+              let user = new User();
+                  socialContact.id = i;
+                  socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
+                  socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
+                  socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
+              this.salesforceContactUsers.add( socialContact );
+          this.logger.info(this.getSalesforceConatactList);
+          $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+          $( "#Sfile_preview" ).show();
+          $( "button#addContacts" ).prop( 'disabled', true );
+          $( "button#uploadCSV" ).prop( 'disabled', true );
+          $( "input[type='file']" ).attr( "disabled", true );
+          $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+          $( "button#cancel_button" ).prop( 'disabled', false );
+          $( "button#zohoContact_button" ).prop( 'disabled', true );
+          $( "button#googleContact_button" ).prop( 'disabled', true );
+          $( "button#microsoftContact_button" ).prop( 'disabled', true );
+
+          $("#myModal1 .close").click()
+          }
+       },
+      error => this.logger.error(error),
+      () => this.logger.log("addContactComponent getSalesforceContacts() Data:"+JSON.stringify(this.getSalesforceConatactList.contacts))
+    );
+
+}
+
+saveSalesforceContactSelectedUsers( isValid: boolean ) {
+    var selectedUserIds = new Array();
+    let selectedUsers = new Array<User>();
+    $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+        var userInformation = $( this ).val().split(',');
+        let user = new User();
+        user.emailId = userInformation[0];
+        user.firstName = userInformation[1];
+        user.lastName = userInformation[2];
+        selectedUsers.push(user);
+    });
+    console.log(selectedUsers);
+    this.logger.info("SelectedUserIDs:"+selectedUserIds);
+    if ( this.model.contactListName != '' ) {
+            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.logger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.contactService.successMessage = true;
+                },
+
+                error => this.logger.info( error ),
+                () => this.logger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                )
+    }
+    else {
+        this.logger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
+    }
+}
+
+saveSalesforceContacts( isValid: boolean ) {
+    
+    this.socialContact.socialNetwork = "salesforce";
+    this.socialContact.contactName = this.model.contactListName;
+    this.socialContact.contactType = this.contactType;
+    this.socialContact.alias = this.salesforceListViewId;
+    
+    this.socialContact.contacts = this.salesforceContactUsers;
+    
+    if ( this.model.contactListName != '' ) {
+        if ( this.salesforceContactUsers.size > 0 ) {
+            this.logger.info( isValid );
+            this.contactService.saveSocialContactList(this.socialContact)
+                .subscribe(
+                data => {
+                    data = data;
+                    this.logger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                },
+
+                error => this.logger.error( error ),
+                () => this.logger.info( "addcontactComponent saveSalesforceContacts() finished" )
+                )
+        } else
+            this.logger.error("AddContactComponent saveSalesforceContacts() Contacts Null Error");
+    }
+    else {
+        this.logger.error( "AddContactComponent saveSalesforceContacts() ContactList Name Error" );
+    }
+} 
+
+googleContactImage(){
+    this.socialContact.socialNetwork = "GOOGLE";
+    
+    this.logger.info("socialContacts"+this.socialContact.socialNetwork);
+    this.contactService.googleLogin()
+    .subscribe(
+            data => {
+                 this.storeLogin = data;
+                if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
+                   this.googleImage = '../../assets/images/crm/google_check.png'; 
+                }else{
+                    this.googleImage = '../../assets/images/crm/google_gear.png';
+                }
+            },
+            error => this.logger.error(error),
+            () => this.logger.log("AddContactsComponent googleContacts() finished.")
+        ); 
+}
+
+salesforceContactImage(){
+    this.socialContact.socialNetwork = "salesforce";
+    this.contactService.salesforceLogin()
+    .subscribe(
+            data => {
+                 this.storeLogin = data;
+                if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
+                   this.salesforceImage = '../../assets/images/crm/sf_check.png'; 
+                }else{
+                    this.salesforceImage = '../../assets/images/crm/sf_gear.png';
+                }
+            },
+            error => this.logger.error(error),
+            () => this.logger.log("AddContactsComponent googleContacts() finished.")
+        ); 
+}
+    ngOnInit() {
+        this.googleContactImage();
+        this.salesforceContactImage();
+        this.gContactsValue = true;
+        
+        if(this.contactService.googleCallBack == true){
+            this.getGoogleContactsUsers();
+        }else if(this.contactService.salesforceContactCallBack == true){
+            $("#salesforceModalPopup").show();
+        }
+        this.contactListName = '';
+        $("#Gfile_preview").hide();
+        $( "#Zfile_preview" ).hide();
+        $( "#Sfile_preview" ).hide();
+        $( "#popupForListviews" ).hide();
+        this.googleContactImage();
+        this.salesforceContactImage();
+        this.gContactsValue = true;
+        this.zohoContactsValue = true;
+        this.salesforceContactsValue = true;
+        try {
+            Metronic.init(); 
+            Layout.init(); 
+            Demo.init(); 
+            $( "#uploadContactsMessage" ).hide();
+            $( "#sample_editable_1" ).hide();
+            $( "#file_preview" ).hide();
+            $( "#google contacts file_preview" ).hide();
+            $( "#clipBoardValidationMessage" ).hide();
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', true );
+            
+            if(this.socialContactType == "google"){
+                this.getGoogleContactsUsers();
+            }
+        }
+        catch ( err ) {
+            this.logger.error( "addContacts.component error " + err );
+        }
+
+    }
+    ngDestroy(){
+        this.contactService.googleCallBack = false;
+        this.contactService.salesforceContactCallBack = false;
+        
+    }
+}

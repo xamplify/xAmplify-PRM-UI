@@ -4,6 +4,8 @@ import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule} from '@angular/common';
 import { HttpModule } from '@angular/http';
 import {ShareButtonsModule} from "ng2-sharebuttons";
+import {ContactService } from './contacts/contact.service';
+
 
 import { ChartModule } from 'angular2-highcharts';
 
@@ -30,7 +32,7 @@ import {UploadCloudvideoService} from './videos/services/upload-cloudvideo.servi
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
   providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,
-               VideoFileService,UploadCloudvideoService],
+               VideoFileService,UploadCloudvideoService,ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

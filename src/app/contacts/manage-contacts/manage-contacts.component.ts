@@ -1,0 +1,688 @@
+import { Component, OnInit } from '@angular/core';
+import { ContactService } from '../contact.service';
+import { ContactList } from '../models/contact-list';
+import { User } from '../../core/models/user';
+import { ConfirmOptions, Position } from 'angular2-bootstrap-confirm';
+import { Positioning } from 'angular2-bootstrap-confirm/position';
+import { Router, NavigationExtras } from "@angular/router";
+import { Response } from '@angular/http';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { Logger } from "angular2-logger/core";
+import { SocialContact } from '../models/social-contact';
+import { PagerService } from '../../shared/services/index';
+import { Pagination } from '../../shared/Pagination';
+
+
+declare var swal: any;
+declare var $: any;
+
+declare var Metronic : any;
+declare var Layout : any;
+declare var Demo : any;
+declare var Portfolio : any;
+
+
+@Component({
+  selector: 'app-manage-contacts',
+  templateUrl: './manage-contacts.component.html',
+  styleUrls: ['../../asserts/css/portfolio.css', '../../asserts/css/jquery.fancybox.css', '../../asserts/css/ribbons.css'],
+   providers: [SocialContact, Pagination]
+})
+export class ManageContactsComponent implements OnInit {
+public show: boolean = false;
+public socialContact: SocialContact;
+public googleSynchronizeButton: boolean;
+allContacts: number;
+invalidContacts: number;
+unsubscribedContacts: number;
+public storeLogin: any;
+
+activeUsersCount: number;
+inActiveUsersCount: number;
+
+public contactLists: Array<ContactList>;
+selectedContactListId: number;
+showAll: boolean;
+showEdit: boolean;
+showAllContactData: boolean = false;
+showManageContactData: boolean = true;
+
+allContactData : boolean;
+activeContactsData : boolean;
+invalidContactData : boolean;
+unsubscribedContactsData : boolean;
+nonActiveContactsData : boolean;
+
+public contactListName: string;
+public alias: any;
+public contactType: string;
+public userName: string;
+public password: string;
+public getZohoConatacts: any;
+public zContacts: Set<SocialContact>;
+public allContactUsers: Array<ContactList>;
+public activeContactUsers: Array<ContactList>;
+public invalidContactUsers: Array<ContactList>;
+public unsubscribedContactUsers: Array<ContactList>;
+public nonActiveContactUsers: Array<ContactList>;
+
+users: User[];
+access_token: string;
+pager: any = {};
+pagedItems: any[];
+
+public totalRecords: number;
+public zohoImage: string = '../../assets/admin/pages/media/works/zoho.png';
+public googleImage: string = '../../assets/admin/pages/media/works/gl.jpg';
+public salesforceImage: string = '../../assets/admin/pages/media/works/sf.jpg';
+public normalImage: string = '../../assets/admin/pages/media/works/img1.jpg';
+public currentContactType:string=null;
+
+constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
+    private pagerService: PagerService, private pagination: Pagination ) {
+    this.show = false;
+    this.showAll = true;
+    this.showEdit = false;
+    this.showManageContactData = true;
+    
+    this.allContactUsers = new Array<ContactList>();
+    this.activeContactUsers = new Array<ContactList>();
+    this.invalidContactUsers = new Array<ContactList>();
+    this.unsubscribedContactUsers  = new Array<ContactList>();
+    this.nonActiveContactUsers = new Array<ContactList>();
+        
+        
+    this.activeUsersCount = 0;
+    this.inActiveUsersCount = 0;
+    this.googleSynchronizeButton = false;
+    /*this.socialContact.alias = "";
+    this.socialContact.contactType = "";*/
+    //this.activeUsersCountStr=0;
+    //this.inActiveUsersCountStr=0;
+    //this.allContactsStr=0;
+    this.socialContact = new SocialContact();
+    this.socialContact.socialNetwork = "";
+    this.logger.info( "socialContact" + this.socialContact.socialNetwork );
+
+    this.access_token = this.authenticationService.access_token;
+    this.logger.info( "successmessageLoad" + this.contactService.successMessage )
+    if ( this.contactService.successMessage == true ) {
+        this.show = this.contactService.successMessage;
+        this.logger.info( "Success Message in manage contact pape" + this.show );
+    }
+}
+
+loadContactLists( pagination: Pagination ) {
+    //this.currentContactType = "manage_contacts";
+    this.activeUsersCount = 0;
+    this.inActiveUsersCount = 0;
+    this.contactService.loadContactLists( pagination )
+        .subscribe(
+        (data:any) => {
+            this.logger.info( data );
+            this.contactLists = data.listOfUserLists;
+            this.totalRecords = data.totalRecords;
+            this.allContacts = 0;
+            this.invalidContacts = 0;
+            this.unsubscribedContacts = 0;
+            for ( let contactList of this.contactLists ) {
+                this.activeUsersCount += contactList.activeUsersCount;
+                this.inActiveUsersCount += contactList.inActiveUsersCount;
+                this.allContacts += contactList.noOfContacts;
+                /*this.allContacts = this.allContacts + contactList.noOfContacts;
+                this.activeContacts = this.activeContacts + contactList.noActiveContacts;
+                this.invalidContacts = this.invalidContacts + contactList.noInvalidContacts;
+                this.nonActiveContacts = this.nonActiveContacts + contactList.noNonActiveContacts;
+                this.unsubscribedContacts = this.unsubscribedContacts + contactList.noUnsubscribedContacts;*/
+                //same for others
+            }
+            pagination.totalRecords = this.totalRecords;
+            pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
+        },
+        error => {
+
+            this.logger.error( error )
+
+        },
+        () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+        )
+}
+
+/*setPage(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
+        return;
+    }
+    this.loadContactLists(page);
+}*/
+
+
+setPage( page: number,) {
+    this.pagination.pageIndex = page;
+    if(this.currentContactType==null){
+        this.loadContactLists( this.pagination );
+    }
+    else if(this.currentContactType=="all_contacts"){
+        this.all_Contacts(this.pagination);
+    }else if(this.currentContactType=="active_contacts"){
+        this.active_Contacts(this.pagination);
+    }else if(this.currentContactType=="invalid_contacts"){
+        this.invalid_Contacts(this.pagination);
+    }else if(this.currentContactType=="unSubscribed_contacts"){
+        this.unSubscribed_Contacts(this.pagination);
+    }else if(this.currentContactType=="nonActive_contacts"){
+        this.nonActive_Contacts(this.pagination);
+    }/*else {
+        this.loadContactLists( this.pagination );
+    }*/
+    
+}
+
+/*setPagination(page: number){
+    this.pager = this.pagerService.getPager(this.totalRecords, page,12);
+    console.log(this.contactLists);
+    this.pagedItems = this.contactLists.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    console.log( this.pagedItems);
+}
+*/
+
+deleteContactList( contactListId: number ) {
+    this.logger.info( "MangeContacts deleteContactList : " + contactListId );
+    this.contactService.deleteContactList( contactListId )
+        .subscribe(
+        data => {
+            console.log( "MangeContacts deleteContactList success : " + data );
+            $( '#contactListDiv_' + contactListId ).remove();
+            //remove from array
+            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+        },
+        error => this.logger.error( error ),
+        () => this.logger.info( "deleted completed" )
+        );
+}
+
+showAlert( contactListId: number ) {
+    this.logger.info( "contactListId in sweetAlert() " + contactListId );
+    let self = this;
+    swal( {
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+
+    }).then( function( myData: any ) {
+        console.log( "ManageContacts showAlert then()" + myData );
+        self.deleteContactList( contactListId );
+
+        //this.deleteContactList(contactListId);
+    })
+}
+
+downloadContactList( contactListId: number ) {
+    this.contactService.downloadContactList( contactListId )
+        .subscribe(
+        data => this.downloadFile( data ),
+        error => this.logger.error( error ),
+        () => this.logger.info( "download completed" )
+        );
+
+}
+
+googleContactsSynchronizationAuthentication( contactListId: number ) {
+    swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+    this.contactService.googleLogin()
+        .subscribe(
+        data => {
+            this.storeLogin = data;
+            console.log( data );
+            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                console.log( "AddContactComponent googleContacts() Authentication Success" );
+                this.googleContactsSyncronize( contactListId );
+            } else {
+                localStorage.setItem( "userAlias", data.userAlias )
+                console.log( data.redirectUrl );
+                console.log( data.userAlias );
+                window.location.href = "" + data.redirectUrl;
+            }
+        },
+        error => this.logger.error( error ),
+        () => this.logger.log( "manageContacts googleContactsSynchronizationAuthentication() finished." )
+        );
+}
+
+googleContactsSyncronize( contactListId: number ) {
+    this.socialContact.socialNetwork = "GOOGLE";
+    this.logger.info( "googleContactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
+    this.logger.info( "googleContactsSyncronize() ContactListId" + contactListId );
+    this.contactService.googleContactsSynchronize( contactListId, this.socialContact )
+        .subscribe(
+        data => {
+            data
+            swal.close();
+            swal( "Success!", "Google Sychronization Completed!", "success" );
+        },
+        error => this.logger.error( error ),
+        () => this.logger.info( "googleContactsSyncronize() completed" )
+        );
+
+}
+
+zohoContactsSynchronizationAuthentication( contactListId: number ) {
+    this.socialContact.socialNetwork = "ZOHO";
+    $( "#myModal .close" ).click()
+    swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+    for ( let i = 0; i < this.contactLists.length; i++ ) {
+        if ( this.contactLists[i].id == contactListId ) {
+            this.contactType = this.contactLists[i].contactType;
+        }
+    }
+    this.contactService.getZohoContacts( this.userName, this.password, this.contactType )
+        .subscribe(
+        data => {
+            this.getZohoConatacts = data;
+            this.zContacts = new Set<SocialContact>();
+            this.zohoContactsSyncronize( contactListId )
+        },
+        error => this.logger.error( error ),
+        () => this.logger.log( "zohocontact data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
+        );
+}
+
+zohoContactsSyncronize( contactListId: number ) {
+    this.socialContact.socialNetwork = "ZOHO";
+    for ( let i = 0; i < this.contactLists.length; i++ ) {
+        if ( this.contactLists[i].id == contactListId ) {
+            this.contactType = this.contactLists[i].contactType;
+        }
+    }
+    this.socialContact.contactType = this.contactType;
+    this.socialContact.contacts = this.getZohoConatacts.contacts;
+    this.logger.info( "zohoSyncronize() contactType:" + this.contactType );
+    this.logger.info( "zohoSyncronize() socialNetWork:" + this.socialContact.socialNetwork );
+    this.logger.info( "zohoContactsSyncronize() ContactListId:" + contactListId );
+    this.logger.info( "zohoSyncronize() userName:" + this.userName );
+    this.logger.info( "zohoContactsSyncronize() passward:" + this.password );
+    this.contactService.zohoContactsSynchronize( contactListId, this.socialContact )
+        .subscribe(
+        data => {
+            data
+            swal.close();
+            swal( "Success!", "Zoho Sychronization Completed!", "success" );
+        },
+
+        error => this.logger.error( error ),
+        () => this.logger.info( "zohoContactsSyncronize() completed" )
+        );
+
+}
+
+salesforceContactsSynchronizationAuthentication( contactListId: number ) {
+    this.socialContact.socialNetwork = "salesforce";
+    swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+    this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+    this.contactService.salesforceLogin()
+        .subscribe(
+        data => {
+            this.storeLogin = data;
+            console.log( data );
+            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                console.log( "AddContactComponent salesforce() Authentication Success" );
+                this.salesforceContactsSyncronize( contactListId );
+
+            } else {
+                localStorage.setItem( "userAlias", data.userAlias )
+                console.log( data.redirectUrl );
+                console.log( data.userAlias );
+                window.location.href = "" + data.redirectUrl;
+            }
+        },
+        error => this.logger.error( error ),
+        () => this.logger.log( "addContactComponent salesforceContacts() login finished." )
+        );
+}
+salesforceContactsSyncronize( contactListId: number ) {
+    this.socialContact.socialNetwork = "SALESFORCE";
+    for ( let i = 0; i < this.contactLists.length; i++ ) {
+        if ( this.contactLists[i].id == contactListId ) {
+            this.alias = this.contactLists[i].alias;
+            this.contactType = this.contactLists[i].contactType;
+        }
+    }
+    this.logger.info( "alias Value:" + this.alias );
+    this.logger.info( "contactType Value:" + this.contactType );
+    this.socialContact.alias = this.alias;
+    this.socialContact.contactType = this.contactType;
+    this.logger.info( "salesforceContactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
+    this.logger.info( "salesforceContactsSyncronize() ContactListId" + contactListId );
+    this.contactService.salesforceContactsSynchronize( contactListId, this.socialContact )
+        .subscribe(
+        data => {
+            data
+            swal.close();
+            swal( "Success!", "Salesforce Sychronization Completed!", "success" );
+        },
+
+        error => this.logger.error( error ),
+        () => this.logger.info( "salesforceContactsSyncronize() completed" )
+        );
+
+}
+
+
+downloadFile( data: Response ) {
+    //var blob = new Blob([data], { type: 'application/vnd.ms-excel,text/csv'});
+    let blob: Blob = data.blob();
+    window['saveAs']( blob, 'UserList.csv' );
+}
+
+
+editContactList( contactSelectedListId: number ) {
+    this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
+    this.selectedContactListId = contactSelectedListId;
+    this.showAll = false;
+    this.showEdit = true;
+    this.show = false;
+    $( "#pagination" ).hide();
+    //this.singleContactListTotalUsersCount = ("Contacts");
+    //details set 
+    this.contactService.loadUsersOfContactList( contactSelectedListId ).subscribe(
+        data => {
+            this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
+            this.users = data;
+            // this.selectedContactListId = contactSelectedListId;
+            //  this.contactService.contactId = contactSelectedListId;
+            this.allContacts = this.users.length;
+            this.activeUsersCount = 0;
+            this.inActiveUsersCount = this.users.length;
+            var self = this;
+            this.users.forEach( user => {
+                // if(user.status == 'Approved'){
+                //   self.activeUsersCount++;
+                // }
+            });
+        },
+        error => this.logger.error( error ),
+        () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+    )
+
+}
+
+backToManageContactPage() {
+    this.showAll = true;
+    this.showEdit = false;
+    this.showAllContactData = false;
+    this.showManageContactData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = null;
+    this.loadContactLists( this.pagination );
+    $( "#pagination" ).show();
+    
+    this.activeUsersCount = 0;
+    this.inActiveUsersCount = 0;
+    
+    this.allContactData = false;
+    this.activeContactsData = false;
+    this.invalidContactData = false;
+    this.unsubscribedContactsData = false;
+    this.nonActiveContactsData = false;
+    
+
+}
+
+
+all_Contacts( pagination: Pagination ) {
+    this.logger.log( pagination );
+    this.contactService.loadAllContacts( pagination )
+        .subscribe(
+        (data:any) => {
+            this.allContactUsers = data.listOfUsers;
+            this.totalRecords = data.totalRecords;
+            pagination.totalRecords = this.totalRecords;
+            this.logger.info( this.allContactUsers );
+            pagination = this.pagerService.getPagedItems( pagination, this.allContactUsers );
+            this.logger.log(data);
+
+        },
+
+        error => console.log( error ),
+        () => console.log( "finished" )
+        );
+}
+
+allContactsDataShowing(){
+    this.showAllContactData = true;
+    this.showManageContactData = false;
+    this.allContactData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = "all_contacts";
+    this.all_Contacts(this.pagination);
+    
+}
+
+activeContactsDataShowing(){
+    this.showAllContactData = true;
+    this.showManageContactData = false;
+    this.activeContactsData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = "active_contacts";
+    this.active_Contacts(this.pagination);
+    
+}
+
+invalidContactsDataShowing(){
+    this.showAllContactData = true;
+    this.showManageContactData = false;
+    this.invalidContactData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = "invalid_contacts";
+    this.invalid_Contacts(this.pagination);
+    
+}
+
+unSubscribedContactsDataShowing(){
+    this.showAllContactData = true;
+    this.showManageContactData = false;
+    this.unsubscribedContactsData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = "unSubscribed_contacts";
+    this.unSubscribed_Contacts(this.pagination);
+    
+}
+
+nonActiveContactsDataShowing(){
+    this.showAllContactData = true;
+    this.showManageContactData = false;
+    this.nonActiveContactsData = true;
+    this.pagination = new Pagination();
+    this.currentContactType = "nonActive_contacts";
+    this.nonActive_Contacts(this.pagination);
+    
+}
+
+active_Contacts( pagination: Pagination ) {
+
+    this.contactService.loadActiveContacts( pagination )
+        .subscribe(
+           (data:any) => {
+            this.activeContactUsers = data.listOfUsers;
+            this.totalRecords = data.totalRecords;
+            pagination.totalRecords = this.totalRecords;
+            pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
+            this.logger.log(data);
+        },
+
+        error => console.log( error ),
+        () => console.log( "finished" )
+        );
+}
+
+invalid_Contacts( pagination: Pagination ) {
+
+    this.contactService.loadInvalidContacts( pagination )
+        .subscribe(
+          (data:any) => {
+            this.invalidContactUsers = data.listOfUsers;
+            this.totalRecords = data.totalRecords;
+            pagination.totalRecords = this.totalRecords;
+            pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
+            this.logger.log(data);
+        },
+
+        error => console.log( error ),
+        () => console.log( "finished" )
+        );
+}
+
+unSubscribed_Contacts( pagination: Pagination ) {
+
+    this.contactService.loadUnSubscribedContacts( pagination )
+        .subscribe(
+           (data:any) => {
+            this.unsubscribedContactUsers = data.listOfUsers;
+            this.totalRecords = data.totalRecords;
+            pagination.totalRecords = this.totalRecords;
+            pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
+            this.logger.log(data);
+        },
+
+        error => console.log( error ),
+        () => console.log( "finished" )
+        );
+}
+
+
+nonActive_Contacts( pagination: Pagination ) {
+
+    this.contactService.loadNonActiveContacts( pagination )
+        .subscribe(
+        (data:any) => {
+            this.nonActiveContactUsers = data.listOfUsers;
+            this.totalRecords = data.totalRecords;
+            pagination.totalRecords = this.totalRecords;
+            pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
+            this.logger.log(data);
+        },
+
+        error => console.log( error ),
+        () => console.log( "finished" )
+        );
+}
+
+checked( event: boolean ) {
+    this.logger.info( "check value" + event )
+    this.allContactUsers.forEach(( allContacts ) => {
+        if ( event == true )
+            allContacts.isChecked = true;
+        else{
+            allContacts.isChecked = false;
+        }
+    })
+}
+
+saveSelectedUsers() {
+    var selectedUserIds = new Array();
+    let selectedUsers = new Array<User>();
+    $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+        var userInformation = $( this ).val().split(',');
+        let user = new User();
+        user.emailId = userInformation[0];
+        user.firstName = userInformation[1];
+        user.lastName = userInformation[2];
+        selectedUsers.push(user);
+    });
+    console.log(selectedUsers);
+    this.logger.info("SelectedUserIDs:"+selectedUserIds);
+    if ( this.contactListName != null ) {
+            this.contactService.saveContactList( this.contactListName, selectedUsers )
+                .subscribe(
+                data => {
+                    data = data;
+                    //$( "#uploadContactsMessage" ).show();
+                    //this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.backToManageContactPage();
+                    this.contactService.successMessage = true;
+                },
+
+                error => this.logger.info( error ),
+                () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
+                )
+    }
+    else {
+        this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
+    }
+}
+
+removeContactListUsers( contactListId: number ) {
+    var removeUserIds = new Array();
+    $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+        var id = $( this ).val();
+        removeUserIds.push( id );
+    });
+    this.logger.info( removeUserIds );
+    this.contactService.removeContactList( contactListId, removeUserIds )
+        .subscribe(
+        data => {
+            data = data;
+            console.log( "update Contacts ListUsers:" + data );
+            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            $.each( removeUserIds, function( index: number, value: any ) {
+                $( '#row_' + value ).remove();
+                console.log( index + "value" + value );
+            });
+
+        },
+        error => this.logger.error( error ),
+        () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+        )
+}
+
+invalidContactsShowAlert( contactListId: number ) {
+
+    var removeUserIds = new Array();
+    $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+        var id = $( this ).val();
+        removeUserIds.push( id );
+    });
+    this.logger.info( "userIdForChecked" + removeUserIds );
+    if ( removeUserIds.length != 0 ) {
+        this.logger.info( "contactListId in sweetAlert() " + contactListId );
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+
+        }).then( function( myData: any ) {
+            console.log( "ManageContacts showAlert then()" + myData );
+            self.removeContactListUsers( contactListId );
+        })
+    }
+}  
+
+
+ngOnInit() {
+
+    // $( "#allContactdata" ).hide();
+    this.loadContactLists( this.pagination );
+    try {
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        Portfolio.init();
+    }
+    catch ( error ) {
+        this.logger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
+    }
+}
+
+ngOnDestroy() {
+    this.logger.info( 'Deinit - Destroyed Component' )
+    this.contactService.successMessage = false;
+}
+}
