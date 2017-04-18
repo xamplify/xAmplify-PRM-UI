@@ -1,7 +1,7 @@
 import { Component, OnInit,Input  } from '@angular/core';
 import { Router ,RouterModule} from '@angular/router';
 import { UserService } from '../services/user.service';
-import {TwitterService} from "../../social/twitter/twitter.service";
+import {TwitterService} from "../../social/services/twitter.service";
 import { User } from '../models/user';
 
 declare var swal: any;

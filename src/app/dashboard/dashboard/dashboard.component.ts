@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import { Logger } from "angular2-logger/core";
 
 import {DashboardService} from '../dashboard.service';
-import {TwitterService} from '../../social/twitter/twitter.service';
+import {TwitterService} from '../../social/services/twitter.service';
 
 
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;

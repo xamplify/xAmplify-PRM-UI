@@ -3,8 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule} from '@angular/common';
 import { HttpModule } from '@angular/http';
-
 import {ShareButtonsModule} from "ng2-sharebuttons";
+
+import { ChartModule } from 'angular2-highcharts';
 
 import {CoreModule} from './core/core.module';
 import {DashboardModule} from './dashboard/dashboard.module';
@@ -16,14 +17,16 @@ import { AppComponent } from './app.component';
 import { Logger } from "angular2-logger/core";
 import { LoginComponent } from './login/login.component';
 
-import {TwitterService} from './social/twitter/twitter.service';
-import {FacebookService} from './social/facebook/facebook.service';
-import {SocialService} from './social/social.service';
+import {TwitterService} from './social/services/twitter.service';
+import {FacebookService} from './social/services/facebook.service';
+import {SocialService} from './social/services/social.service';
 import { UserService } from './core/services/user.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent],
-  imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot()],
+  imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
+             CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+             ChartModule],
   providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,],
   bootstrap: [AppComponent]
 })

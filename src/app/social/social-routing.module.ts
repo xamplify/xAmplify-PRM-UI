@@ -1,19 +1,29 @@
-import { NgModule }            from '@angular/core';
-import { RouterModule, Routes}        from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import {TwitterTweetsComponent} from './twitter/twitter-tweets/twitter-tweets.component';
-import {TwitterFriendsComponent} from './twitter/twitter-friends/twitter-friends.component';
-import {TwitterFollowersComponent} from './twitter/twitter-followers/twitter-followers.component';
-import {TwitterAnalyticsComponent} from './twitter/twitter-analytics/twitter-analytics.component';
-import {TwitterProfileComponent} from './twitter/twitter-profile/twitter-profile.component';
+import { UpdateStatusComponent } from './common/update-status/update-status.component';
+
+import { TwitterTweetsComponent } from './twitter/twitter-tweets/twitter-tweets.component';
+import { TwitterFriendsComponent } from './twitter/twitter-friends/twitter-friends.component';
+import { TwitterFollowersComponent } from './twitter/twitter-followers/twitter-followers.component';
+import { TwitterAnalyticsComponent } from './twitter/twitter-analytics/twitter-analytics.component';
+import { TwitterProfileComponent } from './twitter/twitter-profile/twitter-profile.component';
+
+import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
+import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
 
 
 const routes: Routes = [
+    { path: 'update-status', component: UpdateStatusComponent },
+
     { path: 'twitter-tweets', component: TwitterTweetsComponent },
     { path: 'twitter-friends', component: TwitterFriendsComponent },
     { path: 'twitter-followers', component: TwitterFollowersComponent },
     { path: 'twitter-analytics', component: TwitterAnalyticsComponent },
     { path: 'twitter-user/:id', component: TwitterProfileComponent },
+
+    { path: 'facebook-posts/:ownerId', component: FacebookPostsComponent },
+    { path: 'facebook-accounts', component: FacebookAccountsComponent },
     ];
 
 
