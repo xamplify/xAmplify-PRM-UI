@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 import {ShareButtonsModule} from "ng2-sharebuttons";
 import {ContactService } from './contacts/contact.service';
 
-
 import { ChartModule } from 'angular2-highcharts';
 
 import {CoreModule} from './core/core.module';
@@ -25,13 +24,15 @@ import {SocialService} from './social/services/social.service';
 import { UserService } from './core/services/user.service';
 import {VideoFileService} from './videos/services/video-file.service';
 import {UploadCloudvideoService} from './videos/services/upload-cloudvideo.service';
+import {ReferenceService} from './core/services/reference.service';
+import {PagerService} from './core/services/pager.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent],
   imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
-  providers: [ UserService, SocialService, TwitterService, FacebookService, Logger,
+  providers: [ UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
                VideoFileService,UploadCloudvideoService,ContactService],
   bootstrap: [AppComponent]
 })
