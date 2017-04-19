@@ -1,3 +1,259 @@
-<p>
-  edit-contacts works!
-</p>
+<!-- BEGIN PAGE CONTENT-->
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-edit"></i>List of Contacts
+				</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse"> </a> <a
+						href="#portlet-config" data-toggle="modal" class="config"> </a> <a
+						href="javascript:;" class="reload"> </a> <a href="javascript:;"
+						class="remove"> </a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="table-toolbar">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="btn-group">
+								<button id="add_contact" class="btn green" (click)="addRow()">
+									Add a Contact <i class="fa fa-plus"></i>
+								</button>
+							</div>
+							<div class="btn-group">
+								<button id="copyFrom_clipboard" class="btn green"
+									(click)="copyFromClipboard()">
+									Copy From ClipBoard <i class="fa fa-plus"></i>
+								</button>
+							</div>
+							<div class="btn-group">
+								<button class="fileUpload btn btn-primary" id="upload_csv"
+									style="background-color: #26a69a">
+									Upload a .CSV <i class="fa fa-plus"></i> <input type="file"
+										ng2FileSelect class="upload" [uploader]="uploader"
+										(change)="fileChange(input)" #input />
+								</button>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="col-md-10" align="right" style="padding-right: 5px">
+								<button id="cancel_button" class="btn green"
+									(click)="cancelContacts()">
+									Cancel<i class="fa fa-cancel"></i>
+								</button>
+							</div>
+							<div class="btn-group pull-right">
+								<button class="btn dropdown-toggle" id="save&delete_button"
+									data-toggle="dropdown">
+									Actions <i class="fa fa-angle-down"></i>
+								</button>
+								<ul class="dropdown-menu pull-right">
+									<li><a id="save_button" (click)="saveContacts()"> Save
+									</a></li>
+									<li><a id="delete_button"
+										(click)="showAlert(selectedContactListId)"> Delete</a></li>
+									<li><a href="javascript:;"> Export to Excel </a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-9" style="margin-bottom: 0px; padding-left: 1cm" >
+					<table class="table" id="uploadCsvUsingFile">
+						<thead>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of uploader.queue">
+								<td width="28%"><strong>{{ item?.file?.name }}</strong></td>
+								<td *ngIf="uploader.isHTML5" nowrap>{{
+									item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+								<td *ngIf="uploader.isHTML5">
+									<div class="progress" style="margin-bottom: 0;">
+										<div class="progress-bar" role="progressbar"
+											[ngStyle]="{ 'width': item.progress + '%' }"></div>
+									</div>
+								</td>
+								<td class="text-center"><span *ngIf="item.isSuccess"><i
+										class="glyphicon glyphicon-ok"></i></span> <span
+									*ngIf="item.isCancel"><i
+										class="glyphicon glyphicon-ban-circle"></i></span> <span
+									*ngIf="item.isError"><i
+										class="glyphicon glyphicon-remove"></i></span></td>
+								<td nowrap>
+									<!-- <button type="button" class="btn btn-success btn-xs"
+														(click)="item.upload()"
+														[disabled]="uploadvalue || item.isReady || item.isUploading || item.isSuccess">
+														<span class="glyphicon glyphicon-upload"></span> Upload
+													</button> -->
+									<button type="button" class="btn btn-danger btn-xs"
+										(click)="item.remove()" (click)="removeCsv()">
+										<span class="glyphicon glyphicon-trash"></span> Remove
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div id="saveContactsMessage"
+						class="alert alert-success alert-dismissable">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong> Indicates a successful or positive
+						action.
+					</div>
+					<div id="saveContactsMessage1"
+						class="alert alert-success alert-dismissable">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong> Indicates a successful or positive
+						action.
+					</div>
+				<div id="saveContactsMessage2"
+						class="alert alert-success alert-dismissable">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong> Indicates a successful or positive
+						action.
+					</div>
+				</div>
+
+				<div class="row" *ngIf="clickBoard">
+					<div class="col-sm-12">
+						<h3>Copy from text -- paste below</h3>
+					<div class="col-sm-12 form-group">
+					      <select class="col-sm-2 opts form-control"  style="width:15%">
+    					    <option selected value="DEFAULT">Delimeter Type</option>
+    					    <option value="CommaSeperated"> Comma Seperated </option>
+  						    <option value="TabSeperated"> Tab Seperated </option>
+  					       </select>  
+					      <button class=" col-sm-2 btn btn-default" type="button"
+						   style="background-color: #26a69a; color: white"
+						   (click)="clipboardShowPreview()">SHOW PREVIEW</button>
+						</div>
+						<div class="col-sm-6">
+							<textarea [(ngModel)]="clipboardTextareaText" placeholder="EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName.."
+								[ngModelOptions]="{standalone: true}"
+								style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
+								required="required">
+							</textarea>
+						</div>
+						<div class="col-sm-6">
+							<span id="clipBoardValidationMessage"></span>
+						</div>
+					</div>
+				</div>
+				
+						<div class="row" id="file_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+										<div class="tools">
+											<a href="javascript:;" class="collapse"> </a> <a
+												href="#portlet-config" data-toggle="modal" class="config">
+											</a> <a href="javascript:;" class="reload"> </a> <a
+												href="javascript:;" class="remove"> </a>
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="sample_editable_2">
+											<thead>
+												<tr>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+													<!-- <th>Edit</th>
+												<th>Delete</th> -->
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let user of csvFileUsers">
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+													<!-- <td><a class="edit" href="javascript:;"> Edit </a></td>
+												<td><a class="delete" href="javascript:;"> Delete </a>
+												</td> -->
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
+				
+				<form #f="ngForm" style="background-color: white">
+					<table class="table table-striped table-hover table-bordered"
+						id="sample_editable_1" *ngIf="contacts">
+						<thead>
+							<tr>
+								<th><input type="checkbox" [checked]="isAvailable"
+									(change)="checked($event.target.checked)"></th>
+								<th>USERNAME</th>
+								<th>EMAILID</th>
+								<th>FIRSTNAME</th>
+								<th>LASTNAME</th>
+								<!-- <th>Edit</th> -->
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let contact of contacts;let i = index"
+								id="row_{{contact.id}}">
+								<th><input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
+									value="{{contact.id}}" [(ngModel)]="contact.isChecked"></th>
+								<td>{{contact.userName}}</td>
+								<td>{{contact.emailId}}</td>
+								<td>{{contact.firstName}}</td>
+								<td class="center">{{contact.lastName}}</td>
+								<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
+								<td><a class="delete"
+									(click)="showAlert(selectedContactListId)"> Delete </a></td>
+
+							</tr>
+
+							<tr *ngFor="let newContact of users; let i = index"
+								class="new_row">
+								<td><input type="checkbox" checked="newContact.checked"></td>
+								<td></td>
+								<td><input type=Text [(ngModel)]="newContact.emailId"
+									class="form-control" [ngModelOptions]="{standalone: true}"
+									required
+									pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+									#emailId="ngModel">
+									<div
+										[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+										class="alert alert-danger">
+										Email is required and format should be <i>john@doe.com</i>.
+									</div></td>
+								<td><input type=Text [(ngModel)]="newContact.firstName"
+									class="form-control" [ngModelOptions]="{standalone: true}"
+									required minlength="4" maxlength="12" #firstName="ngModel">
+									<!-- <div
+										[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
+										class="alert alert-danger">firstName is required.</div> -->
+										</td>
+								<td><input type=Text [(ngModel)]="newContact.lastName"
+									class="form-control" [ngModelOptions]="{standalone: true}"
+									required minlength="4" maxlength="8" #lastName="ngModel">
+									<!-- <div
+										[hidden]="lastName.valid || (lastName.pristine && !f.submitted)"
+										class="alert alert-danger">lastName is required.</div> -->
+										</td>
+								<td><a class="delete" (click)="cancelRow(i)"> Cancel </a></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+		<!-- END EXAMPLE TABLE PORTLET-->
+	</div>
+</div>

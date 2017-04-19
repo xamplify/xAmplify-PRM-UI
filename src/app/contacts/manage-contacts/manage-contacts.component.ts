@@ -9,8 +9,8 @@ import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
-import { PagerService } from '../../shared/services/index';
-import { Pagination } from '../../shared/Pagination';
+import { PagerService } from '../../core/services/pager.service';
+import { Pagination } from '../../core/models/pagination';
 
 
 declare var swal: any;
@@ -25,7 +25,9 @@ declare var Portfolio : any;
 @Component({
   selector: 'app-manage-contacts',
   templateUrl: './manage-contacts.component.html',
-  styleUrls: ['../../asserts/css/portfolio.css', '../../asserts/css/jquery.fancybox.css', '../../asserts/css/ribbons.css'],
+  styleUrls: ['../../../assets/admin/pages/css/portfolio.css', 
+              '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css', 
+              '../../../assets/css/ribbons.css'],
    providers: [SocialContact, Pagination]
 })
 export class ManageContactsComponent implements OnInit {

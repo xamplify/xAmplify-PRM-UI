@@ -22,11 +22,11 @@ declare var $: any;
 @Component({
   selector: 'app-add-contacts',
   templateUrl: './add-contacts.component.html',
-  styleUrls: ['../../asserts/css/dropzone.css',
-              '../../asserts/css/jquery.fileupload.css',
-              '../../asserts/css/blueimp-gallery.min.css',
-              '../../asserts/css/jquery.fileupload-ui.css',
-              '../../asserts/css/form.css', '../../asserts/css/numbered-textarea.css'],
+  styleUrls: ['../../../assets/global/plugins/dropzone/css/dropzone.css',
+              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
+              '../../../assets/css/form.css', 
+              '../../../assets/css/numbered-textarea.css'],
               providers: [SocialContact,ZohoContact,SalesforceContact]
 })
 export class AddContactsComponent implements OnInit {

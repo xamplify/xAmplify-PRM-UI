@@ -11,7 +11,7 @@ import { AuthenticationService } from '../core/services/authentication.service';
 import { Logger } from "angular2-logger/core";
 import { Router, ActivatedRoute } from '@angular/router';
 /*import {Pagination} from '../videos/models/Pagination';*/
-import {Pagination} from '.././shared/Pagination';
+import { Pagination } from '../core/models/pagination';
 
 
 
