@@ -280,9 +280,9 @@
                                           </ul>
 										<!-- pager end here -->
 										</div>
-	<edit_Contacts-app *ngIf="showEdit" [contacts]="users"
+	<app-edit-contacts *ngIf="showEdit" [contacts]="users"
 		[selectedContactListId]="selectedContactListId"
-		[contactListId]="selectedContactListId"></edit_Contacts-app>
+		[contactListId]="selectedContactListId"></app-edit-contacts>
 </div>
 <!-- END PAGE CONTENT-->
 <div class="page-content" *ngIf="showAllContactData" >

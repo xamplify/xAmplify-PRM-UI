@@ -6,7 +6,7 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 //import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params,RouterModule } from '@angular/router';
 import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
 import { ZohoContact } from '../models/zoho-contact';

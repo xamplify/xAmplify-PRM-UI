@@ -5,7 +5,7 @@ import { ContactService } from '../contact.service';
 
 @Component({
   selector: 'myprofile-app',
-  templateUrl: 'app/social/login.html',
+  templateUrl: './login.html',
 })
 export class SalesforceContactsCallbackComponent implements OnInit{
     constructor(private router: Router, private contactService: ContactService) {}
