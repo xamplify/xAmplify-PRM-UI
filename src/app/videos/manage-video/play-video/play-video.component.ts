@@ -208,13 +208,6 @@ export class PlayVideoComponent implements OnInit {
                 }
                }); 
                
-            this.on('loadedmetadata', function() {
-               this.videoStartTime = 0;
-               this.durationTime = 4;
-               this.currentTime = this.videoStartTime;
-               console.log(this.videoStartTime+"sandlak"+ this.durationTime);
-             }, false);
-           
              this.hotkeys({
                  volumeStep: 0.1,
                  seekStep: 5,

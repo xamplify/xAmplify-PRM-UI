@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 import {SharedModule} from '../shared/shared.module';
 
 import {VideosRoutingModule} from './videos-routing.module';
@@ -16,7 +14,7 @@ import { ShareVideoComponent } from './share-video/share-video.component';
 
 
 @NgModule({
-  imports: [  CommonModule,SharedModule,VideosRoutingModule,FormsModule,ReactiveFormsModule ],
+  imports: [SharedModule,VideosRoutingModule ],
   declarations: [ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
                  EditVideoComponent, PlayVideoComponent, CampaignReportVideoComponent, ShareVideoComponent]
 })

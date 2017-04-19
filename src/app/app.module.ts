@@ -1,5 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule} from '@angular/common';
 import { HttpModule } from '@angular/http';
@@ -29,10 +31,10 @@ import {PagerService} from './core/services/pager.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent],
-  imports: [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
+  imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
-  providers: [ UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
+  providers: [UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
                VideoFileService,UploadCloudvideoService,ContactService],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ReferenceService} from '../services/reference.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+	  public refcategories :any
+	    constructor(private referenceService:ReferenceService ) {}
+	            
+	    getCategorisService() {
+	        this.referenceService.getCategories()
+	            .subscribe((result: any) => {
+	                console.log("getcategories");
+	                this.refcategories = result;
+	                this.referenceService.refcategories= this.refcategories;
+	                console.log(this.refcategories);
+	            }),
+	            () => console.log("categoriss  are in the manage vidoes :" + this.refcategories);
+	    }
+	    
+	    ngOnInit(){
+	        
+	        this.getCategorisService();
+	    }
 
 }
