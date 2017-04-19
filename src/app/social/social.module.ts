@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'angular2-highcharts';
 import { TwitterProfileComponent } from './twitter/twitter-profile/twitter-profile.component';
@@ -22,7 +22,7 @@ import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts
 import { UpdateStatusComponent } from './common/update-status/update-status.component';
 
 @NgModule({
-  imports: [ CommonModule, SharedModule, SocialRoutingModule, ChartModule],
+  imports: [ CommonModule, SharedModule, SocialRoutingModule, ChartModule, FormsModule],
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent, 
                  TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent, TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent],
   providers: [TwitterService, FacebookService, SocialService]

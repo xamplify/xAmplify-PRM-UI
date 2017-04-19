@@ -1,3 +1,254 @@
-<p>
-  update-status works!
-</p>
+<div class="page-content">
+    <div class="page-bar square-box margin-bottom-10px">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home"></i> <a [routerLink]="['../../dashboard']">Home</a> <i class="fa fa-angle-right"></i></li>
+            <li>Update Status</li>
+        </ul>
+    </div>
+    <div class="row">
+
+        <div class="col-md-3 col-sm-12">
+            <div class="col-md-12 dashboard-stat2 square-box text-center">
+                <h3 style="margin-bottom: 1em;margin-top: 0.4em;"><b>Social Account</b></h3>
+
+                <div class="col-md-6" style="padding: 1px;" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
+                    <div class="social-box">
+                        <input type="checkbox" id="cb{{i}}" class="social-media" [checked]="socialStatusProvider.selected" (change)="socialStatusProvider.selected = !socialStatusProvider.selected" />
+                        <label for="cb{{i}}">
+				<img src="{{socialStatusProvider.profileImagePath}}" class="profile-image img-circle">
+				<img src="{{socialStatusProvider.providerImagePath}}" class="social-image">
+				<h5>{{socialStatusProvider.profileName}}</h5>
+				</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12 clearfix text-center padding-30px">
+                    <button class="btn btn-primary">+ connect accounts</button>
+                </div>
+            </div>
+            <div class="col-md-12 alert alert-info square-box">
+                <h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
+                <h5><strong>Image specifications:</strong></h5>
+                <li>Supported image media types: JPG, PNG, GIF, WEBP</li>
+                <li>Image Size
+                    <=3 MB</li>
+
+                        <h5><strong>Video specifications:</strong></h5>
+                        <li>Duration should be between 0.5 seconds and 30 seconds</li>
+            </div>
+
+        </div>
+
+        <div class="col-md-9 col-sm-12">
+            <div class="col-sm-12 dashboard-stat2 square-box">
+                <div class="col-sm-12 alert alert-success" *ngIf="successMessage">
+                    <strong>Status has been posted successfully.</strong>
+                </div>
+                <div class="col-sm-12">
+                    <b>Selected Account(s)</b>
+                    <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+				<button class="btn btn-default btn-sm square-box" *ngIf="socialStatusProvider.selected">{{socialStatusProvider.profileName}} ({{socialStatusProvider.providerName}})</button>
+			</span>
+                </div>
+                <div class="col-sm-12 padding-10px">
+                    <textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px" [(ngModel)]="socialStatus.statusMessage" (keypress)="count(socialStatus.statusMessage)"></textarea>
+                    <p class="pull-right"><b>{{characterleft}}</b> character(s) left</p>
+                </div>
+                <div class="col-sm-12 padding-10px">
+                    <div class="img-wrap img-responsive img-thumbnail square-box" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
+                        <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
+                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{REST_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 98px; width: auto;">
+                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
+					<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+				</video>
+                    </div>
+                </div>
+                <div class="col-sm-12 padding-10px" *ngIf="errorMessage">
+                    <div class="col-md-12 alert alert-danger square-box">
+                        <strong>Oops! An error occurred while adding media file(s)</strong>
+                        <h5>{{errorMessage}}</h5>
+                        <h5 *ngFor="let item of errorDetails">{{item}}</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div">
+                    <div class="form-group">
+                        <input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." [(ngModel)]="socialStatus.scheduledDate" />
+                    </div>
+                    <div class="form-group">
+                        <select name="timezone" class="form-control square-box">
+			  		 <option value="-12" >(GMT -12:00)</option>
+			         <option value="-11" >(GMT -11:00)</option>
+			         <option value="-10" >(GMT -10:00)</option>
+			         <option value="-9"  >(GMT -9:00)</option>
+			         <option value="-8"  >(GMT -8:00)</option>
+			         <option value="-7"  >(GMT -7:00)</option>
+			         <option value="-6"  >(GMT -6:00)</option>
+			         <option value="-5"  >(GMT -5:00)</option>
+			         <option value="-4.5">(GMT -4:30)</option>
+			         <option value="-4"  >(GMT -4:00)</option>
+			         <option value="-3.5">(GMT -3:30)</option>
+			         <option value="-3"  >(GMT -3:00)</option>
+			         <option value="-2"  >(GMT -2:00)</option>
+			         <option value="-1"  >(GMT -1:00 hour)</option>
+			         <option value="0"  >(GMT +0:00)</option>
+			         <option value="1"   >(GMT +1:00)</option>
+			         <option value="2"   >(GMT +2:00)</option>
+			         <option value="3"   >(GMT +3:00)</option>
+			         <option value="3.5" >(GMT +3:30)</option>
+			         <option value="4"   >(GMT +4:00)</option>
+			         <option value="4.5" >(GMT +4:30)</option>
+			         <option value="5"   >(GMT +5:00)</option>
+			         <option value="5.5" selected="selected">(GMT +5:30)</option>
+			         <option value="5.75">(GMT +5:45)</option>
+			         <option value="6"   >(GMT +6:00)</option>
+			         <option value="6.5" >(GMT +6:30)</option>
+			         <option value="7"   >(GMT +7:00)</option>
+			         <option value="8"   >(GMT +8:00)</option>
+			         <option value="9"   >(GMT +9:00)</option>
+			         <option value="9.5" >(GMT +9:30)</option>
+			         <option value="10"  >(GMT +10:00)</option>
+			         <option value="11"  >(GMT +11:00)</option>
+			         <option value="12"  >(GMT +12:00)</option>
+				</select>
+                    </div>
+                    <button type="button" class="btn btn-success square-box">Schedule</button>
+                    <button type="button" class="btn btn-default square-box" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
+                </div>
+                <div class="col-sm-12 margin-bottom-10px">
+                    <div class="col-sm-6">
+                        <label class="fileContainer padding-right-10px">
+		    		<i class="fa fa-camera" aria-hidden="true">&nbsp;</i>Add photos
+		    		<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png,video/mp4,video/x-m4v" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
+				</label>
+                        <button class="btn btn-default square-box" (click)="openListVideosModal()">Import Videos</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-success square-box" (click)="showScheduleOption('schedule-option-div')">Schedule</button>
+                            <button type="button" style="min-width: 32px;" class="btn btn-success dropdown-toggle square-box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="updateStatus()">Post Now</a></li>
+                            </ul>
+                        </div>
+                        <span *ngIf="socialStatus.id != null">
+					<button type="button" class="btn btn-success square-box pull-right margin-right-10px" (click)="initializeSocialStatus()">Cancel</button>				
+					<button type="button" class="btn btn-danger square-box pull-right margin-right-10px" (click)="deleteStatus(socialStatus)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+				</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 dashboard-stat2 square-box padding-30px">
+                <div id='full-calendar'></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="listVideosModal" tabindex="-1" role="dialog" aria-labelledby="listVideosModalLabel">
+        <div class="modal-dialog" role="document" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
+                </div>
+                <div class="modal-body" style="height: auto;min-height: 520px;">
+                    <div class="col-md-12">
+                        <div class="col-md-12"><img *ngIf="! pagedItems" alt="loading" src="http://rewardian.com/images/load-page.gif" class="img-responsive center-block"></div>
+                        <div *ngIf="pagedItems" class="col-md-6">
+                            <table class="table table-hover" id="list-videos-table">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Video File Name</th>
+                                        <th>Duration</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let video of pagedItems; let i = index">
+                                        <td><input type="radio" name="videoPath" (click)="previewVideo(video)" [checked]="i === 0"></td>
+                                        <td>{{video.title}}</td>
+                                        <td>{{video.videoLength}}</td>
+                                        <td>
+                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
+                                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--pager starts here  -->
+                            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                    <a (click)="setPage(1)">First</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                                    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                                </li>
+                                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                                    <a (click)="setPage(page)">{{page}}</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                    <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                                    <a (click)="setPage(pager.totalPages)">Last</a>
+                                </li>
+                            </ul>
+                            <!-- pager end here -->
+                        </div>
+                        <div class="col-md-6" id="preview-section" style="top:50px;">
+                            <video id="videojs-video" class="video-js vjs-default-skin" controls preload="auto" width="580" height="320" data-setup='{"example_option":true}' [src]=videoUrl>
+					<source [src]=videoUrl type="video/mp4" />
+				</video>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="addVideo()">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="full-calendar-modal-event-{{socialStatus.id}}" tabindex="-1" role="dialog" *ngFor="let socialStatus of socialStatusList">
+        <div class="modal-dialog" role="document" style="min-width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                    <h4 id="full-calendar-modal-title" class="modal-title" style="word-break: break-all;">Edit Post</h4>
+                </div>
+
+                <div id="full-calendar-modal-body" class="modal-body">
+                    <h4>{{socialStatus.statusMessage}}</h4>
+                    <!-- <div class="col-sm-12 padding-10px">
+						<div class="img-wrap img-responsive img-thumbnail square-box" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index"	id="preview-{{i}}">
+							<img async *ngIf="socialStatusContent.fileType != 'video'" src="{{REST_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 120px; width: auto;">
+							<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
+								<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+							</video>
+						</div>		
+					</div> -->
+                    <div *ngIf="socialStatus.socialStatusContents?.length > 0">
+                        <span *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+		        			<img *ngIf="socialStatusContent.fileType  == 'image'" alt="{{socialStatusContent.fileType}}" src="{{REST_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: auto;width: auto;max-width: 175px;max-height: 175px;">
+		        			<video *ngIf="socialStatusContent.fileType  == 'video'" width="100%" height="240" controls>
+		        				<source src="{{REST_URL}}{{socialStatusContent.contentPath}}?access_token={{accessToken}}" type="video/mp4">
+		        			</video>	
+		        		</span>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-xs" (click)="editSocialStatus(socialStatus)">Edit</button>
+                    <button type="button" class="btn btn-dialog btn-xs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- modal-content -->
+        </div>
+        <!-- modal-dialog -->
+    </div>
+    <!-- modal -->
+</div>
