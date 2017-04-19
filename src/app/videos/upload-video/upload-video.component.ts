@@ -20,7 +20,7 @@ declare var videojs:any;
 @Component({
   selector: 'app-upload-video',
   templateUrl: './upload-video.component.html',
-  styleUrls: ['../video-css/customLoaderCss.css','../video-css/videojs-record-custom.css'],
+  styleUrls: ['../../../assets/css/customLoaderCss.css','../../../assets/css/video-css/videojs-record-custom.css'],
   styles:[`.customDisableCss{cursor:not-allowed !important; opacity:0.3}
           .closeModal {background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
           .cursorCss{ cursor :pointer; }  #myVideo{ background-color: #5fdbf5;}
@@ -443,7 +443,7 @@ export class UploadVideoComponent implements OnInit {
         this.isFileDrop = true;
         this.isChecked = true;
         this.fileDropDisabled();
-        this.onApiLoad();
+      //  this.onApiLoad();    // google drive code 
            $(".box").attr("style", "cursor:not-allowed; opacity:0.3");
            $(".dropBox").attr("style", "cursor:not-allowed; opacity:0.3");
            $(".camera").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -549,7 +549,7 @@ export class UploadVideoComponent implements OnInit {
         };
       
      /* google drive retreive videos */   
-        onApiLoad() {
+     /*   onApiLoad() {
          if(this.processing != true){  //for not clicking again on the google drive
          let self = this;
             //gapi.load('auth', {'callback': self.onAuthApiLoad});
@@ -624,7 +624,7 @@ export class UploadVideoComponent implements OnInit {
             else{
                 swal("Only video files can be uploaded.");
             }
-        }
+        } */
         
         isVideo(filename:any) {
              var parts = filename.split('.');
@@ -646,7 +646,7 @@ export class UploadVideoComponent implements OnInit {
                   return true;
               }
               return false;
-           }
+           }  
     
        ngOnInit() {
            try {

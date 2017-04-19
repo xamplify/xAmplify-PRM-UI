@@ -24,9 +24,9 @@ declare var videojs: any;
     selector: 'app-edit-video',
     templateUrl: './edit-video.component.html',
     styleUrls: [
-       /* '../../video-css/jquery.fancybox.css',*/ '../../video-css/tags.css',
-        '../../video-css/portfolio.css', '../../video-css/video-js.custom.css', '../../video-css/customImg.css',
-        '../../video-css/form.errors.css', '../../video-css/videojs-overlay.css'],
+        '../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css', '../../../../assets/css/video-css/tags.css',
+        '../../../../assets/admin/pages/css/portfolio.css', '../../../../assets/css/video-css/video-js.custom.css', '../../../../assets/css/video-css/customImg.css',
+        '../../../../assets/css/video-css/form.errors.css', '../../../../assets/css/video-css/videojs-overlay.css'],
     styles: [`  .customCss{  margin-right: 13px;margin-left: -11px;} 
                      .closeModal {background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
                      .videoSizeCss { position: relative; height: 24px;padding: 0px 2px;}

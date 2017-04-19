@@ -21,8 +21,9 @@ export class ReferenceService{
 
     getCategories(): Observable<Category[]> {
         var url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
-        return this.http.get(url, "","")
-            .map((response: any) => response.json());
+        return this.http.get(url, "")
+        .map( this.extractData )
+        .catch( this.handleError );
     }
     
     
@@ -35,5 +36,17 @@ export class ReferenceService{
     showInfo(info:string,data:any){
         this.logger.debug(info, data);
     }
+    
+    extractData( res: Response ) {
+        let body = res.json();
+        console.log(body);
+        return body || {};
+     }
+
+     handleError( error: any ) {
+        let errMsg = ( error.message ) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+        return Observable.throw( errMsg );
+     }
     
 }

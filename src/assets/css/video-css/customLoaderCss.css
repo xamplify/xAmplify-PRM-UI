@@ -1,0 +1,14 @@
+.customLoaderBar{
+  padding: 0px;
+    background-color: #b0b6bd;
+    margin-bottom: 20px;
+    margin-right: 304px;
+    margin-left: 19px;
+}
+.h2text {
+	font-weight: bold;color:blue;
+	}
+.disabledSocial {
+	  cursor: not-allowed;
+	  opacity:0.4;
+}

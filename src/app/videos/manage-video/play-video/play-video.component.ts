@@ -14,8 +14,8 @@ declare var $:any;
   selector: 'app-play-video',
   templateUrl: './play-video.component.html',
   
-   styleUrls: ['../../video-css/portfolio.css', '../../video-css/videojs-overlay.css',
-               '../../video-css/video-js.custom.css',],  //'../../video-css/jquery.fancybox.css',
+   styleUrls: ['../../../../assets/admin/pages/css/portfolio.css', '../../../../assets/css/video-css/videojs-overlay.css',
+               '../../../../assets/css/video-css/video-js.custom.css','../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css'],
           styles :[`.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
                      .isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
                      .isPlaySubmit{ padding:15px 58px !important;}`]

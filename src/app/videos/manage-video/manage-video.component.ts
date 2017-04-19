@@ -16,8 +16,8 @@ declare var swal , Metronic, Layout ,Demo:any;
 @Component({
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
-  styleUrls: ['../../../assets/admin/pages/css/portfolio.css', '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css','../video-css/ribbons.css',
-              '../video-css/video-js.custom.css'],
+  styleUrls: ['../../../assets/admin/pages/css/portfolio.css', '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css','../../../assets/css/video-css/ribbons.css',
+              '../../../assets/css/video-css/video-js.custom.css'],
   styles:[`.colorSelect { background-color:lightblue;} .ribbon{right:15px !important}
            .dropDownCss { position: relative; height: 32px; padding: 0px 3px;}
            .customDisableCss{cursor:not-allowed !important; opacity:0.5}
