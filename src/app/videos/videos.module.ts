@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {VideosRoutingModule} from './videos-routing.module';
 import { ManageVideoComponent } from './manage-video/manage-video.component';
 import { PlayStreamerComponent } from './play-streamer/play-streamer.component';
 import { UploadVideoComponent } from './upload-video/upload-video.component';
@@ -11,7 +12,7 @@ import { ShareVideoComponent } from './share-video/share-video.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,VideosRoutingModule
   ],
   declarations: [ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent, EditVideoComponent, PlayVideoComponent, CampaignReportVideoComponent, ShareVideoComponent]
 })

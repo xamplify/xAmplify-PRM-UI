@@ -20,7 +20,11 @@ declare var videojs:any;
 @Component({
   selector: 'app-upload-video',
   templateUrl: './upload-video.component.html',
-  styleUrls: ['../../../assets/css/customLoaderCss.css','../../../assets/css/video-css/videojs-record-custom.css'],
+  styleUrls: ['../../../assets/css/dropfiles.css',
+              '../../../assets/global/plugins/dropzone/css/dropzone.css',
+              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
+              ,'../../../assets/css/customLoaderCss.css','../../../assets/css/video-css/videojs-record-custom.css'],
   styles:[`.customDisableCss{cursor:not-allowed !important; opacity:0.3}
           .closeModal {background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
           .cursorCss{ cursor :pointer; }  #myVideo{ background-color: #5fdbf5;}
