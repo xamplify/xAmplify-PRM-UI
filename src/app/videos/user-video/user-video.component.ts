@@ -5,7 +5,9 @@ declare var Metronic,Layout,Demo,Portfolio:any;
 @Component({
   selector: 'app-user-video',
   templateUrl: './user-video.component.html',
-  styleUrls :['../../../assets/admin/pages/css/portfolio.css', '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css','../video-css/ribbons.css']
+  styleUrls :['./user-video.component.css']
+  
+  //styleUrls :['../../../assets/admin/pages/css/portfolio.css', '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css','../video-css/ribbons.css']
 })
 export class UserVideoComponent implements OnInit {
 

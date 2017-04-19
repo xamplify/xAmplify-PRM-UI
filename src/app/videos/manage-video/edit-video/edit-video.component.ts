@@ -22,12 +22,12 @@ declare var videojs: any;
 
 @Component({
     selector: 'app-edit-video',
-    templateUrl: './edit-video.component.html',
-    styleUrls: [
+    templateUrl: './edit-video.component.html'
+   /* styleUrls: [
         '../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css', '../../../../assets/css/video-css/tags.css',
         '../../../../assets/admin/pages/css/portfolio.css', '../../../../assets/css/video-css/video-js.custom.css', '../../../../assets/css/video-css/customImg.css',
         '../../../../assets/css/video-css/form.errors.css', '../../../../assets/css/video-css/videojs-overlay.css'],
-    styles: [`  .customCss{  margin-right: 13px;margin-left: -11px;} 
+    /* styles: [`  .customCss{  margin-right: 13px;margin-left: -11px;} 
                      .closeModal {background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
                      .videoSizeCss { position: relative; height: 24px;padding: 0px 2px;}
                      .isPlayButtonCss{ margin-top: -66px !important;}
@@ -35,7 +35,7 @@ declare var videojs: any;
                      .isLowerTextCss {margin-top: 43px !important;}
                      .isOffirstname {  margin-top: -43px !important ;}
                      .isPlaySubmit{ padding:15px 58px !important;}
-                      `]
+                      `] */
 
 })
 export class EditVideoComponent implements OnInit {

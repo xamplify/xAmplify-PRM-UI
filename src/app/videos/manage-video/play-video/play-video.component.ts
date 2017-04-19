@@ -4,21 +4,21 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import {UserService} from '../../../core/services/user.service';
 import {User} from '../../../core/models/user';
 import {VideoFileService} from '../../services/video-file.service';
-declare var videojs:any;
 declare var Metronic:any;
 declare var Layout:any;
 declare var Demo:any;
 declare var $:any;
+declare var videojs:any;
 
 @Component({
   selector: 'app-play-video',
-  templateUrl: './play-video.component.html',
+  templateUrl: './play-video.component.html'
   
-   styleUrls: ['../../../../assets/admin/pages/css/portfolio.css', '../../../../assets/css/video-css/videojs-overlay.css',
-               '../../../../assets/css/video-css/video-js.custom.css','../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css'],
+ /*  styleUrls: ['../../video-css/videojs-overlay.css',
+               '../../video-css/video-js.custom.css','../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css'],
           styles :[`.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
                      .isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
-                     .isPlaySubmit{ padding:15px 58px !important;}`]
+                     .isPlaySubmit{ padding:15px 58px !important;}`] */
 })
 export class PlayVideoComponent implements OnInit {
 

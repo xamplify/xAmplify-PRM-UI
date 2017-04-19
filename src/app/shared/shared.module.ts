@@ -6,7 +6,7 @@ import {RouterModule} from '@angular/router';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 import { UiSwitchModule } from 'angular2-ui-switch'
-import { NKDatetimeModule } from 'ng2-datetime';
+//import { NKDatetimeModule } from 'ng2-datetime';
 
 import {ColorPickerService} from 'angular2-color-picker';
 import {ColorPickerDirective} from 'angular2-color-picker';
@@ -20,11 +20,11 @@ import {FileUploadModule} from 'ng2-file-upload/ng2-file-upload';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 
 @NgModule({
-	 imports: [CommonModule,RouterModule, FileUploadModule,NKDatetimeModule,ReactiveFormsModule,FormsModule,
+	 imports: [CommonModule,RouterModule, FileUploadModule,ReactiveFormsModule,FormsModule,
 	              TagInputModule,ChartModule,HttpModule,CKEditorModule,UiSwitchModule,Ng2FilterPipeModule],
 	    declarations: [ColorPickerDirective],
 	    exports :[FileSelectDirective,ColorPickerDirective,FileDropDirective,FormsModule,CommonModule,RouterModule,FileUploadModule,
-	             NKDatetimeModule,ReactiveFormsModule,FormsModule,
+	             ReactiveFormsModule,FormsModule,
 	             TagInputModule,ChartModule,HttpModule,CKEditorModule,UiSwitchModule,Ng2FilterPipeModule],
 	    providers: [ColorPickerService],  
 })

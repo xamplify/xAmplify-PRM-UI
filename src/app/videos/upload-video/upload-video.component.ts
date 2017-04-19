@@ -20,17 +20,29 @@ declare var videojs:any;
 @Component({
   selector: 'app-upload-video',
   templateUrl: './upload-video.component.html',
-  styleUrls: [ '../video-css/dropfiles.css',
-              '../../../assets/global/plugins/dropzone/css/dropzone.css',
-              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
-              '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
+ /* styleUrls: [ '../video-css/dropfiles.css',
               '../../../assets/css/customLoaderCss.css','../../../assets/css/video-css/videojs-record-custom.css'],
-  styles:[`.customDisableCss{cursor:not-allowed !important; opacity:0.3}
-          .closeModal {background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
-          .cursorCss{ cursor :pointer; }  #myVideo{ background-color: #5fdbf5;}
-          .zoomin img { height: 80px; width: 80px;-webkit-transition: all 2s ease;
-            -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
-          .zoomin img:hover {width: 87px;height: 87px; } `]
+  /*styles:[`
+          .customDisableCss{
+             cursor:not-allowed !important;
+              opacity:0.3
+              }
+           .closeModal {
+              background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;
+              }
+             .cursorCss{ 
+              cursor :pointer; 
+              } 
+               #myVideo{ 
+                background-color: #5fdbf5;
+               }
+           .zoomin img { 
+                height: 80px; width: 80px;-webkit-transition: all 2s ease;
+                -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease;
+                  }
+           .zoomin img:hover {
+              width: 87px;height: 87px;
+           } `] */
 })
 export class UploadVideoComponent implements OnInit {
 

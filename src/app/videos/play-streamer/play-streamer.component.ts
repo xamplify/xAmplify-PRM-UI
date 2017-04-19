@@ -7,9 +7,9 @@ declare var FormSamples:any;
 
 @Component({
   selector: 'app-play-streamer',
-  templateUrl: './play-streamer.component.html',
-  styleUrls :[ '../../../assets/admin/pages/css/portfolio.css','../../../assets/global/plugins/fancybox/source/jquery.fancybox.css',
-               ],
+  templateUrl: './play-streamer.component.html'
+  //styleUrls :[ '../../../assets/admin/pages/css/portfolio.css','../../../assets/global/plugins/fancybox/source/jquery.fancybox.css',
+          //     ]
 })
 
 export class PlayStreamerComponent implements OnInit {

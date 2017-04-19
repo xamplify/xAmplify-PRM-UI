@@ -15,8 +15,8 @@ declare var videojs:any;
 
 @Component({
   selector: 'app-share-video',
-  templateUrl: './share-video.component.html',
-  styleUrls: ['../../../assets/css/video-css/portfolio.css', ] //'../video-css/jquery.fancybox.css'
+  templateUrl: './share-video.component.html'
+ // styleUrls: ['../../../assets/css/video-css/portfolio.css' ] 
 })
 export class ShareVideoComponent implements OnInit {
 	  videoFile: SaveVideoFile;
