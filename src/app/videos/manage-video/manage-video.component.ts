@@ -16,13 +16,13 @@ declare var swal , Metronic, Layout ,Demo:any;
 @Component({
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
- /* styleUrls: [
-              '../video-css/video-js.custom.css','../video-css/ribbons.css'],
-  styles:[`.colorSelect { background-color:lightblue;} .ribbon{right:15px !important}
+  styleUrls: ['./manage-video.component.css'],
+
+ /* styles:[`.colorSelect { background-color:lightblue;} 
            .dropDownCss { position: relative; height: 32px; padding: 0px 3px;}
            .customDisableCss{cursor:not-allowed !important; opacity:0.5}
            a.disabled {pointer-events: none; cursor: not-allowed; }
-          `],*/
+          `], */
   providers:[Pagination]
   
 })
@@ -132,7 +132,7 @@ export class ManageVideoComponent implements OnInit {
     }
       
     loadVideos(pagination:Pagination) {
-         swal( { title: 'Loading Videos', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif",allowOutsideClick: false  });
+        swal( { title: 'Loading Videos', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif",allowOutsideClick: false  });
         try{
         this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result:any) => {
@@ -293,7 +293,6 @@ export class ManageVideoComponent implements OnInit {
             console.log( "MangeVideoComponent deleteVideoFile success : " + data );
            //  this.pagedItems.splice(position, 1);
             this.videos.splice(position, 1);
-            // $( '#contactListDiv_' + contactListId ).remove();
             swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
         error => console.error( error ),

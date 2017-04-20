@@ -64,7 +64,7 @@
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 										</div>
-										<div class="inputs" align="right"  style="display:inline; float:right">
+										<div class="inputs" align="right"  style="float:right">
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
@@ -98,7 +98,7 @@
 															<i class="fa fa-bullhorn"></i>
 														</a>
 														 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i)" onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
-								                             <i class="fa fa-trash" style="color: red; !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
+								                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 							                             </a>
 														</div>
 														<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>

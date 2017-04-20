@@ -12,13 +12,11 @@ declare var videojs:any;
 
 @Component({
   selector: 'app-play-video',
-  templateUrl: './play-video.component.html'
-  
- /*  styleUrls: ['../../video-css/videojs-overlay.css',
-               '../../video-css/video-js.custom.css','../../../../assets/global/plugins/fancybox/source/jquery.fancybox.css'],
-          styles :[`.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
-                     .isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
-                     .isPlaySubmit{ padding:15px 58px !important;}`] */
+  templateUrl: './play-video.component.html',
+  styleUrls : ['./play-video.component.css']
+ /* styles :[`.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
+            .isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
+            .isPlaySubmit{ padding:15px 58px !important;}`]  */
 })
 export class PlayVideoComponent implements OnInit {
 
