@@ -3,7 +3,8 @@ import { CommonModule }       from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { UiSwitchModule } from '../../../node_modules/angular2-ui-switch/src';
+//import { UiSwitchModule } from '../../../node_modules/angular2-ui-switch/src';
+import { UiSwitchModule } from 'ngx-ui-switch/src';
 //import { NKDatetimeModule } from 'ng2-datetime';
 
 import { ColorPickerService } from 'angular2-color-picker';
