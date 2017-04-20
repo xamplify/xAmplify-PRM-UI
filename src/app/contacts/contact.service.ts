@@ -86,7 +86,7 @@ export class ContactService {
 
     loadInvalidContacts(pagination:Pagination): Observable<ContactList[]> {
         this.logger.info("Service class loadInvalidContact() completed");
-        return this._http.post( this.url + "contacts?contactType=all" + "&access_token=" + this.authenticationService.access_token,pagination)
+        return this._http.post( this.url + "contacts?contactType=invalid" + "&access_token=" + this.authenticationService.access_token,pagination)
             .map( this.extractData )
             .catch( this.handleError );
     }

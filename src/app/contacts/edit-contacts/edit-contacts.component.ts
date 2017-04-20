@@ -8,6 +8,8 @@ import { ManageContactsComponent } from '../manage-contacts/manage-contacts.comp
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Logger } from "angular2-logger/core";
+import { PagerService } from '../../core/services/pager.service';
+import { Pagination } from '../../core/models/pagination';
 
 declare var Metronic : any;
 declare var Layout : any;
@@ -21,8 +23,9 @@ declare var swal: any;
 @Component({
   selector: 'app-edit-contacts',
   templateUrl: './edit-contacts.component.html',
-  styleUrls: ['../../../assets/global/plugins/fancybox/source/jquery.fancybox.css',
-              '../../../assets/admin/pages/css/portfolio.css', '../../../assets/css/button.css', '../../../assets/css/numbered-textarea.css']
+  styleUrls: ['../../../assets/css/button.css',
+              '../../../assets/css/numbered-textarea.css'],
+              providers:[Pagination]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -45,7 +48,8 @@ export class EditContactsComponent implements OnInit {
     public users: Array<User>;
 
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private logger: Logger ) {
+        private authenticationService: AuthenticationService, private logger: Logger,
+        private pagerService: PagerService, private pagination: Pagination) {
         this.users = new Array<User>();
         this.clipboardUsers = new Array<User>();
         this.csvFileUsers = new Array<User>();

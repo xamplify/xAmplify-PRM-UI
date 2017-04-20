@@ -25,9 +25,7 @@ declare var Portfolio : any;
 @Component({
   selector: 'app-manage-contacts',
   templateUrl: './manage-contacts.component.html',
-  styleUrls: ['../../../assets/admin/pages/css/portfolio.css', 
-              '../../../assets/global/plugins/fancybox/source/jquery.fancybox.css', 
-              '../../../assets/css/ribbons.css'],
+  styleUrls: ['../../../assets/css/ribbons.css'],
    providers: [SocialContact, Pagination]
 })
 export class ManageContactsComponent implements OnInit {
@@ -41,6 +39,7 @@ public storeLogin: any;
 
 activeUsersCount: number;
 inActiveUsersCount: number;
+invlidContactsCount:number;
 
 public contactLists: Array<ContactList>;
 selectedContactListId: number;
@@ -96,6 +95,7 @@ constructor( private contactService: ContactService, private authenticationServi
         
     this.activeUsersCount = 0;
     this.inActiveUsersCount = 0;
+    this.invlidContactsCount = 0;
     this.googleSynchronizeButton = false;
     /*this.socialContact.alias = "";
     this.socialContact.contactType = "";*/
@@ -118,6 +118,7 @@ loadContactLists( pagination: Pagination ) {
     //this.currentContactType = "manage_contacts";
     this.activeUsersCount = 0;
     this.inActiveUsersCount = 0;
+    this.invlidContactsCount = 0;
     this.contactService.loadContactLists( pagination )
         .subscribe(
         (data:any) => {
@@ -125,12 +126,14 @@ loadContactLists( pagination: Pagination ) {
             this.contactLists = data.listOfUserLists;
             this.totalRecords = data.totalRecords;
             this.allContacts = 0;
-            this.invalidContacts = 0;
+            //this.invalidContacts = 0;
             this.unsubscribedContacts = 0;
             for ( let contactList of this.contactLists ) {
                 this.activeUsersCount += contactList.activeUsersCount;
                 this.inActiveUsersCount += contactList.inActiveUsersCount;
                 this.allContacts += contactList.noOfContacts;
+                this.invlidContactsCount += contactList.invlidContactsCount;
+                //this.invalidContacts = this.invalidContacts + contactList.noInvalidContacts;
                 /*this.allContacts = this.allContacts + contactList.noOfContacts;
                 this.activeContacts = this.activeContacts + contactList.noActiveContacts;
                 this.invalidContacts = this.invalidContacts + contactList.noInvalidContacts;
@@ -579,6 +582,17 @@ checked( event: boolean ) {
             allContacts.isChecked = true;
         else{
             allContacts.isChecked = false;
+        }
+    })
+}
+
+invalidContactsChecked( event: boolean ) {
+    this.logger.info( "check value" + event )
+    this.invalidContactUsers.forEach(( invalidContacts ) => {
+        if ( event == true )
+            invalidContacts.isChecked = true;
+        else{
+            invalidContacts.isChecked = false;
         }
     })
 }

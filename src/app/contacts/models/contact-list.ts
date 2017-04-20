@@ -6,6 +6,7 @@ export class ContactList {
     noInvalidContacts: number;
     inActiveUsersCount: number;
     noUnsubscribedContacts: number;
+    invlidContactsCount:number;
     id: number;
     socialNetwork:string;
     uploadedBy: string;
