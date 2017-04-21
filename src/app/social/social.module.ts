@@ -24,7 +24,8 @@ import { UpdateStatusComponent } from './common/update-status/update-status.comp
 @NgModule({
   imports: [ CommonModule, SharedModule, SocialRoutingModule, ChartModule, FormsModule],
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent, 
-                 TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent, TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent],
+                 TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
+                 TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent],
   providers: [TwitterService, FacebookService, SocialService]
 })
 export class SocialModule { }

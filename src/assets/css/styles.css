@@ -11,7 +11,7 @@
  src: url('../fonts/SEGOEUI.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/SEGOEUI.woff') format('woff'), /* Modern Browsers */ url('../fonts/SEGOEUI.ttf') format('truetype'), /* Safari, Android, iOS */ url('../fonts/SEGOEUI.svg#svgFontName') format('svg'); /* Legacy iOS */
  font-weight: normal; font-style: normal;}
 body {color:#4D4D4F; font-family: 'SEGOEUI'; font-size: 15px; font-weight: normal; margin:0px; padding:0px;}
-html, body {height: 100%;}
+html, body {height: 100%;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;}
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section {display:block}
 form input, form select, form textarea {-webkit-appearance: none;}
 .clear {clear: both;}

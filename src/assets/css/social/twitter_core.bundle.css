@@ -971,11 +971,6 @@ hr {
 
 @font-face {
 	font-family: "rosettaicons";
-	src: url("../../font/rosetta-icons-Regular.eot");
-	src: url("../../font/rosetta-icons-Regular.eot?#iefix")
-		format("embedded-opentype"),
-		url("https://abs.twimg.com/a/1486521922/font/rosetta-icons-Regular.woff") format("woff"),
-		url("../../font/rosetta-icons-Regular.ttf") format("truetype");
 	font-style: normal;
 	font-weight: normal
 }
@@ -2551,7 +2546,6 @@ button {
 .icon {
 	display: inline-block;
 	vertical-align: text-top;
-	background-image: url(../../img/t1/twitter_web_sprite_icons.png);
 	background-position: 0 0;
 	background-repeat: no-repeat
 }
@@ -3363,8 +3357,6 @@ body {
 
 .pushing-state .pushstate-spinner {
 	display: inline-block;
-	background: url(../../img/t1/spinner-rosetta-blue-26x26.gif) no-repeat 0
-		0
 }
 
 .pushing-state .bird-topbar-etched {
@@ -3374,7 +3366,6 @@ body {
 @media screen and (-webkit-min-device-pixel-ratio:2) , screen and
 	(min-resolution:192dpi) {
 	.pushing-state .pushstate-spinner {
-		background-image: url(../../img/t1/spinner-rosetta-blue-26x26@2x.gif);
 		background-size: 26px 26px
 	}
 }
@@ -5718,7 +5709,6 @@ html[lang=ja] .has-sms {
 
 .avatar-placeholder {
 	display: inline-block;
-	background-image: url(../../img/t1/avatar_placeholder.png)
 }
 
 .size128 {
@@ -6726,7 +6716,6 @@ li.stream-item.highlighted {
 	display: inline-block;
 	width: 44px;
 	height: 20px;
-	background: url(../../img/t1/img_bing_logo.png) 2px 0 no-repeat;
 	vertical-align: middle
 }
 
@@ -7593,14 +7582,10 @@ body.ar .media-not-displayed p, body.fa .media-not-displayed p, body.ur .media-n
 	width: 32px;
 	height: 32px;
 	margin: 0 auto;
-	background: url(../../img/t1/spinner-rosetta-gray-32x32.gif) no-repeat 0
-		0
 }
 
 .spinner-small {
 	display: inline-block;
-	background: url(../../img/t1/spinner-rosetta-gray-14x14.gif) no-repeat 0
-		0;
 	height: 14px;
 	width: 14px;
 	vertical-align: -2px;
@@ -7608,14 +7593,10 @@ body.ar .media-not-displayed p, body.fa .media-not-displayed p, body.ur .media-n
 }
 
 .spinner-small.spinner-dark-bg {
-	background: url(../../img/t1/spinner-rosetta-gray-14x14-dark-bg.gif)
-		no-repeat 0 0
 }
 
 .spinner-bigger {
 	display: inline-block;
-	background: url(../../img/t1/spinner-rosetta-gray-32x32.gif) no-repeat 0
-		0;
 	height: 32px;
 	width: 32px
 }
@@ -7682,7 +7663,6 @@ body.ar .media-not-displayed p, body.fa .media-not-displayed p, body.ur .media-n
 }
 
 .tear {
-	background: #f5f8fa url(../../img/t1/bg_gap_bottom.png) top left;
 	position: relative;
 	font-size: 13px;
 	margin: -1px 0;
@@ -7691,7 +7671,6 @@ body.ar .media-not-displayed p, body.fa .media-not-displayed p, body.ur .media-n
 
 .tear button {
 	width: 100%;
-	background: url(../../img/t1/bg_gap_top.png) bottom left repeat-x;
 	padding: 20px 0;
 	font-size: 100%;
 	cursor: pointer;
@@ -7702,7 +7681,6 @@ body.ar .media-not-displayed p, body.fa .media-not-displayed p, body.ur .media-n
 .tear-processing .tear-text {
 	width: 14px;
 	height: 14px;
-	background: url(../../img/t1/spinner-rosetta-gray-14x14.gif) no-repeat;
 	text-indent: 21px;
 	overflow: hidden;
 	display: inline-block
@@ -9319,26 +9297,11 @@ div.rich-editor p, div.rich-editor p+p {
 	animation-timing-function: ease-in-out;
 	color: #8899a6;
 	cursor: pointer;
-	display: -moz-box;
 	display: -ms-flexbox;
 	display: flex;
 	line-height: 16px
 }
 
-@
-keyframes show-attribution { 0%{
-	opacity: 0;
-	-ms-filter: "alpha(opacity=0)"
-}
-
-100%{
-opacity
-:
-1;-ms-filter
-:
-"alpha(opacity=100)"
-}
-}
 .provider {
 	display: inline-block;
 	height: 20px;
@@ -9346,11 +9309,9 @@ opacity
 }
 
 .provider--giphy {
-	background-image: url(../../img/t1/icon_giphy.png)
 }
 
 .provider--riffsy {
-	background-image: url(../../img/t1/icon_riffsy.png)
 }
 
 .tweet-form.is-showingProgress .tweet-button .spinner {
@@ -9463,7 +9424,6 @@ opacity
 }
 
 .tweet-form .spinner {
-	background-image: url(../../img/t1/spinner-rosetta-gray-14x14.gif);
 	display: none;
 	height: 14px;
 	margin-right: 10px;
@@ -9879,8 +9839,7 @@ opacity
 	padding: 0 5px 4px 5px
 }
 
-@
-keyframes showSnapReelHint {
+@keyframes showSnapReelHint {
 	from {max-width: 0
 }
 
@@ -9889,8 +9848,7 @@ to {
 }
 
 }
-@
-keyframes hideSnapReelHint {
+@keyframes hideSnapReelHint {
 	from {max-width: 100px
 }
 
@@ -11087,7 +11045,6 @@ input:focus::placeholder, textarea:focus::placeholder {
 
 .HeartAnimation {
 	position: absolute;
-	background: url(../../img/animations/web_heart_animation.png);
 	background-position: left;
 	background-repeat: no-repeat;
 	background-size: 2900%;
@@ -11097,14 +11054,15 @@ input:focus::placeholder, textarea:focus::placeholder {
 	top: -100%
 }
 
-@
-keyframes heart-burst { 0%{
+@keyframes heart-burst { 0%{
 	background-position: left
 }
 
 100%{
 background-position
 :right
+
+
 }
 }
 .ProfileTweet-action--favorite.is-animating .HeartAnimation {
@@ -11598,7 +11556,6 @@ background-position
 }
 
 .Spinner {
-	background-image: url(../../img/t1/spinner-rosetta-gray-14x14.gif);
 	background-position: center;
 	display: none
 }
@@ -11900,8 +11857,7 @@ background-position
 	margin-right: 1px
 }
 
-@
-keyframes showSnapReelHint {
+@keyframes showSnapReelHint {
 	from {max-width: 0
 }
 
@@ -11910,8 +11866,7 @@ to {
 }
 
 }
-@
-keyframes hideSnapReelHint {
+@keyframes hideSnapReelHint {
 	from {max-width: 100px
 }
 
@@ -12211,8 +12166,6 @@ to {
 
 .PageDownload .SmsAppLinkForm .btn .loading {
 	display: none;
-	background: url(../../img/t1/spinner-rosetta-blue-26x26.gif) no-repeat 0
-		0;
 	height: 26px;
 	width: 26px
 }

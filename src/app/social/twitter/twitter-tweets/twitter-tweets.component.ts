@@ -5,7 +5,7 @@ import {Trend} from '../../models/trend';
 
 import {TwitterService} from "../../services/twitter.service";
 
-declare var swal, $: any;
+declare var $: any;
 
 @Component({
   selector: "app-twitter-tweets",
@@ -20,11 +20,11 @@ export class TwitterTweetsComponent implements OnInit{
     constructor(private router: Router, private twitterService: TwitterService) {}
     
     getTweets(){
-        swal( { title: 'Getting Tweets', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
+        //swal( { title: 'Getting Tweets', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
         this.twitterService.getTweets(null,100)
         .subscribe(
             data => {
-                swal.close();
+                //swal.close();
                 for (var i in data){
                     var splitted = data[i].text.split(" ");
                     var updatedText = "";

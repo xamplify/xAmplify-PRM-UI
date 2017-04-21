@@ -1,3 +1,12 @@
-<p>
-  facebook-posts works!
-</p>
+<div class="page-content">
+<div class="page-bar square-box margin-bottom-10px">
+	<ul class="page-breadcrumb">
+		<li><i class="fa fa-home"></i> <a [routerLink]="['../../../dashboard']">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li><a [routerLink]="['../../facebook-accounts']">Facebook Accounts</a> <i class="fa fa-angle-right"></i></li>
+		<li>Posts</li>
+	</ul>
+</div>
+<div *ngFor="let item of posts">
+	<h3>{{item.message}}</h3>
+</div>
+</div>

@@ -1,3 +1,10 @@
-<p>
-  facebook-accounts works!
-</p>
+<div class="page-content">
+<div class="col-sm-12 dashboard-stat2" *ngFor="let item of accounts">
+	<a [routerLink]="['../facebook-posts', item.id]">
+		<span>
+			<h3>{{item.name}}</h3>
+			<h5>{{item.category}}</h5>
+		</span>
+	</a>
+</div>
+</div>

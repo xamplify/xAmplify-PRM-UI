@@ -36,12 +36,13 @@ export class SocialService {
             let code = param['code'];
             let error_code = param['error_code'];
             let error_message = param['error_message'];
+            let error_description = param['error_description'];
 
             if(oauth_token != null && oauth_verifier != null)
                 queryParam = "?oauth_token="+oauth_token+"&oauth_verifier="+oauth_verifier;
             else if(denied != null)
                 queryParam = "?denied="+denied;
-            else if(error_code != null && error_message != null)
+            else if(error_code != null && (error_message != null || error_description != null))
                 queryParam = "?error_code="+error_code+"&error_message="+error_message;
             else
                 queryParam = "?code="+code;

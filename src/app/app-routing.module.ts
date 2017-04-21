@@ -8,6 +8,9 @@ import {VideosModule} from './videos/videos.module';
 import {ContactsModule} from './contacts/contacts.module';
 import {EmailTemplateModule} from './email-template/email-template.module'
 
+import { SocialLoginComponent } from './social/common/social-login/social-login.component';
+import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: 'home/dashboard', pathMatch: 'full', canActivate: [AuthGuard] },
@@ -22,6 +25,8 @@ export const routes: Routes = [
         ]
     },
     { path: 'logout', component: LoginComponent },
+    {path: ':social/login', component:SocialLoginComponent},
+    {path: ':social/callback', component:SocialCallbackComponent}
 
 ];
 

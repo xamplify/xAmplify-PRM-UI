@@ -19,6 +19,8 @@ import { AppComponent } from './app.component';
 
 import { Logger } from "angular2-logger/core";
 import { LoginComponent } from './login/login.component';
+import {SocialLoginComponent} from './social/common/social-login/social-login.component';
+import {SocialCallbackComponent} from './social/common/social-callback/social-callback.component';
 
 import {TwitterService} from './social/services/twitter.service';
 import {FacebookService} from './social/services/facebook.service';
@@ -31,7 +33,7 @@ import {PagerService} from './core/services/pager.service';
 import {EmailTemplateService } from './email-template/services/email-template.service';
 
 @NgModule({
-    declarations: [AppComponent,LoginComponent],
+    declarations: [AppComponent,LoginComponent,SocialLoginComponent,SocialCallbackComponent],
   imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
