@@ -3,7 +3,7 @@ import { RouterModule,Routes }        from '@angular/router';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { MyProfileComponent } from './my-profile/my-profile.component';
+import { MyProfileComponent } from './user-profile/my-profile/my-profile.component';
 import { ViewsReportComponent } from './views-report/views-report.component';
 import { TableAdvanceComponent } from './table-advance/table-advance.component';
 import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
