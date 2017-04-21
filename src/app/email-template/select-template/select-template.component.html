@@ -1,3 +1,122 @@
-<p>
-  select-template works!
-</p>
+
+<style type="text/css">
+h1 {
+	background: #e3e3e3;
+	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3),
+		to(#c8c8c8));
+	padding: 10px 20px;
+	margin-left: -20px;
+	margin-top: 0;
+	position: relative;
+	width: 70%;
+	-moz-box-shadow: 1px 1px 3px #292929;
+	-webkit-box-shadow: 1px 1px 3px #292929;
+	box-shadow: 1px 1px 3px #292929;
+	color: #454545;
+}
+
+.arrow {
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border-left: 20px solid transparent;
+	border-top: 10px solid #c8c8c8;
+	top: 104%;
+	left: 0;
+	position: absolute;
+}
+</style>
+
+
+<div class="page-content">
+
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li><a [routerLink]="['../../emailtemplate/manageTemplates']">Email
+					Templates</a> <i class="fa fa-angle-right"></i></li>
+			<li><a style="color: blue;">Create Email Templates</a></li>
+		</ul>
+	</div>
+	<!-- END PAGE HEADER-->
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tabbable tabbable-custom tabbable-noborder">
+
+				<div class="tab-content">
+					<div class="margin-top-10" style="padding-left: 15%">
+						<ul class="mix-filter" style="display: inline">
+							<li class="filter" (click)="showAllTemplates()"
+								style="font-size: 20px;">All Email Template's</li>
+							<li class="filter" (click)="showRegularTemplates()"
+								style="font-size: 20px;">Regualr Email Template's</li>
+							<li class="filter" (click)="showVideoTemplates()"
+								style="font-size: 20px;">Video Email Template's</li>
+							<li class="filter" (click)="showUploadTemplates()"
+								style="font-size: 20px;">Upload Template</li>
+
+
+						</ul>
+					</div>
+					<div class="tab-pane active regular_emails">
+						<!-- BEGIN FILTER -->
+						<div style="display: inline">
+							<ul class="mix-filter" style="display: inline">
+
+								<li class="filter" (click)="showBasicTemplates()">Basic
+									Template's</li>
+								<li class="filter" (click)="showRichTemplates()">Rich
+									Template's</li>
+								<li class="filter" (click)="showBasicVideoTemplates()">
+									Basic Video Template's</li>
+								<li class="filter" (click)="showRichVideoTemplates()">Rich
+									Video Template's</li>
+								<li class="filter" style="display: none;">Own Template</li>
+							</ul>
+						</div>
+						<div class="inputs regular_emails" align="right"
+							style="display: inline; float: right">
+							<div class="portlet-input input-inline input-small">
+								<div class="input-icon right">
+									<i class="icon-magnifier"></i> <input type="text"
+										class="form-control input-circle"
+										[(ngModel)]="templateFilter.name" placeholder="search...">
+								</div>
+							</div>
+						</div>
+
+						<div class="row mix-grid" style="margin-top: 10px">
+							<div class="col-md-3 col-sm-4 mix"
+								*ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index"
+								style="display: block; opacity: 1;">
+								<div class="mix-inner"
+									style="border: 1px solid #e7ecf1 !important;">
+									<img class="img-responsive" src="{{beeRegularTemplate.body}}"
+										alt="" style="padding-left: 25%;">
+									<div class="mix-details" style="padding: 10px;">
+										<h4>{{beeRegularTemplate.name}}</h4>
+										<div style="top: 7%; position: relative;">
+											<a class="mix-preview2 fancybox-button" title="Add"
+												data-rel="fancybox-button" style="margin-top: 20px;"
+												(click)="showTemplateById(beeRegularTemplate.id,i)"> <i
+												class=""><img src="../../assets/images/plus-icon.png"
+													style="width: 25px; height: 25px;"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+	</div>
+
+	<!-- END CONTENT -->

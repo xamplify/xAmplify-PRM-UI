@@ -1,0 +1,24 @@
+/deep/ .default tag:not(.tag--editing) {
+        color:#fff !important ;
+        background: blue !important;  
+        }
+
+.customCss{
+   margin-right: 13px;margin-left: -11px;
+        } 
+
+.closeModal {
+    background-color:white;
+    color:red ;
+    float:right;
+    font-size:21px;
+    font-weight:700;
+    line-height:1;
+    opacity:1;
+    }
+
+.videoSizeCss { 
+    position: relative;
+    height: 24px;
+    padding: 0px 2px;
+    }

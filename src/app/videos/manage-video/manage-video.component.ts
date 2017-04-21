@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 
 import {SaveVideoFile} from '.././models/save-video-file';
 import {Category} from '.././models/Category';
@@ -9,171 +9,160 @@ import { PagerService } from '../../core/services/pager.service';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {ReferenceService} from '../../core/services/reference.service';
 
-import { Logger } from "angular2-logger/core";
+import { Logger } from 'angular2-logger/core';
 
-declare var swal , Metronic, Layout ,Demo:any;
+declare var swal , Metronic, Layout , Demo,require : any;
 
 @Component({
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
   styleUrls: ['./manage-video.component.css'],
+  providers: [ Pagination ]
+  })
+export class ManageVideoComponent implements OnInit , OnDestroy {
 
- /* styles:[`.colorSelect { background-color:lightblue;} 
-           .dropDownCss { position: relative; height: 32px; padding: 0px 3px;}
-           .customDisableCss{cursor:not-allowed !important; opacity:0.5}
-           a.disabled {pointer-events: none; cursor: not-allowed; }
-          `], */
-  providers:[Pagination]
-  
-})
-export class ManageVideoComponent implements OnInit {
-
-    title: string = "Videos";
-    manageVideos: boolean = true;
-    editVideo: boolean = false;
-    playVideo: boolean = false;
-    campaignReport: boolean = false;
+    title = 'Videos';
+    manageVideos = true;
+    editVideo = false;
+    playVideo = false;
+    campaignReport = false;
     videos: Array<SaveVideoFile>;
-    cancel: boolean = false;
+    cancel = false;
     editDetails: SaveVideoFile;
-    ownValue: boolean = true;
+    ownValue = true;
     selectedVideo: SaveVideoFile;
-    dropdownTogglevalue: boolean = false;
+    dropdownTogglevalue = false;
     categories: Category[];
-    filteredCatergories :Array<Category>;
-    showUpdatevalue: boolean = false;
-    showMessage: boolean = false;
+    filteredCatergories: Array<Category>;
+    showUpdatevalue = false;
+    showMessage = false;
     imagepath: string;
     pager: any = {};
     pagedItems: any[];
-    isvideosLength:boolean;
+    isvideosLength: boolean;
     selectedVideoFile: SaveVideoFile;
     pageBar: boolean;
     showVideoName: string;
-    public totalRecords :number;
-    categoryNum:number ;
-    public isCategoryUpdated:boolean;
-    categoryAnother:string = "All Categories";
-    public searchKey :string ;
-    sortingName:string = null;
-    sortcolumn :string = null;
-    sortingOrder :string = null;
-    isvideoThere:boolean;
-    public isCategoryThere :boolean;
-    public searchDisable:boolean = true;
+    public totalRecords: number;
+    categoryNum: number ;
+    public isCategoryUpdated: boolean;
+    categoryAnother = 'All Categories';
+    public searchKey: string ;
+    sortingName: string = null;
+    sortcolumn: string = null;
+    sortingOrder: string = null;
+    isvideoThere: boolean;
+    public isCategoryThere: boolean;
+    public searchDisable = true;
     sortVideos  = [
-                       {'name':'Sort By','value':''},
-                       {'name':'Title(A-Z)','value':'title-ASC'},
-                       {'name':'Title(Z-A)','value':'title-DESC'},
-                       {'name':'Created Time(ASC)','value':'createdTime-ASC'},
-                       {'name':'Created Time(DESC)','value':'createdTime-DESC'},
-                       {'name':'ViewBy(ASC)','value':'viewBy-ASC'},
-                       {'name':'ViewBy(DESC)','value':'viewBy-DESC'},
+                       {'name': 'Sort By', 'value': ''},
+                       {'name': 'Title(A-Z)', 'value': 'title-ASC'},
+                       {'name': 'Title(Z-A)', 'value': 'title-DESC'},
+                       {'name': 'Created Time(ASC)', 'value': 'createdTime-ASC'},
+                       {'name': 'Created Time(DESC)', 'value': 'createdTime-DESC'},
+                       {'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC'},
+                       {'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC'},
                        ];
-    
-    public videoSort:any = this.sortVideos[0];
-    
-    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService, private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private _logger: Logger,private pagination:Pagination) {
-        console.log("MangeVideosComponent : constructor ");
-        this.showMessage = false; 
+   public videoSort: any = this.sortVideos[0];
+   constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
+    private authenticationService: AuthenticationService,
+        private pagerService: PagerService, private _logger: Logger, private pagination: Pagination) {
+        console.log('MangeVideosComponent : constructor ');
+        this.showMessage = false;
         this.showUpdatevalue = false;
         this.isvideosLength = false;
         this.pageBar = false;
         this.isvideoThere = false;
         this.categoryNum = 0;
         this.isCategoryThere = false;
-        this.searchKey =null;
-        
-        if (this.videoFileService.actionValue == "Save") {
-            console.log("MangeVideosComponent : ngonit ");
+        this.searchKey = null;
+     if (this.videoFileService.actionValue === 'Save') {
+            console.log('MangeVideosComponent : ngonit ');
             this.editVideo = true;
             this.manageVideos = false;
             this.playVideo = false;
             this.campaignReport = false;
-            console.log("opening edit video");
-            this.showMessage = this.videoFileService.showSave; //true
+            console.log('opening edit video');
+            this.showMessage = this.videoFileService.showSave; // true
             this.showUpdatevalue = this.videoFileService.showUpadte; // false
         }
     }
     ngOnInit() {
-        console.log("MangeVideosComponent ngOnInit()");
+        console.log('MangeVideosComponent ngOnInit()');
         this._logger.log('This is a priority level 5 log message...');
         try {
-           if (this.videoFileService.actionValue == "Save") {
-                console.log("MangeVideosComponent : ngonit ");
+           if (this.videoFileService.actionValue === 'Save') {
+                console.log('MangeVideosComponent : ngonit ');
                 this.editVideo = true;
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
-                console.log("opening edit video");
-                this.showMessage = this.videoFileService.showSave; //true
+                console.log('opening edit video');
+                this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
             }
-            console.log("manage videos js started");
-            if (this.videoFileService.actionValue != "Save" || this.videoFileService.actionValue == undefined) {
+            console.log('manage videos js started');
+            if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
                 this.manageVideos = true;
                 this.editVideo = false;
                 this.playVideo = false;
                 this.campaignReport = false;
                 this.showMessage = false;
                 this.showUpdatevalue = false;
-            } 
-            
-            this.loadVideos(this.pagination);
+            }
+          this.loadVideos(this.pagination);
             Metronic.init();
             Layout.init();
             Demo.init();
-            console.log("manage videos js completed");
+            console.log('manage videos js completed');
         }
-        catch (err) {
-            console.log("error " + err);
+        catch(err) {
+            console.log('error ' + err);
         }
     }
-      
-    loadVideos(pagination:Pagination) {
-        swal( { title: 'Loading Videos', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif",allowOutsideClick: false  });
-        try{
+      loadVideos(pagination: Pagination) {
+        swal( { title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false,
+        imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+        try {
         this.videoFileService.loadVideoFiles(pagination)
-            .subscribe((result:any) => {
+            .subscribe((result: any) => {
                 swal.close();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
-                if(this.isCategoryThere == false || this.isCategoryUpdated == true){
+                if (this.isCategoryThere === false || this.isCategoryUpdated === true){
                      this.categories = result.categories;
-                     this.categories.sort(function(a:any, b:any) { return (a.id) - (b.id); });
+                     this.categories.sort(function(a: any, b: any) { return (a.id) - (b.id); });
                 }
                 console.log(this.categories);
                 console.log(this.videos);
-                if(this.videos.length!= 0){
+                if (this.videos.length !== 0) {
                     this.isvideoThere = false;
                  }
                  else {
                      this.isvideoThere = true;
-                     this.pagedItems = null; 
+                     this.pagedItems = null ;
                  }
-                if(this.videos.length==0) this.isvideosLength=true;
-                else this.isvideosLength = false;   
-                for (var i = 0; i < this.videos.length; i++) {
-                    this.imagepath = this.videos[i].imagePath+"?access_token=" + this.authenticationService.access_token;
+                if (this.videos.length === 0) { this.isvideosLength = true; }
+                else { this.isvideosLength = false;  }
+                for (let i = 0; i < this.videos.length; i++) {
+                    this.imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
                     this.videos[i].imagePath = this.imagepath;
                 }
                 this.isCategoryThere = true;
                 this.isCategoryUpdated = false;
                 pagination = this.pagerService.getPagedItems(pagination, this.videos);
-            }),
-            () => console.log("load videos completed:" + this.videos);
+            });
+            ()=>console.log( 'load videos completed:' + this.videos );
         }
         catch(err) {
-            
-             console.log("error " + err);
+             console.log('error ' + err);
         }
     }
 
     setPage(page: number) {
-     if(page!= this.pagination.pageIndex){
-        this.pagination.pageIndex = page; 
+     if  (page !== this.pagination.pageIndex){
+        this.pagination.pageIndex = page;
         this.loadVideos(this.pagination);
         this.showUpdatevalue = false;
         this.showMessage = false;
@@ -191,14 +180,13 @@ export class ManageVideoComponent implements OnInit {
     }
     searchDisableValue(){
         console.log(this.searchKey);
-        if(this.searchKey!=null || this.searchKey.length!=0)
-        this.searchDisable = false;
-        if( this.searchKey.length==0|| this.searchKey=='')
-            this.searchDisable = true;
+        if (this.searchKey !== null || this.searchKey.length !== 0) {
+        this.searchDisable = false; }
+        if (this.searchKey.length === 0 || this.searchKey === '') {
+            this.searchDisable = true; }
     }
-    
     searchVideoTitelName(){
-      if(this.searchKey!=null && this.searchDisable == false){ 
+      if ( this.searchKey !== null && this.searchDisable === false ){
         this.showMessage = false;
         this.showUpdatevalue = false;
         console.log(this.searchKey);
@@ -207,63 +195,49 @@ export class ManageVideoComponent implements OnInit {
         this.loadVideos(this.pagination);
       }
     }
-    selectedSortByValue(event:any){
+    selectedSortByValue( event: any ){
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.videoSort = event;
-         let sortedValue = this.videoSort.value;
-         if(sortedValue!=""){
-             let options:string[] = sortedValue.split("-");
+         const sortedValue = this.videoSort.value;
+         if( sortedValue !== '') {
+             const options: string[] = sortedValue.split('-');
              this.sortcolumn = options[0];
              this.sortingOrder = options[1];
-         }else{ 
+         }else {
              this.sortcolumn = null;
              this.sortingOrder = null;
          }
-        this.pagination.pageIndex =1;
-        this.pagination.sortcolumn = this.sortcolumn;
-        this.pagination.sortingOrder = this.sortingOrder;    
+        this.pagination.pageIndex = 1;
+        this.pagination.sortcolumn = this.sortcolumn ;
+        this.pagination.sortingOrder = this.sortingOrder ;
         this.loadVideos(this.pagination);
     }
-    
-    removeDuplicates(originalArray:any, prop:any) {
-        var newArray:any = []; var lookupObject = {};
-        for (var i in originalArray) {
-            lookupObject[originalArray[i][prop]] = originalArray[i];
-        }
-        for (i in lookupObject) {
-            newArray.push(lookupObject[i]);
-        } return newArray;
-    }
-
-    
     showEditVideo(video: SaveVideoFile) {
-        console.log("show edit video method in mange videos " + JSON.stringify(video));
+        console.log('show edit video method in mange videos ' + JSON.stringify(video));
         console.log(video.alias);
         this.selectedVideoFile = video;
         this.videoFileService.getVideo(video.alias)
             .subscribe((saveVideoFile: SaveVideoFile) => {
-                console.log("enter the show edit vidoe method");
+                console.log('enter the show edit vidoe method');
                 this.editDetails = saveVideoFile;
-                if (saveVideoFile.imageFiles == null)
-                    saveVideoFile.imageFiles = [];
-                if (saveVideoFile.gifFiles == null)
-                    saveVideoFile.gifFiles = [];
+                if (saveVideoFile.imageFiles == null) {
+                    saveVideoFile.imageFiles = []; }
+                if ( saveVideoFile.gifFiles == null )
+                {  saveVideoFile.gifFiles = []; }
                 this.videoFileService.saveVideoFile = this.editDetails;
-                console.log("show edit vidoe object :");
+                console.log('show edit vidoe object :');
                 console.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
                 this.editVideo = true;
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
-
-            }),
-            () => console.log("save video is:");
+            });
     }
 
     showPlayVideo(video: SaveVideoFile) {
-        console.log("MangeVideoComponent playVideo:");
+        console.log('MangeVideoComponent playVideo:');
         console.log(video);
         this.selectedVideo = video;
         this.manageVideos = false;
@@ -274,7 +248,7 @@ export class ManageVideoComponent implements OnInit {
     }
 
     showCampaignVideoReport(video: SaveVideoFile) {
-        console.log("ManageVideoComponent campaign report:");
+        console.log('ManageVideoComponent campaign report:');
         console.log(video);
         this.selectedVideo = video;
         this.campaignReport = true;
@@ -285,62 +259,66 @@ export class ManageVideoComponent implements OnInit {
     }
 
     deleteVideoFile(alias: string, position: number) {
-        console.log("MangeVideoComponent deleteVideoFile alias # " + alias + ", position # " + position);
+        console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
       //  this.pagedItems.splice(position, 1);
         this.videoFileService.deleteVideoFile(alias)
         .subscribe(
         data => {
-            console.log( "MangeVideoComponent deleteVideoFile success : " + data );
+            console.log( 'MangeVideoComponent deleteVideoFile success : ' + data );
            //  this.pagedItems.splice(position, 1);
             this.videos.splice(position, 1);
             swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
         error => console.error( error ),
-        () => console.log( "deleted completed" )
+        () => console.log( 'deleted completed' )
         );
     }
 
     deleteAlert(alias: string, position: number) {
-        console.log("videoId in sweetAlert()");
-        let self = this;
+        console.log('videoId in sweetAlert()');
+        const self = this;
         swal({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
+            text: 'You wont be able to revert this!',
+            type : 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
 
         }).then(function(myData: any) {
-            console.log("ManageVidoes showAlert then()" + myData);
+            console.log('ManageVidoes showAlert then()' + myData);
             self.deleteVideoFile(alias, position);
-        })
+        });
     }
 
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
         if (videoFile != null) {
-            this.pagination.pageIndex =1;
-            this.pagination.filterBy =0;
+            this.pagination.pageIndex = 1;
+            this.pagination.filterBy = 0;
             this.pagination.sortcolumn = null;
             this.pagination.sortingOrder = null;
-            this.searchKey  =null;
+            this.searchKey  = null;
             this.loadVideos(this.pagination);
         }
         this.manageVideos = true;
         this.editVideo = false;
         this.campaignReport = false;
         this.playVideo = false;
-        //this.videoFileService.actionValue = '';
-        this.showMessage = this.videoFileService.showSave; //false
+        // this.videoFileService.actionValue = '';
+        this.showMessage = this.videoFileService.showSave; // false
         this.showUpdatevalue = this.videoFileService.showUpadte; // true
-        if(videoFile== null) this.showVideoName ='';
-        else this.showVideoName = videoFile.title;
-        console.log("update method called " + this.showVideoName)
+        if ( videoFile == null ) {
+            this.showVideoName = '';
+         }
+         else {
+              this.showVideoName = videoFile.title ;
+            }
+        console.log('update method called ' + this.showVideoName);
     }
     goToManageVideos() {
-        console.log("come to goto manage videos :");
+        console.log('come to goto manage videos :');
         this.manageVideos = true;
         this.editVideo = false;
         this.campaignReport = false;
@@ -350,7 +328,7 @@ export class ManageVideoComponent implements OnInit {
         this.showUpdatevalue = false;
         this.videoFileService.actionValue = '';
     }
-    ngOnDestroy(){
+      ngOnDestroy() {
          this.videoFileService.actionValue = '';
          this.isvideoThere = false;
     }

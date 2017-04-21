@@ -28,6 +28,7 @@ import {VideoFileService} from './videos/services/video-file.service';
 import {UploadCloudvideoService} from './videos/services/upload-cloudvideo.service';
 import {ReferenceService} from './core/services/reference.service';
 import {PagerService} from './core/services/pager.service';
+import {EmailTemplateService } from './email-template/services/email-template.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent],
@@ -35,7 +36,7 @@ import {PagerService} from './core/services/pager.service';
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
   providers: [UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
-               VideoFileService,UploadCloudvideoService,ContactService],
+               VideoFileService,UploadCloudvideoService,ContactService,EmailTemplateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

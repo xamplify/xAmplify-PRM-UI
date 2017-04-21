@@ -37,6 +37,10 @@
             "./assets/admin/pages/css/lock.css",
             "./assets/css/dashboardPage.css",
             "./assets/css/facebook.css",
+            "./assets/css/form.errors.css",
+            "./assets/js/videoCapturing/video-js.css",
+            "./assets/js/videojs.record.css",
+            "./assets/js/videojs/video-js.css",
             "./assets/global/plugins/select2/select2.css",
             "./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"
         ],
@@ -150,7 +154,12 @@
             "./assets/admin/pages/scripts/maps-vector.js",
             "./assets/js/Blob.js",
             "./assets/js/fileSaver.js",
-            "./assets/js/CodeHighlighter.js"
+            "./assets/js/CodeHighlighter.js",
+            "./assets/js/videoCapturing/video.min.js",
+            "./assets/js/videoCapturing/RecordRTC.js",
+            "./assets/js/videojs.record.js",
+            "./assets/js/videojs/videojs-contrib-hls.js",
+            "./assets/js/videojs/videojs.hotkeys.min.js"
         ],
         "environmentSource": "environments/environment.ts",
         "environments": {

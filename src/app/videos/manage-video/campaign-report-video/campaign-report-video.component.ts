@@ -1,38 +1,32 @@
 import { Component, OnInit ,Input, ElementRef, OnDestroy,} from '@angular/core';
 import {SaveVideoFile} from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-declare var videojs:any;
-declare var  Metronic:any;
-declare var  Layout:any; 
-declare var  Demo:any; 
-declare var  QuickSidebar:any; 
-declare var  Index:any;   
-declare var  Tasks:any;
+declare var videojs, Metronic, Layout, Demo, QuickSidebar, Index, Tasks,require: any;
 
 @Component({
   selector: 'app-campaign-report-video',
   templateUrl: './campaign-report-video.component.html',
-  styleUrls: ['./campaign-report-video.component.css']
+   styleUrls: ['./campaign-report-video.component.css', '../../../../assets/css/video-css/video-js.custom.css']
+
+//  '../../../../assets/css/daterangepicker-bs3.css'
 })
 export class CampaignReportVideoComponent implements OnInit {
 
-  @Input() selectedVideo :SaveVideoFile;
-  
-    private _elementRef: ElementRef ;
+  @Input() selectedVideo: SaveVideoFile;
+   private _elementRef: ElementRef ;
     private videoJSplayer: any ;
-    public videoUrl :string;
+    public videoUrl: string;
 
-    constructor(elementRef: ElementRef,private authenticationService: AuthenticationService) {
+    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService) {
         this._elementRef = elementRef;
-        
-    }
-	ngOnInit(){
+         }
+
+	ngOnInit() {
 	        this.videoUrl = this.selectedVideo.videoPath;
 	        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
-	        this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
+	        this.videoUrl = this.videoUrl + '.mp4?access_token='+ this.authenticationService.access_token;
 	        console.log('Init - Component initialized')
-	        
-	          this.videoJSplayer = videojs(document.getElementById('example_video_12'), {}, function() {
+	            this.videoJSplayer = videojs(document.getElementById('example_video_12'), {}, function() {
 	            // This is functionally the same as the previous example.
 	            this.play();
 	            this.hotkeys({

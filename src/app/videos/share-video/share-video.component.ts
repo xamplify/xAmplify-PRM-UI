@@ -1,25 +1,25 @@
 import {Component, ElementRef, OnInit, OnDestroy, Input,Inject} from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from '@angular/router';
 import {VideoFileService} from '../services/video-file.service';
 import {SaveVideoFile} from '../models/save-video-file';
 import {Category} from '../models/category';
 import {AuthenticationService} from '../../core/services/authentication.service';
-import { Logger } from "angular2-logger/core";
-//import { MetaService } from 'ng2-meta';
-import { ShareButton, ShareProvider } from "ng2-sharebuttons";
+import { Logger } from 'angular2-logger/core';
+// import { MetaService } from 'ng2-meta';
+import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
-//import {DomAdapter, getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
+// import {DomAdapter, getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
 declare var videojs:any;
-//import {BrowserDomAdapter} from 'angular2/platform/browser';
-//import { Meta ,MetaDefinition} from '../../core/services/angular2-meta.service';
+// import {BrowserDomAdapter} from 'angular2/platform/browser';
+// import { Meta ,MetaDefinition} from '../../core/services/angular2-meta.service';
 
 @Component({
   selector: 'app-share-video',
-  templateUrl: './share-video.component.html'
- // styleUrls: ['../../../assets/css/video-css/portfolio.css' ] 
+  templateUrl: './share-video.component.html',
+  styleUrls: ['../../../assets/css/video-css/video-js.custom.css']
 })
 export class ShareVideoComponent implements OnInit {
-	  videoFile: SaveVideoFile;
+videoFile: SaveVideoFile;
 saveVideoFile: SaveVideoFile;
 private videoJSplayer: any;
 public imgURL = "http://139.59.1.205:9090/vod/images/125/03022017/flight1486153663429_play1.gif";

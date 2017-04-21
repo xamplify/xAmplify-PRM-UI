@@ -11,7 +11,7 @@
 
 @font-face {
   font-family: VideoJS;
-  src: url("../font/1.4.0/VideoJS.eot?#iefix") format("eot"); }
+ /* src: url("../font/1.4.0/VideoJS.eot?#iefix") format("eot");*/ } 
 
 @font-face {
   font-family: VideoJS;

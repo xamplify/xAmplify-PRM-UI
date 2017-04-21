@@ -7,32 +7,21 @@ import { UploadCloudvideoService} from '../services/upload-cloudvideo.service';
 import { Router} from '@angular/router';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
-declare var Dropbox :any;
-declare var swal:any;
-declare var google:any;
-declare var gapi:any;
-declare var downloadFromBox:any;
-declare var BoxSelect:any;
-declare var downloadFromGDrive:any;
-declare var $:any;
-declare var videojs:any;
+declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
 
 @Component({
   selector: 'app-upload-video',
   templateUrl: './upload-video.component.html',
-  styles:[` .customDisableCss{ cursor:not-allowed !important; opacity:0.3  } 
-          .closeModal {  background-color:white;color:red ;float:right;font-size:21px;font-weight:700;line-height:1;opacity:1;}
-          .cursorCss{ cursor :pointer; } 
-           #myVideo{  background-color: #5fdbf5; }
-           .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
-                         -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
-           .zoomin img:hover { width: 87px;height: 87px;  } 
-             .my-drop-zone {  border: dotted 3px lightgray;   text-align: center; width :468px;  height: 151px; }
-             .nv-file-over { border: dotted 3px red; } `
-           ] 
+  styleUrls :['./upload-video.component.css', '../../../assets/css/video-css/customLoaderCss.css',
+              '../../../assets/css/video-css/videojs-record-custom.css',
+             '../../../assets/css/dropfiles.css']
+
+ //  '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css', 
+ // '../../../assets/global/plugins/dropzone/css/dropzone.css'
+ // '../../../assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css',
+   //         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css'
 })
 export class UploadVideoComponent implements OnInit {
-
 
     public processVideoResp: SaveVideoFile;
     public URL = this.authenticationService.REST_URL+'admin/uploadVideo?access_token=';

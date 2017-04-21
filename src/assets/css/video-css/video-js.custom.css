@@ -43,6 +43,7 @@
     font-size: 11px;
     margin-left: -13px;
     margin-right: -9px;
+    background-color:transparent;
 } 
 /deep/ .video-js .vjs-progress-holder .vjs-load-progress   {
 	position: absolute;
@@ -51,15 +52,16 @@
 }
 /deep/ .video-js .vjs-volume-menu-button{
 	font-size :11px;
-    margin-left: -11px
+    margin-left: -11px ;
 	}
 /deep/ .video-js .vjs-play-control {
 	font-size :11px;
+    background-color:transparent;
 }	
 
 /deep/ .video-js .vjs-progress-holder .vjs-play-progress :hover {
 	margin-top : 5px;
-	font-size:5px;
+	font-size: 5px;
 	
 }
  /deep/ .video-js .vjs-play-progress:after {
@@ -84,4 +86,5 @@
 .video-js .vjs-progress-control:hover .vjs-play-progress:after {
     font-family: Arial, Helvetica, sans-serif;
     visibility: visible;
-    font-size: 1em; }
+    font-size: 1em;
+     }

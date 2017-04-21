@@ -46,13 +46,4 @@ h3 {
      position: relative; height: 32px; padding: 0px 3px;
      
      }
-  .customDisableCss{
-      
-      cursor:not-allowed !important; opacity:0.5;
-      }
-  a.disabled {
-      pointer-events: none; cursor: not-allowed; 
-      
-      } 
-
-   
+  

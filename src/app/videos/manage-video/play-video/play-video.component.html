@@ -1,3 +1,8 @@
+<style type="text/css">
+	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
+	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
+	.isPlaySubmit{ padding:15px 58px !important;}
+</style>
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
@@ -38,7 +43,7 @@
 				    </div>
 				     <div id="replay-video" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 373px; margin-top: -66px;">  
                       <a><button type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
-                      <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button>
+                    <!--   <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
                     </div>
                  </div> 
                </div>

@@ -1,3 +1,112 @@
-<p>
-  upload-email-template works!
-</p>
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+	<div class="page-content">
+		<!-- BEGIN PAGE HEADER-->
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li><i class="fa fa-home"></i> <a
+					[routerLink]="['../../dashboard']">Home</a> <i
+					class="fa fa-angle-right"></i></li>
+				<li><a style="color: blue;">Upload Template</a></li>
+			</ul>
+		</div>
+		<!-- BEGIN PAGE CONTENT-->
+		<div class="portlet light">
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div style="float: left; width: 113px;">
+							<button type="button" class="btn green fileinput-button">
+								<span> <i class="fa fa-plus"></i>Upload File
+								</span>
+								<!-- *ngIf="uploader.queue.length==0" -->
+								<input type="file" ng2FileSelect [uploader]="uploader"
+									class="form-control" name="htmlFile"
+									(change)="readFile($event)" accept="text/html">
+							</button>
+						</div>
+					</div>
+					<form>
+						<div class="col-xs-0 col-md-6">
+							<label for="name">Template Name</label> <input type="text"
+								class="form-control" id="templateName" required
+								[(ngModel)]="model.templateName" name="templateName"
+								minlength="1" maxlength="50"
+								placeholder="Please Enter Template Name" #templateName="ngModel"
+								(ngModelChange)="checkAvailableNames($event)">
+							<div [hidden]="templateName.valid || templateName.pristine"
+								class="alert alert-danger">Name is required</div>
+							<div [hidden]="!duplicateTemplateName" class="alert alert-danger">Duplicate
+								Name</div>
+						</div>
+
+
+					</form>
+					<br />
+					<div class="col-md-12" style="margin-top: 25px;">
+						<table class="table">
+							<tbody>
+								<tr
+									*ngFor="let item of uploader.queue;let last = last;let index = index">
+									<td *ngIf="last">{{ item?.file?.name }}</td>
+									<td *ngIf="last">
+										<div style="margin-left: 13px;">{{(item?.file?.size/1024/1024/1024).toFixed(2)
+											}} KB</div>
+									</td>
+									<td nowrap *ngIf="last">
+										<button type="button" class="btn btn-success btn-xs"
+											(click)="saveHtmlTemplate()"
+											[disabled]="!isTemplateName ||duplicateTemplateName ">
+											<span class="glyphicon glyphicon-upload"></span> Save
+										</button>
+										<button type="button" class="btn btn-danger btn-xs"
+											(click)="item.remove();removeFile()">
+											<span class="glyphicon glyphicon-trash"></span> Remove
+										</button>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!--ended the file upload code   -->
+					<div class="col-md-6">
+						<p>
+							<span class="label label-danger"> NOTE: </span> &nbsp; This
+							plugins works only on Latest Chrome, Firefox, Safari, Opera &
+							Internet Explorer 10.
+						</p>
+						<div
+							[class.customDisableCss]='isDisable==true || fileChecked==true ||isFileProgress ==true'
+							ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+							(fileOver)="fileOverBase($event)" (onFileDrop)="readFile($event)"
+							[uploader]="uploader" class="well my-drop-zone">
+							<h3>Drop Files here</h3>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix" style="margin: 5px;"></div>
+				<div class="panel panel-success" *ngIf="isUploaded">
+					<div class="panel-heading">
+						<button type="button" class="btn btn-link"
+							(click)="showHtmlCode()">Code</button>
+						<button type="button" class="btn btn-link" (click)="showPreview()">Preview</button>
+					</div>
+					<div class="panel-body">
+						<div [innerHTML]="htmlText" #myDiv *ngIf="isPreview"></div>
+						<!-- --Preview Div -->
+						<div class="html" contenteditable="true" id="textarea"
+							[hidden]="showText">{{htmlText}}</div>
+						<!-- Content Div -->
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+	</div>
+	<!-- END CONTAINER -->
+</div>

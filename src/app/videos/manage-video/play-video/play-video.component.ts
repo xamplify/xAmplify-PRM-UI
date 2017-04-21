@@ -4,49 +4,41 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import {UserService} from '../../../core/services/user.service';
 import {User} from '../../../core/models/user';
 import {VideoFileService} from '../../services/video-file.service';
-declare var Metronic:any;
-declare var Layout:any;
-declare var Demo:any;
-declare var $:any;
-declare var videojs:any;
+declare var Metronic, Layout, Demo, $, videojs: any;
 
 @Component({
   selector: 'app-play-video',
   templateUrl: './play-video.component.html',
-  styleUrls : ['./play-video.component.css']
- /* styles :[`.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
-            .isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
-            .isPlaySubmit{ padding:15px 58px !important;}`]  */
-})
+  styleUrls : ['./play-video.component.css', '../../../../assets/css/video-css/video-js.custom.css' ,
+   '../../../../assets/css/video-css/videojs-overlay.css',  '../../../../assets/css/about-us.css',
+    '../../../../assets/css/todo.css'] 
+ })
 export class PlayVideoComponent implements OnInit {
 
     @Input() videos: Array<SaveVideoFile>;
     @Input() selectedVideo: SaveVideoFile;
-    
-    selectedPosition : number;
-    public videoUrl :string;
+    selectedPosition: number;
+    public videoUrl: string;
     private _elementRef: ElementRef;
     private videoJSplayer: any;
-    public likes : boolean;
-    public comments :boolean;
-    public isPlayButton :boolean;
-    public isSkipChecked :boolean;
-    public user:User=new User();
-    model :any = {};
-    public upperTextValue :string;
-    public lowerTextValue:string;
-    public isOverlay:boolean;
-    public videoOverlaySubmit:string;
-    public isPlay :boolean;
-    public email_id :string;
-    public firstName:string;
-    public lastName:string;
-    public overLayValue :boolean;
-    public isFistNameChecked :boolean;
-    
-    public videoStartTime :number;
-    public durationTime :number;
-    
+    public likes: boolean;
+    public comments: boolean;
+    public isPlayButton: boolean;
+    public isSkipChecked: boolean;
+    public user: User= new User();
+    model: any = {};
+    public upperTextValue: string;
+    public lowerTextValue: string;
+    public isOverlay: boolean;
+    public videoOverlaySubmit: string;
+    public isPlay: boolean;
+    public email_id: string;
+    public firstName: string;
+    public lastName: string;
+    public overLayValue: boolean;
+    public isFistNameChecked: boolean;
+    public videoStartTime: number;
+    public durationTime: number;
     public startOfthevideo:boolean  = true;  // need to remove and replace with this.saveVideoFile.startOfthevideo
     constructor(elementRef: ElementRef,private authenticationService: AuthenticationService, private videoFileService :VideoFileService,
             private userService :UserService) 
