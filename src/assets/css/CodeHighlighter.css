@@ -1,0 +1,139 @@
+/*
+ * CodeHighlighter - a JavaScript library to highlight Code as in Notepad++
+ * Copyright (C) 2015  Michael David Kuckuk
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: monospace;
+}
+/*############################################################
+ * General code
+ *############################################################*/
+.comment {
+	color: #008000;
+}
+.comment * {
+	color: inherit !important;
+	font-weight: inherit !important;
+}
+/*############################################################
+ * HTML code
+ *############################################################*/
+.htmlTag {
+	color: #0000FF;
+}
+.htmlAttr{
+	color: #FF0000;
+}
+.htmlValue {
+	color: #8000FF;
+	font-weight: bold;
+}
+/*############################################################
+ * CSS code
+ *############################################################*/
+.cssTag {
+	color: #0000FF;
+}
+.cssClass {
+	color: #FF0000;
+}
+.cssImportant {
+	color: #FF0000;
+	font-weight: bold;
+}
+.cssAttr {
+	color: #8080C0;
+	font-weight: bold;
+}
+.cssPseudoClass {
+	color: #FF8000;
+	font-weight: bold;
+}
+.cssId {
+	color: #0080FF;
+	font-weight: bold;
+}
+/*############################################################
+ * JavaScript code
+ *############################################################*/
+.jsInt {
+	color: #FF0000;
+}
+.jsKeyword {
+	color: #000080;
+	font-weight: bold;
+}
+.jsString {
+	color: inherit !important;
+}
+.jsString {
+	color: #808080 !important;
+	font-weight: normal !important;
+}
+.jsString * {
+	color: inherit !important;
+	font-weight: normal !important;
+}
+.jsRegex {
+	color: #8000FF;
+}
+
+#textarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    height: auto;
+    overflow: auto;
+    padding: 2px;
+    resize: both;
+    width: auto;
+}
+
+/*############################################################
+ * PHP code
+ *############################################################*/
+.phpStart, .phpEnd {
+	color: #FF0000;
+}
+.phpString {
+	color: #808080;
+}
+.phpString * {
+	color: inherit !important;
+	font-weight: normal !important;
+}
+.phpInt {
+	color: #FF8000;
+}
+.phpVar {
+	color: #000080;
+}
+.phpOperator {
+	color: #8000FF;
+	font-weight: bold;
+}
+
+span {
+  display: inline-block;
+}

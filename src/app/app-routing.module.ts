@@ -7,6 +7,9 @@ import {HomeComponent} from './core/home/home.component';
 import {VideosModule} from './videos/videos.module';
 import {ContactsModule} from './contacts/contacts.module';
 import {EmailTemplateModule} from './email-template/email-template.module'
+import {CampaignsModule} from './campaigns/campaigns.module';
+import {UpgradeModule} from './upgrade/upgrade.module';
+import {TeamModule} from './team/team.module';
 
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
@@ -22,6 +25,9 @@ export const routes: Routes = [
             { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule' },
             { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule' },
+            { path: 'campaigns' , loadChildren :'app/campaigns/campaigns.module#CampaignsModule'},
+            { path :'upgrade' ,loadChildren :'app/upgrade/upgrade.module#UpgradeModule'},
+            { path :'team' ,loadChildren :'app/team/team.module#TeamModule'},
         ]
     },
     { path: 'logout', component: LoginComponent },

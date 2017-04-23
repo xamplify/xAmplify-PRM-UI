@@ -12,7 +12,7 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 @Component({
     selector: 'app-upload-email-template',
     templateUrl: './upload-email-template.component.html',
-    styleUrls: ['./upload-email-template.component.css'],
+    styleUrls: ['./upload-email-template.component.css','../update-template/CodeHighlighter.css'],
     providers: [EmailTemplate]
 })
 export class UploadEmailTemplateComponent implements OnInit {

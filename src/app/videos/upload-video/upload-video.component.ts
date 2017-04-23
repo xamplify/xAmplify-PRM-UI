@@ -14,12 +14,12 @@ declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloa
   templateUrl: './upload-video.component.html',
   styleUrls :['./upload-video.component.css', '../../../assets/css/video-css/customLoaderCss.css',
               '../../../assets/css/video-css/videojs-record-custom.css',
-             '../../../assets/css/dropfiles.css']
+             '../../../assets/css/dropfiles.css','../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+             '../../../assets/global/plugins/dropzone/css/dropzone.css',
+             '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css'
+             ]
 
- //  '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css', 
- // '../../../assets/global/plugins/dropzone/css/dropzone.css'
- // '../../../assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css',
-   //         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css'
+//   '../../../assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css',
 })
 export class UploadVideoComponent implements OnInit {
 
