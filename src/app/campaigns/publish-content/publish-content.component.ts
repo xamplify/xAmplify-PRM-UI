@@ -4,7 +4,7 @@ import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@an
 import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
 
 import { VideoFileService} from '../../videos/services/video-file.service';
-import { ContactService } from '../../contacts/contact.service';
+import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';

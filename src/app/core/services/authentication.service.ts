@@ -18,8 +18,8 @@ constructor(private http: Http) {
     this.access_token = currentUser && currentUser.access_token;
     this.refresh_token = currentUser && currentUser.refresh_token;
     this.expires_in = currentUser && currentUser.expires_in;
-    this.REST_URL = "http://139.59.1.205:9090/xtremand-rest/";
-    //this.REST_URL = "https://127.0.0.1:8443/xtremand-rest/";
+   // this.REST_URL = "http://139.59.1.205:9090/xtremand-rest/";
+    this.REST_URL = "http://localhost:8080/xtremand-rest/";
 }
 
 getOptions() : RequestOptions{

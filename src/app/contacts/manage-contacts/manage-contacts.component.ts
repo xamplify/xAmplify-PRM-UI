@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService } from '../contact.service';
+import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
 import { ConfirmOptions, Position } from 'angular2-bootstrap-confirm';
@@ -116,23 +116,23 @@ constructor( private contactService: ContactService, private authenticationServi
 
 loadContactLists( pagination: Pagination ) {
     //this.currentContactType = "manage_contacts";
-    this.activeUsersCount = 0;
+   /* this.activeUsersCount = 0;
     this.inActiveUsersCount = 0;
-    this.invlidContactsCount = 0;
+    this.invlidContactsCount = 0;*/
     this.contactService.loadContactLists( pagination )
         .subscribe(
         (data:any) => {
             this.logger.info( data );
             this.contactLists = data.listOfUserLists;
             this.totalRecords = data.totalRecords;
-            this.allContacts = 0;
+            /*this.allContacts = 0;
             //this.invalidContacts = 0;
             this.unsubscribedContacts = 0;
             for ( let contactList of this.contactLists ) {
                 this.activeUsersCount += contactList.activeUsersCount;
                 this.inActiveUsersCount += contactList.inActiveUsersCount;
                 this.allContacts += contactList.noOfContacts;
-                this.invlidContactsCount += contactList.invlidContactsCount;
+                this.invlidContactsCount += contactList.invlidContactsCount;*/
                 //this.invalidContacts = this.invalidContacts + contactList.noInvalidContacts;
                 /*this.allContacts = this.allContacts + contactList.noOfContacts;
                 this.activeContacts = this.activeContacts + contactList.noActiveContacts;
@@ -140,7 +140,7 @@ loadContactLists( pagination: Pagination ) {
                 this.nonActiveContacts = this.nonActiveContacts + contactList.noNonActiveContacts;
                 this.unsubscribedContacts = this.unsubscribedContacts + contactList.noUnsubscribedContacts;*/
                 //same for others
-            }
+            //}
             pagination.totalRecords = this.totalRecords;
             pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
         },
@@ -432,8 +432,6 @@ backToManageContactPage() {
     this.invalidContactData = false;
     this.unsubscribedContactsData = false;
     this.nonActiveContactsData = false;
-    
-
 }
 
 
@@ -682,10 +680,34 @@ invalidContactsShowAlert( contactListId: number ) {
 }  
 
 
+/*contactsCount() {
+    this.contactService.loadContactsCount()
+        .subscribe(
+        data => {
+            this.activeUsersCount = data.activecontacts;
+            this.inActiveUsersCount= data.nonactiveUsers;
+            this.allContacts = data.allcontacts;
+            this.invlidContactsCount = data.invalidUsers;
+            this.unsubscribedContacts = data.unsubscribedUsers;
+            
+            this.logger.log(data);
+            this.logger.log(data[0].activecontacts);
+            this.logger.log(data[1].nonactiveUsers);
+            this.logger.log(this.allContacts);
+            this.logger.log(this.invlidContactsCount);
+            this.logger.log(this.unsubscribedContacts);
+        },
+        error => console.log( error ),
+        () => console.log( "LoadContactsCount Finished" )
+        );
+}
+*/
+
 ngOnInit() {
 
     // $( "#allContactdata" ).hide();
     this.loadContactLists( this.pagination );
+   // this.contactsCount();
     try {
         Metronic.init();
         Layout.init();

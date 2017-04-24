@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ContactService } from '../contact.service';
+import { ContactService } from '../services/contact.service';
 
 @Component({
   selector: 'myprofile-app',

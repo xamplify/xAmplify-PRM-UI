@@ -6,7 +6,7 @@ import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule} from '@angular/common';
 import { HttpModule } from '@angular/http';
 import {ShareButtonsModule} from "ng2-sharebuttons";
-import {ContactService } from './contacts/contact.service';
+import {ContactService } from './contacts/services/contact.service';
 
 import { ChartModule } from 'angular2-highcharts';
 

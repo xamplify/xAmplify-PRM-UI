@@ -1,5 +1,5 @@
 import { Component, OnInit ,ChangeDetectorRef } from '@angular/core';
-import { ContactService } from '../contact.service';
+import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';

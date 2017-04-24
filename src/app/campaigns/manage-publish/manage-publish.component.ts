@@ -3,7 +3,7 @@ import { ActivatedRoute,Router }   from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
 import { VideoFileService} from '../../videos/services/video-file.service';
-import { ContactService } from '../../contacts/contact.service';
+import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 
