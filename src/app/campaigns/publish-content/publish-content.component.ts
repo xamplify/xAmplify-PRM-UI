@@ -23,7 +23,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: an
 @Component({
   selector: 'app-publish-content',
   templateUrl: './publish-content.component.html',
-  styleUrls: ['./publish-content.component.css','../../../assets/css/video-css/ribbons.css','../../../assets/css/form.errors.css']
+  styleUrls: ['./publish-content.component.css','../../../assets/css/video-css/ribbons.css']
 })
 export class PublishContentComponent implements OnInit,OnDestroy {
 

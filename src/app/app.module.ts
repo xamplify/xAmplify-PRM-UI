@@ -31,6 +31,7 @@ import {UploadCloudvideoService} from './videos/services/upload-cloudvideo.servi
 import {ReferenceService} from './core/services/reference.service';
 import {PagerService} from './core/services/pager.service';
 import {EmailTemplateService } from './email-template/services/email-template.service';
+import {CampaignService } from './campaigns/services/campaign.service';
 
 @NgModule({
     declarations: [AppComponent,LoginComponent,SocialLoginComponent,SocialCallbackComponent],
@@ -38,7 +39,7 @@ import {EmailTemplateService } from './email-template/services/email-template.se
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
              ChartModule],
   providers: [UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
-               VideoFileService,UploadCloudvideoService,ContactService,EmailTemplateService],
+               VideoFileService,UploadCloudvideoService,ContactService,EmailTemplateService,CampaignService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

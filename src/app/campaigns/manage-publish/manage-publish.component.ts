@@ -17,7 +17,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: an
 @Component({
   selector: 'app-manage-publish',
   templateUrl: './manage-publish.component.html',
-  styleUrls: ['./manage-publish.component.css','../../../assets/css/form.errors.css']
+  styleUrls: ['./manage-publish.component.css']
 })
 export class ManagePublishComponent implements OnInit {
 
