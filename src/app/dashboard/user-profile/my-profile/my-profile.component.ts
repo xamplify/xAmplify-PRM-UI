@@ -18,8 +18,8 @@ declare var Demo : any;
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
-  styleUrls: ['../../../../assets/css/bootstrap-fileinput.css','../../../../assets/css/profile.css',
-              '../../../../assets/css/form.errors.css'],
+  styleUrls: ['../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css','../../../../assets/admin/pages/css/profile.css'
+              ],
   providers: [User]
 })
 export class MyProfileComponent implements OnInit {
