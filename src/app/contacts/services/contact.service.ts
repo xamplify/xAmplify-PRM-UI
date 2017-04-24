@@ -62,14 +62,14 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-  /*  
-    loadAllContacts(): Observable<ContactList[]> {
-        this.logger.info("Service class loadAllContact() completed");
-        return this._http.post( this.url + "contacts?contactType=all" + "&access_token=" + this.authenticationService.access_token,+"")
+    
+    loadContactsCount(){
+        this.logger.info("Service class loadContactCount() completed");
+        return this._http.get( this.url + "contacts_count?" + "access_token=" + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
-    */
+    
     loadActiveContacts(pagination:Pagination): Observable<ContactList[]> {
         this.logger.info("Service class loadActiveContact() completed");
         return this._http.post( this.url + "contacts?contactType=active" + "&access_token=" + this.authenticationService.access_token,pagination)

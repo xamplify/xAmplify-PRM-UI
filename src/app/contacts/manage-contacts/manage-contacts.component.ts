@@ -680,7 +680,7 @@ invalidContactsShowAlert( contactListId: number ) {
 }  
 
 
-/*contactsCount() {
+contactsCount() {
     this.contactService.loadContactsCount()
         .subscribe(
         data => {
@@ -689,25 +689,18 @@ invalidContactsShowAlert( contactListId: number ) {
             this.allContacts = data.allcontacts;
             this.invlidContactsCount = data.invalidUsers;
             this.unsubscribedContacts = data.unsubscribedUsers;
-            
-            this.logger.log(data);
-            this.logger.log(data[0].activecontacts);
-            this.logger.log(data[1].nonactiveUsers);
-            this.logger.log(this.allContacts);
-            this.logger.log(this.invlidContactsCount);
-            this.logger.log(this.unsubscribedContacts);
         },
         error => console.log( error ),
         () => console.log( "LoadContactsCount Finished" )
         );
 }
-*/
+
 
 ngOnInit() {
 
     // $( "#allContactdata" ).hide();
     this.loadContactLists( this.pagination );
-   // this.contactsCount();
+    this.contactsCount();
     try {
         Metronic.init();
         Layout.init();
