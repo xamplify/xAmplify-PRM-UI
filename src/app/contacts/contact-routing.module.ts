@@ -2,8 +2,8 @@ import { NgModule }            from '@angular/core';
 import { RouterModule ,Routes}   from '@angular/router';
 
 import {AddContactsComponent} from './add-contacts/add-contacts.component';
-import {GoogleContactsCallbackComponent } from './add-contacts/google-contacts-callback.component';
-import {SalesforceContactsCallbackComponent } from './add-contacts/salesforce-contacts-callback.component';
+import { GoogleCallBackComponent } from './google-call-back/google-call-back.component';
+import { SalesforceCallBackComponent } from './salesforce-call-back/salesforce-call-back.component';
 
 import {EditContactsComponent} from './edit-contacts/edit-contacts.component';
 import {ManageContactsComponent} from  './manage-contacts/manage-contacts.component';
@@ -18,8 +18,8 @@ const routes: Routes =  [
                           //{ path: 'manageContacts/table_advance', component: TableAdvanceComponent },
                           //{ path: 'manageContacts/views_report', component: viewsReportComponent },
                          // { path: 'manageContacts/all_contacts/views_report', component: viewsReportComponent },
-                          { path: 'google-callback', component: GoogleContactsCallbackComponent },
-                          { path: 'salesforce-callback', component: SalesforceContactsCallbackComponent }
+                          { path: 'google-callback', component: GoogleCallBackComponent },
+                          { path: 'salesforce-callback', component: SalesforceCallBackComponent }
                            ];
 
 

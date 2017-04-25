@@ -401,6 +401,7 @@ editContactList( contactSelectedListId: number ) {
             this.allContacts = this.users.length;
             this.activeUsersCount = 0;
             this.inActiveUsersCount = this.users.length;
+            this.invlidContactsCount = this.users.length;
             var self = this;
             this.users.forEach( user => {
                 // if(user.status == 'Approved'){
