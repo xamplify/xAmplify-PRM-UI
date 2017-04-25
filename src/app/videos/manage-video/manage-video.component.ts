@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input,AfterViewInit} from '@angular/core';
 
 import {SaveVideoFile} from '.././models/save-video-file';
 import {Category} from '.././models/Category';
@@ -17,9 +17,9 @@ declare var swal , Metronic, Layout , Demo,require : any;
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
   styleUrls: ['./manage-video.component.css'],
-  providers: [ Pagination ]
+  providers: [ Pagination]
   })
-export class ManageVideoComponent implements OnInit , OnDestroy {
+export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
 
     title = 'Videos';
     manageVideos = true;
@@ -111,9 +111,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.showUpdatevalue = false;
             }
           this.loadVideos(this.pagination);
-            Metronic.init();
-            Layout.init();
-            Demo.init();
+           // Metronic.init();
+           // Layout.init();
+           // Demo.init();
             console.log('manage videos js completed');
         }
         catch(err) {
@@ -121,12 +121,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         }
     }
       loadVideos(pagination: Pagination) {
-        swal( { title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false,
-        imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+     //   this._swal2({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
         try {
         this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-                swal.close();
+             //  this._swal2.close();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
@@ -267,14 +266,14 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             console.log( 'MangeVideoComponent deleteVideoFile success : ' + data );
            //  this.pagedItems.splice(position, 1);
             this.videos.splice(position, 1);
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+          //  swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
         error => console.error( error ),
         () => console.log( 'deleted completed' )
         );
     }
 
-    deleteAlert(alias: string, position: number) {
+  /*  deleteAlert(alias: string, position: number) {
         console.log('videoId in sweetAlert()');
         const self = this;
         swal({
@@ -290,7 +289,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             console.log('ManageVidoes showAlert then()' + myData);
             self.deleteVideoFile(alias, position);
         });
-    }
+    } */
 
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
@@ -332,5 +331,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
          this.videoFileService.actionValue = '';
          this.isvideoThere = false;
     }
+      ngAfterViewInit(){
+    	  
+    	
+      }
 
 }

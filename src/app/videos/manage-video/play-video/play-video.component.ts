@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, ElementRef, OnInit, OnDestroy, Input,AfterViewInit } from '@angular/core';
 import {SaveVideoFile} from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import {UserService} from '../../../core/services/user.service';
@@ -13,7 +13,7 @@ declare var Metronic, Layout, Demo, $, videojs: any;
    '../../../../assets/css/video-css/videojs-overlay.css',  '../../../../assets/css/about-us.css',
     '../../../../assets/css/todo.css'] 
  })
-export class PlayVideoComponent implements OnInit {
+export class PlayVideoComponent implements OnInit,AfterViewInit  {
 
     @Input() videos: Array<SaveVideoFile>;
     @Input() selectedVideo: SaveVideoFile;
@@ -100,55 +100,65 @@ export class PlayVideoComponent implements OnInit {
          else {this.isOverlay = true;}
     } 
     
-    ngOnInit() {
-        
-        this.likes  = this.selectedVideo.allowLikes;
-        this.comments = this.selectedVideo.allowComments;
-        
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
-        this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
-        console.log('Init - Component initialized')
-      
-        this.isPlayButton = true;  // need to the value from server
-        this.isSkipChecked = true; // need to the value from server
+    trimCurrentTime(currentTime){
+        return Math.round(currentTime * 100) / 100;
+    }
+    
+    ngOnInit(){
+    	 this.likes  = this.selectedVideo.allowLikes;
+         this.comments = this.selectedVideo.allowComments;
          
-        this.lowerTextValue = "thanks you";   // need to the value from server
-        this.upperTextValue = "welcome to xtremand videos";   // need to the value from server 
+         this.videoUrl = this.selectedVideo.videoPath;
+         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
+         this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
+         console.log('Init - Component initialized')
+       
+         this.isPlayButton = true;  // need to the value from server
+         this.isSkipChecked = true; // need to the value from server
+          
+         this.lowerTextValue = "thanks you";   // need to the value from server
+         this.upperTextValue = "welcome to xtremand videos";   // need to the value from server 
+         
+         this.isFistNameChecked  = true // need to the value from server 
+         
+         this.model.email_id = this.userService.loggedInUserData.emailId;
+         this.firstName = this.userService.loggedInUserData.firstName;
+         this.lastName = this.userService.loggedInUserData.lastName;
+         
+         if(this.validateEmail(this.model.email_id))
+             this.isOverlay = false;
+         else this.isOverlay= true;
+         
+         
+         if(this.startOfthevideo == true){    // need to the value from server
+             this.videoOverlaySubmit = 'PLAY';
+             this.isPlay = true;
+             this.overLayValue = true;
+             localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
+          }
+         else {
+              this.isPlay = false;
+              this.overLayValue = false;
+              this.videoOverlaySubmit = 'SUBMIT';
+              localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
+         } 
+         
+         console.log(this.videos);
+         console.log(this.selectedVideo);
+       //  Metronic.init();
+       //  Layout.init();
+       //  Demo.init();
+    }
+    
+    ngAfterViewInit() {
         
-        this.isFistNameChecked  = true // need to the value from server 
-        
-        this.model.email_id = this.userService.loggedInUserData.emailId;
-        this.firstName = this.userService.loggedInUserData.firstName;
-        this.lastName = this.userService.loggedInUserData.lastName;
-        
-        if(this.validateEmail(this.model.email_id))
-            this.isOverlay = false;
-        else this.isOverlay= true;
-        
-        
-        if(this.startOfthevideo == true){    // need to the value from server
-            this.videoOverlaySubmit = 'PLAY';
-            this.isPlay = true;
-            this.overLayValue = true;
-            localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
-         }
-        else {
-             this.isPlay = false;
-             this.overLayValue = false;
-             this.videoOverlaySubmit = 'SUBMIT';
-             localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
-        } 
-        
-        console.log(this.videos);
-        console.log(this.selectedVideo);
-        Metronic.init();
-        Layout.init();
-        Demo.init();
+       
 
         this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
             // This is functionally the same as the previous example.
                // this.play();
+        	
+        
             let player = this;
             var isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
             console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
@@ -173,6 +183,28 @@ export class PlayVideoComponent implements OnInit {
                 }
             });
 
+            this.on('seeking', function(){
+               
+            	
+            	//Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
+            });
+
+            this.on('timeupdate', function(){
+              //var  startDuration = player.trimCurrentTime(player.currentTime());
+            	var  startDuration = player.currentTime();
+              console.log(startDuration);
+            });
+            
+            this.on('play', function () {
+                console.log('play:'+player.duration());
+                // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
+                
+            });
+            this.on('pause', function () {
+                console.log("video paused at "+player.currentTime());
+               // Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
+            });
+            
            this.on('ended', function() {
                 if(isValid==false){
                $('#example_video_11').append(
@@ -196,9 +228,11 @@ export class PlayVideoComponent implements OnInit {
                     $('#overlay-modal').hide();
                     //player.play();
                 }
-               }); 
-               
-             this.hotkeys({
+               });
+           this.on('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            this.hotkeys({
                  volumeStep: 0.1,
                  seekStep: 5,
                  enableMute: true,
@@ -268,6 +302,8 @@ export class PlayVideoComponent implements OnInit {
                 }
              });
         });
+        
+        
     }
 
     ngOnDestroy() {

@@ -11,6 +11,7 @@ import {CampaignsModule} from './campaigns/campaigns.module';
 import {UpgradeModule} from './upgrade/upgrade.module';
 import {TeamModule} from './team/team.module';
 
+import {ShareVideoComponent} from './videos/share-video/share-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 
@@ -32,7 +33,8 @@ export const routes: Routes = [
     },
     { path: 'logout', component: LoginComponent },
     {path: ':social/login', component:SocialLoginComponent},
-    {path: ':social/callback', component:SocialCallbackComponent}
+    {path: ':social/callback', component:SocialCallbackComponent},
+    {path: 'embed-video/:id',component:ShareVideoComponent}
 
 ];
 

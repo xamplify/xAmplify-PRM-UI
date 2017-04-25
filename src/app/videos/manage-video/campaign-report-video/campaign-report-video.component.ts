@@ -29,6 +29,9 @@ export class CampaignReportVideoComponent implements OnInit {
 	            this.videoJSplayer = videojs(document.getElementById('example_video_12'), {}, function() {
 	            // This is functionally the same as the previous example.
 	            this.play();
+							 this.on('contextmenu', function(e) {
+                e.preventDefault();
+            });
 	            this.hotkeys({
 	                volumeStep: 0.1,
 	                seekStep: 5,
@@ -111,9 +114,9 @@ export class CampaignReportVideoComponent implements OnInit {
 	                 }
 	             });
 	           });
-	               Metronic.init(); 
-	               Layout.init(); 
-	               Demo.init(); 
+	              // Metronic.init(); 
+	              // Layout.init(); 
+	              // Demo.init(); 
 	               QuickSidebar.init(); 
 	               Index.init();   
 	               Index.initDashboardDaterange();

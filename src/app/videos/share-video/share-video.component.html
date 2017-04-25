@@ -1,3 +1,13 @@
-<p>
-  share-video works!
-</p>
+<div class="portlet light">
+	<div class="portlet-body">   	
+		<video id="example_video_11" class="video-js vjs-default-skin"
+				  controls  width="542" height="310" poster=""
+				  data-setup='{"example_option":true }'  [src]=videoUrl >
+				  <source [src]=videoUrl type="video/mp4" />
+	   </video>
+   </div>
+  <!--  <div class="addthis_sharing_toolbox"></div> -->
+        	<share-button [button]='twitterButtons'  [url]="checkUrl" ></share-button> 
+		    <share-button [button]='googleButtons'  [url]= "checkUrl" ></share-button> 
+		    <share-button [button]='facebookButtons'  [url]="checkUrl"></share-button> 
+</div>

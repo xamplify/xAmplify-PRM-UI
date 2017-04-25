@@ -21,6 +21,7 @@ import { Logger } from "angular2-logger/core";
 import { LoginComponent } from './login/login.component';
 import {SocialLoginComponent} from './social/common/social-login/social-login.component';
 import {SocialCallbackComponent} from './social/common/social-callback/social-callback.component';
+import {ShareVideoComponent} from './videos/share-video/share-video.component';
 
 import {TwitterService} from './social/services/twitter.service';
 import {FacebookService} from './social/services/facebook.service';
@@ -33,11 +34,13 @@ import {PagerService} from './core/services/pager.service';
 import {EmailTemplateService } from './email-template/services/email-template.service';
 import {CampaignService } from './campaigns/services/campaign.service';
 
+import { MetaModule } from '@nglibs/meta';
+
 @NgModule({
-    declarations: [AppComponent,LoginComponent,SocialLoginComponent,SocialCallbackComponent],
+  declarations: [AppComponent,LoginComponent,SocialLoginComponent,SocialCallbackComponent,ShareVideoComponent],
   imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule, 
              CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-             ChartModule],
+             ChartModule,MetaModule.forRoot()],
   providers: [UserService,PagerService,ReferenceService, SocialService, TwitterService, FacebookService, Logger,
                VideoFileService,UploadCloudvideoService,ContactService,EmailTemplateService,CampaignService],
   bootstrap: [AppComponent]

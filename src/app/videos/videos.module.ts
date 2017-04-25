@@ -10,12 +10,12 @@ import { UserVideoComponent } from './user-video/user-video.component';
 import { EditVideoComponent } from './manage-video/edit-video/edit-video.component';
 import { PlayVideoComponent } from './manage-video/play-video/play-video.component';
 import { CampaignReportVideoComponent } from './manage-video/campaign-report-video/campaign-report-video.component';
-import { ShareVideoComponent } from './share-video/share-video.component';
+//import { ShareVideoComponent } from './share-video/share-video.component';
 
 
 @NgModule({
   imports: [SharedModule,VideosRoutingModule ],
   declarations: [ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
-                 EditVideoComponent, PlayVideoComponent, CampaignReportVideoComponent, ShareVideoComponent]
+                 EditVideoComponent, PlayVideoComponent, CampaignReportVideoComponent]
 })
 export class VideosModule { }
