@@ -23,6 +23,7 @@ import { MetaService } from '@nglibs/meta';
   styleUrls: ['../../../assets/css/video-css/video-js.custom.css']
 })
 export class ShareVideoComponent implements OnInit {
+
 videoFile: SaveVideoFile;
 saveVideoFile: SaveVideoFile;
 private videoJSplayer: any;
