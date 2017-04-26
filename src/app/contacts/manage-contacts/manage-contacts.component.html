@@ -36,6 +36,7 @@
 	</div>
 	<!-- END PAGE HEADER-->
 	<!-- BEGIN PAGE CONTENT-->
+	<div *ngIf="showAll">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
@@ -136,11 +137,8 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- 	 <button (click)="showAlert()">Show alert</button>
- -->
 	</div>
-	<div class="row mix-grid" style="margin-top: 10px" *ngIf="showAll">
+	<div class="row mix-grid" style="margin-top: 10px">
 		<div *ngFor="let contactList of pagination.pagedItems">
 			<div class="col-md-3 col-sm-4 mix category_1 mix_all"
 				style="display: block; opacity: 1;"
@@ -259,6 +257,7 @@
 			</div>
 		</div>
 	</div>
+	</div>
 	<div id="pagination">
 	<!--pager here  -->
                                           <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
@@ -321,19 +320,19 @@
 							<i class="fa fa-angle-right"></i>
 						</li>
 						<li *ngIf="allContactData==true">
-							<a>All Contacts</a>
+							All Contacts
 						</li>
 						<li *ngIf="activeContactsData==true">
-							<a>Active Contacts</a>
+							Active Contacts
 						</li>
 						<li *ngIf="invalidContactData==true">
-							<a>Invalid Contacts</a>
+							Invalid Contacts
 						</li>
 						<li *ngIf="unsubscribedContactsData==true">
-							<a>Unsubscribed Contacts</a>
+							Unsubscribed Contacts
 						</li>
 						<li *ngIf="nonActiveContactsData==true">
-							<a>Non Active Contacts</a>
+							Non Active Contacts
 						</li>
 						
 					</ul>
@@ -445,14 +444,14 @@
 												<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i>
 												</button>
 												<ul class="dropdown-menu pull-right">
-													<li *ngIf="invalidContactData==true"><a id="delete_button" (click)="invalidContactsShowAlert()"> Delete
+													<li *ngIf="invalidContactData==true"><a id="delete_button" (click)="removeContactListUsers()"> Delete
 													</a></li>
 													<li>
 														<a href="javascript:;">
 														Print </a>
 													</li>
 													<li>
-														<a href="javascript:;">
+														<a (click)="convert()">
 														Save as PDF </a>
 													</li>
 													<li>
@@ -495,8 +494,13 @@
 								</thead>
 								<tbody>
 								<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
-									<th *ngIf="allContactData==true||invalidContactData==true"><input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
+									<th *ngIf="allContactData==true">
+									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									 id="row_{{allcontacts.id}}" value="{{allcontacts.emailId}},{{allcontacts.firstName}},{{allcontacts.lastName}}" [(ngModel)]="allcontacts.isChecked">
+									 </th>
+									 <th *ngIf="invalidContactData==true">
+									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
+									 id="row_{{allcontacts.id}}" value="{{allcontacts.id}},{{allcontacts.emailId}},{{allcontacts.firstName}},{{allcontacts.lastName}},{{allcontacts.userListIds}}" [(ngModel)]="allcontacts.isChecked">
 									 </th>
 									<td>
 										 {{allcontacts.userName}}

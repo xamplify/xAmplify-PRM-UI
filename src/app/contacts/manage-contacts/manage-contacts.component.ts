@@ -20,6 +20,7 @@ declare var Metronic : any;
 declare var Layout : any;
 declare var Demo : any;
 declare var Portfolio : any;
+declare let jsPDF;
 
 
 @Component({
@@ -629,14 +630,17 @@ saveSelectedUsers() {
     }
 }
 
-removeContactListUsers( contactListId: number ) {
+removeContactListUsers() {
     var removeUserIds = new Array();
     $( 'input[name="selectedUserIds"]:checked' ).each( function() {
         var id = $( this ).val();
         removeUserIds.push( id );
     });
     this.logger.info( removeUserIds );
-    this.contactService.removeContactList( contactListId, removeUserIds )
+    this.logger.info( removeUserIds);
+    
+    
+    this.contactService.removeInvalidContactListUsers(removeUserIds )
         .subscribe(
         data => {
             data = data;
@@ -653,7 +657,7 @@ removeContactListUsers( contactListId: number ) {
         )
 }
 
-invalidContactsShowAlert( contactListId: number ) {
+invalidContactsShowAlert() {
 
     var removeUserIds = new Array();
     $( 'input[name="selectedUserIds"]:checked' ).each( function() {
@@ -662,7 +666,7 @@ invalidContactsShowAlert( contactListId: number ) {
     });
     this.logger.info( "userIdForChecked" + removeUserIds );
     if ( removeUserIds.length != 0 ) {
-        this.logger.info( "contactListId in sweetAlert() " + contactListId );
+        this.logger.info( "contactListId in sweetAlert() ");
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -675,7 +679,7 @@ invalidContactsShowAlert( contactListId: number ) {
 
         }).then( function( myData: any ) {
             console.log( "ManageContacts showAlert then()" + myData );
-            self.removeContactListUsers( contactListId );
+            self.removeContactListUsers();
         })
     }
 }  
@@ -696,6 +700,26 @@ contactsCount() {
         );
 }
 
+convert(){
+    var item = {
+      "Email" : "naresh@gmail.com",
+      "FirstName" : "Naresh",
+      "Lastname" : "Kotha"
+    };
+    var doc = new jsPDF();
+    var col = ["Email", "FirstName","LastName"];
+    var rows = [];
+
+    for(var key in item){
+        var temp = [key, item[key]];
+        rows.push(temp);
+    }
+
+    doc.autoTable(col, rows);
+
+    doc.save('Contacts.pdf');
+  }
+
 
 ngOnInit() {
 
@@ -703,10 +727,10 @@ ngOnInit() {
     this.loadContactLists( this.pagination );
     this.contactsCount();
     try {
-        Metronic.init();
-        Layout.init();
-        Demo.init();
-        Portfolio.init();
+        //Metronic.init();
+       // Layout.init();
+        //Demo.init();
+        //Portfolio.init();
     }
     catch ( error ) {
         this.logger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );

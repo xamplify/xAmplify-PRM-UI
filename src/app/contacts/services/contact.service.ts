@@ -146,6 +146,13 @@ export class ContactService {
             .map((response: any) => response.json());
     }
     
+    removeInvalidContactListUsers(removeUserIds:Array<number>): Observable<Object> {
+        this.logger.info(removeUserIds);
+        var newUrl = this.url + "removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        return this._http.post(newUrl, removeUserIds)
+            .map((response: any) => response.json());
+    }
+    
     downloadContactList(contactListId: number): Observable<Response> {
         this.logger.info(contactListId);
         return this._http.get(this.url + "userlist/" + contactListId + "/download?access_token=" + this.authenticationService.access_token)

@@ -1,4 +1,105 @@
 <!-- BEGIN PAGE CONTENT-->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tabbable tabbable-custom tabbable-noborder">
+
+				<div class="tab-content">
+					<div class="tab-pane active">
+						<!-- BEGIN FILTER -->
+
+						<div class="page-bar">
+							<ul class="page-breadcrumb">
+								<li><i style="font-size: 16px;">List of Contacts</i></li>
+
+							</ul>
+							<div class="page-toolbar">
+								<div class="btn-group pull-right">
+									<div class="inputs" align="right"
+										style="display: inline; float: right">
+										<div class="portlet-input input-inline input-small">
+											<div class="input-icon right">
+												<i class="icon-magnifier"></i> <input type="text"
+													class="form-control input-circle" placeholder="search...">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END DASHBOARD STATS -->
+						<div class="clearfix"></div>
+
+						<div class="row">
+							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+								<a class="dashboard-stat dashboard-stat-light blue-soft"
+									(click)="allContactsDataShowing()">
+									<div class="visual">
+										<i class="fa fa-users"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{allContacts}}</div>
+										<div class="desc">All Contacts</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<a class="dashboard-stat dashboard-stat-light red-soft"
+									(click)="activeContactsDataShowing()">
+									<div class="visual">
+										<i class="fa fa-eye"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{activeUsersCount}}</div>
+										<div class="desc">Active Contacts</div>
+									</div>
+								</a>
+							</div>
+
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<a class="dashboard-stat dashboard-stat-light yellow-gold"
+									(click)="invalidContactsDataShowing()">
+									<div class="visual">
+										<i class="fa fa-user-times"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{invlidContactsCount}}</div>
+										<div class="desc">Invalid Contacts</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<a class="dashboard-stat dashboard-stat-light green-soft"
+									(click)="unSubscribedContactsDataShowing()">
+									<div class="visual">
+										<i class="fa fa-times"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{unsubscribedContacts}}</div>
+										<div class="desc">Unsubscribed Contacts</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+								<a class="dashboard-stat dashboard-stat-light blue-sharp"
+									(click)="nonActiveContactsDataShowing()">
+									<div class="visual">
+										<i class="fa fa-eye-slash"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{inActiveUsersCount}}</div>
+										<div class="desc">Non-Active Contacts</div>
+									</div>
+								</a>
+							</div>
+						</div>
+						<!-- END DASHBOARD STATS -->
+						<div class="clearfix"></div>
+					</div>
+					<!-- END FILTER -->
+				</div>
+			</div>
+		</div>
+	</div>
 <div class="row">
 	<div class="col-md-12">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->

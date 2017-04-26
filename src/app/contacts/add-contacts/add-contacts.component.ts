@@ -249,7 +249,6 @@ export class AddContactsComponent implements OnInit {
                 this.logger.info( user );
                 this.clipboardUsers.push( user );
                 self.contacts.push( user );
-                $( "#file_preview" ).show();
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 $( "#file_preview" ).show();
             }
@@ -1166,9 +1165,9 @@ salesforceContactImage(){
         this.zohoContactsValue = true;
         this.salesforceContactsValue = true;
         try {
-            Metronic.init(); 
-            Layout.init(); 
-            Demo.init(); 
+            //Metronic.init(); 
+            //Layout.init(); 
+            //Demo.init(); 
             $( "#uploadContactsMessage" ).hide();
             $( "#sample_editable_1" ).hide();
             $( "#file_preview" ).hide();

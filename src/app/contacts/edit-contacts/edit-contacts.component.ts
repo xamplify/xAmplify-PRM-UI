@@ -46,6 +46,11 @@ export class EditContactsComponent implements OnInit {
     public uploader: FileUploader;
     public clickBoard: boolean = false;
     public users: Array<User>;
+    activeUsersCount : number;
+    inActiveUsersCount: number;
+    allContacts : number;
+    invlidContactsCount : number;
+    unsubscribedContacts : number;
 
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
@@ -381,8 +386,23 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
+    contactsCount() {
+        this.contactService.loadContactsCount()
+            .subscribe(
+            data => {
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount= data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
+            },
+            error => console.log( error ),
+            () => console.log( "LoadEditContactsCount Finished" )
+            );
+    }
 
     ngOnInit() {
+        this.contactsCount();
         let self = this;
 
         this.uploader = new FileUploader( {
