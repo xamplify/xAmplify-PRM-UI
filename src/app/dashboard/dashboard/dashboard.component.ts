@@ -61,57 +61,39 @@ export class DashboardComponent implements OnInit {
     }
 
     viewsSparklineData() {
-        this._dashboardService.getSparklineData()
-            .subscribe(
-            data => {
-                $("#sparkline_bar").sparkline(data['sparklineBar'], {
-                    type: 'bar',
-                    width: '100',
-                    barWidth: 5,
-                    height: '55',
-                    barColor: '#35aa47',
-                    negBarColor: '#e02222'
-                });
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );
+        var myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
+        $("#sparkline_bar").sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
     }
 
     minutesSparklineData() {
-        this._dashboardService.getSparklineData()
-            .subscribe(
-            data => {
-                $("#sparkline_bar2").sparkline(data['sparklineBar2'], {
-                    type: 'bar',
-                    width: '100',
-                    barWidth: 5,
-                    height: '55',
-                    barColor: '#ffb848',
-                    negBarColor: '#e02222'
-                });
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );
+        var myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
+        $("#sparkline_bar2").sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
     }
 
-
-
     averageSparklineData() {
-        this._dashboardService.getSparklineData()
-            .subscribe(
-            data => {
-                $("#sparkline_line").sparkline(data['sparklineLine'], {
-                    type: 'line',
-                    width: '100',
-                    height: '55',
-                    lineColor: '#ffb848'
-                });
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );
+        var myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
+        $("#sparkline_line").sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
     }
 
     googleplusSparklineData() {
@@ -259,7 +241,7 @@ export class DashboardComponent implements OnInit {
             this.linkdinSparklineData();
 
 
-            this.showGaugeMeter();
+            //this.showGaugeMeter();
             
             this.getTotalCountOfTFFF();
             this.getGenderDemographics();

@@ -22,7 +22,7 @@
 				<!-- /.modal -->
 				
 				<!-- BEGIN DASHBOARD STATS -->
-				<div class="row" *ngIf="dashboardStates">
+				<div class="row">
 					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['./views_report']">
 						<div class="visual">
@@ -30,7 +30,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-							{{dashboardStates.totalViews}}
+							100
 							</div>
 							<div class="desc">
 								 Total Views
@@ -45,7 +45,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-									{{dashboardStates.uploadedVideos}}
+									100
 							</div>
 							<div class="desc">
 								 Uploaded Videos
@@ -61,7 +61,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								{{dashboardStates.totalContacts}}
+								100
 							</div>
 							<div class="desc">
 								 Total Contacts
@@ -76,7 +76,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								{{dashboardStates.followers}}
+								100
 							</div>
 							<div class="desc">
 								 Followers
@@ -91,7 +91,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 {{dashboardStates.leads}}
+								 100
 							</div>
 							<div class="desc">
 								 Leads
@@ -106,7 +106,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								{{dashboardStates.shared}}
+								100
 							</div>
 							<div class="desc">
 								 Shared
@@ -525,25 +525,28 @@
 							</div>
 							<div class="portlet-body">
 								<div class="row">
-										<div class="col-md-4">
-											 <div class="GaugeMeter" id="opened"  data-append="%" data-size="120" data-theme="LightGreen-DarkGreen" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="5" data-label="Opened" data-style="Arch" data-label_color="#444">
-											 </div>
-										  
-										</div>
+								<div class="col-md-4">
+									<div class="details">
+										<div class="number">100</div>
+										<div class="desc">opened</div>
+									</div>
+								</div>
+								<div class="margin-bottom-10 visible-sm">
+									</div>
+									<div class="col-md-4">
+									<div class="details">
+										<div class="number">100</div>
+										<div class="desc">Clicked</div>
+									</div>
+								</div>
 									<div class="margin-bottom-10 visible-sm">
 									</div>
 									<div class="col-md-4">
-											 <div class="GaugeMeter" id="clicked" data-append="%" data-size="120" data-theme="LightGold-DarkGold" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="5" data-label="Clicked" data-style="Arch" data-label_color="#444">
-											 </div>
-										  
+									<div class="details">
+										<div class="number">100</div>
+										<div class="desc">Watched</div>
 									</div>
-									<div class="margin-bottom-10 visible-sm">
-									</div>
-									<div class="col-md-4">
-											 <div class="GaugeMeter" id="watched"  data-append="%" data-size="120" data-theme="DarkBlue-LightBlue" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="5" data-label="Watched" data-style="Arch" data-label_color="#444">
-											 </div>
-										  
-									</div>
+								</div>
 								</div>
 							</div>
 						</div>
