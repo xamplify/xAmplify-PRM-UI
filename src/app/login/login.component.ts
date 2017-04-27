@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit {
             this.validateForgotPasswordForm();
         }
         catch ( error ) {
-            alert( error );
+            console.log( error );
         }
     }
 
