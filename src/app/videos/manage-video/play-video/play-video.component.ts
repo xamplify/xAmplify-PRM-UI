@@ -154,7 +154,7 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
         
        
 
-        this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
+        this.videoJSplayer = window["videojs"](document.getElementById('example_video_11'), {}, function() {
             // This is functionally the same as the previous example.
                // this.play();
         	
@@ -191,8 +191,8 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
 
             this.on('timeupdate', function(){
               //var  startDuration = player.trimCurrentTime(player.currentTime());
-            	var  startDuration = player.currentTime();
-              console.log(startDuration);
+            	//var  startDuration = player.currentTime();
+                 console.log(this.currentTime());
             });
             
             this.on('play', function () {
@@ -206,7 +206,9 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
             });
             
            this.on('ended', function() {
-                if(isValid==false){
+        	   var whereYouAt = player.currentTime();
+        	   console.log(whereYouAt);
+        	   if(isValid==false){
                $('#example_video_11').append(
                      $('#overlay-modal').show()
                      );
