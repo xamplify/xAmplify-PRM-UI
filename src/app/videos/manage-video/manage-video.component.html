@@ -49,14 +49,14 @@
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row" *ngIf="manageVideos">
 				   <div *ngIf="showMessage" class="col-md-6"
-						class="col-md-9 alert alert-success alert-dismissable">
+						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <strong>{{showVideoName}} title video Saved Successfully!</strong> 
+					   <strong>{{showVideoName}} video Saved Successfully!</strong> 
 			      </div>
-			    <div *ngIf="showUpdatevalue" class="col-md-6"
-						class="col-md-9 alert alert-success alert-dismissable">
+			    <div *ngIf="showUpdatevalue" class="col-md-6 "
+						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>{{showVideoName}} title video file Updated Successfully!</strong>
+						<strong>{{showVideoName}} video file Updated Successfully!</strong>
 			    </div>
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">

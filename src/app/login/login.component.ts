@@ -171,10 +171,15 @@ export class LoginComponent implements OnInit {
             error => {
                 if ( error == "USERNAME IS ALREADY EXISTING" ) {
                     this.formErrors['userName'] = error;
+                    swal.close();
                 } else if ( error == "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
+                	
                     this.formErrors['emailId'] = 'Email Id already exists';
+                    swal.close();
                 }
-                swal.close();
+                else{
+                	  swal( "Please Contact Admin", "", "error" );
+                }
             },
             () => console.log( "Done" )
             );

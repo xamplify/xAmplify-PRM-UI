@@ -66,7 +66,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
    public videoSort: any = this.sortVideos[0];
    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
     private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private _logger: Logger, private pagination: Pagination) {
+        private pagerService: PagerService, private logger: Logger, private pagination: Pagination) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -89,7 +89,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     }
     ngOnInit() {
         console.log('MangeVideosComponent ngOnInit()');
-        this._logger.log('This is a priority level 5 log message...');
+        this.logger.log('This is a priority level 5 log message...');
         try {
            if (this.videoFileService.actionValue === 'Save') {
                 console.log('MangeVideosComponent : ngonit ');
@@ -121,9 +121,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         }
     }
       loadVideos(pagination: Pagination) {
-        swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
-        try {
-        this.videoFileService.loadVideoFiles(pagination)
+      
+      try {
+    	  if(this.videoFileService.actionValue === undefined){
+              swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+    	  }
+    	  
+    	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
             swal.close();
                 this.videos = result.listOfMobinars;

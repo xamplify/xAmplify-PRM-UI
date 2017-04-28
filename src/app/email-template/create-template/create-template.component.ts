@@ -5,6 +5,7 @@ import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
+import { Logger } from 'angular2-logger/core';
 
 declare var BeePlugin,swal,Promise:any;
 
@@ -16,7 +17,9 @@ declare var BeePlugin,swal,Promise:any;
 })
 export class CreateTemplateComponent implements OnInit {
 	constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
-	private emailTemplate:EmailTemplate,private router:Router) {
+	private emailTemplate:EmailTemplate,private router:Router, private logger :Logger) {
+		
+		this.logger.log(emailTemplateService.emailTemplate);
 	    var names:any = [];
 	    emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id) .subscribe(
 	            (data:any) => {
