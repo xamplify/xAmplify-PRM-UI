@@ -430,7 +430,7 @@ export class UploadVideoComponent implements OnInit {
         this.isFileDrop = true;
         this.isChecked = true;
         this.fileDropDisabled();
-      //  this.onApiLoad();    // google drive code 
+        this.onApiLoad();    // google drive code 
            $(".box").attr("style", "cursor:not-allowed; opacity:0.3");
            $(".dropBox").attr("style", "cursor:not-allowed; opacity:0.3");
            $(".camera").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -486,7 +486,7 @@ export class UploadVideoComponent implements OnInit {
        } //close if condition
     }
         dropbox(files:any){
-          swal({ title: 'retriving video from dropbox...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+          swal({ title: 'Retriving video from dropbox...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
           console.log("files "+files);
            this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
            .subscribe((result: any) => {
@@ -515,7 +515,7 @@ export class UploadVideoComponent implements OnInit {
             let self = this;
             boxSelect.success(function(files:any) {
              if (self.isVideo(files[0].name)) {
-                 swal({ title: 'retriving video from box...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                 swal({ title: 'Retriving video from box...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
                  console.log(files);
                     self.cloudUploadService.downloadFromBox(files[0].url, files[0].name)
                     .subscribe((result: any) => {
@@ -536,7 +536,7 @@ export class UploadVideoComponent implements OnInit {
         };
       
      /* google drive retreive videos */   
-     /*   onApiLoad() {
+      onApiLoad() {
          if(this.processing != true){  //for not clicking again on the google drive
          let self = this;
             //gapi.load('auth', {'callback': self.onAuthApiLoad});
@@ -546,7 +546,7 @@ export class UploadVideoComponent implements OnInit {
      }
         onAuthApiLoad() {
            let self = this;
-            window.gapi.auth.authorize(                
+           window['gapi'].auth.authorize(                
                     {
                         'client_id': "516784406032-okvpndbvngrrev2vq0gdd3n2tng5joq8.apps.googleusercontent.com",
                         'scope': ['https://www.googleapis.com/auth/drive.readonly'],
@@ -588,7 +588,7 @@ export class UploadVideoComponent implements OnInit {
            let self = this;
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
                 var doc = data[google.picker.Response.DOCUMENTS][0];
-                swal({ title: 'retriving video from Google Drive...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                swal({ title: 'Retriving video from Google Drive...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
                 self.downloadGDriveFile(doc.id , doc.name);
             }
             else if (data[google.picker.Response.ACTION] == google.picker.Action.CANCEL) {
@@ -611,7 +611,7 @@ export class UploadVideoComponent implements OnInit {
             else{
                 swal("Only video files can be uploaded.");
             }
-        } */
+        } 
         
         isVideo(filename:any) {
              var parts = filename.split('.');
