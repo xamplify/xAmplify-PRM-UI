@@ -121,11 +121,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         }
     }
       loadVideos(pagination: Pagination) {
-     //   this._swal2({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+        swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
         try {
         this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-             //  this._swal2.close();
+            swal.close();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
@@ -273,7 +273,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         );
     }
 
-  /*  deleteAlert(alias: string, position: number) {
+    deleteAlert(alias: string, position: number) {
         console.log('videoId in sweetAlert()');
         const self = this;
         swal({
@@ -289,7 +289,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
             console.log('ManageVidoes showAlert then()' + myData);
             self.deleteVideoFile(alias, position);
         });
-    } */
+    } 
 
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
