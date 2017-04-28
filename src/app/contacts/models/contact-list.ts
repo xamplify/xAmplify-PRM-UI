@@ -15,4 +15,8 @@ export class ContactList {
     isChecked : boolean;
     listOfUsers : string;
     totalRecords : string;
+    userListIds : number[];
+    emailId : string;
+    firstName : string;
+    lastName : string;
 }

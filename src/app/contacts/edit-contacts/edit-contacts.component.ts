@@ -29,6 +29,7 @@ declare var swal: any;
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
+    @Input() totalRecords:number;
 
     @Input() contactListId: number;
     @Input() selectedContactListId: number;
@@ -39,7 +40,7 @@ export class EditContactsComponent implements OnInit {
     public saveCopyfromClipboardUsers: boolean;
     public saveCsvFileUsers: boolean;
     public clipboardTextareaText : string;
-
+    pagedItems: any[];
     isAvailable = false;
     public clipboardUsers: Array<User>;
     public csvFileUsers: Array<User>;
@@ -70,6 +71,8 @@ export class EditContactsComponent implements OnInit {
         })
     }
 
+    
+    
     fileChange( input: any ) {
         this.saveCsvFileUsers = true;
         this.saveAddcontactUsers = false;
@@ -386,10 +389,11 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-    contactsCount() {
+   /* contactsCount() {
         this.contactService.loadContactsCount()
             .subscribe(
             data => {
+                data
                 this.activeUsersCount = data.activecontacts;
                 this.inActiveUsersCount= data.nonactiveUsers;
                 this.allContacts = data.allcontacts;
@@ -399,10 +403,42 @@ export class EditContactsComponent implements OnInit {
             error => console.log( error ),
             () => console.log( "LoadEditContactsCount Finished" )
             );
+    }*/
+    
+    editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination) {
+        this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
+        this.selectedContactListId = contactSelectedListId;
+        //this.singleContactListTotalUsersCount = ("Contacts");
+        //details set 
+        this.contactService.loadUsersOfContactList( contactSelectedListId,pagination ).subscribe(
+            (data:any) => {
+                this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
+                this.contacts = data.listOfUsers;
+                this.totalRecords = data.totalRecords;
+                this.logger.log(data);
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount= data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
+               
+                pagination.totalRecords = this.totalRecords;
+                pagination = this.pagerService.getPagedItems( pagination, this.contacts );
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+        )
+
     }
 
+    setPage( page: number,) {
+        this.pagination.pageIndex = page;
+            this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        }
     ngOnInit() {
-        this.contactsCount();
+        //this.contactsCount();
+        this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
+        
         let self = this;
 
         this.uploader = new FileUploader( {

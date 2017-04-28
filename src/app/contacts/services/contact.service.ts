@@ -42,8 +42,8 @@ export class ContactService {
         console.log(logger);
     }
     
-    loadUsersOfContactList( contactListId: number ): Observable<User[]> {
-        return this._http.get( this.url + "userlist/" + contactListId + "?access_token=" + this.authenticationService.access_token, )
+    loadUsersOfContactList( contactListId: number,pagination:Pagination ): Observable<User[]> {
+        return this._http.post( this.url + "userlist/" + contactListId +"?access_token=" + this.authenticationService.access_token,pagination)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -138,7 +138,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     } 
-
+    
     removeContactList(contactListId: number, removeUserIds:Array<number>): Observable<Object> {
         this.logger.info(contactListId+"--"+removeUserIds);
         var newUrl = this.url + "userlist/" + contactListId + "/removeUsers?access_token=" + this.authenticationService.access_token;

@@ -9,8 +9,10 @@ import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
+import { UserListIds } from '../models/user-listIds';
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
+
 
 
 declare var swal: any;
@@ -56,6 +58,9 @@ unsubscribedContactsData : boolean;
 nonActiveContactsData : boolean;
 
 public contactListName: string;
+ 
+public removeIds : number;
+public invalidIds : Array<UserListIds>;
 public alias: any;
 public contactType: string;
 public userName: string;
@@ -67,6 +72,7 @@ public activeContactUsers: Array<ContactList>;
 public invalidContactUsers: Array<ContactList>;
 public unsubscribedContactUsers: Array<ContactList>;
 public nonActiveContactUsers: Array<ContactList>;
+public userListIds: Array<UserListIds>;
 
 users: User[];
 access_token: string;
@@ -92,6 +98,7 @@ constructor( private contactService: ContactService, private authenticationServi
     this.invalidContactUsers = new Array<ContactList>();
     this.unsubscribedContactUsers  = new Array<ContactList>();
     this.nonActiveContactUsers = new Array<ContactList>();
+    this.userListIds = new Array<UserListIds>();
         
         
     this.activeUsersCount = 0;
@@ -385,35 +392,11 @@ downloadFile( data: Response ) {
 
 
 editContactList( contactSelectedListId: number ) {
-    this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
     this.selectedContactListId = contactSelectedListId;
     this.showAll = false;
     this.showEdit = true;
     this.show = false;
     $( "#pagination" ).hide();
-    //this.singleContactListTotalUsersCount = ("Contacts");
-    //details set 
-    this.contactService.loadUsersOfContactList( contactSelectedListId ).subscribe(
-        data => {
-            this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
-            this.users = data;
-            // this.selectedContactListId = contactSelectedListId;
-            //  this.contactService.contactId = contactSelectedListId;
-            this.allContacts = this.users.length;
-            this.activeUsersCount = 0;
-            this.inActiveUsersCount = this.users.length;
-            this.invlidContactsCount = this.users.length;
-            var self = this;
-            this.users.forEach( user => {
-                // if(user.status == 'Approved'){
-                //   self.activeUsersCount++;
-                // }
-            });
-        },
-        error => this.logger.error( error ),
-        () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
-    )
-
 }
 
 backToManageContactPage() {
@@ -425,6 +408,7 @@ backToManageContactPage() {
     this.currentContactType = null;
     this.loadContactLists( this.pagination );
     $( "#pagination" ).show();
+    this.contactsCount();
     
     this.activeUsersCount = 0;
     this.inActiveUsersCount = 0;
@@ -533,8 +517,10 @@ invalid_Contacts( pagination: Pagination ) {
             pagination.totalRecords = this.totalRecords;
             pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
             this.logger.log(data);
+            this.userListIds = data.listOfUsers;
+            this.logger.info(this.userListIds);
+            
         },
-
         error => console.log( error ),
         () => console.log( "finished" )
         );
@@ -633,10 +619,31 @@ saveSelectedUsers() {
 removeContactListUsers() {
     var removeUserIds = new Array();
     $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-        var id = $( this ).val();
-        removeUserIds.push( id );
+        this.invalidIds = $( this ).val();
+        removeUserIds.push( this.invalidIds );
+        this.invalidIds = this.removeUserIds;
     });
     this.logger.info( removeUserIds );
+    for(var i=0; i< this.userListIds.length;i++)
+    {
+     if(removeUserIds[i] == this.userListIds[i].id) {
+       
+         this.invalidContactUsers[i].id = this.userListIds[i].id;
+         this.invalidContactUsers[i].emailId = this.userListIds[i].emailId;
+         this.invalidContactUsers[i].firstName = this.userListIds[i].firstName;
+         this.invalidContactUsers[i].lastName = this.userListIds[i].lastName;
+         
+         removeUserIds.push(this.userListIds[i].id);
+         removeUserIds.push(this.userListIds[i].userListIds);
+         removeUserIds.push(this.userListIds[i].emailId);
+         removeUserIds.push(this.userListIds[i].firstName);
+         removeUserIds.push(this.userListIds[i].lastName);
+         this.logger.log(this.userListIds[i].userListIds);
+         this.logger.log(this.userListIds[i].firstName);
+         
+     }       
+    }
+   
     this.logger.info( removeUserIds);
     
     

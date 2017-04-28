@@ -765,7 +765,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     contactListItems:any[];
     loadUsers(id:number){
         swal( { title: 'Loading Contacts', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-        this.contactService.loadUsersOfContactList( id ).subscribe(
+        this.contactService.loadUsersOfContactList( id,this.contactsPagination).subscribe(
                 data => {
                     this.contactListItems = data;
                     console.log(this.contactListItems);

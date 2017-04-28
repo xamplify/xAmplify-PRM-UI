@@ -306,7 +306,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let contact of contacts;let i = index"
+							<tr *ngFor="let contact of pagination.pagedItems;let i = index"
 								id="row_{{contact.id}}">
 								<th><input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									value="{{contact.id}}" [(ngModel)]="contact.isChecked"></th>
@@ -319,7 +319,6 @@
 									(click)="showAlert(selectedContactListId)"> Delete </a></td>
 
 							</tr>
-
 							<tr *ngFor="let newContact of users; let i = index"
 								class="new_row">
 								<td><input type="checkbox" checked="newContact.checked"></td>
@@ -356,9 +355,7 @@
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
-	</div>
-	
-										<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1)">First</a>
                                              </li>
@@ -376,5 +373,6 @@
                                               </li>
                                           </ul>
 	
+	</div>
 	
 </div>

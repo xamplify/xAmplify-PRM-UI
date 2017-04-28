@@ -18,4 +18,6 @@ export class User {
     id: number;
     userId: number;
     isChecked: boolean;
+    userListIds : number[];
+
 }
