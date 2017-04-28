@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
 
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, private userService: UserService ) {
-        this.signUpForm = new FormGroup({
+      
+    	this.signUpForm = new FormGroup({
             fullName: new FormControl(),
             emailId: new FormControl(),
             address: new FormControl(),
@@ -42,6 +43,9 @@ export class LoginComponent implements OnInit {
         this.forgotPasswordForm = new FormGroup({
             forgotPasswordEmailId: new FormControl()
         });
+        this.buildForm();
+        this.validateForgotPasswordForm();
+        
     }
 
     public initializeTwitterNotification() {/*
@@ -108,8 +112,7 @@ export class LoginComponent implements OnInit {
             Login.init();
             Demo.init();
             console.log( "ngOnInit() :LoginComponent completed" );
-            this.buildForm();
-            this.validateForgotPasswordForm();
+          
         }
         catch ( error ) {
             console.log( error );
@@ -180,7 +183,7 @@ export class LoginComponent implements OnInit {
     }
 
     buildForm() {
-        var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
+    	var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
         var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';
         this.signUpForm = this.fb.group( {
             'fullName': [this.signUpUser.fullName, [
