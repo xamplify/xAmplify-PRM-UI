@@ -5,7 +5,6 @@ import {SaveVideoFile} from '../models/save-video-file';
 import {Category} from '../models/category';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { Logger } from 'angular2-logger/core';
-// import { MetaService } from 'ng2-meta';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 // import {DomAdapter, getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
@@ -15,7 +14,7 @@ declare var videojs:any;
 
 import { Meta,MetaDefinition } from '@angular/platform-browser';
 
-import { MetaService } from '@nglibs/meta';
+//import { MetaService } from '@nglibs/meta';
 
 @Component({
   selector: 'app-share-video',
@@ -33,7 +32,7 @@ public images = "http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1
 public linkurl = 'https://github.com/valor-software/ng2-file-upload/issues/238';
 public linkurl2 = 'http://139.59.1.205:9090/vod/videos/125/03022017/flight1486153663429.mp4';
 //  public images = "http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874";
-public checkUrl = 'http://139.59.1.205:4200/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
+public checkUrl = 'https://www.youtube.com/watch?v=eLZH1GEeBU4';
 public videoUrl: string;
 
 twitterButtons:any;
@@ -45,7 +44,7 @@ description = 'hi this is sathish'
 
     //@Inject(DOCUMENT) private document:any , ,private metaService:Meta
   constructor(private router: Router, private route: ActivatedRoute,private videoFileService: VideoFileService,
-             private _logger: Logger,private metaService:Meta, private metaModule: MetaService) {
+             private _logger: Logger,private metaService:Meta) {
             console.log(" share component constructor called");
             this.saveVideoFile = this.videoFileService.saveVideoFile ;
         }
@@ -58,22 +57,20 @@ description = 'hi this is sathish'
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
             this.videoUrl = this.videoUrl + ".mp4";
             console.log(this.videoUrl);
-           // this.metaService.setTitle("videos");
            this.metatags = {
                     'twitter:title' :'Meta Tags NEw',
                    }
             
+           
+            let title:MetaDefinition   =  { name: 'og:type', content: "new titel is title" };
             let desc: MetaDefinition = { name: 'description', content: "checking sdkgaksdgjjlksdd" };
             let ogDesc: MetaDefinition = { name: 'og:title', content: "dec sdgklsdjklgajdskljgklsdjlkgjsdklg" };
             let ogTitle: MetaDefinition = { name: 'twitter:title', content: "Sathish New Project" };
 
-            this.metaService.addTags([desc, ogDesc, ogTitle],true); 
+          //  this.metaService.addTags([desc, ogDesc, ogTitle],true); 
             
-            this.metaService.addTag(ogTitle);
+          //  this.metaService.addTag(ogTitle);
             
-            this.metaModule.setTag('og:image', this.imgURL);
-            
-          //  this.metaService.addTags(this.metatags);
         });
   }
 
