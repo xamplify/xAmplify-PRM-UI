@@ -52,7 +52,8 @@ export class EditContactsComponent implements OnInit {
     allContacts : number;
     invlidContactsCount : number;
     unsubscribedContacts : number;
-
+    public allUsers : number;
+    checkingLoadContactsCount : boolean;
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination) {
@@ -410,20 +411,30 @@ export class EditContactsComponent implements OnInit {
         this.selectedContactListId = contactSelectedListId;
         //this.singleContactListTotalUsersCount = ("Contacts");
         //details set 
+        /*this.activeUsersCount = 0;
+        this.inActiveUsersCount= 0;
+        this.allContacts = 0;
+        this.invlidContactsCount = 0;
+        this.unsubscribedContacts = 0;*/
+        
         this.contactService.loadUsersOfContactList( contactSelectedListId,pagination ).subscribe(
             (data:any) => {
                 this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                 this.contacts = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
                 this.logger.log(data);
-                this.activeUsersCount = data.activecontacts;
-                this.inActiveUsersCount= data.nonactiveUsers;
-                this.allContacts = data.allcontacts;
-                this.invlidContactsCount = data.invalidUsers;
-                this.unsubscribedContacts = data.unsubscribedUsers;
-               
+                if ( this.checkingLoadContactsCount == true ) {
+                    this.activeUsersCount = data.activecontacts;
+                    this.inActiveUsersCount = data.nonactiveUsers;
+                    this.allContacts = data.allcontacts;
+                    this.allUsers = this.allContacts;
+                    this.invlidContactsCount = data.invalidUsers;
+                    this.unsubscribedContacts = data.unsubscribedUsers;
+                }
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
+                this.checkingLoadContactsCount=false;
+                this.logger.log(this.allUsers);
             },
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
@@ -437,6 +448,7 @@ export class EditContactsComponent implements OnInit {
         }
     ngOnInit() {
         //this.contactsCount();
+        this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
         
         let self = this;

@@ -729,7 +729,6 @@ convert(){
 
 
 ngOnInit() {
-
     // $( "#allContactdata" ).hide();
     this.loadContactLists( this.pagination );
     this.contactsCount();
