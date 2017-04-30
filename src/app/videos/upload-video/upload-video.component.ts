@@ -308,9 +308,10 @@ export class UploadVideoComponent implements OnInit {
              $(".video-js .vjs-duration").css("display","none");
              $(".video-js .vjs-fullscreen-control").hide();
              $(".video-js .vjs-fullscreen-control").css("display","none !important");
+           
              
          let self = this;
-         self.player = videojs("myVideo",
+         self.player = window["videojs"]("myVideo",
               {
                 controls: true,
                 loop: false,

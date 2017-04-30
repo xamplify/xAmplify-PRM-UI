@@ -64,7 +64,7 @@
                      <video id="myVideo" class="video-js vjs-default-skin"></video>
                   </div>
                         <div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
-                         <p *ngIf="RecordSave" style="background-color:orange;margin-right: 253px;"><img style="display:visible;color:#FFFFFF; background-color: orange;" src="../../assets/images/loading.gif"><strong>Uploading your video please wait and do not refresh the page...!!!</strong></p>
+                         <p *ngIf="RecordSave" style="background-color:orange;margin-right: 253px;"><img style="display:visible;color:#FFFFFF; background-color: orange;" src="assets/images/loading.gif"><strong>Uploading your video please wait and do not refresh the page...!!!</strong></p>
                           <div *ngIf="hideSaveDiscard">
                            <button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
 					       <button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
@@ -157,28 +157,28 @@
 					</div>
 					<div class="col-md-6" style="padding-top: 69px;">
 						<div style="float: left; width: 100px;" class="zoomin">
-						 <img src="../../assets/images/record.png" title="Click here To Record from computer acttached camera"
+						 <img src="assets/images/record.png" title="Click here To Record from computer acttached camera"
 								(click)="cameraChange()" height="80" width="80" class="camera" style=" border: 5px; margin: 10px;">
 								<small style="margin-left: 18px; font-size: 13px;">Camera</small>
 						</div>
 						<div style="float: left; width: 100px;" class="zoomin">
-				        <img src="../../assets/images/Dropbox.png"  class="dropBox" title="Click here To access videos from your Dropbox account"
+				        <img src="assets/images/Dropbox.png"  class="dropBox" title="Click here To access videos from your Dropbox account"
 								(click)="dropBoxChange()" height="80" width="80"  style="cursor:pointer; border: 1px; margin: 10px;">
 								<small style="margin-left: 18px;font-size: 13px;">DropBox</small>
 						</div>	
 						<div  style="float: left; width: 100px;" class="zoomin">
-						  <img src="../../assets/images/box.png" class="box" title="Click here To access videos from your Box.com account"
+						  <img src="assets/images/box.png" class="box" title="Click here To access videos from your Box.com account"
 								(click)="boxChange()" height="80" width="80" style="cursor:pointer; border: 1px; margin: 10px;">
 								<small style=" margin-left: 29px;font-size: 13px;">Box</small>
 					   </div>
 					   <div  style="float: left; width: 100px;" class="zoomin">			
-						<img src="../../assets/images/GoogleDrive.png" class="googleDrive" title="Click here To access videos from your GoogleDrive account"
+						<img src="assets/images/GoogleDrive.png" class="googleDrive" title="Click here To access videos from your GoogleDrive account"
 								(click)="googleDriveChange()" height="80" width="80" style="cursor: pointer; border: 1px; margin: 10px;">
 								<small style="margin-left: 8px;font-size: 13px;">Google Drive</small>
 								
 					</div>
 					<div  style="float: left; width: 100px;" class="zoomin">			
-					   <img src="../../assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
+					   <img src="assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
 								height="80" width="80" style="cursor: pointer; border: 1px; margin: 10px;">
 								<small style=" margin-left: 12px;font-size: 13px;">One Drive</small>
 					</div>			
