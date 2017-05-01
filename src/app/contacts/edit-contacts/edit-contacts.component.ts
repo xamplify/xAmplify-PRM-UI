@@ -124,8 +124,14 @@ export class EditContactsComponent implements OnInit {
             this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
             this.contactService.updateContactList( this.contactListId, this.users )
                 .subscribe(
-                data => {
+                (data:any) => {
                     data = data;
+                    this.activeUsersCount = data.activecontacts;
+                    this.inActiveUsersCount = data.nonactiveUsers;
+                    this.allContacts = data.allcontacts;
+                    this.allUsers = this.allContacts;
+                    this.invlidContactsCount = data.invalidUsers;
+                    this.unsubscribedContacts = data.unsubscribedUsers;
                     this.logger.info( "update Contacts ListUsers:" + data );
                     this.manageContact.editContactList( this.contactListId );
                     $( "tr.new_row" ).each( function() {
@@ -135,7 +141,7 @@ export class EditContactsComponent implements OnInit {
                         $( "#saveContactsMessage" ).show();
                     });
 
-                    this.users.length = 0;
+                    //this.users.length = 0;
                 },
                 error => this.logger.error( error ),
                 () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -176,8 +182,14 @@ export class EditContactsComponent implements OnInit {
         this.logger.info( removeUserIds );
         this.contactService.removeContactList( this.contactListId, removeUserIds )
             .subscribe(
-            data => {
+            (data:any) => {
                 data = data;
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount = data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.allUsers = this.allContacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
                 console.log( "update Contacts ListUsers:" + data );
                 swal( 'Deleted!', 'Your file has been deleted.', 'success' );
                 $.each( removeUserIds, function( index: number, value: any ) {
