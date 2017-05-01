@@ -80,10 +80,10 @@ pager: any = {};
 pagedItems: any[];
 
 public totalRecords: number;
-public zohoImage: string = '../../assets/admin/pages/media/works/zoho.png';
-public googleImage: string = '../../assets/admin/pages/media/works/gl.jpg';
-public salesforceImage: string = '../../assets/admin/pages/media/works/sf.jpg';
-public normalImage: string = '../../assets/admin/pages/media/works/img1.jpg';
+public zohoImage: string = 'assets/admin/pages/media/works/zoho.png';
+public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
+public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
+public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
 public currentContactType:string=null;
 
 constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
@@ -618,6 +618,7 @@ saveSelectedUsers() {
 
 removeContactListUsers() {
     var removeUserIds = new Array();
+    let invalidUsers = new Array();
     $( 'input[name="selectedUserIds"]:checked' ).each( function() {
         this.invalidIds = $( this ).val();
         removeUserIds.push( this.invalidIds );
@@ -627,27 +628,27 @@ removeContactListUsers() {
     for(var i=0; i< this.userListIds.length;i++)
     {
      if(removeUserIds[i] == this.userListIds[i].id) {
-       
-         this.invalidContactUsers[i].id = this.userListIds[i].id;
-         this.invalidContactUsers[i].emailId = this.userListIds[i].emailId;
-         this.invalidContactUsers[i].firstName = this.userListIds[i].firstName;
-         this.invalidContactUsers[i].lastName = this.userListIds[i].lastName;
-         
-         removeUserIds.push(this.userListIds[i].id);
-         removeUserIds.push(this.userListIds[i].userListIds);
-         removeUserIds.push(this.userListIds[i].emailId);
-         removeUserIds.push(this.userListIds[i].firstName);
-         removeUserIds.push(this.userListIds[i].lastName);
-         this.logger.log(this.userListIds[i].userListIds);
-         this.logger.log(this.userListIds[i].firstName);
+         var object  = {
+                     "id": this.userListIds[i].id,
+                     "userName": null,
+                     "emailId": this.userListIds[i].emailId,
+                     "firstName": this.userListIds[i].firstName,
+                     "lastName": this.userListIds[i].lastName,
+                     "mobileNumber": null,
+                     "interests": null,
+                     "occupation": null,
+                     "description": null,
+                     "websiteUrl": null,
+                     "profileImagePath": null,
+                     "userListIds": this.userListIds[i].userListIds
+         }
+         console.log(object);
+         invalidUsers.push(object);
          
      }       
     }
-   
-    this.logger.info( removeUserIds);
-    
-    
-    this.contactService.removeInvalidContactListUsers(removeUserIds )
+    this.logger.info( invalidUsers);
+    this.contactService.removeInvalidContactListUsers(invalidUsers )
         .subscribe(
         data => {
             data = data;
@@ -657,7 +658,7 @@ removeContactListUsers() {
                 $( '#row_' + value ).remove();
                 console.log( index + "value" + value );
             });
-
+            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
         error => this.logger.error( error ),
         () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -671,7 +672,6 @@ invalidContactsShowAlert() {
         var id = $( this ).val();
         removeUserIds.push( id );
     });
-    this.logger.info( "userIdForChecked" + removeUserIds );
     if ( removeUserIds.length != 0 ) {
         this.logger.info( "contactListId in sweetAlert() ");
         let self = this;
