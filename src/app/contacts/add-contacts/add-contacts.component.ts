@@ -48,9 +48,9 @@ export class AddContactsComponent implements OnInit {
     public saveGoogleContactUsers: boolean;
     public saveZohoContactUsers: boolean;
     public saveSalesforceContactUsers: boolean;
-    public zohoImage : string = '../../assets/images/crm/Zoho_check.png';
+    public zohoImage : string = 'assets/images/crm/Zoho_check.png';
     public googleImage : string;
-    public salesforceImage : string = '../../assets/images/crm/sf_check.png';
+    public salesforceImage : string = 'assets/images/crm/sf_check.png';
 
 
     public listViewName:string;
@@ -1118,9 +1118,9 @@ googleContactImage(){
             data => {
                  this.storeLogin = data;
                 if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
-                   this.googleImage = '../../assets/images/crm/google_check.png'; 
+                   this.googleImage = 'assets/images/crm/google_check.png'; 
                 }else{
-                    this.googleImage = '../../assets/images/crm/google_gear.png';
+                    this.googleImage = 'assets/images/crm/google_gear.png';
                 }
             },
             error => this.logger.error(error),
@@ -1135,9 +1135,9 @@ salesforceContactImage(){
             data => {
                  this.storeLogin = data;
                 if( this.storeLogin.message !=undefined && this.storeLogin.message== "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM"){
-                   this.salesforceImage = '../../assets/images/crm/sf_check.png'; 
+                   this.salesforceImage = 'assets/images/crm/sf_check.png'; 
                 }else{
-                    this.salesforceImage = '../../assets/images/crm/sf_gear.png';
+                    this.salesforceImage = 'assets/images/crm/sf_gear.png';
                 }
             },
             error => this.logger.error(error),
