@@ -14,6 +14,7 @@ import {TeamModule} from './team/team.module';
 import {ShareVideoComponent} from './videos/share-video/share-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
+import {ProfileLockComponent} from './dashboard/user-profile/profile-lock/profile-lock.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
             { path :'team' ,loadChildren :'app/team/team.module#TeamModule'},
         ]
     },
+    { path: 'userlock', component: ProfileLockComponent},
     { path: 'logout', component: LoginComponent },
     {path: ':social/login', component:SocialLoginComponent},
     {path: ':social/callback', component:SocialCallbackComponent},
