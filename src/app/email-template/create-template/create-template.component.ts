@@ -19,7 +19,7 @@ export class CreateTemplateComponent implements OnInit {
 	constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
 	private emailTemplate:EmailTemplate,private router:Router, private logger :Logger) {
 		
-		this.logger.log(emailTemplateService.emailTemplate);
+		console.log(emailTemplateService.emailTemplate);
 	    var names:any = [];
 	    emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id) .subscribe(
 	            (data:any) => {
