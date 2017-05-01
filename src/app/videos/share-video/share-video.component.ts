@@ -85,19 +85,19 @@ description = 'hi this is sathish'
       
      this.googleButtons = new ShareButton(
         ShareProvider.GOOGLEPLUS,              //choose the button from ShareProvider
-        "<img src='../../assets/images/google+.png' style='height: 32px;'>",    //set button template
+        "<img src='assets/images/google+.png' style='height: 32px;'>",    //set button template
         'twitter'                           //set button classes
       );
 
    this.twitterButtons = new ShareButton(
        ShareProvider.TWITTER,              //choose the button from ShareProvider
-       "<img src='../../assets/images/twitter.png' style='height: 32px;'>",    //set button template
+       "<img src='assets/images/twitter.png' style='height: 32px;'>",    //set button template
        'twitter'                           //set button classes
      );
 
 this.facebookButtons = new ShareButton(
        ShareProvider.FACEBOOK,              //choose the button from ShareProvider
-       "<img src='../../assets/images/facebook.png' style='height: 32px;'>",    //set button template
+       "<img src='assets/images/facebook.png' style='height: 32px;'>",    //set button template
        'fb'                           //set button classes
      );
   
