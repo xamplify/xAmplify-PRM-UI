@@ -765,6 +765,10 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                          $('#overlay-modal').hide();
                          player.play();
                      });
+                     $('#skipOverlay').click(function() {
+                         $('#overlay-modal').hide();
+                          player.play();
+                     });
                  }
                  else {
                      $('#overlay-modal').hide();
