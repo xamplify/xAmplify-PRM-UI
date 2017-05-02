@@ -23,7 +23,7 @@ export class UploadVideoComponent implements OnInit {
     public uploader: FileUploader;
     public file_srcs: string[] = [];
     loading: boolean ;
-    processing:boolean =false;
+    processing:boolean = false;
     isChecked :boolean ;
     isFileDrop :boolean;
     isFileProgress:boolean;
@@ -80,7 +80,7 @@ export class UploadVideoComponent implements OnInit {
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
-                maxFileSize: 100 * 1024 * 1024,// 100 MB
+                maxFileSize: 500 * 1024 * 1024,// 500 MB
                 url: this.URL + this.authenticationService.access_token
             });
             this.uploader.onAfterAddingFile = (file) => {
@@ -98,8 +98,9 @@ export class UploadVideoComponent implements OnInit {
                 this.changeDetectorRef.detectChanges();
                 this.loading = true;
                 this.isFileProgress = true;
+                this.processing = true;
                 // this.isDisable =true;
-               // this.isFileDrop = true;
+                this.isFileDrop = true;
                document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
             }
@@ -143,10 +144,10 @@ export class UploadVideoComponent implements OnInit {
     public hasAnotherDropZoneOver: boolean = false;
 
     public fileOverBase(e: any): void {
-        if(this.isFileDrop == false)
+        if(this.isFileDrop == false && this.isFileProgress==false)
             this.hasBaseDropZoneOver= e;
         else {
-            this.hasBaseDropZoneOver =false;
+            this.hasBaseDropZoneOver = false;
          }
     }
 
@@ -155,14 +156,14 @@ export class UploadVideoComponent implements OnInit {
     }
     
     fileDropPreview(file:File):void{
-        if(this.isFileDrop == false || this.isFileProgress==false){ 
+        if(this.isFileDrop == false){ 
          console.log("file got it");
          console.log(file);
          this.readFiles(file);
          this.defaultDesabled();
          }
         else{
-            this.isDisable = true;
+            //this.isDisable = true;
             this.isFileDrop = true;
             file = null;
             console.log("drop file will not work in progress");
@@ -278,6 +279,7 @@ export class UploadVideoComponent implements OnInit {
             swal("Please Add your script and Test it back");
         }else{
           this.stopButtonShow  = true; // stop button show 
+          this.stopButtonDisabled = false;
           this.testSpeedshow = false; // hide the test speed button
           let volume = this.changeVolume*10000;
              $( "#script-text" ).animate({scrollTop: $("#script-text").prop("scrollHeight")},
@@ -388,7 +390,7 @@ export class UploadVideoComponent implements OnInit {
        }
     }
     dropBoxChange(){
-        if(this.isChecked==true) swal("Oops...", "You minimized DropBox window!", "error");
+        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized DropBox window!", "error");
         if(this.isChecked != true&&this.cloudDrive == false &&this.camera==false &&this.cloudOneDrive==false&&this.cloudBox==false){
         this.cloudDropbox = true;
         this.isDisable = true;
@@ -405,7 +407,7 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     boxChange(){
-        if(this.isChecked==true) swal("Oops...", "You minimized Box window!", "error");
+        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized Box window!", "error");
         if(this.isChecked != true &&this.cloudDrive==false&&this.camera==false &&this.cloudOneDrive==false&&this.cloudDropbox==false){
          this.cloudBox = true;
          this.isDisable = true;
@@ -424,7 +426,7 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     googleDriveChange(){
-        if(this.isChecked==true) swal("Oops...", "You minimized Google Drive window!", "error");
+        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized Google Drive window!", "error");
         if(this.isChecked != true &&this.cloudBox==false&&this.camera==false &&this.cloudOneDrive == false&&this.cloudDropbox==false){  
         this.cloudDrive = true;
         this.isDisable = true;

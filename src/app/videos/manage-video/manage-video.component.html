@@ -47,13 +47,13 @@
 		   </div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
-				<div class="row" *ngIf="manageVideos">
-				   <div *ngIf="showMessage" class="col-md-6"
+				<div class="row" *ngIf="manageVideos" >
+				   <div *ngIf="showMessage" class="col-md-6" id="showMessage"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					   <strong>{{showVideoName}} video Saved Successfully!</strong> 
-			      </div>
-			    <div *ngIf="showUpdatevalue" class="col-md-6 "
+			      </div> 
+			    <div *ngIf="showUpdatevalue" class="col-md-6 " id="showUpdatevalue"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>{{showVideoName}} video file Updated Successfully!</strong>

@@ -11,7 +11,7 @@ import {ReferenceService} from '../../core/services/reference.service';
 
 import { Logger } from 'angular2-logger/core';
 
-declare var swal , Metronic, Layout , Demo,require : any;
+declare var swal , Metronic, Layout , Demo,require,$ : any;
 
 @Component({
   selector: 'app-manage-video',
@@ -54,6 +54,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     isvideoThere: boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
+    
     sortVideos  = [
                        {'name': 'Sort By', 'value': ''},
                        {'name': 'Title(A-Z)', 'value': 'title-ASC'},
@@ -85,6 +86,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
             console.log('opening edit video');
             this.showMessage = this.videoFileService.showSave; // true
             this.showUpdatevalue = this.videoFileService.showUpadte; // false
+            setTimeout(function() {
+                $("#showMessage").slideUp(500);
+              }, 2000);
         }
     }
     ngOnInit() {
@@ -100,6 +104,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
                 console.log('opening edit video');
                 this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
+                let sweetAlert2 =this;
+                setTimeout(function() {
+                    $("#showMessage").slideUp(500);
+                	//sweetAlert2.showMessage = false;
+                  }, 2000);
+                
             }
             console.log('manage videos js started');
             if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
@@ -123,10 +133,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
       loadVideos(pagination: Pagination) {
       
       try {
-    	  if(this.videoFileService.actionValue === undefined){
+    	 // if(this.videoFileService.actionValue === undefined){
               swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
-    	  }
-    	  
+    	 // }
     	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
             swal.close();
@@ -312,6 +321,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         // this.videoFileService.actionValue = '';
         this.showMessage = this.videoFileService.showSave; // false
         this.showUpdatevalue = this.videoFileService.showUpadte; // true
+       
+        let sweetAlert = this;
+        setTimeout(function() {
+        	$("#showUpdatevalue").slideUp(500);
+        	//sweetAlert.showUpdatevalue  =  false;
+          }, 2000);
+        
         if ( videoFile == null ) {
             this.showVideoName = '';
          }
