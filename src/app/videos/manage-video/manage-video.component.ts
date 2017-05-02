@@ -54,6 +54,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     isvideoThere: boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
+    public showSweetAlert :boolean = false;
     
     sortVideos  = [
                        {'name': 'Sort By', 'value': ''},
@@ -77,19 +78,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.categoryNum = 0;
         this.isCategoryThere = false;
         this.searchKey = null;
-     if (this.videoFileService.actionValue === 'Save') {
-            console.log('MangeVideosComponent : ngonit ');
-            this.editVideo = true;
-            this.manageVideos = false;
-            this.playVideo = false;
-            this.campaignReport = false;
-            console.log('opening edit video');
-            this.showMessage = this.videoFileService.showSave; // true
-            this.showUpdatevalue = this.videoFileService.showUpadte; // false
-            setTimeout(function() {
-                $("#showMessage").slideUp(500);
-              }, 2000);
-        }
+    
     }
     ngOnInit() {
         console.log('MangeVideosComponent ngOnInit()');
@@ -101,15 +90,10 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
+                this.showSweetAlert = true;
                 console.log('opening edit video');
                 this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
-                let sweetAlert2 =this;
-                setTimeout(function() {
-                    $("#showMessage").slideUp(500);
-                	//sweetAlert2.showMessage = false;
-                  }, 2000);
-                
             }
             console.log('manage videos js started');
             if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
@@ -119,6 +103,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
                 this.campaignReport = false;
                 this.showMessage = false;
                 this.showUpdatevalue = false;
+                this.showSweetAlert = false;
             }
           this.loadVideos(this.pagination);
            // Metronic.init();
@@ -133,9 +118,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
       loadVideos(pagination: Pagination) {
       
       try {
-    	 // if(this.videoFileService.actionValue === undefined){
+    	  if(this.showSweetAlert == false){
               swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
-    	 // }
+    	  }
     	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
             swal.close();
@@ -178,6 +163,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.loadVideos(this.pagination);
         this.showUpdatevalue = false;
         this.showMessage = false;
+        this.showSweetAlert = false;
      }
     }
 
@@ -185,6 +171,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.isvideoThere = false;
+        this.showSweetAlert = false;
         console.log(this.categoryNum);
         this.pagination.filterBy = this.categoryNum;
         this.pagination.pageIndex = 1;
@@ -205,11 +192,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
+        this.showSweetAlert = false;
       }
     }
     selectedSortByValue( event: any ){
         this.showMessage = false;
         this.showUpdatevalue = false;
+        this.showSweetAlert = false;
         this.videoSort = event;
          const sortedValue = this.videoSort.value;
          if( sortedValue !== '') {
@@ -306,6 +295,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
 
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
+        this.showSweetAlert = true;
         if (videoFile != null) {
             this.pagination.pageIndex = 1;
             this.pagination.filterBy = 0;
@@ -321,20 +311,19 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         // this.videoFileService.actionValue = '';
         this.showMessage = this.videoFileService.showSave; // false
         this.showUpdatevalue = this.videoFileService.showUpadte; // true
-       
-        let sweetAlert = this;
+
         setTimeout(function() {
         	$("#showUpdatevalue").slideUp(500);
+        	$("#message").slideUp(500);
         	//sweetAlert.showUpdatevalue  =  false;
           }, 2000);
         
         if ( videoFile == null ) {
             this.showVideoName = '';
          }
-         else {
-              this.showVideoName = videoFile.title ;
-            }
+         else { this.showVideoName = videoFile.title ;  }
         console.log('update method called ' + this.showVideoName);
+        
     }
     goToManageVideos() {
         console.log('come to goto manage videos :');
@@ -345,6 +334,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.pageBar = false;
         this.showMessage = false;
         this.showUpdatevalue = false;
+        this.showSweetAlert = false;
         this.videoFileService.actionValue = '';
     }
       ngOnDestroy() {

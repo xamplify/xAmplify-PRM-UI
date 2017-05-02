@@ -80,7 +80,7 @@ export class UploadVideoComponent implements OnInit {
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
-                maxFileSize: 500 * 1024 * 1024,// 500 MB
+                maxFileSize: 800 * 1024 * 1024,// 800 MB
                 url: this.URL + this.authenticationService.access_token
             });
             this.uploader.onAfterAddingFile = (file) => {
