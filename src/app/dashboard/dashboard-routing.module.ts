@@ -7,6 +7,7 @@ import { MyProfileComponent } from './user-profile/my-profile/my-profile.compone
 import { ViewsReportComponent } from './views-report/views-report.component';
 import { TableAdvanceComponent } from './table-advance/table-advance.component';
 import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
+import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
 
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
                         { path: 'views_report', component: ViewsReportComponent },
                         { path: 'extrafaq', component: ExtraFaqComponent },
                         { path: 'welcome', component: WelcomeComponent },
+                        { path: 'profilehelp', component: ProfileHelpComponent },
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

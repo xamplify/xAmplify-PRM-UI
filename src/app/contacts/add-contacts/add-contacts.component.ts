@@ -155,6 +155,8 @@ export class AddContactsComponent implements OnInit {
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
+        $( "button#uploadCSV" ).prop( 'disabled', true );
+        $( "input[type='file']" ).attr( "disabled", true );
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -459,6 +461,8 @@ export class AddContactsComponent implements OnInit {
         $( "button#salesforceContact_button" ).prop( 'disabled', false );
         $( "button#zohoContact_button" ).prop( 'disabled', false );
         $( "button#microsoftContact_button" ).prop( 'disabled', false );
+        $( "button#uploadCSV" ).prop( 'disabled', false );
+        $( "input[type='file']" ).attr( "disabled", false );
 
     }
     addRow() {
