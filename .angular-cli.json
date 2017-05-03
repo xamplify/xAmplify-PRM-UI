@@ -6,11 +6,15 @@
 	"apps": [
 		{
 			"root": "src",
-			"outDir": "dist",
+			"outDir": "XtremandApp",
 			"assets": [
-				"assets",
-				"favicon.ico"
-			],
+			             "assets/images",
+                         "favicon.ico",
+						 "assets/admin/pages/img",
+						 "assets/admin/layout2/img",
+						 "assets/admin/pages/media",
+					     "assets/global/img"
+			  ],
 			"index": "index.html",
 			"main": "main.ts",
 			"polyfills": "polyfills.ts",
