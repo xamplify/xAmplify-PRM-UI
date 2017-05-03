@@ -86,11 +86,10 @@ export class UploadVideoComponent implements OnInit {
             this.uploader.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
                 this.defaultDesabled();
-                
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
-                this.processing = true;
+              //  this.processing = true;
               //  this.isFileDrop = true;
                 this.processVideo(JSON.parse(response).path);
             };
@@ -98,7 +97,7 @@ export class UploadVideoComponent implements OnInit {
                 this.changeDetectorRef.detectChanges();
                 this.loading = true;
                 this.isFileProgress = true;
-                this.processing = true;
+               // this.processing = true;
                 // this.isDisable =true;
                 this.isFileDrop = true;
                document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
@@ -109,8 +108,12 @@ export class UploadVideoComponent implements OnInit {
             console.error("ERROR : FileUploadComponent constructor " + err)
         }
     }
-    
+
     processVideo(responsePath: any) {
+      const val = this;
+        setTimeout(function() {
+           val.processing = true;
+          }, 100);
         console.log(responsePath);
         return this.videoFileService.processVideoFile(responsePath)
             .subscribe((result: any) => {
@@ -131,11 +134,17 @@ export class UploadVideoComponent implements OnInit {
                     this.router.navigateByUrl('/home/videos/manage_videos');
                 }
                 else {
-                    console.log("process video data object is null please try again:");
+                	if(this.processVideoResp.error == "Maximum Disk Space Reached for you subscription")
+                	{
+                		this.processing =  false;
+                		this.defaultSettings();
+                		swal( 'Contact Admin!', this.processVideoResp.error, 'error' );}
+                	else {
+                	console.log("process video data object is null please try again:");
                     this.player.recorder.reset();
                     $("#myModal").modal("hide");
                     console.log(this.processVideoResp.error);
-                    console.log(this.processVideoResp);
+                	}
                 }
             }),
             () => console.log("process video is:" + this.processVideoResp);

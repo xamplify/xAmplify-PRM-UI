@@ -48,6 +48,19 @@
     margin-right: 304px;
     margin-left: 19px;
 }
+
+.loaderSymbol{
+   height: 57px;
+   padding: 0px;
+   background-color: #d0cede;
+   margin-bottom: 20px;
+   margin-right: 304px; 
+   margin-left: 19px;
+   color: black;
+   border-color: #29101b;
+
+ }
+
 .h2text {
 	font-weight: bold;color:blue;
 	}

@@ -82,10 +82,10 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="addfiles" style="float: left; width: 113px;">
-						<button type="button" class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
+						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" id="openf"
 							(change)="fileChange(input)" [disabled]="loading==true||isDisable == true" #input />
-						</button> </div>
+						</div> </div>
 					 <div style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
 							[disabled]="!uploader.getNotUploadedItems().length || loading==true || fileChecked==true">
@@ -99,11 +99,17 @@
 					</div>
 					<br />
 					<div class="col-md-12" style="margin-top: 25px;">
-	                <div  *ngIf="processing">
-                    <div class="customLoaderBar"> 
-                     <!-- <i class="fa fa-spinner fa-spin" style="font-size:60px"></i> -->
+	                <div *ngIf="processing">
+                  <!--  <div class="customLoaderBar"> 
+                      <i class="fa fa-spinner fa-spin" style="font-size:60px"></i> 
                       <h4 class="h2text"><img src="assets/images/default.gif" style="font-size:6px; width: 53px;"> 
-                         Please wait ..!!! your video got uploaded & we are processing..!!!!</h4> </div>
+                         Please wait ..!!! your video got uploaded & we are processing..!!!!</h4> </div>-->
+                 <div  class="col-md-9 alert alert-success alertMessageCustom loaderSymbol" >
+                      <img src="assets/images/default.gif" style="font-size:6px;width: 53px;"> 
+                        <strong >Please wait ..!!! your video got uploaded & we are processing..!!!!</strong>
+	              </div>
+
+
                     </div> 
 						<table class="table" >
 							<tbody *ngIf="fileChecked==false || isDisable==false">

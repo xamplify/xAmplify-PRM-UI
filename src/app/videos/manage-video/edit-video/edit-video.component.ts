@@ -110,9 +110,10 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     public gifBoolean2: boolean;
     public gifBoolean3: boolean;
 
-    public likesValues: any;
-    public disLikesValues: any;
-
+    public likesValues: number;
+    public disLikesValues: number;
+    public videoViews:number;  
+    
     public isPlay: boolean = false;
     public isThumb: boolean;
     public isPlayButton: boolean;
@@ -145,7 +146,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
     public maxLengthvalue = 120;
     public characterleft = 0;
-
+    
     public publish = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
 
     constructor(private referenceService: ReferenceService,
@@ -215,8 +216,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
-        // this.controlPlayers = false;
-        // this.callaction = false;
         this.isValidated = true;
 
         this.metatags = {
@@ -229,6 +228,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         //   this.metaService.setTitle('Xtremand');
         this.likesValues = 20;
         this.disLikesValues = 12;
+        this.videoViews= 0;
         this.enableCalltoAction = true;
 
         console.log('controller value is in constructor' + this.compControllerColor);
@@ -255,9 +255,10 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         };
 
         this.notifyParent = new EventEmitter<SaveVideoFile>();
-    }
+    }  // closed constructor
+
     onChange(event: any) {
-        let fileList: FileList = event.target.files;
+        const fileList: FileList = event.target.files;
         this.fileObject = fileList[0];
         console.log('file path is :');
         console.log(this.fileObject);
@@ -1105,7 +1106,12 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             (result: any) => {
                 console.log('Save user Form call to acton is successfull');
                 console.log(result);
-            });
+                
+            },
+            (error:string) => {
+	                  //  this.referenceService.showError(error, "save call to action user","Edit Video Component")
+	                }
+            );
     }
 
     cancelVideo() {

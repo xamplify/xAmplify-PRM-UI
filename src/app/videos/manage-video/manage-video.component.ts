@@ -152,8 +152,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
             });
             ()=>console.log( 'load videos completed:' + this.videos );
         }
-        catch(err) {
-             console.log('error ' + err);
+         catch(error){
+           this.referenceService.showError(error, "Error in loadvideos() in manage-videos.ts file","");
         }
     }
 
@@ -262,16 +262,22 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     deleteVideoFile(alias: string, position: number) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
       //  this.pagedItems.splice(position, 1);
+       // this.pagination.pagedItems.splice(position, 1);
         this.videoFileService.deleteVideoFile(alias)
         .subscribe(
         data => {
+          console.log(data);
             console.log( 'MangeVideoComponent deleteVideoFile success : ' + data );
-           //  this.pagedItems.splice(position, 1);
-            this.videos.splice(position, 1);
-          //  swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.pagination.pagedItems.splice(position, 1);
+            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
-        error => console.error( error ),
-        () => console.log( 'deleted completed' )
+       (error: any) => {
+	      if (error.includes("mobinar is being used in one or more campaigns. Please delete those campaigns")){
+                     swal( 'Campaign Video!', error, 'error' );
+                 }
+                 console.log(error);
+           },
+        () => console.log( 'deleted functionality' )
         );
     }
 
@@ -309,14 +315,15 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.campaignReport = false;
         this.playVideo = false;
         // this.videoFileService.actionValue = '';
-        this.showMessage = this.videoFileService.showSave; // false
-        this.showUpdatevalue = this.videoFileService.showUpadte; // true
-
+        this.showMessage = this.videoFileService.showSave; // boolean
+        this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
+        const timevalue = this;
         setTimeout(function() {
-        	$("#showUpdatevalue").slideUp(500);
-        	$("#message").slideUp(500);
-        	//sweetAlert.showUpdatevalue  =  false;
-          }, 2000);
+        	if( timevalue.showUpdatevalue === true) {
+          //  $("#showUpdatevalue").slideUp(500);
+            }
+        	else $("#message").slideUp(500);
+          }, 3000);
         
         if ( videoFile == null ) {
             this.showVideoName = '';

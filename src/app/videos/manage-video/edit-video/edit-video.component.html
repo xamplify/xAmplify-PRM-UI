@@ -56,11 +56,9 @@
                       <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
                  </div>  
                 </form>     
-          </div>
-               	 
-               	 
+            </div>
                	 		
-				<p align="left">127 Views</p>
+				<p align="left">{{videoViews}} Views</p>
 				<div *ngIf="likes==true">
 					<span style="float: right">
 						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
