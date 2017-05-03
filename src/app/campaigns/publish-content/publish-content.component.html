@@ -448,6 +448,78 @@ th, td {
        </form>
         </div>
     </div>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div>
+        							<h4 class="modal-title" id="myModalLabel" align="center"><b>List Of Users</b></h4>
+        							</div>
+     						 </div>
+     					 <div class="modal-body">
+     					 
+     					 <table class="table table-striped table-hover table-bordered" id="sample_editable_1" *ngIf="contactListItems">
+							<thead >
+								<tr >
+									<th>
+										 USERNAME
+									</th>
+									<th>
+										 EMAILID
+									</th>
+									<th>
+										 FIRSTNAME
+									</th>
+									<th>
+										 LASTNAME
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr *ngFor="let allcontacts of contactsUsersPagination.pagedItems;let i = index">
+									<td>
+										 {{allcontacts.userName}}
+									</td>
+									<td>
+										 {{allcontacts.emailId}}
+									</td>
+									<td>
+										  {{allcontacts.firstName}}
+									</td>
+									<td class="center">
+										 {{allcontacts.lastName}}
+									</td>
+								</tr>
+								</tbody>
+								</table>	
+      					</div>
+      					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination">
+                                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+                                                <a (click)="setPage(1,'contactUsers')">First</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+                                                 <a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
+                                              </li>
+                                              <li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
+                                                 <a (click)="setPage(page,'contactUsers')">{{page}}</a>
+                                              </li>
+                                              <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
+                                                  <a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
+                                              </li>
+                                               <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
+                                                  <a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
+                                              </li>
+                                          </ul>
+  				
+      					<div class="modal-footer">
+        					<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+    
     <div class="row setup-content step hiddenStepInfo" id="step-4">
         <div class="col-xs-12">
          <button type="button" style="float:left" class="btn btn-default"
@@ -500,9 +572,9 @@ th, td {
 					                     
 					                      <td class="text-center sorting_1">{{contacts.createdDate}}</td>
 					                      <td class="text-center">{{contacts.name}}</td>
-					                      <td class="text-center">
-					                      	<a  class="btn btn-warning" (click)="loadUsers(contactsPagination.pagedItems[i].id)">
-					                      	<i class="fa fa-eye " style="padding-top: 3px; font-size: 20px;" data-toggle="tooltip" title="" data-original-title="Download">Preview</i></a>
+					                      <td class="text-center" >
+					                      	<a  class="btn btn-warning" (click)="loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)">
+					                      	<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Download" data-toggle="modal" data-target="#myModal">Preview</i></a>
 					                      </td>
 					                  </tr>
 					                </tbody>
@@ -510,19 +582,19 @@ th, td {
                              <div>   
 									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-                                                <a (click)="setPage(1,'contacts')">First</a>
+                                                <a (click)="setPage(1,'contacts',contactUsers)">First</a>
                                              </li>
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-                                                 <a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts')">Previous</a>
+                                                 <a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts',contactUsers)">Previous</a>
                                               </li>
                                               <li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{active:contactsPagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page,'contacts')">{{page}}</a>
+                                                 <a (click)="setPage(page,'contacts',contactUsers)">{{page}}</a>
                                               </li>
                                               <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-                                                  <a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts')">Next</a>
+                                                  <a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts',contactUsers)">Next</a>
                                               </li>
                                                <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-                                                  <a (click)="setPage(contactsPagination.pager.totalPages,'contacts')">Last</a>
+                                                  <a (click)="setPage(contactsPagination.pager.totalPages,'contacts',contactUsers)">Last</a>
                                               </li>
                                           </ul>
 										</div>
@@ -537,51 +609,6 @@ th, td {
 									</div>	
 										
 										<hr>
-										
-									<table class="table table-striped table-hover table-bordered" id="sample_editable_1" *ngIf="contactListItems">
-								<thead >
-								<tr >
-									<th>
-										 USERNAME
-									</th>
-									<th>
-										 EMAILID
-									</th>
-									<th>
-										 FIRSTNAME
-									</th>
-									<th>
-										 LASTNAME
-									</th>
-									<!-- <th>
-										 Edit
-									</th> -->
-									<!-- <th>
-										 Delete
-									</th> -->
-								</tr>
-								</thead>
-								<tbody>
-								<tr *ngFor="let allcontacts of contactListItems;let i = index">
-									<td>
-										 {{allcontacts.userName}}
-									</td>
-									<td>
-										 {{allcontacts.emailId}}
-									</td>
-									<td>
-										  {{allcontacts.firstName}}
-									</td>
-									<td class="center">
-										 {{allcontacts.lastName}}
-									</td>
-									<!-- <td>
-										<a class="delete" href="javascript:;">
-										Delete </a>
-									</td> -->
-								</tr>
-								</tbody>
-								</table>		
                          </div>
                        </div>
                     </div>

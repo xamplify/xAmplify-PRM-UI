@@ -139,6 +139,7 @@ export class EditContactsComponent implements OnInit {
                         $( "button#upload_csv" ).prop( 'disabled', false );
                         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                         $( "#saveContactsMessage" ).show();
+                        setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     });
 
                     //this.users.length = 0;
@@ -162,6 +163,7 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.users.length = 0;
                 $( "#saveContactsMessage2" ).show();
+                setTimeout(function() { $("#saveContactsMessage2").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                 $( "#uploadCsvUsingFile" ).hide();
@@ -360,6 +362,7 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.clickBoard = false;
                 $( "#saveContactsMessage1" ).show();
+                setTimeout(function() { $("#saveContactsMessage1").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#upload_csv" ).prop( 'disabled', false );
                 this.clipboardUsers.length = 0;

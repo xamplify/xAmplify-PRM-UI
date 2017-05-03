@@ -118,6 +118,7 @@ constructor( private contactService: ContactService, private authenticationServi
     this.logger.info( "successmessageLoad" + this.contactService.successMessage )
     if ( this.contactService.successMessage == true ) {
         this.show = this.contactService.successMessage;
+        setTimeout(function() { $("#showMessage").slideUp(500); }, 2000);
         this.logger.info( "Success Message in manage contact pape" + this.show );
     }
 }
@@ -204,8 +205,8 @@ deleteContactList( contactListId: number ) {
         .subscribe(
         data => {
             console.log( "MangeContacts deleteContactList success : " + data );
+            this.contactsCount();
             $( '#contactListDiv_' + contactListId ).remove();
-            //remove from array
             swal( 'Deleted!', 'Your file has been deleted.', 'success' );
         },
         error => this.logger.error( error ),
@@ -605,6 +606,7 @@ saveSelectedUsers() {
                     //this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.backToManageContactPage();
                     this.contactService.successMessage = true;
+                    setTimeout(function() { $("#showMessage").slideUp(500); }, 2000);
                 },
 
                 error => this.logger.info( error ),

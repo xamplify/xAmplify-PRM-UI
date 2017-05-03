@@ -69,6 +69,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     
     videosPagination:Pagination = new Pagination();
     contactsPagination:Pagination = new Pagination();
+    contactsUsersPagination:Pagination = new Pagination();
     emailTemplatesPagination:Pagination = new Pagination();
     
     isvideoThere:boolean;
@@ -78,6 +79,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     public selectedVideoFilePath:string = "";
     public selectedContactListName:string = "";
     public selectedEmailTemplateName:string="";
+    public id:number;
+    public previewContactListId : number;
         
     
     numberOfContactsPerPage = [
@@ -194,6 +197,9 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         }else if(module=="contacts"){
             this.contactsPagination.pageIndex = pageIndex;
             this.loadCampaignContacts(this.contactsPagination);
+        }else if(module=="contactUsers"){
+            this.contactsUsersPagination.pageIndex = pageIndex;
+            this.loadUsers(this.id,this.contactsUsersPagination);
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
             this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -374,6 +380,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         try {
             this.loadCampaignVideos(this.videosPagination);
             this.loadCampaignContacts(this.contactsPagination);
+            this.loadUsers(this.id,this.contactsUsersPagination);
             Metronic.init(); 
             Layout.init();
             Demo.init();
@@ -763,19 +770,33 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         this.emailTemplateHtmlPreivew = emailTemplate.body;
     }
     contactListItems:any[];
-    loadUsers(id:number){
-        swal( { title: 'Loading Contacts', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-        this.contactService.loadUsersOfContactList( id,this.contactsPagination).subscribe(
-                data => {
-                    this.contactListItems = data;
+    loadUsers(id:number,pagination:Pagination){
+        //this.previewContactListId = id;
+        if(id==undefined){
+            id=this.previewContactListId;
+        }else{
+            this.previewContactListId = id;
+        }
+        //swal( { title: 'Loading Contacts', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+        this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
+                (data:any) => {
+                    console.log(data);
+                    console.log(pagination);
+                    this.contactListItems = data.listOfUsers;
                     console.log(this.contactListItems);
-                    swal.close();
+                    //alert(data.totalRecords);
+                    pagination.totalRecords = data.totalRecords;
+                    this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
+                    //swal.close();
                 },
                 error =>
                 () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
             )
     }
     
+    closeModelPopup(){
+        this.contactsUsersPagination = new Pagination();
+    }
     
     sendTestEmail(emailId:string){
         swal( { title: 'Sending Test Email', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
