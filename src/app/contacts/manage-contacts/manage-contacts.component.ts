@@ -654,6 +654,7 @@ removeContactListUsers() {
         .subscribe(
         data => {
             data = data;
+            this.logger.log(data);
             console.log( "update Contacts ListUsers:" + data );
             swal( 'Deleted!', 'Your file has been deleted.', 'success' );
             $.each( removeUserIds, function( index: number, value: any ) {
@@ -661,6 +662,7 @@ removeContactListUsers() {
                 console.log( index + "value" + value );
             });
             swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.invalid_Contacts(this.pagination);
         },
         error => this.logger.error( error ),
         () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
