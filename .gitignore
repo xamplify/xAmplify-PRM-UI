@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /XtremandApp
+/test
 
 # dependencies
 /node_modules
