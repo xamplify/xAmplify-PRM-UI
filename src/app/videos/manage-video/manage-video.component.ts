@@ -320,7 +320,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         const timevalue = this;
         setTimeout(function() {
         	if( timevalue.showUpdatevalue === true) {
-          //  $("#showUpdatevalue").slideUp(500);
+              $("#showUpdatevalue").slideUp(500);
             }
         	else $("#message").slideUp(500);
           }, 3000);

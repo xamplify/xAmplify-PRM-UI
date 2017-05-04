@@ -47,14 +47,14 @@
                    <div class="input-group" style="width: 100%;">
                    <div id="" style="width: 100%; margin-left: auto;margin-right: auto;text-align: right;display: block;">
 					<div id="script" style="display: block;">
-						<textarea id="script-text" style="width: 100% ;height:50px;line-height:16px;"  [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" 
+						<textarea id="script-text" style="width: 100% ;height:55px;line-height:16px; font-size: 14px;"  [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" 
 						[ngModelOptions]="{standalone:true}" placeholder=" Don't forget what you want to say. Add your script here.">
-						</textarea>
+						</textarea>	
 					</div>
 					
 					<div style="margin-bottom: 5px;" id="scrollSpeedDiv">
 						<p style="display:inline;padding-right: 5px;">Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
-						<input type="range" [class.customDisableCss]="RecordSave==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
+						<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
 						 style="border: 0px solid #cecece; width: 42%;display:inline;padding-right: 0px;">
 					    <span style="display:inline;color: red;font-weight: bold;">{{changeVolume}}</span>
 					    <input class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true">
@@ -108,9 +108,12 @@
                       <img src="assets/images/default.gif" style="font-size:6px;width: 53px;"> 
                         <strong >Please wait ..!!! your video got uploaded & we are processing..!!!!</strong>
 	              </div>
-
-
                     </div> 
+                    <div *ngIf="maxSubscription ==true"  class="alert alert-danger alert-dismissable" style="margin-right: 304px;">
+                       <strong>Contact Admin!</strong> Maximum Disk Space Reached for you subscription.!!
+                       <a  class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    </div>
+                    
 						<table class="table" >
 							<tbody *ngIf="fileChecked==false || isDisable==false">
 								<tr *ngFor="let item of uploader.queue">

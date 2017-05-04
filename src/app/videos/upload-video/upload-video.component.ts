@@ -38,12 +38,17 @@ export class UploadVideoComponent implements OnInit {
     public isDisable :boolean;
     public isOndrive :boolean = true;
     
+    public checkSpeedValue = false;
+    public maxSubscription = false;
+    public redirectPge = false;
+    
     public player:any;
     public playerInit :boolean = false;
     
     public recordedVideo :any;
     public responsePath :string;
     public RecordSave :boolean = false;
+    public rageDisabled = false;
     public saveVideo :boolean;
     public discardVideo :boolean;
     public closeModalId :boolean;
@@ -120,6 +125,7 @@ export class UploadVideoComponent implements OnInit {
                 this.processVideoResp = result;
                 console.log(result);
                 this.loading = false;
+                this.processing = false;
                 if (this.processVideoResp != null && this.processVideoResp.error==null) {
                     console.log("process video data :" + this.processVideoResp);
                     this.videoFileService.saveVideoFile = this.processVideoResp;
@@ -131,14 +137,17 @@ export class UploadVideoComponent implements OnInit {
                     console.log(this.videoFileService.actionValue);
                     if(this.playerInit ==true)
                         this.closeRecordPopup();
-                    this.router.navigateByUrl('/home/videos/manage_videos');
+                    if(this.redirectPge  == false)
+                      this.router.navigateByUrl('/home/videos/manage_videos');
                 }
                 else {
                 	if(this.processVideoResp.error == "Maximum Disk Space Reached for you subscription")
                 	{
                 		this.processing =  false;
                 		this.defaultSettings();
-                		swal( 'Contact Admin!', this.processVideoResp.error, 'error' );}
+                		this.maxSubscription = true;
+                		//swal( 'Contact Admin!', this.processVideoResp.error, 'error' );
+                		}
                 	else {
                 	console.log("process video data object is null please try again:");
                     this.player.recorder.reset();
@@ -262,6 +271,7 @@ export class UploadVideoComponent implements OnInit {
  closeRecordPopup(){
         $("#myModal").modal("hide");
         this.defaultSettings();
+        this.stop();
         this.isFileDrop =false;
         this.player.recorder.reset();
         this.saveVideo = false;
@@ -276,6 +286,7 @@ export class UploadVideoComponent implements OnInit {
   stop(){
         this.stopButtonShow  = false; //hide the stop button
         this.testSpeedshow = true; //show the test speed button
+        this.rageDisabled = false;
         $("#script-text").stop(true);
         
     }
@@ -284,13 +295,14 @@ export class UploadVideoComponent implements OnInit {
       $("#script-text").stop(true);
          $( "#script-text" ).scrollTop( 0 );
         if($("#script-text").val()==""){
-            //alert("Please Add your script and Test it back");
-            swal("Please Add your script and Test it back");
+            //swal("Please Add your script and Test it back");
         }else{
           this.stopButtonShow  = true; // stop button show 
           this.stopButtonDisabled = false;
           this.testSpeedshow = false; // hide the test speed button
-          let volume = this.changeVolume*10000;
+          this.rageDisabled = true;
+          this.checkSpeedValue = true;
+          let volume = this.changeVolume*60000;
              $( "#script-text" ).animate({scrollTop: $("#script-text").prop("scrollHeight")},
                         {
                         duration: volume,
@@ -300,7 +312,8 @@ export class UploadVideoComponent implements OnInit {
                   });
         }
     }
-    cameraChange(){
+  
+     cameraChange(){
         if(this.isChecked != true&&this.cloudDrive== false&&this.cloudDropbox==false &&this.cloudOneDrive==false&&this.cloudBox==false){
         this.camera = true;
         this.isDisable = true;
@@ -322,7 +335,7 @@ export class UploadVideoComponent implements OnInit {
            
              
          let self = this;
-         self.player = window["videojs"]("myVideo",
+         self.player = videojs("myVideo",
               {
                 controls: true,
                 loop: false,
@@ -378,9 +391,11 @@ export class UploadVideoComponent implements OnInit {
                      self.stopButtonDisabled = true; // stop button disabled in modal pop up
                      self.testSpeedshow  = true; //show the test speed button
                      self.testSpeeddisabled = true; //test speed button disabled
-                     let volume = self.changeVolume*10000;
+                    // let volume = self.changeVolume*10000;
+                     self.testSpeed();
+                     self.rageDisabled = true;
                      console.log('started recording!');
-                     $("#script-text").animate({ scrollTop: $("#script-text").prop("scrollHeight") }, volume);
+                    // $("#script-text").animate({ scrollTop: $("#script-text").prop("scrollHeight") }, volume);
                      self.saveVideo = false; //save button disabled
                      self.discardVideo = false; //discard button disabled
                  });
@@ -392,6 +407,8 @@ export class UploadVideoComponent implements OnInit {
                      self.testSpeeddisabled = false; // enabled the test speed button
                      self.closeModalId = true; //close button enabled
                      $(".video-js .vjs-fullscreen-control").show();
+                     self.stop();
+                     self.rageDisabled = false;
                      console.log('finished recording: ', self.player.recordedData);
                      self.recordedVideo = self.player.recordedData;
                  });
@@ -661,5 +678,9 @@ export class UploadVideoComponent implements OnInit {
            this.player.recorder.destroy();
            console.log("Destroyed Component completed");
            this.isChecked= false;
+           if(this.processing ==  true) {
+        	   this.redirectPge = true;
+        	   swal("Video is processing backend!", " your video will be saved as draft mode in manage videos!!") 
+           }
        }
 }
