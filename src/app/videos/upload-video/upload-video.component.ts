@@ -129,24 +129,23 @@ export class UploadVideoComponent implements OnInit {
                 if (this.processVideoResp != null && this.processVideoResp.error==null) {
                     console.log("process video data :" + this.processVideoResp);
                     this.videoFileService.saveVideoFile = this.processVideoResp;
-                    if (this.videoFileService.saveVideoFile.imageFiles == null)
-                        this.videoFileService.saveVideoFile.imageFiles = [];
-                    if (this.videoFileService.saveVideoFile.gifFiles == null)
-                        this.videoFileService.saveVideoFile.gifFiles = [];
+                    if (this.videoFileService.saveVideoFile.imageFiles == null){
+                        this.videoFileService.saveVideoFile.imageFiles = [];}
+                    if (this.videoFileService.saveVideoFile.gifFiles == null){
+                        this.videoFileService.saveVideoFile.gifFiles = []; }
                     this.videoFileService.actionValue = "Save";
                     console.log(this.videoFileService.actionValue);
-                    if(this.playerInit ==true)
-                        this.closeRecordPopup();
-                    if(this.redirectPge  == false)
-                      this.router.navigateByUrl('/home/videos/manage_videos');
+                    if(this.playerInit ==true){
+                        this.closeRecordPopup();}
+                    if(this.redirectPge  == false){
+                      this.router.navigateByUrl('/home/videos/manage_videos');}
                 }
                 else {
-                	if(this.processVideoResp.error == "Maximum Disk Space Reached for you subscription")
-                	{
-                		this.processing =  false;
+                	if(this.processVideoResp.error === "Maximum Disk Space Reached for you subscription")
+                	{   this.processing =  false;
                 		this.defaultSettings();
                 		this.maxSubscription = true;
-                		//swal( 'Contact Admin!', this.processVideoResp.error, 'error' );
+                		// swal( 'Contact Admin!', this.processVideoResp.error, 'error' );
                 		}
                 	else {
                 	console.log("process video data object is null please try again:");

@@ -40,6 +40,8 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
     public videoStartTime: number;
     public durationTime: number;
     public startOfthevideo:boolean  = true;  // need to remove and replace with this.saveVideoFile.startOfthevideo
+    public checkCalltoAction:boolean = false; // need to get the value from server
+    
     constructor(elementRef: ElementRef,private authenticationService: AuthenticationService, private videoFileService :VideoFileService,
             private userService :UserService) 
        {
@@ -55,7 +57,15 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
         this.videos.splice(position, 1);
         this.selectedVideo = videoFile;
         this.selectedPosition = position;
-        $('.vjs-default-skin.vjs-paused .vjs-big-play-button' ).show();
+        if(this.checkCalltoAction == true){   // need to get the value from server
+        	$('#overlay-modal').show();
+           $('.vjs-big-play-button').css('display', 'none');
+               }
+        else {
+        	$('#overlay-modal').hide();
+          $('.vjs-big-play-button').css('display', 'block');
+           }
+        
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
         this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
@@ -152,28 +162,24 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
     }
     
     ngAfterViewInit() {
-        
-       
-
-        this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
+  
+          this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
             // This is functionally the same as the previous example.
                // this.play();
-        	
-        
-            let player = this;
+        	  let player = this;
             var isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
             console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
             this.ready(function() {
-               // this.bigPlayButton.hide();
-               $('.vjs-default-skin.vjs-paused .vjs-big-play-button' ).hide();
-                if(isValid==true){
+              //  this.bigPlayButton.show();
+                if (isValid === true){
+                $('.vjs-big-play-button').css('display', 'none');
                 $('#example_video_11').append(
                         $('#overlay-modal').show()
                         );
                 $('#replay-video').click(function() {
                     $('#overlay-modal').hide();
                     player.play();
-                   });
+                                    });
                 $('#skipOverlay').click(function(){
                     $('#overlay-modal').hide();
                     player.play();
@@ -182,29 +188,28 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
                 else{
                     $('#overlay-modal').hide();
                     player.play();
-                }
+              }
             });
 
             this.on('seeking', function(){
-               
-            	
-            	//Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
+            	// Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
             });
 
             this.on('timeupdate', function(){
-              //var  startDuration = player.trimCurrentTime(player.currentTime());
-            	//var  startDuration = player.currentTime();
-                 console.log(this.currentTime());
+              // var  startDuration = player.trimCurrentTime(player.currentTime());
+            	// var  startDuration = player.currentTime();
+                // console.log(this.currentTime());
             });
-            
             this.on('play', function () {
-                console.log('play:'+player.duration());
+                        $('.vjs-big-play-button').css('display', 'none');
+                         //   console.log('play:'+player.duration());
                 // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
                 
             });
             this.on('pause', function () {
-                console.log("video paused at "+player.currentTime());
-               // Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
+                      //      $('.vjs-big-play-button').css('display', 'block');
+                           //  console.log("video paused at "+player.currentTime());
+               //  Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
             });
             
            this.on('ended', function() {
@@ -222,15 +227,17 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
                $('#replay-video1').click(function() {
                    $('#overlay-modal').hide();
                    player.play();
+                    $('.vjs-big-play-button').css('display', 'none');
                   });
                $('#skipOverlay').click(function() {
                    $('#overlay-modal').hide();
-                   //player.play();
+                   // player.play();
                   });
                }  // ended if condition
                 else {
                     $('#overlay-modal').hide();
-                    //player.play();
+                    // player.play();
+                     $('.vjs-big-play-button').css('display', 'none');
                 }
                });
            this.on('contextmenu', function(e) {
