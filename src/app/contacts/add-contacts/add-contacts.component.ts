@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params,RouterModule } from '@angular/router';
 import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
+import { Contacts } from '../models/contacts';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
 
@@ -70,10 +71,10 @@ export class AddContactsComponent implements OnInit {
     public salesforceContact :SalesforceContact;
     public getSalesforceConatactList :any;
     public storeLogin :any;
-    public gContacts : Set<SocialContact>;
-    public zContacts:Set<SocialContact>;
-    public salesforceContactUsers:Set<SocialContact>;
-    public salesforceContactslist:Set<SalesforceContact>;
+    public gContacts : SocialContact[] = new Array();
+    public zContacts:SocialContact[] =  new Array();
+    public salesforceContactUsers:SocialContact[] = new Array();
+    public salesforceContactslist:SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"]});
 
@@ -564,7 +565,7 @@ export class AddContactsComponent implements OnInit {
       .subscribe(
         data =>{
             this.getGoogleConatacts = data;
-            this.gContacts = new Set<SocialContact>();
+            //this.gContacts = new SocialContact();
             for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                 let socialContact = new SocialContact();
                 let user = new User();
@@ -572,7 +573,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-                this.gContacts.add( socialContact );
+                this.gContacts.push(socialContact );
             this.logger.info(this.getGoogleConatacts);
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#Gfile_preview" ).show();
@@ -585,6 +586,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#zohoContact_button" ).prop( 'disabled', true );
             $( "button#microsoftContact_button" ).prop( 'disabled', true );
             }
+            this.socialContact.contacts = this.gContacts;
          },
         error => this.logger.error(error),
         () => this.logger.log("googleContacts data :"+JSON.stringify(this.getGoogleConatacts.contacts))
@@ -600,7 +602,7 @@ export class AddContactsComponent implements OnInit {
       this.socialContact.contacts = this.gContacts;
       
       if ( this.model.contactListName != '' ) {
-          if ( this.gContacts.size > 0 ) {
+          if ( this.gContacts.length > 0 ) {
               this.logger.info( isValid );
               this.contactService.saveSocialContactList(this.socialContact)
                   .subscribe(
@@ -765,7 +767,7 @@ export class AddContactsComponent implements OnInit {
       .subscribe(
         data =>{
             this.getZohoConatacts = data;
-            this.zContacts = new Set<SocialContact>();
+           // this.zContacts = new SocialContact();
             for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                 let socialContact = new SocialContact();
                 let user = new User();
@@ -773,7 +775,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
-                this.zContacts.add( socialContact );
+                this.zContacts.push( socialContact );
             this.logger.info(this.getZohoConatacts);
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#Zfile_preview" ).show();
@@ -803,7 +805,7 @@ saveZohoContacts( isValid: boolean ) {
       this.socialContact.contacts = this.zContacts;
       
       if ( this.model.contactListName != '' ) {
-          if ( this.zContacts.size > 0 ) {
+          if ( this.zContacts.length > 0 ) {
               this.logger.info( isValid );
               this.contactService.saveSocialContactList(this.socialContact)
                   .subscribe(
@@ -955,7 +957,7 @@ getSalesforceContacts(contactType:any){
     .subscribe(
       data =>{
           this.getSalesforceConatactList = data;
-          this.salesforceContactUsers = new Set<SocialContact>();
+          //this.salesforceContactUsers = new SocialContact();
           for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
               let socialContact = new SocialContact();
               let user = new User();
@@ -963,7 +965,7 @@ getSalesforceContacts(contactType:any){
                   socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                   socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                   socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
-              this.salesforceContactUsers.add( socialContact );
+              this.salesforceContactUsers.push( socialContact );
           this.logger.info(this.getSalesforceConatactList);
           $( "button#sample_editable_1_new" ).prop( 'disabled', false );
           $( "#Sfile_preview" ).show();
@@ -1017,7 +1019,7 @@ getSalesforceListViewContacts(contactType:any){
     .subscribe(
       data =>{
           this.getSalesforceConatactList = data;
-          this.salesforceContactUsers = new Set<SocialContact>();
+         // this.salesforceContactUsers = new Set<SocialContact>();
           for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
               let socialContact = new SocialContact();
               let user = new User();
@@ -1025,7 +1027,7 @@ getSalesforceListViewContacts(contactType:any){
                   socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                   socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                   socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
-              this.salesforceContactUsers.add( socialContact );
+              this.salesforceContactUsers.push( socialContact );
           this.logger.info(this.getSalesforceConatactList);
           $( "button#sample_editable_1_new" ).prop( 'disabled', false );
           $( "#Sfile_preview" ).show();
@@ -1091,7 +1093,7 @@ saveSalesforceContacts( isValid: boolean ) {
     this.socialContact.contacts = this.salesforceContactUsers;
     
     if ( this.model.contactListName != '' ) {
-        if ( this.salesforceContactUsers.size > 0 ) {
+        if ( this.salesforceContactUsers.length > 0 ) {
             this.logger.info( isValid );
             this.contactService.saveSocialContactList(this.socialContact)
                 .subscribe(

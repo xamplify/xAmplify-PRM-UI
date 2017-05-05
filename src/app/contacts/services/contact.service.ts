@@ -24,7 +24,7 @@ declare var swal: any;
 export class ContactService {
     
     public successMessage: boolean;
-    public socialContact : SocialContact;
+    public socialContact : SocialContact[];
     public zohoContact : ZohoContact;
     public salesforceContact : SalesforceContact;
     public salesforceListViewContact : SalesforceListViewContact;  
@@ -230,7 +230,7 @@ export class ContactService {
             
     }
     
-    saveSocialContactList(socialContact :SocialContact): Observable<User[]> {
+    saveSocialContactList(socialContact :SocialContact): Observable<Response> {
         
         this.successMessage = true;
         
