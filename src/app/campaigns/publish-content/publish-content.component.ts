@@ -674,6 +674,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                             this.campaign.userListIds = [];
                         }
                     this.launchSuccess = true;
+                    setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 2000);
                     swal.close();
                 }else{
                     swal( "Please Contact Admin", data, "error" );

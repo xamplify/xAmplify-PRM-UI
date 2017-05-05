@@ -6,14 +6,15 @@
 	"apps": [
 		{
 			"root": "src",
-			"outDir": "XtremandApp",
+			"outDir": "xtremandApp",
 			"assets": [
 			             "assets/images",
                          "favicon.ico",
 						 "assets/admin/pages/img",
 						 "assets/admin/layout2/img",
 						 "assets/admin/pages/media",
-					     "assets/global/img"
+					     "assets/global/img",
+					     "assets/js/indexjscss"
 			  ],
 			"index": "index.html",
 			"main": "main.ts",

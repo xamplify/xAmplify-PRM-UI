@@ -55,6 +55,7 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
         this.videos.splice(position, 1);
         this.selectedVideo = videoFile;
         this.selectedPosition = position;
+        $('.vjs-default-skin.vjs-paused .vjs-big-play-button' ).show();
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
         this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
@@ -154,7 +155,7 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
         
        
 
-        this.videoJSplayer = window["videojs"](document.getElementById('example_video_11'), {}, function() {
+        this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
             // This is functionally the same as the previous example.
                // this.play();
         	
@@ -163,7 +164,8 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
             var isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
             console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
             this.ready(function() {
-                this.bigPlayButton.hide();
+               // this.bigPlayButton.hide();
+               $('.vjs-default-skin.vjs-paused .vjs-big-play-button' ).hide();
                 if(isValid==true){
                 $('#example_video_11').append(
                         $('#overlay-modal').show()

@@ -106,7 +106,7 @@ th, td {
         	<form  role="form" [formGroup]="publishAsForm" class="form-horizontal form-bordered form-label-stripped">
         	 <button type="button"  style="float: right" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" [disabled]="!publishAsForm.valid" >FORWARD</button>
             <div class="col-md-12 well text-center" style="margin-top: 10px;">
-            	   <div *ngIf="launchSuccess" class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Campaign Created Successfully</strong></div>
+            	   <div *ngIf="launchSuccess" id="lanchSuccess" class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Campaign Created Successfully</strong></div>
 					<div *ngIf="!isPublishAsSelected"  class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         				<strong>Please Select Email Template Type</strong>
         			</div>

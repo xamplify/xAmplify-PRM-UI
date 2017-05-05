@@ -551,8 +551,16 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         // this.saveVideoFile.lowerText = lowerText;
     }
     enableCallToActionMethod(event: any) {
-        if (event === true) this.enableCalltoAction = true;
-        else this.enableCalltoAction = false;
+        if (event === true)
+        	{
+        	this.enableCalltoAction = true;   // need to store the value in server
+            $('#overlay-modal').show();
+            this.videoJSplayer.pause();
+        	}
+        else {this.enableCalltoAction = false; // need to store the value in server
+           $('#overlay-modal').hide();
+           this.videoJSplayer.play();
+        }
     }
 
     validateEmail(email: string) {
@@ -750,7 +758,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
     ngAfterViewInit(){
     	
-    	 this.videoJSplayer = window['videojs'](document.getElementById('example_video_11'), {}, function() {
+    	 this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
              // this.play();
              const player = this;
              const isValid = JSON.parse(localStorage.getItem('isOverlayValue')); // gettting local storage value here isValid value is true
