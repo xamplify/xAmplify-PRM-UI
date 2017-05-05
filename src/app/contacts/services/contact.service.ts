@@ -3,7 +3,6 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ContactList } from '../models/contact-list';
 import { SocialContact } from '../models/social-contact';
-import { SocialContactDetails } from '../models/social-contacts-details';
 import { ZohoContact } from '../models/zoho-contact';
 import {SalesforceContact} from '../models/salesforce-contact';
 import {SalesforceListViewContact} from '../models/salesforce-list-view-contact';
