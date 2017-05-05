@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Logger } from "angular2-logger/core";
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
+import { UserListIds } from '../models/user-listIds';
 
 declare var Metronic : any;
 declare var Layout : any;
@@ -46,6 +47,11 @@ export class EditContactsComponent implements OnInit {
     public csvFileUsers: Array<User>;
     public uploader: FileUploader;
     public clickBoard: boolean = false;
+    public filePrevew: boolean = false;
+    public successMessage1: boolean = false;
+    public successMessage2: boolean = false;
+    public successMessage3: boolean = false;
+    
     public users: Array<User>;
     activeUsersCount : number;
     inActiveUsersCount: number;
@@ -66,6 +72,7 @@ export class EditContactsComponent implements OnInit {
     public invalidContactUsers: Array<ContactList>;
     public unsubscribedContactUsers: Array<ContactList>;
     public nonActiveContactUsers: Array<ContactList>;
+    public userListIds: Array<UserListIds>;
     
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
@@ -94,7 +101,8 @@ export class EditContactsComponent implements OnInit {
         this.readFiles( input.files );
         this.logger.info( "coontacts preview" );
         $( "#sample_editable_1" ).hide();
-        $( "#file_preview" ).show();
+        //$( "#file_preview" ).show();
+        this.filePrevew = true;
         $( "button#add_contact" ).prop( 'disabled', true );
         $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
     }
@@ -151,7 +159,8 @@ export class EditContactsComponent implements OnInit {
                         $( this ).remove();
                         $( "button#upload_csv" ).prop( 'disabled', false );
                         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
-                        $( "#saveContactsMessage" ).show();
+                        //$( "#saveContactsMessage" ).show();
+                        this.successMessage1 = true;
                         setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     });
                     this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
@@ -176,13 +185,15 @@ export class EditContactsComponent implements OnInit {
                     $( this ).remove();
                 });
                 this.users.length = 0;
-                $( "#saveContactsMessage2" ).show();
+                //$( "#saveContactsMessage2" ).show();
+                this.successMessage3 = true;
                 setTimeout(function() { $("#saveContactsMessage2").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                 $( "#uploadCsvUsingFile" ).hide();
                 $( "#sample_editable_1" ).show();
-                $( "#file_preview" ).hide();
+               // $( "#file_preview" ).hide();
+                this.filePrevew = false;
                 this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
             },
             error => this.logger.error( error ),
@@ -266,7 +277,8 @@ export class EditContactsComponent implements OnInit {
         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
         $( "button#add_contact" ).prop( 'disabled', false );
         this.users.length = 0;
-        $( "#file_preview" ).hide();
+        //$( "#file_preview" ).hide();
+        this.filePrevew = false;
         $( "#sample_editable_1" ).show();
         this.csvFileUsers.length = null;
     }
@@ -352,7 +364,8 @@ export class EditContactsComponent implements OnInit {
         } else {
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( "#clipBoardValidationMessage" ).show();
-            $( "#file_preview" ).hide();
+           // $( "#file_preview" ).hide();
+            this.filePrevew = false;
         }
         this.logger.info( this.clipboardUsers );
     }
@@ -378,7 +391,8 @@ export class EditContactsComponent implements OnInit {
 
                 });
                 this.clickBoard = false;
-                $( "#saveContactsMessage1" ).show();
+                //$( "#saveContactsMessage1" ).show();
+                this.successMessage2 = true;
                 setTimeout(function() { $("#saveContactsMessage1").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#upload_csv" ).prop( 'disabled', false );
@@ -440,6 +454,7 @@ export class EditContactsComponent implements OnInit {
     }*/
     
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination) {
+        
         this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;
         //this.singleContactListTotalUsersCount = ("Contacts");
@@ -610,6 +625,120 @@ export class EditContactsComponent implements OnInit {
             );
     }
     
+
+    invalidContactsChecked( event: boolean ) {
+        this.logger.info( "check value" + event )
+        this.invalidContactUsers.forEach(( invalidContacts ) => {
+            if ( event == true )
+                invalidContacts.isChecked = true;
+            else{
+                invalidContacts.isChecked = false;
+            }
+        })
+    }
+
+    removeInvalidContactListUsers() {
+       
+        
+        var removeUserIds = new Array();
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var id = $( this ).val();
+            removeUserIds.push( id );
+        });
+        this.logger.info( removeUserIds );
+        this.contactService.removeContactList( this.contactListId, removeUserIds )
+            .subscribe(
+            (data:any) => {
+                data = data;
+                console.log( "update invalidContacts ListUsers:" + data );
+                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                $.each( removeUserIds, function( index: number, value: any ) {
+                    $( '#row_' + value ).remove();
+                    console.log( index + "value" + value );
+                });
+                this.invalid_Contacts(this.pagination);
+
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )
+        
+        /*var removeUserIds = new Array();
+        let invalidUsers = new Array();
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            this.invalidIds = $( this ).val();
+            removeUserIds.push( this.invalidIds );
+            this.invalidIds = this.removeUserIds;
+        });
+        this.logger.info( removeUserIds );
+        for(var i=0; i< this.userListIds.length;i++)
+        {
+         if(removeUserIds[i] == this.userListIds[i].id) {
+             var object  = {
+                         "id": this.userListIds[i].id,
+                         "userName": null,
+                         "emailId": this.userListIds[i].emailId,
+                         "firstName": this.userListIds[i].firstName,
+                         "lastName": this.userListIds[i].lastName,
+                         "mobileNumber": null,
+                         "interests": null,
+                         "occupation": null,
+                         "description": null,
+                         "websiteUrl": null,
+                         "profileImagePath": null,
+                         "userListIds": this.userListIds[i].userListIds
+             }
+             console.log(object);
+             invalidUsers.push(object);
+             
+         }       
+        }
+        this.logger.info( invalidUsers);
+        this.contactService.removeInvalidContactListUsers(invalidUsers )
+            .subscribe(
+            data => {
+                data = data;
+                this.logger.log(data);
+                console.log( "update Contacts ListUsers:" + data );
+                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                $.each( removeUserIds, function( index: number, value: any ) {
+                    $( '#row_' + value ).remove();
+                    console.log( index + "value" + value );
+                });
+                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                this.invalid_Contacts(this.pagination);
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )*/
+    }
+
+    invalidContactsShowAlert() {
+
+        var removeUserIds = new Array();
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var id = $( this ).val();
+            removeUserIds.push( id );
+        });
+        if ( removeUserIds.length != 0 ) {
+            this.logger.info( "contactListId in sweetAlert() ");
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.removeInvalidContactListUsers();
+            })
+        }
+    }  
+
     ngOnInit() {
         //this.contactsCount();
         this.checkingLoadContactsCount = true;
@@ -627,10 +756,10 @@ export class EditContactsComponent implements OnInit {
         };
 
         try {
-            $( "#saveContactsMessage" ).hide();
-            $( "#saveContactsMessage1" ).hide();
-            $( "#saveContactsMessage2" ).hide();
-            $( "#file_preview" ).hide();
+            //$( "#saveContactsMessage" ).hide();
+            //$( "#saveContactsMessage1" ).hide();
+            //$( "#saveContactsMessage2" ).hide();
+            //$( "#file_preview" ).hide();
             //caculations
             Metronic.init(); // init metronic core components
             Layout.init(); // init current layout

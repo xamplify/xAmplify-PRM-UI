@@ -1,5 +1,5 @@
 <!-- BEGIN PAGE CONTENT-->
-<div id="manageContacts" *ngIf="showEditContactData">
+<div class="row" id="manageContacts" *ngIf="showEditContactData">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
@@ -198,17 +198,17 @@
 							</tr>
 						</tbody>
 					</table>
-					<div id="saveContactsMessage"
+					<div id="saveContactsMessage" *ngIf="successMessage1"
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
 					</div>
-					<div id="saveContactsMessage1"
+					<div id="saveContactsMessage1" *ngIf="successMessage2"
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
 					</div>
-				<div id="saveContactsMessage2"
+				<div id="saveContactsMessage2" *ngIf="successMessage3"
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
@@ -241,7 +241,7 @@
 					</div>
 				</div>
 				
-						<div class="row" id="file_preview">
+						<div class="row" id="file_preview" *ngIf="filePrevew">
 							<div class="col-md-12">
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
 								<div class="portlet box blue">
@@ -489,7 +489,7 @@
 										
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row" *ngIf="showAllContactData" >
-				<form class="form-inline" *ngIf="allContactData==true">
+				<!-- <form class="form-inline" *ngIf="allContactData==true">
   <div class="col-xs-0 col-md-6 form-group" style="margin-bottom: 8px">
     <label for="name">ContactListName:</label>
     <input type="text" class="form-control" [(ngModel)]="contactListName" id="contactListName" name="contactListName" placeholder="Contact List Name">
@@ -498,14 +498,14 @@
   <button>Cancel</button>
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
-  </form>
+  </form> -->
 					<div class="col-md-12">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
 						<div class="portlet box blue">
 							<div class="portlet-title">
-								<div class="caption" *ngIf="allContactData==true">
+								<!-- <div class="caption" *ngIf="allContactData==true">
 									<i class="fa fa-edit"></i>List of All Contacts
-								</div>
+								</div> -->
 								<div class="caption" *ngIf="activeContactsData==true">
 									<i class="fa fa-edit"></i>List of Active Contacts
 								</div>
@@ -559,9 +559,9 @@
 								<table class="table table-striped table-hover table-bordered" id="sample_editable_1" *ngIf="allContacts">
 								<thead >
 								<tr >
-								<th *ngIf="allContactData==true"><input type="checkbox" [checked]="isAvailable"
+								<!-- <th *ngIf="allContactData==true"><input type="checkbox" [checked]="isAvailable"
 									(change)="checked($event.target.checked)">
-									</th>
+									</th> -->
 									<th *ngIf="invalidContactData==true"><input type="checkbox" [checked]="isAvailable"
 									(change)="invalidContactsChecked($event.target.checked)">
 									</th>
@@ -587,10 +587,10 @@
 								</thead>
 								<tbody>
 								<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
-									<th *ngIf="allContactData==true">
+									<!-- <th *ngIf="allContactData==true">
 									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									 id="row_{{allcontacts.id}}" value="{{allcontacts.emailId}},{{allcontacts.firstName}},{{allcontacts.lastName}}" [(ngModel)]="allcontacts.isChecked">
-									 </th>
+									 </th> -->
 									 <th *ngIf="invalidContactData==true">
 									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									 id="row_{{allcontacts.id}}" value="{{allcontacts.id}}" [(ngModel)]="allcontacts.isChecked">

@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ContactList } from '../models/contact-list';
 import { SocialContact } from '../models/social-contact';
+import { SocialContactDetails } from '../models/social-contacts-details';
 import { ZohoContact } from '../models/zoho-contact';
 import {SalesforceContact} from '../models/salesforce-contact';
 import {SalesforceListViewContact} from '../models/salesforce-list-view-contact';
@@ -163,7 +164,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url =this.url + "userlist/" + contactListId + "/update?access_token=" + this.authenticationService.access_token;
+        var url =this.url + "userlist/" + contactListId + "/update?&access_token=" + this.authenticationService.access_token;
         this.logger.info(users);
         return this._http.post(url, options, requestoptions)
             .map( this.extractData )
@@ -243,7 +244,7 @@ export class ContactService {
              headers: headers
          };
          
-        var url = this.authenticationService.REST_URL+ "saveContacts"+ "?access_token=" + this.authenticationService.access_token;
+        var url = this.authenticationService.REST_URL+ "saveContacts?access_token=" + this.authenticationService.access_token;
         return this._http.post(url,options,requestoptions)
             .map( this.extractData )
             .catch( this.handleError );
