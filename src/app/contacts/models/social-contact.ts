@@ -1,4 +1,5 @@
 import { ListView } from "../models/list-view";
+import { Contacts } from "../models/contacts";
 export class SocialContact{
     firstName: string;
     lastName: string;
@@ -11,7 +12,7 @@ export class SocialContact{
     contactType: string;
     alias: string;
     Listview : ListView[];
-    contacts: Set<SocialContact>;
+    contacts: SocialContact[];
     id:number;
     checked:boolean=true;
 }

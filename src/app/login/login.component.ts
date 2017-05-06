@@ -148,7 +148,7 @@ export class LoginComponent implements OnInit {
 
 
     signUp() {
-        swal( { title: 'Submiting User Details', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+      //  swal( { title: 'Submiting User Details', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         this.signUpUser = this.signUpForm.value;
         this.userService.signUp( this.signUpUser )
             .subscribe(
@@ -161,7 +161,7 @@ export class LoginComponent implements OnInit {
                         this.signUpForm.reset();
                         this.showLogin();
                         this.userActive = true;
-                        swal.close();
+        //                swal.close();
                     }
                 } else {
                     swal( "Please Contact Admin", "", "error" );
@@ -318,7 +318,7 @@ export class LoginComponent implements OnInit {
 
     /********************Forgot Password******************/
     sendPassword() {
-        swal( { title: 'Sending Password', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+       // swal( { title: 'Sending Password', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         this.userService.sendPassword( this.forgotPasswordForm.value.forgotPasswordEmailId )
             .subscribe(
             data => {
@@ -330,7 +330,7 @@ export class LoginComponent implements OnInit {
                         this.forgotPasswordForm.reset();
                         this.showLogin();
                         this.passwordSuccess = true;
-                        swal.close();
+                       // swal.close();
                     }
                 } else {
                     swal( "Please Contact Admin", "", "error" );

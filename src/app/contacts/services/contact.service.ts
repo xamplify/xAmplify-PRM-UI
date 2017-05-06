@@ -24,7 +24,7 @@ declare var swal: any;
 export class ContactService {
     
     public successMessage: boolean;
-    public socialContact : SocialContact;
+    public socialContact : SocialContact[];
     public zohoContact : ZohoContact;
     public salesforceContact : SalesforceContact;
     public salesforceListViewContact : SalesforceListViewContact;  
@@ -163,7 +163,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url =this.url + "userlist/" + contactListId + "/update?access_token=" + this.authenticationService.access_token;
+        var url =this.url + "userlist/" + contactListId + "/update?&access_token=" + this.authenticationService.access_token;
         this.logger.info(users);
         return this._http.post(url, options, requestoptions)
             .map( this.extractData )
@@ -230,7 +230,7 @@ export class ContactService {
             
     }
     
-    saveSocialContactList(socialContact :SocialContact): Observable<User[]> {
+    saveSocialContactList(socialContact :SocialContact): Observable<Response> {
         
         this.successMessage = true;
         
@@ -243,7 +243,7 @@ export class ContactService {
              headers: headers
          };
          
-        var url = this.authenticationService.REST_URL+ "saveContacts"+ "?access_token=" + this.authenticationService.access_token;
+        var url = this.authenticationService.REST_URL+ "saveContacts?access_token=" + this.authenticationService.access_token;
         return this._http.post(url,options,requestoptions)
             .map( this.extractData )
             .catch( this.handleError );
