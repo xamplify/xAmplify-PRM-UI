@@ -1,12 +1,8 @@
-
  <style type="text/css">
 .customDisableCss{
 	 cursor:not-allowed !important; opacity:0.5;
 	 }
-        
- a.disabled {
-	 pointer-events: none; cursor: not-allowed; 
-	 }
+ a.disabled { pointer-events: none; cursor: not-allowed; }
 
 </style> 
 
@@ -58,6 +54,11 @@
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>{{showVideoName}} video file Updated Successfully!</strong>
 			    </div>
+			      <div *ngIf="deletedVideo" class="col-md-6"  id="deleteMesg"
+						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					   <strong> {{deleteVideoName}} video deleted Successfully!</strong> 
+			      </div> 
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">
 							<div class="tab-content">
@@ -70,13 +71,18 @@
                                                 <option *ngFor="let category of categories" [ngValue]="category.id" class="colorSelect">{{category.name}}</option>
                                              </select>
 										</div>
-									    <div style="display:inline;margin-left: 506px;" >
+									   <!--  <div style="display:inline;margin-left: 506px;" >
                                               <label >Sort By:</label>
 										       <select class="dropDownCss" [(ngModel)]="videoSort"  (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
-										</div>
+										</div> -->
 										<div class="inputs" align="right"  style="float:right">
+										  <div style="float:left">  <label >Sort By:</label>
+										       <select class="dropDownCss" [(ngModel)]="videoSort"  (ngModelChange)="selectedSortByValue($event)">
+													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+											   </select>
+										   </div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
@@ -109,7 +115,7 @@
 														<a class="mix-preview2 fancybox-button"  routerLink="../../campaigns" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
 															<i class="fa fa-bullhorn"></i>
 														</a>
-														 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i)" onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
+														 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 								                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 							                             </a>
 														</div>

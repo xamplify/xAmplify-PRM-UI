@@ -64,6 +64,8 @@ export class UploadVideoComponent implements OnInit {
     public textAreaDisable:boolean;
     public hideSaveDiscard:boolean;
     
+    public maxTimeDuration :number;
+    
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService) {
@@ -81,7 +83,9 @@ export class UploadVideoComponent implements OnInit {
             this.hideSaveDiscard = true;
             this.isFileProgress = false;
             // this.stopButtonShow = false;
-             this.textAreaDisable = true;
+            this.textAreaDisable = true;
+            this.maxTimeDuration = 3600;
+             
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
@@ -342,7 +346,7 @@ export class UploadVideoComponent implements OnInit {
                 height: 360,
                 plugins: {
                     record: {
-                        maxLength: 180,
+                        maxLength: self.maxTimeDuration,
                         debug: true,
                         audio: true,
                         video: {
