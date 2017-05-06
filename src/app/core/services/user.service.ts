@@ -39,7 +39,7 @@ signUp(data:User){
 }
 
 sendPassword(emailId:string){
-    return this.http.post(this.URL+"register/forgotpassword?emailId=",emailId)
+    return this.http.get(this.URL+"register/forgotpassword?emailId="+emailId)
     .map(this.extractData)
     .catch(this.handleError);
    
