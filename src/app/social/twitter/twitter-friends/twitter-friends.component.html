@@ -2,7 +2,7 @@
 <div class="page-bar square-box margin-bottom-10px">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="['../../dashboard']">Home</a> <i class="fa fa-angle-right"></i></li>
-		<li>Followers</li>
+		<li>Twitter Friends</li>
 	</ul>
 </div>
 
@@ -22,7 +22,7 @@
 <div class="ProfileNameTruncated">
   <div class="u-textTruncate u-inlineBlock ProfileNameTruncated-withBadges ProfileNameTruncated-withBadges--1">
     <a class="ProfileNameTruncated-link u-textInheritColor js-nav js-action-profile-name" [routerLink]="['../twitter-user', twitterProfile.id]" data-aria-label-part="">{{twitterProfile.name}}</a>
-  	<img *ngIf="twitterProfile.verified && true" alt="Verified account" src="http://paidpertweet.com/v.png" style="float: right;width: 20px;height: 20px;margin-left: 2px;">
+  	<img *ngIf="twitterProfile.verified && true" alt="Verified account" src="https://www.trolldor.com/assets/img/verificado.png" style="float: right;width: 20px;height: 20px;margin-left: 2px;">
   </div>
 </div>
       
