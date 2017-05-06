@@ -50,6 +50,8 @@ showAll: boolean;
 showEdit: boolean;
 showAllContactData: boolean = false;
 showManageContactData: boolean = true;
+deleteSucessMessage : boolean;
+invalidDeleteSucessMessage : boolean;
 
 allContactData : boolean;
 activeContactsData : boolean;
@@ -207,11 +209,15 @@ deleteContactList( contactListId: number ) {
             console.log( "MangeContacts deleteContactList success : " + data );
             this.contactsCount();
             $( '#contactListDiv_' + contactListId ).remove();
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.loadContactLists(this.pagination);
+            this.deleteSucessMessage = true;
+            setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
         },
         error => this.logger.error( error ),
         () => this.logger.info( "deleted completed" )
         );
+    this.deleteSucessMessage = false;
 }
 
 showAlert( contactListId: number ) {
@@ -403,6 +409,7 @@ editContactList( contactSelectedListId: number ) {
 backToManageContactPage() {
     this.showAll = true;
     this.showEdit = false;
+    $( "#showMessage" ).hide();
     this.showAllContactData = false;
     this.showManageContactData = true;
     this.pagination = new Pagination();
@@ -656,17 +663,21 @@ removeContactListUsers() {
             data = data;
             this.logger.log(data);
             console.log( "update Contacts ListUsers:" + data );
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            
             $.each( removeUserIds, function( index: number, value: any ) {
                 $( '#row_' + value ).remove();
                 console.log( index + "value" + value );
             });
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.invalidDeleteSucessMessage = true;
+            setTimeout(function() { $("#showDeleteMessage").slideUp(500); }, 2000);
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
             this.invalid_Contacts(this.pagination);
         },
         error => this.logger.error( error ),
         () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
         )
+        this.invalidDeleteSucessMessage = false;
 }
 
 invalidContactsShowAlert() {

@@ -138,6 +138,10 @@
 			</div>
 		</div>
 	</div>
+	<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong> Contact List has been Deleted successfully.
+	</div>
 	<div class="row mix-grid" style="margin-top: 10px">
 		<div *ngFor="let contactList of pagination.pagedItems">
 			<div class="col-md-3 col-sm-4 mix category_1 mix_all"
@@ -338,7 +342,10 @@
 					</ul>
 					
 				</div>
-			
+	<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong> Contact List has been Deleted successfully.
+	</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">

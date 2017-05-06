@@ -48,9 +48,9 @@ export class EditContactsComponent implements OnInit {
     public uploader: FileUploader;
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
-    public successMessage1: boolean = false;
-    public successMessage2: boolean = false;
-    public successMessage3: boolean = false;
+    public successMessage: boolean;
+    //public successMessage2: boolean;
+   // public successMessage3: boolean;
     
     public users: Array<User>;
     activeUsersCount : number;
@@ -73,6 +73,8 @@ export class EditContactsComponent implements OnInit {
     public unsubscribedContactUsers: Array<ContactList>;
     public nonActiveContactUsers: Array<ContactList>;
     public userListIds: Array<UserListIds>;
+    deleteSucessMessage : boolean;
+    invalidDeleteSucessMessage : boolean;
     
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
@@ -160,9 +162,9 @@ export class EditContactsComponent implements OnInit {
                         $( "button#upload_csv" ).prop( 'disabled', false );
                         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                         //$( "#saveContactsMessage" ).show();
-                        this.successMessage1 = true;
-                        setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     });
+                    this.successMessage = true;
+                    setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
                     //this.users.length = 0;
                     this.cancelContacts();
@@ -170,6 +172,7 @@ export class EditContactsComponent implements OnInit {
                 error => this.logger.error( error ),
                 () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
                 )
+                this.successMessage = false;
         }
     }
 
@@ -186,8 +189,8 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.users.length = 0;
                 //$( "#saveContactsMessage2" ).show();
-                this.successMessage3 = true;
-                setTimeout(function() { $("#saveContactsMessage2").slideUp(500); }, 2000);
+                this.successMessage = true;
+                setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                 $( "#uploadCsvUsingFile" ).hide();
@@ -199,6 +202,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
+            this.successMessage = false;
     }
 
     removeContactListUsers( contactListId: number ) {
@@ -219,7 +223,9 @@ export class EditContactsComponent implements OnInit {
                 this.invlidContactsCount = data.invalidUsers;
                 this.unsubscribedContacts = data.unsubscribedUsers;
                 console.log( "update Contacts ListUsers:" + data );
-                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
                 $.each( removeUserIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
@@ -230,6 +236,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
+            this.deleteSucessMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -392,8 +399,8 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.clickBoard = false;
                 //$( "#saveContactsMessage1" ).show();
-                this.successMessage2 = true;
-                setTimeout(function() { $("#saveContactsMessage1").slideUp(500); }, 2000);
+                this.successMessage = true;
+                setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#upload_csv" ).prop( 'disabled', false );
                 this.clipboardUsers.length = 0;
@@ -403,7 +410,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
-
+            this.successMessage = false;
     }
 
     saveContacts( contactListId: number ) {
@@ -651,7 +658,9 @@ export class EditContactsComponent implements OnInit {
             (data:any) => {
                 data = data;
                 console.log( "update invalidContacts ListUsers:" + data );
-                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                this.invalidDeleteSucessMessage = true;
+                setTimeout(function() { $("#showInvalidDeleteMessage").slideUp(500);}, 2000);
                 $.each( removeUserIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
@@ -662,7 +671,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
-        
+            this.invalidDeleteSucessMessage = false;
         /*var removeUserIds = new Array();
         let invalidUsers = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
