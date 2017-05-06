@@ -75,6 +75,9 @@ export class EditContactsComponent implements OnInit {
     public userListIds: Array<UserListIds>;
     deleteSucessMessage : boolean;
     invalidDeleteSucessMessage : boolean;
+
+    contactUsersId:number; 
+    contactIds = [];
     
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
@@ -747,7 +750,91 @@ export class EditContactsComponent implements OnInit {
             })
         }
     }  
+    
+   /* deleteContactListUsers(selectedId: any) {
+        //this.logger.info( "MangeContacts deleteContactList : " + contactListId );
+        this.contactService.removeContactList(this.contactListId, selectedId )
+            .subscribe(
+            data => {
+                console.log( "MangeContacts deleteContactList success : " + data );
+                //this.contactsCount();
+                //$( '#contactListDiv_' + contactListId ).remove();
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //this.loadContactLists(this.pagination);
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "deleted completed" )
+            );
+        this.deleteSucessMessage = false;
+        
+    }
+    showDeleteAlert( selectedId: any ) {
+        this.logger.info( "contactListId in sweetAlert() " + selectedId );
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
 
+        }).then( function( myData: any ) {
+            console.log( "ManageContacts showAlert then()" + myData );
+            self.deleteContactListUsers( selectedId );
+
+            //this.deleteContactList(contactListId);
+        })
+    }
+*/
+    removeContactListUsers1( contactId: number ) {
+        this.contactUsersId = contactId;
+        this.contactIds[0]=this.contactUsersId;
+        this.contactService.removeContactList( this.contactListId, this.contactIds)
+            .subscribe(
+            (data:any) => {
+                data = data;
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount = data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.allUsers = this.allContacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
+                console.log( "update Contacts ListUsers:" + data );
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
+                this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )
+            this.deleteSucessMessage = false;
+    }
+
+    showAlert1( contactId: number ) {
+      
+        /*this.contactUsersId = contactId;
+        this.contactIds1.push(this.contactUsersId);*/
+        this.contactIds.push(this.contactUsersId)
+        this.logger.info( "contactListId in sweetAlert() " + this.contactIds );
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.removeContactListUsers1(contactId );
+            })
+    }
     ngOnInit() {
         //this.contactsCount();
         this.checkingLoadContactsCount = true;

@@ -317,8 +317,8 @@
 								<td>{{contact.firstName}}</td>
 								<td class="center">{{contact.lastName}}</td>
 								<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-								<td><a class="delete"
-									(click)="showAlert(selectedContactListId)"> Delete </a></td>
+								<td><a class="delete" (click)="showAlert1(contact.id)">
+									 Delete </a></td>
 
 							</tr>
 							<tr *ngFor="let newContact of users; let i = index"

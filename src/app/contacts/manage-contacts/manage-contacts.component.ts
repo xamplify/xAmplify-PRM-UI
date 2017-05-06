@@ -59,7 +59,11 @@ invalidContactData : boolean;
 unsubscribedContactsData : boolean;
 nonActiveContactsData : boolean;
 
+contactListNameError : boolean;
+contactListUsersError : boolean;
+
 public contactListName: string;
+
  
 public removeIds : number;
 public invalidIds : Array<UserListIds>;
@@ -605,6 +609,7 @@ saveSelectedUsers() {
     console.log(selectedUsers);
     this.logger.info("SelectedUserIDs:"+selectedUserIds);
     if ( this.contactListName != null ) {
+        if ( selectedUsers.length != 0 ) {
             this.contactService.saveContactList( this.contactListName, selectedUsers )
                 .subscribe(
                 data => {
@@ -619,10 +624,17 @@ saveSelectedUsers() {
                 error => this.logger.info( error ),
                 () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
+        }else{
+            this.contactListUsersError = true;
+            this.logger.log("Please select the users")
+        }
     }
     else {
+        this.contactListNameError = true;
         this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
     }
+    this.contactListNameError = false;
+    this.contactListUsersError = false;
 }
 
 removeContactListUsers() {
