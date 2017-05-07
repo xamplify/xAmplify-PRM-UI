@@ -2,17 +2,19 @@
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
 	.isPlaySubmit{ padding:15px 58px !important;}
-
+    #example_video_11 { width:auto; }
+    #overlay-modal{width:auto;}
+    
 </style>
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
 			<video id="example_video_11" class="video-js vjs-default-skin"
-				controls preload="auto" width="630" height="320"
-				data-setup='{"example_option":true}' [src]=videoUrl>
+				controls preload="auto" height="320"
+				data-setup='{"example_option":true}'>
 				<source [src]=videoUrl type="video/mp4" />
-
+               <!-- <source [src]="videoUrl" type="application/x-mpegURL" /> -->
 				<p class="vjs-no-js">
 					To view this video please enable JavaScript, and consider upgrading
 					to a web browser that <a
@@ -20,8 +22,8 @@
 						HTML5 video</a>
 				</p>
 			</video>
-			  <div id="overlay-modal" class="video-js" style="width: 630px; height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
-               <label style="margin-top: 23px;">         </label>
+			  <div id="overlay-modal" class="video-js" style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
+               <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
                   <div>
                   <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin:0;">{{upperTextValue}}</p>

@@ -138,6 +138,10 @@
 			</div>
 		</div>
 	</div>
+	<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong> Contact List has been Deleted successfully.
+	</div>
 	<div class="row mix-grid" style="margin-top: 10px">
 		<div *ngFor="let contactList of pagination.pagedItems">
 			<div class="col-md-3 col-sm-4 mix category_1 mix_all"
@@ -338,7 +342,10 @@
 					</ul>
 					
 				</div>
-			
+	<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong> Contact List has been Deleted successfully.
+	</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">
@@ -405,6 +412,8 @@
   <button>Cancel</button>
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
+  <div *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
+  <div *ngIf="contactListUsersError"> <p style="color:red">Please select the Users List Name</p></div>
   </form>
 					<div class="col-md-12">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->

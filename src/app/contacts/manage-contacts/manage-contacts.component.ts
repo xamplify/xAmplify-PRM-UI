@@ -50,6 +50,8 @@ showAll: boolean;
 showEdit: boolean;
 showAllContactData: boolean = false;
 showManageContactData: boolean = true;
+deleteSucessMessage : boolean;
+invalidDeleteSucessMessage : boolean;
 
 allContactData : boolean;
 activeContactsData : boolean;
@@ -57,7 +59,11 @@ invalidContactData : boolean;
 unsubscribedContactsData : boolean;
 nonActiveContactsData : boolean;
 
+contactListNameError : boolean;
+contactListUsersError : boolean;
+
 public contactListName: string;
+
  
 public removeIds : number;
 public invalidIds : Array<UserListIds>;
@@ -207,11 +213,15 @@ deleteContactList( contactListId: number ) {
             console.log( "MangeContacts deleteContactList success : " + data );
             this.contactsCount();
             $( '#contactListDiv_' + contactListId ).remove();
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.loadContactLists(this.pagination);
+            this.deleteSucessMessage = true;
+            setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
         },
         error => this.logger.error( error ),
         () => this.logger.info( "deleted completed" )
         );
+    this.deleteSucessMessage = false;
 }
 
 showAlert( contactListId: number ) {
@@ -403,6 +413,7 @@ editContactList( contactSelectedListId: number ) {
 backToManageContactPage() {
     this.showAll = true;
     this.showEdit = false;
+    $( "#showMessage" ).hide();
     this.showAllContactData = false;
     this.showManageContactData = true;
     this.pagination = new Pagination();
@@ -598,6 +609,7 @@ saveSelectedUsers() {
     console.log(selectedUsers);
     this.logger.info("SelectedUserIDs:"+selectedUserIds);
     if ( this.contactListName != null ) {
+        if ( selectedUsers.length != 0 ) {
             this.contactService.saveContactList( this.contactListName, selectedUsers )
                 .subscribe(
                 data => {
@@ -612,10 +624,17 @@ saveSelectedUsers() {
                 error => this.logger.info( error ),
                 () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
+        }else{
+            this.contactListUsersError = true;
+            this.logger.log("Please select the users")
+        }
     }
     else {
+        this.contactListNameError = true;
         this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
     }
+    this.contactListNameError = false;
+    this.contactListUsersError = false;
 }
 
 removeContactListUsers() {
@@ -656,17 +675,21 @@ removeContactListUsers() {
             data = data;
             this.logger.log(data);
             console.log( "update Contacts ListUsers:" + data );
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            
             $.each( removeUserIds, function( index: number, value: any ) {
                 $( '#row_' + value ).remove();
                 console.log( index + "value" + value );
             });
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.invalidDeleteSucessMessage = true;
+            setTimeout(function() { $("#showDeleteMessage").slideUp(500); }, 2000);
+            //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
             this.invalid_Contacts(this.pagination);
         },
         error => this.logger.error( error ),
         () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
         )
+        this.invalidDeleteSucessMessage = false;
 }
 
 invalidContactsShowAlert() {

@@ -66,9 +66,11 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
           $('.vjs-big-play-button').css('display', 'block');
            }
         
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
-        this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
+        this.videoUrl = this.selectedVideo.videoPath+'?access_token=' + this.authenticationService.access_token;
+       this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+       this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        console.log('video url is ' + this.videoUrl);
+        
         console.log('Init - Component initialized')
         this.likes  = this.selectedVideo.allowLikes;
         this.comments = this.selectedVideo.allowComments;
@@ -119,9 +121,10 @@ export class PlayVideoComponent implements OnInit,AfterViewInit  {
     	 this.likes  = this.selectedVideo.allowLikes;
          this.comments = this.selectedVideo.allowComments;
          
-         this.videoUrl = this.selectedVideo.videoPath;
-         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
-         this.videoUrl = this.videoUrl +".mp4?access_token="+this.authenticationService.access_token;
+         this.videoUrl = this.selectedVideo.videoPath+'?access_token=' + this.authenticationService.access_token;
+         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+          this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+         console.log('video url is ' + this.videoUrl);
          console.log('Init - Component initialized')
        
          this.isPlayButton = true;  // need to the value from server

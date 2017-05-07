@@ -7,7 +7,7 @@
 	</ul>
 </div>
 <div class="row">
-<div class="col-md-3">
+<div class="col-md-3 col-sm-12 col-xs-12">
     <div class="js-stream-item" role="listitem" data-item-type="user">
       <div class="ProfileCard js-actionable-user">
   <a *ngIf="twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-image': 'url(' + twitterProfile.profileBannerUrl + ')'}"></a>
@@ -44,7 +44,7 @@
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{twitterProfile.followersCount}}</span>
 		</li>
 		<li class="ProfileCardStats-stat Arrange-sizeFit" *ngIf="kloutScore">
-			<span class="ProfileCardStats-statLabel u-block">Score</span> 
+			<span class="ProfileCardStats-statLabel u-block label label-default">Score</span> 
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{kloutScore.score}}</span>
 		</li>
 	</ul>
@@ -56,9 +56,9 @@
 </div>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-4 col-sm-12 col-xs-12">
 
-<div class="DMActivity DMConversation js-ariaDocument u-chromeOverflowFix DMActivity--open" style="width: 100%;">
+<div class="DMActivity DMConversation js-ariaDocument u-chromeOverflowFix DMActivity--open" style="width: 100%;min-width: auto;">
   <div class="DMActivity-header">
 
     <div class="DMActivity-title js-ariaTitle" id="dm_dialog-header" style="justify-content: center;">
@@ -245,7 +245,7 @@
 
 </div>
 
-<div class="col-md-5">
+<div class="col-md-5 col-sm-12 col-xs-12">
 <div class="js-stream-item stream-item stream-item" *ngFor="let item of tweets">
 	  <div class="tweet js-stream-tweet js-actionable-tweet js-profile-popup-actionable original-tweet js-original-tweet">
 	    <div class="content" style="width: auto; margin: auto;padding: 10px;background-color: #FFF;">

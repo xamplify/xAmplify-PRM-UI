@@ -48,8 +48,9 @@ description = 'hi this is sathish'
             console.log(" share component constructor called");
             this.saveVideoFile = this.videoFileService.saveVideoFile ;
         }
-  getVideo(alias:string){
-     this.videoFileService.getVideo(alias)
+ /* getVideo(alias:string){
+    
+	  this.videoFileService.getVideo(alias)
         .subscribe(
         data => {
             this.videoFile = data;
@@ -72,12 +73,12 @@ description = 'hi this is sathish'
           //  this.metaService.addTag(ogTitle);
             
         });
-  }
+  } */
 
   ngOnInit() {
       var alias = this.route.snapshot.params['id'];
       console.log(alias);
-      this.getVideo(alias);
+    //  this.getVideo(alias);
         
       this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
           this.play();

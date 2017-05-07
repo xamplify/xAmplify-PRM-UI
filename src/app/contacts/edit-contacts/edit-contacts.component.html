@@ -140,12 +140,12 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="col-md-10" align="right" style="padding-right: 5px">
-								<button id="cancel_button" class="btn green"
-									(click)="cancelContacts()">
+							<div>
+								<button id="cancel_button" class="btn green;dropdown-menu pull-right"
+									(click)="cancelContacts()" style="margin-left:5px;background-color: #cfd8dc">
 									Cancel<i class="fa fa-cancel"></i>
 								</button>
-							</div>
+							
 							<div class="btn-group pull-right">
 								<button class="btn dropdown-toggle" id="save&delete_button"
 									data-toggle="dropdown">
@@ -158,6 +158,7 @@
 										(click)="showAlert(selectedContactListId)"> Delete</a></li>
 									<li><a href="javascript:;"> Export to Excel </a></li>
 								</ul>
+							</div>
 							</div>
 						</div>
 					</div>
@@ -198,12 +199,12 @@
 							</tr>
 						</tbody>
 					</table>
-					<div id="saveContactsMessage" *ngIf="successMessage1"
+					<div  *ngIf="successMessage" id="saveContactsMessage"
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
 					</div>
-					<div id="saveContactsMessage1" *ngIf="successMessage2"
+					<!-- <div id="saveContactsMessage1" *ngIf="successMessage2"
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
@@ -212,7 +213,11 @@
 						class="alert alert-success alert-dismissable">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> Contact list updated successfully.
-					</div>
+					</div> -->
+					<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong>Contact list Users has been Deleted successfully.
+	</div>
 				</div>
 
 				<div class="row" *ngIf="clickBoard">
@@ -312,8 +317,8 @@
 								<td>{{contact.firstName}}</td>
 								<td class="center">{{contact.lastName}}</td>
 								<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-								<td><a class="delete"
-									(click)="showAlert(selectedContactListId)"> Delete </a></td>
+								<td><a class="delete" (click)="showAlert1(contact.id)">
+									 Delete </a></td>
 
 							</tr>
 							<tr *ngFor="let newContact of users; let i = index"
@@ -499,6 +504,10 @@
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
   </form> -->
+  <div *ngIf="invalidDeleteSucessMessage" id="showInvalidDeleteMessage" class="alert alert-success alert-dismissable">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!</strong> Contact List has been Deleted successfully.
+	</div>
 					<div class="col-md-12">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
 						<div class="portlet box blue">

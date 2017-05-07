@@ -20,6 +20,7 @@ export class VideoFileService {
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
+    public viewBytemp :string;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -38,8 +39,13 @@ export class VideoFileService {
           .map( this.extractData )
           .catch( this.handleError );
       }
-     saveVideo(saveVideoFile: SaveVideoFile) {
-        const url = this.URL + 'save?access_token=' + this.authenticationService.access_token;
+    
+   saveVideo(saveVideoFile: SaveVideoFile) {
+    
+	   if(this.viewBytemp=="DRAFT"){
+		  saveVideoFile.action = "save";
+	   }
+	   const url = this.URL + 'save?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, saveVideoFile)
         .map( this.extractData )
         .catch( this.handleError );
@@ -55,11 +61,12 @@ export class VideoFileService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-   getVideo(alias: string): Observable<SaveVideoFile> {
-        console.log(alias);
-        const url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token;
+   getVideo(alias: string, viewBy:string): Observable<SaveVideoFile> {
+        this.viewBytemp = viewBy;
+	    console.log(alias);
+        const url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token+'&viewBy='+viewBy;
        // var url = this.URL + 'getMobinar?alias='+alias;
-        return this.http.get(url)
+        return this.http.get(url,'')
         .map( this.extractData )
         .catch( this.handleError );
     }

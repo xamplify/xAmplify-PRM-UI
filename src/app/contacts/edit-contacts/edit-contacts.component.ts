@@ -48,9 +48,9 @@ export class EditContactsComponent implements OnInit {
     public uploader: FileUploader;
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
-    public successMessage1: boolean = false;
-    public successMessage2: boolean = false;
-    public successMessage3: boolean = false;
+    public successMessage: boolean;
+    //public successMessage2: boolean;
+   // public successMessage3: boolean;
     
     public users: Array<User>;
     activeUsersCount : number;
@@ -73,6 +73,11 @@ export class EditContactsComponent implements OnInit {
     public unsubscribedContactUsers: Array<ContactList>;
     public nonActiveContactUsers: Array<ContactList>;
     public userListIds: Array<UserListIds>;
+    deleteSucessMessage : boolean;
+    invalidDeleteSucessMessage : boolean;
+
+    contactUsersId:number; 
+    contactIds = [];
     
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
@@ -160,9 +165,9 @@ export class EditContactsComponent implements OnInit {
                         $( "button#upload_csv" ).prop( 'disabled', false );
                         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                         //$( "#saveContactsMessage" ).show();
-                        this.successMessage1 = true;
-                        setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     });
+                    this.successMessage = true;
+                    setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                     this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
                     //this.users.length = 0;
                     this.cancelContacts();
@@ -170,6 +175,7 @@ export class EditContactsComponent implements OnInit {
                 error => this.logger.error( error ),
                 () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
                 )
+                this.successMessage = false;
         }
     }
 
@@ -186,8 +192,8 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.users.length = 0;
                 //$( "#saveContactsMessage2" ).show();
-                this.successMessage3 = true;
-                setTimeout(function() { $("#saveContactsMessage2").slideUp(500); }, 2000);
+                this.successMessage = true;
+                setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                 $( "#uploadCsvUsingFile" ).hide();
@@ -199,6 +205,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
+            this.successMessage = false;
     }
 
     removeContactListUsers( contactListId: number ) {
@@ -219,7 +226,9 @@ export class EditContactsComponent implements OnInit {
                 this.invlidContactsCount = data.invalidUsers;
                 this.unsubscribedContacts = data.unsubscribedUsers;
                 console.log( "update Contacts ListUsers:" + data );
-                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
                 $.each( removeUserIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
@@ -230,6 +239,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
+            this.deleteSucessMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -392,8 +402,8 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.clickBoard = false;
                 //$( "#saveContactsMessage1" ).show();
-                this.successMessage2 = true;
-                setTimeout(function() { $("#saveContactsMessage1").slideUp(500); }, 2000);
+                this.successMessage = true;
+                setTimeout(function() { $("#saveContactsMessage").slideUp(500); }, 2000);
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#upload_csv" ).prop( 'disabled', false );
                 this.clipboardUsers.length = 0;
@@ -403,7 +413,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
-
+            this.successMessage = false;
     }
 
     saveContacts( contactListId: number ) {
@@ -651,7 +661,9 @@ export class EditContactsComponent implements OnInit {
             (data:any) => {
                 data = data;
                 console.log( "update invalidContacts ListUsers:" + data );
-                swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                this.invalidDeleteSucessMessage = true;
+                setTimeout(function() { $("#showInvalidDeleteMessage").slideUp(500);}, 2000);
                 $.each( removeUserIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
@@ -662,7 +674,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
-        
+            this.invalidDeleteSucessMessage = false;
         /*var removeUserIds = new Array();
         let invalidUsers = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
@@ -738,7 +750,91 @@ export class EditContactsComponent implements OnInit {
             })
         }
     }  
+    
+   /* deleteContactListUsers(selectedId: any) {
+        //this.logger.info( "MangeContacts deleteContactList : " + contactListId );
+        this.contactService.removeContactList(this.contactListId, selectedId )
+            .subscribe(
+            data => {
+                console.log( "MangeContacts deleteContactList success : " + data );
+                //this.contactsCount();
+                //$( '#contactListDiv_' + contactListId ).remove();
+                //swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+                //this.loadContactLists(this.pagination);
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "deleted completed" )
+            );
+        this.deleteSucessMessage = false;
+        
+    }
+    showDeleteAlert( selectedId: any ) {
+        this.logger.info( "contactListId in sweetAlert() " + selectedId );
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
 
+        }).then( function( myData: any ) {
+            console.log( "ManageContacts showAlert then()" + myData );
+            self.deleteContactListUsers( selectedId );
+
+            //this.deleteContactList(contactListId);
+        })
+    }
+*/
+    removeContactListUsers1( contactId: number ) {
+        this.contactUsersId = contactId;
+        this.contactIds[0]=this.contactUsersId;
+        this.contactService.removeContactList( this.contactListId, this.contactIds)
+            .subscribe(
+            (data:any) => {
+                data = data;
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount = data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.allUsers = this.allContacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
+                console.log( "update Contacts ListUsers:" + data );
+                this.deleteSucessMessage = true;
+                setTimeout(function() { $("#showDeleteMessage").slideUp(500);}, 2000);
+                this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination);
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )
+            this.deleteSucessMessage = false;
+    }
+
+    showAlert1( contactId: number ) {
+      
+        /*this.contactUsersId = contactId;
+        this.contactIds1.push(this.contactUsersId);*/
+        this.contactIds.push(this.contactUsersId)
+        this.logger.info( "contactListId in sweetAlert() " + this.contactIds );
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.removeContactListUsers1(contactId );
+            })
+    }
     ngOnInit() {
         //this.contactsCount();
         this.checkingLoadContactsCount = true;

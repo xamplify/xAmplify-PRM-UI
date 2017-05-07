@@ -55,6 +55,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     public isCategoryThere: boolean;
     public searchDisable = true;
     public showSweetAlert :boolean = false;
+    public deletedVideo :boolean = false;
+    public deleteVideoName :string;
     
     sortVideos  = [
                        {'name': 'Sort By', 'value': ''},
@@ -119,11 +121,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
       
       try {
     	  if(this.showSweetAlert == false){
-              swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+            //  swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
     	  }
     	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-            swal.close();
+         //   swal.close();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
@@ -218,7 +220,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         console.log('show edit video method in mange videos ' + JSON.stringify(video));
         console.log(video.alias);
         this.selectedVideoFile = video;
-        this.videoFileService.getVideo(video.alias)
+        this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((saveVideoFile: SaveVideoFile) => {
                 console.log('enter the show edit vidoe method');
                 this.editDetails = saveVideoFile;
@@ -259,17 +261,20 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.pageBar = true;
     }
 
-    deleteVideoFile(alias: string, position: number) {
+    deleteVideoFile(alias: string, position: number, videoName:string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
       //  this.pagedItems.splice(position, 1);
-       // this.pagination.pagedItems.splice(position, 1);
         this.videoFileService.deleteVideoFile(alias)
         .subscribe(
         data => {
           console.log(data);
             console.log( 'MangeVideoComponent deleteVideoFile success : ' + data );
             this.pagination.pagedItems.splice(position, 1);
-            swal( 'Deleted!', 'Your file has been deleted.', 'success' );
+            this.deletedVideo = true;
+            this.deleteVideoName = videoName;
+            setTimeout(function() {
+                  $("#deleteMesg").slideUp(500);
+              }, 2000);
         },
        (error: any) => {
 	      if (error.includes("mobinar is being used in one or more campaigns. Please delete those campaigns")){
@@ -279,9 +284,10 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
            },
         () => console.log( 'deleted functionality' )
         );
+        this.deletedVideo = false;
     }
 
-    deleteAlert(alias: string, position: number) {
+    deleteAlert(alias: string, position: number,videoName:string) {
         console.log('videoId in sweetAlert()');
         const self = this;
         swal({
@@ -295,7 +301,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
 
         }).then(function(myData: any) {
             console.log('ManageVidoes showAlert then()' + myData);
-            self.deleteVideoFile(alias, position);
+            self.deleteVideoFile(alias, position ,videoName);
         });
     } 
 

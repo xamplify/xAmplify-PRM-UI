@@ -145,6 +145,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
     public overLayValue: boolean; // videojs value overlay
 
+    public isCallactionLast :boolean;
     public startCalltoAction: boolean;   // not required for start of the video
     public endCalltoAction: boolean;   // not required for end of the video
 
@@ -166,7 +167,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.categories = this.referenceService.refcategories;
         console.log('ref categories in edit');
         console.log(this.categories);
-        this.videoUrl = this.saveVideoFile.videoPath;
+        this.videoUrl = this.saveVideoFile.videoPath+'?access_token=' + this.authenticationService.access_token;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         console.log('video url is ' + this.videoUrl);
@@ -555,18 +556,59 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         // this.saveVideoFile.lowerText = lowerText;
     }
     enableCallToActionMethod(event: any) {
-        if (event === true)
+        if (event === true && this.saveVideoFile.startOfVideo == true)
         	{
         	this.enableCalltoAction = true;   // need to store the value in server
-            $('#overlay-modal').show();
+        	  this.isCallactionLast = false;
+        	$('#overlay-modal').show();
             this.videoJSplayer.pause();
+           // localStorage.setItem('isCallactionLast', JSON.stringify(this.isCallactionLast));
         	}
-        else {this.enableCalltoAction = false; // need to store the value in server
-           $('#overlay-modal').hide();
-           this.videoJSplayer.play();
+        else if(event === true && this.saveVideoFile.endOfVideo == true) 
+           {
+             this.enableCalltoAction = false; // need to store the value in server
+             this.isCallactionLast = true;
+             $('#overlay-modal').show();
+             this.videoJSplayer.pause();
+        //   localStorage.setItem('isCallactionLast', JSON.stringify(this.isCallactionLast));
+        }
+        else if(event === false && this.saveVideoFile.startOfVideo == true){
+        	 $('#overlay-modal').hide();
+        	 this.videoJSplayer.play();
+        }
+        else {
+        	   this.isCallactionLast = true;
+        	 $('#overlay-modal').hide();
+        	 this.videoJSplayer.play();
         }
     }
-
+    
+    
+    enableCallToActionMethodTest(event: any) {
+        if (event === true)
+            {
+            this.enableCalltoAction = true;   // need to store the value in server
+          //  this.isCallactionLast = true;
+            $('#overlay-modal').show();
+            this.videoJSplayer.pause();
+            }
+        else {
+           // this.isCallactionLast = true;
+             $('#overlay-modal').hide();
+             this.videoJSplayer.play();
+        }
+    }
+    
+    skipClose(){
+    	 $('#overlay-modal').hide();
+    	  this.videoJSplayer.play();
+    }
+    
+    repeatPlayVideo(){
+        $('#overlay-modal').hide();
+        this.videoJSplayer.play();
+   }
+    
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return validation.test(email);
@@ -597,14 +639,14 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     }
     startCallToactionOverlay(event: boolean) {
         if (event === true) {
-            this.saveVideoFile.startOfVideo = true;
-            this.saveVideoFile.endOfVideo = false;
+          //  this.saveVideoFile.startOfVideo = true;
+          //  this.saveVideoFile.endOfVideo = false;
             this.startCalltoAction = true;
             this.endCalltoAction = false;
         }
         else {
-            this.saveVideoFile.startOfVideo = false;
-            this.saveVideoFile.endOfVideo = true;
+         //   this.saveVideoFile.startOfVideo = false;
+         //   this.saveVideoFile.endOfVideo = true;
             this.endCalltoAction = true;
             this.startCalltoAction = false;
         }
@@ -759,38 +801,40 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     }
 
     ngAfterViewInit() {
-         this.videoJSplayer = videojs(document.getElementById('example_video_11'), {}, function() {
+         this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function() {
              // this.play();
+           //  const callActinLast = JSON.parse(localStorage.getItem('isCallactionLast'));
              const player = this;
              const isValid = JSON.parse(localStorage.getItem('isOverlayValue')); // gettting local storage value here isValid value is true
              console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
-             this.ready(function() {
-                // this.bigPlayButton.hide();
-                 console.log($('#rangeValue').length);
-                 if (isValid === true) {
-                     $('#example_video_11').append(
-                         $('#overlay-modal').show()
-                     );
-                     $('#replay-video').click(function() {
-                         $('#overlay-modal').hide();
-                         player.play();
-                     });
-                     $('#skipOverlay').click(function() {
-                         $('#overlay-modal').hide();
+            	 this.ready(function() {
+                     // this.bigPlayButton.hide();
+                      console.log($('#rangeValue').length);
+                      if (isValid === true) {
+                          $('#edit_video_player').append(
+                              $('#overlay-modal').show()
+                          );
+                          $('#replay-video').click(function() {
+                              $('#overlay-modal').hide();
+                              player.play();
+                          });
+                          $('#skipOverlay').click(function() {
+                              $('#overlay-modal').hide();
+                               player.play();
+                          });
+                      }
+                      else {
+                          $('#overlay-modal').hide();
                           player.play();
-                     });
-                 }
-                 else {
-                     $('#overlay-modal').hide();
-                     player.play();
-                 }
-             });
+                                                 
+                      }
+                  });
 
              this.on('ended', function() {
                  if (isValid === false) {
                    // $('.vjs-big-play-button').css('display', 'none');
                    this.bigPlayButton.hide();
-                     $('#example_video_11').append(
+                     $('#edit_video_player').append(
                          $('#overlay-modal').show()
                      );
 
