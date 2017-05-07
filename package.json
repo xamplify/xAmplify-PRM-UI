@@ -64,6 +64,7 @@
     "ng2-filter-pipe": "^0.1.7",
     "ng2-highcharts": "^1.0.0",
     "ng2-sharebuttons": "^2.1.2",
+    "ng2-slim-loading-bar": "^4.0.0",
     "ng2-social-share": "0.0.10",
     "ng2-tag-input": "^0.7.7",
     "ngx-ui-switch": "^1.2.0",

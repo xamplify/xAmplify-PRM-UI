@@ -9,12 +9,13 @@ import { HomeComponent } from './home/home.component';
 
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from '../auth.guard';
+import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
-@NgModule( {
-    imports: [CommonModule, RouterModule],
+@NgModule({
+    imports: [CommonModule, RouterModule, SlimLoadingBarModule.forRoot()],
     declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],
     exports: [
         TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],
-    providers: [AuthenticationService, AuthGuard]
+    providers: [AuthenticationService, AuthGuard, SlimLoadingBarService]
 })
 export class CoreModule { }

@@ -1,5 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
 import { Logger } from "angular2-logger/core";
+import {SlimLoadingBarService} from 'ng2-slim-loading-bar';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { Logger } from "angular2-logger/core";
 })
 export class AppComponent implements OnInit {
     
-    constructor(private logger: Logger){
+    constructor(private logger: Logger, private slimLoadingBarService: SlimLoadingBarService){
         logger.level = logger.Level.LOG; 
          this.logger.log("AppComponent constructor");
     }
