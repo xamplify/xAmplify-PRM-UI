@@ -157,7 +157,7 @@
 						<img class="img-responsive" *ngIf="contactList.socialNetwork=='MANUAL'"
 						src="{{normalImage}}" alt="">
 					<div class="mix-details-fill">
-						 <div id="container" *ngIf="contactList.socialNetwork=='ZOHO'">
+						<!--  <div id="container" *ngIf="contactList.socialNetwork=='ZOHO'">
        						 <h3> ZOHO <span class="arrow"></span> </h3>
    						 </div>
    						 <div id="container" *ngIf="contactList.socialNetwork=='GOOGLE'">
@@ -168,7 +168,7 @@
    						 </div>
    						 <div id="container" *ngIf="contactList.socialNetwork=='MANUAL'">
        						 <h3> MANUAL <span class="arrow"></span> </h3>
-   						 </div>
+   						 </div> -->
    					<!-- <div class="ribbon" *ngIf="contactList.socialNetwork=='ZOHO'"><span>ZOHO</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='GOOGLE'"><span>GOOGLE</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='SALESFORCE'"><span>SALESFORCE</span></div> -->
@@ -409,7 +409,7 @@
     <input type="text" class="form-control" [(ngModel)]="contactListName" id="contactListName" name="contactListName" placeholder="Contact List Name">
   </div>
   <div class="col-xs-0 col-md-6 form-group" align="right">
-  <button>Cancel</button>
+  <button (click)="cancelAllContactsCancel()">Cancel</button>
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
   <div *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>

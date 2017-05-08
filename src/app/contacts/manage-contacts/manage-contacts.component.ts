@@ -28,7 +28,7 @@ declare let jsPDF;
 @Component({
   selector: 'app-manage-contacts',
   templateUrl: './manage-contacts.component.html',
-  styleUrls: ['../../../assets/css/ribbons.css'],
+  //styleUrls: ['../../../assets/css/ribbons.css'],
    providers: [SocialContact, Pagination]
 })
 export class ManageContactsComponent implements OnInit {
@@ -635,6 +635,11 @@ saveSelectedUsers() {
     }
     this.contactListNameError = false;
     this.contactListUsersError = false;
+}
+
+cancelAllContactsCancel(){
+    this.contactListName = null;
+    this.all_Contacts( this.pagination );
 }
 
 removeContactListUsers() {
