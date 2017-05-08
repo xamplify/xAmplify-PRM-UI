@@ -286,6 +286,8 @@ googleContactsSyncronize( contactListId: number ) {
             data
             swal.close();
             swal( "Success!", "Google Sychronization Completed!", "success" );
+            this.loadContactLists( this.pagination );
+            this.contactsCount();
         },
         error => this.logger.error( error ),
         () => this.logger.info( "googleContactsSyncronize() completed" )
@@ -334,6 +336,8 @@ zohoContactsSyncronize( contactListId: number ) {
             data
             swal.close();
             swal( "Success!", "Zoho Sychronization Completed!", "success" );
+            this.loadContactLists( this.pagination );
+            this.contactsCount();
         },
 
         error => this.logger.error( error ),
@@ -386,6 +390,8 @@ salesforceContactsSyncronize( contactListId: number ) {
             data
             swal.close();
             swal( "Success!", "Salesforce Sychronization Completed!", "success" );
+            this.loadContactLists( this.pagination );
+            this.contactsCount();
         },
 
         error => this.logger.error( error ),
@@ -411,6 +417,7 @@ editContactList( contactSelectedListId: number ) {
 }
 
 backToManageContactPage() {
+    this.contactService.successMessage = false;
     this.showAll = true;
     this.showEdit = false;
     $( "#showMessage" ).hide();
@@ -432,6 +439,10 @@ backToManageContactPage() {
     this.nonActiveContactsData = false;
 }
 
+backToEditContactPage(){
+    this.showAll = false;
+    this.showEdit = true;
+}
 
 all_Contacts( pagination: Pagination ) {
     this.logger.log( pagination );
