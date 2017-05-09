@@ -420,6 +420,9 @@ backToManageContactPage() {
     this.invalidDeleteSucessMessage = false;
     this.show = false;
     this.deleteSucessMessage = false;
+    this.contactListUsersError = false;
+    this.contactListNameError = false;
+
     this.contactListName = null;
     this.showAll = true;
     this.showEdit = false;
@@ -639,21 +642,23 @@ saveSelectedUsers() {
                 () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
         }else{
-           // this.contactListUsersError = true;
+            this.contactListUsersError = true;
+            this.contactListNameError = false;
            // this.logger.log("Please select the users")
         }
     }
     else {
+        this.contactListUsersError = false;
         this.contactListNameError = true;
         this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
     }
-    //this.contactListNameError = false;
-    //this.contactListUsersError = false;
-}
+   }
 
 cancelAllContactsCancel(){
     this.contactListName = null;
     this.all_Contacts( this.pagination );
+    this.contactListUsersError = false;
+    this.contactListNameError = false;
 }
 
 removeContactListUsers() {
