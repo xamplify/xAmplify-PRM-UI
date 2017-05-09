@@ -6,6 +6,7 @@ import {KloutScore} from "../../models/klout-score";
 import {DirectMessage} from "../../models/direct-message";
 
 import {TwitterService} from "../../services/twitter.service";
+import { UtilService } from '../../../core/services/util.service';
 
 declare var $: any;
 
@@ -17,21 +18,26 @@ declare var $: any;
 })
 
 export class TwitterProfileComponent implements OnInit{
-    twitterProfile:TwitterProfile;
+    twitterProfile:any;
     directMessages: Array<DirectMessage>;
     directMessageId: number;
     kloutScore: KloutScore;
     tweets:any;
-    constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService) {
+    constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService, private utilService: UtilService) {
         
     }
     
     getTwitterProfile(id: number){
         this.twitterService.getTwitterProfile(id)
-        .subscribe(
-            data => this.twitterProfile = data,
-            error => console.log(error),
-            () => console.log(this.twitterProfile)
+            .subscribe(
+            data => {
+                this.twitterProfile = data;
+                this.twitterProfile.statusesCount = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
+                this.twitterProfile.friendsCount = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
+                this.twitterProfile.followersCount = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
+            },
+            error => console.log( error ),
+            () => console.log( this.twitterProfile )
         );
     }
     
@@ -42,7 +48,7 @@ export class TwitterProfileComponent implements OnInit{
                 this.directMessages = data;
             },
             error => console.log(error),
-            () => console.log(this.directMessages[0].sender.id)
+            () => console.log(this.directMessages.length)
         );
     }
     

@@ -11,6 +11,7 @@ export class AuthenticationService {
     public expires_in: number;
     public logged_in_time: Date;
     public REST_URL: string;
+    public MEDIA_URL = "https://aravindu.com/vod/";
 
 constructor(private http: Http) {
     // set token if saved in local storage

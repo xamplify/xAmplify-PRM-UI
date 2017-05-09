@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {TwitterProfile} from '../../models/twitter-profile';
 
 import {TwitterService} from '../../services/twitter.service';
+import { UtilService } from '../../../core/services/util.service';
 
 @Component({
   selector: 'app-twitter-followers',
@@ -13,14 +14,17 @@ import {TwitterService} from '../../services/twitter.service';
 })
 export class TwitterFollowersComponent implements OnInit{
     twitterProfiles:any;
-    constructor(private router: Router, private twitterService: TwitterService) {}
+    constructor(private router: Router, private twitterService: TwitterService, private utilService: UtilService) {}
     
     getFollowers(){
         this.twitterService.listTwitterProfiles("followers")
-        .subscribe(
-            data => this.twitterProfiles = data["twitterProfiles"],
-            error => console.log(error),
-            () => console.log(this.twitterProfiles)
+            .subscribe(
+            data => {
+                this.twitterProfiles = data["twitterProfiles"];
+                this.utilService.abbreviateTwitterProfiles( this.twitterProfiles );
+            },
+            error => console.log( error ),
+            () => console.log( this.twitterProfiles )
         );
     }
     

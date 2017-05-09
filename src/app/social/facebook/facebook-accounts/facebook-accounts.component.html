@@ -1,10 +1,15 @@
 <div class="page-content">
-<div class="col-sm-12 dashboard-stat2" *ngFor="let item of accounts">
-	<a [routerLink]="['../facebook-posts', item.id]">
-		<span>
-			<h3>{{item.name}}</h3>
-			<h5>{{item.category}}</h5>
-		</span>
-	</a>
+<div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let page of pages">
+<div class=" dashboard-stat2 square-box">
+		<a style="text-decoration: none; !important" [routerLink]="['../facebook-posts', page.id]">
+			<span>
+				<div class="cover-photo-div">
+					<img class="cover-photo-image img-responsive" alt="{{page.name}}" src="{{page.cover.source}}">
+				</div>
+				<h3>{{page.name}}</h3>
+				<h5>{{page.category}}</h5>
+			</span>
+		</a>
+</div>		
 </div>
 </div>

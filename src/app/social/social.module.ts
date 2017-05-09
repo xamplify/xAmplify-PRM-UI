@@ -10,9 +10,12 @@ import { TwitterAnalyticsComponent } from './twitter/twitter-analytics/twitter-a
 
 import{SocialRoutingModule} from './social-routing.module';
 import {SharedModule} from '../shared/shared.module';
+
+import { UtilService } from './../core/services/util.service';
 import {SocialService} from './services/social.service';
 import {TwitterService} from './services/twitter.service';
 import {FacebookService} from './services/facebook.service';
+
 import { LineChartComponent } from './twitter/line-chart/line-chart.component';
 import { NewFansLineChartComponent } from './twitter/new-fans-line-chart/new-fans-line-chart.component';
 import { PieChartGeoDistributionComponent } from './twitter/pie-chart-geo-distribution/pie-chart-geo-distribution.component';
@@ -26,6 +29,6 @@ import { UpdateStatusComponent } from './common/update-status/update-status.comp
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent, 
                  TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
                  TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent],
-  providers: [TwitterService, FacebookService, SocialService]
+  providers: [TwitterService, FacebookService, SocialService, UtilService]
 })
 export class SocialModule { }

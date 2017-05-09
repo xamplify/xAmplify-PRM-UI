@@ -28,7 +28,6 @@ export class UpdateStatusComponent implements OnInit {
     videos: Array<SaveVideoFile> = [];
     totalRecords: number;
     pager: any = {};
-    pagedItems: any[];
 
     videoUrl: string;
     videoJSplayer: any;
@@ -40,14 +39,13 @@ export class UpdateStatusComponent implements OnInit {
     socialStatusList: Array<SocialStatus> = new Array<SocialStatus>();
     socialStatus: SocialStatus = new SocialStatus();
 
-    REST_URL = this.authenticationService.REST_URL;
+    MEDIA_URL = this.authenticationService.MEDIA_URL;
     accessToken = this.authenticationService.access_token;
 
 
     constructor( private socialService: SocialService, private twitterService: TwitterService,
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
         private pagerService: PagerService, private pagination: Pagination ) {
-        console.log( "constructor called" );
     }
     count( statusMessage: string ) {
         if ( this.maxlength > statusMessage.length ) {
@@ -68,7 +66,7 @@ export class UpdateStatusComponent implements OnInit {
     addVideo() {
         console.log( this.socialStatus );
         this.errorMessage = "";
-        if ( this.socialStatus.socialStatusContents.size > 0 && this.socialStatus.socialStatusContents[0].fileType != "video" ) {
+        if ( this.socialStatus.socialStatusContents.size > 0 &&  (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")  ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
         } else {
             this.socialStatus.statusMessage = this.selectedVideo.title + " " + this.videoUrl;
@@ -103,7 +101,7 @@ export class UpdateStatusComponent implements OnInit {
         if ( ( uploadedFilesCount + existingFilesCount ) > 4 ) {
             this.errorMessage = "You can upload maximum 4 images.";
             return false;
-        } else if ( ( this.socialStatus.socialStatusContents.size == 1 ) && ( this.socialStatus.socialStatusContents[0].fileType == "video" ) ) {
+        } else if ( ( this.socialStatus.socialStatusContents.size == 1 ) && ( Array.from(this.socialStatus.socialStatusContents)[0].fileType == "video" ) ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
             return false;
         }
@@ -245,9 +243,33 @@ export class UpdateStatusComponent implements OnInit {
         socialStatusProvider2.providerImagePath = "https://cdn0.iconfinder.com/data/icons/social-media-2098/512/linkedin-32.png";
         socialStatusProvider2.profileImagePath = "https://pbs.twimg.com/profile_images/822508786975932418/INWa9whk.jpg";
         socialStatusProvider2.profileName = "@manas9173";
+        
+        let socialStatusProvider3: SocialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider3.id = 1525007124493887;
+        socialStatusProvider3.providerName = "facebook";
+        socialStatusProvider3.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
+        socialStatusProvider3.profileImagePath = "https://scontent.xx.fbcdn.net/v/t31.0-8/s720x720/13710654_1638510509810214_605289008248391157_o.jpg?oh=cff05ae49b11f9e1bd197a020314f810&oe=59BB2CEE";
+        socialStatusProvider3.profileName = "@manas.sahoo.photography";
+        
+        let socialStatusProvider4: SocialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider4.id = 1525007124493887;
+        socialStatusProvider4.providerName = "facebook";
+        socialStatusProvider4.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
+        socialStatusProvider4.profileImagePath = "https://scontent.xx.fbcdn.net/v/t1.0-0/p180x540/427881_293088954129254_1040393794_n.jpg?oh=dc0b6cbc6fa6c545e643fa5da00543be&oe=598315DF";
+        socialStatusProvider4.profileName = "@arjun";
+        
+        let socialStatusProvider5: SocialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider5.id = 1525007124493887;
+        socialStatusProvider5.providerName = "facebook";
+        socialStatusProvider5.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
+        socialStatusProvider5.profileImagePath = "https://scontent.xx.fbcdn.net/v/t1.0-9/s720x720/1920321_723753151009549_1501205085_n.jpg?oh=681d6513f26af3cac6865e09774f1afa&oe=59B3055C";
+        socialStatusProvider5.profileName = "@c4code";
 
         socialStatusProviders.add( socialStatusProvider1 );
         socialStatusProviders.add( socialStatusProvider2 );
+        socialStatusProviders.add( socialStatusProvider3 );
+        socialStatusProviders.add( socialStatusProvider4 );
+        socialStatusProviders.add( socialStatusProvider5 );
 
         return socialStatusProviders;
     }
@@ -260,7 +282,6 @@ export class UpdateStatusComponent implements OnInit {
     openListVideosModal() {
         $( '#listVideosModal' ).modal( 'show' );
         if ( this.videos.length == 0 ) {
-            $( "#preview-section" ).hide();
             this.listVideos( this.pagination );
         }
     }
@@ -282,11 +303,6 @@ export class UpdateStatusComponent implements OnInit {
             return;
         }
         this.listVideos( this.pagination );
-    }
-
-    setPagination( page: number ) {
-        this.pager = this.pagerService.getPager( this.totalRecords, page, 10 );
-        this.pagedItems = this.videos.slice( this.pager.startIndex, this.pager.endIndex + 1 );
     }
 
     hmsToSecondsOnly( hms: any ) {
@@ -337,16 +353,12 @@ export class UpdateStatusComponent implements OnInit {
     showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
     hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
     ngOnInit() {
+        this.videoUrl = 'http://vjs.zencdn.net/v/oceans.webm';
+        this.videoJSplayer = videojs('videojs-video');
         this.listEvents();
         this.constructCalendar();
         this.initializeSocialStatus();
         $( "#schedule-later-div" ).hide();
-
-        $( document ).ready( function() {
-            console.log( "ready!" );
-        });
-
-
     }
 
     ngOnDestroy() {
