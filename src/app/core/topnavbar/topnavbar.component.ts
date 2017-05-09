@@ -19,7 +19,7 @@ export class TopnavbarComponent implements OnInit {
     }
     
     loggedInUser:User;
-    @Input('profilePicutrePath') profilePicutrePath:string="../../assets/admin/pages/media/profile/icon-user-default.png";;
+    @Input('profilePicutrePath') profilePicutrePath:string;
     
     listTwitterNotifications(){
         setInterval(() => {
@@ -73,9 +73,12 @@ export class TopnavbarComponent implements OnInit {
                     }else{
                         this.displayName = response.emailId;
                     }
-                    if(response.profileImagePath!=null){
+                    if(!(response.profileImagePath.indexOf(null)>-1)){
                         this.profilePicutrePath = response.profileImagePath;
+                    }else{
+                        this.profilePicutrePath =  "../../assets/admin/pages/media/profile/icon-user-default.png";
                     }
+                    console.log(this.profilePicutrePath);
                 }else{
                     swal("Please Contact Admin",data,"error");
                 }

@@ -25,6 +25,8 @@
 				<!-- BEGIN PAGE HEADER-->
 				<h3 class="page-title">
 				User Account <small>user account page sample</small>
+				<app-topnavbar [displayName]="displayName"></app-topnavbar>
+						 <app-topnavbar [profilePicutrePath]="profilePicutrePath"></app-topnavbar>
 				</h3>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
@@ -71,7 +73,6 @@
 					<div class="col-md-12">
 						<!-- BEGIN PROFILE SIDEBAR -->
 						<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
-						<app-topnavbar [displayName]="displayName"></app-topnavbar>
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
 								<!-- SIDEBAR USERPIC -->
@@ -81,7 +82,7 @@
 								<!-- END SIDEBAR USERPIC -->
 								<!-- SIDEBAR USER TITLE -->
 								<div class="profile-usertitle">
-									<div class="profile-usertitle-name">
+									<div class="profile-usertitle-name" style="overflow: auto">
 										 {{userData.displayName}}
 									</div>
 									<div class="profile-usertitle-job">
@@ -245,12 +246,14 @@
 														<div class="form-group">
 															<div class="fileinput fileinput-new" data-provides="fileinput">
 																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-																	<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt=""/>
+																	<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" id="priview"/>
 																</div>
 																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
 																</div>
 																<div>
-																	<span class="btn default btn-file">Select image<input type="file" ng2FileSelect [uploader]="uploader"  /> 
+																	<span class="btn default btn-file">Select image
+																	<input type="file" ng2FileSelect [uploader]="uploader" 
+																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" #input/> 
 																	</span>
 																	
 																</div>
@@ -297,7 +300,6 @@
 																</tr>
 															</tbody>
 														</table>
-														 <app-topnavbar [profilePicutrePath]="profilePicutrePath"></app-topnavbar>
 													</form>
 												</div>
 												<!-- END CHANGE AVATAR TAB -->

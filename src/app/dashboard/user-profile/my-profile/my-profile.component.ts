@@ -29,13 +29,13 @@ profileUploadSuccess = false;
 userProfileImage:string= "../../assets/admin/pages/media/profile/icon-user-default.png";
 userData:User;
 displayName:string = "";
-profilePicutrePath:string="../../assets/admin/pages/media/profile/icon-user-default.png";
+profilePicutrePath:string="";//"../../assets/admin/pages/media/profile/icon-user-default.png";
 public uploader: FileUploader;  
 constructor(private fb: FormBuilder,private userService:UserService,private authenticationService:AuthenticationService,private logger:Logger) {
    
     //  System.import('../../assets/global/plugins/dropzone/dropzone.js').then((dz) => this.initDropzone(dz));
     this.userData = this.userService.loggedInUserData;
-    if(this.userData.profileImagePath!=null){
+    if(!(this.userData.profileImagePath.indexOf(null)>-1)){
         this.userProfileImage = this.userData.profileImagePath;
     }
     this.uploader = new FileUploader({ 
@@ -53,9 +53,11 @@ constructor(private fb: FormBuilder,private userService:UserService,private auth
           console.log(response);
           var imageFilePath = JSON.parse(response);
           console.log(imageFilePath);
-          this.profileUploadSuccess = true;
           this.userProfileImage = imageFilePath['message'];
           this.profilePicutrePath = imageFilePath['message'];
+          this.uploader.queue.length = 0;
+          this.clearImage();
+          this.profileUploadSuccess = true;
       };
   
 }
@@ -63,7 +65,29 @@ constructor(private fb: FormBuilder,private userService:UserService,private auth
 clearImage(){
     $('div#previewImage > img').remove();
     $('div#previewImage').append('<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"/>');
+    $('#priview').attr('src', 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image');
+    
 }
+fileChange(inputFile:any,event:any) {
+    this.readFiles(inputFile.files);
+}
+readFile(file:any, reader:any, callback:any) {
+    reader.onload = () => {
+        callback(reader.result);
+    }
+    reader.readAsDataURL(file);
+}
+
+readFiles(files:any, index = 0) {
+    let reader = new FileReader();
+    if (index in files) {
+        this.readFile(files[index], reader, (result:any) => {
+            $('#priview').attr('src', result);
+            this.readFiles(files, index + 1);// Read the next file;
+        });
+    } 
+}
+
 
 ngOnInit(){
     try{
@@ -74,7 +98,7 @@ ngOnInit(){
          this.validateUpdatePasswordForm();
          this.validateUpdateUserProfileForm();
          if(this.userData.firstName!=null){
-             this.userData.displayName = this.userData.firstName;
+               this.userData.displayName = this.userData.firstName;
          }else{
              this.userData.displayName = this.userData.emailId;
          }
@@ -85,7 +109,6 @@ ngOnInit(){
 
 
 updatePassword(){
-    this.logger.error("Fuck Off");
     swal({   title: 'Updating Password',   text: "Please Wait...",  showConfirmButton: false,imageUrl: "assets/images/loader.gif" });
     console.log(this.updatePasswordForm.value);
     var userPassword = {
@@ -318,5 +341,18 @@ updatePassword(){
           return false;
       }
                   
-       
+      readURL(input:any){
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e:any) {
+                  alert(e);
+                $('#blah')
+                  .attr('src', e.target.result)
+                  .width(150)
+                  .height(200);
+              };
+              reader.readAsDataURL(input.files[0]);
+            }
+      }
+      
 }
