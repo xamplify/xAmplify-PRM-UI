@@ -417,7 +417,10 @@ editContactList( contactSelectedListId: number ) {
 }
 
 backToManageContactPage() {
-    this.contactService.successMessage = false;
+    this.invalidDeleteSucessMessage = false;
+    this.show = false;
+    this.deleteSucessMessage = false;
+    this.contactListName = null;
     this.showAll = true;
     this.showEdit = false;
     $( "#showMessage" ).hide();
@@ -531,7 +534,6 @@ active_Contacts( pagination: Pagination ) {
 }
 
 invalid_Contacts( pagination: Pagination ) {
-
     this.contactService.loadInvalidContacts( pagination )
         .subscribe(
           (data:any) => {
@@ -628,7 +630,8 @@ saveSelectedUsers() {
                     //$( "#uploadContactsMessage" ).show();
                     //this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.backToManageContactPage();
-                    this.contactService.successMessage = true;
+                    //this.contactService.successMessage = true;
+                    this.show = true;
                     setTimeout(function() { $("#showMessage").slideUp(500); }, 2000);
                 },
 
@@ -636,16 +639,16 @@ saveSelectedUsers() {
                 () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
         }else{
-            this.contactListUsersError = true;
-            this.logger.log("Please select the users")
+           // this.contactListUsersError = true;
+           // this.logger.log("Please select the users")
         }
     }
     else {
         this.contactListNameError = true;
         this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
     }
-    this.contactListNameError = false;
-    this.contactListUsersError = false;
+    //this.contactListNameError = false;
+    //this.contactListUsersError = false;
 }
 
 cancelAllContactsCancel(){
@@ -705,7 +708,7 @@ removeContactListUsers() {
         error => this.logger.error( error ),
         () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
         )
-        this.invalidDeleteSucessMessage = false;
+        this.invalidDeleteSucessMessage = false; 
 }
 
 invalidContactsShowAlert() {

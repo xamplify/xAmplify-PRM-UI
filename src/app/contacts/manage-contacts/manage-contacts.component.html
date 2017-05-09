@@ -409,13 +409,13 @@
   <div class="col-xs-0 col-md-6 form-group" style="margin-bottom: 8px">
     <label for="name">ContactListName:</label>
     <input type="text" class="form-control" [(ngModel)]="contactListName" id="contactListName" name="contactListName" placeholder="Contact List Name">
+    <div *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
+    <div *ngIf="contactListUsersError"> <p style="color:red">Please select the atleast one User</p></div>
   </div>
   <div class="col-xs-0 col-md-6 form-group" align="right">
   <button (click)="cancelAllContactsCancel()">Cancel</button>
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
-  <div *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
-  <div *ngIf="contactListUsersError"> <p style="color:red">Please select the Users List Name</p></div>
   </form>
 					<div class="col-md-12">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
