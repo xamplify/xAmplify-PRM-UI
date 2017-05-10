@@ -117,6 +117,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                 }
             }
             this.logger.debug("Showing Upload Templates size of: "+this.filteredEmailTemplates.length);
+            this.logger.debug(this.filteredEmailTemplates);
         }catch(error){
             var cause = "Error in showUploadTemplates() in selectTemplatesComponent";
             swal(error.toString(),cause,"error");
@@ -206,25 +207,27 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
    
     
     showTemplateById(id:number,index:number){
-        if(index==17){
-            this.emailTemplateService.isRegularUpload = true;
-            this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
-        }else if(index==16){
-            this.emailTemplateService.isRegularUpload = false;
-            this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
-        }else{
-            this.emailTemplateService.getById(id)
-            .subscribe(
-                (data:any) => {
-                 this.emailTemplateService.emailTemplate = data;
-                    this.router.navigate(["/home/emailtemplate/createTemplate"]);
-                },
-                (error:any) => {
-                    swal(error,"","error");
-                },
-                () => console.log("Got Email Template")
-            );
-        }
+       if(id!=undefined){
+           this.emailTemplateService.getById(id)
+           .subscribe(
+               (data:any) => {
+                this.emailTemplateService.emailTemplate = data;
+                   this.router.navigate(["/home/emailtemplate/createTemplate"]);
+               },
+               (error:any) => {
+                   swal(error,"","error");
+               },
+               () => console.log("Got Email Template")
+           );
+       }else if(index==17 || index==1){
+           //This is normal template
+           this.emailTemplateService.isRegularUpload = true;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+       }else if(index==16 || index==0){
+           //This is video template
+           this.emailTemplateService.isRegularUpload = false;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+       }
     }
     
 

@@ -24,4 +24,5 @@ export class Campaign {
     campaignId:number=0;
     campaignVideoFile:SaveVideoFile;
     emailTemplate:EmailTemplate;
+    scheduleTime:string;
 }

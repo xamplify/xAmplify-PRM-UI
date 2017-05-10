@@ -260,9 +260,12 @@ th, td {
                             </form>
                   </div>
        </div>
-
+	
+	
     <div class="row setup-content step hiddenStepInfo" id="step-3">
-        <div class="col-xs-12">
+    <br>
+    <div *ngIf="videosPagination.totalRecords==0" class="alert alert-danger"><strong>No Videos Found</strong></div> 
+        <div class="col-xs-12" *ngIf="videosPagination.totalRecords>0">
         <form  role="form" [formGroup]="videoForm"	class="form-horizontal form-bordered form-label-stripped">
          <button type="button" style="float:left" class="btn btn-default"  
          (click)="resetActive($event, 40, 'step-2')">PREVIOUS</button>
@@ -521,7 +524,9 @@ th, td {
 			</div>
     
     <div class="row setup-content step hiddenStepInfo" id="step-4">
-        <div class="col-xs-12">
+    <br>
+    <div *ngIf="contactsPagination.totalRecords==0" class="alert alert-danger"><strong>No Contacts Found</strong></div> 
+        <div class="col-xs-12" *ngIf="contactsPagination.totalRecords>0">
          <button type="button" style="float:left" class="btn btn-default"
           (click)="resetActive($event, 40, 'step-3')">PREVIOUS</button>
        <button type="submit"  style="float: right" class="btn btn-default btn green" 
@@ -619,7 +624,9 @@ th, td {
         </div>
     </div>
     <div class="row setup-content step hiddenStepInfo" id="step-5">
-        <div class="col-xs-12">
+    <br>
+      <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> 
+        <div class="col-xs-12" *ngIf="emailTemplatesPagination.totalRecords>0">
         <form  role="form" [formGroup]="emailTemplateForm"
 			class="form-horizontal form-bordered form-label-stripped">
          <button type="button" style="float:left" class="btn btn-default"
@@ -781,6 +788,8 @@ th, td {
 				  <div class="row">
                 	<div class="col-md-4 col-md-offset-4">                    
                       <!--  <datetime [timepicker]="false" formControlName="launchTime"></datetime> -->
+                      <input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" />
+                      
                       </div>
                     </div>  
                 </div>

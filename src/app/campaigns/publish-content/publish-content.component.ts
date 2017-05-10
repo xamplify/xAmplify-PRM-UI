@@ -17,8 +17,9 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
 import { Pagination } from '../../core/models/pagination';
+import { Logger } from 'angular2-logger/core';
 
-declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: any;
+declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any;
 
 @Component({
   selector: 'app-publish-content',
@@ -94,14 +95,11 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     public contactItemsSize:any = this.numberOfContactsPerPage[0];
                             
     constructor( private videoFileService: VideoFileService, private route: ActivatedRoute, private fb: FormBuilder,
-        private contactService: ContactService, private campaignService: CampaignService, private userService: UserService,private emailTemplateService:EmailTemplateService,private pagerService:PagerService,private authenticationService: AuthenticationService ) {
+        private contactService: ContactService, private campaignService: CampaignService, private userService: UserService,private emailTemplateService:EmailTemplateService,private pagerService:PagerService,private authenticationService: AuthenticationService,private logger:Logger ) {
         this.campaign = new Campaign();
         if ( this.campaignService.campaign != undefined ) {
             console.log(this.campaignService.campaign);
            this.campaign = this.campaignService.campaign;
-           if(this.campaign.launchTime!=undefined){
-               this.campaign.launchTime = new Date((this.campaign.launchTime).toString());  // added to string() to launchtime
-           }
             this.videoId = this.campaignService.campaign.selectedVideoId;
             this.emailTemplateId =  this.campaignService.campaign.selectedEmailTemplateId;
             this.isAdd = false;
@@ -109,30 +107,37 @@ export class PublishContentComponent implements OnInit,OnDestroy {
             this.isContactListSelected = true;
             this.isScheduleSelected = true;
             this.isEmailTemplateSelected = true;
+            this.isPublishAsSelected  = true;
             this.name = this.campaignService.campaign.campaignName;
             if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
             }
-            if(this.campaignService.campaign.launchTime!=null){
+            if(this.campaignService.campaign.scheduleTime!=null ||this.campaignService.campaign.scheduleTime!="null" ){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
             }
             let emailTemplate = this.campaign.emailTemplate;
-            if(emailTemplate.beeRegularTemplate || emailTemplate.regularTemplate){
-                this.emailType = 'Regular Email';
-                this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            if(emailTemplate!=undefined){
+                if(emailTemplate.beeRegularTemplate || emailTemplate.regularTemplate){
+                    this.emailType = 'Regular Email';
+                    this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+                }else{
+                    this.emailType = 'Video Email';
+                    this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+                }
+                this.loadEmailTemplates(this.emailTemplatesPagination);
+                this.getEmailTemplatePreview(emailTemplate);
             }else{
-                this.emailType = 'Video Email';
-                this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+                this.logger.info("No Email Template Added For Campaign");
             }
-            this.loadEmailTemplates(this.emailTemplatesPagination);
             this.contactsPagination.editCampaign = true;
             this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
-            this.getEmailTemplatePreview(emailTemplate);
+           
         }
         if(this.userService.loggedInUserData!=undefined){
            this.campaign.userId = this.userService.loggedInUserData.id;
             this.loadCampaignNames(this.userService.loggedInUserData.id);
         }
+       
         
     }
     
@@ -362,6 +367,12 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     }
 
     ngOnInit() {
+        flatpickr( '.flatpickr',{
+            enableTime: true,
+            minDate: new Date(),
+            dateFormat: 'd/m/Y H:i',
+            time_24hr: true
+        } );
         this.validatePublishAsForm();
         this.buildCampaignForm();
         this.validateVideoForm();
@@ -380,7 +391,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         try {
             this.loadCampaignVideos(this.videosPagination);
             this.loadCampaignContacts(this.contactsPagination);
-            this.loadUsers(this.id,this.contactsUsersPagination);
+            this.loadUsers(this.userService.loggedInUserData.id,this.contactsUsersPagination);
             Metronic.init(); 
             Layout.init();
             Demo.init();
@@ -554,7 +565,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     builcampaignLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
             'scheduleCampaign': [this.campaign.scheduleCampaign,Validators.required],
-            'launchTime': [this.campaign.launchTime],
+            'launchTime': [this.campaign.scheduleTime],
         },{
             validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
         }
@@ -650,12 +661,12 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 'videoPlayed': this.campaignForm.value.videoPlayed,
                 'replyVideo': this.campaignForm.value.replyVideo,
                 'socialSharingIcons': this.campaignForm.value.socialSharingIcons,
-                'userId':this.campaign.userId,
+                'userId':this.userService.loggedInUserData.id,
                 'selectedVideoId':this.campaign.selectedVideoId,
                 'userListIds':self.campaign.userListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-                'launchTime':this.campaignLaunchForm.value.launchTime,
+                'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
                 'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId
         }
@@ -681,7 +692,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 }
             },
             error => {
-                swal( error, "", "error" );
+                swal("Please Contact Admin","Unable to Launch Campaign","error");
+                console.log(error);
             },
             () => console.log( "Done" )
             );
@@ -733,12 +745,12 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 'videoPlayed': this.campaignForm.value.videoPlayed,
                 'replyVideo': this.campaignForm.value.replyVideo,
                 'socialSharingIcons': this.campaignForm.value.socialSharingIcons,
-                'userId':this.campaign.userId,
+                'userId':this.userService.loggedInUserData.id,
                 'selectedVideoId':this.campaign.selectedVideoId,
                 'userListIds':self.campaign.userListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-                'launchTime':this.campaignLaunchForm.value.launchTime,
+                'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
                 'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId
             }
@@ -816,12 +828,12 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 'videoPlayed': this.campaignForm.value.videoPlayed,
                 'replyVideo': this.campaignForm.value.replyVideo,
                 'socialSharingIcons': this.campaignForm.value.socialSharingIcons,
-                'userId':this.campaign.userId,
+                'userId':this.userService.loggedInUserData.id,
                 'selectedVideoId':this.campaign.selectedVideoId,
                 'userListIds':self.campaign.userListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-                'launchTime':this.campaignLaunchForm.value.launchTime,
+                'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
                 'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId,
                 'testEmailId':emailId
