@@ -167,11 +167,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.categories = this.referenceService.refcategories;
         console.log('ref categories in edit');
         console.log(this.categories);
-        this.videoUrl = this.saveVideoFile.videoPath+'?access_token=' + this.authenticationService.access_token;
+        this.videoUrl = this.saveVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+     //   this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         console.log('video url is ' + this.videoUrl);
-
         console.log('User data of loggdin');
         console.log(this.userService.loggedInUserData);
 

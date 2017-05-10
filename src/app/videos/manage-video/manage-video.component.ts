@@ -327,10 +327,15 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         setTimeout(function() {
         	if( timevalue.showUpdatevalue === true) {
               $("#showUpdatevalue").slideUp(500);
+             
             }
-        	else $("#message").slideUp(500);
+        	else{ $("#message").slideUp(500);
+               
+     };
           }, 3000);
         
+     
+
         if ( videoFile == null ) {
             this.showVideoName = '';
          }
@@ -348,6 +353,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.showSweetAlert = false;
+        this.deletedVideo  = false;
         this.videoFileService.actionValue = '';
     }
       ngOnDestroy() {

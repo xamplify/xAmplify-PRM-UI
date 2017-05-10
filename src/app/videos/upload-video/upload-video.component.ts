@@ -142,7 +142,10 @@ export class UploadVideoComponent implements OnInit {
                     if(this.playerInit ==true){
                         this.closeRecordPopup();}
                     if(this.redirectPge  == false){
-                      this.router.navigateByUrl('/home/videos/manage_videos');}
+                        this.router.navigateByUrl('/home/videos/manage_videos');}
+                     else {
+                         this.videoFileService.actionValue = '';
+                     }   
                 }
                 else {
                 	if(this.processVideoResp.error === "Maximum Disk Space Reached for you subscription")
@@ -593,6 +596,7 @@ export class UploadVideoComponent implements OnInit {
                 this.tempr = authResult.access_token;
                 self.createPicker();
             }
+           
         }
         
         onPickerApiLoad() {
@@ -614,6 +618,7 @@ export class UploadVideoComponent implements OnInit {
                 .build();
                 picker.setVisible(true);
             }
+           
         }
         
         pickerCallback(data:any) {

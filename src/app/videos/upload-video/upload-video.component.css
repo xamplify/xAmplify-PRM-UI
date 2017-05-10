@@ -11,7 +11,7 @@
  .my-drop-zone { 
          border: dotted 3px lightgray; 
          text-align: center;
-         width :468px; 
+         width :auto; 
          height: 151px;
          }
     .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */

@@ -1,3 +1,4 @@
+
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	 .modelSizeChange{ margin-top: -298px; } 
@@ -19,9 +20,9 @@
 			<!-- video started -->
 			<div class="col-md-6" style="padding-top: 38px">
 				<video id="edit_video_player" class="video-js vjs-default-skin" controls  height="299" poster="{{defaultImagePath}}"
-					data-setup='{"example_option":true }' >
-					<source [src]=videoUrl type="video/mp4" />
-			      <!--  <source [src]="videoUrl" type="application/x-mpegURL"> -->
+					data-setup='{"example_option":true }'>
+					<!--<source [src]=videoUrl type="video/mp4" />-->
+			       <source [src]= videoUrl type="application/x-mpegURL">
 				</video>
              <div id="overlay-modal" class="video-js" [class.modelSizeChange] = "isCallactionLast===true"
               style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   

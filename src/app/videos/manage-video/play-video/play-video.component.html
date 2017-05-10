@@ -11,17 +11,19 @@
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
 			<video id="example_video_11" class="video-js vjs-default-skin"
-				controls preload="auto" height="320"
-				data-setup='{"example_option":true}'>
-				<source [src]=videoUrl type="video/mp4" />
-               <!-- <source [src]="videoUrl" type="application/x-mpegURL" /> -->
+				controls preload="auto" height="299" poster="{{posterImg}}"
+			    data-setup='{"example_option":true}'>
+				<!--<source [src] = videoUrl type="video/mp4" />-->
+                <source [src] = videoUrl  type="application/x-mpegURL" />
+                 <source [src] = videoUrl  type="application/vnd.apple.mpegurl" />
 				<p class="vjs-no-js">
 					To view this video please enable JavaScript, and consider upgrading
 					to a web browser that <a
 						href="http://videojs.com/html5-video-support/" target="_blank">supports
 						HTML5 video</a>
 				</p>
-			</video>
+			</video>	
+	 
 			  <div id="overlay-modal" class="video-js" style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
@@ -61,7 +63,7 @@
           </div>
 			
 			<div>
-				<span align="left">127 Views</span>
+				<span align="left">0 Views</span>
 				<div *ngIf="likes==true">
 				 <span style="float: right">
 					<p class="fa fa-thumbs-o-up" style="color: #337ab7;">127</p> &nbsp;
@@ -238,7 +240,7 @@
 												<div class="mix-details">
 													<h4>{{videoFile.title}}</h4>
 													<a class="mix-preview fancybox-button"
-														(click)="showVideo(videoFile, i)" title="videoFile.title"
+														(click)="showVideo(videoFile, i)" title="play video"
 														data-rel="fancybox-button"> <i class="fa fa-play"></i>
 													</a> <span align="right"
 														style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>
