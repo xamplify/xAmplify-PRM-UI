@@ -24,6 +24,7 @@ export class SaveVideoFile {
     allowEmbed: boolean;
     transparency:number;
     action: string;
+    callAction:boolean;
     name: boolean;
     skip: boolean;
     upperText: string;

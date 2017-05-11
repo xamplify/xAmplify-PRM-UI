@@ -84,7 +84,7 @@
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" id="openf"
-						     (change)=fileChange(input) [disabled]="loading==true||isDisable == true" #input />
+						     [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
 					 <div style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
@@ -117,11 +117,22 @@
 						<table class="table" >
 							<tbody *ngIf="fileChecked==false || isDisable==false">
 								<tr *ngFor="let item of uploader.queue">
-									<td *ngFor="let file_src of file_srcs">
+							  	<td >
 									     <video id="my-video"  controls preload="auto" width="280" height="180" >
-											<source src='{{file_src}}' type='video/mp4'>
+											<source [src]='filePreviewPath' type='video/mp4'>
+											<source [src]='filePreviewPath' type='video/3gpp'>
+											<source [src]='filePreviewPath' type='video/quicktime'>
+											<source [src]='filePreviewPath' type='video/x-ms-wmv'>
+											<source [src]="filePreviewPath" typ'video/x-msvideo'> 
+											<source [src]="filePreviewPath" typ'video/mpeg'> 
+											<source [src]="filePreviewPath" typ'video/dvd'> 
+											<source [src]="filePreviewPath" typ'video/xvid'> 
+											<source [src]="filePreviewPath" typ'video/x-flv'> 
+											<source [src]="filePreviewPath" typ'video/x-f4v'> 
+											<source [src]="filePreviewPath" typ'video/divx'> 
 										</video>
-									</td>
+									</td> 
+
 									<td>{{ item?.file?.name }}</td>
 									<td>
 									  <div style="margin-left: 13px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>

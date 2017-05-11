@@ -241,13 +241,16 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
 
     showPlayVideo(video: SaveVideoFile) {
         console.log('MangeVideoComponent playVideo:');
-        console.log(video);
-        this.selectedVideo = video;
+      this.videoFileService.getVideo(video.alias, video.viewBy)
+        .subscribe((saveVideoFile: SaveVideoFile) => {
+        console.log(saveVideoFile);
+        this.selectedVideo = saveVideoFile;
         this.manageVideos = false;
         this.editVideo = false;
         this.playVideo = true;
         this.campaignReport = false;
         this.pageBar = true;
+      });
     }
 
     showCampaignVideoReport(video: SaveVideoFile) {

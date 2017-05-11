@@ -23,6 +23,7 @@
 					data-setup='{"example_option":true }'>
 					<!--<source [src]=videoUrl type="video/mp4" />-->
 			       <source [src]= videoUrl type="application/x-mpegURL">
+				   <source [src] = videoUrl  type="application/vnd.apple.mpegurl" />
 				</video>
              <div id="overlay-modal" class="video-js" [class.modelSizeChange] = "isCallactionLast===true"
               style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   

@@ -233,7 +233,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.likesValues = 20;
         this.disLikesValues = 12;
         this.videoViews= 0;
-        this.enableCalltoAction = true;
+        this.enableCalltoAction = this.saveVideoFile.callAction;
 
         console.log('controller value is in constructor' + this.compControllerColor);
         console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
@@ -559,6 +559,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         if (event === true && this.saveVideoFile.startOfVideo == true)
         	{
         	this.enableCalltoAction = true;   // need to store the value in server
+            this.saveVideoFile.callAction = this.enableCalltoAction;
         	  this.isCallactionLast = false;
         	$('#overlay-modal').show();
             this.videoJSplayer.pause();
@@ -589,11 +590,13 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             {
             this.enableCalltoAction = true;   // need to store the value in server
           //  this.isCallactionLast = true;
+         this.saveVideoFile.callAction =  this.enableCalltoAction;
             $('#overlay-modal').show();
             this.videoJSplayer.pause();
             }
         else {
            // this.isCallactionLast = true;
+           this.saveVideoFile.callAction = this.enableCalltoAction = false;
              $('#overlay-modal').hide();
              this.videoJSplayer.play();
         }
@@ -750,6 +753,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             allowEmbed: this.saveVideoFile.allowEmbed,
             transparency: this.saveVideoFile.transparency,
             action: this.saveVideoFile.action,
+            callAction : this.saveVideoFile.callAction,
             name: this.saveVideoFile.name,
             skip: this.saveVideoFile.skip,
             upperText: this.saveVideoFile.upperText,
@@ -976,6 +980,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             'controllerColor': [this.saveVideoFile.controllerColor],
             'transparency': [this.saveVideoFile.transparency],
             'action': [this.saveVideoFile.action],
+            'callAction' :[this.saveVideoFile.callAction],
             'name': [this.saveVideoFile.name],
             'skip': [this.saveVideoFile.skip],
             'upperText': [this.saveVideoFile.upperText, Validators.required],
@@ -1112,6 +1117,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             }
             //console.log('video object is ' + JSON.stringify(this.saveVideoFile));
             this.saveVideoFile.transparency = this.valueRange;
+            this.saveVideoFile.callAction = this.enableCalltoAction;
             console.log(this.saveVideoFile.transparency);
             console.log(this.saveVideoFile);
             return this.videoFileService.saveVideo(this.saveVideoFile)

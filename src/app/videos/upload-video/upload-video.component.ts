@@ -1,5 +1,6 @@
 import { Component, OnInit, Directive,ViewChild, ChangeDetectorRef, AfterContentInit, ElementRef  } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileDropDirective,FileItem } from 'ng2-file-upload';
 import { AuthenticationService} from '../../core/services/authentication.service';
@@ -24,6 +25,7 @@ export class UploadVideoComponent implements OnInit {
     public file_srcs: string[] = [];
     public hasBaseDropZoneOver  = false;
     public hasAnotherDropZoneOver = false;
+    public filePreviewPath: SafeUrl;
     loading: boolean ;
     processing = false;
     isChecked :boolean ;
@@ -61,11 +63,11 @@ export class UploadVideoComponent implements OnInit {
     public textAreaDisable:boolean;
     public hideSaveDiscard:boolean;
     public maxTimeDuration :number;
-    
+    public source: string;
+
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
-        private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService) {
-
+        private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer) {
         try {
             this.isChecked = false;
             this.isDisable = false;
@@ -88,8 +90,9 @@ export class UploadVideoComponent implements OnInit {
                 maxFileSize: 800 * 1024 * 1024,// 800 MB
                 url: this.URL + this.authenticationService.access_token
             });
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
+            this.uploader.onAfterAddingFile = (fileItem) => {
+                fileItem.withCredentials = false;
+                this.filePreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -194,6 +197,8 @@ export class UploadVideoComponent implements OnInit {
         this.isChecked = false;
         this.isFileDrop =false;
     }
+
+
     fileChange(inputFile:any,event:any) {
         this.readFiles(inputFile.files);
     }
@@ -326,7 +331,9 @@ export class UploadVideoComponent implements OnInit {
              $(".vjs-time-control .vjs-time-divider").css("display","none !important");
              $(".video-js .vjs-duration").css("display","none");
              $(".video-js .vjs-fullscreen-control").hide();
-             $(".video-js .vjs-fullscreen-control").css("display","none !important");
+          //   $(".video-js .vjs-fullscreen-control").css("display","none !important");
+          //  $(".vjs-fullscreen-control .vjs-control vjs-button").css("display","none !important");
+
          const self = this;
          self.player = videojs("myVideo",
               {
@@ -363,8 +370,9 @@ export class UploadVideoComponent implements OnInit {
          self.player.on('deviceReady', function()
                  {
                  self.saveVideo = false;
-                 self.discardVideo = false;   
+                 self.discardVideo = false;
                  $(".video-js .vjs-fullscreen-control").hide();
+              //  $(".vjs-fullscreen-control .vjs-control vjs-button").css("display","none !important");
                  console.log('device error:', this.player.deviceErrorCode);
                  });
          self.player.on('error', function(error:any)

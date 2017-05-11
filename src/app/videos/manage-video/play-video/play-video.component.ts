@@ -64,18 +64,19 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
 
     showVideo(videoFile: SaveVideoFile, position: number) {
         console.log('videoComponent showVideo() '+ position);
-        if (this.selectedVideo) {
+     this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
+        .subscribe((saveVideoFile: SaveVideoFile) => {
+        this.selectedVideo = saveVideoFile;
+        console.log(this.selectedVideo);
+         if (this.selectedVideo) {
             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
             this.videos.splice(this.selectedPosition, 0, this.selectedVideo);
         }
         this.videos.splice(position, 1);
-        this.selectedVideo = videoFile;
         this.selectedPosition = position;
-
         this.posterImg = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-       // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         console.log('video url is ' + this.videoUrl);
           const self = this;
@@ -99,8 +100,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         }
         this.likes = this.selectedVideo.allowLikes;
         this.comments = this.selectedVideo.allowComments;
+      });
     }
-
     saveCallToActionUserForm() {
         console.log(this.model.email_id);
 
