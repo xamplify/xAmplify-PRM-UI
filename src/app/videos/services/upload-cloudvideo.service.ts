@@ -4,8 +4,8 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import {Observable} from 'rxjs';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import {Category} from '../models/Category';
-import {Pagination} from '../../core/models/Pagination';
+import {Category} from '../models/category';
+import {Pagination} from '../../core/models/pagination';
 
 @Injectable()
 export class UploadCloudvideoService {

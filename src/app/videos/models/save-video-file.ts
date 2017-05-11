@@ -1,4 +1,4 @@
-import {Category} from '../models/Category';
+import {Category} from '../models/category';
 import { FileDropDirective,FileItem } from 'ng2-file-upload';
 export class SaveVideoFile {
     id: number;

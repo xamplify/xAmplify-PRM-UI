@@ -7,7 +7,7 @@ import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { SaveVideoFile } from '../../models/save-video-file';
-import { Category } from '../../models/Category';
+import { Category } from '../../models/category';
 import { validateOwnThumbnail } from '../../../form-validator';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { CeiboShare } from 'ng2-social-share';

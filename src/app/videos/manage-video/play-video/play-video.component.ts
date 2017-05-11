@@ -21,9 +21,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public videoUrl: string;
     private _elementRef: ElementRef;
     private videoJSplayer: any;
-    private label :string;
-    
-    public setValueForSrc :boolean;
+    public setValueForSrc: boolean;
     public posterImg: string;
     public likes: boolean;
     public comments: boolean;
@@ -43,14 +41,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public isFistNameChecked: boolean;
     public videoStartTime: number;
     public durationTime: number;
-    public startOfthevideo: boolean = true;  // need to remove and replace with this.saveVideoFile.startOfthevideo
-    public checkCalltoAction: boolean = false; // need to get the value from server
+    public startOfthevideo = true;  // need to remove and replace with this.saveVideoFile.startOfthevideo
+    public checkCalltoAction = false; // need to get the value from server
 
-    public videoId: boolean = false;
+    public videoId = false;
 
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private videoFileService: VideoFileService,
         private userService: UserService) {
-        this._elementRef = elementRef
+        this._elementRef = elementRef;
     }
 
     videoPlayListSource(videoUrl: string){
@@ -65,9 +63,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     }
 
     showVideo(videoFile: SaveVideoFile, position: number) {
-        console.log("videoComponent showVideo() " + position);
+        console.log('videoComponent showVideo() '+ position);
         if (this.selectedVideo) {
-            console.log("videoComponent showVideo() re adding the existing video " + this.selectedPosition);
+            console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
             this.videos.splice(this.selectedPosition, 0, this.selectedVideo);
         }
         this.videos.splice(position, 1);
@@ -106,7 +104,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     saveCallToActionUserForm() {
         console.log(this.model.email_id);
 
-        if (this.userService.loggedInUserData.emailId == this.model.email_id) {
+        if (this.userService.loggedInUserData.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
             this.user.firstName = this.userService.loggedInUserData.firstName;
             this.user.lastName = this.userService.loggedInUserData.lastName;
@@ -120,7 +118,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe(
             (result: any) => {
-                console.log("Save user Form call to acton is successfull");
+                console.log('Save user Form call to acton is successfull');
                 console.log(result);
             });
     }

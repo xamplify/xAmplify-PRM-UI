@@ -1,4 +1,4 @@
-import {KloutInfluence} from './Klout-influence';
+import {KloutInfluence} from './klout-influence';
 export class Klout{
     myInfluencersCount: Number;
     myInfluenceesCount: Number;
