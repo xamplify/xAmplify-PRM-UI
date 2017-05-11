@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
-import { User } from '../../core/models/User';
+import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { ManageContactsComponent } from '../manage-contacts/manage-contacts.component';

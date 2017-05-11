@@ -68,11 +68,16 @@
 									(ngModelChange)="changEvent($event)" required
 									[(ngModel)]="model.contactListName" name="contactListName"
 									minlength="4" maxlength="20"
-									placeholder="Please Enter Contact List Name"
+									placeholder="Contact List Name"
 									#contactListName="ngModel">
-								<div style="margin-left: 170px"
+								<!-- <div style="margin-left: 170px"
 									[hidden]="contactListName.valid || contactListName.pristine"
-									class="alert alert-danger">Name is required</div>
+									class="alert alert-danger">Name is required</div> -->
+  <!-- <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div> -->
+							<div style="margin-left: 167px" class="alert alert-danger alert-dismissable fade in" *ngIf="contactListNameError">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     Please enter the contact list name.
+  </div>
 							</div>
 							</div>
 							<div class="col-xs-0 col-md-6" style="padding-left: 7px;"

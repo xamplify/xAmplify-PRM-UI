@@ -644,12 +644,14 @@ saveSelectedUsers() {
         }else{
             this.contactListUsersError = true;
             this.contactListNameError = false;
+           // setTimeout(function() { $("#ContactsErrorMessage").slideUp(500);}, 2000);
            // this.logger.log("Please select the users")
         }
     }
     else {
         this.contactListUsersError = false;
         this.contactListNameError = true;
+        //setTimeout(function() { $("#NameErrorMessage").slideUp(500);}, 2000);
         this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
     }
    }

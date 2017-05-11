@@ -13,6 +13,7 @@ import { Contacts } from '../models/contacts';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
 
+
 declare var Metronic : any;
 declare var Layout : any;
 declare var Demo : any;
@@ -52,6 +53,7 @@ export class AddContactsComponent implements OnInit {
     public zohoImage : string = 'assets/images/crm/Zoho_check.png';
     public googleImage : string;
     public salesforceImage : string = 'assets/images/crm/sf_check.png';
+    public contactListNameError : boolean;
 
 
     public listViewName:string;
@@ -297,6 +299,7 @@ export class AddContactsComponent implements OnInit {
                 this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
         else {
+            this.contactListNameError = true;
             this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
     }
@@ -345,6 +348,7 @@ export class AddContactsComponent implements OnInit {
                 this.logger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
         }
         else {
+            this.contactListNameError = true;
             this.logger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
         }
     }
@@ -625,6 +629,7 @@ export class AddContactsComponent implements OnInit {
               this.logger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
       }
       else {
+          this.contactListNameError = true;
           this.logger.error( "AddContactComponent saveGoogleContacts() ContactListName Error" );
       }
   } 
@@ -659,6 +664,7 @@ export class AddContactsComponent implements OnInit {
                   )
       }
       else {
+          this.contactListNameError = true;
           this.logger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
       }
   }
@@ -828,6 +834,7 @@ saveZohoContacts( isValid: boolean ) {
               this.logger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
       }
       else {
+          this.contactListNameError = true;
           this.logger.error( "AddContactComponent saveZohoContacts() ContactList Name Error" );
       }
   } 
@@ -862,6 +869,7 @@ saveZohoContactSelectedUsers( isValid: boolean ) {
                 )
     }
     else {
+        this.contactListNameError = true;
         this.logger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
     }
 }
@@ -1084,6 +1092,7 @@ saveSalesforceContactSelectedUsers( isValid: boolean ) {
                 )
     }
     else {
+        this.contactListNameError = true;
         this.logger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
     }
 }
@@ -1116,6 +1125,7 @@ saveSalesforceContacts( isValid: boolean ) {
             this.logger.error("AddContactComponent saveSalesforceContacts() Contacts Null Error");
     }
     else {
+        this.contactListNameError = true;
         this.logger.error( "AddContactComponent saveSalesforceContacts() ContactList Name Error" );
     }
 } 

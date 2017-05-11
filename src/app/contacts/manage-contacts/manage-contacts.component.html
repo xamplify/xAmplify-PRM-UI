@@ -409,8 +409,17 @@
   <div class="col-xs-0 col-md-6 form-group" style="margin-bottom: 8px">
     <label for="name">ContactListName:</label>
     <input type="text" class="form-control" [(ngModel)]="contactListName" id="contactListName" name="contactListName" placeholder="Contact List Name">
-    <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
-    <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListUsersError"> <p style="color:red">Please select the atleast one User</p></div>
+    <!-- <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
+    <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListUsersError"> <p style="color:red">Please select the atleast one User</p></div> -->
+  <div id="NameErrorMessage" style="margin-left: 115px;width:264px" class="alert alert-danger alert-dismissable fade in" *ngIf="contactListNameError">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     Please enter the contact list name.
+  </div>
+  <div id="ContactsErrorMessage" style="margin-left: 115px;width:264px" class="alert alert-danger alert-dismissable fade in" *ngIf="contactListUsersError">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    Please select the contacts.
+  </div>
+  
   </div>
   <div class="col-xs-0 col-md-6 form-group" align="right">
   <button (click)="cancelAllContactsCancel()">Cancel</button>
