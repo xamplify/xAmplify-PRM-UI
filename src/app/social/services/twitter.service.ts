@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
-import {Tweet} from '../models/Tweet';
+import {Tweet} from '../models/tweet';
 import {TwitterProfile} from '../models/twitter-profile';
 import {DirectMessage} from '../models/direct-message';
 

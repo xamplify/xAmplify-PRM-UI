@@ -6,7 +6,7 @@ import {ReferenceService} from '../../core/services/reference.service';
 import {Observable} from 'rxjs';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import {Category} from '../models/Category';
+import {Category} from '../models/category';
 import {Pagination} from '../../core/models/pagination';
 import {User} from '../../core/models/user';
 

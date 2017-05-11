@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input,AfterViewInit} from '@angular/core';
 
 import {SaveVideoFile} from '.././models/save-video-file';
-import {Category} from '.././models/Category';
+import {Category} from '.././models/category';
 import {Pagination} from '../../core/models/pagination';
 
 import {VideoFileService} from '.././services/video-file.service';
