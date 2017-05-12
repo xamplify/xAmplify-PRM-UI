@@ -80,6 +80,14 @@ export class ManageContactsComponent implements OnInit {
     public nonActiveContactUsers: Array<ContactList>;
     public userListIds: Array<UserListIds>;
 
+public searchKey: string ;
+sortingName: string = null;
+sortcolumn: string = null;
+sortingOrder: string = null;
+isvideoThere: boolean;
+public isCategoryThere: boolean;
+public searchDisable = true;
+
     users: User[];
     access_token: string;
     pager: any = {};
@@ -91,6 +99,15 @@ export class ManageContactsComponent implements OnInit {
     public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
     public currentContactType: string = null;
+
+sortContacts  = [
+               {'name': 'Sort By', 'value': ''},
+               {'name': 'Name(A-Z)', 'value': 'name-ASC'},
+               {'name': 'Name(Z-A)', 'value': 'name-DESC'},
+               {'name': 'Created Time(ASC)', 'value': 'createdTime-ASC'},
+               {'name': 'Created Time(DESC)', 'value': 'createdTime-DESC'},
+               ];
+public contactsSort: any = this.sortContacts[0];
 
     constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination ) {
@@ -124,6 +141,44 @@ export class ManageContactsComponent implements OnInit {
         }
     }
 
+    searchDisableValue(){
+        console.log(this.searchKey);
+        if (this.searchKey !== null || this.searchKey.length !== 0) {
+        this.searchDisable = false; }
+        if (this.searchKey.length === 0 || this.searchKey === '') {
+            this.searchDisable = true; }
+    }
+    searchVideoTitelName(){
+      if ( this.searchKey !== null && this.searchDisable === false ){
+        //this.showMessage = false;
+        //this.showUpdatevalue = false;
+        console.log(this.searchKey);
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+        this.loadContactLists(this.pagination);
+        //this.showSweetAlert = false;
+      }
+    }
+    selectedSortByValue( event: any ){
+       // this.showMessage = false;
+       // this.showUpdatevalue = false;
+       // this.showSweetAlert = false;
+        this.contactsSort = event;
+         const sortedValue = this.contactsSort.value;
+         if( sortedValue !== '') {
+             const options: string[] = sortedValue.split('-');
+             this.sortcolumn = options[0];
+             this.sortingOrder = options[1];
+         }else {
+             this.sortcolumn = null;
+             this.sortingOrder = null;
+         }
+        this.pagination.pageIndex = 1;
+        this.pagination.sortcolumn = this.sortcolumn ;
+        this.pagination.sortingOrder = this.sortingOrder ;
+        this.loadContactLists(this.pagination);
+    }
+    
     loadContactLists( pagination: Pagination ) {
         this.contactService.loadContactLists( pagination )
             .subscribe(
