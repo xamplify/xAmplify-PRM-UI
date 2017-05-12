@@ -56,6 +56,14 @@ export class ContactService {
             .catch( this.handleError );
     }
     
+    loadContactLists1(pagination:Pagination): Observable<ContactList[]> {
+        pagination.maxResults = 1000;
+        this.logger.info("Service class loadContact() completed");
+        return this._http.post( this.url + "userlist?" + "access_token=" + this.authenticationService.access_token,pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     loadAllContacts(pagination:Pagination): Observable<ContactList[]> {
         this.logger.info("Service class loadAllContact() completed");
         return this._http.post( this.url + "contacts?contactType=all" + "&access_token=" + this.authenticationService.access_token,pagination)

@@ -12,6 +12,7 @@ import { SocialContact } from '../models/social-contact';
 import { Contacts } from '../models/contacts';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
+import { Pagination } from '../../core/models/pagination';
 
 
 declare var Metronic : any;
@@ -29,10 +30,12 @@ declare var $: any;
               '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
               '../../../assets/css/form.css', 
               '../../../assets/css/numbered-textarea.css'],
-              providers: [SocialContact,ZohoContact,SalesforceContact]
+              providers: [SocialContact,ZohoContact,SalesforceContact,Pagination]
 })
 export class AddContactsComponent implements OnInit {
 
+    
+    public contactLists: Array<ContactList>;
     public isFlag: boolean = false;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
@@ -50,7 +53,7 @@ export class AddContactsComponent implements OnInit {
     public saveGoogleContactUsers: boolean;
     public saveZohoContactUsers: boolean;
     public saveSalesforceContactUsers: boolean;
-    public zohoImage : string = 'assets/images/crm/Zoho_check.png';
+    public zohoImage : string;
     public googleImage : string;
     public salesforceImage : string = 'assets/images/crm/sf_check.png';
     public contactListNameError : boolean;
@@ -85,7 +88,7 @@ export class AddContactsComponent implements OnInit {
     private socialContactType:string;
     constructor(private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
-        private router: Router,private logger: Logger) {
+        private router: Router,private logger: Logger,private pagination: Pagination) {
         this.contacts = new Array<User>();
         this.newUsers = new Array<User>();
         this.googleUsers = new Array<User>();
@@ -1165,10 +1168,32 @@ salesforceContactImage(){
             () => this.logger.log("AddContactsComponent googleContacts() finished.")
         ); 
 }
+
+loadContactLists( pagination: Pagination ) {
+    this.contactService.loadContactLists1( pagination )
+        .subscribe(
+        (data:any) => {
+            this.logger.info( data );
+            this.contactLists = data.listOfUserLists;
+            for ( let i=0;i< data.listOfUserLists.length;i++) {
+                if ( data.listOfUserLists[i].socialNetwork == "ZOHO" ) {
+                    this.zohoImage = 'assets/images/crm/Zoho_check.png';
+                }else{
+                    this.zohoImage = 'assets/images/crm/Zoho_gear.png';
+                }
+            }
+        },
+        error => {
+            this.logger.error( error )
+        },
+        () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+       )
+}
     ngOnInit() {
         this.googleContactImage();
         this.salesforceContactImage();
         this.gContactsValue = true;
+        this.loadContactLists( this.pagination );
         
         if(this.contactService.googleCallBack == true){
             this.getGoogleContactsUsers();
