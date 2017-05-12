@@ -83,7 +83,7 @@
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 										   </div>
-											<div class="portlet-input input-inline input-small">
+											<div class="portlet-input input-inline input-small" style="margin-left: 6px;">
 												<div class="input-icon right">
 													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchDisableValue()"

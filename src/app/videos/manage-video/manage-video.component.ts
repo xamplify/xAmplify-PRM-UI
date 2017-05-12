@@ -1,13 +1,13 @@
-import {Component, OnInit, OnDestroy, Input,AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import {SaveVideoFile} from '.././models/save-video-file';
-import {Category} from '.././models/category';
-import {Pagination} from '../../core/models/pagination';
+import { SaveVideoFile } from '.././models/save-video-file';
+import { Category } from '.././models/category';
+import { Pagination } from '../../core/models/pagination';
 
-import {VideoFileService} from '.././services/video-file.service';
+import { VideoFileService} from '.././services/video-file.service';
 import { PagerService } from '../../core/services/pager.service';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {ReferenceService} from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
 import { Logger } from 'angular2-logger/core';
 
@@ -19,7 +19,7 @@ declare var swal , Metronic, Layout , Demo,require,$ : any;
   styleUrls: ['./manage-video.component.css'],
   providers: [ Pagination]
   })
-export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
+export class ManageVideoComponent implements OnInit , OnDestroy {
 
     title = 'Videos';
     manageVideos = true;
@@ -54,7 +54,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
     isvideoThere: boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
-    public showSweetAlert :boolean = false;
     public deletedVideo :boolean = false;
     public deleteVideoName :string;
     
@@ -92,7 +91,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
-                this.showSweetAlert = true;
                 console.log('opening edit video');
                 this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
@@ -105,7 +103,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
                 this.campaignReport = false;
                 this.showMessage = false;
                 this.showUpdatevalue = false;
-                this.showSweetAlert = false;
             }
           this.loadVideos(this.pagination);
            // Metronic.init();
@@ -117,12 +114,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
             console.log('error ' + err);
         }
     }
+   
       loadVideos(pagination: Pagination) {
       
+    	
       try {
-    	  if(this.showSweetAlert == false){
             //  swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
-    	  }
     	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
          //   swal.close();
@@ -165,7 +162,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.loadVideos(this.pagination);
         this.showUpdatevalue = false;
         this.showMessage = false;
-        this.showSweetAlert = false;
      }
     }
 
@@ -173,7 +169,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.isvideoThere = false;
-        this.showSweetAlert = false;
         console.log(this.categoryNum);
         this.pagination.filterBy = this.categoryNum;
         this.pagination.pageIndex = 1;
@@ -194,13 +189,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
-        this.showSweetAlert = false;
       }
     }
     selectedSortByValue( event: any ){
         this.showMessage = false;
         this.showUpdatevalue = false;
-        this.showSweetAlert = false;
         this.videoSort = event;
          const sortedValue = this.videoSort.value;
          if( sortedValue !== '') {
@@ -310,7 +303,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
 
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
-        this.showSweetAlert = true;
         if (videoFile != null) {
             this.pagination.pageIndex = 1;
             this.pagination.filterBy = 0;
@@ -355,7 +347,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
         this.pageBar = false;
         this.showMessage = false;
         this.showUpdatevalue = false;
-        this.showSweetAlert = false;
         this.deletedVideo  = false;
         this.videoFileService.actionValue = '';
     }
@@ -363,9 +354,5 @@ export class ManageVideoComponent implements OnInit , OnDestroy,AfterViewInit {
          this.videoFileService.actionValue = '';
          this.isvideoThere = false;
     }
-      ngAfterViewInit(){
-    	  
-    	
-      }
 
 }

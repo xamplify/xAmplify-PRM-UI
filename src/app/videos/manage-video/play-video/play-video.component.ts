@@ -25,6 +25,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public posterImg: string;
     public likes: boolean;
     public comments: boolean;
+    public shareVideo: boolean;
+    public embedVideo :boolean;
     public isPlayButton: boolean;
     public isSkipChecked: boolean;
     public user: User = new User();
@@ -41,45 +43,59 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public isFistNameChecked: boolean;
     public videoStartTime: number;
     public durationTime: number;
-    public startOfthevideo = true;  // need to remove and replace with this.saveVideoFile.startOfthevideo
-    public checkCalltoAction = false; // need to get the value from server
+    public startOfthevideo: boolean;  // need to remove and replace with this.saveVideoFile.startOfthevideo
+    public endOfthevideo: boolean;
+    public checkCalltoAction = false; // need to get the value from server and set the call to action value
 
     public videoId = false;
 
-    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private videoFileService: VideoFileService,
-        private userService: UserService) {
+    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
+    private videoFileService: VideoFileService,private userService: UserService) {
         this._elementRef = elementRef;
     }
 
     videoPlayListSource(videoUrl: string){
         this.videoUrl = videoUrl;
-         const self = this;
-          this.videoJSplayer.playlist([{
-            sources: [{
-               src: self.videoUrl,
-               type: 'application/x-mpegURL'
-             }] }
-             ]);
+        const self = this;
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
     }
 
-    showVideo(videoFile: SaveVideoFile, position: number) {
-        console.log('videoComponent showVideo() '+ position);
-     this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
-        .subscribe((saveVideoFile: SaveVideoFile) => {
-        this.selectedVideo = saveVideoFile;
-        console.log(this.selectedVideo);
-         if (this.selectedVideo) {
-            console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
-            this.videos.splice(this.selectedPosition, 0, this.selectedVideo);
-        }
-        this.videos.splice(position, 1);
-        this.selectedPosition = position;
+    playVideoInfo(selectedVideo: SaveVideoFile) {
         this.posterImg = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        console.log('video url is ' + this.videoUrl);
-          const self = this;
+        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+       // call to action values
+        this.lowerTextValue = this.selectedVideo.lowerText;   // need  the value from server
+        this.upperTextValue = this.selectedVideo.upperText;   // need  the value from server 
+        this.isFistNameChecked = this.selectedVideo.name; // need  the value from server 
+        this.isPlayButton = this.selectedVideo.name;  // need to get the value from server
+        this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
+        this.startOfthevideo =  this.selectedVideo.startOfVideo;
+        this.endOfthevideo  = this.selectedVideo.endOfVideo;
+        this.checkCalltoAction = this.selectedVideo.callAction;
+       // video controlls
+        this.likes = this.selectedVideo.allowLikes;
+        this.comments = this.selectedVideo.allowComments;
+        this.shareVideo = this.selectedVideo.allowSharing;
+        this.embedVideo = this.selectedVideo.allowEmbed;
+        console.log(this.selectedVideo);
+    }
+
+    showVideo(videoFile: SaveVideoFile, position: number) {
+       console.log('videoComponent showVideo() ' + position);
+       this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
+         .subscribe((saveVideoFile: SaveVideoFile) => {
+           this.selectedVideo = saveVideoFile;
+           console.log(this.selectedVideo);
+           if (this.selectedVideo) {
+             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
+             this.videos.splice(this.selectedPosition, 0, this.selectedVideo);
+          }
+        this.videos.splice(position, 1);
+        this.selectedPosition = position;
+        this.playVideoInfo(this.selectedVideo);
+      // change the video src dynamically
        if (this.setValueForSrc === true) {
               this.videoPlayListSource(this.videoUrl);
               this.setValueForSrc = false;
@@ -87,7 +103,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         else {
              this.videoPlayListSource(this.videoUrl);
              this.videoPlayListSource(this.videoUrl);
-          } 
+          }
+    // to check the call to action overlay is there or not
        if (this.checkCalltoAction === true) {   // need to get the value from server
             $('#overlay-modal').show();
             $('.vjs-big-play-button').css('display', 'none');
@@ -98,13 +115,29 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             $('.vjs-big-play-button').css('display', 'block');
              this.videoJSplayer.pause();
         }
-        this.likes = this.selectedVideo.allowLikes;
-        this.comments = this.selectedVideo.allowComments;
       });
     }
+
+   validateEmail(email: string) {
+        var validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return validation.test(email);
+    }
+
+    checkingCallToActionValues() {
+        if (this.isFistNameChecked == true && this.validateEmail(this.model.email_id) && this.firstName.length != 0 && this.lastName.length != 0) {
+        this.isOverlay = false;
+            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
+        }
+        else if (this.isFistNameChecked == false && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
+        else { this.isOverlay = true; }
+    }
+
+    trimCurrentTime(currentTime) {
+        return Math.round(currentTime * 100) / 100;
+    }
+
     saveCallToActionUserForm() {
         console.log(this.model.email_id);
-
         if (this.userService.loggedInUserData.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
             this.user.firstName = this.userService.loggedInUserData.firstName;
@@ -124,86 +157,41 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             });
     }
 
-    validateEmail(email: string) {
-        var validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return validation.test(email);
-    }
-
-    checkingCallToActionValues() {
-        // console.log(this.model.email_id);
-        if (this.isFistNameChecked == true && this.validateEmail(this.model.email_id) && this.firstName.length != 0 && this.lastName.length != 0) {
-        this.isOverlay = false;
-            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
-        }
-        else if (this.isFistNameChecked == false && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
-        else { this.isOverlay = true; }
-    }
-
-    trimCurrentTime(currentTime) {
-        return Math.round(currentTime * 100) / 100;
-    }
-
     ngOnInit() {
         this.setValueForSrc = true;
-        this.likes = this.selectedVideo.allowLikes;
-        this.comments = this.selectedVideo.allowComments;
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-       // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        console.log('video url is ' + this.videoUrl);
-        console.log('Init - Component initialized')
-
-        this.isPlayButton = true;  // need to get the value from server
-        this.isSkipChecked = true; // need to get the value from server
-
-        this.lowerTextValue = "thanks you";   // need to the value from server
-        this.upperTextValue = "welcome to xtremand videos";   // need to the value from server 
-
-        this.isFistNameChecked = true // need to the value from server 
 
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
         this.lastName = this.userService.loggedInUserData.lastName;
 
-        if (this.validateEmail(this.model.email_id))
-            this.isOverlay = false;
-        else this.isOverlay = true;
+        if (this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
+        else {this.isOverlay = true; }
 
+        this.playVideoInfo(this.selectedVideo);
 
-        if (this.startOfthevideo == true) {    // need to the value from server
+       if (this.startOfthevideo === true) {    // need the value from server and add the checkCalltoAction to the condition 
             this.videoOverlaySubmit = 'PLAY';
             this.isPlay = true;
             this.overLayValue = true;
-            localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
+            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
         }
         else {
             this.isPlay = false;
             this.overLayValue = false;
             this.videoOverlaySubmit = 'SUBMIT';
-            localStorage.setItem("isOverlayValue", JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
+            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
         }
 
-        console.log(this.videos);
-        console.log(this.selectedVideo);
-        //  Metronic.init();
-        //  Layout.init();
-        //  Demo.init();
     }
 
     ngAfterViewInit() {
-
         this.videoJSplayer = videojs('example_video_11', {}, function() {
-            // This is functionally the same as the previous example.
-            // this.play();
             let player = this;
            // var id = player.id();
-            var aspectRatio = 320/640;
-    
-            var isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
+            const aspectRatio = 320/640;
+            const isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
            // console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
             this.ready(function() {
-                //  this.bigPlayButton.show();
                 if (isValid === true) {
                     $('.vjs-big-play-button').css('display', 'none');
                     $('#example_video_11').append(
@@ -233,9 +221,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                 player.width(width).height( width * aspectRatio );
               }
             resizeVideoJS();
-            
             window.onresize = resizeVideoJS; */
-            
             this.on('timeupdate', function() {
                 // var  startDuration = player.trimCurrentTime(player.currentTime());
                 // var  startDuration = player.currentTime();
@@ -354,15 +340,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                 }
             });
         });
-
-
     }
-
     ngOnDestroy() {
-        console.log('Deinit - Destroyed Component')
+        console.log('Deinit - Destroyed Component');
         this.videoJSplayer.dispose();
-        localStorage.removeItem("isOverlayValue");
+        localStorage.removeItem('isOverlayValue');
     }
-
-
 }

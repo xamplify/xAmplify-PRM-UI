@@ -25,7 +25,7 @@ export class UploadVideoComponent implements OnInit {
     public file_srcs: string[] = [];
     public hasBaseDropZoneOver  = false;
     public hasAnotherDropZoneOver = false;
-    public filePreviewPath: SafeUrl;
+    public videoPreviewPath: SafeUrl;
     loading: boolean ;
     processing = false;
     isChecked :boolean ;
@@ -92,7 +92,7 @@ export class UploadVideoComponent implements OnInit {
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
-                this.filePreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+                this.videoPreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -177,7 +177,7 @@ export class UploadVideoComponent implements OnInit {
     fileDropPreview(file:File):void{
         if(this.isFileDrop == false){ 
          console.log("file got it" +file);
-         this.readFiles(file);
+       //  this.readFiles(file);
          this.defaultDesabled();
          }
         else{
