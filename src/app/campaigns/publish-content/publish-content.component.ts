@@ -36,8 +36,11 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     campaignLaunchForm: FormGroup;
     public isAvailable: boolean = false;
     public isVideoSelected:boolean = false;
-    public isEmailTemplateSelected:boolean = false;
+    public isVideoSelectedForDraft:boolean = false;
     public isContactListSelected:boolean = false;
+    public isContactListSelectedForDraft:boolean = false;
+    public isEmailTemplateSelected:boolean = false;
+    public isEmailTemplateSelectedForDraft:boolean = false;
     public isPublishAsSelected:boolean = false;
     public isScheduleSelected:boolean = false;
     isAdd = true;
@@ -61,6 +64,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     isvideosLength:boolean;
     public searchKey :string ;
     private videoJSplayer: any;
+    private player:any;
     sortingName:string = null;
     sortcolumn :string = null;
     sortingOrder :string = null;
@@ -78,7 +82,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     public isCategoryUpdated:boolean;
     public emailTemplateHtmlPreivew:string="";
     public selectedVideoFilePath:string = "";
-    public selectedContactListName:string = "";
+    public selectedContactListNames:string[] = [];
     public selectedEmailTemplateName:string="";
     public id:number;
     public previewContactListId : number;
@@ -98,39 +102,62 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         private contactService: ContactService, private campaignService: CampaignService, private userService: UserService,private emailTemplateService:EmailTemplateService,private pagerService:PagerService,private authenticationService: AuthenticationService,private logger:Logger ) {
         this.campaign = new Campaign();
         if ( this.campaignService.campaign != undefined ) {
-            console.log(this.campaignService.campaign);
-           this.campaign = this.campaignService.campaign;
-            this.videoId = this.campaignService.campaign.selectedVideoId;
-            this.emailTemplateId =  this.campaignService.campaign.selectedEmailTemplateId;
             this.isAdd = false;
-            this.isVideoSelected = true;
-            this.isContactListSelected = true;
-            this.isScheduleSelected = true;
-            this.isEmailTemplateSelected = true;
+            console.log(this.campaignService.campaign);
+            this.campaign = this.campaignService.campaign;
+            
+            //Selecting Publish As Radio Button
+            if(this.campaign.regularEmail){
+                this.emailType = 'Regular Email';
+                this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            }else{
+                this.emailType = 'Video Email';
+                this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+            }
+            this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
             this.isPublishAsSelected  = true;
+            
+            //Check whether video is selected or not
+            var selectedVideoId  = this.campaignService.campaign.selectedVideoId;
+            if(selectedVideoId>0){
+                this.isVideoSelected = true;
+                this.videoId =selectedVideoId ;
+                this.isVideoSelectedForDraft = true;
+                this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
+            }
+            //Check This Conditions if ids exists;
+            if(this.campaign.userListIds.length>0){
+                this.isContactListSelected = true;
+                this.contactsPagination.editCampaign = true;
+                this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
+                this.isContactListSelectedForDraft = true;
+            }
+           
+            var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
+            if(selectedTemplateId>0){
+                this.emailTemplateId = selectedTemplateId;
+                this.isEmailTemplateSelected = true;
+                this.isEmailTemplateSelectedForDraft = true;
+            }
+            
             this.name = this.campaignService.campaign.campaignName;
             if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
+                this.isScheduleSelected = true;
             }
-            if(this.campaignService.campaign.scheduleTime!=null ||this.campaignService.campaign.scheduleTime!="null" ){
+            if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null" ){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
+                this.isScheduleSelected = true;
+            }
+            if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
+                this.campaign.scheduleTime = "";
             }
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
-                if(emailTemplate.beeRegularTemplate || emailTemplate.regularTemplate){
-                    this.emailType = 'Regular Email';
-                    this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-                }else{
-                    this.emailType = 'Video Email';
-                    this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-                }
-                this.loadEmailTemplates(this.emailTemplatesPagination);
                 this.getEmailTemplatePreview(emailTemplate);
             }else{
                 this.logger.info("No Email Template Added For Campaign");
             }
-            this.contactsPagination.editCampaign = true;
-            this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
            
         }
         if(this.userService.loggedInUserData!=undefined){
@@ -261,13 +288,21 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     /************************************Start Of Contacts********************************************************/
     
     
-    loadCampaignContacts(pagination:Pagination) {
-        this.contactService.loadContactLists(pagination)
+    loadCampaignContacts(contactsPagination:Pagination) {
+        this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data:any) => {
                 this.campaignContactLists = data.listOfUserLists;
-                pagination.totalRecords = data.totalRecords;
-                this.contactsPagination = this.pagerService.getPagedItems(pagination, this.campaignContactLists);
+                contactsPagination.totalRecords = data.totalRecords;
+                if(contactsPagination.filterBy!=null){
+                    if(contactsPagination.filterBy==0){
+                        contactsPagination.maxResults = data.totalRecords;
+                    }else{
+                        contactsPagination.maxResults = contactsPagination.filterBy;
+                    }
+                   
+                }
+                this.contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
                 console.log(this.contactsPagination);
                // this.validateContactListForm();
                 
@@ -287,6 +322,9 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 this.campaignEmailTemplates = data.emailTemplates;
                 pagination.totalRecords = data.totalRecords;
                 this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+                if(this.emailTemplatesPagination.totalRecords==0){
+                    this.isEmailTemplateSelected = false;
+                }
             },
             (error:string) => {
                console.log(error, "listEmailTemplates","ManageTemplatesComponent")
@@ -310,7 +348,6 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         console.log(videoFile);
        this.campaign.selectedVideoId =videoFile.id;
        this.selectedVideoFilePath = videoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
-       
         console.log( "video id is " + videoFile.id );
     }
 
@@ -400,6 +437,22 @@ export class PublishContentComponent implements OnInit,OnDestroy {
             this.videoJSplayer = videojs(document.getElementById('campaignVideo'), {}, function() {
                 this.play();
            });
+            
+            
+            
+          /*  var player = videojs('videojs-panorama-player');
+            player.panorama({
+                autoMobileOrientation: true,
+                clickAndDrag: true,
+                clickToToggle: true,
+                callback: function () {
+                    alert("playes i rdae");
+                    
+                  player.ready();
+                }
+              });
+            console.log(player);
+            */
         }
         catch ( err ) {
             console.log( "error" );
@@ -448,6 +501,16 @@ export class PublishContentComponent implements OnInit,OnDestroy {
             this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         }
         this.loadEmailTemplates(this.emailTemplatesPagination);
+        if(!(this.isAdd)){
+            var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
+            if(selectedTemplateId>0){
+                this.emailTemplateId = selectedTemplateId;
+                this.isEmailTemplateSelected = true;
+                this.isEmailTemplateSelectedForDraft = true;
+            }
+                 
+        }
+          
     }
     
     /*********************************Save Campaign video*******************************/
@@ -513,7 +576,9 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     onVideoFormValueChanged( data?: any ) {
         if ( !this.videoForm ) { return; }
         const form = this.videoForm;
-        if(this.videoForm['_status']=="VALID"){this.isVideoSelected=true}
+        if(this.videoForm['_status']=="VALID"){
+            this.isVideoSelected=true
+            }
         for ( const field in this.formErrors ) {
             // clear previous error message (if any)
             this.formErrors[field] = '';
@@ -650,6 +715,12 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         $('[name="campaignContact[]"]:checked').each(function(){
            self.campaign.userListIds.push($(this).val());
         });
+        
+        if(this.emailType== "Regular Email"){
+            this.campaign.regularEmail = true;
+        }else{
+            this.campaign.regularEmail = false;
+        }
         var data = {
                 'campaignName': this.campaignForm.value.campaignName,
                 'fromName': this.campaignForm.value.fromName,
@@ -668,7 +739,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
                 'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
-                'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId
+                'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId,
+                'regularEmail':this.campaign.regularEmail
         }
        console.log(data);
         this.campaignService.saveCampaign( data )
@@ -707,7 +779,9 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         this.name = "";
         if(!this.launchSuccess){
            if(this.isAdd){
-               this.saveCampaign();
+              if(this.isPublishAsSelected){
+                  this.saveCampaign();
+              }
            }else{
                let self = this;
                swal( {
@@ -734,6 +808,11 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         $('[name="campaignContact[]"]:checked').each(function(){
            self.campaign.userListIds.push($(this).val());
         });
+        if(this.emailType== "Regular Email"){
+            this.campaign.regularEmail = true;
+        }else{
+            this.campaign.regularEmail = false;
+        }
         var data = {
                 'campaignName': this.campaignForm.value.campaignName,
                 'fromName': this.campaignForm.value.fromName,
@@ -752,7 +831,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
                 'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
-                'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId
+                'selectedEmailTemplateId':this.emailTemplateForm.value.emailTemplateId,
+                'regularEmail':this.campaign.regularEmail
             }
         console.log(data);
         this.campaignService.saveCampaign( data )
@@ -781,6 +861,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
         this.emailTemplateHtmlPreivew = emailTemplate.body;
+        this.selectedEmailTemplateName = emailTemplate.name;
     }
     contactListItems:any[];
     loadUsers(id:number,pagination:Pagination){
@@ -797,7 +878,6 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                     console.log(pagination);
                     this.contactListItems = data.listOfUsers;
                     console.log(this.contactListItems);
-                    //alert(data.totalRecords);
                     pagination.totalRecords = data.totalRecords;
                     this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
                     //swal.close();
@@ -857,8 +937,16 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         );
     }
     
+    
+    
     checkAll(ev:any){
-        this.contactsPagination.pagedItems.forEach(x => x.state = ev.target.checked);
+        if(ev.target.checked){
+            $('[name="campaignContact[]"]').prop('checked', true);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+        }
+       
+        /*this.contactsPagination.pagedItems.forEach(x => x.state = ev.target.checked);
         if(ev.target.checked){
             if($('[name="campaignContact[]"]:checked').length==0){
                 this.isContactListSelected = true;
@@ -868,10 +956,11 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 this.isContactListSelected = false;
             }
         }
-      
+      */
     }
     
     isAllChecked() {
+       
         return this.contactsPagination.pagedItems.every(_ => _.state);
       }
     
@@ -879,7 +968,20 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     addIds(event:any,id:number){
         if($('[name="campaignContact[]"]:checked').length>0){
             this.isContactListSelected = true;
-        }else{ this.isContactListSelected = false;}
+        }else{ 
+            this.isContactListSelected = false;
+        
+        }
+       
+    }
+    
+    addUserEmailIds(){
+        let self = this;
+        self.selectedContactListNames = [];
+        $('[name="campaignContact[]"]:checked').each(function(){
+            self.selectedContactListNames.push($(this)[0].id);
+         });
+        
     }
     
     addEmailId(){

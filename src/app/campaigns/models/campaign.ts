@@ -25,4 +25,5 @@ export class Campaign {
     campaignVideoFile:SaveVideoFile;
     emailTemplate:EmailTemplate;
     scheduleTime:string;
+    regularEmail:boolean;
 }

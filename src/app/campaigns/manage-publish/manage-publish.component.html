@@ -1,6 +1,5 @@
 
 <div class="page-content">
- <div *ngIf="campaigns?.length <=0"  class="alert alert-danger"><strong>No Campaigns Found</strong></div>
 	<div class="row mix-grid" style="margin-top: 10px" *ngIf="campaigns?.length > 0">
 		<div *ngFor="let campaign of campaigns">
 			<div class="col-md-3 col-sm-4 mix category_1 mix_all"	style="display: block; opacity: 1;" id="campaignListDiv_{{campaign.campaignId}}">
@@ -28,5 +27,6 @@
 			</div>
 		</div>
 	</div>
+	 <div *ngIf="campaigns?.length <= 0"  class="alert alert-danger"><strong>No Campaigns Found</strong></div>
 </div>
 <!-- END PAGE CONTENT-->
