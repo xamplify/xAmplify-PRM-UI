@@ -79,6 +79,24 @@ export class EditContactsComponent implements OnInit {
     contactUsersId:number; 
     contactIds = [];
     
+    public searchKey: string ;
+    sortingName: string = null;
+    sortcolumn: string = null;
+    sortingOrder: string = null;
+    isvideoThere: boolean;
+    public isCategoryThere: boolean;
+    public searchDisable = true;
+    
+    sortContacts  = [
+                     {'name': 'Sort By', 'value': ''},
+                     {'name': 'Name(A-Z)', 'value': 'name-ASC'},
+                     {'name': 'Name(Z-A)', 'value': 'name-DESC'},
+                     {'name': 'Created Time(ASC)', 'value': 'createdTime-ASC'},
+                     {'name': 'Created Time(DESC)', 'value': 'createdTime-DESC'},
+                     ];
+      public contactsSort: any = this.sortContacts[0];
+
+    
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination) {
@@ -87,6 +105,46 @@ export class EditContactsComponent implements OnInit {
         this.csvFileUsers = new Array<User>();
     }
 
+    searchDisableValue(){
+        console.log(this.searchKey);
+        if (this.searchKey !== null || this.searchKey.length !== 0) {
+        this.searchDisable = false; }
+        if (this.searchKey.length === 0 || this.searchKey === '') {
+            this.searchDisable = true; }
+    }
+    searchVideoTitelName(){
+      if ( this.searchKey !== null && this.searchDisable === false ){
+        //this.showMessage = false;
+        //this.showUpdatevalue = false;
+        console.log(this.searchKey);
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+        this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        //this.showSweetAlert = false;
+      }
+    }
+    selectedSortByValue( event: any ){
+       // this.showMessage = false;
+       // this.showUpdatevalue = false;
+       // this.showSweetAlert = false;
+        this.contactsSort = event;
+         const sortedValue = this.contactsSort.value;
+         if( sortedValue !== '') {
+             const options: string[] = sortedValue.split('-');
+             this.sortcolumn = options[0];
+             this.sortingOrder = options[1];
+         }else {
+             this.sortcolumn = null;
+             this.sortingOrder = null;
+         }
+        this.pagination.pageIndex = 1;
+        this.pagination.sortcolumn = this.sortcolumn ;
+        this.pagination.sortingOrder = this.sortingOrder ;
+        this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+    }
+    
+    
+    
     checked( event: boolean ) {
         this.logger.info( "check value" + event )
         this.contacts.forEach(( contacts ) => {
