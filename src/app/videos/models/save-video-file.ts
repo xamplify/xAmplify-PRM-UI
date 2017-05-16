@@ -24,7 +24,7 @@ export class SaveVideoFile {
     allowEmbed: boolean;
     transparency:number;
     action: string;
-    callAction:boolean;
+    callACtion:boolean;
     name: boolean;
     skip: boolean;
     upperText: string;
@@ -40,4 +40,5 @@ export class SaveVideoFile {
     uploadedDate: Date;
     uploadedBy: string;
     alias: string;
+    is360video :boolean;
 }

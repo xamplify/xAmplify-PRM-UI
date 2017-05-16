@@ -84,7 +84,7 @@
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" id="openf"
-						     [disabled]="loading==true||isDisable == true" #input />
+						     *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
 					 <div style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
@@ -123,13 +123,13 @@
 											<source [src]='videoPreviewPath' type='video/3gpp'>
 											<source [src]='videoPreviewPath' type='video/quicktime'>
 											<source [src]='videoPreviewPath' type='video/x-ms-wmv'>
-											<source [src]="videoPreviewPath" typ'video/x-msvideo'> 
-											<source [src]="videoPreviewPath" typ'video/mpeg'> 
-											<source [src]="videoPreviewPath" typ'video/dvd'> 
-											<source [src]="videoPreviewPath" typ'video/xvid'> 
-											<source [src]="videoPreviewPath" typ'video/x-flv'> 
-											<source [src]="videoPreviewPath" typ'video/x-f4v'> 
-											<source [src]="videoPreviewPath" typ'video/divx'> 
+											<source [src]="videoPreviewPath" type ='video/x-msvideo'> 
+											<source [src]="videoPreviewPath" type ='video/mpeg'> 
+											<source [src]="videoPreviewPath" type ='video/dvd'> 
+											<source [src]="videoPreviewPath" type ='video/xvid'> 
+											<source [src]="videoPreviewPath" type ='video/x-flv'> 
+											<source [src]="videoPreviewPath" type ='video/x-f4v'> 
+											<source [src]="videoPreviewPath" type ='video/divx'> 
 										</video>
 									</td> 
 

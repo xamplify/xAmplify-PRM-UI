@@ -45,7 +45,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public durationTime: number;
     public startOfthevideo: boolean;  // need to remove and replace with this.saveVideoFile.startOfthevideo
     public endOfthevideo: boolean;
-    public checkCalltoAction = false; // need to get the value from server and set the call to action value
+    public checkCalltoAction : boolean = false; // need to get the value from server and set the call to action value
 
     public videoId = false;
 
@@ -57,7 +57,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     videoPlayListSource(videoUrl: string){
         this.videoUrl = videoUrl;
         const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+       this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+        
+       
     }
 
     playVideoInfo(selectedVideo: SaveVideoFile) {
@@ -73,7 +75,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
         this.startOfthevideo =  this.selectedVideo.startOfVideo;
         this.endOfthevideo  = this.selectedVideo.endOfVideo;
-        this.checkCalltoAction = this.selectedVideo.callAction;
+       // this.checkCalltoAction = this.selectedVideo.callACtion;
        // video controlls
         this.likes = this.selectedVideo.allowLikes;
         this.comments = this.selectedVideo.allowComments;
@@ -95,6 +97,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videos.splice(position, 1);
         this.selectedPosition = position;
         this.playVideoInfo(this.selectedVideo);
+        this.posterImg =  this.selectedVideo.imagePath;
       // change the video src dynamically
        if (this.setValueForSrc === true) {
               this.videoPlayListSource(this.videoUrl);
@@ -105,7 +108,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
              this.videoPlayListSource(this.videoUrl);
           }
     // to check the call to action overlay is there or not
-       if (this.checkCalltoAction === true) {   // need to get the value from server
+       if ( this.selectedVideo.startOfVideo==true) {   // need to get the value from server
             $('#overlay-modal').show();
             $('.vjs-big-play-button').css('display', 'none');
              this.videoJSplayer.pause();
@@ -115,6 +118,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             $('.vjs-big-play-button').css('display', 'block');
              this.videoJSplayer.pause();
         }
+       
       });
     }
 
@@ -158,7 +162,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.setValueForSrc = true;
+    	//this.playNormalVideo();
+    	this.setValueForSrc = true;
 
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
@@ -184,14 +189,45 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
 
     }
 
+    play360Video(){
+        $('.h-video').remove();
+        $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
+        var player = videojs('example_video_11');
+        console.log(player);
+        player.panorama({
+            autoMobileOrientation: true,
+            clickAndDrag: true,
+            clickToToggle: true,
+            callback: function () {
+              player.ready();
+            }
+          });
+    }
+    playNormalVideo(){
+        $('.p-video').remove();
+        $('head').append('<script src="assets/js/indexjscss/video.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
+        $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />'); 
+      //  var player = videojs('example_video_11');
+      //  player.ready();
+     
+    }
+    
     ngAfterViewInit() {
-        this.videoJSplayer = videojs('example_video_11', {}, function() {
+        
+    	//this.playNormalVideo();
+    
+    	this.videoJSplayer = videojs('example_video_11', {}, function() {
             let player = this;
            // var id = player.id();
+           // this.play();
             const aspectRatio = 320/640;
             const isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
            // console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
-            this.ready(function() {
+           this.ready(function() {
                 if (isValid === true) {
                     $('.vjs-big-play-button').css('display', 'none');
                     $('#example_video_11').append(
@@ -210,7 +246,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                     $('#overlay-modal').hide();
                     player.play();
                 }
-            });
+            }); 
 
             this.on('seeking', function() {
                 // Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
@@ -340,10 +376,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                 }
             });
         });
-    }
+    //	  this.videoPlayListSource(this.videoUrl);
+    	
+    } 
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
         this.videoJSplayer.dispose();
         localStorage.removeItem('isOverlayValue');
     }
-}
+} 

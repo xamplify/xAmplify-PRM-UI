@@ -64,7 +64,7 @@ export class UploadVideoComponent implements OnInit {
     public hideSaveDiscard:boolean;
     public maxTimeDuration :number;
     public source: string;
-
+    
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer) {
@@ -118,9 +118,11 @@ export class UploadVideoComponent implements OnInit {
 
     processVideo(responsePath: any) {
       const val = this;
-        setTimeout(function() {
+      if(this.RecordSave != true){ 
+      setTimeout(function() {
            val.processing = true;
           }, 100);
+      }
         console.log(responsePath);
         return this.videoFileService.processVideoFile(responsePath)
             .subscribe((result: any) => {
@@ -146,19 +148,20 @@ export class UploadVideoComponent implements OnInit {
                      }
                 }
                 else {
-
                     if(this.processVideoResp.error === 'Maximum Disk Space Reached for you subscription')
-                 {   this.processing =  false;
-                 this.defaultSettings();
-                  this.maxSubscription = true;
+                     {   this.processing =  false;
+                         this.defaultSettings();
+                         this.maxSubscription = true;
                       }
-                else {
-                     console.log('process video data object is null please try again:');
-                    this.player.recorder.reset();
-                    $("#myModal").modal("hide");
-                    console.log(this.processVideoResp.error);
-                  }
-                }
+                    else {
+                          console.log('process video data object is null please try again:');
+                          swal("Contact Admin" ,this.processVideoResp.error,'error')
+                         if(this.RecordSave === true){
+                           this.player.recorder.reset();
+                           $("#myModal").modal("hide"); }
+                         console.log(this.processVideoResp.error);
+                      }
+                   }
             }),
             () => console.log('process video is:'+ this.processVideoResp);
     }
@@ -627,8 +630,8 @@ export class UploadVideoComponent implements OnInit {
             else{
                 swal("Only video files can be uploaded.");
             }
-        } 
-        
+        }
+
         isVideo(filename:any) {
              var parts = filename.split('.');
              var ext  = parts[parts.length - 1];
@@ -649,8 +652,7 @@ export class UploadVideoComponent implements OnInit {
                   return true;
               }
               return false;
-           }  
-    
+           }
        ngOnInit() {
            try {
                this.defaultSettings();
@@ -661,13 +663,13 @@ export class UploadVideoComponent implements OnInit {
           }
        ngOnDestroy() {
            console.log('Deinit - Destroyed Component')
-           if(this.playerInit==true)
-           this.player.recorder.destroy();
+           if(this.playerInit==true){
+           this.player.recorder.destroy(); }
            console.log("Destroyed Component completed");
            this.isChecked= false;
            if(this.processing ==  true) {
-        	   this.redirectPge = true;
-        	   swal("Video is processing backend!", " your video will be saved as draft mode in manage videos!!") 
+                this.redirectPge = true;
+                swal("Video is processing backend!", " your video will be saved as draft mode in manage videos!!"); 
            }
        }
 }

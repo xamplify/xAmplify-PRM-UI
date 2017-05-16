@@ -273,7 +273,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
               }, 2000);
         },
        (error: any) => {
-	      if (error.includes("mobinar is being used in one or more campaigns. Please delete those campaigns")){
+    	  // str.search("worlds") != -1)
+    	   if (error.search("mobinar is being used in one or more campaigns. Please delete those campaigns")!= -1){
                      swal( 'Campaign Video!', error, 'error' );
                  }
                  console.log(error);

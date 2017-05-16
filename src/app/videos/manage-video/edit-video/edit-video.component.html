@@ -386,6 +386,12 @@
 											 <ui-switch color="red" size="large" formControlName="allowEmbed" (change)="allowEmbedVideo($event)"></ui-switch>
 											</div>
 										</div>
+										<div class="form-group">
+											<label class="col-md-6 control-label">360 video:</label>
+											<div class="col-md-3">
+											 <ui-switch color="blue" size="large" formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
+											</div>
+										</div>
 									</div>
 								</div>
 								<!-- </form> -->
@@ -411,9 +417,13 @@
 									<label class="col-md-3 control-label">Call To Action:</label>
 									<div class="col-md-6">
 										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
-											<label> <ui-switch [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" color="lightgreen"
+										<!-- 	<label > <ui-switch  [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" color="lightgreen"
+													size="large" (change)="enableCallToActionMethodTest($event)"></ui-switch>
+											</label> -->
+											<label > <ui-switch  formControlName="callACtion"  color="lightgreen"
 													size="large" (change)="enableCallToActionMethodTest($event)"></ui-switch>
 											</label>
+											
 										</div>
 									</div>
 								</div>
@@ -423,14 +433,22 @@
 										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
 											<label style="margin-top: 8px;"> start Of the video</label><label style="margin-left: 116px;  margin-top: -29px;">
 											<ui-switch  color="lightgreen"
-												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"	(change)="startCallToactionOverlay($event)"></ui-switch></label>
+												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"	(change)="startCallToactionOverlay($event)">
+											</ui-switch>
+											<!-- <ui-switch  color="lightgreen" formControlName="startOfVideo"   (change)="startCallToactionOverlay($event)">
+											</ui-switch> -->
+											</label>
 									    </div>
 									</div>
 									<div class="col-md-6">
 									    <div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">			
 												<label style="margin-top: 8px;"> end Of the video</label><label  style="margin-left: 116px;  margin-top: -29px;">
 												<ui-switch  color="lightgreen"
-													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"(change)="endCallToactionOverlay($event)"></ui-switch></label>
+													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"(change)="endCallToactionOverlay($event)">
+												</ui-switch>
+												<!-- <ui-switch  color="lightgreen"  formControlName="endOfVideo" (change)="endCallToactionOverlay($event)">
+												</ui-switch> -->
+												</label>
 										</div>
 									</div>
 								</div>

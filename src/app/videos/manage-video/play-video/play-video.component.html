@@ -61,11 +61,12 @@
 			
 			<div>
 				<span align="left">0 Views</span>
+				
 				<div *ngIf="likes==true">
-				 <span style="float: right">
-					<p class="fa fa-thumbs-o-up" style="color: #337ab7;">127</p> &nbsp;
-					<p class="fa fa-thumbs-o-down" style="color: #f3565d;">127</p>
-				</span>
+					<span style="float: right">
+						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
+						<button class="fa fa-thumbs-down" style="color: #f3565d;" (click)="disLikesValuesDemo()">{{disLikesValues}}</button>
+					</span>
 				</div>
 			</div>
 			<div>
