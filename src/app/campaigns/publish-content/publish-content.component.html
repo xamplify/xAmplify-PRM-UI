@@ -422,7 +422,6 @@ th, td {
 							</table>
 							<!-- <div class="dataTables_info" id="videos_table_new_info" role="status" aria-live="polite">
 							Showing <b>1 to 5</b> of 20 entries</div> -->
-							
 								<div *ngIf="!isvideoThere">   
 								<!--pager here  -->
 									    <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
@@ -727,12 +726,19 @@ th, td {
 				<table id="myTable">
 				<tr>
 					<th>Selected Video</th>
-					<th>
-					<video id="campaignVideo" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{defaultImagePath}}"
-							data-setup='{"example_option":true }' [src]=selectedVideoFilePath>
-						<source [src]=selectedVideoFilePath type="video/mp4" /></video>
-						
-						</th>
+					<th *ngIf="!is360Video">
+					<video id="campaignVideo" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{poster}}"
+							data-setup='{"example_option":true }'>
+						<source [src]=selectedVideoFilePath type="application/x-mpegURL" />
+						<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
+					</video>
+					</th>
+					<th *ngIf="is360Video">
+					 <video id="campaignVideo" class="video-js vjs-default-skin" width="542" height="299"  poster="{{poster}}"  crossorigin="anonymous" controls >
+            					<source [src]=selectedVideoFilePath type="video/mp4" />
+            					<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
+        				</video>
+					</th>
 				</tr>
 				<tr>
 					<td>Selected Contact List</td>

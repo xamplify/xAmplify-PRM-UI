@@ -18351,6 +18351,7 @@ THREE.ImageLoader.prototype = {
 	constructor: THREE.ImageLoader,
 
 	load: function ( url, onLoad, onProgress, onError ) {
+		
 
 		if ( this.path !== undefined ) url = this.path + url;
 
@@ -18417,7 +18418,9 @@ THREE.ImageLoader.prototype = {
 		scope.manager.itemStart( url );
 
 		image.src = url;
-
+		console.log(image);
+		this.image = image; // retain a reference to the object to prevent garbage collection
+		console.log(this.image)
 		return image;
 
 	},

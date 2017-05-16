@@ -82,6 +82,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     public isCategoryUpdated:boolean;
     public emailTemplateHtmlPreivew:string="";
     public selectedVideoFilePath:string = "";
+    private poster:string = "";
+    private is360Video:boolean = true;
     public selectedContactListNames:string[] = [];
     public selectedEmailTemplateName:string="";
     public id:number;
@@ -105,7 +107,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
             this.isAdd = false;
             console.log(this.campaignService.campaign);
             this.campaign = this.campaignService.campaign;
-            
+            $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
             //Selecting Publish As Radio Button
             if(this.campaign.regularEmail){
                 this.emailType = 'Regular Email';
@@ -123,7 +125,15 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 this.isVideoSelected = true;
                 this.videoId =selectedVideoId ;
                 this.isVideoSelectedForDraft = true;
-                this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
+                if(this.campaign.campaignVideoFile.alias.indexOf("xtremand-360")>-1){
+                    this.play360Video();
+                    this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
+                    this.poster = this.campaign.campaignVideoFile.imagePath;
+                }else{
+                     this.playNormalVideo();
+                     this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath+"?access_token="+this.authenticationService.access_token;
+                     this.poster = this.campaign.campaignVideoFile.imagePath;
+                 }
             }
             //Check This Conditions if ids exists;
             if(this.campaign.userListIds.length>0){
@@ -343,19 +353,65 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         );
     }
     
+    addUserEmailIds(){
+        let self = this;
+        self.selectedContactListNames = [];
+        $('[name="campaignContact[]"]:checked').each(function(){
+            self.selectedContactListNames.push($(this)[0].id);
+         });
+        if(this.is360Video){
+           this.play360Video();
+        }else{
+            this.playNormalVideo();
+        }
+        
+    }
+    play360Video(){
+        $('.h-video').remove();
+        $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
+        var player = videojs('campaignVideo');
+        console.log(player);
+        player.panorama({
+            autoMobileOrientation: true,
+            clickAndDrag: true,
+            clickToToggle: true,
+            callback: function () {
+              player.ready();
+            }
+          });
+    }
+    playNormalVideo(){
+        $('.p-video').remove();
+        $('head').append('<script src="assets/js/indexjscss/video.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
+        $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />');
+        var player = videojs('campaignVideo');
+        player.ready();
+    
+    }
     
     addVideoIdFile(videoFile:any ) {
         console.log(videoFile);
        this.campaign.selectedVideoId =videoFile.id;
-       this.selectedVideoFilePath = videoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
+       if(videoFile.alias.indexOf("xtremand-360")>-1){
+           this.is360Video = true;
+           this.selectedVideoFilePath = videoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
+           this.poster = videoFile.imagePath;
+       }else{
+           this.is360Video = false;
+           this.selectedVideoFilePath = videoFile.videoPath+"?access_token="+this.authenticationService.access_token;
+           this.poster = videoFile.imagePath;
+       }
         console.log( "video id is " + videoFile.id );
     }
-
     
     getTemplateId( event: any ) {
         console.log( "template id" + event );
-
     }
+    
     checked( event: any, id: number ) {
         if ( event ) {
             console.log(event);
@@ -434,25 +490,14 @@ export class PublishContentComponent implements OnInit,OnDestroy {
             Demo.init();
             TableManaged.init();
             
-            this.videoJSplayer = videojs(document.getElementById('campaignVideo'), {}, function() {
+           /* this.videoJSplayer = videojs(document.getElementById('campaignVideo'), {}, function() {
                 this.play();
-           });
+           });*/
+            /*var player = videojs("videojs-panorama-player");
+            if(player){
+                player.dispose();
+            }*/
             
-            
-            
-          /*  var player = videojs('videojs-panorama-player');
-            player.panorama({
-                autoMobileOrientation: true,
-                clickAndDrag: true,
-                clickToToggle: true,
-                callback: function () {
-                    alert("playes i rdae");
-                    
-                  player.ready();
-                }
-              });
-            console.log(player);
-            */
         }
         catch ( err ) {
             console.log( "error" );
@@ -975,14 +1020,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
        
     }
     
-    addUserEmailIds(){
-        let self = this;
-        self.selectedContactListNames = [];
-        $('[name="campaignContact[]"]:checked').each(function(){
-            self.selectedContactListNames.push($(this)[0].id);
-         });
-        
-    }
+   
     
     addEmailId(){
         var self = this;
