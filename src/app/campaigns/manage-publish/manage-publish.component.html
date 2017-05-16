@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="page-content">
 	<div class="row mix-grid" style="margin-top: 10px" *ngIf="campaigns?.length > 0">
 		<div *ngFor="let campaign of campaigns">
@@ -28,5 +28,111 @@
 		</div>
 	</div>
 	 <div *ngIf="campaigns?.length <= 0"  class="alert alert-danger"><strong>No Campaigns Found</strong></div>
-</div>
+</div> -->
 <!-- END PAGE CONTENT-->
+
+<div class="page-content">
+				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+					<div class="col-md-12">
+						<div class="tabbable tabbable-custom tabbable-noborder">
+							<div class="tab-content">
+								<div class="tab-pane active">
+									<!-- BEGIN FILTER -->
+									<div class="margin-top-10" >
+											<div class="inputs" align="right"  style="display:inline; float:right">
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"  (click)="searchCampaigns()"></i>
+													<input type="text" 
+													 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
+												</div>
+											</div>
+										</div>
+										
+										<div class="inputs" align="right"  style="display:inline; margin-left: 965px;">
+											<div class="portlet-input input-inline input-small">
+													<select class="btn btn-primary"
+													    [(ngModel)]="selectedSortedOption" 
+													    (ngModelChange)="getSortedResult($event)">
+													  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
+													    {{sortOption.name}}
+													  </option>
+											</select>
+											</div>
+										</div>
+										 
+										<br><br>
+										<div class="row mix-grid" style="margin-top: 10px" *ngIf="campaigns">
+										  <div *ngFor="let campaign of pagination.pagedItems ;let i =index">
+											<div class="col-md-3 col-sm-4 mix category_1 mix_all"	style="display: block; opacity: 1;" id="campaignListDiv_{{campaign.campaignId}}">
+												<div class="mix-inner">
+													<img class="img-responsive"
+														src="assets/admin/pages/media/works/img1.jpg" alt="">
+													<div class="mix-details-fill">
+														<h4>{{campaign.campaignName}}</h4>
+														<div style="top: 7%; position: relative;">
+															<a *ngIf="campaign.launched==false" class="mix-preview4 fancybox-button" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
+																<i class="fa fa-pencil-square-o"></i>
+															</a> 
+															<a class="mix-preview6 fancybox-button" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
+																<i class="fa fa-trash"></i>
+															</a>
+														</div>
+														<span *ngIf="campaign.launched==false" align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">
+															<img alt="" src="assets/images/draft.png">
+														</span>
+														<span *ngIf="campaign.launched==true" align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">
+															<img alt="" src="assets/images/launched.png">
+														</span>
+													</div>
+												</div>
+											</div>
+											</div>
+											</div>
+											
+											
+										</div>
+										 <div *ngIf="totalRecords<=0"  class="alert alert-danger"><strong>No Campaigns Found</strong></div>
+										</div>
+									</div>
+										
+									<!-- END FILTER -->
+								</div>
+								   
+								<!--pager here  -->
+									    <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+                                                <a (click)="setPage(1)">First</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+                                                 <a (click)="setPage(pagination.pager.currentPage - 1)">Previous</a>
+                                              </li>
+                                              <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+                                                 <a (click)="setPage(page)">{{page}}</a>
+                                              </li>
+                                              <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                                                  <a (click)="setPage(pagination.pager.currentPage + 1)">Next</a>
+                                              </li>
+                                               <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                                                  <a (click)="setPage(pagination.pager.totalPages)">Last</a>
+                                              </li>
+                                          </ul>
+                                  		 <div class="col-xs-2" style="float: right;margin-top: -8px;">
+											  <label for="ex1"></label>
+<!-- 											  <input disabled="disabled" style="color: blue;"  class="form-control" id="ex1" type="text" value="Showing  {{totalRecords}} Records">
+ -->										</div>
+										<div class="col-xs-1" style="float: right;margin-top: 10px;">
+											<select class="btn btn-primary"
+													    [(ngModel)]="itemsSize" 
+													    (ngModelChange)="getNumberOfItemsPerPage($event)">
+													  <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">
+													    {{itemPerPage.name}}
+													  </option>
+											</select>
+										</div>
+										
+										<!-- pager end here -->
+							</div>
+						</div>
+				<!-- END PAGE CONTENT-->
+		<!-- END CONTENT -->
