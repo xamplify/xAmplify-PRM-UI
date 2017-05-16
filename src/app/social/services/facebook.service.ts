@@ -9,30 +9,43 @@ export class FacebookService {
     URL = this.authenticationService.REST_URL + 'facebook/';
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
 
-    constructor(private http: Http, private authenticationService: AuthenticationService) { }
+    constructor( private http: Http, private authenticationService: AuthenticationService ) { }
 
-    getPosts(facebookAccessToken: string, ownerId: string) {
-        return this.http.get(this.URL + 'posts' + this.QUERY_PARAMETERS + '&facebookAccessToken='
-        + facebookAccessToken + '&ownerId=' + ownerId)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getPosts( facebookAccessToken: string, ownerId: string ) {
+        return this.http.get( this.URL + 'posts' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+            + facebookAccessToken + '&ownerId=' + ownerId )
+            .map( this.extractData )
+            .catch( this.handleError );
     }
 
-    listPages(facebookAccessToken: string) {
-        return this.http.get(this.URL + 'pages' + this.QUERY_PARAMETERS + '&facebookAccessToken=' + facebookAccessToken)
-            .map(this.extractData)
-            .catch(this.handleError);
+    listPages( facebookAccessToken: string ) {
+        return this.http.get( this.URL + 'pages' + this.QUERY_PARAMETERS + '&facebookAccessToken=' + facebookAccessToken )
+            .map( this.extractData )
+            .catch( this.handleError );
     }
 
-    private extractData(res: Response) {
+    listAccounts( facebookAccessToken: string ) {
+        return this.http.get( this.URL + 'accounts' + this.QUERY_PARAMETERS + '&facebookAccessToken=' + facebookAccessToken )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getUserProfileImage( facebookAccessToken: string, userId: string ) {
+        return this.http.get( this.URL + 'profile-image' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+            + facebookAccessToken + '&userId=' + userId )
+            .map( this.extractData )
+            .catch( this.handleError );
+        }
+
+    private extractData( res: Response ) {
         const body = res.json();
-        console.log(body);
+        console.log( body );
         return body || {};
     }
 
-    private handleError(error: any) {
-        const errMsg = (error.message) ? error.message :
+    private handleError( error: any ) {
+        const errMsg = ( error.message ) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw(errMsg);
+        return Observable.throw( errMsg );
     }
 }

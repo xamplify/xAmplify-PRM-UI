@@ -21,6 +21,7 @@ export class TwitterProfileComponent implements OnInit{
     twitterProfile:any;
     directMessages: Array<DirectMessage>;
     directMessageId: number;
+    directMessageText: string;
     kloutScore: KloutScore;
     tweets:any;
     constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService, private utilService: UtilService) {
@@ -64,15 +65,17 @@ export class TwitterProfileComponent implements OnInit{
     
     }
     
-    sendDirectMessage(text:string){
-        this.twitterService.sendDirectMessage(this.twitterProfile.id, text)
+    sendDirectMessage(directMessageText: string){
+        this.twitterService.sendDirectMessage(this.twitterProfile.id, directMessageText)
         .subscribe(
             data => {
                 this.directMessages.push(data);
                 $('#myModal').modal('hide');
             },
             error => console.log(error),
-            () => console.log(this.twitterProfile.id)
+            () => {
+                this.directMessageText=''
+            }
         );
     }
     deleteDirectMessage(){

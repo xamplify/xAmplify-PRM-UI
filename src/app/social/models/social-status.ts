@@ -8,8 +8,8 @@ export class SocialStatus{
     scheduledTimeServer: Date;
     scheduledTimeUser: Date;
     timeZone: String;
-    socialStatusContents: Set<SocialStatusContent>;
-    socialStatusProviders: Set<SocialStatusProvider>;
+    socialStatusContents: Array<SocialStatusContent>;
+    socialStatusProviders: Array<SocialStatusProvider>;
     publishStatus: String;
 
     createdTime: Date;

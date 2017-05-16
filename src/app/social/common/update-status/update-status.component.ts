@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { PagerService } from '../../../core/services/pager.service';
 import { SocialService } from "../../services/social.service";
 import { TwitterService } from "../../services/twitter.service";
+import { FacebookService } from "../../services/facebook.service";
 import { VideoFileService } from "../.././../videos/services/video-file.service";
 
 import { Pagination } from '../../../core/models/pagination';
@@ -18,7 +19,7 @@ declare var swal, $, flatpickr, videojs: any;
 @Component( {
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
-    styleUrls: ['./update-status.component.css'],
+    styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css' ],
     providers: [PagerService, Pagination]
 })
 export class UpdateStatusComponent implements OnInit {
@@ -41,9 +42,9 @@ export class UpdateStatusComponent implements OnInit {
 
     MEDIA_URL = this.authenticationService.MEDIA_URL;
     accessToken = this.authenticationService.access_token;
+    profileImage: string;
 
-
-    constructor( private socialService: SocialService, private twitterService: TwitterService,
+    constructor( private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
         private pagerService: PagerService, private pagination: Pagination ) {
     }
@@ -55,27 +56,31 @@ export class UpdateStatusComponent implements OnInit {
             this.socialStatus.statusMessage = statusMessage.substr( 0, statusMessage.length - 1 );
         }
     }
+    
     previewVideo( videoFile: SaveVideoFile ) {
         this.selectedVideo = videoFile;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring( 0, this.videoUrl.lastIndexOf( "." ) );
-        this.videoUrl = this.videoUrl + ".mp4";
+        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        
+        this.videoPlayListSource(this.videoUrl);
+        this.videoPlayListSource(this.videoUrl);
         this.videoJSplayer.play();
     }
 
     addVideo() {
         console.log( this.socialStatus );
         this.errorMessage = "";
-        if ( this.socialStatus.socialStatusContents.size > 0 &&  (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")  ) {
+        if ( this.socialStatus.socialStatusContents.length > 0 &&  (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")  ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
         } else {
-            this.socialStatus.statusMessage = this.selectedVideo.title + " " + this.videoUrl;
+            this.socialStatus.statusMessage = this.selectedVideo.title;
             let socialStatusContent: SocialStatusContent = new SocialStatusContent();
             socialStatusContent.id = this.selectedVideo.id;
             socialStatusContent.fileName = this.selectedVideo.title;
             socialStatusContent.fileType = "video";
             socialStatusContent.filePath = this.videoUrl;
-            this.socialStatus.socialStatusContents.add( socialStatusContent );
+            this.socialStatus.socialStatusContents.push( socialStatusContent );
         }
         $( '#listVideosModal' ).modal( 'hide' );
     }
@@ -86,7 +91,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 $( "#preview-" + i ).remove( 'slow' );
-                this.socialStatus.socialStatusContents.delete( socialStatusContent )
+                this.socialStatus.socialStatusContents.splice(i);
                 this.errorMessage = "";
             },
             error => console.log( error ),
@@ -97,11 +102,11 @@ export class UpdateStatusComponent implements OnInit {
         this.errorMessage = "";
         this.errorDetails = [];
         var uploadedFilesCount = files.length;
-        var existingFilesCount = this.socialStatus.socialStatusContents.size;
+        var existingFilesCount = this.socialStatus.socialStatusContents.length;
         if ( ( uploadedFilesCount + existingFilesCount ) > 4 ) {
             this.errorMessage = "You can upload maximum 4 images.";
             return false;
-        } else if ( ( this.socialStatus.socialStatusContents.size == 1 ) && ( Array.from(this.socialStatus.socialStatusContents)[0].fileType == "video" ) ) {
+        } else if ( ( this.socialStatus.socialStatusContents.length == 1 ) && ( Array.from(this.socialStatus.socialStatusContents)[0].fileType == "video" ) ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
             return false;
         }
@@ -131,9 +136,8 @@ export class UpdateStatusComponent implements OnInit {
                     .subscribe(
                     data => {
                         for ( var i in data ) {
-                            let socialStatusContent = data[i];
-                            //socialStatusContent.filePath = this.REST_URL+data[i].filePath+"?access_token="+this.accessToken+"&timestamp=" + new Date().getTime();
-                            this.socialStatus.socialStatusContents.add( socialStatusContent );
+                            const socialStatusContent = data[i];
+                            this.socialStatus.socialStatusContents.push( socialStatusContent );
                         }
                         console.log( this.socialStatus );
                     },
@@ -154,6 +158,11 @@ export class UpdateStatusComponent implements OnInit {
     }
 
     updateStatus() {
+        let socialStatusProviders = this.socialStatus.socialStatusProviders;
+        socialStatusProviders = socialStatusProviders.filter(function( obj ) {
+            return obj.selected === true;
+        });
+        this.socialStatus.socialStatusProviders = socialStatusProviders;
         console.log( this.socialStatus );
         swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
         this.socialService.updateStatus( this.socialStatus )
@@ -170,6 +179,11 @@ export class UpdateStatusComponent implements OnInit {
             },
             () => console.log( "Finished" )
             );
+    }
+    
+    schedule(){
+        this.socialStatus.shareNow = false;
+        this.updateStatus();
     }
 
     deleteStatus( socialStatus: SocialStatus ) {
@@ -219,69 +233,33 @@ export class UpdateStatusComponent implements OnInit {
 
 
     initializeSocialStatus() {
-        this.socialStatus.socialStatusContents = new Set<SocialStatusContent>();
+        this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
         this.socialStatus.id = null;
         this.socialStatus.statusMessage = "";
         this.socialStatus.shareNow = true;
 
-        //this.socialStatus.socialStatusProviders = new Set<SocialStatusProvider>();
         this.socialStatus.socialStatusProviders = this.listSocialStatusProviders();
     }
 
     listSocialStatusProviders() {
-        let socialStatusProviders: Set<SocialStatusProvider> = new Set<SocialStatusProvider>();
-        let socialStatusProvider1: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider1.id = 1;
-        socialStatusProvider1.providerName = "twitter";
-        socialStatusProvider1.providerImagePath = "https://cdn0.iconfinder.com/data/icons/social-media-2098/512/twitter-32.png";
-        socialStatusProvider1.profileImagePath = "https://instagram.fhyd2-1.fna.fbcdn.net/t51.2885-19/s150x150/13397667_966003090179916_1274276788_a.jpg";
-        socialStatusProvider1.profileName = "@manassahoo9173";
+        let socialStatusProviders: Array<SocialStatusProvider> = new Array<SocialStatusProvider>();
+        let socialStatusProvider: SocialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider.id = 1;
+        socialStatusProvider.providerName = "twitter";
+        socialStatusProvider.providerImagePath = "https://cdn0.iconfinder.com/data/icons/social-media-2098/512/twitter-32.png";
+        socialStatusProvider.profileImagePath = "https://instagram.fhyd2-1.fna.fbcdn.net/t51.2885-19/s150x150/13397667_966003090179916_1274276788_a.jpg";
+        socialStatusProvider.profileName = "@manassahoo9173";
 
-        let socialStatusProvider2: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider2.id = 2;
-        socialStatusProvider2.providerName = "linkedin";
-        socialStatusProvider2.providerImagePath = "https://cdn0.iconfinder.com/data/icons/social-media-2098/512/linkedin-32.png";
-        socialStatusProvider2.profileImagePath = "https://pbs.twimg.com/profile_images/822508786975932418/INWa9whk.jpg";
-        socialStatusProvider2.profileName = "@manas9173";
-        
-        let socialStatusProvider3: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider3.id = 1525007124493887;
-        socialStatusProvider3.providerName = "facebook";
-        socialStatusProvider3.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
-        socialStatusProvider3.profileImagePath = "https://scontent.xx.fbcdn.net/v/t31.0-8/s720x720/13710654_1638510509810214_605289008248391157_o.jpg?oh=cff05ae49b11f9e1bd197a020314f810&oe=59BB2CEE";
-        socialStatusProvider3.profileName = "@manas.sahoo.photography";
-        
-        let socialStatusProvider4: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider4.id = 1525007124493887;
-        socialStatusProvider4.providerName = "facebook";
-        socialStatusProvider4.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
-        socialStatusProvider4.profileImagePath = "https://scontent.xx.fbcdn.net/v/t1.0-0/p180x540/427881_293088954129254_1040393794_n.jpg?oh=dc0b6cbc6fa6c545e643fa5da00543be&oe=598315DF";
-        socialStatusProvider4.profileName = "@arjun";
-        
-        let socialStatusProvider5: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider5.id = 1525007124493887;
-        socialStatusProvider5.providerName = "facebook";
-        socialStatusProvider5.providerImagePath = "https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-32.png";
-        socialStatusProvider5.profileImagePath = "https://scontent.xx.fbcdn.net/v/t1.0-9/s720x720/1920321_723753151009549_1501205085_n.jpg?oh=681d6513f26af3cac6865e09774f1afa&oe=59B3055C";
-        socialStatusProvider5.profileName = "@c4code";
+        socialStatusProviders.push( socialStatusProvider );
 
-        socialStatusProviders.add( socialStatusProvider1 );
-        socialStatusProviders.add( socialStatusProvider2 );
-        socialStatusProviders.add( socialStatusProvider3 );
-        socialStatusProviders.add( socialStatusProvider4 );
-        socialStatusProviders.add( socialStatusProvider5 );
+        this.getFacebookAccounts();
 
         return socialStatusProviders;
-    }
-    toggleScheduleDiv() {
-        if ( this.socialStatus.shareNow )
-            $( "#schedule-later-div" ).hide();
-        else
-            $( "#schedule-later-div" ).show();
     }
     openListVideosModal() {
         $( '#listVideosModal' ).modal( 'show' );
         if ( this.videos.length == 0 ) {
+            $("#preview-section").hide();
             this.listVideos( this.pagination );
         }
     }
@@ -289,11 +267,15 @@ export class UpdateStatusComponent implements OnInit {
         this.videoFileService.loadVideoFiles( pagination )
             .subscribe(( result: any ) => {
                 swal.close();
+                $("#preview-section").show();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
                 console.log( this.videos );
                 pagination = this.pagerService.getPagedItems( pagination, this.videos );
+                
+                this.videoJSplayer = videojs("videojs-video");
+                this.previewVideo(this.videos[0]);
             }),
             () => console.log( "load videos completed:" + this.videos );
     }
@@ -337,7 +319,10 @@ export class UpdateStatusComponent implements OnInit {
             },
             error => console.log( error ),
             () => {
-                flatpickr( '.flatpickr' );
+                flatpickr( '.flatpickr', {
+                    enableTime: true,
+                    minDate: new Date()
+                } );
                 console.log( "listEvents() finished" )
             }
             );
@@ -352,9 +337,40 @@ export class UpdateStatusComponent implements OnInit {
     }
     showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
     hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
+    
+    getFacebookAccounts() {
+        this.facebookService.listAccounts( localStorage.getItem( 'facebook' ) )
+            .subscribe(
+            data => {
+                for ( var i in data ) {
+                    let socialStatusProvider: SocialStatusProvider = data[i];
+                    socialStatusProvider.profileImagePath = this.MEDIA_URL + socialStatusProvider.profileImagePath;
+                    this.socialStatus.socialStatusProviders.push( socialStatusProvider );
+                }
+            },
+            error => console.log( error ),
+            () => console.log( 'getAccounts() Finished.' )
+            );
+
+    }
+    
+    getUserProfileImage( userId: string){
+        this.facebookService.getUserProfileImage( localStorage.getItem( 'facebook' ), userId )
+        .subscribe(
+        data => this.profileImage = data,
+        error => console.log( error ),
+        () => console.log( 'getUserProfileImage() Finished.' )
+        );
+
+}
+    
+    videoPlayListSource(videoUrl: string){
+        this.videoUrl = videoUrl;
+        const self = this;
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+    }
+    
     ngOnInit() {
-        this.videoUrl = 'http://vjs.zencdn.net/v/oceans.webm';
-        this.videoJSplayer = videojs('videojs-video');
         this.listEvents();
         this.constructCalendar();
         this.initializeSocialStatus();

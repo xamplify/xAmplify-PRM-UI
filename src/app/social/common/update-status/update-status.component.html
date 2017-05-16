@@ -11,18 +11,20 @@
             <div class="col-md-12 dashboard-stat2 square-box text-center">
                 <h3 style="margin-bottom: 1em;margin-top: 0.4em;"><b>Social Account</b></h3>
 
-                <div class="col-md-6" style="padding: 1px;" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
-                    <div class="social-box">
-                        <input type="checkbox" id="cb{{i}}" class="social-media" [checked]="socialStatusProvider.selected" (change)="socialStatusProvider.selected = !socialStatusProvider.selected" />
-                        <label for="cb{{i}}">
-				<img src="{{socialStatusProvider.profileImagePath}}" class="profile-image img-circle">
-				<img src="{{socialStatusProvider.providerImagePath}}" class="social-image">
-				<h5>{{socialStatusProvider.profileName}}</h5>
-				</label>
-                    </div>
-                </div>
+				<div class="col-md-6" style="padding: 1px;"
+					*ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
+					<div class="social-box">
+						<input type="checkbox" id="cb{{i}}" class="social-media" [checked]="socialStatusProvider.selected"
+							(change)="socialStatusProvider.selected = !socialStatusProvider.selected" />
+						<label for="cb{{i}}"> 
+							<img src="{{socialStatusProvider.profileImagePath}}?access_token={{accessToken}}" class="profile-image img-circle"> 
+							<img src="{{socialStatusProvider.providerImagePath}}" class="social-image">
+							<h5>{{socialStatusProvider.profileName}}</h5>
+						</label>
+					</div>
+				</div>
 
-                <div class="col-md-12 clearfix text-center padding-30px">
+				<div class="col-md-12 clearfix text-center padding-30px">
                     <button class="btn btn-primary">+ connect accounts</button>
                 </div>
             </div>
@@ -45,19 +47,19 @@
                     <strong>Status has been posted successfully.</strong>
                 </div>
                 <div class="col-sm-12">
-                    <b>Selected Account(s)</b>
+                    <h2>Selected Account(s)</h2><br/>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
 				<button class="btn btn-default btn-sm square-box" *ngIf="socialStatusProvider.selected">{{socialStatusProvider.profileName}} ({{socialStatusProvider.providerName}})</button>
 			</span>
                 </div>
                 <div class="col-sm-12 padding-10px">
-                    <textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px" [(ngModel)]="socialStatus.statusMessage" (keypress)="count(socialStatus.statusMessage)"></textarea>
+                    <textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px" [(ngModel)]="socialStatus.statusMessage" (keyup)="count(socialStatus.statusMessage)" ></textarea>
                     <p class="pull-right"><b>{{characterleft}}</b> character(s) left</p>
                 </div>
                 <div class="col-sm-12 padding-10px">
                     <div class="img-wrap img-responsive img-thumbnail square-box" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
                         <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
-                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 98px; width: auto;">
+                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 120px; width: auto;">
                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
 					<source src="{{socialStatusContent.filePath}}" type="video/mp4">
 				</video>
@@ -111,7 +113,7 @@
 			         <option value="12"  >(GMT +12:00)</option>
 				</select>
                     </div>
-                    <button type="button" class="btn btn-success square-box">Schedule</button>
+                    <button type="button" class="btn btn-success square-box" (click)="schedule()">Schedule</button>
                     <button type="button" class="btn btn-default square-box" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
                 </div>
                 <div class="col-sm-12 margin-bottom-10px">
@@ -153,8 +155,9 @@
                 </div>
                 <div class="modal-body" style="height: auto;min-height: 520px;">
                     <div class="col-md-12">
-                        <div class="col-md-12"><img *ngIf="! videos" alt="loading" src="http://rewardian.com/images/load-page.gif" class="img-responsive center-block"></div>
-                        <div *ngIf="videos" class="col-md-6">
+                        <div class="col-md-12">
+                        <img *ngIf="! videos?.length > 0" alt="loading" src="http://rewardian.com/images/load-page.gif" class="img-responsive center-block"></div>
+                        <div *ngIf="videos?.length > 0" class="col-md-6">
                             <table class="table table-hover" id="list-videos-table">
                                 <thead>
                                     <tr>
@@ -198,8 +201,11 @@
                         </div>
 						<div class="col-md-6" id="preview-section" style="top: 50px;">
 							<video id="videojs-video" class="video-js vjs-default-skin"
-								controls preload="auto" width="580" height="320">
-								<source [src]=videoUrl type="video/mp4" />
+								controls preload="auto" width="580" height="320"
+								data-setup='{"example_option":true}'>
+								<!-- <source [src]=videoUrl type="video/mp4" /> -->
+								<source [src] = videoUrl  type="application/x-mpegURL" />
+                 				<source [src] = videoUrl  type="application/vnd.apple.mpegurl" />
 							</video>
 						</div>
 					</div>
