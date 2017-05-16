@@ -45,7 +45,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public durationTime: number;
     public startOfthevideo: boolean;  // need to remove and replace with this.saveVideoFile.startOfthevideo
     public endOfthevideo: boolean;
-    public checkCalltoAction : boolean = false; // need to get the value from server and set the call to action value
+    public checkCalltoAction = false; // need to get the value from server and set the call to action value
 
     public videoId = false;
 
@@ -108,7 +108,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
              this.videoPlayListSource(this.videoUrl);
           }
     // to check the call to action overlay is there or not
-       if ( this.selectedVideo.startOfVideo==true) {   // need to get the value from server
+       if (this.checkCalltoAction === true) {   // need to get the value from server
             $('#overlay-modal').show();
             $('.vjs-big-play-button').css('display', 'none');
              this.videoJSplayer.pause();
@@ -118,7 +118,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             $('.vjs-big-play-button').css('display', 'block');
              this.videoJSplayer.pause();
         }
-       
       });
     }
 

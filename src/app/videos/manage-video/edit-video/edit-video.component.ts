@@ -644,7 +644,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             }
          else if(endvalue==false && event===true && this.saveVideoFile.endOfVideo===true){
              $('#overlay-modal').show();
-              // this.isCallactionLast = true;
+               //this.isCallactionLast = true;
                this.videoJSplayer.pause();
             }
         else {
@@ -919,14 +919,15 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                  else if(isValid!='EndOftheVideo' && isCallActionChanged == null){
                    //   localStorage.setItem('callEndValue', JSON.stringify(player.callendValue)); 
                      $('#overlay-modal').hide();
-                      player.play();
+                      player.pause();
                  }
                  else if (isValid ==='removeCallAction'){
                 	    $('#overlay-modal').hide();
-                	  //  player.play();
+                	   player.pause();
                  }
                  else {
                 	  $('#overlay-modal').hide();
+                	  player.pause();
                  }
              }); 
 
