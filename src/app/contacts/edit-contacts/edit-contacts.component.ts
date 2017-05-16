@@ -112,7 +112,7 @@ export class EditContactsComponent implements OnInit {
         if (this.searchKey.length === 0 || this.searchKey === '') {
             this.searchDisable = true; }
     }
-    searchVideoTitelName(){
+    searchContactsTitelName(){
       if ( this.searchKey !== null && this.searchDisable === false ){
         //this.showMessage = false;
         //this.showUpdatevalue = false;

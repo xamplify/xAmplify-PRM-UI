@@ -52,6 +52,7 @@ export class ManageContactsComponent implements OnInit {
     showManageContactData: boolean = true;
     deleteSucessMessage: boolean;
     invalidDeleteSucessMessage: boolean;
+    synchronizationSucessMessage : boolean;
 
     allContactData: boolean;
     activeContactsData: boolean;
@@ -148,7 +149,7 @@ public contactsSort: any = this.sortContacts[0];
         if (this.searchKey.length === 0 || this.searchKey === '') {
             this.searchDisable = true; }
     }
-    searchVideoTitelName(){
+    searchContactTitelName(){
       if ( this.searchKey !== null && this.searchDisable === false ){
         //this.showMessage = false;
         //this.showUpdatevalue = false;
@@ -156,7 +157,6 @@ public contactsSort: any = this.sortContacts[0];
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadContactLists(this.pagination);
-        //this.showSweetAlert = false;
       }
     }
     selectedSortByValue( event: any ){
@@ -307,14 +307,16 @@ public contactsSort: any = this.sortContacts[0];
             data => {
                 data
                 swal.close();
-                swal( "Success!", "Google Sychronization Completed!", "success" );
+                //swal( "Success!", "Google Sychronization Completed!", "success" );
+                this.synchronizationSucessMessage = true;
+                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
             error => this.logger.error( error ),
             () => this.logger.info( "googleContactsSyncronize() completed" )
             );
-
+        this.synchronizationSucessMessage = false;
     }
 
     zohoContactsSynchronizationAuthentication( contactListId: number ) {
@@ -357,7 +359,9 @@ public contactsSort: any = this.sortContacts[0];
             data => {
                 data
                 swal.close();
-                swal( "Success!", "Zoho Sychronization Completed!", "success" );
+                //swal( "Success!", "Zoho Sychronization Completed!", "success" );
+                this.synchronizationSucessMessage = true;
+                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
@@ -365,7 +369,7 @@ public contactsSort: any = this.sortContacts[0];
             error => this.logger.error( error ),
             () => this.logger.info( "zohoContactsSyncronize() completed" )
             );
-
+        this.synchronizationSucessMessage = false;
     }
 
     salesforceContactsSynchronizationAuthentication( contactListId: number ) {
@@ -411,7 +415,9 @@ public contactsSort: any = this.sortContacts[0];
             data => {
                 data
                 swal.close();
-                swal( "Success!", "Salesforce Sychronization Completed!", "success" );
+                //swal( "Success!", "Salesforce Sychronization Completed!", "success" );
+                this.synchronizationSucessMessage = true;
+                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
@@ -419,7 +425,7 @@ public contactsSort: any = this.sortContacts[0];
             error => this.logger.error( error ),
             () => this.logger.info( "salesforceContactsSyncronize() completed" )
             );
-
+        this.synchronizationSucessMessage = false;
     }
 
 
@@ -444,6 +450,7 @@ public contactsSort: any = this.sortContacts[0];
         this.deleteSucessMessage = false;
         this.contactListUsersError = false;
         this.contactListNameError = false;
+        this.synchronizationSucessMessage = false;
 
         this.contactListName = null;
         this.showAll = true;
