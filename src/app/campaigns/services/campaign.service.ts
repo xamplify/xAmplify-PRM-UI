@@ -7,7 +7,7 @@ import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Campaign } from '../models/campaign';
-
+import {Pagination} from '../../core/models/pagination';
 
 @Injectable()
 export class CampaignService {
@@ -48,10 +48,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaign() {
-        return this.http.get(this.URL + "admin/listCampaign?access_token=" + this.authenticationService.access_token, "")
-            .map(this.extractData)
-            .catch(this.handleError);
+    listCampaign(pagination:Pagination) {
+        var url =this.URL+"admin/listCampaign?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);   
+      
+       
     }
 
     getCampaignById(data: any) {
@@ -85,8 +88,21 @@ export class CampaignService {
     }
 
     private handleError(error: any) {
-        console.log(error);
-        var body = error['_body'];
+        if (error.status === 500) {
+            alert("500");
+            console.log(error);
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 400) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 409) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 406) {
+            return Observable.throw(new Error(error.status));
+        }
+        /*var body = error['_body'];
         if (body != "") {
             var response = JSON.parse(body);
             if (response.message != undefined) {
@@ -99,7 +115,7 @@ export class CampaignService {
             let errMsg = (error.message) ? error.message :
                 error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
             return Observable.throw(error);
-        }
+        }*/
 
     }
 }

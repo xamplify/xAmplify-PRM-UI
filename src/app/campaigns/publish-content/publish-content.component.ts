@@ -125,7 +125,8 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 this.isVideoSelected = true;
                 this.videoId =selectedVideoId ;
                 this.isVideoSelectedForDraft = true;
-                if(this.campaign.campaignVideoFile.alias.indexOf("xtremand-360")>-1){
+                var alias = this.campaign.campaignVideoFile.alias;
+                if(alias.lastIndexOf("-xtremand360")>-1){
                     this.play360Video();
                     this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
                     this.poster = this.campaign.campaignVideoFile.imagePath;
@@ -396,7 +397,7 @@ export class PublishContentComponent implements OnInit,OnDestroy {
     addVideoIdFile(videoFile:any ) {
         console.log(videoFile);
        this.campaign.selectedVideoId =videoFile.id;
-       if(videoFile.alias.indexOf("xtremand-360")>-1){
+       if(videoFile.alias.endsWith("-xtremand360")>-1){
            this.is360Video = true;
            this.selectedVideoFilePath = videoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
            this.poster = videoFile.imagePath;
