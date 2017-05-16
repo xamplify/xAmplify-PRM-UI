@@ -110,6 +110,17 @@ sortContacts  = [
                ];
 public contactsSort: any = this.sortContacts[0];
 
+sortContactUsers  = [
+                 {'name': 'Sort By', 'value': ''},
+                 {'name': 'EmailId(A-Z)', 'value': 'emailId-ASC'},
+                 {'name': 'EmailId(Z-A)', 'value': 'emailId-DESC'},
+                 {'name': 'FirstName(ASC)', 'value': 'firstName-ASC'},
+                 {'name': 'FirstName(DESC)', 'value': 'firstName-DESC'},
+                 {'name': 'LastName(ASC)', 'value': 'lastName-ASC'},
+                 {'name': 'LastName(DESC)', 'value': 'lastName-DESC'},
+                 ];
+  public contactsUsersSort: any = this.sortContactUsers[0];
+
     constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination ) {
         this.show = false;
@@ -156,7 +167,22 @@ public contactsSort: any = this.sortContacts[0];
         console.log(this.searchKey);
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
-        this.loadContactLists(this.pagination);
+        //this.loadContactLists(this.pagination);
+        if ( this.currentContactType == null ) {
+            this.loadContactLists( this.pagination );
+        }
+        else if ( this.currentContactType == "all_contacts" ) {
+            this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" ) {
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" ) {
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" ) {
+            this.nonActive_Contacts( this.pagination );
+        }
+        
       }
     }
     selectedSortByValue( event: any ){
@@ -178,6 +204,41 @@ public contactsSort: any = this.sortContacts[0];
         this.pagination.sortingOrder = this.sortingOrder ;
         this.loadContactLists(this.pagination);
     }
+    
+    userSelectedSortByValue( event: any ){
+        // this.showMessage = false;
+        // this.showUpdatevalue = false;
+        // this.showSweetAlert = false;
+         this.contactsUsersSort = event;
+          const sortedValue = this.contactsUsersSort.value;
+          if( sortedValue !== '') {
+              const options: string[] = sortedValue.split('-');
+              this.sortcolumn = options[0];
+              this.sortingOrder = options[1];
+          }else {
+              this.sortcolumn = null;
+              this.sortingOrder = null;
+          }
+         this.pagination.pageIndex = 1;
+         this.pagination.sortcolumn = this.sortcolumn ;
+         this.pagination.sortingOrder = this.sortingOrder ;
+         //this.loadContactLists(this.pagination);
+         
+         if ( this.currentContactType == null ) {
+             this.loadContactLists( this.pagination );
+         }
+         else if ( this.currentContactType == "all_contacts" ) {
+             this.all_Contacts( this.pagination );
+         } else if ( this.currentContactType == "active_contacts" ) {
+             this.active_Contacts( this.pagination );
+         } else if ( this.currentContactType == "invalid_contacts" ) {
+             this.invalid_Contacts( this.pagination );
+         } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+             this.unSubscribed_Contacts( this.pagination );
+         } else if ( this.currentContactType == "nonActive_contacts" ) {
+             this.nonActive_Contacts( this.pagination );
+         }
+     }
     
     loadContactLists( pagination: Pagination ) {
         this.contactService.loadContactLists( pagination )

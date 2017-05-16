@@ -405,8 +405,8 @@
 										
 										<div class="inputs" align="right"  style="float:right">
 										  <div style="float:left;margin-right:10px">
-										       <select class="form-control" [(ngModel)]="contactsSort"  (ngModelChange)="selectedSortByValue($event)">
-													  <option *ngFor="let sort of sortContacts" [ngValue]="sort"> {{sort.name}} </option>
+										       <select class="form-control" [(ngModel)]="contactsUsersSort"  (ngModelChange)="userSelectedSortByValue($event)">
+													  <option *ngFor="let sort of sortContactUsers" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 										   </div>
 											<div class="portlet-input input-inline input-small">
