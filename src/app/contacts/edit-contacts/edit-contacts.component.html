@@ -23,7 +23,7 @@
 										   </div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
-													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
+													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchContactsTitelName()"></i>
 													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchDisableValue()"
 													 class="form-control input-circle" placeholder="search...">
 												 
@@ -519,6 +519,34 @@
   <button style="background-color:#3598dc;color:white" (click)="saveSelectedUsers()">Save</button>
   </div>
   </form> -->
+  							<div class="page-toolbar">
+						<div class="btn-group pull-right">
+							<!-- <div class="inputs" align="right"  style="display:inline; float:right">
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"></i>
+													<input type="text" class="form-control input-circle" placeholder="search...">
+												</div>
+											</div>
+										</div> -->
+										
+										<div class="inputs" align="right"  style="float:right">
+										  <div style="float:left;margin-right:10px">
+										       <select class="form-control" [(ngModel)]="contactsSort"  (ngModelChange)="selectedSortByValue($event)">
+													  <option *ngFor="let sort of sortContacts" [ngValue]="sort"> {{sort.name}} </option>
+											   </select>
+										   </div>
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchContactsTitelName()"></i>
+													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchDisableValue()"
+													 class="form-control input-circle" placeholder="search...">
+												 
+												</div>
+											</div>
+										</div>
+						</div>
+					</div>
   <div *ngIf="invalidDeleteSucessMessage" id="showInvalidDeleteMessage" class="alert alert-success alert-dismissable">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been Deleted successfully.
