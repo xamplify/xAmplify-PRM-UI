@@ -127,12 +127,13 @@ export class PublishContentComponent implements OnInit,OnDestroy {
                 this.isVideoSelectedForDraft = true;
                 var alias = this.campaign.campaignVideoFile.alias;
                 if(alias.lastIndexOf("-xtremand360")>-1){
-                    this.play360Video();
+                    this.is360Video = true;
                     this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
                     this.poster = this.campaign.campaignVideoFile.imagePath;
                 }else{
-                     this.playNormalVideo();
+                     this.is360Video = false;
                      this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath+"?access_token="+this.authenticationService.access_token;
+                   //  this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".mp4","_mobinar.m3u8")+"?access_token="+this.authenticationService.access_token;
                      this.poster = this.campaign.campaignVideoFile.imagePath;
                  }
             }

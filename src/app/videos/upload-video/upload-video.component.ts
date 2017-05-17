@@ -64,6 +64,8 @@ export class UploadVideoComponent implements OnInit {
     public hideSaveDiscard:boolean;
     public maxTimeDuration :number;
     public source: string;
+    public sweetAlertDisabled :boolean;
+    public sweetAlertMesg:string;
     
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
@@ -416,12 +418,14 @@ export class UploadVideoComponent implements OnInit {
        }
     }
     dropBoxChange(){
-        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized DropBox window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false && this.sweetAlertMesg=='DropBox') swal("Oops...", "You minimized DropBox window!", "error");
         if(this.isChecked != true&&this.cloudDrive == false &&this.camera==false &&this.cloudOneDrive==false&&this.cloudBox==false){
         this.cloudDropbox = true;
         this.isDisable = true;
         this.isFileDrop = true;
         this.isChecked = true;
+        this.sweetAlertDisabled = false;
+        this.sweetAlertMesg = 'DropBox';
         this.fileDropDisabled();
         this.downloadFromDropbox();
            $(".googleDrive").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -432,13 +436,15 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     boxChange(){
-        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized Box window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false && this.sweetAlertMesg=='Box') swal("Oops...", "You minimized Box window!", "error");
         if(this.isChecked != true &&this.cloudDrive==false&&this.camera==false &&this.cloudOneDrive==false&&this.cloudDropbox==false){
-         this.cloudBox = true;
-         this.isDisable = true;
-         this.isFileDrop = true;
-         this.isChecked = true;
-         this.fileDropDisabled();
+        this.cloudBox = true;
+        this.isDisable = true;
+        this.isFileDrop = true;
+        this.isChecked = true;
+        this.sweetAlertDisabled = false;
+        this.sweetAlertMesg = 'Box';
+        this.fileDropDisabled();
         this.downloadFrombox();
         this.cloudOneDrive= true;
         this.cloudDrive = true;
@@ -450,12 +456,14 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     googleDriveChange(){
-        if(this.isChecked==true &&  this.processing!=true) swal("Oops...", "You minimized Google Drive window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled ==false && this.sweetAlertMesg=='Drive') swal("Oops...", "You minimized Google Drive window!", "error");
         if(this.isChecked != true &&this.cloudBox==false&&this.camera==false &&this.cloudOneDrive == false&&this.cloudDropbox==false){  
         this.cloudDrive = true;
         this.isDisable = true;
         this.isFileDrop = true;
         this.isChecked = true;
+        this.sweetAlertDisabled = false;
+        this.sweetAlertMesg = 'Drive';
         this.fileDropDisabled();
         this.onApiLoad();    // google drive code 
            $(".box").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -466,7 +474,8 @@ export class UploadVideoComponent implements OnInit {
      }
     }
     defaultDesabled(){
-        this.isChecked = true;
+        this.sweetAlertDisabled = true;
+    	this.isChecked = true;
         $(".dropBox").attr("style", "cursor:not-allowed; opacity:0.3");
         $(".googleDrive").attr("style", "cursor:not-allowed; opacity:0.3");
         $(".box").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -484,6 +493,7 @@ export class UploadVideoComponent implements OnInit {
        this.isDisable = false;
        this.hideSaveDiscard = true;
        this.isFileProgress = false;
+       this.sweetAlertDisabled = false;
         $(".dropBox").attr("style", "cursor:pointer; opacity:1");
         $(".googleDrive").attr("style", "cursor:pointer; opacity:1");
         $(".box").attr("style", "cursor:pointer; opacity:1");
