@@ -358,7 +358,7 @@ th, td {
 							       <div class="form-group">
 									   <input type="radio" [checked]="campaign.campaignVideoFile.id===videoId" name="videoFileId" [value]="campaign.campaignVideoFile.id" formControlName="videoFileId" (click)="addVideoIdFile(campaign.campaignVideoFile)">
 								      <a href="javascript:void(0)" onclick="showCampaignMobinarPreview(campaign.campaignVideoFile)"> 
-								       <img class="img-responsive" src="{{campaign.campaignVideoFile}}" alt="" style="width: 100px;height: 50px">
+								       <img class="img-responsive" src="{{campaign.campaignVideoFile.imagePath}}" alt="" style="width: 100px;height: 50px">
 								       </a>
 							       </div>
 							     </td>
@@ -729,7 +729,8 @@ th, td {
 					<th *ngIf="!is360Video">
 					<video id="campaignVideo" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{poster}}"
 							data-setup='{"example_option":true }'>
-						<source [src]=selectedVideoFilePath type="application/x-mpegURL" />
+						<!-- <source [src]=selectedVideoFilePath type="application/x-mpegURL" /> -->
+						<source [src]=selectedVideoFilePath type="video/mp4" />
 						<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
 					</video>
 					</th>

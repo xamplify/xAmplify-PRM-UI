@@ -89,7 +89,6 @@ export class CampaignService {
 
     private handleError(error: any) {
         if (error.status === 500) {
-            alert("500");
             console.log(error);
             return Observable.throw(new Error(error.status));
         }
