@@ -121,8 +121,20 @@ export class EditContactsComponent implements OnInit {
         console.log(this.searchKey);
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
-        this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        //this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
         //this.showSweetAlert = false;
+        
+        if(this.currentContactType==null){
+            this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        }else if(this.currentContactType=="active_contacts"){
+            this.active_Contacts(this.pagination);
+        }else if(this.currentContactType=="invalid_contacts"){
+            this.invalid_Contacts(this.pagination);
+        }else if(this.currentContactType=="unSubscribed_contacts"){
+            this.unSubscribed_Contacts(this.pagination);
+        }else if(this.currentContactType=="nonActive_contacts"){
+            this.nonActive_Contacts(this.pagination);
+        }
       }
     }
     selectedSortByValue( event: any ){
@@ -142,7 +154,18 @@ export class EditContactsComponent implements OnInit {
         this.pagination.pageIndex = 1;
         this.pagination.sortcolumn = this.sortcolumn ;
         this.pagination.sortingOrder = this.sortingOrder ;
-        this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+       // this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        if(this.currentContactType==null){
+            this.editContactListLoadAllUsers(this.selectedContactListId,this.pagination );
+        }else if(this.currentContactType=="active_contacts"){
+            this.active_Contacts(this.pagination);
+        }else if(this.currentContactType=="invalid_contacts"){
+            this.invalid_Contacts(this.pagination);
+        }else if(this.currentContactType=="unSubscribed_contacts"){
+            this.unSubscribed_Contacts(this.pagination);
+        }else if(this.currentContactType=="nonActive_contacts"){
+            this.nonActive_Contacts(this.pagination);
+        }
     }
     
     

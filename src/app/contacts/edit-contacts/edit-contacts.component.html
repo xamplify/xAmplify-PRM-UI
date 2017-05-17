@@ -314,7 +314,7 @@
 							<tr>
 								<th><input type="checkbox" [checked]="isAvailable"
 									(change)="checked($event.target.checked)"></th>
-								<th>USERNAME</th>
+								<!-- <th>USERNAME</th> -->
 								<th>EMAILID</th>
 								<th>FIRSTNAME</th>
 								<th>LASTNAME</th>
@@ -327,7 +327,7 @@
 								id="row_{{contact.id}}">
 								<th><input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									value="{{contact.id}}" [(ngModel)]="contact.isChecked"></th>
-								<td>{{contact.userName}}</td>
+								<!-- <td>{{contact.userName}}</td> -->
 								<td>{{contact.emailId}}</td>
 								<td>{{contact.firstName}}</td>
 								<td class="center">{{contact.lastName}}</td>
@@ -520,7 +520,7 @@
   </div>
   </form> -->
   							<div class="page-toolbar">
-						<div class="btn-group pull-right">
+						<div class="btn-group pull-right" style="float:left;margin-right:16px">
 							<!-- <div class="inputs" align="right"  style="display:inline; float:right">
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
@@ -531,7 +531,7 @@
 										</div> -->
 										
 										<div class="inputs" align="right"  style="float:right">
-										  <div style="float:left;margin-right:10px">
+										  <div style="float:left;margin-right:15px">
 										       <select class="form-control" [(ngModel)]="contactsSort"  (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortContacts" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
@@ -551,7 +551,7 @@
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been Deleted successfully.
 	</div>
-					<div class="col-md-12">
+					<div class="col-md-12" style="margin-top:15px">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
 						<div class="portlet box blue">
 							<div class="portlet-title">
@@ -617,9 +617,9 @@
 									<th *ngIf="invalidContactData==true"><input type="checkbox" [checked]="isAvailable"
 									(change)="invalidContactsChecked($event.target.checked)">
 									</th>
-									<th>
+									<!-- <th>
 										 USERNAME
-									</th>
+									</th> -->
 									<th>
 										 EMAILID
 									</th>
@@ -647,9 +647,9 @@
 									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									 id="row_{{allcontacts.id}}" value="{{allcontacts.id}}" [(ngModel)]="allcontacts.isChecked">
 									 </th>
-									<td>
+									<!-- <td>
 										 {{allcontacts.userName}}
-									</td>
+									</td> -->
 									<td>
 										 {{allcontacts.emailId}}
 									</td>

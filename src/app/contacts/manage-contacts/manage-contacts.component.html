@@ -525,9 +525,9 @@
 									<th *ngIf="invalidContactData==true"><input type="checkbox" [checked]="isAvailable"
 									(change)="invalidContactsChecked($event.target.checked)">
 									</th>
-									<th>
+									<!-- <th>
 										 USERNAME
-									</th>
+									</th> -->
 									<th>
 										 EMAILID
 									</th>
@@ -555,9 +555,9 @@
 									<input type="checkbox" name="selectedUserIds" id="selectedUserWithIds"
 									 id="row_{{allcontacts.id}}" value="{{allcontacts.id}}" [(ngModel)]="allcontacts.isChecked">
 									 </th>
-									<td>
+									<!-- <td>
 										 {{allcontacts.userName}}
-									</td>
+									</td> -->
 									<td>
 										 {{allcontacts.emailId}}
 									</td>
