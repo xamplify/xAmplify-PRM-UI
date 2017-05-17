@@ -83,7 +83,7 @@
 					<div class="col-md-6">
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add files...</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" id="openf"
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
 						     *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
 					 <div style="float: left; width: 113px;">

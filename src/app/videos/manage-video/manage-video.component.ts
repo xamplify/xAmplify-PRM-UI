@@ -116,13 +116,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     }
    
       loadVideos(pagination: Pagination) {
-      
-    	
       try {
-            //  swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
+          //   swal({ title: 'Loading Videos', text: 'Please Wait...', showConfirmButton: false, imageUrl: 'assets/images/loader.gif', allowOutsideClick: false  });
     	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-         //   swal.close();
+           //swal.close();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
@@ -212,6 +210,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     showEditVideo(video: SaveVideoFile) {
         console.log('show edit video method in mange videos ' + JSON.stringify(video));
         console.log(video.alias);
+        this.deletedVideo = false;
         this.selectedVideoFile = video;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((saveVideoFile: SaveVideoFile) => {
@@ -243,6 +242,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.playVideo = true;
         this.campaignReport = false;
         this.pageBar = true;
+        this.deletedVideo = false;
       });
     }
 
@@ -255,6 +255,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.editVideo = false;
         this.playVideo = false;
         this.pageBar = true;
+        this.deletedVideo = false;
     }
 
     deleteVideoFile(alias: string, position: number, videoName:string) {
@@ -354,6 +355,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
       ngOnDestroy() {
          this.videoFileService.actionValue = '';
          this.isvideoThere = false;
+         this.deletedVideo = false;
     }
 
 }

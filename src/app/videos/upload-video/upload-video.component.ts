@@ -110,7 +110,7 @@ export class UploadVideoComponent implements OnInit {
                // this.processing = true;
                 // this.isDisable =true;
                 this.isFileDrop = true;
-               document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
+              // document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
             }
         } catch (err) {

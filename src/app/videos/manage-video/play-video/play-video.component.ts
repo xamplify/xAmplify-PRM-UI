@@ -11,13 +11,21 @@ declare var Metronic, Layout, Demo, $, videojs: any;
     templateUrl: './play-video.component.html',
     styleUrls: ['./play-video.component.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
-        '../../../../assets/css/todo.css']
+        '../../../../assets/css/todo.css','../edit-video/edit-video.component.css']
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit {
 
     @Input() videos: Array<SaveVideoFile>;
     @Input() selectedVideo: SaveVideoFile;
     selectedPosition: number;
+    public images = 'http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
+    
+    embedWidth = '640';
+    embedHeight = '360';
+    videoSizes: string[] = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
+    videosize = '640 × 360';
+    public embedFullScreen = 'allowfullscreen';
+    isFullscreen: boolean;
     public videoUrl: string;
     private _elementRef: ElementRef;
     private videoJSplayer: any;
@@ -48,10 +56,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public checkCalltoAction = false; // need to get the value from server and set the call to action value
 
     public videoId = false;
-
+    public likesValues:number;
+    public disLikesValues :number;
+    public title :string;
+    public shareValues :boolean;
+    public alias :string;
+    
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
     private videoFileService: VideoFileService,private userService: UserService) {
         this._elementRef = elementRef;
+        this.disLikesValues = 0;
+        this.likesValues = 2;
     }
 
     videoPlayListSource(videoUrl: string){
@@ -82,6 +97,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.shareVideo = this.selectedVideo.allowSharing;
         this.embedVideo = this.selectedVideo.allowEmbed;
         console.log(this.selectedVideo);
+        this.title = this.selectedVideo.title;
+        this.alias = this.selectedVideo.alias;
+        
+        $('.video-js').css('color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
     }
 
     showVideo(videoFile: SaveVideoFile, position: number) {
@@ -120,7 +142,25 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         }
       });
     }
+    
+    likesValuesDemo() {
+        this.likesValues += 1;
+    }
+    disLikesValuesDemo() {
+        this.disLikesValues += 1;
+    }
+    embedFulScreenValue() {
+        if ( this.isFullscreen === true ) {this.embedFullScreen = 'allowfullscreen';}
+        else{ this.embedFullScreen = ''; }
+    }
 
+    embedVideoSizes() {
+        if (this.videosize === this.videoSizes[0]) { this.embedWidth = '1280'; this.embedHeight = '720'; }
+        else if (this.videosize === this.videoSizes[1]) { this.embedWidth = '560'; this.embedHeight = '315'; }
+        else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480'; }
+        else { this.embedWidth = '640'; this.embedHeight = '360'; }
+    }
+    
    validateEmail(email: string) {
         var validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return validation.test(email);
@@ -135,6 +175,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         else { this.isOverlay = true; }
     }
 
+    embedCode() {
+        (<HTMLInputElement>document.getElementById('embed_code')).select();
+        document.execCommand('copy');
+    }
+    
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
     }
