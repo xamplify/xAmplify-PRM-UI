@@ -66,7 +66,7 @@
     "ng2-sharebuttons": "^2.1.2",
     "ng2-slim-loading-bar": "^4.0.0",
     "ng2-social-share": "0.0.10",
-    "ng2-tag-input": "^0.7.7",
+    "ng2-tag-input": "^1.2.8",
     "ngx-ui-switch": "^1.2.0",
     "rxjs": "^5.1.0",
     "summernote": "^0.8.3",

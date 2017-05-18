@@ -72,9 +72,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     videoPlayListSource(videoUrl: string){
         this.videoUrl = videoUrl;
         const self = this;
-       this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
-        
-       
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
     }
 
     playVideoInfo(selectedVideo: SaveVideoFile) {
@@ -99,11 +97,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         console.log(this.selectedVideo);
         this.title = this.selectedVideo.title;
         this.alias = this.selectedVideo.alias;
-        
-        $('.video-js').css('color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
+
     }
 
     showVideo(videoFile: SaveVideoFile, position: number) {
@@ -257,14 +251,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />'); 
       //  var player = videojs('example_video_11');
       //  player.ready();
-     
     }
-    
     ngAfterViewInit() {
-        
-    	//this.playNormalVideo();
-    
-    	this.videoJSplayer = videojs('example_video_11', {}, function() {
+   let colors = this;
+       $(document).ready(function(){
+        $('.video-js').css('color', colors.selectedVideo.playerColor);
+        $('.video-js .vjs-play-progress').css('background-color', colors.selectedVideo.playerColor);
+        $('.video-js .vjs-volume-level').css('background-color', colors.selectedVideo.playerColor);
+        $('.video-js .vjs-control-bar').css('background-color', colors.selectedVideo.controllerColor);
+        $('.vjs-control-bar').css('background-color', colors.selectedVideo.controllerColor + '! important');
+      });
+
+      this.videoJSplayer = videojs('example_video_11', {}, function() {
             let player = this;
            // var id = player.id();
            // this.play();
@@ -420,8 +418,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                 }
             });
         });
-    //	  this.videoPlayListSource(this.videoUrl);
-    	
     } 
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');

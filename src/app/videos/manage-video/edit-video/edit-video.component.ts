@@ -17,7 +17,7 @@ declare var $, videojs: any;
 @Component({
     selector: 'app-edit-video',
     templateUrl: './edit-video.component.html',
-   styleUrls : ['./edit-video.component.css', '../../../../assets/css/video-css/video-js.custom.css' ,
+   styleUrls : ['./edit-video.component.css','./foundation-themes.scss', '../../../../assets/css/video-css/video-js.custom.css' ,
    '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
    '../../../../assets/css/about-us.css', '../../../../assets/css/todo.css',
    '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css'] 
@@ -52,6 +52,8 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
     private videoJSplayer: any;
     public videoUrl: string;
+    public videoUrlM3U8: string;
+    public videoUrlMp4: string;
 
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
 
@@ -164,22 +166,13 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.categories = this.referenceService.refcategories;
         console.log('video url is ' + this.videoUrl);
-        
-        this.videoUrl = this.saveVideoFile.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        
         console.log('User data of loggdin');
         console.log(this.userService.loggedInUserData);
 
         this.isFullscreen = false;
         // this.isOverlay = true;
         this.showOverLay = true;
-        
-        if (this.saveVideoFile.allowFullscreen == false){ $('.video-js .vjs-fullscreen-control').css('display','none');}
-        else {$('.video-js .vjs-fullscreen-control').css('display','block');}
-        
-        
+     
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
         this.lastName = this.userService.loggedInUserData.lastName;
@@ -269,8 +262,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             //  console.log(this.saveVideoFile.imageFile);
 
         };
-
         this.notifyParent = new EventEmitter<SaveVideoFile>();
+        this.videoUrl = this.saveVideoFile.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrlM3U8 = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        this.videoUrlMp4  =  this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
     }  // closed constructor
 
     onChange(event: any) {
@@ -706,7 +702,21 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                this.is360Value = this.saveVideoFile.is360video = true;}
         else {this.is360Value = this.saveVideoFile.is360video = false;}
     }
-    
+    videoPlayListSourceM3U8() {
+        this.videoUrl = this.saveVideoFile.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        const self = this;
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+    }
+   videoPlayListSourceMP4() {
+        this.videoUrl = this.saveVideoFile.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        const self = this;
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
+    }
+
     ngOnInit() {
 
         this.categories = this.referenceService.refcategories;
@@ -987,12 +997,15 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
              });
 
          });
-        const self = this;
-        this.videoJSplayer.playlist([
-             {
-                 sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]
-             }
-            ]);
+
+     if(this.videoFileService.actionValue === 'Save'){
+           this.videoPlayListSourceMP4();
+           console.log("mp4 video");
+         }
+     else {
+          this.videoPlayListSourceM3U8();
+          console.log("m3u8 video ");
+        }
 
     }
     /*********************************Save Video*******************************/

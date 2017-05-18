@@ -20,9 +20,8 @@
 			<div class="col-md-6" style="padding-top: 38px">
 				<video id="edit_video_player" class="video-js vjs-default-skin" controls  height="299" poster="{{defaultImagePath}}"
 					data-setup='{"example_option":true }'>
-				  <!--  <source [src] = videoUrl  type="video/mp4" /> -->
-			       <source [src] = videoUrl  type="application/x-mpegURL">
-				   <source [src] = videoUrl  type="application/vnd.apple.mpegurl" />
+			       <source [src] = videoUrlMp4  type="video/mp4" /> 
+			       <source [src] = videoUrlM3U8  type="application/x-mpegURL"> 
 				</video>
             	<!-- video overlay modal popup -->
 			 <div id="overlay-modal" class="video-js" [class.modelSizeChange] = "isCallactionLast===true"
@@ -198,7 +197,7 @@
 
 									<div class="form-group">
 										<label class="col-md-3 control-label">Tags:</label>
-										<div class="col-md-9"><tag-input  formControlName="tags" required></tag-input>
+										<div class="col-md-9"><tag-input  formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 										</div>
 									</div>
