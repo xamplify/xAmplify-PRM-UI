@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef,AfterViewInit} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileDropDirective, FileItem } from 'ng2-file-upload';
@@ -45,19 +46,18 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     stags = 'Hello, World';
     sdescription = 'This is a test';
     sharevideo: any;
-    playlist: any;
 
     googleButton: any;
     facebookButton: any;
-
+    public imageUrlPath: SafeUrl;
     private videoJSplayer: any;
+    public  playlist: any;
     public videoUrl: string;
     public videoUrlM3U8: string;
     public videoUrlMp4: string;
 
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
 
-    public file_srcs: string[] = [];
     public imageFilesfirst: string;
     public imageFilessecond: string;
     public imageFilesthird: string;
@@ -73,22 +73,18 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     public gifValue1: string;
     public gifValue2: string;
     public gifValue3: string;
-
     public newTags: string[] = [];
-
     public categories: Category[];
-
     submitted = false;
     active = true;
     videoForm: FormGroup;
-
     model: any = {};
     public manageVideos: boolean;
     public editVideo: boolean;
     public titleOfVideo: string;
-    public ownThumbnail: boolean = false;
-    public openOwnThumbnail: boolean = false;
-    public thumbnailRadioOpen: boolean = true;
+    public ownThumbnail = false;
+    public openOwnThumbnail = false;
+    public thumbnailRadioOpen = true;
     public fileItem: FileItem;
     public ownThumb: boolean;
     public comments: boolean;
@@ -102,7 +98,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     public share: boolean;
     public shareVideos: boolean;
     public shareValues: boolean;
-    public embedVideo: boolean;
+    public embedVideo :  boolean;
     public imgBoolean1: boolean;
     public imgBoolean2: boolean;
     public imgBoolean3: boolean;
@@ -124,7 +120,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     public embedFullScreen = 'allowfullscreen';
     isFullscreen: boolean;
     enableCalltoAction: boolean;
-    public callActionValue :boolean;
+    public callActionValue: boolean;
     public valueRange: number;
     public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
     public email_id: string;
@@ -139,16 +135,10 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     public videoOverlaySubmit: string;
     public user: User = new User();
     public isValidated: boolean;
-
     public overLayValue: string; // videojs value overlay
-
-    public isCallactionLast: boolean;
     public startCalltoAction: boolean;   // not required for start of the video
     public endCalltoAction: boolean;   // not required for end of the video
-    public callendValue: boolean;
-    public endValue :boolean;
     public is360Value: boolean;
-
     public maxLengthvalue = 120;
     public characterleft = 0;
     public publish = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
@@ -156,7 +146,8 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
-        private authenticationService: AuthenticationService, private userService: UserService) {
+        private authenticationService: AuthenticationService, private userService: UserService,
+        private sanitizer: DomSanitizer) {
 
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.titleOfVideo = this.videoFileService.actionValue;
@@ -165,14 +156,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.categories = this.referenceService.refcategories;
-        console.log('video url is ' + this.videoUrl);
-        console.log('User data of loggdin');
         console.log(this.userService.loggedInUserData);
 
         this.isFullscreen = false;
         // this.isOverlay = true;
         this.showOverLay = true;
-     
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
         this.lastName = this.userService.loggedInUserData.lastName;
@@ -180,16 +168,16 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         if ( this.validateEmail(this.model.email_id) )
            { this.isOverlay = false; }
         else { this.isOverlay = true; }
-       
-        this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value 
+
+        this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
         this.callActionValue = this.saveVideoFile.callACtion;
         this.startCalltoAction = this.saveVideoFile.startOfVideo;
         this.endCalltoAction = this.saveVideoFile.endOfVideo;
-       
-        if(this.saveVideoFile.startOfVideo == true){this.videoOverlaySubmit = 'PLAY';}
+
+        if(this.saveVideoFile.startOfVideo === true){this.videoOverlaySubmit = 'PLAY';}
         else {  this.videoOverlaySubmit = 'SUBMIT';}
-        
-        if (this.saveVideoFile.startOfVideo === true && this.saveVideoFile.callACtion==true ) {
+
+        if (this.saveVideoFile.startOfVideo === true && this.saveVideoFile.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
             this.startCalltoAction = true;
             this.endCalltoAction = false;
@@ -197,7 +185,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             this.isPlay = true;
             localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
         }
-        else if(this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion==true) {
+        else if(this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
             this.endCalltoAction = true;
             this.startCalltoAction = false;
             this.overLayValue = 'EndOftheVideo';
@@ -208,7 +196,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         else {
             this.overLayValue = 'removeCallAction';
             localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
-            
         }
         // share details
         this.share = true;
@@ -222,13 +209,10 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length;}
 
         this.isPlayButton = this.saveVideoFile.name;
-        console.log(this.isPlayButton);
-        console.log(this.sharevideo);
 
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
         this.isValidated = true;
-
         this.metatags = {
             'title': 'Meta Tags NEw',
             'description': 'sdsdgsddssdkghsdkjglkdjsg',
@@ -248,20 +232,12 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
         });
-        this.uploader.onAfterAddingFile = (file) => {
-            file.withCredentials = false;
-            console.log('file object for image file');
-            console.log(file);
-            //  this.fileItem = file;
-            //  console.log(this.fileItem);
-            //  this.saveVideoFile.imageFile = file;
-            this.ownThumb = true;
-            this.ownThumbnail = false;
-            // console.log('image file vlaue is :');
-            // validateOwnThumbnail('imageFile',this.fileItem,'ownThumb');
-            //  console.log(this.saveVideoFile.imageFile);
-
-        };
+        this.uploader.onAfterAddingFile = (fileItem) => {
+              fileItem.withCredentials = false;
+              this.ownThumb = true;
+              this.ownThumbnail = false;
+              this.imageUrlPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.videoUrl = this.saveVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -269,19 +245,15 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.videoUrlMp4  =  this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
     }  // closed constructor
 
-    onChange(event: any) {
-        const fileList: FileList = event.target.files;
-        this.fileObject = fileList[0];
-        console.log('file path is :');
-        console.log(this.fileObject);
+    removeOwnThumbnail(){
+     this.imageUrlPath = false;
+      this.ownThumb = false;
+      this.ownThumbnail = true;
     }
-
     changeImgRadio1() {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.file_srcs = [];
-        console.log('radio button clicked 1st');
         this.saveVideoFile.imagePath = this.imageValue1;
         console.log(this.saveVideoFile.imagePath);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;;
@@ -293,12 +265,8 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.file_srcs = [];
-        console.log('radio button clicked 2nd');
         this.saveVideoFile.imagePath = this.imageValue2;
-
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;;
-        console.log(this.saveVideoFile.imagePath);
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.imgBoolean2 = true;
         this.imgBoolean1 = this.imgBoolean3 = false;
@@ -307,11 +275,7 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.file_srcs = [];
-        console.log('radio button clicked 3rd');
         this.saveVideoFile.imagePath = this.imageValue3;
-        console.log(this.imageValue3);
-        console.log(this.saveVideoFile.imagePath);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.imgBoolean1 = this.imgBoolean2 = false;
@@ -322,9 +286,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.openOwnThumbnail = true;
         this.ownThumb = true;
         this.isThumb = false;
-        this.file_srcs = [];
-        console.log('radio button clicked');
-        console.log('own thumb nail value is :' + this.ownThumb);
         this.thumbnailRadioOpen = false;
     }
     changeThumbRadio() {
@@ -345,7 +306,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.gifBoolean1 = this.gifBoolean3 = false;
         this.saveVideoFile.gifImagePath = this.gifValue2;
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
-
     }
     changeGifRadio3() {
         this.gifBoolean1 = this.gifBoolean2 = false;
@@ -353,50 +313,22 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.saveVideoFile.gifImagePath = this.gifValue3;
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
-
-    fileChangefile(input: any) {
-        this.ownThumbnail = false;
-        this.isThumb = true;
-        console.log('file change method called');
-        this.readFiles(input.files);
-    }
-    readFile(file: any, reader: any, callback: any) {
-        reader.onload = () => {
-            callback(reader.result);
-        }
-        reader.readAsDataURL(file);
-    }
-    readFiles(files: any, index = 0) {
-        const reader = new FileReader();
-        if (index in files) {
-            this.readFile(files[index], reader, (result: any) => {
-                this.file_srcs.push(result);
-                this.readFiles(files, index + 1);
-            });
-        } else {
-            this.changeDetectorRef.detectChanges();
-        }
-    }
-
     titleDivChange(event: boolean) {
-        console.log('title div value is :'+event);
         this.titleDiv = event;
         this.colorControl = this.controlPlayers = this.callaction = false;
     }
     colorControlChange(event: boolean) {
-        console.log('colorControl div value is :'+event);
         this.colorControl = event;
         this.titleDiv  = this.controlPlayers = this.callaction = false;
     }
     controlPlayerChange(event: any) {
-        console.log('contrl player div value is :'+event);
         this.controlPlayers = event;
         this.colorControl = this.titleDiv = this.callaction =false;
     }
 
     callToActionChange(event: any) {
         this.callaction = event;
-        this.controlPlayers= this.colorControl=this.titleDiv  = false;
+        this.controlPlayers = this.colorControl = this.titleDiv  = false;
     }
     likesValuesDemo() {
         this.likesValues += 1;
@@ -460,9 +392,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />');
-       // var player = videojs('example_video_11');
-       // player.ready();
-    
     }
     // video control methods
     allowComments(event: boolean) {
@@ -498,12 +427,9 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
     allowSharing(event: boolean) {
         console.log('allow sharing ' + event);
         this.shareValues = this.saveVideoFile.allowSharing = event;
-        // this.saveVideoFile.allowSharing = this.shareValues;
-        // console.log(this.saveVideoFile.allowSharing);
     }
     allowEmbedVideo(event: boolean) {
         this.embedVideo = this.saveVideoFile.allowEmbed = event;
-        // this.saveVideoFile.allowEmbed = this.embedVideo;
     }
 
     enableVideoControllers(event: boolean) {
@@ -561,16 +487,12 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         	//$('.vjs-fullscreen.vjs-user-inactive').css('cursor', 'none');
         	// $('.vjs-hidden').css('display','none');
         	$('.video-js .vjs-fullscreen-control').hide();
-        	//this.videoJSplayer.isFullscreen(true);
-        	
         	}
         else {
         //	$('.video-js .vjs-fullscreen-control').show();
         	//$('.vjs-fullscreen.vjs-user-inactive').css('cursor', 'block');
         	 $('.vjs-hidden').css('display','block');
-        //	this.videoJSplayer.isFullscreen(false);
         	}
-
     }
 
     changeUpperText(upperText: string) {
@@ -584,74 +506,25 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
     enableCallToActionMethodTest(event: any) {
        this.enableCalltoAction = this.saveVideoFile.callACtion = event;
-        const newValue = true;       
-        const isCheckedcallaction = localStorage.setItem('iscallAction', JSON.stringify(newValue));
-        const endvalue =  JSON.parse(localStorage.getItem('callEndValue'));
-        // this.endValue = this.callendValue;
-        if(event==true &&this.callActionValue == false && this.saveVideoFile.startOfVideo == true){
-              this.isCallactionLast = true;
-              $('#overlay-modal').show();
+        if(event===true && this.saveVideoFile.startOfVideo === true){
+               $('#edit_video_player').append(
+                   $('#overlay-modal').show()
+                );
               this.videoJSplayer.pause();
               this.videoOverlaySubmit = 'PLAY';
               this.isPlay = true;
         }
-        else if(event ==true && this.callActionValue == false && this.saveVideoFile.endOfVideo == true){
-              this.isCallactionLast = true;
-              $('#overlay-modal').show();
+        else if(event === true && this.saveVideoFile.endOfVideo === true) {
+            $('#edit_video_player').append(
+                   $('#overlay-modal').show()
+                );
               this.videoJSplayer.pause();
-              this.isPlay = false;
               this.videoOverlaySubmit = 'SUBMIT';
+              this.isPlay = false;
         }
-        else if(event==true &&this.callActionValue == true && this.saveVideoFile.startOfVideo == true){
-            this.isCallactionLast = true;
-            $('#overlay-modal').show();
-            this.videoJSplayer.pause();
-            this.videoOverlaySubmit = 'PLAY';
-            this.isPlay = true;
-      }
-       else if(event ==true && this.callActionValue == true && this.saveVideoFile.endOfVideo == true){
-            this.isCallactionLast = true;
-            $('#overlay-modal').show();
-            this.videoJSplayer.pause();
-            this.isPlay = false;
-            this.videoOverlaySubmit = 'SUBMIT';
-      }
-       else if(endvalue==false && this.callActionValue == true && event===true && this.saveVideoFile.startOfVideo===true){
-           $('#overlay-modal').show();
-             this.isCallactionLast = false;
-             this.videoJSplayer.pause();
-          }
-       else if(endvalue==false&& this.callActionValue == true && event===true && this.saveVideoFile.endOfVideo===true){
-           $('#overlay-modal').show();
-             this.isCallactionLast = false;
-             this.videoJSplayer.pause();
-          }
-       else if(endvalue==true && event == true && this.saveVideoFile.endOfVideo === true){
-            this.isCallactionLast = false;
-            $('#overlay-modal').show();
-            this.videoJSplayer.pause();
-        }
-        else if(endvalue==true && event===true && this.saveVideoFile.startOfVideo===true){
-            $('#overlay-modal').show();
-              this.isCallactionLast = false;
-              this.videoJSplayer.pause();
-           }
-        
-         else if(endvalue==false && event===true && this.saveVideoFile.startOfVideo===true){
-             $('#overlay-modal').show();
-               this.isCallactionLast = true;
-               this.videoJSplayer.pause();
-            }
-         else if(endvalue==false && event===true && this.saveVideoFile.endOfVideo===true){
-             $('#overlay-modal').show();
-               this.isCallactionLast = true;
-               this.videoJSplayer.pause();
-            }
         else {
-            this.isCallactionLast = false;
-          //  this.saveVideoFile.callACtion = this.enableCalltoAction = false;
              $('#overlay-modal').hide();
-             this.videoJSplayer.play();
+             this.videoJSplayer.pause();
         }
     }
     skipClose() {
@@ -689,14 +562,25 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.isSkipChecked = this.saveVideoFile.skip;
     }
     startCallToactionOverlay(event: boolean) {
-        if (event === true) { this.startCalltoAction = true;  this.endCalltoAction = false; }
-        else {  this.endCalltoAction = true; this.startCalltoAction = false; }
+        if (event === true) {
+            this.startCalltoAction = this.saveVideoFile.startOfVideo = true;
+            this.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+            }
+        else {
+             this.endCalltoAction  =  this.saveVideoFile.endOfVideo = true;
+             this.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+           }
     }
     endCallToactionOverlay(event: boolean) {
-        if (event === true) { this.endCalltoAction = true;  this.startCalltoAction = false; }
-        else {  this.startCalltoAction = true;  this.endCalltoAction = false;}
+        if (event === true) {
+            this.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+            this.endCalltoAction = this.saveVideoFile.endOfVideo = true;
+         }
+        else {
+            this.startCalltoAction = this.saveVideoFile.startOfVideo = true;
+            this.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+        }
     }
-   
     is360VideoCheck(event :boolean){
         if(event ==true) { this.saveVideoFile.is360video = true;
                this.is360Value = this.saveVideoFile.is360video = true;}
@@ -828,40 +712,21 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
              );
     }
 
-    
     ngAfterViewInit() {
-        let newSelf = this;
         this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function() {
-             // this.play();
-           //  const callActinLast = JSON.parse(localStorage.getItem('isCallactionLast'));
-        	const player = this;
-             const valueEnd = true;
+             const player = this;
              const isValid = JSON.parse(localStorage.getItem('isOverlayValue')); // gettting local storage value here isValid value is true
-             console.log( player.callendValue);
-             console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
                   this.ready(function() {
-                	  // const isCallActionChanged = localStorage.getItem('iscallAction');
-                      // this.bigPlayButton.hide();
-                      console.log($('#rangeValue').length);
                       if (isValid === 'StartOftheVideo' ) {
-                          localStorage.setItem('callEndValue', JSON.stringify(valueEnd));
                           $('#edit_video_player').append(
                               $('#overlay-modal').show()
                           );
-                          $('#replay-video').click(function() {
-                              $('#overlay-modal').hide();
-                              player.play();
-                          });
-                          $('#skipOverlay').click(function() {
-                              $('#overlay-modal').hide();
-                               player.play();
-                          });
-                      }
-                      else if(isValid!= 'StartOftheVideo' ) {
+                       }
+                      else if(isValid !== 'StartOftheVideo' ) {
                           $('#overlay-modal').hide();
                           player.play();
                       }
-                      else if (isValid ==='removeCallAction'){
+                      else if (isValid === 'removeCallAction'){
                           $('#overlay-modal').hide();
                         //  player.play();
                        }
@@ -870,34 +735,12 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                       }
                   });
              this.on('ended', function() {
-             player.callendValue = false;
-             localStorage.setItem('callEndValue', JSON.stringify(player.callendValue));
-             console.log(player.callendValue);
-           //  const isCallActionChanged = localStorage.getItem('iscallAction');
                  if (isValid === 'EndOftheVideo' ) {
-                   // $('.vjs-big-play-button').css('display', 'none');
-                  // this.bigPlayButton.hide();
-                // player.callendValue = true;
-                 // localStorage.setItem('callEndValue', JSON.stringify(player.callendValue)); 
                      $('#edit_video_player').append(
                          $('#overlay-modal').show()
                      );
-
-                     $('#replay-video').click(function() {
-                         $('#overlay-modal').hide();
-                         player.play();
-                     });
-                     $('#replay-video1').click(function() {
-                         $('#overlay-modal').hide();
-                         player.play();
-                     });
-                     $('#skipOverlay').click(function() {
-                         $('#overlay-modal').hide();
-                          player.play();
-                     });
                  }  // ended if condition
-                 else if(isValid!='EndOftheVideo'){
-                   //   localStorage.setItem('callEndValue', JSON.stringify(player.callendValue)); 
+                 else if(isValid !== 'EndOftheVideo'){
                      $('#overlay-modal').hide();
                       player.pause();
                  }
@@ -909,11 +752,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                       $('#overlay-modal').hide();
                       player.pause();
                  }
-             }); 
+             });
 
-           /*  this.on('contextmenu', function(e) {
+             this.on('contextmenu', function(e) {
                  e.preventDefault();
-             }); */
+             });
 
              this.hotkeys({
                  volumeStep: 0.1,
@@ -955,7 +798,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
                              }
                          }
                      },
-                     // Override number keys example from https://github.com/ctd1500/videojs-hotkeys/pull/36
                      numbersKey: {
                          key: function(event: any) {
                              // Override number keys
@@ -1000,11 +842,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
 
      if(this.videoFileService.actionValue === 'Save'){
            this.videoPlayListSourceMP4();
-           console.log("mp4 video");
+           console.log('its mp4 video path');
          }
      else {
           this.videoPlayListSourceM3U8();
-          console.log("m3u8 video ");
+          console.log('its m3u8 video path ');
         }
 
     }
@@ -1200,9 +1042,11 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         }
     }
     saveCallToActionUserForm() {
-        console.log(this.model.email_id);
-
-        if (this.userService.loggedInUserData.emailId == this.model.email_id) {
+         $('#overlay-modal').hide();
+        if(this.videoOverlaySubmit === 'PLAY'){ this.videoJSplayer.play();}
+        else { this.videoJSplayer.pause(); }
+         console.log(this.model.email_id);
+        if (this.userService.loggedInUserData.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
             this.user.firstName = this.userService.loggedInUserData.firstName;
             this.user.lastName = this.userService.loggedInUserData.lastName;
@@ -1237,9 +1081,6 @@ export class EditVideoComponent implements OnInit,AfterViewInit {
         this.videoJSplayer.dispose();
         this.videoFileService.actionValue = ''; // need to change to empty
         localStorage.removeItem('isOverlayValue');
-        localStorage.removeItem('callEndValue');
-        localStorage.removeItem('iscallAction');
-        console.log(this.endValue);
     }
 
 }

@@ -120,7 +120,7 @@ export class UploadVideoComponent implements OnInit {
 
     processVideo(responsePath: any) {
       const val = this;
-      if(this.RecordSave != true){ 
+      if(this.RecordSave != true){
       setTimeout(function() {
            val.processing = true;
           }, 100);
@@ -475,7 +475,7 @@ export class UploadVideoComponent implements OnInit {
     }
     defaultDesabled(){
         this.sweetAlertDisabled = true;
-    	this.isChecked = true;
+        this.isChecked = true;
         $(".dropBox").attr("style", "cursor:not-allowed; opacity:0.3");
         $(".googleDrive").attr("style", "cursor:not-allowed; opacity:0.3");
         $(".box").attr("style", "cursor:not-allowed; opacity:0.3");
@@ -501,7 +501,6 @@ export class UploadVideoComponent implements OnInit {
          $(".oneDrive").attr("style", "cursor:pointer; opacity:1");
         $(".addfiles").attr("style", "float: left; margin-right: 9px; opacity:1");
     }
-    
     downloadFromDropbox() {
         if(this.processing != true){
         let self = this;
@@ -510,7 +509,6 @@ export class UploadVideoComponent implements OnInit {
                    console.log(files[0].name);
                    self.dropbox(files);
                    },
-
                cancel: function() {
                   self.defaultSettings();
                },
@@ -519,7 +517,7 @@ export class UploadVideoComponent implements OnInit {
                extensions: ['.m4v', '.avi', '.mpg', '.mp4', '.flv', '.mov', '.wmv', '.divx', '.f4v', '.mpeg', '.vob', '.xvid'],
            };
            Dropbox.choose(options);
-       } //close if condition
+       } // close if condition
     }
         dropbox(files:any){
           swal({ title: 'Retriving video from dropbox...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
@@ -532,7 +530,7 @@ export class UploadVideoComponent implements OnInit {
                this.processVideo(result.path);
            });
         }
-        /* box retreive videos */    
+        /* box retreive videos */
         downloadFrombox() {
            let value = this;
             var options = {
@@ -540,7 +538,6 @@ export class UploadVideoComponent implements OnInit {
                 linkType: 'direct',
                 multiselect: false,
             };
-
             var boxSelect = new BoxSelect(options);
             if(value.processing != true){ 
                boxSelect.launchPopup();
@@ -578,7 +575,7 @@ export class UploadVideoComponent implements OnInit {
      }
         onAuthApiLoad() {
            let self = this;
-           window['gapi'].auth.authorize(                
+           window['gapi'].auth.authorize(
                     {
                         'client_id': "516784406032-okvpndbvngrrev2vq0gdd3n2tng5joq8.apps.googleusercontent.com",
                         'scope': ['https://www.googleapis.com/auth/drive.readonly'],
@@ -586,13 +583,13 @@ export class UploadVideoComponent implements OnInit {
                     },
                     this.handleAuthResult.bind(this));
         }
-        
         handleAuthResult(authResult:any) {
            let self = this;
             if (authResult && !authResult.error) {
                 this.tempr = authResult.access_token;
                 self.createPicker();
             }
+
         }
         onPickerApiLoad() {
            let self = this;
@@ -612,6 +609,7 @@ export class UploadVideoComponent implements OnInit {
                 .build();
                 picker.setVisible(true);
             }
+          
         }
         pickerCallback(data:any) {
            let self = this;
@@ -624,7 +622,7 @@ export class UploadVideoComponent implements OnInit {
                 self.defaultSettings();
             }
         }
-        
+
         downloadGDriveFile(fileId:any, name:string){
             let self = this;
             if(this.isVideo(name)){
@@ -638,7 +636,7 @@ export class UploadVideoComponent implements OnInit {
                 });
             }
             else{
-                swal("Only video files can be uploaded.");
+                swal('Only video files can be uploaded');
             }
         }
 
@@ -668,18 +666,18 @@ export class UploadVideoComponent implements OnInit {
                this.defaultSettings();
                }
         catch (err) {
-                console.error("ERROR : FileUploadComponent : ngOnInit() " + err);
+                console.error('ERROR : FileUploadComponent : ngOnInit() ' + err);
             }
           }
        ngOnDestroy() {
            console.log('Deinit - Destroyed Component')
            if(this.playerInit==true){
            this.player.recorder.destroy(); }
-           console.log("Destroyed Component completed");
+           console.log('Destroyed Component completed');
            this.isChecked= false;
            if(this.processing ==  true) {
                 this.redirectPge = true;
-                swal("Video is processing backend!", " your video will be saved as draft mode in manage videos!!"); 
+                swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!'); 
            }
        }
 }

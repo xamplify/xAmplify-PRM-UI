@@ -1,6 +1,6 @@
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;}
-	.modelSizeChange{ margin-top: -298px; } 
+	.ownThumnailCss{margin-top: -22px;}
 	.emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}
 	.isOffirstname {  margin-top: -43px !important ;}
@@ -24,7 +24,7 @@
 			       <source [src] = videoUrlM3U8  type="application/x-mpegURL"> 
 				</video>
             	<!-- video overlay modal popup -->
-			 <div id="overlay-modal" class="video-js" [class.modelSizeChange] = "isCallactionLast===true"
+			 <div id="overlay-modal" class="video-js" 
               style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"> </label>
                 <form #f="ngForm" novalidate>
@@ -202,8 +202,8 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-3 control-label">Thumbnail</label>
-										  <label> <input name="options" ng-control="options" type="radio" [value]="1" (click)="changeThumbRadio()"
+										<label class="col-md-3 control-label" style="margin-left: -4px;">Thumbnail</label>
+										  <label> <input name="options" ng-control="options" type="radio" [value]="1" (click)="changeThumbRadio();uploader.clearQueue();removeOwnThumbnail()"
 											[(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="margin-top: 12px;" checked="checked">
 										</label>
 										<div class="col-md-12" *ngIf="thumbnailRadioOpen">
@@ -225,7 +225,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group" [class.ownThumnailCss]="thumbnailRadioOpen ==false">
 										<label class="col-md-3 control-label">or: </label>
 										<div class="col-md-6" style="margin-left: -19px;">
 											<label class="radio-inline"> 
@@ -235,11 +235,15 @@
 										</div>
 										<div class="col-md-9">
 											<div *ngIf="openOwnThumbnail">
-												<input type="file" ng2FileSelect [uploader]="uploader" (change)="onChange($event)" (change)="fileChangefile(input)" #input>
+												<input type="file" ng2FileSelect [uploader]="uploader"  *ngIf="uploader.queue.length==0" #input>
 												<p class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
-												<div *ngFor="let filesrc of file_srcs">
+											<!--	<div *ngFor="let filesrc of file_srcs">
 													<img src="{{filesrc}}" style="height: 71px; width: 98px">
-												</div>
+												</div> -->
+											<div>
+												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();removeOwnThumbnail()">&times;</span>
+												<img *ngIf="imageUrlPath" [src] = imageUrlPath  style="height: 71px; width: 98px">
+											</div>
 												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required</div>
 												<!--  <div *ngIf="formErrors.imageFile" class="alert alert-danger">{{formErrors.imageFile}}</div> -->
 											</div>

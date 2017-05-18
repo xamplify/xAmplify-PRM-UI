@@ -136,7 +136,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         }
       });
     }
-    
     likesValuesDemo() {
         this.likesValues += 1;
     }
@@ -147,8 +146,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         if ( this.isFullscreen === true ) {this.embedFullScreen = 'allowfullscreen';}
         else{ this.embedFullScreen = ''; }
     }
-
-    embedVideoSizes() {
+    embedVideoSizes(){
         if (this.videosize === this.videoSizes[0]) { this.embedWidth = '1280'; this.embedHeight = '720'; }
         else if (this.videosize === this.videoSizes[1]) { this.embedWidth = '560'; this.embedHeight = '315'; }
         else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480'; }
@@ -165,7 +163,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
         }
-        else if (this.isFistNameChecked == false && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
+        else if (this.isFistNameChecked === false && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
         else { this.isOverlay = true; }
     }
 
@@ -173,11 +171,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         (<HTMLInputElement>document.getElementById('embed_code')).select();
         document.execCommand('copy');
     }
-    
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
     }
-
     saveCallToActionUserForm() {
         console.log(this.model.email_id);
         if (this.userService.loggedInUserData.emailId === this.model.email_id) {
@@ -200,9 +196,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-    	//this.playNormalVideo();
-    	this.setValueForSrc = true;
-
+        this.setValueForSrc = true;
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
         this.lastName = this.userService.loggedInUserData.lastName;
