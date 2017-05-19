@@ -75,6 +75,10 @@ export class EditContactsComponent implements OnInit {
     public userListIds: Array<UserListIds>;
     deleteSucessMessage : boolean;
     invalidDeleteSucessMessage : boolean;
+    emptyActiveContactsUsers : boolean;
+    emptyInvalidContactsUsers : boolean;
+    emptyUnsubscribedContactsUsers : boolean;
+    emptyNonActiveContactsUsers : boolean;
 
     contactUsersId:number; 
     contactIds = [];
@@ -648,15 +652,18 @@ export class EditContactsComponent implements OnInit {
     }
 
     active_Contacts( pagination: Pagination ) {
-
         this.contactService.loadActiveContactsUsers( this.contactListId,pagination )
             .subscribe(
                (data:any) => {
                 this.activeContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyActiveContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                 this.logger.log(data);
+                }
             },
 
             error => console.log( error ),
@@ -671,9 +678,13 @@ export class EditContactsComponent implements OnInit {
               (data:any) => {
                 this.invalidContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyInvalidContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
                 this.logger.log(data);
+                }
               //  this.userListIds = data.listOfUsers;
                 //this.logger.info(this.userListIds);
                 
@@ -690,9 +701,13 @@ export class EditContactsComponent implements OnInit {
                (data:any) => {
                 this.unsubscribedContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyUnsubscribedContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                 this.logger.log(data);
+                }
             },
 
             error => console.log( error ),
@@ -708,9 +723,13 @@ export class EditContactsComponent implements OnInit {
             (data:any) => {
                 this.nonActiveContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyNonActiveContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                 this.logger.log(data);
+                }
             },
 
             error => console.log( error ),

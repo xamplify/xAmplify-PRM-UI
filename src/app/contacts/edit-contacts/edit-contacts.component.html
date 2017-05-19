@@ -547,11 +547,25 @@
 										</div>
 						</div>
 					</div>
+					<div class="col-md-12" style="margin-top:15px">
   <div *ngIf="invalidDeleteSucessMessage" id="showInvalidDeleteMessage" class="alert alert-success alert-dismissable">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been Deleted successfully.
 	</div>
-					<div class="col-md-12" style="margin-top:15px">
+	<div *ngIf="emptyActiveContactsUsers" class="alert alert-info">
+  <strong>Info!</strong> No Active Contacts found.
+</div>
+<div *ngIf="emptyInvalidContactsUsers" class="alert alert-info">
+  <strong>Info!</strong> No Invalid Contacts found.
+</div>
+<div *ngIf="emptyUnsubscribedContactsUsers" class="alert alert-info">
+  <strong>Info!</strong> No Unsubscribed Contacts found.
+</div>
+<div *ngIf="emptyNonActiveContactsUsers" class="alert alert-info">
+  <strong>Info!</strong> No Non Active Contacts found.
+</div>
+</div>
+					<div class="col-md-12" style="margin-top:12px">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
 						<div class="portlet box blue">
 							<div class="portlet-title">
