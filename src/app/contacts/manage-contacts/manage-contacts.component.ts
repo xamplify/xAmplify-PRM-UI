@@ -62,9 +62,10 @@ export class ManageContactsComponent implements OnInit {
 
     contactListNameError: boolean;
     contactListUsersError: boolean;
+    emptyContacts : boolean;
+    emptyContactsUsers : boolean;
 
     public contactListName: string;
-
 
     public removeIds: number;
     public invalidIds: Array<UserListIds>;
@@ -247,8 +248,12 @@ sortContactUsers  = [
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUserLists.length == 0){
+                    this.emptyContacts = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
+                }
             },
             error => {
 
@@ -547,11 +552,14 @@ sortContactUsers  = [
             ( data: any ) => {
                 this.allContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 this.logger.info( this.allContactUsers );
                 pagination = this.pagerService.getPagedItems( pagination, this.allContactUsers );
                 this.logger.log( data );
-
+                }
             },
 
             error => console.log( error ),
@@ -616,9 +624,13 @@ sortContactUsers  = [
             ( data: any ) => {
                 this.activeContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                 this.logger.log( data );
+                }
             },
 
             error => console.log( error ),
@@ -632,12 +644,15 @@ sortContactUsers  = [
             ( data: any ) => {
                 this.invalidContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
                 this.logger.log( data );
                 this.userListIds = data.listOfUsers;
                 this.logger.info( this.userListIds );
-
+                }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -651,9 +666,13 @@ sortContactUsers  = [
             ( data: any ) => {
                 this.unsubscribedContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                 this.logger.log( data );
+                }
             },
 
             error => console.log( error ),
@@ -669,9 +688,13 @@ sortContactUsers  = [
             ( data: any ) => {
                 this.nonActiveContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(data.listOfUsers.length == 0){
+                    this.emptyContactsUsers = true;
+                }else{
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                 this.logger.log( data );
+                }
             },
 
             error => console.log( error ),

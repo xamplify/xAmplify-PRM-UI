@@ -153,6 +153,9 @@
 			</div>
 		</div>
 	</div>
+	<div *ngIf="emptyContacts" class="alert alert-info">
+  <strong>Info!</strong> No Contact Lists found please add the contact lists.
+</div>
 	<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="alert alert-success alert-dismissable">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been Deleted successfully.
@@ -461,6 +464,9 @@
   </form>
 					<div class="col-md-12">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+						<div *ngIf="emptyContactsUsers" class="alert alert-info">
+  <strong>Info!</strong> No Contacts found please add the contact lists.
+</div>
 						<div class="portlet box blue">
 							<div class="portlet-title">
 								<div class="caption" *ngIf="allContactData==true">
