@@ -5,7 +5,6 @@ import { User } from '../../core/models/user';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-//import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Router, ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
@@ -14,11 +13,9 @@ import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
 import { Pagination } from '../../core/models/pagination';
 
-
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
-
 declare var swal: any;
 declare var $: any;
 
@@ -33,8 +30,6 @@ declare var $: any;
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination]
 })
 export class AddContactsComponent implements OnInit {
-
-
     public contactLists: Array<ContactList>;
     public isFlag: boolean = false;
     public clipBoard: boolean = false;
@@ -57,8 +52,6 @@ export class AddContactsComponent implements OnInit {
     public googleImage: string;
     public salesforceImage: string = 'assets/images/crm/sf_check.png';
     public contactListNameError: boolean;
-
-
     public listViewName: string;
     public uploadvalue = true;
     public contactListName: string;
@@ -82,9 +75,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"] });
-
     contacts: User[];
-
     private socialContactType: string;
     constructor( private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
@@ -95,8 +86,6 @@ export class AddContactsComponent implements OnInit {
         this.clipboardUsers = new Array<User>();
         this.googleContactUser = new Array<User>();
         this.socialContact = new SocialContact();
-        /*this.contactService.googleCallBack = false;
-        this.contactService.salesforceContactCallBack = false;*/
         this.zohoContact = new ZohoContact();
         this.socialContact.socialNetwork = "GOOGLE";
         this.uploader.onAfterAddingFile = ( file ) => {
@@ -106,22 +95,20 @@ export class AddContactsComponent implements OnInit {
         this.userName = '';
         this.password = '';
         this.contactType = '';
-
         let self = this;
         this.uploader.onBuildItemForm = function( fileItem: any, form: FormData ) {
             this.logger.info( "addContacts.component onBuildItemForm" + self.model.contactListName );
             form.append( 'userListName', "" + self.model.contactListName );
             return { fileItem, form }
         };
-
         this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
             var responsePath = response;
             this.logger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
             $( "#uploadContactsMessage" ).show();
             router.navigateByUrl( '/home/contacts/manageContacts' )
-
         };
     }
+
     checked( event: boolean ) {
         this.logger.info( "selected check value" + event )
         this.newUsers.forEach(( contacts ) => {
@@ -133,12 +120,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     changEvent( event: any ) {
-
         this.uploadvalue = false;
     }
 
     changEvents( event: any ) {
-
         this.uploadvalue = false;
     }
 
@@ -149,7 +134,6 @@ export class AddContactsComponent implements OnInit {
         this.saveZohoContactUsers = false;
         this.saveClipBoardUsers = false;
         this.saveSalesforceContactUsers = false;
-
         this.readFiles( input.files );
         this.logger.info( "coontacts preview" );
         $( "#file_preview" ).show();
@@ -169,12 +153,10 @@ export class AddContactsComponent implements OnInit {
         reader.onload = () => {
             callback( reader.result );
         }
-
         reader.readAsText( file );
     }
 
     readFiles( files: any, index = 0 ) {
-
         let reader = new FileReader();
         reader.readAsText( files[0] );
         this.logger.info( files[0] );
@@ -200,23 +182,19 @@ export class AddContactsComponent implements OnInit {
     clipboardShowPreview() {
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         var splitValue;
-
         if ( this.clipboardTextareaText == undefined ) {
             swal( "value can't be null" );
         }
-
         if ( selectedDropDown == "DEFAULT" ) {
             swal( "Please Select the Delimeter Type" );
             return false;
         }
-
         else {
             if ( selectedDropDown == "CommaSeperated" )
                 splitValue = ",";
             else if ( selectedDropDown == "TabSeperated" )
                 splitValue = "\t";
         }
-
         this.logger.info( "selectedDropDown:" + selectedDropDown );
         this.logger.info( splitValue );
         var startTime = new Date();
@@ -239,7 +217,6 @@ export class AddContactsComponent implements OnInit {
             for ( var i = 0; i < allTextLines.length; i++ ) {
                 var data = allTextLines[i].split( splitValue );
                 let user = new User();
-
                 switch ( data.length ) {
                     case 1:
                         user.emailId = data[0];
@@ -476,8 +453,8 @@ export class AddContactsComponent implements OnInit {
         $( "button#uploadCSV" ).prop( 'disabled', false );
         $( "input[type='file']" ).attr( "disabled", false );
         this.model.contactListName = null;
-
     }
+
     addRow() {
         this.saveAddCotactsUsers = true;
         this.saveClipBoardUsers = false;
@@ -496,13 +473,12 @@ export class AddContactsComponent implements OnInit {
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
-
     }
+
     cancelRow( rowId: number ) {
         if ( rowId !== -1 ) {
             this.newUsers.splice( rowId, 1 );
         }
-
     }
 
     copyFromClipboard() {
@@ -513,7 +489,6 @@ export class AddContactsComponent implements OnInit {
         this.saveGoogleContactUsers = false;
         this.saveZohoContactUsers = false;
         this.saveSalesforceContactUsers = false;
-
         $( "button#addContacts" ).prop( 'disabled', true );
         $( "button#uploadCSV" ).prop( 'disabled', true );
         $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -524,12 +499,10 @@ export class AddContactsComponent implements OnInit {
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
         this.clipBoard = true;
-
     }
 
     googleContacts() {
         this.logger.info( "addContactComponent googlecontacts() login:" );
-
         this.socialContact.firstName = '';
         this.socialContact.lastName = '';
         this.socialContact.emailId = '';
@@ -541,7 +514,6 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.alias = '';
         this.socialContact.socialNetwork = "GOOGLE";
         this.contactService.googleCallBack = true;
-
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.googleLogin()
             .subscribe(
@@ -563,6 +535,7 @@ export class AddContactsComponent implements OnInit {
             () => this.logger.log( "AddContactsComponent googleContacts() finished." )
             );
     }
+
     getGoogleContactsUsers() {
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
@@ -577,7 +550,6 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getGoogleConatacts = data;
-                //this.gContacts = new SocialContact();
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -606,13 +578,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveGoogleContacts( isValid: boolean ) {
-
         this.socialContact.socialNetwork = "GOOGLE";
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.contactType = "CONTACT";
-
         this.socialContact.contacts = this.gContacts;
-
         if ( this.model.contactListName != '' ) {
             if ( this.gContacts.length > 0 ) {
                 this.logger.info( isValid );
@@ -624,7 +593,6 @@ export class AddContactsComponent implements OnInit {
                         $( "#uploadContactsMessage" ).show();
                         this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     },
-
                     error => this.logger.error( error ),
                     () => this.logger.info( "addcontactComponent saveacontact() finished" )
                     )
@@ -699,6 +667,7 @@ export class AddContactsComponent implements OnInit {
             }
         })
     }
+
     selectAllSalesforceContacts( event: boolean ) {
         this.logger.info( "check value:" + event )
         this.salesforceContactUsers.forEach(( salesforceContactUsers ) => {
@@ -720,7 +689,6 @@ export class AddContactsComponent implements OnInit {
             all.checked = false;
             this.salesforceContactsValue = false;
         }
-
     }
 
     selectZohoContact( event: boolean ) {
@@ -730,7 +698,6 @@ export class AddContactsComponent implements OnInit {
             all.checked = false;
             this.zohoContactsValue = false;
         }
-
     }
 
     selectSalesforceContact( event: boolean ) {
@@ -740,17 +707,14 @@ export class AddContactsComponent implements OnInit {
             all.checked = false;
             this.salesforceContactsValue = false;
         }
-
     }
 
     zohoContacts() {
-
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         if ( selectedDropDown == "DEFAULT" ) {
             alert( "Please Select the which you like to import from:" );
             return false;
         }
-
         else {
             if ( selectedDropDown == "contact" ) {
                 this.contactType = selectedDropDown;
@@ -763,9 +727,7 @@ export class AddContactsComponent implements OnInit {
             this.logger.log( this.userName );
             this.logger.log( this.password );
             this.getZohoContacts( this.contactType, this.userName, this.password );
-
         }
-
     }
 
     getZohoContacts( contactType: any, username: string, password: string ) {
@@ -781,7 +743,6 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
-                // this.zContacts = new SocialContact();
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -811,13 +772,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveZohoContacts( isValid: boolean ) {
-
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.contactType = this.contactType;
-
         this.socialContact.contacts = this.zContacts;
-
         if ( this.model.contactListName != '' ) {
             if ( this.zContacts.length > 0 ) {
                 this.logger.info( isValid );
@@ -876,6 +834,7 @@ export class AddContactsComponent implements OnInit {
             this.logger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
         }
     }
+
     onChange( item: any ) {
         this.logger.log( item );
         this.salesforceListViewId = item;
@@ -887,6 +846,7 @@ export class AddContactsComponent implements OnInit {
             this.logger.log( "listviewNameDROPDOWN" + this.salesforceListViewName );
         }
     }
+
     onChangeSalesforceDropdown( event: Event ) {
         this.contactType = event.target["value"];
         this.socialNetwork = "salesforce";
@@ -900,10 +860,8 @@ export class AddContactsComponent implements OnInit {
                         for ( var i = 0; i < data.listViews.length; i++ ) {
                             this.salesforceListViewsData.push( data.listViews[i] );
                             this.logger.log( data.listViews[i] );
-
                         }
                     }
-
                 },
                 error => this.logger.error( error ),
                 () => this.logger.log( "onChangeSalesforceDropdown" )
@@ -913,7 +871,6 @@ export class AddContactsComponent implements OnInit {
 
     salesforceContacts() {
         this.socialContact.socialNetwork = "salesforce";
-
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.salesforceLogin()
             .subscribe(
@@ -927,7 +884,6 @@ export class AddContactsComponent implements OnInit {
                     } else {
                         this.getSalesforceContacts( this.contactType );
                     }
-
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
                     console.log( data.redirectUrl );
@@ -956,7 +912,6 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.statusCode = 0;
         this.socialContact.contactType = '';
         this.socialContact.alias = '';
-
         this.socialNetwork = "salesforce";
         var self = this;
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
@@ -967,12 +922,10 @@ export class AddContactsComponent implements OnInit {
             this.contactType = selectedDropDown;
             this.logger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
         }
-
         this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
             .subscribe(
             data => {
                 this.getSalesforceConatactList = data;
-                //this.salesforceContactUsers = new SocialContact();
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -992,18 +945,15 @@ export class AddContactsComponent implements OnInit {
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
-
                     $( "#myModal1 .close" ).click()
                 }
             },
             error => this.logger.error( error ),
             () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
-
     }
 
     getSalesforceListViewContacts( contactType: any ) {
-
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
@@ -1019,7 +969,6 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.statusCode = 0;
         this.socialContact.contactType = '';
         this.socialContact.alias = '';
-
         this.socialNetwork = "salesforce";
         var self = this;
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
@@ -1034,7 +983,6 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getSalesforceConatactList = data;
-                // this.salesforceContactUsers = new Set<SocialContact>();
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1054,14 +1002,12 @@ export class AddContactsComponent implements OnInit {
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
-
                     $( "#myModal1 .close" ).click()
                 }
             },
             error => this.logger.error( error ),
             () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
-
     }
 
     saveSalesforceContactSelectedUsers( isValid: boolean ) {
@@ -1088,7 +1034,6 @@ export class AddContactsComponent implements OnInit {
                     this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.contactService.successMessage = true;
                 },
-
                 error => this.logger.info( error ),
                 () => this.logger.info( "addcontactComponent saveZohoContactUsers() finished" )
                 )
@@ -1100,14 +1045,11 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveSalesforceContacts( isValid: boolean ) {
-
         this.socialContact.socialNetwork = "salesforce";
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.contactType = this.contactType;
         this.socialContact.alias = this.salesforceListViewId;
-
         this.socialContact.contacts = this.salesforceContactUsers;
-
         if ( this.model.contactListName != '' ) {
             if ( this.salesforceContactUsers.length > 0 ) {
                 this.logger.info( isValid );
@@ -1119,7 +1061,6 @@ export class AddContactsComponent implements OnInit {
                         $( "#uploadContactsMessage" ).show();
                         this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     },
-
                     error => this.logger.error( error ),
                     () => this.logger.info( "addcontactComponent saveSalesforceContacts() finished" )
                     )
@@ -1134,7 +1075,6 @@ export class AddContactsComponent implements OnInit {
 
     googleContactImage() {
         this.socialContact.socialNetwork = "GOOGLE";
-
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.googleLogin()
             .subscribe(
@@ -1188,12 +1128,12 @@ export class AddContactsComponent implements OnInit {
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
     }
+
     ngOnInit() {
         this.googleContactImage();
         this.salesforceContactImage();
         this.gContactsValue = true;
         this.loadContactLists( this.pagination );
-
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
@@ -1228,11 +1168,10 @@ export class AddContactsComponent implements OnInit {
         catch ( err ) {
             this.logger.error( "addContacts.component error " + err );
         }
-
     }
+
     ngDestroy() {
         this.contactService.googleCallBack = false;
         this.contactService.salesforceContactCallBack = false;
-
     }
 }

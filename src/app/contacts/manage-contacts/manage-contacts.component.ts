@@ -805,17 +805,13 @@ export class ManageContactsComponent implements OnInit {
         var doc = new jsPDF();
         var col = ["Email", "FirstName", "LastName"];
         var rows = [];
-
         for ( var key in item ) {
             var temp = [key, item[key]];
             rows.push( temp );
         }
-
         doc.autoTable( col, rows );
-
         doc.save( 'Contacts.pdf' );
     }
-
 
     ngOnInit() {
         this.loadContactLists( this.pagination );
