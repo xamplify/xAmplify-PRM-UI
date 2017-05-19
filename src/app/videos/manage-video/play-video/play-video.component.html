@@ -2,17 +2,19 @@
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
 	.isPlaySubmit{ padding:15px 58px !important;}
+	 #play_video_player {width:auto;}
+     #overlay-modal{width:auto;}
 </style>
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
-			<video id="example_video_11" class="video-js vjs-default-skin"
+			<video id="play_video_player" class="video-js vjs-default-skin"
 				controls preload="auto" height="318" poster="{{posterImg}}"
 			    data-setup='{"example_option":true}'>
-				<!--<source [src] = videoUrl type="video/mp4" />-->
-                <source [src] = videoUrl  type="application/x-mpegURL" />
-                 <source [src] = videoUrl  type="application/vnd.apple.mpegurl" />
+				<!--<source [src] = videoUrl type="video/mp4" /> -->
+              <!--  <source [src] = videoUrl  type="application/x-mpegURL" />
+               <!--  <source [src] = videoUrl  type="application/vnd.apple.mpegurl" /> -->
 				<p class="vjs-no-js">
 					To view this video please enable JavaScript, and consider upgrading
 					to a web browser that <a
@@ -20,7 +22,7 @@
 						HTML5 video</a>
 				</p>
 			</video>	
-	 
+	      <!-- call to action modal popup-->
 			  <div id="overlay-modal" class="video-js" style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
@@ -53,15 +55,15 @@
                  <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
                 </div> 
                    <div>
-                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (change)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
-                      <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
+                      <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px" (click)="skipOverlay()"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
                  </div>  
                 </form>     
           </div>
-			
+			<!-- modal popup end-->
+
 			<div>
 				<span align="left">0 Views</span>
-				
 				<div *ngIf="likes==true">
 					<span style="float: right">
 						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
@@ -80,7 +82,7 @@
 					</a>
 				</div>
 
-				<!-- Modal Start-->
+				<!-- emebd src Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -118,12 +120,8 @@
 			<div>
 				<h3>{{selectedVideo.title}}</h3>
 				<h4>Description:</h4>
-				<p align="justify">
-					{{selectedVideo.description}}
-				</p>
+				<p align="justify"> {{selectedVideo.description}}</p>
 			</div>
-			
-			
 			<div>
 				<div class="slimScrollDiv"
 					style="position: relative; overflow: hidden; width: auto;">
@@ -132,7 +130,6 @@
 						data-always-visible="0" data-rail-visible="0"
 						data-handle-color="#dae3e7" data-initialized="1">
 						<form action="#" class="form-horizontal">
-
 							<div class="tabbable-line">
 								<ul class="nav nav-tabs ">
 									<li class="active"><a href="#tab_1" data-toggle="tab"

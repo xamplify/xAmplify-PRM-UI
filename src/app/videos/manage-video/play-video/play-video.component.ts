@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import {UserService} from '../../../core/services/user.service';
 import {User} from '../../../core/models/user';
 import {VideoFileService} from '../../services/video-file.service';
+import {UtilService} from '../../services/util.service';
 declare var Metronic, Layout, Demo, $, videojs: any;
 
 @Component({
@@ -11,34 +12,33 @@ declare var Metronic, Layout, Demo, $, videojs: any;
     templateUrl: './play-video.component.html',
     styleUrls: ['./play-video.component.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
-        '../../../../assets/css/todo.css','../edit-video/edit-video.component.css']
+        '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css']
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit {
 
     @Input() videos: Array<SaveVideoFile>;
     @Input() selectedVideo: SaveVideoFile;
+    private _elementRef: ElementRef;
+    public user: User = new User();
+    model: any = {};
     selectedPosition: number;
     public images = 'http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
-    
     embedWidth = '640';
     embedHeight = '360';
-    videoSizes: string[] = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
+    videoSizes: string[];
     videosize = '640 × 360';
     public embedFullScreen = 'allowfullscreen';
     isFullscreen: boolean;
     public videoUrl: string;
-    private _elementRef: ElementRef;
     private videoJSplayer: any;
     public setValueForSrc: boolean;
     public posterImg: string;
     public likes: boolean;
     public comments: boolean;
     public shareVideo: boolean;
-    public embedVideo :boolean;
+    public embedVideo: boolean;
     public isPlayButton: boolean;
     public isSkipChecked: boolean;
-    public user: User = new User();
-    model: any = {};
     public upperTextValue: string;
     public lowerTextValue: string;
     public isOverlay: boolean;
@@ -47,32 +47,49 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public email_id: string;
     public firstName: string;
     public lastName: string;
-    public overLayValue: boolean;
+    public overLayValue: string;
     public isFistNameChecked: boolean;
     public videoStartTime: number;
     public durationTime: number;
-    public startOfthevideo: boolean;  // need to remove and replace with this.saveVideoFile.startOfthevideo
+    public startOfthevideo: boolean;
     public endOfthevideo: boolean;
-    public checkCalltoAction = false; // need to get the value from server and set the call to action value
-
+    public checkCalltoAction = false;
     public videoId = false;
-    public likesValues:number;
-    public disLikesValues :number;
-    public title :string;
-    public shareValues :boolean;
-    public alias :string;
-    
+    public likesValues: number;
+    public disLikesValues: number;
+    public title: string;
+    public shareValues: boolean;
+    public alias: string;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
-    private videoFileService: VideoFileService,private userService: UserService) {
+    private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
         this._elementRef = elementRef;
+        this.videoSizes = this.utilService.videoSizes;
         this.disLikesValues = 0;
         this.likesValues = 2;
+        this.isFullscreen = true;
     }
-
     videoPlayListSource(videoUrl: string){
         this.videoUrl = videoUrl;
         const self = this;
         this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+    }
+    checkCallToActionAvailable() {
+        if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
+            this.overLayValue = 'StartOftheVideo';
+            this.videoOverlaySubmit = 'PLAY';
+            this.isPlay = true;
+            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
+        }
+        else if(this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
+            this.overLayValue = 'EndOftheVideo';
+            this.isPlay = false;
+            this.videoOverlaySubmit = 'SUBMIT';
+            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
+        }
+        else {
+            this.overLayValue = 'removeCallAction';
+            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
+        }
     }
 
     playVideoInfo(selectedVideo: SaveVideoFile) {
@@ -81,8 +98,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
        // call to action values
-        this.lowerTextValue = this.selectedVideo.lowerText;   // need  the value from server
-        this.upperTextValue = this.selectedVideo.upperText;   // need  the value from server 
+        this.lowerTextValue = this.selectedVideo.lowerText;
+        this.upperTextValue = this.selectedVideo.upperText;
         this.isFistNameChecked = this.selectedVideo.name; // need  the value from server 
         this.isPlayButton = this.selectedVideo.name;  // need to get the value from server
         this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
@@ -97,9 +114,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         console.log(this.selectedVideo);
         this.title = this.selectedVideo.title;
         this.alias = this.selectedVideo.alias;
-
     }
-
     showVideo(videoFile: SaveVideoFile, position: number) {
        console.log('videoComponent showVideo() ' + position);
        this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
@@ -115,25 +130,22 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.playVideoInfo(this.selectedVideo);
         this.posterImg =  this.selectedVideo.imagePath;
       // change the video src dynamically
-       if (this.setValueForSrc === true) {
-              this.videoPlayListSource(this.videoUrl);
-              this.setValueForSrc = false;
-       }
-        else {
-             this.videoPlayListSource(this.videoUrl);
-             this.videoPlayListSource(this.videoUrl);
-          }
-    // to check the call to action overlay is there or not
-       if (this.checkCalltoAction === true) {   // need to get the value from server
-            $('#overlay-modal').show();
-            $('.vjs-big-play-button').css('display', 'none');
-             this.videoJSplayer.pause();
+        this.videoPlayListSource(this.videoUrl);
+        this.videoPlayListSource(this.videoUrl);
+      if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
+            this.overLayValue = 'StartOftheVideo';
+            $('#play_video_player').append( $('#overlay-modal').show());
+            this.videoJSplayer.pause();
         }
-        else {
+       else if(this.selectedVideo.startOfVideo === false && this.selectedVideo.callACtion === true ) {
             $('#overlay-modal').hide();
-            $('.vjs-big-play-button').css('display', 'block');
-             this.videoJSplayer.pause();
-        }
+            this.videoJSplayer.play();
+       }
+       else {
+            $('#overlay-modal').hide();
+            this.videoJSplayer.play();
+       }
+       this.checkCallToActionAvailable();
       });
     }
     likesValuesDemo() {
@@ -152,18 +164,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480'; }
         else { this.embedWidth = '640'; this.embedHeight = '360'; }
     }
-    
-   validateEmail(email: string) {
-        var validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return validation.test(email);
-    }
-
     checkingCallToActionValues() {
-        if (this.isFistNameChecked == true && this.validateEmail(this.model.email_id) && this.firstName.length != 0 && this.lastName.length != 0) {
+        if (this.isFistNameChecked === true && this.utilService.validateEmail(this.model.email_id)
+        && this.firstName.length !== 0 && this.lastName.length !== 0) {
         this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
         }
-        else if (this.isFistNameChecked === false && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
+        else if (this.isFistNameChecked === false && this.utilService.validateEmail(this.model.email_id)) { this.isOverlay = false; }
         else { this.isOverlay = true; }
     }
 
@@ -175,6 +182,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         return Math.round(currentTime * 100) / 100;
     }
     saveCallToActionUserForm() {
+        $('#overlay-modal').hide();
+        if(this.videoOverlaySubmit === 'PLAY'){ this.videoJSplayer.play();}
+        else { this.videoJSplayer.pause(); }
         console.log(this.model.email_id);
         if (this.userService.loggedInUserData.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
@@ -188,39 +198,29 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         }
         console.log(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
-            .subscribe(
-            (result: any) => {
-                console.log('Save user Form call to acton is successfull');
-                console.log(result);
-            });
+            .subscribe( (result: any) => {
+                console.log('Save user Form call to acton is successfull' + result); });
+       }
+     repeatPlayVideo() {
+        $('#overlay-modal').hide();
+        this.videoJSplayer.play();
+     }
+     skipOverlay(){
+        $('#overlay-modal').hide();
+        this.videoJSplayer.play();
     }
-
     ngOnInit() {
         this.setValueForSrc = true;
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
         this.lastName = this.userService.loggedInUserData.lastName;
 
-        if (this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
+        if (this.utilService.validateEmail(this.model.email_id)) { this.isOverlay = false; }
         else {this.isOverlay = true; }
 
         this.playVideoInfo(this.selectedVideo);
-
-       if (this.startOfthevideo === true) {    // need the value from server and add the checkCalltoAction to the condition 
-            this.videoOverlaySubmit = 'PLAY';
-            this.isPlay = true;
-            this.overLayValue = true;
-            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
-        }
-        else {
-            this.isPlay = false;
-            this.overLayValue = false;
-            this.videoOverlaySubmit = 'SUBMIT';
-            localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
-        }
-
+        this.checkCallToActionAvailable();
     }
-
     play360Video(){
         $('.h-video').remove();
         $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
@@ -239,7 +239,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         $('.p-video').remove();
         $('head').append('<script src="assets/js/indexjscss/video.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
-        $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
+        $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js" class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />'); 
@@ -247,7 +247,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
       //  player.ready();
     }
     ngAfterViewInit() {
-   let colors = this;
+   const colors = this;
        $(document).ready(function(){
         $('.video-js').css('color', colors.selectedVideo.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', colors.selectedVideo.playerColor);
@@ -256,33 +256,25 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         $('.vjs-control-bar').css('background-color', colors.selectedVideo.controllerColor + '! important');
       });
 
-      this.videoJSplayer = videojs('example_video_11', {}, function() {
-            let player = this;
+      this.videoJSplayer = videojs('play_video_player', {}, function() {
+            const player = this;
            // var id = player.id();
            // this.play();
             const aspectRatio = 320/640;
-            const isValid = JSON.parse(localStorage.getItem("isOverlayValue")); // gettting local storage value here isValid value is true
-           // console.log(player.isValidated); // isValidated is undefined ..value setted in constructor
+            let isValid = JSON.parse(localStorage.getItem('isOverlayValue')); // gettting local storage value here isValid value is true
            this.ready(function() {
-                if (isValid === true) {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    $('#example_video_11').append(
-                        $('#overlay-modal').show()
-                    );
-                    $('#replay-video').click(function() {
-                        $('#overlay-modal').hide();
-                        player.play();
-                    });
-                    $('#skipOverlay').click(function() {
-                        $('#overlay-modal').hide();
-                        player.play();
-                    });
-                }
-                else {
-                    $('#overlay-modal').hide();
-                    player.play();
-                }
-            }); 
+                 if (isValid === 'StartOftheVideo' ) {
+                      $('.vjs-big-play-button').css('display', 'none');
+                      $('#play_video_player').append( $('#overlay-modal').show());
+                    }
+                 else if(isValid !== 'StartOftheVideo' ) { 
+                     $('#overlay-modal').hide(); player.play(); 
+                    }
+                 else if (isValid === 'removeCallAction'){ 
+                     $('#overlay-modal').hide(); }
+                 else { 
+                     $('#overlay-modal').hide(); }
+            });
 
             this.on('seeking', function() {
                 // Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
@@ -302,120 +294,71 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             this.on('play', function() {
                 $('.vjs-big-play-button').css('display', 'none');
                 //   console.log('play:'+player.duration());
-                // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
+                // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),
+                // trimCurrentTime(player.currentTime()));
 
             });
             this.on('pause', function() {
                 //      $('.vjs-big-play-button').css('display', 'block');
                 //  console.log("video paused at "+player.currentTime());
-                //  Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),trimCurrentTime(player.currentTime()));
+                //  Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),
+                // trimCurrentTime(player.currentTime()));
             });
-
             this.on('ended', function() {
+              isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                 var whereYouAt = player.currentTime();
                 console.log(whereYouAt);
-                if (isValid == false) {
-                    $('#example_video_11').append(
-                        $('#overlay-modal').show()
-                    );
-
-                    $('#replay-video').click(function() {
-                        $('#overlay-modal').hide();
-                        player.play();
-                    });
-                    $('#replay-video1').click(function() {
-                        $('#overlay-modal').hide();
-                        player.play();
-                        $('.vjs-big-play-button').css('display', 'none');
-                    });
-                    $('#skipOverlay').click(function() {
-                        $('#overlay-modal').hide();
-                        // player.play();
-                    });
-                }  // ended if condition
-                else {
-                    $('#overlay-modal').hide();
-                    // player.play();
-                    $('.vjs-big-play-button').css('display', 'none');
-                }
+                 if (isValid === 'EndOftheVideo') {
+                     $('#play_video_player').append( $('#overlay-modal').show());}
+                 else if(isValid !== 'EndOftheVideo') {
+                     $('#overlay-modal').hide(); player.pause();}
+                 else if (isValid === 'removeCallAction'){
+                     $('#overlay-modal').hide(); player.pause();}
+                 else {
+                     $('#overlay-modal').hide();
+                     player.pause();
+                     $('.vjs-big-play-button').css('display', 'none'); }
             });
             this.on('contextmenu', function(e) {
                 e.preventDefault();
             });
             this.hotkeys({
-                volumeStep: 0.1,
-                seekStep: 5,
-                enableMute: true,
-                enableFullscreen: true,
-                enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function(event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function(e: any) {
-                            return (e.which === 83);
-                        },
-                        handler: function(player: any, options: any, e: any) {
-                            if (player.paused()) {
-                                player.play();
-                            } else {
-                                player.pause();
-                            }
-                        }
-                    },
-                    complexKey: {
-                        key: function(e: any) {
-                            return (e.ctrlKey && e.which === 68);
-                        },
-                        handler: function(player: any, options: any, event: any) {
-                            if (options.enableMute) {
-                                player.muted(!player.muted());
-                            }
-                        }
-                    },
-                    numbersKey: {
-                        key: function(event: any) {
-                            return ((event.which > 47 && event.which < 59) || (event.which > 95 && event.which < 106));
-                        },
-                        handler: function(player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                var sub = 48;
-                                if (event.which > 95) {
-                                    sub = 96;
-                                }
-                                var number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {
-                    },
-                    withoutKey: {
-                        handler: function(player: any, options: any, event: any) {
-                            console.log('withoutKey handler');
-                        }
-                    },
-                    withoutHandler: {
-                        key: function(e: any) {
-                            return true;
-                        }
-                    },
-                    malformedKey: {
-                        key: function() {
-                            console.log('I have a malformed customKey. The Key function must return a boolean.');
-                        },
-                        handler: function(player: any, options: any, event: any) {
-                        },
-                    }
-                }
-            });
-        });
-    } 
+                 volumeStep: 0.1, seekStep: 5, enableMute: true,
+                 enableFullscreen: true, enableNumbers: false,
+                 enableVolumeScroll: true,
+                 fullscreenKey: function(event: any, player: any) {
+                      return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                 },
+                 customKeys: {
+                     simpleKey: {
+                         key: function(e: any) {  return (e.which === 83);},
+                         handler: function(player: any, options: any, e: any) {
+                             if (player.paused()) {  player.play();} else { player.pause(); }  } },
+                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68);},
+                         handler: function(player: any, options: any, event: any) {
+                             if (options.enableMute) { player.muted(!player.muted()); }}
+                     },
+                     numbersKey: {
+                         key: function(event: any) { return ((event.which > 47 && event.which < 59) ||
+                              (event.which > 95 && event.which < 106)); },
+                         handler: function(player: any, options: any, event: any) {
+                             if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                                 var sub = 48;
+                                 if (event.which > 95) { sub = 96; }
+                                 var number = event.which - sub;
+                                 player.currentTime(player.duration() * number * 0.1); }  } },
+                     emptyHotkey: { },
+                     withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler');}},
+                     withoutHandler: { key: function(e: any) { return true;}},
+                     malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
+                         handler: function(player: any, options: any, event: any) { }
+                     } }  }); });
+        this.videoPlayListSource(this.videoUrl);
+        this.videoPlayListSource(this.videoUrl);
+      }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
         this.videoJSplayer.dispose();
         localStorage.removeItem('isOverlayValue');
     }
-} 
+}

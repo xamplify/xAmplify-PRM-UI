@@ -11,6 +11,9 @@
      img:hover {  opacity: 1.0;  filter: alpha(opacity=100); /* For IE8 and earlier */  } 
      #edit_video_player {width:auto;}
      #overlay-modal{width:auto;}
+	/deep/ .vjs-fullscreen-control {
+    display:none;
+}
 </style>
 
 <div class="portlet light">
@@ -18,10 +21,10 @@
 		<div class="row margin-bottom-30">
 			<!-- video started -->
 			<div class="col-md-6" style="padding-top: 38px">
-				<video id="edit_video_player" class="video-js vjs-default-skin" controls  height="299" poster="{{defaultImagePath}}"
+				<video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
 					data-setup='{"example_option":true }'>
-			       <source [src] = videoUrlMp4  type="video/mp4" /> 
-			       <source [src] = videoUrlM3U8  type="application/x-mpegURL"> 
+			      <!-- <source [src] = videoUrlMp4  type="video/mp4" /> 
+			       <source [src] = videoUrlM3U8  type="application/x-mpegURL"> -->
 				</video>
             	<!-- video overlay modal popup -->
 			 <div id="overlay-modal" class="video-js" 
