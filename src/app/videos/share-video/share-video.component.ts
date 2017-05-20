@@ -32,7 +32,7 @@ public images = "http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1
 public linkurl = 'https://github.com/valor-software/ng2-file-upload/issues/238';
 public linkurl2 = 'http://139.59.1.205:9090/vod/videos/125/03022017/flight1486153663429.mp4';
 //  public images = "http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874";
-public checkUrl = 'https://www.youtube.com/watch?v=eLZH1GEeBU4';
+public checkUrl = 'http://localhost:4200/embed-video/336a00b6-b75e-4929-9576-9e27eb957449';
 public videoUrl: string;
 
 twitterButtons:any;
@@ -76,6 +76,7 @@ description = 'hi this is sathish'
   } */
 
   ngOnInit() {
+      
       var alias = this.route.snapshot.params['id'];
       console.log(alias);
     //  this.getVideo(alias);

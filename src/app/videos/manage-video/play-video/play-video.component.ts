@@ -60,6 +60,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public title: string;
     public shareValues: boolean;
     public alias: string;
+    public valueRange: number;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
     private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
         this._elementRef = elementRef;
@@ -98,6 +99,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
        // call to action values
+        this.valueRange = this.selectedVideo.transparency;
         this.lowerTextValue = this.selectedVideo.lowerText;
         this.upperTextValue = this.selectedVideo.upperText;
         this.isFistNameChecked = this.selectedVideo.name; // need  the value from server 
@@ -132,6 +134,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
       // change the video src dynamically
         this.videoPlayListSource(this.videoUrl);
         this.videoPlayListSource(this.videoUrl);
+
       if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
             $('#play_video_player').append( $('#overlay-modal').show());
@@ -146,6 +149,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             this.videoJSplayer.play();
        }
        this.checkCallToActionAvailable();
+       this.defaultVideoOptions();
+       this.transperancyControllBar(this.valueRange);
+       if (this.selectedVideo.enableVideoController === false)
+          { this.defaultVideoControllers(); }
       });
     }
     likesValuesDemo() {
@@ -221,6 +228,28 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.playVideoInfo(this.selectedVideo);
         this.checkCallToActionAvailable();
     }
+    defaultVideoOptions(){
+        $('.video-js').css('color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
+        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
+        $('.vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
+        if (this.selectedVideo.allowFullscreen === false) {
+           $('.video-js .vjs-fullscreen-control').hide();
+        }
+        else { 	$('.video-js .vjs-fullscreen-control').show();
+        }
+    }
+    defaultVideoControllers() {
+        if (this.selectedVideo.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();}
+        else { $('.video-js .vjs-control-bar').show();}
+    }
+      transperancyControllBar(value: any) {
+        const rgba = this.utilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
+        $('.video-js .vjs-control-bar').css('background-color', rgba);
+        this.valueRange = value;
+        console.log(this.valueRange);
+    }
     play360Video(){
         $('.h-video').remove();
         $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
@@ -247,15 +276,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
       //  player.ready();
     }
     ngAfterViewInit() {
-   const colors = this;
-       $(document).ready(function(){
-        $('.video-js').css('color', colors.selectedVideo.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', colors.selectedVideo.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', colors.selectedVideo.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', colors.selectedVideo.controllerColor);
-        $('.vjs-control-bar').css('background-color', colors.selectedVideo.controllerColor + '! important');
-      });
-
       this.videoJSplayer = videojs('play_video_player', {}, function() {
             const player = this;
            // var id = player.id();
@@ -324,7 +344,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             });
             this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
-                 enableFullscreen: true, enableNumbers: false,
+                 enableFullscreen: false, enableNumbers: false,
                  enableVolumeScroll: true,
                  fullscreenKey: function(event: any, player: any) {
                       return ((event.which === 70) || (event.ctrlKey && event.which === 13));
@@ -355,7 +375,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                      } }  }); });
         this.videoPlayListSource(this.videoUrl);
         this.videoPlayListSource(this.videoUrl);
-      }
+        this.defaultVideoOptions();
+        this.transperancyControllBar(this.valueRange);
+        if (this.selectedVideo.enableVideoController === false)
+         { this.defaultVideoControllers(); }
+     }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
         this.videoJSplayer.dispose();

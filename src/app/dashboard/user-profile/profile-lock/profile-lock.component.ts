@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-declare var Metronic : any;
-declare var Layout : any;
-declare var Demo : any;
-declare var Profile : any;
+import { Router } from '@angular/router';
+import { UserService } from '../../../core/services/user.service';
+import { User } from '../../../core/models/user';
+import {AuthenticationService} from '../../../core/services/authentication.service';
+declare var Metronic , Layout, Demo: any;
 
 @Component({
   selector: 'app-profile-lock',
@@ -11,17 +12,56 @@ declare var Profile : any;
 })
 export class ProfileLockComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+ userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
+ userData: User;
+ displayName: string;
+ password: string;
+ error: string;
+ constructor(private userService:UserService, private authenticationService:AuthenticationService, private router: Router,)
+ { }
+ 
+ngOnInit() {
       try {
-          Metronic.init();
-          Layout.init(); 
-          Demo.init();
+            this.userData = this.userService.loggedInUserData;
+            if (!(this.userData.profileImagePath.indexOf(null)>-1)) {
+                this.userProfileImage = this.userData.profileImagePath;
+            }
+            if (this.userData.firstName !== null) {
+            this.userData.displayName = this.userData.firstName;
+            this.displayName = this.userData.displayName;
+            }else {
+            this.userData.displayName = this.userData.emailId;
+            this.displayName = this.userData.displayName;
+            }
+           Metronic.init();
+           Layout.init();
+           Demo.init();
+           console.log(this.displayName);
       }
       catch (err) {
-          console.log("error");
+          console.log('error' + err);
       }
   }
+
+  lockScreenLogin() {
+       console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
+        this.authenticationService.login( this.userData.emailId, this.password ).subscribe( result => {
+            console.log( 'result: ' + result );
+            if ( result === true ) {
+                this.router.navigate( [''] );
+            } else {
+                this.logError();
+            }
+          },
+            err => this.logError(),
+            () => console.log( 'login() Complete' ) );
+        return false;
+ }
+
+logError() {
+        this.error = 'Password is incorrect';
+        console.log( 'error : ' + this.error );
+       // this.router.navigate( ['/login'] );
+    }
 
 }

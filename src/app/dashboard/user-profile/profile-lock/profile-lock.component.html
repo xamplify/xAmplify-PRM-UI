@@ -1,7 +1,15 @@
+<style  type="text/css">
+.avatarImg {
+	 margin-top: 25px;
+    height: 114px;
+    width: 111px;
+    border-radius: 50% !important;
+}
 
+</style>
 <div class="page-lock">
 	<div class="page-logo">
-		<a class="brand" href="index.html">
+		<a class="brand">
 		<img src="assets/admin/layout2/img/logo-default.png" alt="logo"/>
 		</a>
 	</div>
@@ -11,20 +19,25 @@
 		</div>
 		<div class="lock-body">
 			<div class="pull-left lock-avatar-block">
-				<img src="assets/admin/pages/media/profile/photo3.jpg" class="lock-avatar">
+				<img [src] = userProfileImage class="avatarImg">
 			</div>
 			<form class="lock-form pull-left" action="index.html" method="post">
-				<h4>Amanda Smith</h4>
+				<h4>{{displayName}}</h4>
 				<div class="form-group">
-					<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
+				 <div *ngIf="error" class="alert alert-danger">
+			    	<span>{{error}}</span>
+		    	</div>
+					<input class="form-control placeholder-no-fix" type="password" [(ngModel)]="password" autocomplete="off" 
+					placeholder="Password" name="password"/>
 				</div>
 				<div class="form-actions">
-					<button type="submit" class="btn btn-success uppercase" [routerLink]="['../home/dashboard']">Login</button>
+				  <!--<button type="submit" class="btn btn-success uppercase" [routerLink]="['../home/dashboard']">Login</button>-->
+				 <button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()">Login</button>
 				</div>
 			</form>
 		</div>
 		<div class="lock-bottom">
-			<a href="">Not Amanda Smith?</a>
+			<a  [routerLink]="['../login']" >Not {{displayName}}?</a>
 		</div>
 	</div>
 	<div class="page-footer-custom">

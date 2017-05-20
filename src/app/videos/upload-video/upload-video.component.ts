@@ -584,6 +584,7 @@ export class UploadVideoComponent implements OnInit {
                     this.handleAuthResult.bind(this));
         }
         handleAuthResult(authResult:any) {
+          console.log("close window google drive");
            let self = this;
             if (authResult && !authResult.error) {
                 this.tempr = authResult.access_token;

@@ -29,7 +29,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     public imgURL = '';
     // public imgURL = 'http://139.59.1.205:9090/vod/images/125/03022017/flight1486153663429_play1.gif';
     public images = 'http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
-    public linkurl = 'https://www.youtube.com/watch?v=IPf4rGw3XHw';
+    public linkurl = 'http://aravindu.com/embed-video/e47c4a80-1be0-4b32-8098-a327baac05f2';
     public encodeImage = encodeURIComponent(this.imgURL);
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
     public saveVideoFile: SaveVideoFile;
@@ -50,7 +50,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     sharevideo: any;
     googleButton: any;
     facebookButton: any;
-    targetItem:any
     private videoJSplayer: any;
     public playlist: any;
     public videoUrl: string;
@@ -120,7 +119,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     public upperTextValue: string;
     public lastNameValid = false;
     public videoOverlaySubmit: string;
-    public isValidated: boolean;
     public overLayValue: string; // videojs value overlay
     public startCalltoAction: boolean;   // not required for start of the video
     public endCalltoAction: boolean;   // not required for end of the video
@@ -169,7 +167,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
             this.isPlay = true;
             localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
         }
-        else if(this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
+        else if( this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
             this.endCalltoAction = true;
             this.startCalltoAction = false;
             this.overLayValue = 'EndOftheVideo';
@@ -193,7 +191,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         this.isPlayButton = this.saveVideoFile.name;
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
-        this.isValidated = true;
         this.metatags = {
             'title': 'Meta Tags NEw',
             'description': 'sdsdgsddssdkghsdkjglkdjsg',
@@ -296,6 +293,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     colorControlChange(event: boolean) {
         this.colorControl = event;
         this.titleDiv  = this.controlPlayers = this.callaction = false;
+       // this.transperancyControllBar(this.valueRange);
     }
     controlPlayerChange(event: any) {
         this.controlPlayers = event;
@@ -380,11 +378,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         $('.video-js').css('color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
+        this.transperancyControllBar(this.valueRange);
     }
     changeControllerColor(event: any) {
         console.log('controller color value changed' + event);
         this.saveVideoFile.controllerColor = event;
         $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
+        this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {
         this.saveVideoFile.allowFullscreen = event;
@@ -512,8 +512,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
              this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false; }
         else { this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false; }
     }
-    defaultSettings() {
-        console.log('default settings called');
+    defaultValues(){
         this.likes = this.saveVideoFile.allowLikes;
         this.comments = this.saveVideoFile.allowComments;
         this.shareValues = this.saveVideoFile.allowSharing;
@@ -521,20 +520,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         this.valueRange = this.saveVideoFile.transparency;
         this.isFistNameChecked = this.saveVideoFile.name;
         this.isSkipChecked = this.saveVideoFile.skip;
+    }
+    defaultVideoSettings() {
+        console.log('default settings called');
         $('.video-js').css('color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
         if (this.saveVideoFile.allowFullscreen === false) {
-        	// $('.vjs-fullscreen.vjs-user-inactive').css('cursor', 'none');
-        //	$('.video-js .vjs-fullscreen-control').hide();	
-       //  this.fullScreen = false;
-        $('.vjs-nofull .video-js .vjs-fullscreen-control').css('pointer-events', 'none');
-
+           $('.video-js .vjs-fullscreen-control').hide();
         }
-        else { //	$('.video-js .vjs-fullscreen-control').show();
-        //	 $('.vjs-hidden').css('display','block');
-         $('.vjs-nofull .vjs-fullscreen-control').css('display', 'none');
+        else { 	$('.video-js .vjs-fullscreen-control').show();
         }
     }
     ngOnInit() {
@@ -612,9 +608,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         };
         try {
         this.buildForm();
-        this.defaultSettings();
-        if (this.saveVideoFile.enableVideoController === false)
-           { this.defaultVideoControllers();}
+        this.defaultValues();
         this.defaultImagePaths();
         this.defaultGifPaths();
         }
@@ -669,7 +663,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
              });
              this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
-                 enableFullscreen: true, enableNumbers: false,
+                 enableFullscreen: false, enableNumbers: false,
                  enableVolumeScroll: true,
                  fullscreenKey: function(event: any, player: any) {
                       return ((event.which === 70) || (event.ctrlKey && event.which === 13));
@@ -700,6 +694,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
                      } }  }); });
      if (this.videoFileService.actionValue === 'Save') { this.videoPlayListSourceMP4();}
      else { this.videoPlayListSourceM3U8(); }
+     this.defaultVideoSettings();
+     this.transperancyControllBar(this.valueRange);
+     if (this.saveVideoFile.enableVideoController === false)
+      { this.defaultVideoControllers();}
     }
     /*********************************Save Video*******************************/
     buildForm(): void {
