@@ -61,6 +61,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public shareValues: boolean;
     public alias: string;
     public valueRange: number;
+    public selectedVideoAlias:string;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
     private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
         this._elementRef = elementRef;
@@ -94,6 +95,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     }
 
     playVideoInfo(selectedVideo: SaveVideoFile) {
+        this.selectedVideoAlias = this.selectedVideo.alias;
         this.posterImg = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -119,15 +121,21 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     }
     showVideo(videoFile: SaveVideoFile, position: number) {
        console.log('videoComponent showVideo() ' + position);
+        if (this.selectedVideo) {
+             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
+             this.videos.push(this.selectedVideo);
+          }
        this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
          .subscribe((saveVideoFile: SaveVideoFile) => {
            this.selectedVideo = saveVideoFile;
            console.log(this.selectedVideo);
-           if (this.selectedVideo) {
-             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
-             this.videos.splice(this.selectedPosition, 0, this.selectedVideo);
+      //   this.videos.add(position, 1);
+        for (let i = 0; i < this.videos.length; i ++) {
+          if (this.selectedVideo.id === this.videos[i].id) {
+              this.videos.splice(i, 1);
+              break;
           }
-        this.videos.splice(position, 1);
+        }
         this.selectedPosition = position;
         this.playVideoInfo(this.selectedVideo);
         this.posterImg =  this.selectedVideo.imagePath;
@@ -217,6 +225,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videoJSplayer.play();
     }
     ngOnInit() {
+        for (let i = 0; i < this.videos.length; i ++) {
+          if (this.selectedVideo.id === this.videos[i].id) {
+              this.videos.splice(i, 1);
+              break;
+          }
+        }
         this.setValueForSrc = true;
         this.model.email_id = this.userService.loggedInUserData.emailId;
         this.firstName = this.userService.loggedInUserData.firstName;
