@@ -32,6 +32,28 @@
 <!-- END PAGE CONTENT-->
 
 <div class="page-content">
+			<div class="page-bar">
+					<ul class="page-breadcrumb">
+						<li>
+							<i class="fa fa-home"></i> 
+							<a	[routerLink]="['../../dashboard']">Home</a> 
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a [routerLink]="['../../campaigns/select-campaign']">Select Campaign</a>
+							 <i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							<a style="color: blue;">Manage Campaings</a>
+						</li>
+					</ul>
+				</div><!-- End of Line 2 -->
+				 <div *ngIf="isCampaignCreated" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
+				 	<strong>Campaign Created Successfully</strong>
+				 </div>
+				  <div *ngIf="isCampaignUpdated" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
+				 	<strong>Campaign Updated Successfully</strong>
+				 </div>
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">
@@ -49,7 +71,7 @@
 											</div>
 										</div>
 										
-										<div class="inputs" align="right"  style="display:inline; margin-left: 965px;">
+										<div class="inputs" align="right"  style="display:inline;">
 											<div class="portlet-input input-inline input-small">
 													<select class="btn btn-primary"
 													    [(ngModel)]="selectedSortedOption" 

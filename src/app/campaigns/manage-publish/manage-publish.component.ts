@@ -6,7 +6,7 @@ import { VideoFileService} from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
-
+import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign} from '../models/campaign';
 import { SaveVideoFile} from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
@@ -23,17 +23,17 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: an
   providers:[Pagination]
 })
 export class ManagePublishComponent implements OnInit {
-
-
     campaigns:Campaign[];
     pager: any = {};
     pagedItems: any[];
     public totalRecords :number=1;
     public searchKey :string="";
+    isCampaignCreated:boolean = false;
+    isCampaignUpdated:boolean = false;
 
         sortByDropDown  = [
                    {'name':'Sort By','value':''},
-                   {'name':'Name(A-Z)','value':'campaign-ASC'},
+                   {'name':'Name(A-Z)','value':'camapaign-ASC'},
                    {'name':'Name(Z-A)','value':'campaign-DESC'},
                    {'name':'Created Date(ASC)','value':'createdTime-ASC'},
                    {'name':'Created Date(DESC)','value':'createdTime-DESC'}
@@ -53,7 +53,13 @@ export class ManagePublishComponent implements OnInit {
                                                        
         
         
-    constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,private pagination:Pagination,private pagerService: PagerService) {
+    constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,
+            private pagination:Pagination,private pagerService: PagerService,private refService:ReferenceService) {
+        this.isCampaignCreated = this.refService.isCampaignCreated;
+        this.isCampaignUpdated = this.refService.isCampaignUpdated;
+        if(this.isCampaignCreated){
+            setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 2000);
+        }
     }
     
     listCampaign(pagination:Pagination){
@@ -130,7 +136,7 @@ export class ManagePublishComponent implements OnInit {
         data => {
            this.campaignService.campaign=data;
            console.log(this.campaignService.campaign);
-           this.router.navigate(["/home/campaigns/publishContent"]);
+           this.router.navigate(["/home/campaigns/create-campaign"]);
         },
         error => console.log( error ),
         () => console.log()

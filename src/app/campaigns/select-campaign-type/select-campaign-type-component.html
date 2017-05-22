@@ -1,0 +1,43 @@
+<style type="text/css">
+.check
+{
+    opacity:0.5;
+	color:#996;
+}
+.img-check{width: 40% !important;background-color: #ffffff;border: none;}
+.image-text { text-align: center;color: #000; margin-top: 20px;}
+.btn-default{ background-color: #ffffff;box-shadow: 5px 5px 10px 5px rgba(199, 199, 199, 0.5);}
+</style>
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li><a [routerLink]="['../../campaigns/managepublish']">Manage Publish</a> <i class="fa fa-angle-right"></i></li>
+			<li><a style="color: blue;">Select Campaign</a></li>
+		</ul>
+	</div><!-- End of page-bar -->
+
+	<div class="row">
+		<form method="get">
+			<div class="col-md-12">
+				<div class="col-md-6" id="imageDiv">
+					<div class="btn btn-default" (click)="createVideoCampaign()" style="margin-left: 50%; padding: 20px;"> 
+						<img src="assets/images/video-campaign.png" alt="..." class="img-thumbnail img-check" id="firstImage">
+						<h4 class="image-text">Video Campaign</h4> 
+						<input type="radio" name="campaign-type" id="video-campaign" value="video-campaign" class="hidden">
+					</div>
+				</div>
+				<div class="col-md-6" id="imageDiv">
+					<div class="btn btn-default" (click)="createRegularCampaign()" align="center" style="padding: 20px;"> 
+						<img src="assets/images/regular-campaign.png" alt="..."	class="img-thumbnail img-check" id="secondImage">
+						<h4 class="image-text">Regular Campaign</h4> 
+						<input type="radio"	name="campaign-type" id="regular-campaign" value="regular-campaign" class="hidden">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>	
+	
+</div><!-- End of page-content -->

@@ -23,7 +23,7 @@ export class Campaign {
     isChecked :boolean;
     campaignId:number=0;
     campaignVideoFile:SaveVideoFile;
-    emailTemplate:EmailTemplate;
+    emailTemplate:EmailTemplate=new EmailTemplate();
     scheduleTime:string;
     regularEmail:boolean;
 }

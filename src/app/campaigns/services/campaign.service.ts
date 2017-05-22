@@ -90,7 +90,8 @@ export class CampaignService {
     private handleError(error: any) {
         if (error.status === 500) {
             console.log(error);
-            return Observable.throw(new Error(error.status));
+            var response =  JSON.parse(error['_body']);
+            return Observable.throw(new Error(response.message));
         }
         else if (error.status === 400) {
             return Observable.throw(new Error(error.status));

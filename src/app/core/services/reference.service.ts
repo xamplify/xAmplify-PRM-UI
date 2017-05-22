@@ -12,6 +12,9 @@ declare var swal :any;
 export class ReferenceService{
 
     public refcategories: Category[];
+    public selectedCampaignType:string = "";
+    isCampaignCreated:boolean = false;
+    isCampaignUpdated:boolean = false;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
 
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger:Logger) {

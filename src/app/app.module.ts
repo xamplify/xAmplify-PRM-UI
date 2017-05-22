@@ -38,6 +38,7 @@ import { CampaignService } from './campaigns/services/campaign.service';
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent],
   imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,

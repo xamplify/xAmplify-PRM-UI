@@ -1,0 +1,203 @@
+a.disabled { pointer-events: none; cursor: not-allowed; }
+
+/* action.css*/
+.hiddenStepInfo {
+    display: none;
+}
+
+.activeStepInfo {
+    display: block !important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.step {
+    /*margin-top: 27px;*/
+}
+
+.progress {
+    position: relative;
+    height: 25px;
+}
+
+.progress > .progress-type {
+    position: absolute;
+    left: 0px;
+    font-weight: 800;
+    padding: 3px 30px 2px 10px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(25, 25, 25, 0.2);
+}
+
+.progress > .progress-completed {
+    position: absolute;
+    right: 0px;
+    font-weight: 800;
+    padding: 3px 10px 2px;
+}
+
+.step {
+    text-align: center;
+}
+.col-md-2 > p{
+	padding: 5px;
+}
+.step .col-md-2 {
+    background-color: #fff;
+    border: 1px solid #C0C0C0;
+    border-right: none;
+    /* width: 20% */
+}
+
+.step .col-md-2:last-child {
+    border: 1px solid #C0C0C0;
+}
+
+.step .col-md-2:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.step .col-md-2:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.step .col-md-2:hover {
+     color:#B38867; 
+    cursor: pointer;
+}
+.step .col-md-2-success{
+     color:#00a6e8; 
+     border: 1px solid #C0C0C0;
+    border-right: none;
+}
+
+
+.step .activestep {
+    color:#7ba0bb; 
+    /*height: 100px;*/
+    margin-top: -4px;
+    /* padding-top: 7px; */
+    border-left: 2px solid #14B9D6 !important;
+    border-right: 2px solid #14B9D6 !important;
+   /*  border-top: 2px solid #14B9D6 !important;
+    border-bottom: 2px solid #14B9D6 !important; */
+    vertical-align: central;
+}
+
+.step #disableTab{
+	pointer-events: none;
+    cursor: not-allowed; 
+    background-color: #ECECEC;
+    /* width: 20% */
+}
+.step .col-md-2-disable{
+	pointer-events: none;
+    cursor: not-allowed; 
+    background-color: #ECECEC;
+}
+.step .fa {
+    padding-top: 22px;
+    font-size: 40px;
+}
+
+
+/* publish.css*/
+
+.btn-squared-default {
+  width: 165px !important;
+  height: 125px !important;
+  font-size: 15px;
+      padding-top: 20px
+}
+.btn-squared-default:hover {
+  border: 3px solid #eee;
+  font-weight: 600;
+}
+
+.btn-squared-default-plain {
+  width: 100px !important;
+  height: 100px !important;
+  font-size: 10px;
+}
+.btn-squared-default-plain:hover {
+  border: 0px solid white;
+}
+
+
+/*	--------------------------------------------------
+	:: Table Filter
+	-------------------------------------------------- */
+.panel {
+	border: 1px solid #ddd;
+	background-color: #fcfcfc;
+}
+.panel .btn-group {
+	margin: 15px 0 30px;
+}
+.panel .btn-group .btn {
+	transition: background-color .3s ease;
+}
+.table-filter {
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+}
+.table-filter tbody tr:hover {
+	 cursor: pointer; 
+	background-color: #eee;
+}
+.table-filter tbody tr td {
+	padding: 10px;
+	vertical-align: middle;
+	border-top-color: #eee;
+}
+.table-filter tbody tr.selected td {
+	background-color: #eee;
+}
+.table-filter > td{font-family: "Open Sans", sans-serif;}
+.not-active {
+ pointer-events: none;
+ cursor: default;
+}
+/* .table-filter tr td:first-child {
+	width: 38px;
+}
+.table-filter tr td:nth-child(2) {
+	width: 35px;
+} */
+
+.table-filter tbody tr.active td {
+  background-color:#123456 !important;
+  color: white;
+}
+
+#myTable { 
+  width: 100%;
+  text-align: left;
+  background-color: lemonchiffon;
+  border-collapse: collapse; 
+  }
+#myTable th { 
+  background-color: goldenrod;
+  color: white; 
+  }
+#myTable td, 
+#myTable th { 
+  padding: 10px;
+  border: 1px solid goldenrod; 
+  }
+  
+ .campaign-arrow{
+ width: 32px;
+ background-color: #fdfdfd;
+ }
+ .campaign-arrow-error{
+ width: 32px;
+ background-color: #999;
+  pointer-events: none; cursor: not-allowed;
+ }
+ .table tr.contact-list-selected td {
+  background-color:#123456 !important;
+  color: white;
+}
