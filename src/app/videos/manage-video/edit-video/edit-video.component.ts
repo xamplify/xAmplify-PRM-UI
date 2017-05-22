@@ -677,8 +677,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
                      malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
-     if (this.videoFileService.actionValue === 'Save') { this.videoPlayListSourceMP4();}
-     else { this.videoPlayListSourceM3U8(); }
+     if (this.videoFileService.actionValue === 'Save' || this.saveVideoFile.is360video === true) {
+          this.videoPlayListSourceMP4();
+          this.videoPlayListSourceMP4();
+         }
+     else {
+          this.videoPlayListSourceM3U8();
+         this.videoPlayListSourceM3U8();
+       }
      this.defaultVideoSettings();
      this.transperancyControllBar(this.valueRange);
      if (this.saveVideoFile.enableVideoController === false)

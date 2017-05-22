@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
-import {SaveVideoFile} from '../../models/save-video-file';
+import { Component, ElementRef, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import {UserService} from '../../../core/services/user.service';
-import {User} from '../../../core/models/user';
-import {VideoFileService} from '../../services/video-file.service';
-import {UtilService} from '../../services/util.service';
+import { UserService } from '../../../core/services/user.service';
+import { User } from '../../../core/models/user';
+import { VideoFileService } from '../../services/video-file.service';
+import { UtilService } from '../../services/util.service';
 declare var Metronic, Layout, Demo, $, videojs: any;
 
 @Component({
@@ -61,7 +61,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public shareValues: boolean;
     public alias: string;
     public valueRange: number;
-    public selectedVideoAlias:string;
+    public selectedVideoAlias: string;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
     private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
         this._elementRef = elementRef;
@@ -70,11 +70,20 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.likesValues = 2;
         this.isFullscreen = true;
     }
-    videoPlayListSource(videoUrl: string){
+    videoPlayListSourceM3U8(videoUrl: string) {
         this.videoUrl = videoUrl;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         const self = this;
         this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
-    }
+     }
+       videoPlayListSourceMP4(videoUrl: string) {
+        this.videoUrl = videoUrl;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl =  this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+         const self = this;
+        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
+     }
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
@@ -98,8 +107,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.selectedVideoAlias = this.selectedVideo.alias;
         this.posterImg = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
        // call to action values
         this.valueRange = this.selectedVideo.transparency;
         this.lowerTextValue = this.selectedVideo.lowerText;
@@ -127,22 +134,26 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
           }
        this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
          .subscribe((saveVideoFile: SaveVideoFile) => {
-           this.selectedVideo = saveVideoFile;
-           console.log(this.selectedVideo);
-      //   this.videos.add(position, 1);
-        for (let i = 0; i < this.videos.length; i ++) {
-          if (this.selectedVideo.id === this.videos[i].id) {
-              this.videos.splice(i, 1);
-              break;
-          }
-        }
+            this.selectedVideo = saveVideoFile;
+            console.log(this.selectedVideo);
+           for (let i = 0; i < this.videos.length; i ++) {
+             if (this.selectedVideo.id === this.videos[i].id) {
+                this.videos.splice(i, 1);
+                break;
+              }
+           }
         this.selectedPosition = position;
         this.playVideoInfo(this.selectedVideo);
         this.posterImg =  this.selectedVideo.imagePath;
       // change the video src dynamically
-        this.videoPlayListSource(this.videoUrl);
-        this.videoPlayListSource(this.videoUrl);
-
+      if(this.selectedVideo.is360video === true) {
+           this.videoPlayListSourceMP4(this.videoUrl);
+           this.videoPlayListSourceMP4(this.videoUrl);
+       }
+       else{
+          this.videoPlayListSourceM3U8(this.videoUrl);
+          this.videoPlayListSourceM3U8(this.videoUrl);
+       }
       if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
             $('#play_video_player').append( $('#overlay-modal').show());
@@ -387,8 +398,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                      malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
-        this.videoPlayListSource(this.videoUrl);
-        this.videoPlayListSource(this.videoUrl);
+       if (this.selectedVideo.is360video === true) {
+           this.videoPlayListSourceMP4(this.videoUrl);
+           this.videoPlayListSourceMP4(this.videoUrl);
+       }
+       else{
+          this.videoPlayListSourceM3U8(this.videoUrl);
+          this.videoPlayListSourceM3U8(this.videoUrl);
+       }
         this.defaultVideoOptions();
         this.transperancyControllBar(this.valueRange);
         if (this.selectedVideo.enableVideoController === false)
