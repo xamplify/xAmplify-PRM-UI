@@ -33,7 +33,6 @@
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchDisableValue()"
 													class="form-control input-circle" placeholder="search...">
-
 											</div>
 										</div>
 									</div>
@@ -67,7 +66,6 @@
 									</div>
 								</a>
 							</div>
-
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<a class="dashboard-stat dashboard-stat-light yellow-gold"
 									(click)="invalidContactsDataShowing()">
@@ -178,7 +176,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="col-md-9" style="margin-bottom: 0px; padding-left: 1cm">
 						<table class="table" id="uploadCsvUsingFile">
 							<thead>
@@ -287,9 +284,6 @@
 												<td>{{user.emailId}}</td>
 												<td>{{user.firstName}}</td>
 												<td>{{user.lastName}}</td>
-												<!-- <td><a class="edit" href="javascript:;"> Edit </a></td>
-												<td><a class="delete" href="javascript:;"> Delete </a>
-												</td> -->
 											</tr>
 										</tbody>
 									</table>
@@ -311,7 +305,6 @@
 									<th>EMAILID</th>
 									<th>FIRSTNAME</th>
 									<th>LASTNAME</th>
-									<!-- <th>Edit</th> -->
 									<th>Delete</th>
 								</tr>
 							</thead>
@@ -333,7 +326,6 @@
 								<tr *ngFor="let newContact of users; let i = index"
 									class="new_row">
 									<td><input type="checkbox" checked="newContact.checked"></td>
-									<td></td>
 									<td><input type=Text [(ngModel)]="newContact.emailId"
 										class="form-control" [ngModelOptions]="{standalone: true}"
 										required
@@ -441,9 +433,6 @@
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box blue">
 			<div class="portlet-title">
-				<!-- <div class="caption" *ngIf="allContactData==true">
-									<i class="fa fa-edit"></i>List of All Contacts
-								</div> -->
 				<div class="caption" *ngIf="activeContactsData==true">
 					<i class="fa fa-edit"></i>List of Active Contacts
 				</div>
@@ -486,25 +475,13 @@
 					id="sample_editable_1" *ngIf="allContacts">
 					<thead>
 						<tr>
-							<!-- <th *ngIf="allContactData==true"><input type="checkbox" [checked]="isAvailable"
-									(change)="checked($event.target.checked)">
-									</th> -->
 							<th *ngIf="invalidContactData==true"><input type="checkbox"
 								[checked]="isAvailable"
 								(change)="invalidContactsChecked($event.target.checked)">
 							</th>
-							<!-- <th>
-										 USERNAME
-									</th> -->
 							<th>EMAILID</th>
 							<th>FIRSTNAME</th>
 							<th>LASTNAME</th>
-							<!-- <th>
-										 Edit
-									</th> -->
-							<!-- <th>
-										 Delete
-									</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -514,9 +491,6 @@
 								name="selectedUserIds" id="selectedUserWithIds"
 								id="row_{{allcontacts.id}}" value="{{allcontacts.id}}"
 								[(ngModel)]="allcontacts.isChecked"></th>
-							<!-- <td>
-										 {{allcontacts.userName}}
-									</td> -->
 							<td>{{allcontacts.emailId}}</td>
 							<td>{{allcontacts.firstName}}</td>
 							<td class="center">{{allcontacts.lastName}}</td>
