@@ -1,6 +1,8 @@
 import { Component, OnInit,OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { Pagination } from '../../core/models/pagination';
+import { Logger } from 'angular2-logger/core';
 import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
 
 import { VideoFileService} from '../../videos/services/video-file.service';
@@ -16,15 +18,14 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
-import { Pagination } from '../../core/models/pagination';
-import { Logger } from 'angular2-logger/core';
+
 
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any;
 
 @Component({
   selector: 'app-publish-content',
   templateUrl: './publish-content.component.html',
-  styleUrls: ['./publish-content.component.css','../../../assets/css/video-css/ribbons.css']
+  styleUrls: ['../../../assets/css/video-css/ribbons.css']
 })
 export class PublishContentComponent implements OnInit,OnDestroy {
 
@@ -544,8 +545,10 @@ export class PublishContentComponent implements OnInit,OnDestroy {
         this.emailType = type;
         if(type=="Video Email"){
             this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+            $('#videoTab').show();
         }else{
             this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            $('#videoTab').hide();
         }
         this.loadEmailTemplates(this.emailTemplatesPagination);
         if(!(this.isAdd)){
