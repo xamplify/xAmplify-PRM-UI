@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
-import {AuthenticationService} from '../../../core/services/authentication.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 declare var Metronic , Layout, Demo: any;
 
 @Component({
@@ -17,9 +17,10 @@ export class ProfileLockComponent implements OnInit {
  displayName: string;
  password: string;
  error: string;
- constructor(private userService:UserService, private authenticationService:AuthenticationService, private router: Router,)
- { }
- 
+ constructor(private userService: UserService, private authenticationService:  AuthenticationService, private router: Router)
+ {
+     this.password = '';
+ }
 ngOnInit() {
       try {
             this.userData = this.userService.loggedInUserData;
@@ -37,6 +38,7 @@ ngOnInit() {
            Layout.init();
            Demo.init();
            console.log(this.displayName);
+           this.authenticationService.logout();
       }
       catch (err) {
           console.log('error' + err);
@@ -59,9 +61,13 @@ ngOnInit() {
  }
 
 logError() {
+       if(this.password !== ''){
         this.error = 'Password is incorrect';
+       }
+       else {
+         this.error = "Password should't be empty";
+       }
         console.log( 'error : ' + this.error );
        // this.router.navigate( ['/login'] );
     }
-
 }

@@ -95,7 +95,7 @@
 				<!-- <a class="btn btn-primary" (click)="openWindow()"> -->
 				<div>
 					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
-						[routerLink]="['../../../embed-video', saveVideoFile.alias]">
+						[routerLink]="['../../../embed-video', saveVideoFile.viewBy,saveVideoFile.alias]">
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
 						data-toggle="modal" data-target="#myModal">

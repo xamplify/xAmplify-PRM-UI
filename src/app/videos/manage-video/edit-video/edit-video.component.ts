@@ -217,7 +217,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     }  // closed constructor
 
   // image path and gif image path methods
-    removeOwnThumbnail(){
+    removeOwnThumbnail() {
       this.imageUrlPath = false;
       this.ownThumb = false;
       this.ownThumbnail = true;
@@ -327,7 +327,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     }
  // share window popup
     openWindow() {
-        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.alias,
+        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=610,height=420');
     }
 
@@ -422,13 +422,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     }
     enableCallToActionMethodTest(event: any) {
        this.enableCalltoAction = this.saveVideoFile.callACtion = event;
-        if(event===true && this.saveVideoFile.startOfVideo === true){
+        if(event === true && this.saveVideoFile.startOfVideo === true) {
               $('#edit_video_player').append(  $('#overlay-modal').show());
               this.videoJSplayer.pause(); this.videoOverlaySubmit = 'PLAY';
               this.isPlay = true;  }
         else if(event === true && this.saveVideoFile.endOfVideo === true) {
             $('#edit_video_player').append( $('#overlay-modal').show() );
-              this.videoJSplayer.pause();this.videoOverlaySubmit = 'SUBMIT';
+              this.videoJSplayer.pause(); this.videoOverlaySubmit = 'SUBMIT';
               this.isPlay = false; }
         else { $('#overlay-modal').hide(); this.videoJSplayer.pause();}
     }
@@ -501,7 +501,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     // default methods when component initilized
     defaultImagePaths() {
         if (this.saveVideoFile.imagePath === this.imageValue1) {
-        this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false;}
+        this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false; }
         else if (this.saveVideoFile.imagePath === this.imageValue2) {
         this.imgBoolean2 = true; this.imgBoolean1 = this.imgBoolean3 = false; }
         else { this.imgBoolean3 = true; this.imgBoolean1 = this.imgBoolean2 = false; }
@@ -615,21 +615,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         catch (err) {
             console.log('error' + err);
         }
-        this.googleButton = new ShareButton(
-                ShareProvider.GOOGLEPLUS,              // choose the button from ShareProvider
-                "<img src='../../assets/images/google+.png' style='height: 32px;'>",    // set button template
-                'twitter'                           // set button classes
-              );
-       this.twitterButton = new ShareButton(
-               ShareProvider.TWITTER,              // choose the button from ShareProvider
-               "<img src='../../assets/images/twitter.png' style='height: 32px;'>",    // set button template
-               'twitter'                           // set button classes
-             );
-       this.facebookButton = new ShareButton(
-               ShareProvider.FACEBOOK,              // choose the button from ShareProvider
-               "<img src='../../assets/images/facebook.png' style='height: 32px;'>",    // set button template
-               'fb'                           // set button classes
-             );
     }
     ngAfterViewInit() {
         this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function() {

@@ -9,43 +9,39 @@ import 'rxjs/add/operator/map';
 import {Category} from '../models/category';
 import {Pagination} from '../../core/models/pagination';
 import {User} from '../../core/models/user';
-
 declare var swal: any;
+
 @Injectable()
 export class VideoFileService {
-
     public actionValue: string;
     public saveVideoFile: SaveVideoFile;
     public categories: Category[];
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
-    public viewBytemp :string;
+    public viewBytemp: string;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
     }
-     processVideoFile(responsePath: any): Observable<any> {
+   processVideoFile(responsePath: any): Observable<any> {
         console.log('response path in service ' + responsePath);
         const url = this.URL + 'process_video?path=' + responsePath + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, '')
         .map( this.extractData )
         .catch( this.handleError );
     }
-
     saveRecordedVideo(formData: any) {
           const url = this.URL + 'saveRecordedVideo?access_token=' + this.authenticationService.access_token;
           return this.http.post(url, formData)
           .map( this.extractData )
           .catch( this.handleError );
       }
-    
    saveVideo(saveVideoFile: SaveVideoFile) {
-    
-	   if(this.viewBytemp=="DRAFT"){
-		  saveVideoFile.action = "save";
-	   }
-	   const url = this.URL + 'save?access_token=' + this.authenticationService.access_token;
+      if (this.viewBytemp === 'DRAFT'){
+          saveVideoFile.action = 'save';
+       }
+       const url = this.URL + 'save?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, saveVideoFile)
         .map( this.extractData )
         .catch( this.handleError );
@@ -61,18 +57,16 @@ export class VideoFileService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-   getVideo(alias: string, viewBy:string): Observable<SaveVideoFile> {
+   getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
-	    console.log(alias);
-        const url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token+'&viewBy='+viewBy;
+        console.log(alias);
+        const url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token+'&viewBy=' + viewBy;
        // var url = this.URL + 'getMobinar?alias='+alias;
-        return this.http.get(url,'')
+        return this.http.get(url, '')
         .map( this.extractData )
         .catch( this.handleError );
     }
-
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
-   
         console.log('deleted video alias is ' + alias);
         const url = this.URL + 'videoStatusChange/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;
         console.log('delete url is ' + url);
@@ -95,10 +89,9 @@ export class VideoFileService {
          return this.http.post(url, user)
          .map( this.extractData )
          .catch( this.handleError );
-       }catch(error){
+       }catch (error) {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
-	        }
-
+             }
     }
     extractData( res: Response ) {
        const body = res.json();
@@ -112,14 +105,14 @@ export class VideoFileService {
         return Observable.throw( errMsg );
      }
     handleErrorDelete( error: any ) {
-       const errMsg = ( error.message ) ? error.message :
-           error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+     const errMsg = ( error.message ) ? error.message :
+     error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
       const errorbody = error._body;
       if ( errorbody.indexOf('mobinar is being used in one or more campaigns. Please delete those campaigns') >= 0) {
          return Observable.throw( errorbody );
         }
       else {
-      return Observable.throw( error );
+         return Observable.throw( error );
        }
     }
 }
