@@ -399,16 +399,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
      
     /************Showing Video Preview****************/
-    showPreview(videoFile:any){
+    showPreview(videoFile:SaveVideoFile){
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
         var videoPath = videoFile.videoPath;
+        var is360 = videoFile.is360video;
         console.log(videoFile);
         $("#main_video").empty();
         $("#modal-title").empty();
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
-        if(title.indexOf("360")>-1){
+        if(is360){
             console.log("Loaded 360 Video");
             $('.h-video').remove();
             $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
@@ -418,7 +419,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#modal-title").append(title);
             $("#main_video").append(str);
-            $("#main_video video").append('<source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type="video/mp4">');
+          //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+            $("#main_video video").append('<source src="'+videoPath+'" type="video/mp4">');
             var player = videojs('videoId');
             player.panorama({
                 autoMobileOrientation: true,
