@@ -5,7 +5,6 @@ import { CampaignsRoutingModule } from './campaigns-routing.module';
 
 
 import { ManagePublishComponent } from './manage-publish/manage-publish.component';
-import { PublishContentComponent } from './publish-content/publish-content.component';
 import { SelectCampaignTypeComponent } from './select-campaign-type/select-campaign-type.component';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
 
@@ -16,7 +15,7 @@ import { EmailTemplateService } from '../email-template/services/email-template.
 @NgModule({
 	
   imports: [ CommonModule,SharedModule,CampaignsRoutingModule ],
-  declarations: [ManagePublishComponent, PublishContentComponent,SelectCampaignTypeComponent,CreateCampaignComponent],
+  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent],
   providers :[ContactService,VideoFileService,EmailTemplateService]
 
 })
