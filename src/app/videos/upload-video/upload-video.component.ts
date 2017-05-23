@@ -159,7 +159,8 @@ export class UploadVideoComponent implements OnInit {
                           console.log('process video data object is null please try again:');
                           swal("Contact Admin" ,this.processVideoResp.error,'error')
                          if(this.RecordSave === true){
-                           this.player.recorder.reset();
+                          // this.player.recorder.reset();
+                           this.player.recorder.stopDevice();
                            $("#myModal").modal("hide"); }
                          console.log(this.processVideoResp.error);
                       }
@@ -279,7 +280,7 @@ export class UploadVideoComponent implements OnInit {
         this.defaultSettings();
         this.stop();
         this.isFileDrop =false;
-        this.player.recorder.reset();
+        this.player.recorder.stopDevice();
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
@@ -673,7 +674,8 @@ export class UploadVideoComponent implements OnInit {
        ngOnDestroy() {
            console.log('Deinit - Destroyed Component')
            if(this.playerInit==true){
-           this.player.recorder.destroy(); }
+          // this.player.recorder.destroy();
+           this.player.recorder.stopDevice();}
            console.log('Destroyed Component completed');
            this.isChecked= false;
            if(this.processing ==  true) {

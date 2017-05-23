@@ -6,25 +6,22 @@ import {ReferenceService} from '../services/reference.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
 
-	  public refcategories :any
-	    constructor(private referenceService:ReferenceService ) {}
-	            
+export class HomeComponent implements OnInit {
+	  public refcategories: any;
+	    constructor(private referenceService: ReferenceService ) { }
 	    getCategorisService() {
 	        this.referenceService.getCategories()
 	            .subscribe((result: any) => {
-	                console.log("getcategories");
 	                this.refcategories = result;
-	                this.referenceService.refcategories= this.refcategories;
-	                console.log(this.refcategories);
+	                this.referenceService.refcategories = this.refcategories;
+	               // console.log(this.refcategories);
 	            }),
-	            () => console.log("categoriss  are in the manage vidoes :" + this.refcategories);
+              () => console.log('categoriss  are in the manage vidoes :' + this.refcategories);
 	    }
-	    
-	    ngOnInit(){
-	        
-	        this.getCategorisService();
-	    }
+
+        ngOnInit(){
+           this.getCategorisService();
+       }
 
 }
