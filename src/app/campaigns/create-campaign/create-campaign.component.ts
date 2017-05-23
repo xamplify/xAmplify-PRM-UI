@@ -407,19 +407,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         console.log(videoFile);
         $("#main_video").empty();
         $("#modal-title").empty();
-       // $('head').append('<link href="css/video-hls-js.css" rel="stylesheet">');
-        if(alias.endsWith("mobinar360")){
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
+        if(title.indexOf("360")>-1){
             console.log("Loaded 360 Video");
             $('.h-video').remove();
-           /* $('head').append('<script src="assets/videoPlayer/video.js" type="text/javascript"  class="p-video"/>');
-            $('head').append('<script src="assets/videoPlayer/three.js" type="text/javascript"  class="p-video" />');
-            $('head').append('<link href="assets/videoPlayer/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-            $('head').append('<script src="assets/videoPlayer/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');*/
-            $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+            $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#modal-title").append(title);
             $("#main_video").append(str);
-            $("#main_video video").append('<source src='+videoPath+' type="video/mp4">');
+            $("#main_video video").append('<source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type="video/mp4">');
             var player = videojs('videoId');
             player.panorama({
                 autoMobileOrientation: true,
@@ -435,21 +434,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             console.log("Loaded Normal Video");
             $('.p-video').remove();
-            /*$('head').append('<script src="js/plugin/video-hls.js" type="text/javascript" class="h-video"  />');
-            $('head').append('<script src="js/plugin/videojs.hls.min.js" type="text/javascript"  class="h-video" />');*/
-            $('head').append('<script src="assets/js/indexjscss/video.js"  class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
-            $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#modal-title").append(title);
             $("#main_video").append(str);
-            videoPath = videoPath.replace(".m3u8",".mp4")
-           // videoPath = videoPath.replace(".mp4",".m3u8");//Replacing .mp4 to .m3u8
-         //   $("#main_video video").append('<source src='+videoPath+' type="application/x-mpegURL">');
-            $("#main_video video").append('<source src='+videoPath+' type="video/mp4">');
+            videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+           $("#main_video video").append('<source src='+videoPath+' type="application/x-mpegURL">');
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
             var document:any = window.document;
@@ -467,7 +458,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 
                     }
                      
-
                 });
             }
         }
