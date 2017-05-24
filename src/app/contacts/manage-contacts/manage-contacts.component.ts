@@ -462,6 +462,7 @@ export class ManageContactsComponent implements OnInit {
 
     backToManageContactPage() {
         this.invalidDeleteSucessMessage = false;
+        this.emptyContactsUsers = false;
         this.show = false;
         this.deleteSucessMessage = false;
         this.contactListUsersError = false;
