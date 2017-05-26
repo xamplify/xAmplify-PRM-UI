@@ -268,9 +268,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                         $(".vjs-tech").css("height", "100%");
                     }else if(event==="FullscreenOff"){
                         $("#videoId").css("width", "550px");
-                
                     }
-                     
                 });
                 this.on('contextmenu', function(e) {
                     e.preventDefault();
@@ -315,9 +313,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                         $(".vjs-tech").css("height", "100%");
                     }else if(event==="FullscreenOff"){
                         $("#videoId").css("width", "550px");
-                
                     }
-                     
                 });
             }*/
         }
