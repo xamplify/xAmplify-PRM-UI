@@ -600,8 +600,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                     }
                  else if (isValid === 'removeCallAction'){
                      $('#overlay-modal').hide(); }
-                 else { 
-                     $('#overlay-modal').hide(); }
+                 else { $('#overlay-modal').hide(); }
             });
 
             this.on('seeking', function() {
