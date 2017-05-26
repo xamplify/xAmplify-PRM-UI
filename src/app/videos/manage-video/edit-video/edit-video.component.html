@@ -10,6 +10,7 @@
 	.sizeImg { height: 71px; width:98px ; }
      img:hover {  opacity: 1.0;  filter: alpha(opacity=100); /* For IE8 and earlier */  } 
      #edit_video_player {width:auto;}
+	 #newPlayerVideo{width:auto;}
      #overlay-modal{width:auto;}
 </style>
 
@@ -18,11 +19,21 @@
 		<div class="row margin-bottom-30">
 			<!-- video started -->
 			<div class="col-md-6" style="padding-top: 38px">
-				<video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
-					data-setup='{"example_option":true }'>
-			      <!-- <source [src] = videoUrlMp4  type="video/mp4" /> 
-			       <source [src] = videoUrlM3U8  type="application/x-mpegURL"> -->
-				</video>
+				<div *ngIf="is360Value==false">
+				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
+                 data-setup='{"example_option":true }'>
+				 <!--  <source [src] = videoUrl  type: 'application/x-mpegURL' />
+				  <source [src] = videoUrl  type="video/mp4" /> -->
+				</video> 
+				</div>
+                <div  *ngIf="is360Value==true">
+				  <div id="newPlayerVideo"></div>
+				  <!-- <video id="newPlayerVideo" class="video-js vjs-default-skin vjs-nofull" height="299" poster="{{defaultImagePath}}"
+                   crossorigin="anonymous" controls  data-setup='{"example_option":true }'>
+				 <!--  <source [src] = videoUrl  type: 'application/x-mpegURL' />
+				  <source [src] = videoUrl  type="video/mp4" />
+				</video> -->
+                </div>
             	<!-- video overlay modal popup -->
 			 <div id="overlay-modal" class="video-js" 
               style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
@@ -47,7 +58,7 @@
                    pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 				    #email_id="ngModel">
 				    </div>
-				     <div id="replay-video" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
+				     <div id="playorsubmit" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
                       <a><button type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
                       <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
                     </div>
@@ -57,7 +68,7 @@
                  <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
                 </div> 
                    <div>
-                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
                       <label *ngIf="isSkipChecked==true" id="skipOverlay" (click)="skipClose()"
                       style="float:right;color:white;cursor:pointer;margin-top:-32px">
                       <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i>

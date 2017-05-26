@@ -2,26 +2,25 @@
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
 	.isPlaySubmit{ padding:15px 58px !important;}
-	 #play_video_player {width:auto;}
+	 #play_video_player_demo1{ width:auto; }
      #overlay-modal{width:auto;}
 </style>
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
-			<video id="play_video_player" class="video-js vjs-default-skin"
+			<div *ngIf="is360Value==false">
+			<video id="play_video_player_{{idValue}}" class="video-js vjs-default-skin"
 				controls preload="auto" height="318" poster="{{posterImg}}"
 			    data-setup='{"example_option":true}'>
-				<!--<source [src] = videoUrl type="video/mp4" /> -->
-              <!--  <source [src] = videoUrl  type="application/x-mpegURL" />
-               <!--  <source [src] = videoUrl  type="application/vnd.apple.mpegurl" /> -->
-				<p class="vjs-no-js">
-					To view this video please enable JavaScript, and consider upgrading
-					to a web browser that <a
-						href="http://videojs.com/html5-video-support/" target="_blank">supports
-						HTML5 video</a>
-				</p>
+               <!--  <source [src] = videoUrl  type="application/x-mpegURL" />
+				 <source [src] = videoUrl  type="video/mp4" /> -->>
 			</video>	
+			</div>
+			 <div  *ngIf="is360Value==true">
+		    	  <div id="newPlayerVideo"></div>
+			 </div>
+			 <>
 	      <!-- call to action modal popup-->
 			  <div id="overlay-modal" class="video-js" style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
@@ -283,7 +282,8 @@
 												<div class="mix-details">
 													<h4>{{videoFile.title}}</h4>
 													<a class="mix-preview fancybox-button"
-														(click)="showVideo(videoFile, i)" title="play video"
+														(click)="showVideo(videoFile, i)"
+														title="play video"
 														data-rel="fancybox-button"> <i class="fa fa-play"></i>
 													</a> <span align="right"
 														style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>
