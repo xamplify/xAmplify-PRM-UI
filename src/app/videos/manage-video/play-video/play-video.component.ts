@@ -81,7 +81,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+        $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="application/x-mpegURL">');
+       // this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
      }
        videoPlayListSourceMP4() {
         this.videoUrl = this.selectedVideo.videoPath;
@@ -155,7 +156,172 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.playVideoInfo(this.selectedVideo);
         this.posterImg =  this.selectedVideo.imagePath;
       // change the video src dynamically
-      if(this.selectedVideo.is360video === true) {
+        $("#newPlayerVideo").empty();
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
+        if(this.selectedVideo.is360video){
+            $('.h-video').remove();
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+            $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
+            $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+            var str = '<video id=videoId poster='+this.posterImg+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+            $("#newPlayerVideo").append(str);
+            this.videoUrl = this.selectedVideo.videoPath;
+            this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+            this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+            $("#newPlayerVideo video").append('<source src="'+this.videoUrl+'" type="video/mp4">');
+            var player = videojs('videoId');
+            player.panorama({
+                autoMobileOrientation: true,
+                clickAndDrag: true,
+                clickToToggle: true,
+                callback: function () {
+                  player.ready();
+                }
+              });
+            $("#videoId").css("width", "550px");
+            $("#videoId").css("height", "310px");
+            
+        }else{
+            $('.p-video').remove();
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
+            var str = '<video id=videoId  poster='+this.posterImg+' preload="none"  class="video-js vjs-default-skin" controls></video>';
+            $("#newPlayerVideo").append(str);
+            this.videoUrl = this.selectedVideo.videoPath;
+            this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+            this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+            $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="application/x-mpegURL">');
+            $("#videoId").css("width", "550px");
+            $("#videoId").css("height", "310px");
+           // var document:any = window.document;
+            //var player = videojs("videoId");
+            this.videoJSplayer = videojs('videoId', {}, function() {
+                const player = this;
+                var document:any = window.document;
+               // var id = player.id();
+               // this.play();
+                const aspectRatio = 320/640;
+                let isValid = JSON.parse(localStorage.getItem('isOverlayValue')); // gettting local storage value here isValid value is true
+               this.ready(function() {
+                     if (isValid === 'StartOftheVideo' ) {
+                          $('.vjs-big-play-button').css('display', 'none');
+                          $('#videoId').append( $('#overlay-modal').show());
+                        }
+                     else if(isValid !== 'StartOftheVideo' ) {
+                         $('#overlay-modal').hide(); player.play();
+                        }
+                     else if (isValid === 'removeCallAction'){
+                         $('#overlay-modal').hide(); }
+                     else { 
+                         $('#overlay-modal').hide(); }
+                });
+
+                this.on('seeking', function() {
+                    // Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
+                });
+
+               /*  resizeVideoJS(){
+                    var width = document.getElementById(id).parentElement.offsetWidth;
+                    player.width(width).height( width * aspectRatio );
+                  }
+                resizeVideoJS();
+                window.onresize = resizeVideoJS; */
+                this.on('timeupdate', function() {
+                    // var  startDuration = player.trimCurrentTime(player.currentTime());
+                    // var  startDuration = player.currentTime();
+                    // console.log(this.currentTime());
+                });
+                this.on('play', function() {
+                    $('.vjs-big-play-button').css('display', 'none');
+                    //   console.log('play:'+player.duration());
+                    // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),
+                    // trimCurrentTime(player.currentTime()));
+
+                });
+                this.on('pause', function() {
+                    //      $('.vjs-big-play-button').css('display', 'block');
+                    //  console.log("video paused at "+player.currentTime());
+                    //  Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),
+                    // trimCurrentTime(player.currentTime()));
+                });
+                this.on('ended', function() {
+                  isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
+                    var whereYouAt = player.currentTime();
+                    console.log(whereYouAt);
+                     if (isValid === 'EndOftheVideo') {
+                         $('#play_video_player_demo1').append( $('#overlay-modal').show());}
+                     else if(isValid !== 'EndOftheVideo') {
+                         $('#overlay-modal').hide(); player.pause();}
+                     else if (isValid === 'removeCallAction'){
+                         $('#overlay-modal').hide(); player.pause();}
+                     else {
+                         $('#overlay-modal').hide();
+                         player.pause();
+                         $('.vjs-big-play-button').css('display', 'none'); }
+                });
+                this.on('fullscreenchange', function () {
+                    var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    var event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if(event==="FullscreenOn"){
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    }else if(event==="FullscreenOff"){
+                        $("#videoId").css("width", "550px");
+                
+                    }
+                     
+                });
+                this.on('contextmenu', function(e) {
+                    e.preventDefault();
+                });
+                this.hotkeys({
+                     volumeStep: 0.1, seekStep: 5, enableMute: true,
+                     enableFullscreen: false, enableNumbers: false,
+                     enableVolumeScroll: true,
+                     fullscreenKey: function(event: any, player: any) {
+                          return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                     },
+                     customKeys: {
+                         simpleKey: {
+                             key: function(e: any) {  return (e.which === 83);},
+                             handler: function(player: any, options: any, e: any) {
+                                 if (player.paused()) {  player.play();} else { player.pause(); }  } },
+                         complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68);},
+                             handler: function(player: any, options: any, event: any) {
+                                 if (options.enableMute) { player.muted(!player.muted()); }}
+                         },
+                         numbersKey: {
+                             key: function(event: any) { return ((event.which > 47 && event.which < 59) ||
+                                  (event.which > 95 && event.which < 106)); },
+                             handler: function(player: any, options: any, event: any) {
+                                 if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                                     var sub = 48;
+                                     if (event.which > 95) { sub = 96; }
+                                     var number = event.which - sub;
+                                     player.currentTime(player.duration() * number * 0.1); }  } },
+                         emptyHotkey: { },
+                         withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler');}},
+                         withoutHandler: { key: function(e: any) { return true;}},
+                         malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
+                             handler: function(player: any, options: any, event: any) { }
+                         } }  }); });
+           /* if(player){
+                player.on('fullscreenchange', function () {
+                    var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    var event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if(event==="FullscreenOn"){
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    }else if(event==="FullscreenOff"){
+                        $("#videoId").css("width", "550px");
+                
+                    }
+                     
+                });
+            }*/
+        }
+/*      if(this.selectedVideo.is360video === true) {
            this.is360Value = true;
              if(this.video360running === true){
                  this.videoUrl = this.selectedVideo.videoPath;
@@ -166,7 +332,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
           $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
          }
          else{
-          this.videoJSplayer.dispose();
+         this.videoJSplayer.dispose();
          this.play360Video();
          }
        }
@@ -174,7 +340,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
           this.is360Value = false;
          this.playNormalVideoFiles();
         if(this.videoJSplayer){
-         this.videoJSplayer.pause();
          this.videoPlayListSourceM3U8();
          this.videoPlayListSourceM3U8();
         }
@@ -187,10 +352,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
           const self = this;
           this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
           this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
-         // this.videoPlayListSourceM3U8();
-         // this.videoPlayListSourceM3U8();
         }
-       }
+       }*/
       if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
            if(this.videoJSplayer){
@@ -323,7 +486,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
    play360Video() {
         this.is360Value = true;
         this.video360running = true;
-        $('play_video_player_' + this.idValue).empty();
+        $("#newPlayerVideo").empty();
         $('.h-video').remove();
          $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
          $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
@@ -337,6 +500,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
              this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
              this.new360video = this.videoUrl;
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+             $("#videoId").css("height", "318");
+             $("#videoId").css("width", "auto");
              var player  = videojs('videoId');
              player.panorama({
                 autoMobileOrientation: true,
@@ -414,8 +579,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.playNormalVideoFiles();
         this.is360Value = false;
         let valueId = this.idValue;
-        this.videoJSplayer = videojs('play_video_player_' + this.idValue , {}, function() {
+        var str = '<video id=videoId  poster="'+this.posterImg+'" preload="none"  class="video-js vjs-default-skin" controls></video>';
+        $("#newPlayerVideo").append(str);
+        $("#videoId").css("height", "318");
+        $("#videoId").css("width", "auto");
+        this.videoUrl = this.selectedVideo.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="application/x-mpegURL">');
+        this.videoJSplayer = videojs('videoId', {}, function() {
             const player = this;
+            var document:any = window.document;
            // var id = player.id();
            // this.play();
             const aspectRatio = 320/640;
@@ -423,7 +597,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
            this.ready(function() {
                  if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
-                      $('#play_video_player_demo1').append( $('#overlay-modal').show());
+                      $('#videoId').append( $('#overlay-modal').show());
                     }
                  else if(isValid !== 'StartOftheVideo' ) {
                      $('#overlay-modal').hide(); player.play();
@@ -477,6 +651,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                      player.pause();
                      $('.vjs-big-play-button').css('display', 'none'); }
             });
+            this.on('fullscreenchange', function () {
+                var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                var event = state ? 'FullscreenOn' : 'FullscreenOff';
+                if(event==="FullscreenOn"){
+                    $(".vjs-tech").css("width", "100%");
+                    $(".vjs-tech").css("height", "100%");
+                }else if(event==="FullscreenOff"){
+                    $("#videoId").css("width", "auto");
+            
+                }
+                 
+            });
             this.on('contextmenu', function(e) {
                 e.preventDefault();
             });
@@ -511,7 +697,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                      malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
-         this.videoPlayListSourceM3U8();
       } // if close
       else {
           this.play360Video();
@@ -529,4 +714,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         $('.h-video').remove();
         $('.p-video').remove();
     }
+    
+   
 }
