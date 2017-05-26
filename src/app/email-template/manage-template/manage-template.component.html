@@ -33,21 +33,19 @@ h6 {
 							<div class="tab-content">
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->
-									<div class="margin-top-10" >
 									
-									<div  align="right"  style="display:inline;">
-                                             <select class="btn btn-primary" 
-													    [(ngModel)]="selectedTemplate" 
-													    (ngModelChange)="getSelectedEmailTemplate($event)">
-													  <option *ngFor="let templateType of templatesDropDown" [ngValue]="templateType">
-													    {{templateType.name}}
+									<div class="page-toolbar">
+									<div class="btn-group pull-right">
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px">
+												<select class="form-control"
+													    [(ngModel)]="selectedSortedOption" 
+													    (ngModelChange)="getSortedResult($event)">
+													  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
+													    {{sortOption.name}}
 													  </option>
 											</select>
-										</div>
-										
-										
-										
-											<div class="inputs" align="right"  style="display:inline; float:right">
+											</div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier"  (click)="searchTemplates()"></i>
@@ -56,18 +54,44 @@ h6 {
 												</div>
 											</div>
 										</div>
-										
-										<div class="inputs" align="right"  style="display:inline; margin-left: 650px;">
-											<div class="portlet-input input-inline input-small">
-													<select class="btn btn-primary"
+									</div>
+								</div>
+									
+									
+									<div class="margin-top-10" >
+									
+									<div  align="right"  style="width:24%">
+                                             <select class="form-control" 
+													    [(ngModel)]="selectedTemplate" 
+													    (ngModelChange)="getSelectedEmailTemplate($event)">
+													  <option *ngFor="let templateType of templatesDropDown" [ngValue]="templateType">
+													    {{templateType.name}}
+													  </option>
+											</select>
+										</div>
+											<!-- <div class="inputs" align="right"  style="display:inline; float:right">
+											<select class="form-control"
 													    [(ngModel)]="selectedSortedOption" 
 													    (ngModelChange)="getSortedResult($event)">
 													  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
 													    {{sortOption.name}}
 													  </option>
 											</select>
+											
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"  (click)="searchTemplates()"></i>
+													<input type="text" 
+													 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
+												</div>
 											</div>
-										</div>
+										</div> -->
+										
+										<!-- <div class="inputs" align="right"  style="display:inline; margin-left: 650px;">
+											<div class="portlet-input input-inline input-small">
+													
+											</div>
+										</div> -->
 										 
 										<br><br>
 										<div class="row mix-grid" style="margin-top: 10px" *ngIf="emailTemplates">

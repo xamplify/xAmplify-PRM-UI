@@ -172,7 +172,8 @@ export class ContactService {
         this.logger.info( contactListId + "--" + removeUserIds );
         var newUrl = this.url + "userlist/" + contactListId + "/removeUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
-            .map(( response: any ) => response.json() );
+            .map(( response: any ) => response.json() )
+           .catch( this.handleErrorDelete);
     }
 
     removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
@@ -371,4 +372,16 @@ export class ContactService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( errMsg );
     }
+    
+    handleErrorDelete( error: any ) {
+        const errMsg = ( error.message ) ? error.message :
+        error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+         const errorbody = error._body;
+         if ( errorbody.indexOf('contactlist is being used in one or more campaigns. Please delete those campaigns first.') >= 0) {
+            return Observable.throw( errorbody );
+           }
+         else {
+            return Observable.throw( error );
+          }
+       }
 }

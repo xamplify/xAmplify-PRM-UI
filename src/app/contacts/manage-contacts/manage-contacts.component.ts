@@ -166,7 +166,7 @@ export class ManageContactsComponent implements OnInit {
             }
         }
     }
-    
+
     selectedSortByValue( event: any ) {
         this.contactsSort = event;
         const sortedValue = this.contactsSort.value;
@@ -265,7 +265,12 @@ export class ManageContactsComponent implements OnInit {
                 this.deleteSucessMessage = true;
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
             },
-            error => this.logger.error( error ),
+            ( error: any ) => {
+                if ( error.search( 'contact list is being used in one or more campaigns. Please delete those campaigns' ) != -1 ) {
+                    swal( 'Campaign Video!', error, 'error' );
+                }
+                console.log( error );
+            },
             () => this.logger.info( "deleted completed" )
             );
         this.deleteSucessMessage = false;
@@ -416,7 +421,7 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.log( "addContactComponent salesforceContacts() login finished." )
             );
     }
-    
+
     salesforceContactsSyncronize( contactListId: number ) {
         this.socialContact.socialNetwork = "SALESFORCE";
         for ( let i = 0; i < this.contactLists.length; i++ ) {
