@@ -4,12 +4,15 @@
 	.isPlaySubmit{ padding:15px 58px !important;}
 	 #play_video_player_demo1{ width:auto; }
      #overlay-modal{width:auto;}
+	 .showVideoDiv{margin-top: -317px}
 </style>
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
+		    <div id="modal-add">
 			<div id="newPlayerVideo"></div>
+			</div>
 			<!-- <div *ngIf="is360Value==false">
 			<video id="play_video_player_{{idValue}}" class="video-js vjs-default-skin"
 				controls preload="auto" height="318" poster="{{posterImg}}"
@@ -22,7 +25,8 @@
 		    	  <div id="newPlayerVideo"></div>
 			 </div> -->
 	      <!-- call to action modal popup-->
-			  <div id="overlay-modal" class="video-js" style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
+			  <div id="overlay-modal" class="video-js" [class.showVideoDiv]="showVideoModal==true"
+			   style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
                   <div>
@@ -116,7 +120,7 @@
 					</div>
 				</div>
 				<!-- Modal End-->
-			<div>
+			<div id="testModal">
 				<h3>{{selectedVideo.title}}</h3>
 				<h4>Description:</h4>
 				<p align="justify"> {{selectedVideo.description}}</p>

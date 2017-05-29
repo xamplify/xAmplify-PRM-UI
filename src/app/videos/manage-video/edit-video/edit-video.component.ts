@@ -346,7 +346,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
              this.videoUrl = this.saveVideoFile.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
              this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-             this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
+           ///  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
             var player = videojs('videoId');
             player.panorama({

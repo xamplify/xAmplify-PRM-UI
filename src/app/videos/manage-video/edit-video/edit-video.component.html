@@ -1,8 +1,17 @@
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
-	.emailCustomCss { margin-top: 92px; }
-	.isLowerTextCss {margin-top: 43px !important;}
+	.emailCustomCss { }    /*margin top 93px*/
+	/*.isLowerTextCss {margin-top: 43px !important;}*/
+	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
+	.isLowerTextCss{ }
+	.upperTextCssDiv{ font-size: 22px;color: white; word-break: break-all;
+       line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
+       text-align: center; width: 100%; top: 23px;
+	}
+	.lowerTextCssDiv{    position: absolute;top: 249px; line-height: 17px; font-size: 22px;
+    text-align: center !important;  color: white; word-break: break-all;
+    line-height: 1.0em; margin: -19px 20px; left: 0; right: 0;}
 	.isOffirstname {  margin-top: -43px !important ;}
 	.isPlaySubmit{ padding:15px 58px !important;}
 	.colorImg {  box-shadow: 2px 6px 6px #000; opacity: 1.0; filter: alpha(opacity=100); /* For IE8 and earlier */ }
@@ -40,9 +49,9 @@
                <label style="margin-top: 23px;"> </label>
                 <form #f="ngForm" novalidate>
                   <div>
-                  <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin: -19px 20px;">{{upperTextValue}}</p>
+                  <p class="upperTextCssDiv">{{upperTextValue}}</p>
                   </div>
-                 <div style="width: 500px;margin-top: 26px;">
+                 <div style="width: 500px;top: 38% !important;position: absolute;">
                  <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
                      <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group"   (ngModelChange)="checkingCallToActionValues()"
                      placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
@@ -64,14 +73,15 @@
                     </div>
                  </div> 
                </div>
-                <div [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
+                <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
+                 <p style="font-size: 16px;" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
                 </div> 
-                   <div>
-                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
+                   <div style="position: absolute; top: 258px; right: 11px;">
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -494px; top: -5px;" (click)="repeatPlayVideo()">
+						 <i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; top: 9px;position: absolute;right: -67px;" [class.changeRepeat]="isSkipChecked==false"></i></label>
                       <label *ngIf="isSkipChecked==true" id="skipOverlay" (click)="skipClose()"
-                      style="float:right;color:white;cursor:pointer;margin-top:-32px">
-                      <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i>
+                      style="float:right;color:white;cursor:pointer;">
+                      <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;"></i>
                       <b style="font-size: 13px; color:white;" >skip</b></label>
                  </div>  
                 </form>     
