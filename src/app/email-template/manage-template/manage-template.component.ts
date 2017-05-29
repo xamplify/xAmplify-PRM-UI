@@ -8,7 +8,6 @@ import { ReferenceService} from '../../core/services/reference.service';
 
 import { Pagination} from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
-
 declare var Metronic ,Layout ,Demo,swal ,TableManaged:any;
 
 @Component({
@@ -63,15 +62,13 @@ export class ManageTemplateComponent implements OnInit {
 	    
 	    listEmailTemplates(pagination:Pagination){
 	        try{
-	            swal( { title: 'Loading Templates', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif",allowOutsideClick: false  });
-	            this.emailTemplateService.listTemplates(pagination,this.userService.loggedInUserData.id)
+	           this.emailTemplateService.listTemplates(pagination,this.userService.loggedInUserData.id)
 	            .subscribe(
 	                (data:any) => {
 	                    this.emailTemplates = data.emailTemplates;
 	                    this.totalRecords = data.totalRecords;
 	                    pagination.totalRecords = data.totalRecords;
 	                    pagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
-	                    swal.close();
 	                    this.refService.showInfo("Finished listEmailTemplates in manageTemplatesComponent",this.emailTemplates);
 	                },
 	                (error:string) => {
@@ -220,7 +217,6 @@ export class ManageTemplateComponent implements OnInit {
 	        .subscribe(
 	        (data:string) => {
 	            document.getElementById('emailTemplateListDiv_'+id).remove();
-	            swal(data,'', 'success' );
 	            this.refService.showInfo("Email Template Deleted Successfully","")
 	        },
 	        (error:string) => {  this.refService.showError(error, "deleteEmailTemplate","ManageTemplatesComponent");}

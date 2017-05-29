@@ -37,23 +37,19 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          catch(error){
              let errorMessage = "Error In ngOnInit() In  selectTemplatesComponent";
              this.logger.error(errorMessage, error);
-             swal(error.toString(),errorMessage,"error");
          
          }
        }       
     
        listDefaultTemplates(){
-           swal( { title: 'Loading Templates', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif",allowOutsideClick: false  });
            this.emailTemplateService.listDefaultTemplates()
            .subscribe(
                (data:any) => {
                    this.allEmailTemplates = data;
                    this.filteredEmailTemplates = data;
-                   swal.close();
                },
                (error:string) => {
                    var cause = "Error In listDefaultTemplates() in selectTemplatesComponent";
-                   swal(error.toString(),cause,"error");
                    this.logger.error(cause+":"+error);
                },
                () =>this.logger.debug("Got List Of Default Templates From listDefaultTemplates() in selectTemplatesComponent",this.allEmailTemplates)
@@ -84,7 +80,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Regular Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showRegularTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     }
@@ -102,7 +97,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Video Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showVideoTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     }
@@ -120,7 +114,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug(this.filteredEmailTemplates);
         }catch(error){
             var cause = "Error in showUploadTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     }
@@ -139,7 +132,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Basic Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showBasicTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     }
@@ -158,7 +150,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Rich Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showRichTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     
@@ -178,7 +169,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Basic Video Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showBasicVideoTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     
@@ -198,7 +188,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Rich Video Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showRichVideoTemplates() in selectTemplatesComponent";
-            swal(error.toString(),cause,"error");
             this.logger.error(cause+":"+error);
         }
     
@@ -215,7 +204,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                    this.router.navigate(["/home/emailtemplate/createTemplate"]);
                },
                (error:any) => {
-                   swal(error,"","error");
                },
                () => console.log("Got Email Template")
            );

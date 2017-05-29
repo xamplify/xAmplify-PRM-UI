@@ -12,8 +12,8 @@ declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
 
 @Component({
     selector: 'app-select-campaign',
-    templateUrl: './select-campaign-type-component.html'
-    //styleUrls: ['./publish-content.component.css','../../../assets/css/video-css/ribbons.css']
+    templateUrl: './select-campaign-type-component.html',
+    styleUrls: ['../../../assets/css/pricing-table.css']
   })
   
 export class SelectCampaignTypeComponent implements OnInit{

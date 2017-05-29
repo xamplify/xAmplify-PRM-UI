@@ -5,7 +5,7 @@ export class EmailTemplate {
 		subject:string; 
 		body:string;
 		desc:string;
-		langId:string;
+		langId:number;
 		userDefined:boolean;
 		defaultTemplate:boolean;
 		regularTemplate:boolean;

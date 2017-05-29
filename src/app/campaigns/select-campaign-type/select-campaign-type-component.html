@@ -15,11 +15,11 @@
 				[routerLink]="['../../dashboard']">Home</a> <i
 				class="fa fa-angle-right"></i></li>
 			<li><a [routerLink]="['../../campaigns/managepublish']">Manage Publish</a> <i class="fa fa-angle-right"></i></li>
-			<li><a style="color: blue;">Select Campaign</a></li>
+			<li><a style="color: blue;">Publish a campaign</a></li>
 		</ul>
 	</div><!-- End of page-bar -->
 
-	<div class="row">
+<!-- 	<div class="row">
 		<form method="get">
 			<div class="col-md-12">
 				<div class="col-md-6" id="imageDiv">
@@ -38,6 +38,100 @@
 				</div>
 			</div>
 		</form>
-	</div>	
-	
+	</div>	 -->
+	<div class="row">
+					<div class="col-md-12">
+						<!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
+						<div class="portlet light">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-cogs"></i>Publish a campaign <small style="font-size: 65%">please choose one of the option to publish a campaign</small>
+								</div>
+								
+							</div>
+							<div class="portlet-body">
+								<div class="row margin-bottom-40">
+									<!-- Pricing -->
+									<div class="col-md-2">
+									</div>
+									<div class="col-md-4">
+										<div class="pricing hover-effect">
+											<div class="pricing-head">
+												<h3>Video e-mail Campaign </h3>
+												<h4><img alt="" class="img" src="assets/images/video-email.png">
+												</h4>
+											</div>
+											<h5><span style="padding-left:5px;"> Steps involved:</span></h5>
+											<ul class="pricing-content list-unstyled">
+												<li>
+													<i class="fa fa-list"></i> Provide campaign details
+												</li>
+												<li>
+													<i class="fa fa-video-camera"></i> Select a video
+												</li>
+												<li>
+													<i class="fa fa-users"></i> Select contact lists
+												</li>
+												<li>
+													<i class="fa fa-envelope"></i> Select an e-mail template
+												</li>
+												<li>
+													<i class="fa fa-rocket"></i> Preview and Launch
+												</li>
+											</ul>
+											<div class="pricing-footer">
+												<p>
+													  ** before you proceed further in publishing a campaign, make sure we feed the platform with need content.
+												</p>
+												<a href="javascript:;" class="btn yellow-crusta" (click)="createVideoCampaign()">
+												Select <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="pricing hover-effect">
+											<div class="pricing-head">
+												<h3>Regular E-mail Campaign
+												</h3>
+												<h4><img alt="" class="img" src="assets/images/regular-email.png">
+												</h4>
+											</div>
+											<h5><span style="padding-left:5px;"> Steps involved:</span></h5>
+											<ul class="pricing-content list-unstyled">
+												<li>
+													<i class="fa fa-list"></i> Provide campaign details
+												</li>
+												<li>
+													<i class="fa fa-video-camera"></i> Select a video
+												</li>
+												<li>
+													<i class="fa fa-users"></i> Select contact lists
+												</li>
+												<li>
+													<i class="fa fa-envelope"></i> Select an e-mail template
+												</li>
+												<li>
+													<i class="fa fa-rocket"></i> Preview and Launch
+												</li>
+												
+											</ul>
+											<div class="pricing-footer">
+												<p>
+													 ** before you proceed further in publishing a campaign, make sure we feed the platform with need content.
+												</p>
+												<a href="javascript:;" class="btn yellow-crusta" (click)="createRegularCampaign()">
+												Select <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+											</div>
+										</div>
+									</div>
+									
+									<!--//End Pricing -->
+								</div>
+							</div>
+						</div>
+						<!-- END INLINE NOTIFICATIONS PORTLET-->
+					</div>
+				</div>
 </div><!-- End of page-content -->

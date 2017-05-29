@@ -45,41 +45,25 @@ h1 {
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
 		<div class="col-md-12">
-			<div class="tabbable tabbable-custom tabbable-noborder">
-
-				<div class="tab-content">
-					<div class="margin-top-10" style="padding-left: 15%">
-						<ul class="mix-filter" style="display: inline">
-							<li class="filter" (click)="showAllTemplates()"
-								style="font-size: 20px;">All Email Template's</li>
-							<li class="filter" (click)="showRegularTemplates()"
-								style="font-size: 20px;">Regualr Email Template's</li>
-							<li class="filter" (click)="showVideoTemplates()"
-								style="font-size: 20px;">Video Email Template's</li>
-							<li class="filter" (click)="showUploadTemplates()"
-								style="font-size: 20px;">Upload Template</li>
-
-
-						</ul>
-					</div>
-					<div class="tab-pane active regular_emails">
-						<!-- BEGIN FILTER -->
-						<div style="display: inline">
-							<ul class="mix-filter" style="display: inline">
-
-								<li class="filter" (click)="showBasicTemplates()">Basic
-									Template's</li>
-								<li class="filter" (click)="showRichTemplates()">Rich
-									Template's</li>
-								<li class="filter" (click)="showBasicVideoTemplates()">
-									Basic Video Template's</li>
-								<li class="filter" (click)="showRichVideoTemplates()">Rich
-									Video Template's</li>
+			<div class="portlet light">
+				<div class="portlet-title">
+					<div class="caption">
+						<div class="row">
+						<div class="colxs-12 col-sm-9">
+						<div>
+							<ul class="mix-filter">
+								<li class="filter" (click)="showAllTemplates()">All Email Template's</li>
+								<li class="filter" (click)="showBasicTemplates()">Basic Template's</li>
+								<li class="filter" (click)="showRichTemplates()">Rich Template's</li>
+								<li class="filter" (click)="showBasicVideoTemplates()">Basic Video Template's</li>
+								<li class="filter" (click)="showRichVideoTemplates()">RichVideo Template's</li>
+								<li class="filter" (click)="showUploadTemplates()">Upload Template</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
-						<div class="inputs regular_emails" align="right"
-							style="display: inline; float: right">
+						</div>
+						<div class="colxs-12 col-sm-3">
+						<div class="inputs regular_emails" align="right" style="float: right">
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
 									<i class="icon-magnifier"></i> <input type="text"
@@ -88,9 +72,13 @@ h1 {
 								</div>
 							</div>
 						</div>
-
-						<div class="row mix-grid" style="margin-top: 10px">
-							<div class="col-md-3 col-sm-4 mix"
+						</div>
+						</div>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+							<!-- <div class="col-md-3 col-sm-4 mix"
 								*ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index"
 								style="display: block; opacity: 1;">
 								<div class="mix-inner"
@@ -109,10 +97,25 @@ h1 {
 										</div>
 									</div>
 								</div>
+							</div> -->
+							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
+								<div class="portlet light block">
+									<div class="portlet-title">
+										<div class="caption">
+											<h4 class="caption-subject font-purple-intense uppercase text-center">{{beeRegularTemplate.name}}</h4>
+										</div>
+									</div>
+									<div class="portlet-body">
+										<div class="row email-template-container">
+											<img class="img-responsive center-block" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
+											<div class="email-template-i-container">
+										        <i class="fa fa-plus-circle fa-4x" aria-hidden="true" (click)="showTemplateById(beeRegularTemplate.id,i)"></i>
+										    </div>
+										</div>
+									</div>
+								</div>
 							</div>
-
 						</div>
-					</div>
 				</div>
 			</div>
 			<!-- END PAGE CONTENT-->

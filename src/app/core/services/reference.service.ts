@@ -7,7 +7,6 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import {Category} from '../../videos/models/category';
 import { Logger } from "angular2-logger/core";
-declare var swal :any;
 @Injectable()
 export class ReferenceService{
 
@@ -32,7 +31,6 @@ export class ReferenceService{
     
     showError(cause:string,methodName:string,componentName:string){
        let message = "Error In "+methodName+"() "+componentName;
-       swal(cause.toString(),message,"error");
        this.logger.error(message+":",cause);
     }
     

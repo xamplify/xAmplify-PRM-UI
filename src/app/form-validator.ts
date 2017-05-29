@@ -51,7 +51,6 @@ export function validateOwnThumbnail(imageFile:any,fileItem:FileItem,ownThumb:an
 		  let ownThumbnail = group.controls[ownThumb];
 	      if(fileItem!= null  && (fileItem != undefined && ownThumb.value != false)){
 	        console.log("in validate own thumbnail method");
-	        alert("sdgagdskgkasdjkgjadsl");
 	    	  return{
 	              invalidImagefile:true
 	          }

@@ -76,7 +76,7 @@ export class TopnavbarComponent implements OnInit {
                     if(!(response.profileImagePath.indexOf(null)>-1)){
                         this.profilePicutrePath = response.profileImagePath;
                     }else{
-                        this.profilePicutrePath =  "../../assets/admin/pages/media/profile/icon-user-default.png";
+                        this.profilePicutrePath =  "assets/admin/pages/media/profile/icon-user-default.png";
                     }
                     console.log(this.profilePicutrePath);
                 }else{

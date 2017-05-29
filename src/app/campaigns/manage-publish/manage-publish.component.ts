@@ -22,7 +22,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: an
   styleUrls: ['./manage-publish.component.css'],
   providers:[Pagination]
 })
-export class ManagePublishComponent implements OnInit {
+export class ManagePublishComponent implements OnInit,OnDestroy {
     campaigns:Campaign[];
     pager: any = {};
     pagedItems: any[];
@@ -30,10 +30,10 @@ export class ManagePublishComponent implements OnInit {
     public searchKey :string="";
     isCampaignCreated:boolean = false;
     isCampaignUpdated:boolean = false;
-
+    isCampaignDeleted:boolean = false;
         sortByDropDown  = [
                    {'name':'Sort By','value':''},
-                   {'name':'Name(A-Z)','value':'camapaign-ASC'},
+                   {'name':'Name(A-Z)','value':'campaign-ASC'},
                    {'name':'Name(Z-A)','value':'campaign-DESC'},
                    {'name':'Created Date(ASC)','value':'createdTime-ASC'},
                    {'name':'Created Date(DESC)','value':'createdTime-DESC'}
@@ -57,7 +57,7 @@ export class ManagePublishComponent implements OnInit {
             private pagination:Pagination,private pagerService: PagerService,private refService:ReferenceService) {
         this.isCampaignCreated = this.refService.isCampaignCreated;
         this.isCampaignUpdated = this.refService.isCampaignUpdated;
-        if(this.isCampaignCreated){
+        if(this.isCampaignCreated || this.isCampaignUpdated){
             setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 2000);
         }
     }
@@ -73,7 +73,6 @@ export class ManagePublishComponent implements OnInit {
             },
             error => {
                 this.logger.error("error in listCampaign()", error);
-                swal( 'Oops...','Something went wrong!','error');
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
         );
@@ -164,12 +163,21 @@ export class ManagePublishComponent implements OnInit {
         this.campaignService.delete(id)
         .subscribe(
         data => {
+            this.isCampaignDeleted = true;
             $( '#campaignListDiv_' + id ).remove();
-            swal(data,'', 'success' );
+            setTimeout( function() { $( "#deleteSuccess" ).slideUp( 500 ); }, 2000 );
         },
-        error => { swal(error,"","error");},
+        error => { console.log(error)},
         () => console.log( "Campaign Deleted Successfully" )
         );
     }
- 
+
+    ngOnDestroy() {
+        this.refService.isCampaignCreated = false;
+        this.refService.isCampaignUpdated = false;
+        this.isCampaignDeleted = false;
+        
+    }
+    
+    
 }
