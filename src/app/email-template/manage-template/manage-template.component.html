@@ -151,8 +151,8 @@ h6 {
 											  <label for="ex1"></label>
 <!-- 											  <input disabled="disabled" style="color: blue;"  class="form-control" id="ex1" type="text" value="Showing  {{totalRecords}} Records">
  -->										</div>
-										<div class="col-xs-1" style="float: right;margin-top: 10px;">
-											<select class="btn btn-primary"
+										<div class="col-xs-2" style="float: right;margin-top: 10px;margin-right:-196px;width:10%;">
+											<select class="form-control"
 													    [(ngModel)]="itemsSize" 
 													    (ngModelChange)="getNumberOfItemsPerPage($event)">
 													  <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">
