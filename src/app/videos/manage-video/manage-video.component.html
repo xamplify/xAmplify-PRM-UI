@@ -74,8 +74,8 @@
 											   </select>
 										</div> -->
 										<div class="inputs" align="right"  style="float:right">
-										  <div style="float:left">  <label >Sort By:</label>
-										       <select class="dropDownCss" [(ngModel)]="videoSort"  (ngModelChange)="selectedSortByValue($event)">
+										  <div style="float:left">
+										       <select class="form-control" [(ngModel)]="videoSort"  (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 										   </div>
