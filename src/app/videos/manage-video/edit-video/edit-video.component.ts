@@ -361,7 +361,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
                  const isValid = newValue.overLayValue;
                 player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
-                      $('#videoId').append( $('#overlay-modal').show());
+                    //  $('#videoId').append( $('#overlay-modal').show());
+                    newValue.show360ModalDialog();
                     }
                     else if(isValid !== 'StartOftheVideo' ) {
                       $('#overlay-modal').hide(); player.play(); }
@@ -378,7 +379,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
                  });
                  player.on('ended', function() {
                      if (isValid === 'EndOftheVideo') {
-                     $('#videoId').append( $('#overlay-modal').show());
+                   //  $('#videoId').append( $('#overlay-modal').show());
+                     newValue.show360ModalDialog();
                      $('.video-js .vjs-control-bar').hide();
                     }
                      else if(isValid !== 'EndOftheVideo') {
@@ -607,6 +609,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         else { 	$('.video-js .vjs-fullscreen-control').show();
         }
     }
+    showEditModalDialog(){
+      $('#edit_video_player').append( $('#overlay-modal').show());
+    }
+    show360ModalDialog(){
+     $('#videoId').append( $('#overlay-modal').show());
+    }
     ngOnInit() {
         console.log('EditVideoComponent ngOnit: ');
         this.categories = this.referenceService.refcategories;
@@ -710,7 +718,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
              this.ready(function() {
                  if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
-                      $('#edit_video_player').append( $('#overlay-modal').show());
+                      callactionValue.showEditModalDialog();
+                   //   $('#edit_video_player').append( $('#overlay-modal').show());
                     }
                  else if(isValid !== 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
@@ -729,7 +738,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
              this.on('ended', function() {
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
-                     $('#edit_video_player').append( $('#overlay-modal').show());}
+                   //  $('#edit_video_player').append( $('#overlay-modal').show());
+                     callactionValue.showEditModalDialog();
+                }
                  else if(isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#overlay-modal').hide(); player.pause();}

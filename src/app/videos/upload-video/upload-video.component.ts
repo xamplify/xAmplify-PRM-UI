@@ -112,9 +112,10 @@ export class UploadVideoComponent implements OnInit {
                 this.isFileDrop = true;
               // document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
-            }
+            };
+          $('head').append('<script src="assets/js/indexjscss/videojs.record.js"" type="text/javascript"  class="r-video"/>');
         } catch (err) {
-            console.error('ERROR : FileUploadComponent constructor ' + err)
+            console.error('ERROR : FileUploadComponent constructor ' + err);
         }
     }
 
@@ -141,9 +142,9 @@ export class UploadVideoComponent implements OnInit {
                         this.videoFileService.saveVideoFile.gifFiles = []; }
                     this.videoFileService.actionValue = "Save";
                     console.log(this.videoFileService.actionValue);
-                    if(this.playerInit ==true){
+                    if(this.playerInit === true){
                         this.closeRecordPopup();}
-                    if(this.redirectPge  == false){
+                    if(this.redirectPge  === false){
                         this.router.navigateByUrl('/home/videos/manage_videos');}
                      else {
                          this.videoFileService.actionValue = '';
@@ -157,10 +158,10 @@ export class UploadVideoComponent implements OnInit {
                       }
                     else {
                           console.log('process video data object is null please try again:');
-                          swal("Contact Admin" ,this.processVideoResp.error,'error')
+                          swal("Contact Admin" ,this.processVideoResp.error,'error');
                          if(this.RecordSave === true){
-                          // this.player.recorder.reset();
-                           this.player.recorder.stopDevice();
+                           this.player.recorder.reset();
+                        //   this.player.recorder.stopDevice();
                            $("#myModal").modal("hide"); }
                          console.log(this.processVideoResp.error);
                       }
@@ -203,15 +204,13 @@ export class UploadVideoComponent implements OnInit {
         this.isChecked = false;
         this.isFileDrop =false;
     }
-
-
     fileChange(inputFile:any,event:any) {
         this.readFiles(inputFile.files);
     }
     readFile(file:any, reader:any, callback:any) {
         reader.onload = () => {
             callback(reader.result);
-        }
+        };
         reader.readAsDataURL(file);
     }
     readFiles(files:any, index = 0) {
@@ -233,12 +232,10 @@ export class UploadVideoComponent implements OnInit {
         this.isChecked = false;
         this.isDisable = false;
     }
-   
   recordVideo(){
          $('#script-text').val('');
          $("#myModal").modal("show");
     } 
-  
   uploadRecordedVideo(){
       this.RecordSave = true;
       this.saveVideo= false;
@@ -269,8 +266,9 @@ export class UploadVideoComponent implements OnInit {
        );
   }
   removeRecordVideo(){
-       this.player.recorder.stopDevice();
-       this.player.recorder.getDevice();
+     //  this.player.recorder.stopDevice();
+     //  this.player.recorder.getDevice();
+       this.player.recorder.reset();
        this.saveVideo = false;
        this.discardVideo = false;
        this.hideSaveDiscard = true;
@@ -280,7 +278,8 @@ export class UploadVideoComponent implements OnInit {
         this.defaultSettings();
         this.stop();
         this.isFileDrop =false;
-        this.player.recorder.stopDevice();
+       // this.player.recorder.stopDevice();
+       this.player.recorder.reset();
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
@@ -672,15 +671,17 @@ export class UploadVideoComponent implements OnInit {
             }
           }
        ngOnDestroy() {
-           console.log('Deinit - Destroyed Component')
+           console.log('Deinit - Destroyed Component');
            if(this.playerInit==true){
-          // this.player.recorder.destroy();
-           this.player.recorder.stopDevice();}
+           this.player.recorder.destroy();
+          // this.player.recorder.stopDevice();
+        }
            console.log('Destroyed Component completed');
            this.isChecked= false;
            if(this.processing ==  true) {
                 this.redirectPge = true;
-                swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!'); 
+                swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!');
            }
+           $('.r-video').remove();
        }
 }
