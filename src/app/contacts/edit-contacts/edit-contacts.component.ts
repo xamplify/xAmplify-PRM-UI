@@ -470,6 +470,7 @@ export class EditContactsComponent implements OnInit {
                 $( "button#add_contact" ).prop( 'disabled', false );
                 $( "button#upload_csv" ).prop( 'disabled', false );
                 this.clipboardUsers.length = 0;
+                this.cancelContacts();
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.logger.error( error ),
