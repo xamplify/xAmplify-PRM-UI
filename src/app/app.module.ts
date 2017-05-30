@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
+import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShareButtonsModule } from 'ng2-sharebuttons';
@@ -47,10 +48,11 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
     provide: Http,
     useFactory: httpService,
     deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
-  },
+  }, {provide: LocationStrategy, useClass: HashLocationStrategy},
     UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
     VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
   bootstrap: [AppComponent]
+
 })
 export class AppModule { }
 

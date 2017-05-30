@@ -10,9 +10,10 @@
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
-		    <div id="modal-add">
+		    <div>
 			<div id="newPlayerVideo"></div>
 			</div>
+			<div id="modalDialog"></div>
 			<!-- <div *ngIf="is360Value==false">
 			<video id="play_video_player_{{idValue}}" class="video-js vjs-default-skin"
 				controls preload="auto" height="318" poster="{{posterImg}}"
@@ -21,11 +22,8 @@
 				 <source [src] = videoUrl  type="video/mp4" />>
 			</video>	
 			</div>
-			 <div  *ngIf="is360Value==true">
-		    	  <div id="newPlayerVideo"></div>
-			 </div> -->
 	      <!-- call to action modal popup-->
-			  <div id="overlay-modal" class="video-js" [class.showVideoDiv]="showVideoModal==true"
+			  <div id="overlay-modal" class="video-js" [ngClass]="['showVideoDiv']"
 			   style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
@@ -74,10 +72,9 @@
 					</span>
 				</div>
 			</div>
-			
-			<div>
-					<a *ngIf="shareVideo==true" class="btn btn-primary" style="color:white"
-						[routerLink]="['../../../embed-video', alias]">
+		   	<div>
+				<a *ngIf="shareVideo==true" class="btn btn-primary" style="color:white"
+					[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
 						data-toggle="modal" data-target="#myModal">
