@@ -27,6 +27,17 @@ h6 {
 
     </style>
 <div class="page-content">
+<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li>Manage Templates
+			</li>
+		</ul>
+
+	</div>
+			<div class="row">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">
@@ -92,9 +103,9 @@ h6 {
 													
 											</div>
 										</div> -->
-										 
-										<br><br>
-										<div class="row mix-grid" style="margin-top: 10px" *ngIf="emailTemplates">
+										<!--  
+										<br><br> -->
+										<div class="row mix-grid" style="margin-top: 15px;margin-left:4px;" *ngIf="emailTemplates">
 										  <div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
 											<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;" id="emailTemplateListDiv_{{emailTemplate.id}}">
 											    <div id="container"> <h3>{{emailTemplate.description}}<span class="arrow"></span> </h3> </div>
@@ -163,6 +174,7 @@ h6 {
 										
 										<!-- pager end here -->
 							</div>
+						</div>
 						</div>
 					</div>
 				<!-- END PAGE CONTENT-->
