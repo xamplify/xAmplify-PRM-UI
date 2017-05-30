@@ -80,31 +80,6 @@ h6 {
 													  </option>
 											</select>
 										</div>
-											<!-- <div class="inputs" align="right"  style="display:inline; float:right">
-											<select class="form-control"
-													    [(ngModel)]="selectedSortedOption" 
-													    (ngModelChange)="getSortedResult($event)">
-													  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
-													    {{sortOption.name}}
-													  </option>
-											</select>
-											
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right">
-													<i class="icon-magnifier"  (click)="searchTemplates()"></i>
-													<input type="text" 
-													 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
-												</div>
-											</div>
-										</div> -->
-										
-										<!-- <div class="inputs" align="right"  style="display:inline; margin-left: 650px;">
-											<div class="portlet-input input-inline input-small">
-													
-											</div>
-										</div> -->
-										<!--  
-										<br><br> -->
 										<div class="row mix-grid" style="margin-top: 15px;margin-left:4px;" *ngIf="emailTemplates">
 										  <div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
 											<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;" id="emailTemplateListDiv_{{emailTemplate.id}}">
