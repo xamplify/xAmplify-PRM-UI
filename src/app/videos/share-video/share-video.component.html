@@ -1,10 +1,79 @@
+<style type="text/css">
+	.isPlayButtonCss{ margin-top: -66px !important;}
+	.ownThumnailCss{margin-top: -22px;}
+	/*.isLowerTextCss {margin-top: 43px !important;}*/
+	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
+	.upperTextCssDiv{ font-size: 22px;color: white; word-break: break-all;
+       line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
+       text-align: center; width: 100%; top: 23px;
+	}
+	.lowerTextCssDiv{    position: absolute;top: 249px; line-height: 17px; font-size: 22px;
+    text-align: center !important;  color: white; word-break: break-all;
+    line-height: 1.0em; margin: -19px 20px; left: 0; right: 0;}
+	.isOffirstname {  margin-top: -43px !important ;}
+	.isPlaySubmit{ padding:15px 58px !important;}
+	/*#embed_video_player {width:auto;}*/
+	 #newPlayerVideo{width:auto;}
+     #overlay-modal{width:auto;}
+	 .overlaySet{margin-top:-299px;}
+</style>
+
 <div class="portlet light">
 	<div class="portlet-body">   	
-		<video id="example_video_11" class="video-js vjs-default-skin"
-				  controls  width="542" height="310" poster=""
-				  data-setup='{"example_option":true }'  [src]=videoUrl >
+			<!--<div *ngIf="is360Value==false">
+		  <video id="embed_video_player" class="video-js vjs-default-skin"
+				  controls  width="542" height="310" poster="{{posterImagePath}}"
+				  data-setup='{"example_option":true }' >
 				  <source [src]=videoUrl type="video/mp4" />
-	   </video>
+	       </video>
+	   </div>-->
+		 <div>
+				  <div id="newPlayerVideo"></div>
+        </div>
+			<div id="overLayDialog"></div>
+            	<!-- video overlay modal popup -->
+			 <div id="overlay-modal" class="video-js" 
+              style="width:640px;height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
+               <label style="margin-top: 23px;"> </label>
+                <form #f="ngForm" novalidate>
+                  <div>
+                  <p class="upperTextCssDiv">{{upperTextValue}}</p>
+                  </div>
+                 <div style="width: 500px;top: 38% !important;position: absolute;">
+                 <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
+                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group"   (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
+                 </div>  
+                 <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
+                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group"  (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
+                </div> 
+                  <div id="maimessage" style="width: 500px;"> 
+                    <div style=" width: 106px;">
+                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group" (ngModelChange)="checkingCallToActionValues()"
+                   placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;border-left: 0px solid #ffffff;" 
+                   pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+				    #email_id="ngModel">
+				    </div>
+				     <div  [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
+                      <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
+                      <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
+                    </div>
+                 </div> 
+               </div>
+                <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
+                 <p style="font-size: 16px;">{{lowerTextValue}}</p>
+                </div> 
+                   <div style="position: absolute; top: 258px; right: 11px;">
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -494px; top: -5px;" (click)="repeatPlayVideo()">
+						 <i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; top: 9px;position: absolute;right: -67px;" [class.changeRepeat]="isSkipChecked==false"></i></label>
+                      <label *ngIf="isSkipChecked==true" id="skipOverlay" (click)="skipClose()"
+                      style="float:right;color:white;cursor:pointer;">
+                      <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;"></i>
+                      <b style="font-size: 13px; color:white;" >skip</b></label>
+                 </div>  
+                </form>     
+            </div>
    </div>
   <!--  <div class="addthis_sharing_toolbox"></div> -->
         	<share-button [button]='twitterButtons'  [url]="checkUrl" ></share-button> 

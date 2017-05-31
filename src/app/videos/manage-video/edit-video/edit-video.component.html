@@ -21,13 +21,14 @@
      #edit_video_player {width:auto;}
 	 #newPlayerVideo{width:auto;}
      #overlay-modal{width:auto;}
+	 .overlaySet{margin-top:-299px;}
 </style>
 
 <div class="portlet light">
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
 			<!-- video started -->
-			<div class="col-md-6" style="padding-top: 38px">
+			<div class="col-md-6" style="padding-top: 28px">
 				<div *ngIf="is360Value==false">
 				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
                  data-setup='{"example_option":true }'>
@@ -38,8 +39,9 @@
                 <div  *ngIf="is360Value==true">
 				  <div id="newPlayerVideo"></div>
                 </div>
+				<div id="overLayDialog"></div>
             	<!-- video overlay modal popup -->
-			 <div id="overlay-modal" class="video-js" 
+			 <div id="overlay-modal" class="video-js" [ngClass]="['overlaySet']"
               style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"> </label>
                 <form #f="ngForm" novalidate>
@@ -62,8 +64,8 @@
                    pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 				    #email_id="ngModel">
 				    </div>
-				     <div id="playorsubmit" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
-                      <a><button type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
+				     <div  [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
+                      <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
                       <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
                     </div>
                  </div> 
@@ -156,14 +158,14 @@
 				<!-- Modal End-->
 			</div>
 			<!-- video ended  -->
-			<div class="col-md-6">
+			<div class="col-md-6" style=" top: -15px;">
 				<form class="form-horizontal" role="form" [formGroup]="videoForm" *ngIf="active" (ngSubmit)="saveVideo()">
 					<div class="form-actions">
 						<div class="row">
-							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right">
+							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false">Save</button>
-									<button type="button" class="btn default" (click)="cancelVideo()">Cancel</button>
+									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
 								</div>
 							</div>
 						</div>
