@@ -66,9 +66,11 @@ description = 'hi this is sathish';
           this.embedVideoFile = data;
           console.log(data);
           this.posterImagePath = this.embedVideoFile.imagePath;
-          this.model.email_id = " ";
-          this.firstName = " ";
-          this.lastName = " ";
+        //  this.model.email_id = " ";
+        //   this.firstName = " ";
+        //   this.lastName = " ";
+          this.lowerTextValue = this.embedVideoFile.lowerText;
+          this.upperTextValue = this.embedVideoFile.upperText;
           this.is360Value  =  this.embedVideoFile.is360video;
        //   alert(this.is360Value);
         if(this.embedVideoFile.startOfVideo === true) {this.videoOverlaySubmit = 'PLAY'; }
@@ -92,7 +94,7 @@ description = 'hi this is sathish';
         else{
           this.playNormalVideo();
         }
-
+       this.checkingCallToActionValues();
        this.defaultVideoSettings();
        this.transperancyControllBar(this.valueRange);
        if (this.embedVideoFile.enableVideoController === false)

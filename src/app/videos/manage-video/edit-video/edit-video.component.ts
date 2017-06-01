@@ -28,7 +28,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
 
     public imgURL = '';
     // public imgURL = 'http://139.59.1.205:9090/vod/images/125/03022017/flight1486153663429_play1.gif';
-    public images = 'http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
     public linkurl = 'http://aravindu.com/embed-video/e47c4a80-1be0-4b32-8098-a327baac05f2';
     public encodeImage = encodeURIComponent(this.imgURL);
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -130,6 +129,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     public selectedVideoFilePath: string;
     public value360: boolean;
     public isCallAction: string;
+    public embedSrcPath: string;
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -656,6 +656,11 @@ $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-pan
     show360ModalDialog(){
      $('#overLayDialog').append( $('#overlay-modal').show());
     // $('#videoId').append( $('#overlay-modal').show());
+   }
+   embedSourcePath(alias: string, viewBy: string){
+    this.embedSrcPath = document.location.href;
+    this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '#/embedVideo' + viewBy + alias;
+    console.log(this.embedSrcPath);
     }
     ngOnInit() {
         $('#overlay-modal').hide();
@@ -736,6 +741,7 @@ $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-pan
         this.defaultValues();
         this.defaultImagePaths();
         this.defaultGifPaths();
+        this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
         }
         catch (err) {
             console.log('error' + err);

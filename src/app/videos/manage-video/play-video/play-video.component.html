@@ -1,7 +1,7 @@
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
-	.isPlaySubmit{ padding:15px 58px !important;}
+	.isPlaySubmit{ padding:15px 58px !important;border-radius: 0px;}
 	 #play_video_player_demo1{ width:auto; }
      #overlay-modal{width:auto;}
 	 .showVideoDiv{margin-top: -317px}
@@ -42,7 +42,7 @@
                   <div id="maimessage" [class.emailCustomCss]="isPlayButton==false" style="width: 500px;"> 
                     <div style=" width: 106px;">
                     <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group" (ngModelChange)="checkingCallToActionValues()"
-                   placeholder="Email" style=" width: 313px; height: 51px; margin-left: 61px; font-size: 22px; color: black;border-left: 0px solid #ffffff;" 
+                   placeholder="Email" style=" width: 311px; height: 51px; margin-left: 63px; font-size: 22px; color: black;" 
                    pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 				    #email_id="ngModel">
 				    </div>
@@ -94,7 +94,7 @@
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{images}}"  {{embedFullScreen}}></iframe><br /><a href="{{images}}" target="_blank">{{title}}</a></textarea>
+											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{title}}</a></textarea>
 									</div>
 									<span class="input-group-btn">
 										<div style="margin-top: 4px;">

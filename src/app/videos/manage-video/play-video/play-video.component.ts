@@ -22,7 +22,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public user: User = new User();
     model: any = {};
     selectedPosition: number;
-    public images = 'http://localhost:3000/embed-video/75eb5693-1865-4002-af66-ea6d1dd1d874';
+    public embedSrcPath: string;
     embedWidth = '640';
     embedHeight = '360';
     videoSizes: string[];
@@ -66,6 +66,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public is360Value: boolean;
     public new360video: string;
     public video360running: boolean;
+    public viewBy: string;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,private router: Router,
     private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
         this._elementRef = elementRef;
@@ -73,6 +74,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.disLikesValues = 0;
         this.likesValues = 2;
         this.isFullscreen = true;
+    }
+    embedSourcePath(alias: string, viewBy: string){
+    this.embedSrcPath = document.location.href;
+    this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '#/embedVideo' + viewBy + alias;
+    console.log(this.embedSrcPath);
     }
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true ) {
@@ -116,6 +122,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.title = this.selectedVideo.title;
         this.alias = this.selectedVideo.alias;
         this.is360Value = this.selectedVideo.is360video;
+        this.viewBy = this.selectedVideo.viewBy;
+        this.embedSourcePath(this.alias ,this.viewBy);
     }
    showOverlayModal(){
         //  $("#videoId").append($("#overlay-modal").show());
