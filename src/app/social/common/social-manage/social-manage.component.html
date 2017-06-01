@@ -1,0 +1,47 @@
+<div class="page-content">
+	<div class="col-xs-12">
+		<div class="portlet-body">
+			<div class="portlet light">
+				<div class="portlet-title">
+					<div class="caption">
+						<h4>Manage Account(s)</h4>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<div class="portlet-body">
+							<div class="col-md-3 col-sm-4 col-xs-12 box"
+								*ngFor="let socialStatusProvider of socialStatusProviders;let i = index">
+								<div class="portlet light block">
+									<div class="portlet-title">
+										<div class="caption">
+											<div class="col-xs-12">
+												<img alt="selected"
+													src="https://cdn1.iconfinder.com/data/icons/linecon/512/tick-24.png">
+												<h5 class="caption-subject uppercase text-center">{{socialStatusProvider.profileName}}</h5>
+											</div>
+										</div>
+									</div>
+									<div class="portlet-body">
+										<div class="row email-template-container">
+											<img class="img-responsive center-block"
+												src="{{MEDIA_URL}}{{socialStatusProvider.profileImagePath}}?access_token={{accessToken}}"
+												alt="{{socialStatusProvider.profileName}}">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="pull-right">
+									<button type="button" class="btn btn-success">Save</button>
+									<button type="button" class="btn btn-default">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -10,7 +10,6 @@ import { UiSwitchModule } from 'ngx-ui-switch/src';
 import { ColorPickerService } from 'angular2-color-picker';
 import { ColorPickerDirective } from 'angular2-color-picker';
 import { TagInputModule } from 'ng2-tag-input';
-import { ChartModule } from 'angular2-highcharts';
 import { HttpModule } from '@angular/http';
 import { CKEditorModule } from 'ng2-ckeditor';
 
@@ -20,12 +19,12 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 
 @NgModule({
 	 imports: [ CommonModule,RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-	           TagInputModule, ChartModule, HttpModule, CKEditorModule, Ng2FilterPipeModule ],
+	           TagInputModule, HttpModule, CKEditorModule, Ng2FilterPipeModule ],
 	           
 	 declarations: [ ColorPickerDirective ],
 	 
 	 exports :[ FileSelectDirective, ColorPickerDirective, FileDropDirective, FormsModule, CommonModule, RouterModule,
-	           FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule, ChartModule,
+	           FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule, 
 	           HttpModule, CKEditorModule, Ng2FilterPipeModule ],
 	              
 	 providers: [ ColorPickerService ],  

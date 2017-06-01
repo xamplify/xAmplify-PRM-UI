@@ -52,6 +52,13 @@ export class SocialService {
         .catch(this.handleError);
     }
     
+    listAccounts(socialProvider:string){
+        return this.http.get(this.URL+socialProvider+"/accounts?access_token="+
+                this.authenticationService.access_token+"&accessToken=EAATKxofcScwBAPeulr2DRil5MeRPr5pS996A4Xp83dQBzgrjdcGPZBmi6zX497uJwbjmmXmWhTGAR1WxnQ7RFZCGTqHHcm0tOFJhsbZCHEIoTqzf8xHADZBMvZB212DZBrkBpRpXog4OpzZAazYRLzOdZBQR7JM6bRoaQ8hxBlwWWgZDZD")
+        .map(this.extractData)
+        .catch(this.handleError); 
+    }
+    
     listEvents(){
         return this.http.get(this.URL+"social/update-status?access_token="+this.authenticationService.access_token)
         .map(this.extractData)

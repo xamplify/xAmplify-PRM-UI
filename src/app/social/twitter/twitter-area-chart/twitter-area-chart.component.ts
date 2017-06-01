@@ -2,24 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { ChartModule  } from 'angular2-highcharts';
 import {TwitterService} from '../../services/twitter.service';
 
+declare var Highcharts: any;
 @Component( {
     selector: 'app-twitter-area-chart',
-    styles: [`chart {display: block;height: 68%;width: 100%;}`],
-    template: `<div style="min-width:100px; height:350px"><chart [options]="options"></chart></div>`
+    template: `<div id="twitter-area-chart"></div>`
 })
 
 export class TwitterAreaChartComponent implements OnInit {
     constructor( private twitterService: TwitterService ) {
-        this.getFollowersHistory();
     }
     getFollowersHistory() {
         this.twitterService.getfollowersHistory()
             .subscribe(
             data => {
-                var values: Array<any> = [];
-                for ( var i = 0; i < data.length; i++ ) {
+                var values: Array<any> = [
+[Date.UTC(2013,5,2),0.7695],
+[Date.UTC(2013,5,3),0.7648],
+[Date.UTC(2013,5,4),0.7645],
+[Date.UTC(2013,5,5),0.7638],
+[Date.UTC(2013,5,6),0.7549],
+[Date.UTC(2013,5,7),0.7562],
+[Date.UTC(2013,5,9),0.7574],
+[Date.UTC(2013,5,10),0.7543],
+[Date.UTC(2013,5,11),0.7510]];
+                /*for ( var i = 0; i < data.length; i++ ) {
                     values.push( [parseInt( data[i][0] ), parseInt( data[i][1] )] );
-                }
+                }*/
                 this.constructChart( values );
             },
             error => console.log( error ),
@@ -27,7 +35,8 @@ export class TwitterAreaChartComponent implements OnInit {
             );
     }
     constructChart( data: any ) {
-        this.options = {
+
+        Highcharts.chart( 'twitter-area-chart', {
             chart: { type: 'area', zoomType: 'x' },
             title: { text: 'Followers Demographics' },
             subtitle: { text: 'click and drag in plot area to zoom in' },
@@ -61,11 +70,11 @@ export class TwitterAreaChartComponent implements OnInit {
                 name: 'Followers',
                 data: data
             }]
-        };
+        });
+     
     }
-    options: Object;
-
     ngOnInit() {
+        this.getFollowersHistory();
     }
 
 }

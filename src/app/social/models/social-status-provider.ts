@@ -6,10 +6,9 @@ export class SocialStatusProvider {
     providerId: string;
     providerName: String;
 
-    providerImagePath: String;
     profileImagePath: String;
     profileName: String;
-    selected: boolean;
+    selected: boolean = false;
 
     createdTime: Date;
     updatedTime: Date;

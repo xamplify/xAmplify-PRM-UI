@@ -18,7 +18,7 @@ export class SocialCallbackComponent implements OnInit {
                 console.log( "result: " + result );
                 localStorage.removeItem( providerName );
                 localStorage.setItem( providerName, result.toString() );
-                this.router.navigate( ['/home/dashboard'] );
+                this.router.navigate( ['home/'+providerName+'/manage'] );
             },
             error => console.log( error ),
             () => console.log( 'login() Complete' ) );

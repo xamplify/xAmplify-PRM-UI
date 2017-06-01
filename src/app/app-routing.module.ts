@@ -14,6 +14,8 @@ import { TeamModule } from './team/team.module';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
+import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
+
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 
 export const routes: Routes = [
@@ -30,6 +32,7 @@ export const routes: Routes = [
             { path: 'campaigns' , loadChildren : 'app/campaigns/campaigns.module#CampaignsModule'},
             { path: 'upgrade' , loadChildren : 'app/upgrade/upgrade.module#UpgradeModule'},
             { path: 'team' , loadChildren : 'app/team/team.module#TeamModule'},
+            {path: ':social/manage', component: SocialManageComponent}
         ]
     },
     { path: 'userlock', component: ProfileLockComponent},

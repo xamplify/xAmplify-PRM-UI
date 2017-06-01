@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
+declare var Highcharts: any;
 @Component( {
     selector: 'app-pie-chart-geo-distribution',
     styles: [`chart { display: block; height: 100%; width: 50%; }`],
-    template: `<div style="height:400px"><chart [options]="options"></chart></div>`
+    template: `<div id="twitter-pie-chart-geo-distribution" style="height:400px"></div>`
 })
 
 export class PieChartGeoDistributionComponent implements OnInit {
     constructor() {
-        this.options = {
+        this.options = {};
+    }
+    options: Object;
+
+    ngOnInit() {
+        Highcharts.chart( 'twitter-pie-chart-geo-distribution', {
 
             chart: {
                 plotBackgroundColor: null,
@@ -58,11 +64,7 @@ export class PieChartGeoDistributionComponent implements OnInit {
                     }
                 ]
             }]
-        };
-    }
-    options: Object;
-
-    ngOnInit() {
-    }
+        });
+     }
 
 }

@@ -1,0 +1,41 @@
+.box {
+	padding: 10px;
+}
+
+.portlet {
+	border-radius: 0;
+}
+
+.portlet.light {
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+}
+
+.text-center {
+	text-align: center;
+}
+
+.portlet>.portlet-title>.caption {
+	float: none;
+	display: inherit;
+}
+
+.portlet.light .portlet-body {
+	padding: 1em;
+}
+
+.portlet.light.block:hover {
+	-webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
+	-webkit-transform: translateY(-.5rem);
+	-ms-transform: translateY(-.5rem);
+	transform: translateY(-.5rem);
+	cursor: pointer;
+	cursor: hand;
+}
+
+h5 {
+	display: inline;
+	font-weight: 600;
+}
+
+.btn{min-width: 10em;}

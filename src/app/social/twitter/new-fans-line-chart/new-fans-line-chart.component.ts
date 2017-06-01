@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 
+declare var Highcharts: any;
 @Component( {
     selector: 'app-new-fans-line-chart',
     styles: [`chart {display: block; height: 68%; width: 100%; }`],
-    template: `<div style="min-width:100px; height:350px"><chart [options]="options"></chart></div>`
+    template: `<div id="twitter-new-fans-line-chart" style="min-width:100px; height:350px"></div>`
 })
 
-export class NewFansLineChartComponent {
-    constructor() {
-        this.options = {
-
+export class NewFansLineChartComponent implements OnInit {
+    constructor() {}
+    ngOnInit() {
+        Highcharts.chart( 'twitter-new-fans-line-chart', {
             title: {
                 text: 'KEY INDICATORS (Know how your conversing with your audience)',
                 x: -20 //center
@@ -44,7 +45,6 @@ export class NewFansLineChartComponent {
                 name: 'Unliked',
                 data: [2.9, 2.2, 3.7, 3.5, 3.9, 3.2, 3.0, 3.6, 3.2, 3.3, 3.6, 3.3]
             }]
-        };
-    }
-    options: Object;
+        });
+     }
 }

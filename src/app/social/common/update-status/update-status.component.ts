@@ -246,9 +246,8 @@ export class UpdateStatusComponent implements OnInit {
         let socialStatusProvider: SocialStatusProvider = new SocialStatusProvider();
         socialStatusProvider.id = 1;
         socialStatusProvider.providerName = "twitter";
-        socialStatusProvider.providerImagePath = "https://cdn0.iconfinder.com/data/icons/social-media-2098/512/twitter-32.png";
         socialStatusProvider.profileImagePath = "https://instagram.fhyd2-1.fna.fbcdn.net/t51.2885-19/s150x150/13397667_966003090179916_1274276788_a.jpg";
-        socialStatusProvider.profileName = "@manassahoo9173";
+        socialStatusProvider.profileName = "manas sahoo";
 
         socialStatusProviders.push( socialStatusProvider );
 

@@ -9,23 +9,28 @@
 
         <div class="col-md-3 col-sm-12">
             <div class="col-md-12 dashboard-stat2 square-box text-center">
-                <h3 style="margin-bottom: 1em;margin-top: 0.4em;"><b>Social Account</b></h3>
+                <h3 style="margin-bottom: 1em;margin-top: 0.4em;">Social Account</h3>
 
-				<div class="col-md-6" style="padding: 1px;"
-					*ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
-					<div class="social-box">
-						<input type="checkbox" id="cb{{i}}" class="social-media" [checked]="socialStatusProvider.selected"
-							(change)="socialStatusProvider.selected = !socialStatusProvider.selected" />
-						<label for="cb{{i}}"> 
-							<img src="{{socialStatusProvider.profileImagePath}}?access_token={{accessToken}}" class="profile-image img-circle"> 
-							<img src="{{socialStatusProvider.providerImagePath}}" class="social-image">
-							<h5>{{socialStatusProvider.profileName}}</h5>
-						</label>
-					</div>
-				</div>
-
-				<div class="col-md-12 clearfix text-center padding-30px">
-                    <button class="btn btn-primary">+ connect accounts</button>
+						<div class="col-md-6 col-sm-6 col-xs-6 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
+							<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}" 
+							(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
+								<div class="portlet-title col-xs-12">
+									<h6 title="{{socialStatusProvider.profileName}}" class="ellipsis pull-left"><b>{{socialStatusProvider.profileName}}</b></h6>
+									<i class="fa fa-social pull-right" 
+										[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.providerName ==='facebook', 'fa-twitter fa-twitter-color': socialStatusProvider.providerName ==='twitter'}"></i>
+								</div>
+								<div class="portlet-body">
+									<div class="row inline-block">
+										<img class="img-responsive profile-image" src="{{socialStatusProvider.profileImagePath}}?access_token={{accessToken}}" 
+												>
+									</div>
+								</div>
+							</div>
+						</div>
+				
+				
+				<div class="clearfix text-center padding-30px">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">+ connect accounts</button>
                 </div>
             </div>
             <div class="col-md-12 alert alert-info square-box">
@@ -49,8 +54,15 @@
                 <div class="col-sm-12">
                     <h2>Selected Account(s)</h2><br/>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-				<button class="btn btn-default btn-sm square-box" *ngIf="socialStatusProvider.selected">{{socialStatusProvider.profileName}} ({{socialStatusProvider.providerName}})</button>
-			</span>
+						<div class="btn btn-xs square-box" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
+						[ngClass]="{'btn-facebook': socialStatusProvider.providerName ==='facebook', 'btn-twitter': socialStatusProvider.providerName ==='twitter'}">
+							<div class="col-xs-12" style="display: inline-flex;">
+								<i class="fa fa-social pull-right" 
+										[ngClass]="{'fa-facebook': socialStatusProvider.providerName ==='facebook', 'fa-twitter': socialStatusProvider.providerName ==='twitter'}"></i>
+								<h5>{{socialStatusProvider.profileName}}</h5>
+							</div>
+						</div>
+					</span>
                 </div>
                 <div class="col-sm-12 padding-10px">
                     <textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px" [(ngModel)]="socialStatus.statusMessage" (keyup)="count(socialStatus.statusMessage)" ></textarea>
@@ -258,4 +270,46 @@
         <!-- modal-dialog -->
     </div>
     <!-- modal -->
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select the Account</h4>
+      </div>
+      <div class="modal-body">
+      		<div class="row">
+      			<div class="col-sm-6 hidden-xs">
+      				<img class="img-responsive" alt="" src="http://www.practiceweb.co.uk/sites/www.practiceweb.co.uk/files/images/social_collage.jpg">
+      			</div>
+      			<div class="col-xs-12 col-sm-6">
+		      		<div class="col-xs-12">
+			           	<a class="btn btn-social btn-facebook" routerLink="../../../facebook/login">
+		    	  			<i class="fa fa-facebook"></i> Connect Facebook
+		    			</a>
+		      		</div>
+		    		<div class="col-xs-12">
+		    			<a class="btn btn-social btn-twitter" routerLink="../../../twitter/login">
+		      				<i class="fa fa-twitter"></i> Connect Twitter
+		    			</a>
+		    		</div>
+		    		<div class="col-xs-12">
+		    			<a class="btn btn-social btn-google" routerLink="../../../google/login">
+		      				<i class="fa fa-google"></i> Connect Google
+		    			</a>
+		    		</div>
+		    		<div class="col-xs-12">
+		    			<a class="btn btn-social btn-linkedin" routerLink="../../../linkedin/login">
+		      				<i class="fa fa-linkedin"></i> Connect Linkedin
+		    			</a>
+		    		</div>       			
+      			</div>
+    		</div>
+      </div>
+    </div>
+  </div>
 </div>

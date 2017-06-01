@@ -134,10 +134,10 @@ followersHistory:any;
         	     Index.initMiniCharts();
         	     Tasks.initDashboardWidget();
                  
-        	     $(".GaugeMeter").gaugeMeter();
+        	     //$(".GaugeMeter").gaugeMeter();
            }
             catch(err){
-                  console.log("error");
+                  console.log(err);
               }
          
        }       

@@ -62,7 +62,6 @@
 				"./assets/global/plugins/jquery.cokie.min.js",
 				"./assets/global/plugins/uniform/jquery.uniform.min.js",
 				"./assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js",
-				"./assets/global/plugins/sparkline/jquery.sparkline.js",
 				"./assets/global/plugins/sparkline/jquery.sparkline.min.js",
 				"./assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js",
 				"./assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js",

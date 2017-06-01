@@ -11,7 +11,7 @@ import { TwitterProfileComponent } from './twitter/twitter-profile/twitter-profi
 
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
 import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
-
+import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebook-analytics.component';
 
 const routes: Routes = [
     { path: 'update-status', component: UpdateStatusComponent },
@@ -22,8 +22,9 @@ const routes: Routes = [
     { path: 'twitter-analytics', component: TwitterAnalyticsComponent },
     { path: 'twitter-user/:id', component: TwitterProfileComponent },
 
-    { path: 'facebook-posts/:ownerId', component: FacebookPostsComponent },
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
+    { path: 'facebook-posts/:ownerId', component: FacebookPostsComponent },
+    { path: 'facebook-analytics/:ownerId', component: FacebookAnalyticsComponent },
     ];
 
 

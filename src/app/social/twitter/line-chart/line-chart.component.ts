@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 
+declare var Highcharts: any;
 @Component( {
     selector: 'app-line-chart',
-    styles: [`chart { display: block; height: 68%; width: 100%; } `],
-    template: `<div style="min-width:100px; height:350px"><chart [options]="options"></chart></div>`
+    template: `<div id="twitter-line-chart" style="min-width:100px; height:350px"></div>`
 })
 export class LineChartComponent implements OnInit {
 
@@ -15,13 +15,11 @@ export class LineChartComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.options = {
-
+        Highcharts.chart( 'twitter-line-chart', {
             title: {
                 text: 'KEY INDICATORS (Know how your conversing with your audience)',
                 x: -20 //center
             },
-
             xAxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             },
@@ -49,6 +47,6 @@ export class LineChartComponent implements OnInit {
                 name: 'engagement',
                 data: this.engagement
             }]
-        };
-    }
+        });
+     }
 }

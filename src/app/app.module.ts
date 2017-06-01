@@ -22,6 +22,7 @@ import { Logger } from 'angular2-logger/core';
 import { LoginComponent } from './login/login.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
+import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 
 import { TwitterService } from './social/services/twitter.service';
@@ -40,7 +41,7 @@ import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent],
+  declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent, ShareVideoComponent],
   imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
     CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
     ChartModule, MetaModule.forRoot()],
