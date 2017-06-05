@@ -9,8 +9,6 @@ import { CommonModule } from '@angular/common';
 import { ShareButtonsModule } from 'ng2-sharebuttons';
 import { ContactService } from './contacts/services/contact.service';
 
-import { ChartModule } from 'angular2-highcharts';
-
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
@@ -44,7 +42,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
   declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent, ShareVideoComponent],
   imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
     CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-    ChartModule, MetaModule.forRoot()],
+    MetaModule.forRoot()],
   providers: [{
     provide: Http,
     useFactory: httpService,
