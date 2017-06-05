@@ -27,6 +27,12 @@ h6 {
 
     </style>
 <div class="page-content">
+  <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
+	 	 Campaign <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
+	 </div>
+	  <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
+	 	<strong>Please Delete Associated Campaign(s)</strong>
+	 </div>
 <div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a
@@ -92,7 +98,7 @@ h6 {
 														<a class="mix-preview1 fancybox-button"  title="Edit Template" data-rel="fancybox-button" (click)="edit(emailTemplate.id)">
 															<i class="fa fa-pencil-square-o"></i>
 														</a>
-														<a class="mix-preview6 fancybox-button" (click)="confirmDeleteEmailTemplate(emailTemplate.id)"  onMouseOver="this.style.color='#fff'" title="Delete Template" data-rel="fancybox-button" style="left:50%;"> 
+														<a class="mix-preview6 fancybox-button" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"  onMouseOver="this.style.color='#fff'" title="Delete Template" data-rel="fancybox-button" style="left:50%;"> 
 								                             <i class="fa fa-trash" style="color: red; !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 							                             </a>
 							                             
@@ -137,7 +143,7 @@ h6 {
 											  <label for="ex1"></label>
 <!-- 											  <input disabled="disabled" style="color: blue;"  class="form-control" id="ex1" type="text" value="Showing  {{totalRecords}} Records">
  -->										</div>
-										<div class="col-xs-2" style="float: right;margin-top: 10px;margin-right:-196px;width:10%;">
+										<!-- <div class="col-xs-2" style="float: right;margin-top: 10px;margin-right:-196px;width:10%;">
 											<select class="form-control"
 													    [(ngModel)]="itemsSize" 
 													    (ngModelChange)="getNumberOfItemsPerPage($event)">
@@ -145,7 +151,7 @@ h6 {
 													    {{itemPerPage.name}}
 													  </option>
 											</select>
-										</div>
+										</div> -->
 										
 										<!-- pager end here -->
 							</div>

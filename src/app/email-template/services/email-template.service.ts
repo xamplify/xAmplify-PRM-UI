@@ -113,7 +113,21 @@ export class EmailTemplateService {
     }
 
     private handleError(error: any) {
-        var body = error['_body'];
+        if (error.status === 500) {
+            console.log(error);
+            var response =  JSON.parse(error['_body']);
+            return Observable.throw(new Error(response.message));
+        }
+        else if (error.status === 400) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 409) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 406) {
+            return Observable.throw(new Error(error.status));
+        }
+       /* var body = error['_body'];
         if(body!=""){
             var response = JSON.parse(body);
             if(response.message!=undefined){
@@ -127,6 +141,6 @@ export class EmailTemplateService {
                 error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
             return Observable.throw(error);
         }
-       
+       */
     }  
 }

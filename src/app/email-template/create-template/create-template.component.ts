@@ -6,6 +6,7 @@ import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { Logger } from 'angular2-logger/core';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 
 declare var BeePlugin,swal,Promise:any;
 
@@ -18,7 +19,6 @@ declare var BeePlugin,swal,Promise:any;
 export class CreateTemplateComponent implements OnInit {
 	constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
 	private emailTemplate:EmailTemplate,private router:Router, private logger :Logger) {
-		
 		console.log(emailTemplateService.emailTemplate);
 	    var names:any = [];
 	    emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id) .subscribe(
@@ -137,6 +137,13 @@ export class CreateTemplateComponent implements OnInit {
 	                  emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
 	                  emailTemplate.desc = emailTemplateService.emailTemplate.name;//Type Of Email Template
 	                  emailTemplate.subject = emailTemplateService.emailTemplate.body;//Image Path
+	                  if(emailTemplateService.emailTemplate.name.indexOf('Basic')>-1){
+	                      emailTemplate.type = EmailTemplateType.BASIC;
+	                  }else if(emailTemplateService.emailTemplate.name.indexOf('Rich')>-1){
+	                      emailTemplate.type = EmailTemplateType.RICH;
+	                  }else if(emailTemplateService.emailTemplate.name.indexOf('Upload')>-1){
+	                      emailTemplate.type = EmailTemplateType.UPLOADED;
+	                  }
 	                  emailTemplateService.save(emailTemplate) .subscribe(
 	                          data => {
 	                              

@@ -4,7 +4,7 @@ import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@an
 import { Pagination } from '../../core/models/pagination';
 import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../core/services/reference.service';
-import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
+import { validateCampaignSchedule } from '../../form-validator'; // not using multipleCheckboxRequireOne
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
@@ -18,7 +18,7 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
-
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery:any;
 
 @Component({
@@ -35,17 +35,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isCategoryUpdated:boolean;
     isvideosLength:boolean;
     imagePath:string;
-    campaignForm: FormGroup;
+    //campaignForm: FormGroup;
     campaign:Campaign;
     names:string[]=[];
+    editedCampaignName:string = "";
     isAdd:boolean = true;
     name:string = "";
     width:string="";
+    campaignDetailsTabClass = "col-md-2 activestep";
     videoTabClass:string = "col-md-2";
     contactListTabClass:string = "col-md-2";
     emailTemplateTabClass:string = "col-md-2";
     launchCampaignTabClass:string = "col-md-2";
-    
+    currentTabActiveClass:string = "col-md-2 activestep";
+    inActiveTabClass:string = "col-md-2";
+    successTabClass:string = "col-md-2 successstep";
     /*************Pagination********************/
     videosPagination:Pagination = new Pagination();
     contactsUsersPagination:Pagination = new Pagination();
@@ -55,13 +59,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     /************Campaign Details******************/
     campaignType:string = "";
+    isCampaignDetailsFormValid:boolean = false;
     
     /************Video******************/
     isVideo:boolean = false;
     isCampaignDraftVideo:boolean = false;
     videoId:number=0;
     draftMessage:string = "";
-    
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -76,7 +80,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;                           
-    selectedRowClass:string = "";       
+    selectedRowClass:string = "";      
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;  
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
@@ -88,6 +92,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isDefaultCampaignEmailTemplate:boolean = true;
     defaultEmailTemplateActiveClass:string = "filter active";
     ownEmailTemplateActiveClass:string = "filter";
+    selectedEmailTemplateRow:number;
+    selectedEmailTemplateTypeIndex:number = 0;
+    selectedEmailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -108,20 +115,31 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.campaign = new Campaign();
-        
         if ( this.userService.loggedInUserData != undefined ) {
             this.campaign.userId = this.userService.loggedInUserData.id;
             this.loadCampaignNames( this.userService.loggedInUserData.id );
             }
         if(this.campaignService.campaign!=undefined){
-            this.isAdd = false;
-            this.campaign = this.campaignService.campaign;
             $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
-            
+            this.isAdd = false;
+            this.editedCampaignName = this.campaignService.campaign.campaignName;
+            this.campaign = this.campaignService.campaign;
+            /******************Campaign Details Tab**************************/
+            if(this.campaign.email!=undefined){
+                this.isValidEmail = true;
+            }
+            if(this.campaign.campaignName!=undefined && this.campaign.fromName!=undefined && 
+                    this.campaign.subjectLine!=undefined&& this.campaign.email!=undefined && 
+                    this.campaign.preHeader!=undefined && this.campaign.message!=undefined){
+                this.isCampaignDetailsFormValid = true;
+            }else{
+                this.isCampaignDetailsFormValid = false;
+            }
             /***********Select Video Tab*************************/
             var selectedVideoId  = this.campaignService.campaign.selectedVideoId;
             if(selectedVideoId>0){
                 this.isVideo = true;
+                this.videoTabClass  = this.successTabClass;
                 this.videoId = selectedVideoId;
                 this.isCampaignDraftVideo = true;
                 var alias = this.campaign.campaignVideoFile.alias;
@@ -140,6 +158,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             /***********Select Contact List Tab*************************/
             if(this.campaign.userListIds.length>0){
                 this.isContactList = true;
+                this.contactListTabClass = this.successTabClass;
                 this.contactsPagination.editCampaign = true;
                 this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
                 this.isCampaignDraftContactList = true;
@@ -152,7 +171,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             /***********Select Email Template Tab*************************/
             var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
             if(selectedTemplateId>0){
+                this.emailTemplateTabClass = this.successTabClass;
                 this.emailTemplateId = selectedTemplateId;
+                this.selectedEmailTemplateRow = selectedTemplateId;
                 this.isEmailTemplate = true;
                 this.isCampaignDraftEmailTemplate = true;
             }
@@ -166,32 +187,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
                 this.isScheduleSelected = true;
+                this.launchCampaignTabClass = this.successTabClass;
             }
             if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null" ){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
                 this.isScheduleSelected = true;
+                this.launchCampaignTabClass = this.successTabClass;
             }
             if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
                 this.campaign.scheduleTime = "";
             }
             let emailTemplate = this.campaign.emailTemplate;
-            console.log(this.campaign);
             if(emailTemplate!=undefined){
-                if(emailTemplate.langId==2){
-                    this.isDefaultCampaignEmailTemplate = true;
-                    this.defaultEmailTemplateActiveClass = "filter active";
-                    this.ownEmailTemplateActiveClass = "filter";
-                }else{
-                    this.ownEmailTemplateActiveClass = "filter active";
-                    this.defaultEmailTemplateActiveClass = "filter";
-                    this.isDefaultCampaignEmailTemplate = false;
-                }
-                
+                this.isEmailTemplate = true;
                 this.getEmailTemplatePreview(emailTemplate);
             }else{
                 this.logger.info("No Email Template Added For Campaign");
             }
-            this.isDefaultCampaignEmailTemplate = true;//Remove This Line Later
         }//End Of Edit
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
@@ -208,7 +220,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             dateFormat: 'd/m/Y H:i',
             time_24hr: true
         } );
-        this.validatecampaignForm();
+        //this.validatecampaignForm();
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadCampaignContacts(this.contactsPagination);
@@ -232,10 +244,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#videoTab').hide();
         }  
         this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
-        this.loadDefaultEmailTemplates();
-        if(!this.isAdd){
-           this.setSuccessBgColor("step-2");
-        }
     }
     
     /******************************************Pagination Related Code******************************************/
@@ -257,6 +265,52 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     /*************************************************************Campaign Details***************************************************************************************/
+    isValidEmail:boolean = false;
+    isValidCampaignName:boolean = true;
+     validateForm() {
+         var isValid = true;
+        $('#campaignDetailsForm input[type="text"]').each(function() {
+          if ( $(this).val() === '' )
+              isValid = false;
+        });
+        if(isValid && this.isValidEmail && this.isValidCampaignName){
+            this.isCampaignDetailsFormValid = true;
+        }else{
+            this.isCampaignDetailsFormValid = false;
+        }
+        console.log("is Valid Form"+this.isCampaignDetailsFormValid);
+      }
+     validateEmail(emailId:string){
+         console.log(emailId);
+         var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
+         if(regex.test(emailId)){
+             this.isValidEmail = true;
+             console.log("Valid Email Id");
+         }else{
+             this.isValidEmail = false;
+             console.log("Invalid Email Id");
+         }
+     }
+     validateCampaignName(campaignName:string){
+         console.log(campaignName);
+         var list = this.names[0];
+         console.log(list);
+         if(this.isAdd){
+             if($.inArray(campaignName, list) > -1){
+                 this.isValidCampaignName = false;  
+             }else{
+                 this.isValidCampaignName = true;
+             }
+         }else{
+             console.log(this.editedCampaignName+":::::::::"+campaignName);
+             if($.inArray(campaignName, list) > -1 && this.editedCampaignName!=campaignName){
+                 this.isValidCampaignName = false;  
+             }else{
+                 this.isValidCampaignName = true;
+             }
+         }
+         
+     }
     loadCampaignNames(userId:number){
         this.campaignService.getCampaignNames(userId)
         .subscribe(
@@ -280,54 +334,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaign.socialSharingIcons = event;
     }
     
-    validatecampaignForm(): void {
-        var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
-        this.campaignForm = this.fb.group( {
-            'campaignName': [this.campaign.campaignName, Validators.required],
-            'fromName': [this.campaign.fromName, Validators.required],
-            'subjectLine': [this.campaign.subjectLine, Validators.required],
-            'email': [this.campaign.email,[Validators.required,Validators.pattern(emailRegex)]],
-            'preHeader': [this.campaign.preHeader, Validators.required],
-            'message': [this.campaign.message,Validators.required],
-            'emailOpened': [this.campaign.emailOpened],
-            'videoPlayed': [this.campaign.videoPlayed],
-            'replyVideo': [this.campaign.replyVideo],
-            'socialSharingIcons': [this.campaign.socialSharingIcons],
-            'userId': [this.campaign.userId]
-        },{
-            validator: validateCampaignName('campaignName',this.names,this.isAdd,this.name)
-        });
-        this.campaignForm.valueChanges
-            .subscribe( data => this.onValueChanged( data ) );
-
-        this.onValueChanged(); // (re)set validation messages now
-        
-    }
-
-
-    onValueChanged(data?: any) {
-      if (!this.campaignForm) { return; }
-      const form = this.campaignForm;
-      if(this.campaignForm['_status']=="VALID"){
-          this.setTabClass();
-      }
-      for (const field in this.formErrors) {
-        // clear previous error message (if any)
-        this.formErrors[field] = '';
-        const control = form.get(field);
-
-        if (control && control.dirty && !control.valid) {
-          const messages = this.validationMessages[field];
-          for (const key in control.errors) {
-            this.formErrors[field] += messages[key] + ' ';
-          }
-        }
-      }
-    }
-
     
     /*************************************************************Select Video***************************************************************************************/
     setClickedRow = function(index,videoFile:any){
+       console.log(videoFile);
         if(videoFile.viewBy=="DRAFT"){
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
         }else{
@@ -438,6 +448,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#modal-title").append(title);
             $("#main_video").append(str);
+            console.log("360 video path"+videoPath);
           //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             $("#main_video video").append('<source src="'+videoPath+'" type="video/mp4">');
             var player = videojs('videoId');
@@ -461,8 +472,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#modal-title").append(title);
             $("#main_video").append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+            console.log("Video Path:::"+videoPath);
             videoPath = videoPath.substring(0,videoPath.lastIndexOf('.'));
             videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+            console.log("Normal Video Updated Path:::"+videoPath);
            $("#main_video video").append('<source src='+videoPath+' type="application/x-mpegURL">');
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
@@ -521,8 +534,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
     
-   
-    
 
     getNumberOfContactItemsPerPage(items:any){
         try{
@@ -562,7 +573,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
        if(selectedRowsLength>0){
            this.isContactList = true;
-           this.setTabClass();//Method to change color to blue
        }else{
            this.isContactList = false;
        }
@@ -627,13 +637,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){
-         this.emailTemplateService.listTemplates(pagination,this.userService.loggedInUserData.id)
+        pagination.campaignDefaultTemplate = true;
+        this.emailTemplateService.listTemplates(pagination,this.userService.loggedInUserData.id)
         .subscribe(
             (data:any) => {
                 this.campaignEmailTemplates = data.emailTemplates;
                 pagination.totalRecords = data.totalRecords;
                 this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
-                if(this.emailTemplatesPagination.totalRecords==0){
+                if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow>0 ){
                     this.isEmailTemplate = false;
                 }
             },
@@ -644,44 +655,30 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
     
-    loadDefaultEmailTemplates(){
-        this.emailTemplateService.listCampaignDefaultTemplates()
-        .subscribe(
-            (data:any) => {
-                this.campaignDefaultEmailTemplates = data;
-            },
-            (error:string) => {
-                this.logger.error("error in loadDefaultEmailTemplates()", error);
-            },
-            () => this.logger.info("Finished loadDefaultEmailTemplates()", this.campaignDefaultEmailTemplates)
-            )
-    }
+
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
         this.emailTemplateHtmlPreivew = emailTemplate.body;
         this.selectedEmailTemplateName = emailTemplate.name;
-        this.isEmailTemplate = true;
-        if(this.campaign.emailTemplate!=undefined){
-            this.campaign.emailTemplate.id = emailTemplate.id;
-        }else{
-            this.campaign.emailTemplate = new EmailTemplate();
-            this.campaign.emailTemplate.id = emailTemplate.id;
-        }
     }
-    
-    loadEmailTempaltes(){
-        this.isDefaultCampaignEmailTemplate = false;
-        this.ownEmailTemplateActiveClass="filter active";
-        this.defaultEmailTemplateActiveClass= "filter";
+    filterTemplates(type:EmailTemplateType,index:number){
+        this.emailTemplatesPagination.emailTemplateType =type;
+        this.selectedEmailTemplateType = type;
+        this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
+        
+        
     }
-    loadDefaultTemplates(){
-        this.isDefaultCampaignEmailTemplate = true;
-        this.defaultEmailTemplateActiveClass= "filter active";
-        this.ownEmailTemplateActiveClass="filter";
-        this.loadDefaultEmailTemplates();
+    
+    
+ 
+    setEmailTemplate(emailTemplate:EmailTemplate){
+       this.selectedEmailTemplateRow = emailTemplate.id;
+       this.isEmailTemplate = true;
+       this.getEmailTemplatePreview(emailTemplate);
     }
+
     /*************************************************************Launch Campaign***************************************************************************************/
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
@@ -741,34 +738,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     getCampaignData(emailId:string){
         let self = this;
-        $('[name="campaignContact[]"]:checked').each(function(){
+       $('[name="campaignContact[]"]:checked').each(function(){
            self.campaign.userListIds.push($(this).val());
         });
-        
+       let filteredUserListIds =this.remove_duplicates(self.campaign.userListIds);
         if(this.campaignType== "regular"){
             this.campaign.regularEmail = true;
         }else{
             this.campaign.regularEmail = false;
         }
         var data = {
-                'campaignName': this.campaignForm.value.campaignName,
-                'fromName': this.campaignForm.value.fromName,
-                'subjectLine': this.campaignForm.value.subjectLine,
-                'email': this.campaignForm.value.email,
-                'preHeader': this.campaignForm.value.preHeader,
-                'message': this.campaignForm.value.message,
-                'emailOpened': this.campaignForm.value.emailOpened,
-                'videoPlayed': this.campaignForm.value.videoPlayed,
-                'replyVideo': this.campaignForm.value.replyVideo,
-                'socialSharingIcons': this.campaignForm.value.socialSharingIcons,
+                'campaignName': this.campaign.campaignName,
+                'fromName': this.campaign.fromName,
+                'subjectLine': this.campaign.subjectLine,
+                'email': this.campaign.email,
+                'preHeader': this.campaign.preHeader,
+                'message': this.campaign.message,
+                'emailOpened': this.campaign.emailOpened,
+                'videoPlayed': this.campaign.videoPlayed,
+                'replyVideo': this.campaign.replyVideo,
+                'socialSharingIcons': this.campaign.socialSharingIcons,
                 'userId':this.userService.loggedInUserData.id,
                 'selectedVideoId':this.campaign.selectedVideoId,
-                'userListIds':self.campaign.userListIds,
+                'userListIds':filteredUserListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
                 'scheduleTime':this.campaignLaunchForm.value.launchTime,
                 'campaignId':this.campaign.campaignId,
-                'selectedEmailTemplateId':this.campaign.emailTemplate.id,
+                'selectedEmailTemplateId':this.selectedEmailTemplateRow,
                 'regularEmail':this.campaign.regularEmail,
                 'testEmailId':emailId
                 
@@ -776,7 +773,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         return data;
         
     }
-    
+    remove_duplicates(arr) {
+        let obj = {};
+        for (let i = 0; i < arr.length; i++) {
+            obj[arr[i]] = true;
+        }
+        arr = [];
+        for (let key in obj) {
+            arr.push(key);
+        }
+        return arr;
+    }
     
     
     sendTestEmail(emailId:string){
@@ -836,7 +843,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
         $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/RecordRTC.js"  class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/webcam-capture/RecordRTC.js"  class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />');
         var player = videojs('campaignVideo');
         player.ready();
@@ -974,17 +981,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $( ".progress-bar" ).css( "width", percent + "%" ).attr( "aria-valuenow", percent );
             $( ".progress-completed" ).text( percent + "%" );
 
-            $( "div" ).each( function() {
+           /* $( "div" ).each( function() {
                 if ( $( this ).hasClass( "activestep" ) ) {
                     $( this ).removeClass( "activestep" );
                 }
-            });
-            if ( event.target.className == "col-md-2" ) {
+            });*/
+            /*if ( event.target.className == "col-md-2" ) {
                 $( event.target ).addClass( "activestep" );
             }
             else {
                 $( event.target.parentNode ).addClass( "activestep" );
-            }
+            }*/
             this.hideSteps();
             this.showCurrentStepInfo( step );
 
@@ -1001,43 +1008,88 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
         showCurrentStepInfo( step ) {
             var id = "#" + step;
+            //var successTabColor = '#00a6e8';
+            if(step=="step-2"){
+                this.campaignDetailsTabClass = this.currentTabActiveClass;
+                if(this.isContactList){
+                    //Setting Sky Blue Color
+                    this.contactListTabClass = this.successTabClass;
+                }else{
+                    this.contactListTabClass = this.inActiveTabClass;
+                }
+               if(this.isVideo){
+                   this.videoTabClass  = this.successTabClass;
+               }else{
+                   this.videoTabClass  = this.inActiveTabClass;
+               }
+               if(this.isEmailTemplate){
+                   this.emailTemplateTabClass = this.successTabClass;
+               }else{
+                   this.emailTemplateTabClass = this.inActiveTabClass;
+               }
+               if(this.campaignLaunchForm.valid){
+                   this.launchCampaignTabClass = this.successTabClass;
+               }else{
+                   this.launchCampaignTabClass = this.inActiveTabClass;
+               }
+                
+            }
+            else if(step=="step-3"){
+                this.videoTabClass = this.currentTabActiveClass;
+                this.campaignDetailsTabClass = this.successTabClass;
+                if(this.isContactList){
+                    this.contactListTabClass = this.successTabClass;
+                }else{
+                    this.contactListTabClass = this.inActiveTabClass;
+                }
+                if(this.isEmailTemplate){
+                    this.emailTemplateTabClass = this.successTabClass;
+                }else{
+                    this.emailTemplateTabClass = this.inActiveTabClass;
+                }
+                if(this.campaignLaunchForm.valid){
+                    this.launchCampaignTabClass = this.successTabClass;
+                }else{
+                    this.launchCampaignTabClass = this.inActiveTabClass;
+                }
+            }else if(step=="step-4"){
+                //Highlighting Contact List Tab With Oragne
+                this.contactListTabClass  = this.currentTabActiveClass;
+                this.campaignDetailsTabClass = this.successTabClass;
+                this.videoTabClass  = this.successTabClass;
+                if(this.isEmailTemplate){
+                    this.emailTemplateTabClass = this.successTabClass;
+                }else{
+                    this.emailTemplateTabClass = this.inActiveTabClass;
+                }
+                if(this.campaignLaunchForm.valid){
+                    this.launchCampaignTabClass = this.successTabClass;
+                }else{
+                    this.launchCampaignTabClass = this.inActiveTabClass;
+                }
+            }else if(step=="step-5"){
+              //Highlighting Email Templatet Tab With Oragne
+                this.emailTemplateTabClass = this.currentTabActiveClass;
+                this.videoTabClass = this.successTabClass;
+                this.campaignDetailsTabClass = this.successTabClass;
+                this.contactListTabClass = this.successTabClass;
+                if(this.campaignLaunchForm.valid){
+                    this.launchCampaignTabClass = this.successTabClass;
+                }else{
+                    this.launchCampaignTabClass = this.inActiveTabClass;
+                }
+            }else if(step=="step-6"){
+              //Highlighting Launch With Oragne
+                this.launchCampaignTabClass = this.currentTabActiveClass;
+                this.campaignDetailsTabClass = this.successTabClass;
+                this.contactListTabClass = this.successTabClass;
+                this.videoTabClass  = this.successTabClass;
+                this.emailTemplateTabClass = this.successTabClass;
+            }
+            
             $( id ).addClass( "activeStepInfo" );
            /* var stepId = step.split('-')[1];
             $('#step'+stepId).css('color','#7ba0bb');*/
         }
-        setSuccessBgColor(currentStep:string){
-         /*   var bgColor = '#00a6e8';
-            if(this.campaignForm.valid && currentStep!="step-2"){
-                $('#step2').css('color',bgColor)
-            }
-            if(this.isVideo && currentStep!="step-3"){
-                $('#step3').css('color',bgColor);
-            }
-            if(this.isContactList && currentStep!="step-4"){
-                $('#step4').css('color',bgColor);
-            }
-            if(this.isEmailTemplate && currentStep!="step-5"){
-                $('#step5').css('color',bgColor);
-            }
-            if(this.campaignLaunchForm.valid && currentStep!="step-6"){
-                $('#step6').css('color',bgColor);
-            }*/
-        }
         
-        setTabClass(){
-           /* var successClass = "col-md-2 col-md-2-success";
-            if(this.isVideo){
-                this.videoTabClass = successClass;
-            }
-            if(this.isContactList){
-                this.contactListTabClass  = successClass;
-            }
-            if(this.isEmailTemplate){
-                this.emailTemplateTabClass = successClass;
-            }
-            if(this.sheduleCampaignValues.indexOf(this.campaign.scheduleCampaign)>-1){
-                this.launchCampaignTabClass = successClass;
-            }*/
-           
-        }
 }

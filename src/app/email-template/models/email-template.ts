@@ -1,4 +1,5 @@
 import { User } from '../../core/models/user';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 export class EmailTemplate {
 		id:number;
 		name:string;
@@ -14,4 +15,5 @@ export class EmailTemplate {
 		beeVideoTemplate:boolean;
 		user:User;
 		jsonBody:string;
+        type:EmailTemplateType;
 }

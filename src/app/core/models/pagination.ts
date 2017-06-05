@@ -1,3 +1,4 @@
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 export class Pagination {
 	    pageIndex: number = 1 ;
 		maxResults :number=10;
@@ -10,4 +11,7 @@ export class Pagination {
 		totalRecords:number;
 		editCampaign:boolean=false;
 		campaignUserListIds:number[]=[];
+        campaignDefaultTemplate:boolean=false;
+        emailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
+
 }

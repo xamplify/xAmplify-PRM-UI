@@ -170,6 +170,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         error => { console.log(error)},
         () => console.log( "Campaign Deleted Successfully" )
         );
+        this.isCampaignDeleted = false;
     }
 
     ngOnDestroy() {

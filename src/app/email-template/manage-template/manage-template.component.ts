@@ -8,7 +8,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 
 import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
-declare var Metronic, Layout, Demo, swal, TableManaged: any;
+declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
     selector: 'app-manage-template',
@@ -25,7 +25,9 @@ export class ManageTemplateComponent implements OnInit {
     pagedItems: any[];
     public totalRecords: number = 1;
     public searchKey: string = "";
-
+    isEmailTemplateDeleted:boolean = false;
+    isCampaignEmailTemplate:boolean  = false;
+    selectedEmailTemplateName:string = "";
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -191,7 +193,7 @@ export class ManageTemplateComponent implements OnInit {
 
 
 
-    confirmDeleteEmailTemplate( id: number ) {
+    confirmDeleteEmailTemplate( id: number,name:string ) {
         try {
             let self = this;
             swal( {
@@ -204,7 +206,7 @@ export class ManageTemplateComponent implements OnInit {
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function() {
-                self.deleteEmailTemplate( id );
+                self.deleteEmailTemplate( id,name );
             })
         } catch ( error ) {
             this.refService.showError( error, "confirmDeleteEmailTemplate", "ManageTemplatesComponent" );
@@ -212,12 +214,25 @@ export class ManageTemplateComponent implements OnInit {
 
     }
 
-    deleteEmailTemplate( id: number ) {
+    deleteEmailTemplate( id: number,name:string ) {
+        this.isEmailTemplateDeleted = false;
+        this.isCampaignEmailTemplate = false;
         this.emailTemplateService.delete( id )
             .subscribe(
             ( data: string ) => {
-                document.getElementById( 'emailTemplateListDiv_' + id ).remove();
-                this.refService.showInfo( "Email Template Deleted Successfully", "" )
+                if(data=="Success"){
+                    document.getElementById( 'emailTemplateListDiv_' + id ).remove();
+                    this.refService.showInfo( "Email Template Deleted Successfully", "" );
+                    this.selectedEmailTemplateName = name;
+                    this.isEmailTemplateDeleted = true;
+                    this.isCampaignEmailTemplate = false;
+                    setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
+                }else{
+                    this.isEmailTemplateDeleted = false;
+                    this.isCampaignEmailTemplate = true;
+                    setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
+                }
+                
             },
             ( error: string ) => { this.refService.showError( error, "deleteEmailTemplate", "ManageTemplatesComponent" ); }
             );

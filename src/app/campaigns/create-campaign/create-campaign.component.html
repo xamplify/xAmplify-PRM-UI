@@ -11,7 +11,7 @@
 				 <i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a>Create Campaign</a>
+				<a style="color: blue;">Create Campaign</a>
 			</li>
 		</ul>
 	</div><!-- End of Line 2 -->
@@ -20,17 +20,17 @@
 		<div class="row" style="padding-left:0px;padding-right:0px;margin-right: 0px; margin-left: 0px;">
 			 <div class="row step" style="margin: 20px 0 10px;">
 	            <!-- ---------------------------Campaign Details--------------------------------------- -->
-			 	 <div  id="step2" class="col-md-2 activestep" (click) ="resetActive($event, 0, 'step-2');setSuccessBgColor('step-2')" [ngStyle]="{ 'width': width }">
+			 	 <div  id="step2" [attr.class]="campaignDetailsTabClass"  (click) ="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                 	<span class="fa fa-th-list"></span>
                 	<p>Campaign Details</p>
             	</div>
             	<!-- ---------------------------Select Video--------------------------------------- -->
             	<div *ngIf="campaignType=='video'">
-            		<div *ngIf="!campaignForm.valid" class="col-md-2" id="disableTab" [ngStyle]="{ 'width': width }">
+            		<div  *ngIf="!isCampaignDetailsFormValid " class="col-md-2" id="disableTab" [ngStyle]="{ 'width': width }">
 	                <span class="fa fa-video-camera"></span>
 	                <p>Select a Video</p>
 	            </div>
-            	<div id="step3" *ngIf="campaignForm.valid"  [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');setSuccessBgColor('step-3')" 
+            	<div  *ngIf="isCampaignDetailsFormValid" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" 
             			[ngStyle]="{ 'width': width }" ><!-- style="color: #00a6e8;" -->
 	                <span class="fa fa-video-camera"></span>
 	                <p>Select a Video</p>
@@ -38,31 +38,32 @@
             	</div>
             	
 	            <!-- ---------------------------Contact List--------------------------------------- -->
-	             <div  *ngIf="!campaignForm.valid || !isVideo" class="col-md-2"    id="disableTab" [ngStyle]="{ 'width': width }">
+	             <div  *ngIf="!isCampaignDetailsFormValid  || !isVideo  " class="col-md-2"   id="disableTab" [ngStyle]="{ 'width': width }">
                 	<span class="fa fa-users"></span>
                 	<p>Contact Lists</p>
            	   </div>
-	            <div id="step4"  *ngIf="campaignForm.valid && isVideo" [attr.class]="contactListTabClass"  (click)="resetActive($event, 60, 'step-4');highlightSelectedRows('step-4');setSuccessBgColor('step-4')" [ngStyle]="{ 'width': width }">
+	            <div id="step4"  *ngIf="isCampaignDetailsFormValid  && isVideo " [attr.class]="contactListTabClass"  (click)="resetActive($event, 60, 'step-4');" [ngStyle]="{ 'width': width }">
                 	<span class="fa fa-users"></span>
                 	<p>Contact Lists</p>
            	   </div>
 			  <!-- ---------------------------Email Template--------------------------------------- -->
-			   <div *ngIf="!campaignForm.valid || !isVideo || !isContactList" class="col-md-2"  id="disableTab" [ngStyle]="{ 'width': width }">
+			   <div *ngIf=" !isCampaignDetailsFormValid  || !isVideo || !isContactList" class="col-md-2"  id="disableTab" [ngStyle]="{ 'width': width }">
                 <span class="fa fa-envelope"></span>
                 <p>Email Template</p>
             </div>
             
-			  <div id="step5"  *ngIf="campaignForm.valid && isVideo && isContactList" [attr.class]="emailTemplateTabClass"   (click)="resetActive($event, 80, 'step-5');setSuccessBgColor('step-5')" [ngStyle]="{ 'width': width }">
+			  <div id="step5"  *ngIf=" isCampaignDetailsFormValid  && isVideo  && isContactList " [attr.class]="emailTemplateTabClass"   (click)="resetActive($event, 80, 'step-5');" [ngStyle]="{ 'width': width }">
                 <span class="fa fa-envelope"></span>
                 <p>Email Template</p>
             </div>
              <!-- ---------------------------Launch--------------------------------------- -->
-             <div *ngIf="!campaignForm.valid || !isVideo || !isContactList || !isEmailTemplate" class="col-md-2"  id="disableTab" [ngStyle]="{ 'width': width }">
+             <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate"  class="col-md-2" id="disableTab" [ngStyle]="{ 'width': width }">
                 <span class="fa fa-flag"></span>
                 <p>Launch</p>
             </div>
             
-            <div  id="step6"  *ngIf="campaignForm.valid && isVideo && isContactList && isEmailTemplate" [attr.class]="launchCampaignTabClass" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();setSuccessBgColor('step-6')" [ngStyle]="{ 'width': width }">
+            <div  id="step6"  *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate" [attr.class]="launchCampaignTabClass" 
+			  	(click)="resetActive($event, 100, 'step-6');addUserEmailIds();" [ngStyle]="{ 'width': width }">
                 <span class="fa fa-flag"></span>
                 <p>Launch</p>
             </div>
@@ -74,63 +75,46 @@
 		<div class="row setup-content step activeStepInfo" id="step-2">
 		<!-- <br> -->
 			<div class="col-xs-12">
-				<form role="form" [formGroup]="campaignForm" class="form-horizontal form-bordered form-label-stripped">
+				<form role="form"  class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm">
 					<div class="col-md-12 well text-center" style="margin-top: 10px;">
 						<div class="portlet box">
 							<div class="portlet-body form">
 								<!-- BEGIN FORM-->
-								<!-- <form action="#" 
-											  class="form-horizontal form-bordered form-label-stripped"> -->
 								<div class="form-body" style="text-align: left;">
 									<div class="form-group">
-										<label class="control-label col-md-3">Publish As<small>(Save
-												as)</small></label>
+										<label class="control-label col-md-3">Publish As
+											<small>(Save as)</small>
+											<font style="color: red"><b>*</b></font>
+										</label>
 										<div class="col-md-9">
-											<input type="text" formControlName="campaignName"
-												placeholder="Campaign Name" class="form-control" />
-											<div *ngIf="formErrors.campaignName"
-												class="alert alert-danger">{{formErrors.campaignName}}
-											</div>
-											<div *ngIf="campaignForm.hasError('duplicateCampaignName')"
-												class="alert alert-danger">Already Exists.</div>
+											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();" />
+											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 										</div>
 									</div>
 
 									<div class="form-group">
-										<label class="control-label col-md-3">From Name<small></small></label>
+										<label class="control-label col-md-3">From Name<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" formControlName="fromName"
-												placeholder="From Name" class="form-control" />
-											<div *ngIf="formErrors.fromName" class="alert alert-danger">{{formErrors.fromName}}
-											</div>
+											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm()"  />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3">Subject Line</label>
+										<label class="control-label col-md-3">Subject Line<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" formControlName="subjectLine"
-												placeholder="Subject Line" class="form-control" />
-											<div *ngIf="formErrors.subjectLine"
-												class="alert alert-danger">{{formErrors.subjectLine}}
-											</div>
+											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm()" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3">From Email</label>
+										<label class="control-label col-md-3">From Email<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" formControlName="email"
-												placeholder="Email" class="form-control" />
-											<div *ngIf="formErrors.email" class="alert alert-danger">{{formErrors.email}}
-											</div>
+											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();"  />
+											<span *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3">Pre Header</label>
+										<label class="control-label col-md-3">Pre Header<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" formControlName="preHeader"
-												placeholder="Pre Header" class="form-control" />
-											<div *ngIf="formErrors.preHeader" class="alert alert-danger">{{formErrors.preHeader}}
-											</div>
+											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm()"  />
 										</div>
 									</div>
 									<div class="form-group">
@@ -139,8 +123,7 @@
 											<div class="email-options-checkbox-group email-options-notify">
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
-														<ui-switch *ngIf="campaignForm.value.emailOpened==true" color="green" size="medium"  formControlName="emailOpened" checked (change)=setEmailOpened($event)></ui-switch>
-														<ui-switch *ngIf="campaignForm.value.emailOpened==false || campaignForm.value.emailOpened==null" color="green" size="medium"  formControlName="emailOpened" (change)=setEmailOpened($event)></ui-switch>
+													<ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch>
 													</div>
 													<div class="col-sm-11" style="padding: 0;">
 														<label style="margin-top: 10px;">Email is opened</label>
@@ -148,8 +131,7 @@
 												</div>
 												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
 												<div class="col-sm-1 ui-switch-custom-div">
-													<ui-switch *ngIf="campaignForm.value.videoPlayed==true" color="green" size="medium"  formControlName="videoPlayed" checked (change)=setVideoPlayed($event)></ui-switch>
-													<ui-switch *ngIf="campaignForm.value.videoPlayed==false || campaignForm.value.videoPlayed==null" color="green" size="medium"  formControlName="videoPlayed" (change)=setVideoPlayed($event)>></ui-switch>
+												<ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch>
 												</div>
 												<div class="col-sm-11" style="padding: 0;">	
 														<label style="margin-top: 10px;">Video is played</label>
@@ -164,8 +146,8 @@
 											<div class="email-options-checkbox-group email-options-notify">
 												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
 													<div class="col-sm-1 ui-switch-custom-div">
-														<ui-switch *ngIf="campaignForm.value.replyVideo==true" color="green" size="medium"  formControlName="replyVideo" checked (change)=setReplyVideo($event)></ui-switch>
-														<ui-switch *ngIf="campaignForm.value.replyVideo==false || campaignForm.value.replyVideo==null" color="green" size="medium"  formControlName="replyVideo" (change)=setReplyVideo($event)></ui-switch>
+													<ui-switch color="green" size="medium" [(ngModel)]="campaign.replyVideo" name="replyVideo"  (change)=setReplyVideo($event)></ui-switch>
+													
 													</div>
 													<div>
 														<label style="margin-top: 10px;">Reply with Video</label>
@@ -173,8 +155,7 @@
 												</div>
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
-														<ui-switch *ngIf="campaignForm.value.socialSharingIcons==true" color="green" size="medium"  formControlName="socialSharingIcons" checked (change)=setSocialSharingIcons($event)></ui-switch>
-														<ui-switch *ngIf="campaignForm.value.socialSharingIcons==false || campaignForm.value.socialSharingIcons==null" color="green" size="medium"  formControlName="socialSharingIcons" (change)=setSocialSharingIcons($event)></ui-switch>
+													<ui-switch color="green" size="medium" [(ngModel)]="campaign.socialSharingIcons" name="socialSharingIcons"  (change)=setSocialSharingIcons($event)></ui-switch>
 													</div>
 													<div>
 														<label style="margin-top: 10px;">Social Sharing Icons</label>
@@ -184,13 +165,9 @@
 										</div>
 									</div>
 									<div class="form-group last">
-										<label class="control-label col-md-3">Notification
-											Message</label>
+										<label class="control-label col-md-3">Notification Message<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" formControlName="message"
-												placeholder="Notification Message" class="form-control" />
-											<div *ngIf="formErrors.message" class="alert alert-danger">{{formErrors.message}}
-											</div>
+											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm()"  />
 										</div>
 									</div>
 								</div>
@@ -198,7 +175,13 @@
 								<!-- END FORM-->
 							</div>
 						</div>
-							<button type="button"  style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3')" [disabled]="!campaignForm.valid" title="Please Fill Campaign Details">Next</button>
+							<button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button"  
+							style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');"  
+							title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+							<button  *ngIf="campaignType=='regular'" type="button" id="campaign-detail-next-button"  
+							style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" 
+							 title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+						
 					</div>
 				</form>
 			</div>
@@ -319,7 +302,7 @@
 									(click)="setClickedRow(i,videoFile)" [class.active]="(i == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage" (mouseover)='showToolTip(videoFile.viewBy)'>
 										<!-- --------------Thumbnail--------------------------- -->
 										<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="addVideoIdFile(videoFile)" id="campaign_video_id_{{i}}">   
+											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile)" id="campaign_video_id_{{i}}">   
 												<a href="javascript:void(0)" (click)="showPreview(videoFile)">
 													<img src="{{videoFile.imagePath}}" width="100px" height="50px">
 												</a>
@@ -384,8 +367,8 @@
 							</div>
 						  </div>
                         	</div></div></div></div>
-                        	 <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')">Previous</button>
-        					<button type="button"  style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4')"  [disabled]="!isVideo"  title="Please Select Video">Next</button>
+                        	 <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2');">Previous</button>
+        					<button type="button"  style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4');"  [disabled]="!isVideo"  title="Please Select Video">Next</button>
                 </div>
         </div>
         
@@ -513,12 +496,13 @@
 									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightRow(contacts.id)" [class.contact-list-selected]="contacts.id===contactsPagination.campaignUserListIds[i]">
 					                     <td *ngIf="isAdd || !isCampaignDraftContactList ">
 					                      <div class="form-group">
-						                     <input type="checkbox" lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}" [(ngModel)]="contacts.state" (click)="highlightRow(contacts.id)"/>
+						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}" [(ngModel)]="contacts.state" (click)="highlightRow(contacts.id)"/>
 					                      </div>
 					                     </td>
 					                     <td *ngIf="!isAdd && isCampaignDraftContactList"><!-- [(ngModel)]="contacts.state" -->
 					                     	<div class="form-group">
-						                     <input type="checkbox" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="contacts.id===contactsPagination.campaignUserListIds[i]"   name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id)">
+						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}" [checked]="contacts.id===contactsPagination.campaignUserListIds[i]"   
+						                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id)">
 					                      </div>
 					                     </td>
 					                     
@@ -564,32 +548,30 @@
                  </div>
               </div>
             </div>
-             <button type="button" style="float:left;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-3')">Previous</button>
-       		<button type="submit"  style="float: right;" class="btn btn-default btn green"  (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" >Next</button>
+             <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-3');">Previous</button>
+             <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-2')">Previous</button>
+       		<button type="submit"  style="float: right;" class="btn btn-default btn green"  (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List"  >Next</button>
           </div>
         </div>
     </div>
     <!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
     <div class="row setup-content step hiddenStepInfo" id="step-5">
     <!-- <br> -->
-      	<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div>
-		<div class="col-xs-12" *ngIf="emailTemplatesPagination.totalRecords>0">
+      	<!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
+		<div class="col-xs-12">
 	    	<div class="portlet light">
 				<div class="portlet-title">
 					<div class="caption">
 						<div class="row">
-							<!-- <ul class="mix-filter" style="float: left;">
-								<li [attr.class]="defaultEmailTemplateActiveClass" (click)="loadDefaultTemplates()" style="font-size: 20px;">Default Email Templates</li>
-								<li [attr.class]="ownEmailTemplateActiveClass" (click)="loadEmailTempaltes()" style="font-size: 20px;">Your Email Templates</li>
-							</ul> -->
 							<ul class="mix-filter">
-								<li class="filter" (click)="showAllTemplates()">All Email Templates</li>
-								<li class="filter" (click)="showBasicTemplates()">Basic Templates</li>
-								<li class="filter" (click)="showRichTemplates()">Rich Templates</li>
-								<li class="filter" (click)="showBasicVideoTemplates()">Basic Video Templates</li>
-								<li class="filter" (click)="showRichVideoTemplates()">RichVideo Templates</li>
-								<li class="filter" (click)="showUploadTemplates()">Uploaded Templates</li>
-								<li class="filter" style="display: none;">Own Template</li>
+								<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex">All Email Templates</li>
+								<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>
+								<li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+								
+								<li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
+								<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
 							</ul>
 						</div>
 					</div>
@@ -598,123 +580,80 @@
 					<div class="row">
 						<form role="form" class="form-horizontal form-bordered form-label-stripped">
 								<div class="col-xs-12">
-									<div class="row" id="user_list_table_view">
-												<!-- -------------Load Default Templates Here------------- -->
-												<div class="portlet-body" style="background-color: white;" *ngIf="isDefaultCampaignEmailTemplate">
-													<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
-													<div class="row-fluid">
-													<div class="row mix-grid" style="margin-top: 10px">
-													<!-- <div *ngIf="!isAdd && isCampaignDraftEmailTemplate && campaign.emailTemplate.langId==2">
-														<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
-															<div id="container"> <h3>{{campaign.emailTemplate.description}}<span class="arrow"></span> </h3> </div>
-															<div class="mix-inner" style="background-color: #536372">
-																<img class="img-responsive" src="assets/admin/layout2/img/logo-default.png" alt="" style="margin-left: 85px;height: 134px;width: 117px;">
-																<div class="mix-details" style="z-index: 700;">
-																	<h4>{{campaign.emailTemplate.name}}</h4>
-																	<div style="top: 31%; position: relative;"></div>
-																	<span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{campaign.emailTemplate.createdBy}}</span>
-																	<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{campaign.emailTemplate.createdDate}}</span>
-																	<input type="radio" [checked]="emailTemplateId==campaign.emailTemplate.id" name="emailTemplateId" [value]="campaign.emailTemplate.id"  (click)="getEmailTemplatePreview(campaign.emailTemplate)">
+									<div class="row" id="user_list_table_view" *ngIf="emailTemplatesPagination.totalRecords>0">
+										<div class="portlet-body" style="background-color: white;">
+											<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+											<div class="row-fluid">
+											<div class="row mix-grid" style="margin-top: 10px">
+												<!-- -----------Selected Email Template--------------- -->
+												<div (click)="setEmailTemplate(campaign.emailTemplate)" *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && 
+												(selectedEmailTemplateType==campaign.emailTemplate.type ||selectedEmailTemplateType=='NONE' || selectedEmailTemplateType==0) && emailTemplatesPagination.pageIndex==1">
+													<div class="col-md-3 col-sm-4 col-xs-6 box"	>
+													<div class="portlet light block" [class.active]="emailTemplateId == selectedEmailTemplateRow">
+														<div class="portlet-title">
+															<div class="caption">
+																<div class="col-xs-12">
+																	<img *ngIf="emailTemplateId==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																	<h4 class="caption-subject uppercase text-center" style="display: inline-block;">{{campaign.emailTemplate.name}}</h4>
 																</div>
 															</div>
 														</div>
-													</div> -->
-													
-								<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let beeRegularTemplate of campaignDefaultEmailTemplates ;let i =index">
-									<div class="portlet light block" (click)="selectEmailTemplate();">
-										<div class="portlet-title">
-											<div class="caption">
-												<div class="col-xs-12">
-													<img alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
-													<h4 class="caption-subject uppercase text-center" style="display: inline-block;">{{beeRegularTemplate.name}}</h4>
+														<div class="portlet-body">
+															<div class="row email-template-container">
+																<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="No Image Selected">
+															</div>
+														</div>
+													</div>
+												</div>	
 												</div>
+											<!-- -----------All Email Templates--------------- -->
+											<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index"
+														 (click)="setEmailTemplate(emailTemplate)"  >
+											<div class="col-md-3 col-sm-4 col-xs-6 box" *ngIf="emailTemplateId!=emailTemplate.id"  >
+												<div class="portlet light block" [class.active]="emailTemplate.id == selectedEmailTemplateRow">
+													<div class="portlet-title">
+														<div class="caption">
+															<div class="col-xs-12">
+																<img *ngIf="emailTemplate.id==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																<h4 class="caption-subject uppercase text-center" style="display: inline-block;">{{emailTemplate.name}}</h4>
+															</div>
+														</div>
+													</div>
+													<div class="portlet-body">
+														<div class="row email-template-container">
+															<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="No Image Selected">
+														</div>
+													</div>
+													</div>	
 											</div>
-										</div>
-										<div class="portlet-body">
-											<div class="row email-template-container">
-												<img class="img-responsive center-block" src="https://beefree.io/wp-content/themes/bee/images/templates/rt_simple.png" alt="{{beeRegularTemplate.name}}">
+											</div><!-- End Of Ng For -->
+											</div>
+											</div>
 											</div>
 										</div>
 									</div>
-								</div>
-													
-													<!-- <div *ngFor="let emailTemplate of campaignDefaultEmailTemplates ;let i =index">
-														<div *ngIf="emailTemplateId!=emailTemplate.id" class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;" id="emailTemplateListDiv_{{emailTemplate.id}}">
-															<div id="container"> <h3>{{emailTemplate.description}}<span class="arrow"></span> </h3> </div>
-															<div class="mix-inner" style="background-color: #536372">
-																<img class="img-responsive" src="assets/admin/layout2/img/logo-default.png" alt="" style="margin-left: 85px; height: 134px;width: 117px;">
-																<div class="mix-details" style="z-index: 700;">
-																	<h4>{{emailTemplate.name}}</h4>
-																	<div style="top: 31%; position: relative;"></div>
-																	<span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
-																	<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{emailTemplate.createdDate}}</span>
-																	<input type="radio" name="emailTemplateId" [value]="emailTemplate.id" (click)="getEmailTemplatePreview(emailTemplate)">												</div>
-															</div>
-														</div>
-													</div> -->
-													</div>
-													</div>
-													</div>
-												</div>
-												<!-- ----------------------User Defined Templates ----------------------->
-											<!-- 	<div class="portlet-body" style="background-color: white;" *ngIf="!isDefaultCampaignEmailTemplate">
-													<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
-													<div class="row-fluid">
-													<div class="row mix-grid" style="margin-top: 10px">
-													<div *ngIf="!isAdd && isCampaignDraftEmailTemplate && campaign.emailTemplate.langId!=2">
-														<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
-															<div id="container"> <h3>{{campaign.emailTemplate.description}}<span class="arrow"></span> </h3> </div>
-															<div class="mix-inner" style="background-color: #536372">
-																<img class="img-responsive" src="{{campaign.emailTemplate.subject}}" alt="" style="margin-left: 85px;">
-																<div class="mix-details" style="z-index: 700;">
-																	<h4>{{campaign.emailTemplate.name}}</h4>
-																	<div style="top: 31%; position: relative;"></div>
-																	<span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{campaign.emailTemplate.createdBy}}</span>
-																	<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{campaign.emailTemplate.createdDate}}</span>
-																	<input type="radio" [checked]="emailTemplateId==campaign.emailTemplate.id" name="emailTemplateId" [value]="campaign.emailTemplate.id"  (click)="getEmailTemplatePreview(campaign.emailTemplate)">
-																</div>
-															</div>
-														</div>
-													</div>
-													<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
-														<div *ngIf="emailTemplateId!=emailTemplate.id" class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;" id="emailTemplateListDiv_{{emailTemplate.id}}">
-															<div id="container"> <h3>{{emailTemplate.description}}<span class="arrow"></span> </h3> </div>
-															<div class="mix-inner" style="background-color: #536372">
-																<img class="img-responsive" src="{{emailTemplate.subject}}" alt="" style="margin-left: 85px;">
-																<div class="mix-details" style="z-index: 700;">
-																	<h4>{{emailTemplate.name}}</h4>
-																	<div style="top: 31%; position: relative;"></div>
-																	<span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
-																	<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{emailTemplate.createdDate}}</span>
-																	<input type="radio" name="emailTemplateId" [value]="emailTemplate.id" (click)="getEmailTemplatePreview(emailTemplate)">												</div>
-															</div>
-														</div>
-													</div>
-													</div>
-													<div *ngIf="emailTemplatesPagination.totalRecords<=0"  class="alert alert-danger"><strong>No Templates Found</strong></div>
-													 <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
-				                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-				                                            <a (click)="setPage(1,'emailTemplates')">First</a>
-				                                         </li>
-				                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-				                                             <a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')">Previous</a>
-				                                          </li>
-				                                          <li *ngFor="let page of emailTemplatesPagination.pager.pages" [ngClass]="{active:emailTemplatesPagination.pager.currentPage === page}">
-				                                             <a (click)="setPage(page,'emailTemplates')">{{page}}</a>
-				                                          </li>
-				                                          <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-				                                              <a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')">Next</a>
-				                                          </li>
-				                                           <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-				                                              <a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')">Last</a>
-				                                          </li>
-					                                  </ul>
-													</div>
-													</div>
-												</div> -->
-									</div>
+									<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>
+									<div *ngIf="emailTemplatesPagination.totalRecords>0" >
+									 <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
+                                        <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
+                                           <a (click)="setPage(1,'emailTemplates')">First</a>
+                                        </li>
+                                        <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
+                                            <a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')">Previous</a>
+                                         </li>
+                                         <li *ngFor="let page of emailTemplatesPagination.pager.pages" [ngClass]="{active:emailTemplatesPagination.pager.currentPage === page}">
+                                            <a (click)="setPage(page,'emailTemplates')">{{page}}</a>
+                                         </li>
+                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
+                                             <a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')">Next</a>
+                                         </li>
+                                          <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
+                                             <a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')">Last</a>
+                                         </li>
+					                </ul>
+					                </div>
 							  		<button type="button" style="float:left;margin-left: -10px;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-4')">Previous</button>
-   								 	<button type="submit"  style="float: right;margin-right: -10px;"  class=" btn green" (click)="resetActive($event, 40, 'step-6');addUserEmailIds()"  [disabled]="!isEmailTemplate" title="Please Select Email Template">Next</button> 
+   								 	<button type="submit"  style="float: right;margin-right: -10px;"  class=" btn green" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();"  [disabled]="!isEmailTemplate" title="Please Select Email Template">Next</button> 
 								</div>
 							</form>
 					</div>
@@ -738,7 +677,7 @@
 					<video id="campaignVideo" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{poster}}"
 							data-setup='{"example_option":true }'>
 						<!-- <source [src]=selectedVideoFilePath type="application/x-mpegURL" /> -->
-						<source [src]=selectedVideoFilePath type="video/mp4" />
+						<source [src]=selectedVideoFilePath type="application/x-mpegURL" />
 						<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
 					</video>
 					</th>
@@ -775,7 +714,6 @@
                  </div> 
 				  <div class="row">
                 	<div class="col-md-4 col-md-offset-4">                    
-                      <!--  <datetime [timepicker]="false" formControlName="launchTime"></datetime> -->
                       <input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" />
                       
                       </div>
