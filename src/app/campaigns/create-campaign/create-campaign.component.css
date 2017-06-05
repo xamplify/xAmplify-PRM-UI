@@ -82,7 +82,8 @@ a.disabled { pointer-events: none; cursor: not-allowed; }
      border: 1px solid #f8c300;
 }
 .step .successstep{
-	 color:#00a6e8; 
+	/*  color:#00a6e8;  */
+	 color:#86dcfc;
     vertical-align: central;
 }
 .step .col-md-2 .col-md-2-success .activestep{
@@ -263,4 +264,12 @@ line-height: inherit;
 }
 .emailtemplate-selected{
 	background-color: #6dcff6;
+}
+
+
+.has-success .form-control{
+	border-color: #0ad40e;
+}
+.has-error .form-control{
+	border-color:#a94442;
 }

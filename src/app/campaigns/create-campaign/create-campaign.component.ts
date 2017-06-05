@@ -58,6 +58,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     
     /************Campaign Details******************/
+    formGroupClass:string = "form-group";
+    campaignNameDivClass:string = this.formGroupClass;
+    fromNameDivClass:string =  this.formGroupClass;
+    subjectLineDivClass:string = this.formGroupClass;
+    fromEmaiDivClass:string = this.formGroupClass;
+    preHeaderDivClass:string = this.formGroupClass;
+    messageDivClass:string = this.formGroupClass;
     campaignType:string = "";
     isCampaignDetailsFormValid:boolean = false;
     
@@ -86,7 +93,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
     isEmailTemplate:boolean = false;
     isCampaignDraftEmailTemplate:boolean = false;
-    emailTemplateHtmlPreivew:string = "";;
     selectedEmailTemplateName:string = "";
     emailTemplateId:number=0;
     isDefaultCampaignEmailTemplate:boolean = true;
@@ -200,7 +206,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
-                this.getEmailTemplatePreview(emailTemplate);
+                //this.getEmailTemplatePreview(emailTemplate);
             }else{
                 this.logger.info("No Email Template Added For Campaign");
             }
@@ -269,9 +275,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isValidCampaignName:boolean = true;
      validateForm() {
          var isValid = true;
+         let self = this;
         $('#campaignDetailsForm input[type="text"]').each(function() {
-          if ( $(this).val() === '' )
+            if ( $(this).val() === '' ){
               isValid = false;
+          }
+             
         });
         if(isValid && this.isValidEmail && this.isValidCampaignName){
             this.isCampaignDetailsFormValid = true;
@@ -310,6 +319,49 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }
          }
          
+     }
+     validateField(fieldId:string){
+         var errorClass = "form-group has-error has-feedback";
+         var successClass = "form-group has-success has-feedback";
+         let fieldValue = $('#'+fieldId).val();
+         if(fieldId=="campaignName"){
+             if(fieldValue.length>0&&this.isValidCampaignName){
+                 this.campaignNameDivClass = successClass;
+             }else{
+                 this.campaignNameDivClass = errorClass;
+             }
+            
+         }else if(fieldId=="fromName"){
+             if(fieldValue.length>0){
+                 this.fromNameDivClass = successClass;
+             }else{
+                 this.fromNameDivClass = errorClass;
+             }
+         }else if(fieldId=="subjectLine"){
+             if(fieldValue.length>0){
+                 this.subjectLineDivClass = successClass;
+             }else{
+                 this.subjectLineDivClass = errorClass;
+             }
+         }else if(fieldId=="preHeader"){
+             if(fieldValue.length>0){
+                 this.preHeaderDivClass = successClass;
+             }else{
+                 this.preHeaderDivClass = errorClass;
+             }
+         }else if(fieldId=="email"){
+             if(fieldValue.length>0 && this.isValidEmail){
+                 this.fromEmaiDivClass = successClass;
+             }else{
+                 this.fromEmaiDivClass = errorClass;
+             }
+         }else if(fieldId=="message"){
+             if(fieldValue.length>0){
+                 this.messageDivClass = successClass;
+             }else{
+                 this.messageDivClass = errorClass;
+             }
+         }
      }
     loadCampaignNames(userId:number){
         this.campaignService.getCampaignNames(userId)
@@ -658,8 +710,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
-        this.emailTemplateHtmlPreivew = emailTemplate.body;
         this.selectedEmailTemplateName = emailTemplate.name;
+        $("#htmlContent").empty();
+        $("#email-template-title").empty();
+        $("#email-template-title").append(emailTemplate.name);
+        $("#htmlContent").append(emailTemplate.body);
+        //$("#show_email_template_preivew").css({height:"350px", overflow:"auto"});
+        $("#show_email_template_preivew").modal({backdrop: 'static', keyboard: false});
+            
     }
     filterTemplates(type:EmailTemplateType,index:number){
         this.emailTemplatesPagination.emailTemplateType =type;
@@ -676,7 +734,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailTemplate(emailTemplate:EmailTemplate){
        this.selectedEmailTemplateRow = emailTemplate.id;
        this.isEmailTemplate = true;
-       this.getEmailTemplatePreview(emailTemplate);
     }
 
     /*************************************************************Launch Campaign***************************************************************************************/

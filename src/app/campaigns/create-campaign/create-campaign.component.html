@@ -81,40 +81,40 @@
 							<div class="portlet-body form">
 								<!-- BEGIN FORM-->
 								<div class="form-body" style="text-align: left;">
-									<div class="form-group">
+									<div class="form-group" [attr.class]="campaignNameDivClass">
 										<label class="control-label col-md-3">Publish As
 											<small>(Save as)</small>
 											<font style="color: red"><b>*</b></font>
 										</label>
 										<div class="col-md-9">
-											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();" />
+											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" />
 											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group" [attr.class]="fromNameDivClass">
 										<label class="control-label col-md-3">From Name<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm()"  />
+											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');"  />
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group" [attr.class]="subjectLineDivClass">
 										<label class="control-label col-md-3">Subject Line<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm()" />
+											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" />
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group" [attr.class]="fromEmaiDivClass">
 										<label class="control-label col-md-3">From Email<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();"  />
+											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');"  />
 											<span *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span>
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group" [attr.class]="preHeaderDivClass">
 										<label class="control-label col-md-3">Pre Header<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm()"  />
+											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');"  />
 										</div>
 									</div>
 									<div class="form-group">
@@ -164,10 +164,10 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-group last">
+									<div class="form-group last" [attr.class]="messageDivClass">
 										<label class="control-label col-md-3">Notification Message<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm()"  />
+											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm();validateField('message');"  />
 										</div>
 									</div>
 								</div>
@@ -372,7 +372,7 @@
                 </div>
         </div>
         
-        
+   <!-- --------------------Video FIle Preivew Modal Pop Up -->     
         <div class="modal" id="show_preview">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
@@ -601,6 +601,9 @@
 														<div class="portlet-body">
 															<div class="row email-template-container">
 																<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="No Image Selected">
+																<div class="email-template-i-container">
+										       						 <i class="fa fa-info fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
+										   						 </div>
 															</div>
 														</div>
 													</div>
@@ -622,6 +625,9 @@
 													<div class="portlet-body">
 														<div class="row email-template-container">
 															<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="No Image Selected">
+															<div class="email-template-i-container">
+										       						 <i class="fa fa-info fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
+										   						 </div>
 														</div>
 													</div>
 													</div>	
@@ -660,6 +666,20 @@
 				</div>
 			</div>
 		</div>
+		<!-- --------------------Video FIle Preivew Modal Pop Up -->     
+        <div class="modal" id="show_email_template_preivew" >
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                 <h4 class="modal-title" id="email-template-title"></h4>
+	
+	            </div>
+	            <div class="modal-body"><div id = "htmlContent"></div></div>
+	            <div class="modal-footer"> <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default">Close</a>
+	            </div>
+	        </div>
+	    </div>
     </div><!-- End of step 5 -->
      <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
         <div class="row setup-content step hiddenStepInfo" id="step-6">
@@ -730,7 +750,7 @@
 				</form>
             </div><hr><br>
             <hr>
-             <div [innerHtml]="emailTemplateHtmlPreivew"></div>
+             <!-- <div [innerHtml]="emailTemplateHtmlPreivew"></div> -->
         </div>
     
 	</div><!-- End Of Line 18 -->
