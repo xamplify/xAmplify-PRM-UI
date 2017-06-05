@@ -60,7 +60,7 @@ export class VideoFileService {
    getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);
-        const url = this.URL + 'getMobinar?alias=' + alias + '&access_token=' + this.authenticationService.access_token+'&viewBy=' + viewBy;
+        const url = this.URL + 'getMobinar?alias=' + alias + '&viewBy=' + viewBy;
        // var url = this.URL + 'getMobinar?alias='+alias;
         return this.http.get(url, '')
         .map( this.extractData )

@@ -25,7 +25,7 @@ embedVideoFile: SaveVideoFile;
 saveVideoFile: SaveVideoFile;
 private videoJSplayer: any;
 public imgURL = 'https://aravindu.com/vod/images/125/03022017/flight1486153663429_play1.gif';
-public checkUrl = 'https://aravindu.com/xtremandApp/#/embed-video/PRIVATE/3867c8e2-85ba-4ca9-9804-b28769e67746';
+public checkUrl = 'https://aravindu.com/xtremandTest/#/embed-video/PRIVATE/3867c8e2-85ba-4ca9-9804-b28769e67746';
 public videoUrl: string;
 model: any = {};
 public isPlay = false;
@@ -51,13 +51,14 @@ googleButtons: any;
 facebookButtons: any;
 metatags: any;
 description = 'hi this is sathish';
+public embedUrl: string;
  // private _dom: DomAdapter = getDOM();
 // @Inject(DOCUMENT) private document:any , ,private metaService:Meta
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger,private utilService: UtilService, private metaService: Meta) {
+            private _logger: Logger, private utilService: UtilService, private metaService: Meta) {
             console.log('share component constructor called');
-         //   this.saveVideoFile = this.videoFileService.saveVideoFile ;
-            console.log('url is on angular 2' + document.location);
+            console.log('url is on angular 2' + document.location.href);
+            this.embedUrl = document.location.href;
         }
   getVideo(alias: string , viewby: string) {
     this.videoFileService.getVideo(alias, viewby)
@@ -66,13 +67,9 @@ description = 'hi this is sathish';
           this.embedVideoFile = data;
           console.log(data);
           this.posterImagePath = this.embedVideoFile.imagePath;
-        //  this.model.email_id = " ";
-        //   this.firstName = " ";
-        //   this.lastName = " ";
           this.lowerTextValue = this.embedVideoFile.lowerText;
           this.upperTextValue = this.embedVideoFile.upperText;
           this.is360Value  =  this.embedVideoFile.is360video;
-       //   alert(this.is360Value);
         if(this.embedVideoFile.startOfVideo === true) {this.videoOverlaySubmit = 'PLAY'; }
         else {  this.videoOverlaySubmit = 'SUBMIT'; }
 
@@ -101,15 +98,24 @@ description = 'hi this is sathish';
        { this.defaultVideoControllers();}
         this.defaultValues();
             console.log(this.videoUrl);
-           this.metatags = {
-                    'twitter:title' : 'Meta Tags NEw',
-                   }
-            let title:MetaDefinition   =  { name: 'og:type', content: "new titel is title" };
-            let desc: MetaDefinition = { name: 'description', content: "checking sdkgaksdgjjlksdd" };
-            let ogDesc: MetaDefinition = { name: 'og:title', content: "dec sdgklsdjklgajdskljgklsdjlkgjsdklg" };
-            let ogTitle: MetaDefinition = { name: 'twitter:title', content: "Sathish New Project" };
-          //  this.metaService.addTags([desc, ogDesc, ogTitle],true);
-          //  this.metaService.addTag(ogTitle);
+          // twitter og info
+            const twiettrDec = 'Grace is the only complete studio album by Jeff Buckley, released on August 23,';
+            const twitterCard: MetaDefinition = { name: 'twitter:card', content: 'summary' };
+            const twitterSite: MetaDefinition = { name: 'twitter:site', content: '@michlbrmly'};
+            const twitterTitle: MetaDefinition = { name: 'twitter:title', content: 'Grace' };
+            const twitterDesc: MetaDefinition = { name: 'twitter:description', content : twiettrDec};
+            const twitterImage: MetaDefinition = { name: 'twitter:image', content : this.imgURL };
+            const twitterUrl: MetaDefinition = { name: 'twitter:url', content: this.embedUrl };
+           // open graph meta tags info
+            const ogDescription  = 'Grace is the only complete studio album by Jeff Buckley, released on August 23';
+            const ogtitle: MetaDefinition   =  { name: 'og:title', content: 'Grace' };
+            const ogSitename: MetaDefinition = { name: 'og:site_name', content: 'My Favourite Albums'};
+            const ogUrl: MetaDefinition = { name: 'og:url', content: this.embedUrl};
+            const ogdesc: MetaDefinition = { name: 'og:description', content: ogDescription };
+            const ogImage: MetaDefinition = { name: 'og:image', content: this.imgURL};
+         //   this.metaService.addTags([ogtitle, ogSitename, ogdesc, ogUrl, ogImage, twitterCard, twitterSite, twitterTitle,
+          //    twitterDesc, twitterImage, twitterUrl], true);
+         //   this.metaService.addTag(ogTitle);
         });
   }
   ngOnInit() {

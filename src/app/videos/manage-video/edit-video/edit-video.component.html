@@ -366,53 +366,70 @@
 									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
 										<div class="form-group">
-											<label class="col-md-6 control-label">Allow Sharing:</label>
+											<label class="col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue" size="large" formControlName="allowSharing" (change)="allowSharing($event)"></ui-switch>
+												<ui-switch color="lightblue" formControlName="allowSharing" (change)="allowSharing($event)"></ui-switch>
+											</div>
+											<label class="col-md-3 control-label">Enable Settings:</label>
+											<div class="col-md-3">
+												<ui-switch color="red"   formControlName="enableSettings" checked></ui-switch>
 											</div>
 										</div>
-										<div class="form-group">
+										<!--<div class="form-group">
 											<label class="col-md-6 control-label">Enable Settings:</label>
 											<div class="col-md-3">
 												<ui-switch color="red" size="large"  formControlName="enableSettings" checked></ui-switch>
 											</div>
-										</div>
+										</div> -->
 										<div class="form-group">
-											<label class="col-md-6 control-label">Allow Fullscreen:</label>
+											<label class="col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue" size="large" formControlName="allowFullscreen" (change)="changeFullscreen($event)"></ui-switch>
+												<ui-switch color="lightblue" formControlName="allowFullscreen" (change)="changeFullscreen($event)"></ui-switch>
+											</div>
+											<label class="col-md-3 control-label">Allow Comments:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue"  formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
 											</div>
 										</div>
-										<div class="form-group">
+										<!--<div class="form-group">
 											<label class="col-md-6 control-label">Allow Comments:</label>
 											<div class="col-md-3">
 												<ui-switch color="lightblue" size="large" formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group">
-											<label class="col-md-6 control-label">Allow Likes:</label>
+											<label class="col-md-3 control-label">Allow Likes:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue" size="large" formControlName="allowLikes" (change)="allowLikes($event)"></ui-switch>
+												<ui-switch color="lightblue"  formControlName="allowLikes" (change)="allowLikes($event)"></ui-switch>
 											</div>
+                                           	<label class="col-md-3 control-label">Enable Casting:</label>
+											<div class="col-md-3">
+												<ui-switch color="orange"  formControlName="enableCasting"></ui-switch>
+											</div>
+
 										</div>
-										<div class="form-group">
+										<!--<div class="form-group">
 											<label class="col-md-6 control-label">Enable Casting:</label>
 											<div class="col-md-3">
 												<ui-switch color="orange" size="large" formControlName="enableCasting"></ui-switch>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group">
-											<label class="col-md-6 control-label">Allow Embed:</label>
+											<label class="col-md-3 control-label">Allow Embed:</label>
 											<div class="col-md-3">
-											 <ui-switch color="red" size="large" formControlName="allowEmbed" (change)="allowEmbedVideo($event)"></ui-switch>
+											 <ui-switch color="red"  formControlName="allowEmbed" (change)="allowEmbedVideo($event)"></ui-switch>
+											</div>
+												<label class="col-md-3 control-label">360 video:</label>
+											<div class="col-md-3">
+											 <ui-switch color="blue"  formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
 											</div>
 										</div>
-										<div class="form-group">
+										<!--<div class="form-group">
 											<label class="col-md-6 control-label">360 video:</label>
 											<div class="col-md-3">
 											 <ui-switch color="blue" size="large" formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
 											</div>
-										</div>
+										</div>-->
 									</div>
 								</div>
 								<!-- </form> -->
