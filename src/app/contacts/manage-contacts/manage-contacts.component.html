@@ -162,6 +162,11 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Success!</strong> Contact List has been Deleted successfully.
 		</div>
+		<div *ngIf="deleteErrorMessage" id="showDeleteErrorMessage"
+			class="alert alert-success alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Success!</strong> This Contact List using in campaigns please delete those campaign first.
+		</div>
 		<div *ngIf="synchronizationSucessMessage" id="showSynchronizeMessage"
 			class="alert alert-success alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

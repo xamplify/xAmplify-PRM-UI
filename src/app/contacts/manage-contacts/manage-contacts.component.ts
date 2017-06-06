@@ -44,6 +44,7 @@ export class ManageContactsComponent implements OnInit {
     showAllContactData: boolean = false;
     showManageContactData: boolean = true;
     deleteSucessMessage: boolean;
+    deleteErrorMessage: boolean;
     invalidDeleteSucessMessage: boolean;
     synchronizationSucessMessage: boolean;
     allContactData: boolean;
@@ -221,7 +222,7 @@ export class ManageContactsComponent implements OnInit {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUserLists.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContacts = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -267,7 +268,8 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contact list is being used in one or more campaigns. Please delete those campaigns' ) != -1 ) {
-                    swal( 'Campaign Video!', error, 'error' );
+                    //swal( 'Campaign Video!', error, 'error' );
+                    this.deleteErrorMessage = true;
                 }
                 console.log( error );
             },
@@ -505,7 +507,7 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.allContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -570,7 +572,7 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.activeContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -589,7 +591,7 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.invalidContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -610,7 +612,7 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.unsubscribedContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -629,7 +631,7 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.nonActiveContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
