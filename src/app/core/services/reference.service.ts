@@ -7,10 +7,12 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import {Category} from '../../videos/models/category';
 import { Logger } from "angular2-logger/core";
+import {User} from '../models/user';
 @Injectable()
 export class ReferenceService{
 
     public refcategories: Category[];
+    public user: any;
     public selectedCampaignType:string = "";
     isCampaignCreated:boolean = false;
     isCampaignUpdated:boolean = false;

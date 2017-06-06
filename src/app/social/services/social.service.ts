@@ -14,9 +14,12 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 @Injectable()
 export class SocialService {
     URL = this.authenticationService.REST_URL;
+    public access_token: string;
+    public REST_URL: string;
 
     constructor(private http: Http, private router: Router, 
                 private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
+    	this.REST_URL = "http://localhost:8080/xtremand-rest/";
     }
     
     
@@ -109,4 +112,42 @@ export class SocialService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw(errMsg);
     }
+    
+xtremandlogin(client_id:string, client_secret:string){
+        
+        var url = this.REST_URL+'oauth/token';
+        // var url = 'http://localhost:8080/xtremand-rest/oauth/token';
+       
+       var headers = new Headers();
+       headers.append('Content-Type', 'application/x-www-form-urlencoded');
+       headers.append('Authorization', 'Basic' + btoa(client_id+':'));
+       
+       var body = 'client_id='+client_id+'&client_secret='+client_secret+'&grant_type=client_credentials';
+       var options = {
+           headers: headers
+       };
+       console.log("authentication service "+body);
+      return this.http.post(url, body, options)
+           .map(response => {
+               // login successful if there's a jwt token in the response
+               let access_token = response.json() && response.json().access_token;
+               let refresh_token = response.json() && response.json().refresh_token;
+               let expires_in = response.json() && response.json().expires_in;
+               console.log("Authenticated : "+access_token+", "+refresh_token);
+               if (access_token) {
+                   // set token property
+                   this.access_token = access_token;
+
+                   // store username and jwt token in local storage to keep user logged in between page refreshes
+
+                   // return true to indicate successful login
+                   return true;
+               } else {
+                   // return false to indicate failed login
+                   console.log("Error : "+response);
+                   return false;
+               }
+           });
+   }
+    
 }

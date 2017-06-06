@@ -16,6 +16,7 @@ export class TopnavbarComponent implements OnInit {
     notificationsCount: number = 0;
     constructor( private router: Router,private userService:UserService, private twitterService: TwitterService) {
         this.getLoggedInUserDetails();
+        //this.testSpringSecurity();
     }
     
     loggedInUser:User;
@@ -91,4 +92,18 @@ export class TopnavbarComponent implements OnInit {
         );
     
     }
+    
+    public testSpringSecurity() {
+        this.userService.testSpringSecurity()
+            .subscribe(
+            data => {
+                console.log(data);
+                this.getLoggedInUserDetails();
+
+            },
+            error => console.log(error),
+            () => console.log("finished")
+            );
+        
+   }
 }

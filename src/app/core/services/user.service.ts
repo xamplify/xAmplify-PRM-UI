@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 import { User } from '../models/user';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { ReferenceService } from './reference.service';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ URL = this.authenticationService.REST_URL;
 
 constructor(
     private http: Http,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService, private refService : ReferenceService) {
 }
 
 getUsers(): Observable<User[]> {
@@ -96,5 +97,11 @@ private handleError(error: any) {
         return Observable.throw(error);
     }
    
+}
+
+testSpringSecurity(){
+    return this.http.post(this.URL+"admin/testSpringSecurity?access_token="+this.authenticationService.access_token, this.refService.user)
+    .map(this.extractData)
+    .catch(this.handleError);
 }
 }
