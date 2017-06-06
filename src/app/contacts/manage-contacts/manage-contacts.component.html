@@ -66,12 +66,10 @@
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier"
-														[class.customDisableCss]="searchDisable==true"
 														style="cursor: pointer; font-size: 18px;"
 														(click)="searchContactTitelName()"></i> <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														(input)="searchDisableValue()"
 														class="form-control input-circle" placeholder="search...">
 												</div>
 											</div>
@@ -173,6 +171,12 @@
 			<strong>Success!</strong> Contact List has been Synchronized
 			successfully.
 		</div>
+		
+		<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Contact lists found.. !!!</strong>
+			                </div>
+			                
 		<div class="row mix-grid" style="margin-top: 10px">
 			<div *ngFor="let contactList of pagination.pagedItems">
 				<div class="col-md-3 col-sm-4 mix category_1 mix_all"
@@ -423,12 +427,10 @@
 									<div class="portlet-input input-inline input-small">
 										<div class="input-icon right">
 											<i class="icon-magnifier"
-												[class.customDisableCss]="searchDisable==true"
 												style="cursor: pointer; font-size: 18px;"
 												(click)="searchContactTitelName()"></i> <input type="text"
 												[(ngModel)]="searchKey"
 												[ngModelOptions]="{standalone: true}"
-												(input)="searchDisableValue()"
 												class="form-control input-circle" placeholder="search...">
 
 										</div>

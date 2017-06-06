@@ -137,35 +137,49 @@ export class ManageContactsComponent implements OnInit {
         }
     }
 
-    searchDisableValue() {
+    /*searchDisableValue() {
         console.log( this.searchKey );
         if ( this.searchKey !== null || this.searchKey.length !== 0 ) {
             this.searchDisable = false;
         }
-        if ( this.searchKey.length === 0 || this.searchKey === '' ) {
+        if ( this.searchKey.length == 0 || this.searchKey == '' ) {
             this.searchDisable = true;
         }
-    }
+    }*/
+    
     searchContactTitelName() {
-        if ( this.searchKey !== null && this.searchDisable === false ) {
             console.log( this.searchKey );
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
-            if ( this.currentContactType == null ) {
+            if ( this.currentContactType == null || (this.currentContactType == null && this.searchKey == "")) {
                 this.loadContactLists( this.pagination );
             }
-            else if ( this.currentContactType == "all_contacts" ) {
+            else if ( this.currentContactType == "all_contacts" || (this.currentContactType == "all_contacts" && this.searchKey == "" )) {
                 this.all_Contacts( this.pagination );
-            } else if ( this.currentContactType == "active_contacts" ) {
+            } else if ( this.currentContactType == "active_contacts" || (this.currentContactType == "active_contacts" && this.searchKey == "")) {
                 this.active_Contacts( this.pagination );
-            } else if ( this.currentContactType == "invalid_contacts" ) {
+            } else if (this.currentContactType == "invalid_contacts" || (this.currentContactType == "invalid_contacts" && this.searchKey == "" )) {
                 this.invalid_Contacts( this.pagination );
-            } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+            } else if ( this.currentContactType == "unSubscribed_contacts" || (this.currentContactType == "unSubscribed_contacts" && this.searchKey == "")) {
                 this.unSubscribed_Contacts( this.pagination );
-            } else if ( this.currentContactType == "nonActive_contacts" ) {
+            } else if ( this.currentContactType == "nonActive_contacts" || (this.currentContactType == "nonActive_contacts" && this.searchKey == "")) {
                 this.nonActive_Contacts( this.pagination );
             }
+       
+       /* if( this.currentContactType=="null") {
+            this.loadContactLists( this.pagination );
         }
+        else if ( this.currentContactType == "all_contacts" ) {
+            this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" ) {
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" ) {
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" ) {
+            this.nonActive_Contacts( this.pagination );
+        }*/
     }
 
     selectedSortByValue( event: any ) {
@@ -228,6 +242,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
                 }
+                if (this.contactLists.length !== 0) {
+                    this.isvideoThere = false;
+                 }
+                 else {
+                     this.isvideoThere = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => {
                 this.logger.error( error )
