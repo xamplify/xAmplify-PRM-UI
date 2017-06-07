@@ -49,6 +49,8 @@ export class EditContactsComponent implements OnInit {
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
     public successMessage: boolean;
+    noContactsFound : boolean;
+    noContactsFound1 : boolean;
 
     public users: Array<User>;
     activeUsersCount: number;
@@ -109,7 +111,7 @@ export class EditContactsComponent implements OnInit {
         this.csvFileUsers = new Array<User>();
     }
 
-    searchDisableValue() {
+    /*searchDisableValue() {
         console.log( this.searchKey );
         if ( this.searchKey !== null || this.searchKey.length !== 0 ) {
             this.searchDisable = false;
@@ -117,23 +119,21 @@ export class EditContactsComponent implements OnInit {
         if ( this.searchKey.length === 0 || this.searchKey === '' ) {
             this.searchDisable = true;
         }
-    }
+    }*/
     searchContactsTitelName() {
-        if ( this.searchKey !== null && this.searchDisable === false ) {
             console.log( this.searchKey );
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
-            if ( this.currentContactType == null ) {
+            if ( this.currentContactType == null|| (this.currentContactType == null && this.searchKey == "") ) {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-            } else if ( this.currentContactType == "active_contacts" ) {
+            } else if ( this.currentContactType == "active_contacts" || (this.currentContactType == "active_contacts" && this.searchKey == "") ) {
                 this.active_Contacts( this.pagination );
-            } else if ( this.currentContactType == "invalid_contacts" ) {
+            } else if ( this.currentContactType == "invalid_contacts" || (this.currentContactType == "invalid_contacts" && this.searchKey == "") ) {
                 this.invalid_Contacts( this.pagination );
-            } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+            } else if ( this.currentContactType == "unSubscribed_contacts" || (this.currentContactType == "unSubscribed_contacts" && this.searchKey == "") ) {
                 this.unSubscribed_Contacts( this.pagination );
-            } else if ( this.currentContactType == "nonActive_contacts" ) {
+            } else if ( this.currentContactType == "nonActive_contacts" || (this.currentContactType == "nonActive_contacts" && this.searchKey == "") ) {
                 this.nonActive_Contacts( this.pagination );
-            }
         }
     }
     selectedSortByValue( event: any ) {
@@ -526,6 +526,13 @@ export class EditContactsComponent implements OnInit {
                     this.invlidContactsCount = data.invalidUsers;
                     this.unsubscribedContacts = data.unsubscribedUsers;
                 }
+                if (this.contacts.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
                 this.checkingLoadContactsCount = false;
@@ -595,13 +602,20 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 this.activeContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyActiveContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                     this.logger.log( data );
                 }
+                if (this.activeContactUsers.length !== 0) {
+                    this.noContactsFound1 = false;
+                 }
+                 else {
+                     this.noContactsFound1 = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -614,13 +628,20 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 this.invalidContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyInvalidContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
                     this.logger.log( data );
                 }
+                if (this.invalidContactUsers.length !== 0) {
+                    this.noContactsFound1 = false;
+                 }
+                 else {
+                     this.noContactsFound1 = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -633,13 +654,20 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 this.unsubscribedContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyUnsubscribedContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                     this.logger.log( data );
                 }
+                if (this.unsubscribedContactUsers.length !== 0) {
+                    this.noContactsFound1 = false;
+                 }
+                 else {
+                     this.noContactsFound1 = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -653,13 +681,20 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 this.nonActiveContactUsers = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( data.listOfUsers.length == 0 ) {
+                if ( data.totalRecords.length == 0 ) {
                     this.emptyNonActiveContactsUsers = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                     this.logger.log( data );
                 }
+                if (this.nonActiveContactUsers.length !== 0) {
+                    this.noContactsFound1 = false;
+                 }
+                 else {
+                     this.noContactsFound1 = true;
+                     this.pagedItems = null ;
+                 }
             },
 
             error => console.log( error ),

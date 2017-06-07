@@ -26,12 +26,10 @@
 										<div class="portlet-input input-inline input-small">
 											<div class="input-icon right">
 												<i class="icon-magnifier"
-													[class.customDisableCss]="searchDisable==true"
 													style="cursor: pointer; font-size: 18px;"
 													(click)="searchContactsTitelName()"></i> <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
-													(input)="searchDisableValue()"
 													class="form-control input-circle" placeholder="search...">
 											</div>
 										</div>
@@ -223,6 +221,10 @@
 							successfully.
 						</div>
 					</div>
+					<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Contact found.. !!!</strong>
+			                </div>
 
 					<div class="row" *ngIf="clickBoard">
 						<div class="col-sm-12">
@@ -326,7 +328,7 @@
 								<tr *ngFor="let newContact of users; let i = index"
 									class="new_row">
 									<td><input type="checkbox" checked="newContact.checked"></td>
-									<td><input type=Text [(ngModel)]="newContact.emailId"
+									<!-- <td><input type=Text [(ngModel)]="newContact.emailId"
 										class="form-control" [ngModelOptions]="{standalone: true}"
 										required
 										pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
@@ -335,16 +337,23 @@
 											[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
 											class="alert alert-danger">
 											Email is required and format should be <i>john@doe.com</i>.
-										</div></td>
+										</div></td> -->
+										<td><input type=Text [(ngModel)]="newContact.emailId"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											required
+											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+											#emailId="ngModel">
+											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+												class="alert alert-danger">
+												Email is required and format should be <i>john@doe.com</i>.
+											</div></td>
 									<td><input type=Text [(ngModel)]="newContact.firstName"
-										class="form-control" [ngModelOptions]="{standalone: true}"
-										required minlength="4" maxlength="12" #firstName="ngModel">
+										class="form-control" [ngModelOptions]="{standalone: true}">
 										<!-- <div
 										[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
 										class="alert alert-danger">firstName is required.</div> --></td>
 									<td><input type=Text [(ngModel)]="newContact.lastName"
-										class="form-control" [ngModelOptions]="{standalone: true}"
-										required minlength="4" maxlength="8" #lastName="ngModel">
+										class="form-control" [ngModelOptions]="{standalone: true}">
 										<!-- <div
 										[hidden]="lastName.valid || (lastName.pristine && !f.submitted)"
 										class="alert alert-danger">lastName is required.</div> --></td>
@@ -398,11 +407,10 @@
 				<div class="portlet-input input-inline input-small">
 					<div class="input-icon right">
 						<i class="icon-magnifier"
-							[class.customDisableCss]="searchDisable==true"
 							style="cursor: pointer; font-size: 18px;"
 							(click)="searchContactsTitelName()"></i> <input type="text"
 							[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-							(input)="searchDisableValue()" class="form-control input-circle"
+							class="form-control input-circle"
 							placeholder="search...">
 
 					</div>
@@ -416,6 +424,10 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Success!</strong> Contact List has been Deleted successfully.
 		</div>
+		<div *ngIf="noContactsFound1==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Contacts found.. !!!</strong>
+			                </div>
 		<div *ngIf="emptyActiveContactsUsers" class="alert alert-info">
 			<strong>Info!</strong> No Active Contacts found.
 		</div>
