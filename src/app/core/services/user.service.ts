@@ -65,13 +65,17 @@ updateUserProfile(data:any){
     .catch(this.handleError);
 }
 
-getUserData(): Observable<User> {
-    // get users from api
-    return this.http.get(this.URL+"admin/getUserById?access_token="+this.authenticationService.access_token)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
 
+
+
+getUserData(): Observable<User> {
+// get users from api
+console.log(this.refService.userName);
+let userName = this.refService.userName;
+ return this.http.post(this.URL+"admin/getUserById/?userName="+userName+"&access_token="+this.authenticationService.access_token,"")
+.map(this.extractData)
+.catch(this.handleError);
+}
 
 private extractData(res: Response) {
     console.log(res);
@@ -99,9 +103,4 @@ private handleError(error: any) {
    
 }
 
-testSpringSecurity(){
-    return this.http.post(this.URL+"admin/testSpringSecurity?access_token="+this.authenticationService.access_token, this.refService.user)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
 }

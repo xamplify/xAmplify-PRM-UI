@@ -93,17 +93,4 @@ export class TopnavbarComponent implements OnInit {
     
     }
     
-    public testSpringSecurity() {
-        this.userService.testSpringSecurity()
-            .subscribe(
-            data => {
-                console.log(data);
-                this.getLoggedInUserDetails();
-
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );
-        
-   }
 }

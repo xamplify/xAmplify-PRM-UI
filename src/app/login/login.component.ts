@@ -7,6 +7,7 @@ import { User } from '../core/models/user';
 import { AuthenticationService } from '../core/services/authentication.service';
 import { UserService } from '../core/services/user.service';
 import {matchingPasswords} from '../form-validator';
+import { ReferenceService } from '../core/services/reference.service';
 
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
     passwordSuccess = false;
 
     constructor( private router: Router,
-        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, private userService: UserService ) {
+        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, private userService: UserService, private refService :ReferenceService ) {
       
     	this.signUpForm = new FormGroup({
             fullName: new FormControl(),
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
 
     public login() {
         this.loading = true;
+        this.refService.userName = this.model.username;
         this.authenticationService.login( this.model.username, this.model.password ).subscribe( result => {
             console.log( "result: " + result );
             if ( result === true ) {

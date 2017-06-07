@@ -21,9 +21,9 @@ export class SocialCallbackComponent implements OnInit {
     
         this.socialService.callback( providerName )
             .subscribe(
-            result => {
+           result  => {
                 console.log( "result :" + result);
-                this.refService.user = result;
+                this.refService.userName = result;
                 
                 if(providerName=="salesforce"){
                     client_id= "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
@@ -43,16 +43,16 @@ export class SocialCallbackComponent implements OnInit {
                     if ( result === true ) {
                         let abcd =  this.socialService.access_token;
                         let expires_in = 60;
-                        let username= "naresh.kotha04@gmail.com";
+                        let username= this.refService.userName;
                         localStorage.removeItem('currentUser');
                         localStorage.setItem('currentUser', JSON.stringify(
-                                {   username: username, 
-                                    access_token: abcd, 
+                                {   username: this.refService.userName, 
+                                    access_token: this.socialService.access_token, 
                                     refresh_token : abcd,
                                     expires_in: expires_in
                                 }
                             ));
-                        this.authenticationService.access_token=abcd;
+                        this.authenticationService.access_token=this.socialService.access_token;
                         
                         //if user is coming from login
                         //this.getLoggedInUserDetails();

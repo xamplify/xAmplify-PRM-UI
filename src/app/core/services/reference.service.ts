@@ -12,7 +12,7 @@ import {User} from '../models/user';
 export class ReferenceService{
 
     public refcategories: Category[];
-    public user: any;
+    public userName: any;
     public selectedCampaignType:string = "";
     isCampaignCreated:boolean = false;
     isCampaignUpdated:boolean = false;
