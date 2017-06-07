@@ -392,6 +392,11 @@
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been Deleted successfully.
 	</div>
+	<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Contact found.. !!!</strong>
+			                </div>
+	
 	<!-- END PAGE HEADER-->
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">

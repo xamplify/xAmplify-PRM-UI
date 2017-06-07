@@ -76,6 +76,7 @@ export class ManageContactsComponent implements OnInit {
     sortcolumn: string = null;
     sortingOrder: string = null;
     isvideoThere: boolean;
+    noContactsFound : boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
     users: User[];
@@ -536,6 +537,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.allContactUsers );
                     this.logger.log( data );
                 }
+                if (this.allContactUsers.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -600,6 +608,14 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                     this.logger.log( data );
                 }
+                
+                if (this.activeContactUsers.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -621,6 +637,14 @@ export class ManageContactsComponent implements OnInit {
                     this.userListIds = data.listOfUsers;
                     this.logger.info( this.userListIds );
                 }
+                
+                if (this.invalidContactUsers.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -640,6 +664,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                     this.logger.log( data );
                 }
+                if (this.unsubscribedContactUsers.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -659,6 +690,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                     this.logger.log( data );
                 }
+                if (this.nonActiveContactUsers.length !== 0) {
+                    this.noContactsFound = false;
+                 }
+                 else {
+                     this.noContactsFound = true;
+                     this.pagedItems = null ;
+                 }
             },
 
             error => console.log( error ),
