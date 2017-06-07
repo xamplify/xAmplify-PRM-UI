@@ -35,6 +35,9 @@ export class SocialCallbackComponent implements OnInit {
                 }else  if(providerName=="facebook"){
                     client_id= "1348853938538956";
                     client_secret = "69202865ccc82e3cf43a5aa097c4e7bf";
+                }else  if(providerName=="twitter"){
+                    client_id= "J60F2OG6jZOEK33xK3MtiU4zI";
+                    client_secret = "d3xQ5hPlPZtQdeMkNAjlejXFvwRrPSalwbpyApncxi49Pf4lFi";
                 }
                 
                 this.socialService.xtremandlogin( client_id, client_secret )
