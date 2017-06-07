@@ -132,7 +132,7 @@ export class ContactService {
     deleteContactList( contactListId: number ) {
         return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
             .map( this.extractData )
-            .catch( this.handleError );
+            .catch( this.handleErrorDelete );
     }
 
     saveContactList( contactListName: string, users: Array<User> ): Observable<User[]> {

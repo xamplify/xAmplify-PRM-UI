@@ -57,6 +57,7 @@ export class ManageContactsComponent implements OnInit {
     emptyContacts: boolean;
     emptyContactsUsers: boolean;
     public contactListName: string;
+    public model: any = {};
     public removeIds: number;
     public invalidIds: Array<UserListIds>;
     public alias: any;
@@ -83,6 +84,7 @@ export class ManageContactsComponent implements OnInit {
     access_token: string;
     pager: any = {};
     pagedItems: any[];
+    Campaign : string;
     public totalRecords: number;
     public zohoImage: string = 'assets/admin/pages/media/works/zoho.png';
     public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
@@ -289,15 +291,18 @@ export class ManageContactsComponent implements OnInit {
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
             },
             ( error: any ) => {
-                if ( error.search( 'contact list is being used in one or more campaigns. Please delete those campaigns' ) != -1 ) {
-                    //swal( 'Campaign Video!', error, 'error' );
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    //swal( 'Campaign contact!', error, 'error' );
+                    this.Campaign = error;
                     this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 }
                 console.log( error );
             },
             () => this.logger.info( "deleted completed" )
             );
         this.deleteSucessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -497,7 +502,7 @@ export class ManageContactsComponent implements OnInit {
         this.contactListUsersError = false;
         this.contactListNameError = false;
         this.synchronizationSucessMessage = false;
-        this.contactListName = null;
+        this.model.contactListName = null;
         this.showAll = true;
         this.showEdit = false;
         $( "#showMessage" ).hide();
@@ -739,9 +744,9 @@ export class ManageContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.contactListName != null ) {
+        if ( this.model.contactListName != null ) {
             if ( selectedUsers.length != 0 ) {
-                this.contactService.saveContactList( this.contactListName, selectedUsers )
+                this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                     .subscribe(
                     data => {
                         data = data;
@@ -766,7 +771,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     cancelAllContactsCancel() {
-        this.contactListName = null;
+        this.model.contactListName = null;
         this.all_Contacts( this.pagination );
         this.contactListUsersError = false;
         this.contactListNameError = false;

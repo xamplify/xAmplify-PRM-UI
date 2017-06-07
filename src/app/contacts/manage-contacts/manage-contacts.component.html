@@ -160,10 +160,10 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Success!</strong> Contact List has been Deleted successfully.
 		</div>
-		<div *ngIf="deleteErrorMessage" id="showDeleteErrorMessage"
-			class="alert alert-success alert-dismissable">
+		<div *ngIf="deleteErrorMessage" id="campaignError"
+			class="alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> This Contact List using in campaigns please delete those campaign first.
+			<strong>Danger!</strong>{{Campaign}}
 		</div>
 		<div *ngIf="synchronizationSucessMessage" id="showSynchronizeMessage"
 			class="alert alert-success alert-dismissable">
@@ -460,12 +460,30 @@
 					<!-- BEGIN PAGE CONTENT-->
 					<div class="row">
 						<form class="form-inline" *ngIf="allContactData==true">
+						<form #f="ngForm">
 							<div class="col-xs-0 col-md-6 form-group"
 								style="margin-bottom: 8px">
-								<label for="name">ContactListName:</label> <input type="text"
+								<!-- <label for="name">ContactListName:</label> <input type="text"
 									class="form-control" [(ngModel)]="contactListName"
+									(ngModelChange)="changEvent($event)" required
 									id="contactListName" name="contactListName"
-									placeholder="Contact List Name">
+									placeholder="Contact List Name"
+									#contactListName="ngModel">
+									<div style="margin-left: 118px;width:40%" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
+												class="alert alert-danger">
+												Minimum 4 letters required.
+											</div> -->
+											<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label> <input class="col-sm-8" type="text"
+									class="form-control" style="width:65%" id="contactListName"
+									 required
+									[(ngModel)]="model.contactListName" name="contactListName"
+									minlength="4" maxlength="20"
+									placeholder="Contact List Name"
+									#contactListName="ngModel">
+									<div style="margin-left: 178px;width:65%" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
+												class="alert alert-danger">
+												Minimum 4 letters required.
+											</div>
 								<!-- <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
     <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListUsersError"> <p style="color:red">Please select the atleast one User</p></div> -->
 								<div id="NameErrorMessage"
@@ -485,6 +503,7 @@
 								</div>
 
 							</div>
+							</form>
 							<div class="col-xs-0 col-md-6 form-group" align="right">
 								<button (click)="cancelAllContactsCancel()">Cancel</button>
 								<button style="background-color: #3598dc; color: white"
