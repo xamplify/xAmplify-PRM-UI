@@ -74,7 +74,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceContactUsers: SocialContact[] = new Array();
     public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
-    public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"] });
+    public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv"] });
     contacts: User[];
     private socialContactType: string;
     constructor( private authenticationService: AuthenticationService, private contactService: ContactService,

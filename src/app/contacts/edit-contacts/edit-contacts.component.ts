@@ -221,7 +221,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
-        if ( this.users[0].emailId != undefined ) {
+        if ( this.users[0].emailId != undefined && this.validateEmailAddress(this.users[0].emailId) ) {
             this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
             this.contactService.updateContactList( this.contactListId, this.users )
                 .subscribe(
@@ -541,9 +541,9 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
         )
-
     }
-
+    changEvent( event: any ) {
+    }
     setPage( page: number, ) {
         this.pagination.pageIndex = page;
         if ( this.currentContactType == null ) {

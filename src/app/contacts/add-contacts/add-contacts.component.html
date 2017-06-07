@@ -70,6 +70,10 @@
 									minlength="4" maxlength="20"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
+									<div style="margin-left: 167px" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
+												class="alert alert-danger">
+												Minimum 4 letters required.
+											</div>
 								<!-- <div style="margin-left: 170px"
 									[hidden]="contactListName.valid || contactListName.pristine"
 									class="alert alert-danger">Name is required</div> -->
