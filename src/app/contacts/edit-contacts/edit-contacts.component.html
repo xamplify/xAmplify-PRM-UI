@@ -9,7 +9,20 @@
 			<li>
 			<a (click)="backToEditContacts()"><i class="fa fa-angle-right"> </i>Edit
 				contacts</a></li>
+			<li *ngIf="activeContactsData==true">
+			<i class="fa fa-angle-right"> </i>Active Contacts
+				contacts</li>
+			<li *ngIf="invalidContactData==true">
+			<i class="fa fa-angle-right"> </i>Invalid
+				Contacts</li>
+			<li *ngIf="unsubscribedContactsData==true">
+			<i class="fa fa-angle-right"> </i>Unsubscribed
+				Contacts</li>
+			<li *ngIf="nonActiveContactsData==true">
+			<i class="fa fa-angle-right"> </i>Non Active Contacts
+			</li>
 		</ul>
+		
 
 	</div>
 <div class="row" id="manageContacts" *ngIf="showEditContactData">
