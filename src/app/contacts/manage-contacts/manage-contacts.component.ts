@@ -85,6 +85,8 @@ export class ManageContactsComponent implements OnInit {
     pager: any = {};
     pagedItems: any[];
     Campaign : string;
+    names:string[]=[];
+    isValidContactName:boolean;
     public totalRecords: number;
     public zohoImage: string = 'assets/admin/pages/media/works/zoho.png';
     public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
@@ -252,6 +254,9 @@ export class ManageContactsComponent implements OnInit {
                      this.isvideoThere = true;
                      this.pagedItems = null ;
                  }
+                for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
+                  this.names.push(data.listOfUserLists[i].name);
+                }
             },
             error => {
                 this.logger.error( error )
@@ -553,6 +558,17 @@ export class ManageContactsComponent implements OnInit {
             error => console.log( error ),
             () => console.log( "finished" )
             );
+    }
+    
+    validateContactName(contactName:string){
+        console.log(contactName);
+        var list = this.names;
+        console.log(list);
+        if($.inArray(contactName, list) > -1){
+            this.isValidContactName = true;  
+        }else{
+            this.isValidContactName = false;
+        }
     }
 
     allContactsDataShowing() {

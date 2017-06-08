@@ -478,8 +478,10 @@
 									 required
 									[(ngModel)]="model.contactListName" name="contactListName"
 									minlength="4" maxlength="20"
+									(input)="validateContactName(model.contactListName)"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
+									<span *ngIf="isValidContactName" style="color: red;margin-left: 180px;">Contact List Name Already Exists</span>
 									<div style="margin-left: 178px;width:65%" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
 												class="alert alert-danger">
 												Minimum 4 letters required.
