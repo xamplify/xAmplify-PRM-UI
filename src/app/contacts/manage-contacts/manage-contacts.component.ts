@@ -532,7 +532,12 @@ export class ManageContactsComponent implements OnInit {
         this.showAll = false;
         this.showEdit = true;
     }
-
+    
+    update(user:User) {
+        this.showAll = true;
+        this.showEdit = false; 
+    }
+    
     all_Contacts( pagination: Pagination ) {
         this.logger.log( pagination );
         this.contactService.loadAllContacts( pagination )

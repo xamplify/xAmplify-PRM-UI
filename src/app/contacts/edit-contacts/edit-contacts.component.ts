@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input ,Output, EventEmitter} from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ManageContactsComponent } from '../manage-contacts/manage-contacts.component';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -36,6 +37,10 @@ export class EditContactsComponent implements OnInit {
     @Input() selectedContactListId: number;
 
     @Input( 'value' ) value: number;
+    editContacts : User;
+    @Output() notifyParent: EventEmitter<User>;
+    
+    
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
@@ -104,11 +109,12 @@ export class EditContactsComponent implements OnInit {
 
 
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private logger: Logger,
+        private authenticationService: AuthenticationService, private logger: Logger,private router: Router,
         private pagerService: PagerService, private pagination: Pagination ) {
         this.users = new Array<User>();
         this.clipboardUsers = new Array<User>();
         this.csvFileUsers = new Array<User>();
+        this.notifyParent = new EventEmitter<User>();
     }
 
     /*searchDisableValue() {
@@ -559,6 +565,17 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
+    refresh(){
+        this.editContacts = null;
+        this.notifyParent.emit(this.editContacts);
+    }
+    
+    backToEditContacts(){
+        this.showAllContactData = false;
+        this.showEditContactData = true;
+        this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+    }
+    
     activeContactsDataShowing() {
         this.showAllContactData = true;
         this.showEditContactData = false;

@@ -25,6 +25,7 @@
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been created successfully.
 	</div>
+ <div *ngIf="showAll">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a
@@ -32,14 +33,15 @@
 				class="fa fa-angle-right"></i></li>
 			<li><a (click)="backToManageContactPage()"> Manage contacts</a>
 			</li>
-			<li *ngIf="showEdit"><i class="fa fa-angle-right"> </i>Edit
-				contacts</li>
+			<!-- <li *ngIf="showEdit">
+			<a (click)="backToEditContactPage()"><i class="fa fa-angle-right"> </i>Edit
+				contacts</a></li> -->
 		</ul>
 
 	</div>
 	<!-- END PAGE HEADER-->
 	<!-- BEGIN PAGE CONTENT-->
-	<div *ngIf="showAll">
+	<div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="tabbable tabbable-custom tabbable-noborder">
@@ -318,6 +320,7 @@
 			</div>
 		</div>
 	</div>
+	</div>
 	<div id="pagination">
 		<!--pager here  -->
 		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
@@ -340,7 +343,7 @@
 		</ul>
 		<!-- pager end here -->
 	</div>
-	<app-edit-contacts *ngIf="showEdit" [contacts]="users"
+	<app-edit-contacts *ngIf="showEdit" [contacts]="users"(notifyParent)="update($event)"
 		[selectedContactListId]="selectedContactListId"
 		[contactListId]="selectedContactListId"></app-edit-contacts>
 </div>

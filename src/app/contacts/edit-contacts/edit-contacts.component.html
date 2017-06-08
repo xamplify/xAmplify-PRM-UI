@@ -1,4 +1,17 @@
 <!-- BEGIN PAGE CONTENT-->
+<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li><a (click)="refresh()"> Manage contacts</a>
+			</li>
+			<li>
+			<a (click)="backToEditContacts()"><i class="fa fa-angle-right"> </i>Edit
+				contacts</a></li>
+		</ul>
+
+	</div>
 <div class="row" id="manageContacts" *ngIf="showEditContactData">
 	<div class="row">
 		<div class="col-md-12">
