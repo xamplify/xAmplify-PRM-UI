@@ -504,6 +504,7 @@ export class ManageContactsComponent implements OnInit {
         this.emptyContactsUsers = false;
         this.show = false;
         this.deleteSucessMessage = false;
+        this.deleteErrorMessage = false;
         this.contactListUsersError = false;
         this.contactListNameError = false;
         this.synchronizationSucessMessage = false;
