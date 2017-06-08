@@ -39,6 +39,11 @@ export class AddContactsComponent implements OnInit {
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
     model: any = {};
+    names:string[]=[];
+    isValidContactName:boolean;
+    editedContactName:string = "";
+
+    isAdd:boolean = true;
     public gContactsValue: boolean;
     public zohoContactsValue: boolean;
     public salesforceContactsValue: boolean;
@@ -109,6 +114,40 @@ export class AddContactsComponent implements OnInit {
         };
     }
 
+    validateContactName(contactName:string){
+        console.log(contactName);
+        var list = this.names;
+        console.log(list);
+        if($.inArray(contactName, list) > -1){
+            this.isValidContactName = true;  
+        }else{
+            this.isValidContactName = false;
+        }
+       /* for(var i = 0;i< list.length; i++){
+            if(contactName == list[i]){
+                this.isValidContactName = true; 
+            }else if(contactName != list[i]){
+                this.isValidContactName = false;
+            }
+        }*/
+       /*// if(this.isAdd){
+            if($.inArray(contactName, list) > -1){
+                this.isValidContactName = false;  
+            }else{
+                this.isValidContactName = true;
+           // }
+        }else{
+            console.log(this.editedContactName+":::::::::"+contactName);
+            if($.inArray(contactName, list) > -1 && this.editedContactName!=contactName){
+                this.isValidContactName = false;  
+            }else{
+                this.isValidContactName = true;
+            }
+        }*/
+        
+    }
+
+    
     checked( event: boolean ) {
         this.logger.info( "selected check value" + event )
         this.newUsers.forEach(( contacts ) => {
@@ -1117,9 +1156,10 @@ export class AddContactsComponent implements OnInit {
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
                     if ( data.listOfUserLists[i].socialNetwork == "ZOHO" ) {
                         this.zohoImage = 'assets/images/crm/Zoho_check.png';
-                    } else {
+                    } /*else {
                         this.zohoImage = 'assets/images/crm/Zoho_gear.png';
-                    }
+                    }*/
+                  this.names.push(data.listOfUserLists[i].name);
                 }
             },
             error => {

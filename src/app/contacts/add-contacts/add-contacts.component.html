@@ -67,13 +67,24 @@
 									class="form-control" style="width:65%" id="contactListName"
 									(ngModelChange)="changEvent($event)" required
 									[(ngModel)]="model.contactListName" name="contactListName"
+									(input)="validateContactName(model.contactListName)"
 									minlength="4" maxlength="20"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
+									<span *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</span>
 									<div style="margin-left: 167px" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
 												class="alert alert-danger">
 												Minimum 4 letters required.
 											</div>
+											
+											
+											<!-- <div class="col-md-9">
+											<input type="text" id="contactName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" />
+											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
+										</div> -->
+											
+											
+											
 								<!-- <div style="margin-left: 170px"
 									[hidden]="contactListName.valid || contactListName.pristine"
 									class="alert alert-danger">Name is required</div> -->
@@ -139,7 +150,7 @@
 
 
 							</div>
-
+							
 							<div class="col-md-6">
 								<p>Import from available cloud service</p>
 								<button id="salesforceContact_button" style="margin: -8px; background-color: white" data-toggle="modal" data-target="#myModal1">

@@ -259,7 +259,7 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
     }
-
+    
     setPage( page: number, ) {
         this.pagination.pageIndex = page;
         if ( this.currentContactType == null ) {
