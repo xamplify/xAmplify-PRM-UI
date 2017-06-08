@@ -576,6 +576,10 @@ export class EditContactsComponent implements OnInit {
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.successMessage = false;
         this.deleteSucessMessage = false;
+        this.activeContactsData=false;
+        this.invalidContactData = false;
+        this.unsubscribedContactsData=false;
+        this.nonActiveContactsData=false;
     }
     
     activeContactsDataShowing() {
