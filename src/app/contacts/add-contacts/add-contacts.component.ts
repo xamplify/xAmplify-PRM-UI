@@ -258,7 +258,8 @@ export class AddContactsComponent implements OnInit {
         $( "button#uploadCSV" ).prop( 'disabled', false );
         $( "input[type='file']" ).attr( "disabled", false );
         this.model.contactListName = null;
-        //this.removeCsvName = false;
+        this.removeCsvName = false;
+        this.uploader.queue.length = 0;
     }
    }
     
