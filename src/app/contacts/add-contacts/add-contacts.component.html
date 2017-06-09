@@ -139,7 +139,7 @@
 												<i class="fa fa-file-excel-o fa-5x"
 													style="font-size: 50px; padding-top: 15px;"></i> <br>
 												<br> Upload a .CSV <input type="file" ng2FileSelect
-													[uploader]="uploader" (change)="fileChange(input)" #input />
+													[uploader]="uploader" (change)="fileChange(input)" accept=".csv" #input />
 											</button>
 										</p>
 									</div>
@@ -294,7 +294,7 @@
     				</div>
   				</div>
 			</div>
-								<div
+								<div *ngIf="removeCsvName" id="removeCsv"
 									style="margin-bottom: -15px; padding-left: 1cm">
 									<table class="table">
 										<thead>
@@ -326,8 +326,11 @@
 										</tbody>
 									</table>
 								</div>
-
 						</div>
+	<div *ngIf="fileTypeError" id="csvFileTypeError"
+			class="alert alert-danger alert-dismissable" style="width:50%">
+			<b>File type not allowed please select the .csv file only..</b>
+		</div>					
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
 						<h3>Copy from text -- paste below</h3>

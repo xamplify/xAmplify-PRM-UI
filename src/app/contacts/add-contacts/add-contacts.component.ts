@@ -67,6 +67,8 @@ export class AddContactsComponent implements OnInit {
     public salesforceListViewName: string;
     public socialNetwork: string;
     csvData: any;
+    fileTypeError:boolean;
+    removeCsvName : boolean;
     public socialContact: SocialContact;
     public zohoContact: ZohoContact;
     public getGoogleConatacts: any;
@@ -79,7 +81,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceContactUsers: SocialContact[] = new Array();
     public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
-    public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv"] });
+    public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv","application/vnd.ms-excel", "text/plain", "text/csv"] });
     contacts: User[];
     private socialContactType: string;
     constructor( private authenticationService: AuthenticationService, private contactService: ContactService,
@@ -167,7 +169,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     fileChange( input: any ) {
-        this.saveCsvUsers = true;
+        this.readFiles( input.files );
+        //this.removeCsvName = false;
+        //this.removeCsv();
+        /*this.saveCsvUsers = true;
         this.saveAddCotactsUsers = false;
         this.saveGoogleContactUsers = false;
         this.saveZohoContactUsers = false;
@@ -175,7 +180,7 @@ export class AddContactsComponent implements OnInit {
         this.saveSalesforceContactUsers = false;
         this.readFiles( input.files );
         this.logger.info( "coontacts preview" );
-        $( "#file_preview" ).show();
+        //$( "#file_preview" ).show();
         $( "button#addContacts" ).prop( 'disabled', true );
         $( "button#copyFromClipBoard" ).prop( 'disabled', true );
         $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -183,9 +188,9 @@ export class AddContactsComponent implements OnInit {
         $( "button#googleContact_button" ).prop( 'disabled', true );
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
-        $( "button#microsoftContact_button" ).prop( 'disabled', true );
-        $( "button#uploadCSV" ).prop( 'disabled', true );
-        $( "input[type='file']" ).attr( "disabled", true );
+        $( "button#microsoftContact_button" ).prop( 'disabled', true );*/
+        //$( "button#uploadCSV" ).prop( 'disabled', true );
+        //$( "input[type='file']" ).attr( "disabled", true );
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -196,7 +201,31 @@ export class AddContactsComponent implements OnInit {
     }
 
     readFiles( files: any, index = 0 ) {
-        let reader = new FileReader();
+        //alert(files[0].type);
+       // alert(files[0].name);
+      if(files[0].type == "application/vnd.ms-excel"){
+          this.fileTypeError = false;
+          this.removeCsvName = true;
+          $( "#file_preview" ).show();
+          $( "button#uploadCSV" ).prop( 'disabled', true );
+          $( "input[type='file']" ).attr( "disabled", true );
+          this.saveCsvUsers = true;
+          this.saveAddCotactsUsers = false;
+          this.saveGoogleContactUsers = false;
+          this.saveZohoContactUsers = false;
+          this.saveClipBoardUsers = false;
+          this.saveSalesforceContactUsers = false;
+          this.logger.info( "coontacts preview" );
+          //$( "#file_preview" ).show();
+          $( "button#addContacts" ).prop( 'disabled', true );
+          $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+          $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+          $( "button#cancel_button" ).prop( 'disabled', true );
+          $( "button#googleContact_button" ).prop( 'disabled', true );
+          $( "button#salesforceContact_button" ).prop( 'disabled', true );
+          $( "button#zohoContact_button" ).prop( 'disabled', true );
+          $( "button#microsoftContact_button" ).prop( 'disabled', true );
+          let reader = new FileReader();
         reader.readAsText( files[0] );
         this.logger.info( files[0] );
         var lines = new Array();
@@ -216,8 +245,23 @@ export class AddContactsComponent implements OnInit {
             }
             console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
         }
+    }else{
+        this.fileTypeError = true;
+        //this.removeCsv();
+        $( "#file_preview" ).hide();
+        $( "button#copyFromClipBoard" ).prop( 'disabled', false );
+        $( "button#addContacts" ).prop( 'disabled', false );
+        $( "button#googleContact_button" ).prop( 'disabled', false );
+        $( "button#salesforceContact_button" ).prop( 'disabled', false );
+        $( "button#zohoContact_button" ).prop( 'disabled', false );
+        $( "button#microsoftContact_button" ).prop( 'disabled', false );
+        $( "button#uploadCSV" ).prop( 'disabled', false );
+        $( "input[type='file']" ).attr( "disabled", false );
+        this.model.contactListName = null;
+        //this.removeCsvName = false;
     }
-
+   }
+    
     clipboardShowPreview() {
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         var splitValue;
@@ -253,6 +297,7 @@ export class AddContactsComponent implements OnInit {
             this.contacts.length = 0;
         }
         if ( isValidData ) {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             for ( var i = 0; i < allTextLines.length; i++ ) {
                 var data = allTextLines[i].split( splitValue );
                 let user = new User();
@@ -482,6 +527,8 @@ export class AddContactsComponent implements OnInit {
     }
 
     removeCsv() {
+        this.fileTypeError = false;
+       // this.removeCsvName = false;
         $( "#file_preview" ).hide();
         $( "button#copyFromClipBoard" ).prop( 'disabled', false );
         $( "button#addContacts" ).prop( 'disabled', false );
@@ -495,6 +542,8 @@ export class AddContactsComponent implements OnInit {
     }
 
     addRow() {
+        this.removeCsv();
+        //$( "#removeCsv" ).hide();
         this.saveAddCotactsUsers = true;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
@@ -521,6 +570,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     copyFromClipboard() {
+        this.removeCsv();
         this.clipboardTextareaText = "";
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = true;
@@ -530,7 +580,7 @@ export class AddContactsComponent implements OnInit {
         this.saveSalesforceContactUsers = false;
         $( "button#addContacts" ).prop( 'disabled', true );
         $( "button#uploadCSV" ).prop( 'disabled', true );
-        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        //$( "button#sample_editable_1_new" ).prop( 'disabled', false );
         $( "input[type='file']" ).attr( "disabled", true );
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( "button#googleContact_button" ).prop( 'disabled', true );
@@ -541,6 +591,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     googleContacts() {
+        this.removeCsv();
         this.logger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
         this.socialContact.lastName = '';
@@ -749,6 +800,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     zohoContacts() {
+        this.removeCsv();
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         if ( selectedDropDown == "DEFAULT" ) {
             alert( "Please Select the which you like to import from:" );
@@ -909,6 +961,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     salesforceContacts() {
+        this.removeCsv();
         this.socialContact.socialNetwork = "salesforce";
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.salesforceLogin()
