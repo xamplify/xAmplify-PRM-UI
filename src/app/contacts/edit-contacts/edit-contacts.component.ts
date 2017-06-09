@@ -48,6 +48,7 @@ export class EditContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     pagedItems: any[];
     isAvailable = false;
+    fileTypeError:boolean;
     public clipboardUsers: Array<User>;
     public csvFileUsers: Array<User>;
     public uploader: FileUploader;
@@ -184,7 +185,9 @@ export class EditContactsComponent implements OnInit {
 
 
     fileChange( input: any ) {
-        this.saveCsvFileUsers = true;
+        this.fileTypeError = false;
+        this.readFiles( input.files );
+        /*this.saveCsvFileUsers = true;
         this.saveAddcontactUsers = false;
         this.saveCopyfromClipboardUsers = false;
         this.readFiles( input.files );
@@ -192,7 +195,7 @@ export class EditContactsComponent implements OnInit {
         $( "#sample_editable_1" ).hide();
         this.filePrevew = true;
         $( "button#add_contact" ).prop( 'disabled', true );
-        $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
+        $( "button#copyFrom_clipboard" ).prop( 'disabled', true );*/
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -204,7 +207,17 @@ export class EditContactsComponent implements OnInit {
     }
 
     readFiles( files: any, index = 0 ) {
-        let reader = new FileReader();
+       if(files[0].type == "application/vnd.ms-excel"){
+           this.fileTypeError = false; 
+           this.saveCsvFileUsers = true;
+           this.saveAddcontactUsers = false;
+           this.saveCopyfromClipboardUsers = false;
+           this.logger.info( "coontacts preview" );
+           $( "#sample_editable_1" ).hide();
+           this.filePrevew = true;
+           $( "button#add_contact" ).prop( 'disabled', true );
+           $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
+           let reader = new FileReader();
         reader.readAsText( files[0] );
         this.logger.info( files[0] );
         var self = this;
@@ -224,6 +237,10 @@ export class EditContactsComponent implements OnInit {
             }
             console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.csvFileUsers ) );
         }
+      }else{
+          this.fileTypeError = true; 
+          this.uploader.queue.length = 0;
+      }
     }
 
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
@@ -348,6 +365,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     addRow() {
+        this.fileTypeError = false; 
         this.users.push( new User() );
         this.saveAddcontactUsers = true;
         this.saveCopyfromClipboardUsers = false;
@@ -364,6 +382,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     removeCsv() {
+        this.fileTypeError = false; 
         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
         $( "button#add_contact" ).prop( 'disabled', false );
         this.users.length = 0;
@@ -373,6 +392,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     copyFromClipboard() {
+        this.fileTypeError = false; 
         this.clipboardTextareaText = "";
         this.clickBoard = true;
         this.saveAddcontactUsers = false;

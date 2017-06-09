@@ -170,7 +170,7 @@
 										style="background-color: #26a69a">
 										Upload a .CSV <i class="fa fa-plus"></i> <input type="file"
 											ng2FileSelect class="upload" [uploader]="uploader"
-											(change)="fileChange(input)" #input />
+											(change)="fileChange(input)" accept=".csv" #input />
 									</button>
 								</div>
 							</div>
@@ -235,6 +235,10 @@
 								</tr>
 							</tbody>
 						</table>
+						<div *ngIf="fileTypeError" id="csvFileTypeError"
+			class="alert alert-danger alert-dismissable" style="width:50%">
+			<b>File type not allowed please select the .csv file only..</b>
+		</div>		
 						<div *ngIf="successMessage" id="saveContactsMessage"
 							class="alert alert-success alert-dismissable">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
