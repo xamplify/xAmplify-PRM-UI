@@ -66,7 +66,6 @@ export class UploadVideoComponent implements OnInit {
     public source: string;
     public sweetAlertDisabled :boolean;
     public sweetAlertMesg:string;
-    
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer) {
@@ -96,6 +95,7 @@ export class UploadVideoComponent implements OnInit {
                 fileItem.withCredentials = false;
                 this.videoPreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
+                console.log(fileItem);
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
@@ -171,7 +171,7 @@ export class UploadVideoComponent implements OnInit {
     }
 
     public fileOverBase(e: any): void {
-        if(this.isFileDrop == false && this.isFileProgress==false){
+        if(this.isFileDrop == false && this.isFileProgress===false){
             this.hasBaseDropZoneOver= e;}
         else {
             this.hasBaseDropZoneOver = false;

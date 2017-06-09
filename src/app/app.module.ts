@@ -47,7 +47,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
     provide: Http,
     useFactory: httpService,
     deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
-  }, {provide: LocationStrategy, useClass: HashLocationStrategy},
+  },
     UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
     VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
   bootstrap: [AppComponent]

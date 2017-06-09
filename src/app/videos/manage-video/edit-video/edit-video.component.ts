@@ -15,6 +15,7 @@ import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user.service';
 import { UtilService } from '../../services/util.service';
 declare var $, videojs, swal: any;
+import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Component({
    selector: 'app-edit-video',
@@ -130,11 +131,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
     public value360: boolean;
     public isCallAction: string;
     public embedSrcPath: string;
+    public embedUrl:string;
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
         private authenticationService: AuthenticationService, private userService: UserService,
-        private sanitizer: DomSanitizer , private utilService: UtilService) {
+        private sanitizer: DomSanitizer , private utilService: UtilService , public metaService:Meta) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.titleOfVideo = this.videoFileService.actionValue;
         this.videoSizes = this.utilService.videoSizes;
@@ -143,12 +145,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
         console.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
-        console.log(this.userService.loggedInUserData);
+    //    console.log(this.userService.loggedInUserData);
         this.isFullscreen = true;
         this.showOverLay = true;
-        this.model.email_id = this.userService.loggedInUserData.emailId;
-        this.firstName = this.userService.loggedInUserData.firstName;
-        this.lastName = this.userService.loggedInUserData.lastName;
+    //    this.model.email_id = this.userService.loggedInUserData.emailId = '';  /// need to remove the empty
+    //    this.firstName = this.userService.loggedInUserData.firstName = '';  /// need to remove the empty
+    //    this.lastName = this.userService.loggedInUserData.lastName = '';   /// need to remove the empty
+        this.model.email_id = '';  /// need to remove the empty
+        this.firstName = '';  /// need to remove the empty
+        this.lastName  = '';   /// need to remove the emty
         this.is360Value = this.value360 =  this.saveVideoFile.is360video;
         if ( this.utilService.validateEmail(this.model.email_id) )
            { this.isOverlay = false; }
@@ -216,8 +221,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
               this.imageUrlPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
          };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
+            this.embedUrl = 'https://aravindu.com/xtremandTest/#/embed-video/'+this.saveVideoFile.viewBy+'/'+this.saveVideoFile.alias;
+
     }  // closed constructor
 
+  shareClick() {
+     const routerPath = this.saveVideoFile.viewBy +'%'+ this.saveVideoFile.alias;
+      this.router.navigate(['/embed-video', routerPath]);
+      this.router.navigate(['/embed-video', routerPath]);
+  }
   // image path and gif image path methods
     removeOwnThumbnail() {
       this.imageUrlPath = false;
@@ -1020,16 +1032,16 @@ $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-pan
              this.videoJSplayer.pause();
         } */
          console.log(this.model.email_id);
-        if (this.userService.loggedInUserData.emailId === this.model.email_id) {
+      /*  if (this.userService.loggedInUserData.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
-            this.user.firstName = this.userService.loggedInUserData.firstName;
+            this.user.firstName = this.userService.loggedInUserData.firstName;   // need to remove the commets here
             this.user.lastName = this.userService.loggedInUserData.lastName;
-        }
-        else {
+        } */
+     //   else {
             this.user.emailId = this.model.email_id;
             this.user.firstName = this.firstName;
             this.user.lastName = this.lastName;
-        }
+      //  }
         console.log(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe( (result: any) => { console.log('Save user Form call to acton is successfull' +result);},

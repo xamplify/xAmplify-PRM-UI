@@ -168,14 +168,14 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             this.searchDisable = true; }
     }
     searchVideoTitelName(){
-      if ( this.searchKey !== null && this.searchDisable === false ){
+     // if ( this.searchKey !== null && this.searchDisable === false ){
         this.showMessage = false;
         this.showUpdatevalue = false;
         console.log(this.searchKey);
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
-      }
+     // }
     }
     selectedSortByValue( event: any ){
         this.showMessage = false;

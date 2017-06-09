@@ -113,13 +113,17 @@
 				<!-- <a class="btn btn-primary" (click)="openWindow()"> -->
 				<div>
 					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
-						[routerLink]="['../../../embed-video', saveVideoFile.viewBy,saveVideoFile.alias]">
+						(click)="shareClick()">
+					<!--	<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
+						[routerLink]="['../../../embed-video', saveVideoFile.alias]">
+							[routerLink]="['../../../embed-video', saveVideoFile.viewBy,saveVideoFile.alias]"-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
 				</div>
+				<div class="addthis_sharing_toolbox"></div>
 
 				<!-- Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">

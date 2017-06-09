@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit} from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit, Renderer} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { Category} from '../models/category';
@@ -8,6 +9,7 @@ import { Logger } from 'angular2-logger/core';
 import { UtilService } from '../services/util.service';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
+import { Subscription } from 'rxjs/Subscription';
 // import {DomAdapter, getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
 declare var $, videojs: any;
 // import {BrowserDomAdapter} from 'angular2/platform/browser';
@@ -24,8 +26,7 @@ export class ShareVideoComponent implements OnInit {
 embedVideoFile: SaveVideoFile;
 saveVideoFile: SaveVideoFile;
 private videoJSplayer: any;
-public imgURL = 'https://aravindu.com/vod/images/125/03022017/flight1486153663429_play1.gif';
-public checkUrl = 'https://aravindu.com/xtremandTest/#/embed-video/PRIVATE/3867c8e2-85ba-4ca9-9804-b28769e67746';
+public imgURL: string;
 public videoUrl: string;
 model: any = {};
 public isPlay = false;
@@ -33,11 +34,11 @@ public isThumb: boolean;
 public isPlayButton: boolean;
 public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
 public email_id: string;
-public firstName: string;
-public lastName: string;
+public firstproperty: string;
+public lastproperty: string;
 public isSkipChecked: boolean; // isSkiped means to hide the videojs overlay for users
 public showOverLay: boolean; // for show the videojs overlay modal at the start or end of the video
-public isFistNameChecked: boolean;
+public isFistpropertyChecked: boolean;
 public lowerTextValue: string;
 public upperTextValue: string;
 public videoOverlaySubmit: string;
@@ -50,12 +51,17 @@ twitterButtons: any;
 googleButtons: any;
 facebookButtons: any;
 metatags: any;
-description = 'hi this is sathish';
 public embedUrl: string;
+public routerAlias: string;
+public routerType: string;
+public sub: Subscription;
+public title: string;
+public description: string;
  // private _dom: DomAdapter = getDOM();
 // @Inject(DOCUMENT) private document:any , ,private metaService:Meta
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private utilService: UtilService, private metaService: Meta) {
+            private _logger: Logger, private utilService: UtilService, private metaService: Meta,
+            @Inject(DOCUMENT) private document: any, private renderer: Renderer) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.embedUrl = document.location.href;
@@ -70,6 +76,9 @@ public embedUrl: string;
           this.lowerTextValue = this.embedVideoFile.lowerText;
           this.upperTextValue = this.embedVideoFile.upperText;
           this.is360Value  =  this.embedVideoFile.is360video;
+          this.imgURL =  this.embedVideoFile.gifImagePath;
+          this.title = this.embedVideoFile.title;
+          this.description = this.embedVideoFile.description;
         if(this.embedVideoFile.startOfVideo === true) {this.videoOverlaySubmit = 'PLAY'; }
         else {  this.videoOverlaySubmit = 'SUBMIT'; }
 
@@ -99,32 +108,56 @@ public embedUrl: string;
         this.defaultValues();
             console.log(this.videoUrl);
           // twitter og info
-            const twiettrDec = 'Grace is the only complete studio album by Jeff Buckley, released on August 23,';
-            const twitterCard: MetaDefinition = { name: 'twitter:card', content: 'summary' };
-            const twitterSite: MetaDefinition = { name: 'twitter:site', content: '@michlbrmly'};
-            const twitterTitle: MetaDefinition = { name: 'twitter:title', content: 'Grace' };
-            const twitterDesc: MetaDefinition = { name: 'twitter:description', content : twiettrDec};
-            const twitterImage: MetaDefinition = { name: 'twitter:image', content : this.imgURL };
-            const twitterUrl: MetaDefinition = { name: 'twitter:url', content: this.embedUrl };
+            const twiettrDec = 'Xtremand is the only complete studio album by Jeff Buckley, released on August 23,';
+            const twitterCard: MetaDefinition = { property: 'twitter:card', content: 'Tags summary' };
+            const twitterSite: MetaDefinition = { property: 'twitter:site', content: '@michlbrmly'};
+            const twitterTitle: MetaDefinition = { property: 'twitter:title', content: 'Xtremand Meta tags' };
+            const twitterDesc: MetaDefinition = { property: 'twitter:description', content : twiettrDec};
+            const twitterImage: MetaDefinition = { property: 'twitter:image', content : this.imgURL };
+            const twitterUrl: MetaDefinition = { property: 'twitter:url', content: this.embedUrl };
            // open graph meta tags info
-            const ogDescription  = 'Grace is the only complete studio album by Jeff Buckley, released on August 23';
-            const ogtitle: MetaDefinition   =  { name: 'og:title', content: 'Grace' };
-            const ogSitename: MetaDefinition = { name: 'og:site_name', content: 'My Favourite Albums'};
-            const ogUrl: MetaDefinition = { name: 'og:url', content: this.embedUrl};
-            const ogdesc: MetaDefinition = { name: 'og:description', content: ogDescription };
-            const ogImage: MetaDefinition = { name: 'og:image', content: this.imgURL};
-         //   this.metaService.addTags([ogtitle, ogSitename, ogdesc, ogUrl, ogImage, twitterCard, twitterSite, twitterTitle,
-          //    twitterDesc, twitterImage, twitterUrl], true);
-         //   this.metaService.addTag(ogTitle);
-        });
+            // const ogDescription  = 'Xtremand is the only complete studio album by Jeff Buckley, released on August 23';
+            // const ogtitle: MetaDefinition   =  { property: 'og:title', content: 'Xtremand Meta tags' };
+            // const ogSiteproperty: MetaDefinition = { property: 'og:site_name', content: 'My Favourite Albums'};
+            // const ogUrl: MetaDefinition = { property: 'og:url', content: this.embedUrl};
+            // const ogdesc: MetaDefinition = { property: 'og:description', content: ogDescription };
+            // const ogImage: MetaDefinition = { property: 'og:image', content: this.imgURL};
+            //  this.metaService.addTags([ogtitle, ogSiteproperty, ogdesc, ogUrl, ogImage, twitterCard, twitterSite, twitterTitle,
+            //  twitterDesc, twitterImage, twitterUrl], true);
+            //  this.metaService.addTag({ property: 'og:title', content: 'Xtremand Videos' });
+            //  this.metaService.addTag({ property: 'og:description', content: ogDescription });
+            //  this.metaService.addTag({ property: 'og:site_name', content: 'My Favourite Albums'});
+            //  this.metaService.addTag({ property: 'og:url', content: this.embedUrl});
+            //  this.metaService.addTag({ property: 'og:image', content: this.imgURL});
+            const selector = 'property="og:title"';
+            const contentValue =   this.metaService.getTag(selector);
+            this.metaService.getTag(selector);
+         //  let contentValue =  document.head.querySelector("[property=og:title]");
+           console.log(contentValue);
+            this.metaService.updateTag({ content: 'New Updated tags info'}, "property='og:title'");
+            this.metaService.updateTag({content:'Embed videos'},"property ='twitter:card'");
+         console.log(this.metaService.getTag(selector));
+    });
+  }
+  ngAfterViewInit(){
+    //  alert("called ngafter");
+  //    $(".addthis_sharing_toolbox").load(location.href + " .addthis_sharing_toolbox");
   }
   ngOnInit() {
      $('#overlay-modal').hide();
-     console.log("ng On init called");
-     const viewBy = this.route.snapshot.params['type'];
-     const alias = this.route.snapshot.params['id'];
-     console.log(viewBy + ' and ' + alias);
-     this.getVideo(alias, viewBy);
+     console.log('Share video component ngOnInit called');
+    // this.routerType = this.route.snapshot.params['type'];
+    // this.routerAlias = this.route.snapshot.params['alias'];
+     this.sub = this.route.params.subscribe(
+        (params: any) => {
+            const typealias = params.typealias;
+            const type = typealias.split("%");
+            this.routerType = type[0];
+            this.routerAlias = type[1];
+         }
+        );
+     console.log( this.routerType  + ' and ' + this.routerAlias);
+     this.getVideo(this.routerAlias, this.routerType);
      console.log(this.embedVideoFile);
      this.googleButtons = new ShareButton(
         ShareProvider.GOOGLEPLUS,              // choose the button from ShareProvider
@@ -144,11 +177,10 @@ this.facebookButtons = new ShareButton(
        'fb'                           // set button classes
      );
   }
-   defaultValues(){
+   defaultValues() {
         this.valueRange = this.embedVideoFile.transparency;
-        this.isFistNameChecked = this.embedVideoFile.name;
+        this.isFistpropertyChecked = this.embedVideoFile.name;
         this.isSkipChecked = this.embedVideoFile.skip;
-
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -163,12 +195,12 @@ this.facebookButtons = new ShareButton(
         }
     }
     checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.validateEmail(this.model.email_id)
-         && this.firstName.length !== 0 && this.lastName.length !== 0) {
+        if (this.isFistpropertyChecked === true && this.validateEmail(this.model.email_id)
+         && this.firstproperty.length !== 0 && this.lastproperty.length !== 0) {
         this.isOverlay = false;
-            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
+            console.log(this.model.email_id + 'mail ' + this.firstproperty + ' and last property ' + this.lastproperty);
         }
-        else if (this.isFistNameChecked === false
+        else if (this.isFistpropertyChecked === false
          && this.validateEmail(this.model.email_id)) { this.isOverlay = false; }
         else { this.isOverlay = true; }
     }
@@ -412,7 +444,6 @@ const str = '<video id=videoId class="video-js vjs-default-skin" crossorigin="an
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
   //    this.videoPlayListSourceM3U8();
-    
    }
     defaultVideoControllers() {
         if (this.embedVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();}
@@ -439,10 +470,24 @@ const str = '<video id=videoId class="video-js vjs-default-skin" crossorigin="an
         this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
     }
   ngOnDestroy() {
-     console.log('Deinit - Destroyed Component')
+     console.log('Deinit - Destroyed Component');
      if(this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();
           $('.p-video').remove();
-      }
+     this.sub.unsubscribe();
+    // og info
+    //  this.metaService.removeTag("property='og:title'");
+    //  this.metaService.removeTag("property='og:site_name'");
+    //  this.metaService.removeTag("property='og:url'");
+    //  this.metaService.removeTag("property='og:description'");
+    //  this.metaService.removeTag("property='og:image'");
+     // twitter og info
+    //  this.metaService.removeTag("property='twitter:card'");
+    //  this.metaService.removeTag("property='twitter:site'");
+    //  this.metaService.removeTag("property='twitter:title'");
+    //  this.metaService.removeTag("property='twitter:description'");
+    //  this.metaService.removeTag("property='twitter:url'");
+    //  this.metaService.removeTag("property='twitter:image'");
+  }
 }

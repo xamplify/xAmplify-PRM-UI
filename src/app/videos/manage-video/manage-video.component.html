@@ -72,9 +72,9 @@
 											</div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
-													<i class="icon-magnifier" [class.customDisableCss]="searchDisable==true" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchDisableValue()"
-													 class="form-control input-circle" placeholder="search...">
+													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
+													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
+													 class="form-control input-circle" placeholder="search..."> <!-- (input)="searchDisableValue()" -->
 												</div>
 											</div>
 										</div>
