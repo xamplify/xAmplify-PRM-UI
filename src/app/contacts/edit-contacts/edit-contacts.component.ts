@@ -248,6 +248,7 @@ export class EditContactsComponent implements OnInit {
                     });
                     this.successMessage = true;
                     setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
+                    this.checkingLoadContactsCount = true;
                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                     this.cancelContacts();
                 },
@@ -278,6 +279,7 @@ export class EditContactsComponent implements OnInit {
                 $( "#uploadCsvUsingFile" ).hide();
                 $( "#sample_editable_1" ).show();
                 this.filePrevew = false;
+                this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.logger.error( error ),
@@ -310,6 +312,7 @@ export class EditContactsComponent implements OnInit {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
                 });
+                this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.logger.error( error ),
@@ -477,6 +480,7 @@ export class EditContactsComponent implements OnInit {
                 $( "button#upload_csv" ).prop( 'disabled', false );
                 this.clipboardUsers.length = 0;
                 this.cancelContacts();
+                this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.logger.error( error ),
