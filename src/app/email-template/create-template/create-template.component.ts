@@ -67,7 +67,7 @@ export class CreateTemplateComponent implements OnInit {
 	      
 	      var save = function(jsonContent:string, htmlContent:string) {
 	          if(emailTemplateService.emailTemplate.beeVideoTemplate){
-	              if(jsonContent.indexOf("xtremandVideoFile.gif")<0){
+	              if(jsonContent.indexOf("xtremand-video.gif")<0){
 	                 swal("Please Add Default .gif ","","error");
 	                 return false;
 	              }
@@ -192,9 +192,9 @@ export class CreateTemplateComponent implements OnInit {
 	        name: 'content 2',
 	        value: '[content1]'
 	      }];
-
+	      var beeUserId = "bee-"+userService.loggedInUserData.id;
 	      var beeConfig = {  
-	        uid: 'test1-clientside',
+	        uid: beeUserId,
 	        container: 'bee-plugin-container',
 	        autosave: 15, 
 	        language: 'en-US',

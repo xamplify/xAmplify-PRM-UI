@@ -9,7 +9,7 @@ export class Campaign {
     preHeader: string;
     message: string;
     selectedVideoId :number;
-    userListIds: any[] = [];
+    userListIds: number[] = [];
     userId: number;
     emailOpened: boolean;
     videoPlayed: boolean;

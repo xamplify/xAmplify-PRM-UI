@@ -107,3 +107,6 @@
 .btn-squared-default-plain:hover {
   border: 0px solid white;
 }
+
+ .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
+  a.disabled { pointer-events: none; cursor: not-allowed; }

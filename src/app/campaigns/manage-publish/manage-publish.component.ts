@@ -54,16 +54,17 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         
         
     constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,
-            private pagination:Pagination,private pagerService: PagerService,private refService:ReferenceService) {
+            private pagination:Pagination,private pagerService: PagerService,private refService:ReferenceService,private userService:UserService) {
         this.isCampaignCreated = this.refService.isCampaignCreated;
         this.isCampaignUpdated = this.refService.isCampaignUpdated;
         if(this.isCampaignCreated || this.isCampaignUpdated){
             setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 2000);
         }
+       
     }
     
     listCampaign(pagination:Pagination){
-        this.campaignService.listCampaign(pagination)
+        this.campaignService.listCampaign(pagination,this.userService.loggedInUserData.id)
         .subscribe(
             data => {
                 this.campaigns = data.campaigns;
@@ -166,6 +167,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.isCampaignDeleted = true;
             $( '#campaignListDiv_' + id ).remove();
             setTimeout( function() { $( "#deleteSuccess" ).slideUp( 500 ); }, 2000 );
+            this.listCampaign(this.pagination);
         },
         error => { console.log(error)},
         () => console.log( "Campaign Deleted Successfully" )

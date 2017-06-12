@@ -24,7 +24,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, fl
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
-  styleUrls: ['./create-campaign.component.css','../../../assets/css/video-css/ribbons.css']
+  styleUrls: ['./create-campaign.component.css']
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedRow:Number;
@@ -55,8 +55,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     contactsUsersPagination:Pagination = new Pagination();
     emailTemplatesPagination:Pagination = new Pagination();
     pagedItems: any[];
-    
-    
     /************Campaign Details******************/
     formGroupClass:string = "form-group";
     campaignNameDivClass:string = this.formGroupClass;
@@ -73,16 +71,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isCampaignDraftVideo:boolean = false;
     videoId:number=0;
     draftMessage:string = "";
+    launchVideoPreview:SaveVideoFile = new SaveVideoFile();
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
     campaignContactLists: Array<ContactList>;
     numberOfContactsPerPage = [
-                               {'name':'10','value':'10'},
-                               {'name':'20','value':'20'},
-                               {'name':'30','value':'30'},
-                               {'name':'40','value':'40'},
-                               {'name':'50','value':'50'},
+                               {'name':'12','value':'12'},
+                               {'name':'24','value':'24'},
+                               {'name':'48','value':'48'},
                                {'name':'---All---','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
@@ -93,6 +90,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
     isEmailTemplate:boolean = false;
     isCampaignDraftEmailTemplate:boolean = false;
+    emailTemplateHtmlPreivew:string = "";;
     selectedEmailTemplateName:string = "";
     emailTemplateId:number=0;
     isDefaultCampaignEmailTemplate:boolean = true;
@@ -104,14 +102,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
-    selectedVideoFilePath:string = "";
-    poster:string = "";
-    is360Video:boolean = false;
-    selectedContactListNames:string[] = [];
+    selectedContactLists: Array<Object>;
     id:number;
     previewContactListId : number;
     public sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
     isLaunched:boolean = false;
+    lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute, private refService:ReferenceService,
                 private logger:Logger,private videoFileService:VideoFileService,
@@ -148,17 +144,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoTabClass  = this.successTabClass;
                 this.videoId = selectedVideoId;
                 this.isCampaignDraftVideo = true;
-                var alias = this.campaign.campaignVideoFile.alias;
-                if(this.campaign.campaignVideoFile.is360video){
-                    this.is360Video = true;
-                    this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
-                    this.poster = this.campaign.campaignVideoFile.imagePath;
-                }else{
-                     this.is360Video = false;
-                     this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
-                    // this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".mp4","_mobinar.m3u8")+"?access_token="+this.authenticationService.access_token;
-                     this.poster = this.campaign.campaignVideoFile.imagePath;
-                 }
+                this.launchVideoPreview = this.campaignService.campaign.campaignVideoFile;
             }
             
             /***********Select Contact List Tab*************************/
@@ -168,11 +154,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactsPagination.editCampaign = true;
                 this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
                 this.isCampaignDraftContactList = true;
-                let self = this;
-                self.selectedContactListNames = [];
-                $('[name="campaignContact[]"]:checked').each(function(){
-                    self.selectedContactListNames.push($(this)[0].lang);
-                 });
             }
             /***********Select Email Template Tab*************************/
             var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
@@ -204,9 +185,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaign.scheduleTime = "";
             }
             let emailTemplate = this.campaign.emailTemplate;
+            console.log(emailTemplate);
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
-                //this.getEmailTemplatePreview(emailTemplate);
             }else{
                 this.logger.info("No Email Template Added For Campaign");
             }
@@ -243,11 +224,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
                      
             }
+            this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
         }else{
             this.width="25%";
             this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
             this.isVideo = true;
             $('#videoTab').hide();
+            this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
         }  
         this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
     }
@@ -255,6 +238,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /******************************************Pagination Related Code******************************************/
     setPage(pageIndex:number,module:string){
         if(module=="videos"){
+           // var td = $('#videoTable tr.active').find('td:eq(0)');  
             this.videosPagination.pageIndex = pageIndex;
             this.loadCampaignVideos(this.videosPagination);
         }else if(module=="contacts"){
@@ -301,18 +285,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          }
      }
      validateCampaignName(campaignName:string){
-         console.log(campaignName);
+         let lowerCaseCampaignName = campaignName.toLowerCase().trim();
          var list = this.names[0];
          console.log(list);
          if(this.isAdd){
-             if($.inArray(campaignName, list) > -1){
+             if($.inArray(lowerCaseCampaignName, list) > -1){
                  this.isValidCampaignName = false;  
              }else{
                  this.isValidCampaignName = true;
              }
          }else{
-             console.log(this.editedCampaignName+":::::::::"+campaignName);
-             if($.inArray(campaignName, list) > -1 && this.editedCampaignName!=campaignName){
+             console.log(this.editedCampaignName+":::::::::"+lowerCaseCampaignName);
+             if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName!=lowerCaseCampaignName){
                  this.isValidCampaignName = false;  
              }else{
                  this.isValidCampaignName = true;
@@ -388,35 +372,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     
     /*************************************************************Select Video***************************************************************************************/
-    setClickedRow = function(index,videoFile:any){
-       console.log(videoFile);
+    setClickedRow = function(videoFile:any){
+        console.log(videoFile);
+       let videoId = videoFile.id;
         if(videoFile.viewBy=="DRAFT"){
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
         }else{
-            this.selectedRow = index;
-            $('#campaign_video_id_'+index).prop( "checked", true );
-            this.campaign.selectedVideoId =videoFile.id;
+            this.selectedRow = videoId;
+            $('#campaign_video_id_'+videoId).prop( "checked", true );
+            this.launchVideoPreview = videoFile;
             this.isVideo = true;
             if(!(this.isAdd)){
-                if(index==-1){
+                if(videoId==this.campaign.campaignVideoFile.id){
                     $('#selectedVideoRow').addClass("active");
                 }else{
                     $('#selectedVideoRow').removeClass("active");
                 }
                
             }
-            if(videoFile.is360video){
-                this.is360Video = true;
-                this.selectedVideoFilePath = videoFile.videoPath.replace(".m3u8",".mp4")+"?access_token="+this.authenticationService.access_token;
-                this.poster = videoFile.imagePath;
-            }else{
-                 this.is360Video = false;
-                 this.selectedVideoFilePath = videoFile.videoPath.replace(".","_mobinar.m3u8")+"?access_token="+this.authenticationService.access_token;
-               //  this.selectedVideoFilePath = this.campaign.campaignVideoFile.videoPath.replace(".mp4","_mobinar.m3u8")+"?access_token="+this.authenticationService.access_token;
-                 this.poster = videoFile.imagePath;
-             }
-        
+            this.campaign.selectedVideoId =videoFile.id;
         }
+        
         
     }
     showToolTip(videoType:string){
@@ -482,15 +458,32 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
+        this.appendVideoData(videoFile, "main_video", "modal-title");
+        $("#show_preview").modal({backdrop: 'static', keyboard: false});
+    }
+    destroyPreview(){
+        var player = videojs("videoId");
+        if(player){
+            player.dispose();
+            $("#main_video").empty();
+        }
+    }
+    playVideo(){
+        $('#main_video_src').empty();
+        this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
+    }
+    
+    appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
+       console.log(videoFile);
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
         var videoPath = videoFile.videoPath;
         var is360 = videoFile.is360video;
-        $("#main_video").empty();
-        $("#modal-title").empty();
+        $("#"+divId).empty();
+        $("#"+titleId).empty();
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
-        if(title.indexOf("360")>-1){
+        if(is360){
             console.log("Loaded 360 Video");
             $('.h-video').remove();
             $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
@@ -498,11 +491,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
             $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#modal-title").append(title);
-            $("#main_video").append(str);
+            $("#"+titleId).append(title);
+            $("#"+divId).append(str);
             console.log("360 video path"+videoPath);
+            videoPath = videoPath.replace(".m3u8",".mp4");
+            console.log("Updated 360 video path"+videoPath);
           //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
-            $("#main_video video").append('<source src="'+videoPath+'" type="video/mp4">');
+            $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
             var player = videojs('videoId');
             player.panorama({
                 autoMobileOrientation: true,
@@ -514,6 +509,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               });
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
+            $("#videoId").css("max-width", "100%");
             
         }else{
             console.log("Loaded Normal Video");
@@ -521,16 +517,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
-            $("#modal-title").append(title);
-            $("#main_video").append(str);
+            $("#"+titleId).append(title);
+            $("#"+divId).append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             console.log("Video Path:::"+videoPath);
             videoPath = videoPath.substring(0,videoPath.lastIndexOf('.'));
             videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
             console.log("Normal Video Updated Path:::"+videoPath);
-           $("#main_video video").append('<source src='+videoPath+' type="application/x-mpegURL">');
+           $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
+            $("#videoId").css("max-width", "100%");
             var document:any = window.document;
             var player = videojs("videoId");
             console.log(player);
@@ -553,14 +550,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             return false;
             });
         
-        $("#show_preview").modal({backdrop: 'static', keyboard: false});
-    }
-    destroyPreview(){
-        var player = videojs("videoId");
-        if(player){
-            player.dispose();
-            $("#main_video").empty();
-        }
     }
    
     /*************************************************************Contact List***************************************************************************************/
@@ -611,60 +600,81 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log(error, "Get Filtered Contacts","Publish Content Component")
         }
     }
-    
-    
-    highlightRow(contactId:number){
-        if($('#'+contactId).is(':checked')){
-            $('#'+contactId).prop( "checked", false );
-            $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+    highlightRow(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+        let contactIds = this.campaign.userListIds;
+        if(isChecked){
+            $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+            contactIds.push(contactId);
         }else{
+            $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+            contactIds.splice( $.inArray(contactId,this.campaign.userListIds) ,1 );
+        }
+        this.contactsUtility();
+       event.stopPropagation();
+    }
+    highlightContactRow(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+          if(isChecked){
+              //Removing Highlighted Row
+              $('#'+contactId).prop( "checked", false );
+              $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+              console.log("Revmoing"+contactId);
+              this.campaign.userListIds.splice( $.inArray(contactId,this.campaign.userListIds) ,1 );
+        }else{
+            //Highlighting Row
             $('#'+contactId).prop( "checked", true );
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+            console.log("Adding"+contactId);
+            this.campaign.userListIds.push(contactId);
         }
-       var trLength = $('#user_list_tb tbody tr').length;
-       var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
-       if(selectedRowsLength>0){
-           this.isContactList = true;
-       }else{
-           this.isContactList = false;
-       }
-       if(trLength!=selectedRowsLength){
-           $('#checkAllExistingContacts').prop("checked",false)
-       }else if(trLength==selectedRowsLength){
-           $('#checkAllExistingContacts').prop("checked",true);
-       }
-        
+          this.contactsUtility();
+          event.stopPropagation();
+          console.log(this.campaign.userListIds);
     }
-    highlightSelectedRows(){
-        var selectedContactListIds = this.campaign.userListIds.sort();
-        $.each(selectedContactListIds,function(index,value){
-            $('#campaignContactListTable_'+value).addClass('contact-list-selected');
-        });
+    contactsUtility(){
+        var trLength = $('#user_list_tb tbody tr').length;
+        var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
+        if(selectedRowsLength>0){
+            this.isContactList = true;
+        }else{
+            this.isContactList = false;
+        }
+        if(trLength!=selectedRowsLength){
+            $('#checkAllExistingContacts').prop("checked",false)
+        }else if(trLength==selectedRowsLength){
+            $('#checkAllExistingContacts').prop("checked",true);
+        }
     }
+   
     checkAll(ev:any){
         if(ev.target.checked){
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
+            let self = this;
+            let contactIds = this.campaign.userListIds = [];
             $('[name="campaignContact[]"]:checked').each(function(){
                 var id = $(this).val();
+                contactIds.push(parseInt(id));
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
+            this.campaign.userListIds = [];
         }
+        ev.stopPropagation();
     }
     
     isAllChecked() {
         return this.contactsPagination.pagedItems.every(_ => _.state);
       }
     
-                /*******************************Preview*************************************/
+    /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination){
-          //this.previewContactListId = id;
-          if(id==undefined){
+           if(id==undefined){
               id=this.previewContactListId;
           }else{
               this.previewContactListId = id;
@@ -677,6 +687,36 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                       console.log(this.contactListItems);
                       pagination.totalRecords = data.totalRecords;
                       this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
+                      $('#users-modal-body').html('');
+                      var html = "";
+                      html+= '<table  class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
+                              '<thead>'+
+                                  '<tr>'+
+                                      '<th>EMAIL ID</th>'+
+                                      '<th>FIRST NAME</th>'+
+                                      '<th>LAST NAME</th>'+
+                                  '</tr>'+
+                              '</thead>'+
+                               '<tbody>';
+                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
+                          var firstName = value.firstName;
+                          var lastName = value.lastName;
+                          if(firstName==null || firstName=="null"){
+                              firstName="";
+                          }
+                         if(lastName==null || lastName=="null"){
+                             lastName = "";
+                         }
+                          html+= '<tr>'+
+                                      '<td>'+value.emailId+'</td>'+
+                                      '<td>'+firstName+'</td>'+
+                                      '<td>'+lastName+'</td>'+
+                                  '</tr>';
+                      });     
+                       html+='</tbody>';
+                       html+='</table>';
+                      $('#users-modal-body').append(html);
+                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
                   },
                   error =>
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
@@ -696,7 +736,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaignEmailTemplates = data.emailTemplates;
                 pagination.totalRecords = data.totalRecords;
                 this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
-                if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow>0 ){
+                if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                     this.isEmailTemplate = false;
                 }
             },
@@ -714,10 +754,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#htmlContent").empty();
         $("#email-template-title").empty();
         $("#email-template-title").append(emailTemplate.name);
-        $("#htmlContent").append(emailTemplate.body);
-        //$("#show_email_template_preivew").css({height:"350px", overflow:"auto"});
+        if(this.campaignType=='video'){
+            let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
+            let updatedBody = emailTemplate.body.replace("<mobinarImgURL>",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("http://139.59.1.205:9090/vod/images/125/14032017/DhoniRetires12Sec1489482713198_play1.gif",selectedVideoGifPath);
+            $("#htmlContent").append(updatedBody);
+        }else{
+            $("#htmlContent").append(emailTemplate.body);
+        }
+        $('.modal .modal-body').css('overflow-y', 'auto'); 
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#show_email_template_preivew").modal({backdrop: 'static', keyboard: false});
-            
     }
     filterTemplates(type:EmailTemplateType,index:number){
         this.emailTemplatesPagination.emailTemplateType =type;
@@ -734,6 +781,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailTemplate(emailTemplate:EmailTemplate){
        this.selectedEmailTemplateRow = emailTemplate.id;
        this.isEmailTemplate = true;
+       this.campaign.emailTemplate = emailTemplate;
     }
 
     /*************************************************************Launch Campaign***************************************************************************************/
@@ -794,11 +842,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        }
     
     getCampaignData(emailId:string){
-        let self = this;
-       $('[name="campaignContact[]"]:checked').each(function(){
-           self.campaign.userListIds.push($(this).val());
-        });
-       let filteredUserListIds =this.remove_duplicates(self.campaign.userListIds);
         if(this.campaignType== "regular"){
             this.campaign.regularEmail = true;
         }else{
@@ -817,7 +860,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 'socialSharingIcons': this.campaign.socialSharingIcons,
                 'userId':this.userService.loggedInUserData.id,
                 'selectedVideoId':this.campaign.selectedVideoId,
-                'userListIds':filteredUserListIds,
+                'userListIds':this.campaign.userListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
                 "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
                 'scheduleTime':this.campaignLaunchForm.value.launchTime,
@@ -830,17 +873,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         return data;
         
     }
-    remove_duplicates(arr) {
-        let obj = {};
-        for (let i = 0; i < arr.length; i++) {
-            obj[arr[i]] = true;
-        }
-        arr = [];
-        for (let key in obj) {
-            arr.push(key);
-        }
-        return arr;
-    }
+   
     
     
     sendTestEmail(emailId:string){
@@ -866,45 +899,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     addUserEmailIds(){
         let self = this;
-        self.selectedContactListNames = [];
-        $('[name="campaignContact[]"]:checked').each(function(){
-            self.selectedContactListNames.push($(this)[0].lang);
-         });
-        if(this.campaignType=='video'){
-            if(this.is360Video){
-                this.play360Video();
-             }else{
-                 this.playNormalVideo();
-             }
-        }
-       
-        
-    }
-    play360Video(){
-        $('.h-video').remove();
-        $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
-        var player = videojs('campaignVideo');
-        console.log(player);
-        player.panorama({
-            autoMobileOrientation: true,
-            clickAndDrag: true,
-            clickToToggle: true,
-            callback: function () {
-              player.ready();
+        self.selectedContactLists = [];
+        $('[name="campaignContact[]"]:checked').each(function(index){
+            var id = $(this).val();
+            var name = $(this)[0].lang;
+            var  contactList = {'id':id,'name':name};
+            if(self.selectedContactLists.length<=1){
+                self.selectedContactLists.push(contactList);
             }
-          });
-    }
-    playNormalVideo(){
-        $('.p-video').remove();
-        $('head').append('<script src="assets/js/indexjscss/video.js"  class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"  class="h-video"  />');
-        $('head').append('<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.5.0/videojs-contrib-hls.js"  class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js"  class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/webcam-capture/RecordRTC.js"  class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.record.js"  class="h-video"  />');
-        var player = videojs('campaignVideo');
-        player.ready();
-    
+         });
+        if(this.campaignType=="video"){
+            this.playVideo();
+        }
     }
     
     saveCampaignOnDestroy(){
@@ -916,12 +922,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log(data);
             if(data.message=="success"){
                 this.isLaunched = true;
-                /*if(this.isAdd){
-                    this.refService.isCampaignCreated  = true;
-                }else{
-                    this.refService.isCampaignUpdated = true;
-                }*/
-            }else{
             }
         },
         error => {
@@ -1037,18 +1037,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         resetActive( event: any, percent: number, step: string ) {
             $( ".progress-bar" ).css( "width", percent + "%" ).attr( "aria-valuenow", percent );
             $( ".progress-completed" ).text( percent + "%" );
-
-           /* $( "div" ).each( function() {
-                if ( $( this ).hasClass( "activestep" ) ) {
-                    $( this ).removeClass( "activestep" );
-                }
-            });*/
-            /*if ( event.target.className == "col-md-2" ) {
-                $( event.target ).addClass( "activestep" );
-            }
-            else {
-                $( event.target.parentNode ).addClass( "activestep" );
-            }*/
             this.hideSteps();
             this.showCurrentStepInfo( step );
 
@@ -1065,7 +1053,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
         showCurrentStepInfo( step ) {
             var id = "#" + step;
-            //var successTabColor = '#00a6e8';
             if(step=="step-2"){
                 this.campaignDetailsTabClass = this.currentTabActiveClass;
                 if(this.isContactList){
@@ -1145,8 +1132,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
             
             $( id ).addClass( "activeStepInfo" );
-           /* var stepId = step.split('-')[1];
-            $('#step'+stepId).css('color','#7ba0bb');*/
         }
         
 }

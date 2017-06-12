@@ -86,7 +86,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         reader.onload = (e) => {
             let htmlText: string = reader.result;
             this.htmlText = htmlText;
-            $('.html').highlightCode('html', htmlText);
+           // $('.html').highlightCode('html', htmlText);
             swal.close();
         }
         reader.readAsText(file);
@@ -149,7 +149,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.body = $('#textarea').text();
         this.emailTemplate.userDefined = true;
-        this.emailTemplate.subject = "../../assets/images/file_upload_icon.png";
+        this.emailTemplate.subject = "assets/images/file_upload_icon.png";
         console.log(this.emailTemplate);
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;

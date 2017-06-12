@@ -13,37 +13,37 @@
 		<!-- BEGIN PAGE CONTENT-->
 		<div class="portlet light">
 			<div class="portlet-body">
-				<div class="row">
-					<div class="col-md-6">
-						<div style="float: left; width: 113px;">
+					<div class="col-xs-12 col-md-6">
+						<!-- <div style="float: left; width: 113px;">
 							<button type="button" class="btn green fileinput-button">
 								<span> <i class="fa fa-plus"></i>Upload File
 								</span>
-								<!-- *ngIf="uploader.queue.length==0" -->
+								*ngIf="uploader.queue.length==0"
 								<input type="file" ng2FileSelect [uploader]="uploader"
 									class="form-control" name="htmlFile"
 									(change)="readFile($event)" accept="text/html">
 							</button>
-						</div>
+						</div> -->
+					
+		              <div class="form-group files color">
+                		<h3>Upload Your File </h3>
+		                <input type="file" class="form-control">
+		              </div>
 					</div>
-					<form>
-						<div class="col-xs-0 col-md-6">
-							<label for="name">Template Name</label> <input type="text"
-								class="form-control" id="templateName" required
-								[(ngModel)]="model.templateName" name="templateName"
-								minlength="1" maxlength="50"
-								placeholder="Please Enter Template Name" #templateName="ngModel"
-								(ngModelChange)="checkAvailableNames($event)">
+					
+					<div class="col-xs-12 col-md-6">
+						<form>
+							<h3>Template Name</h3> 
+							<input type="text" class="form-control" id="templateName" required [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50"
+								placeholder="Please Enter Template Name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event)">
 							<div [hidden]="templateName.valid || templateName.pristine"
 								class="alert alert-danger">Name is required</div>
 							<div [hidden]="!duplicateTemplateName" class="alert alert-danger">Duplicate
 								Name</div>
-						</div>
+						</form>
+					</div>
 
-
-					</form>
-					<br />
-					<div class="col-md-12" style="margin-top: 25px;">
+					<div class="col-xs-12" style="margin-top: 25px;">
 						<table class="table">
 							<tbody>
 								<tr
@@ -70,10 +70,9 @@
 						</table>
 						<div></div>
 					</div>
-				</div>
 
-				<div class="row">
-					<!--ended the file upload code   -->
+				<!-- <div class="row">
+					ended the file upload code  
 					<div class="col-md-6">
 						<p>
 							<span class="label label-danger"> NOTE: </span> &nbsp; This
@@ -88,7 +87,7 @@
 							<h3>Drop Files here</h3>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="clearfix" style="margin: 5px;"></div>
 				<div class="panel panel-success" *ngIf="isUploaded">
 					<div class="panel-heading">

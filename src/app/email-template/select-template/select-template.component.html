@@ -1,33 +1,4 @@
 
-<style type="text/css">
-h1 {
-	background: #e3e3e3;
-	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
-	background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3),
-		to(#c8c8c8));
-	padding: 10px 20px;
-	margin-left: -20px;
-	margin-top: 0;
-	position: relative;
-	width: 70%;
-	-moz-box-shadow: 1px 1px 3px #292929;
-	-webkit-box-shadow: 1px 1px 3px #292929;
-	box-shadow: 1px 1px 3px #292929;
-	color: #454545;
-}
-
-.arrow {
-	width: 0;
-	height: 0;
-	line-height: 0;
-	border-left: 20px solid transparent;
-	border-top: 10px solid #c8c8c8;
-	top: 104%;
-	left: 0;
-	position: absolute;
-}
-</style>
-
 
 <div class="page-content">
 
@@ -78,26 +49,6 @@ h1 {
 				</div>
 				<div class="portlet-body">
 					<div class="row">
-							<!-- <div class="col-md-3 col-sm-4 mix"
-								*ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index"
-								style="display: block; opacity: 1;">
-								<div class="mix-inner"
-									style="border: 1px solid #e7ecf1 !important;">
-									<img class="img-responsive" src="{{beeRegularTemplate.body}}"
-										alt="" style="padding-left: 25%;">
-									<div class="mix-details" style="padding: 10px;">
-										<h4>{{beeRegularTemplate.name}}</h4>
-										<div style="top: 7%; position: relative;">
-											<a class="mix-preview2 fancybox-button" title="Add"
-												data-rel="fancybox-button" style="margin-top: 20px;"
-												(click)="showTemplateById(beeRegularTemplate.id,i)"> <i
-												class=""><img src="assets/images/plus-icon.png"
-													style="width: 25px; height: 25px;"></i>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div> -->
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
 								<div class="portlet light block">
 									<div class="portlet-title">

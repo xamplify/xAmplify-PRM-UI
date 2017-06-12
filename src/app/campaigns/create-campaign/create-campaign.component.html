@@ -242,7 +242,7 @@
 						    	 	</div>
 						    	 </div>End Of 239
 						    	</div> -->
-						    	<table class="table table-filter" cellspacing="0" width="100%" id="videos_table_new" style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
+						    	<table class="table table-filter" cellspacing="0" width="100%"  style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
 								<thead style="background-color: #B7B7B7;">
 									<tr role="row">
 									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
@@ -259,11 +259,12 @@
 								</thead>
 								<tbody class="row_selected">
 								<!-- ------------------Selected Video Row-->
-									<tr *ngIf="!isAdd && isCampaignDraftVideo" class="active" id="selectedVideoRow" (click)="setClickedRow('-1',campaign.campaignVideoFile)">
+									<tr *ngIf="!isAdd && isCampaignDraftVideo" class="active" id="selectedVideoRow" (click)="setClickedRow(campaign.campaignVideoFile)">
 									<!-- --------------Thumbnail--------------------------- -->
 										<td style="text-align: center;">
-											 <input type="radio" [checked]="campaign.campaignVideoFile.id===videoId" (click)="addVideoIdFile(campaign.campaignVideoFile)"   name="videoFileId" [value]="campaign.campaignVideoFile.id"  id="campaign_video_id_-1"> 
-												<a href="javascript:void(0)" (click)="showPreview(campaign.campaignVideoFile)">
+											 <input type="radio" [checked]="campaign.campaignVideoFile.id===videoId" (click)="setClickedRow(campaign.campaignVideoFile)"   
+											 	name="videoFileId" [value]="campaign.campaignVideoFile.id"  id="campaign_video_id_{{campaign.campaignVideoFile.id}}"> 
+												<a href="javascript:void(0)" (mouseover)="showPreview(campaign.campaignVideoFile)">
 													<img src="{{campaign.campaignVideoFile.imagePath}}" width="100px" height="50px">
 												</a>
 										</td>
@@ -299,11 +300,12 @@
 								
 									<!-- --------------------Avalilable Campaign Videos------------ -->	
 									<tr role="row" class="odd" *ngFor="let videoFile of videosPagination.pagedItems;let i =  index" 
-									(click)="setClickedRow(i,videoFile)" [class.active]="(i == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage" (mouseover)='showToolTip(videoFile.viewBy)'>
+									(click)="setClickedRow(videoFile)" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
+										[attr.title]="draftMessage" (mouseover)='showToolTip(videoFile.viewBy)'>
 										<!-- --------------Thumbnail--------------------------- -->
 										<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile)" id="campaign_video_id_{{i}}">   
-												<a href="javascript:void(0)" (click)="showPreview(videoFile)">
+											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile)" id="campaign_video_id_{{videoFile.id}}">   
+												<a href="javascript:void(0)" (mouseover)="showPreview(videoFile)" lang="{{videoFile.id}}">
 													<img src="{{videoFile.imagePath}}" width="100px" height="50px">
 												</a>
 										</td>
@@ -372,7 +374,7 @@
                 </div>
         </div>
         
-   <!-- --------------------Video FIle Preivew Modal Pop Up -->     
+        <!-- -------------------------Video Preview------------------- -->
         <div class="modal" id="show_preview">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
@@ -392,76 +394,6 @@
     <div class="row setup-content step hiddenStepInfo" id="step-4">
     <!-- <br> -->
     <div *ngIf="contactsPagination.totalRecords==0" class="alert alert-danger"><strong>No Contacts Found</strong></div> 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-  					<div class="modal-dialog" role="document">
-    					<div class="modal-content">
-      						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<div>
-        							<h4 class="modal-title" id="myModalLabel" align="center"><b>List Of Users</b></h4>
-        							</div>
-     						 </div>
-     					 <div class="modal-body">
-     					 
-     					 <table class="table table-striped table-hover table-bordered" id="sample_editable_1" *ngIf="contactListItems">
-							<thead >
-								<tr >
-									<!-- <th>
-										 USERNAME
-									</th> -->
-									<th>
-										 EMAILID
-									</th>
-									<th>
-										 FIRSTNAME
-									</th>
-									<th>
-										 LASTNAME
-									</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr *ngFor="let allcontacts of contactsUsersPagination.pagedItems;let i = index">
-									<!-- <td>
-										 {{allcontacts.userName}}
-									</td> -->
-									<td>
-										 {{allcontacts.emailId}}
-									</td>
-									<td>
-										  {{allcontacts.firstName}}
-									</td>
-									<td class="center">
-										 {{allcontacts.lastName}}
-									</td>
-								</tr>
-								</tbody>
-								</table>	
-      					</div>
-      					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination">
-                                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-                                                <a (click)="setPage(1,'contactUsers')">First</a>
-                                             </li>
-                                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-                                                 <a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
-                                              </li>
-                                              <li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page,'contactUsers')">{{page}}</a>
-                                              </li>
-                                              <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
-                                                  <a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
-                                              </li>
-                                               <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
-                                                  <a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
-                                              </li>
-                                          </ul>
-  				
-      					<div class="modal-footer">
-        					<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
-     		 			</div>
-    				</div>
-  				</div>
-			</div>
         <div class="col-xs-12" *ngIf="contactsPagination.totalRecords>0" style="margin-top: 10px;">
             <div class="col-md-12 well text-center">
                 <div class="row" id="user_list_table_view">
@@ -493,29 +425,30 @@
 				                  </tr>
 				                 </thead>
 				                	<tbody>
-									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightRow(contacts.id)" [class.contact-list-selected]="contacts.id===contactsPagination.campaignUserListIds[i]">
+									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts.id,$event)" [class.contact-list-selected]="contacts.id===contactsPagination.campaignUserListIds[i]">
 					                     <td *ngIf="isAdd || !isCampaignDraftContactList ">
 					                      <div class="form-group">
-						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}" [(ngModel)]="contacts.state" (click)="highlightRow(contacts.id)"/>
+						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}" [(ngModel)]="contacts.state"
+						                      (click)="highlightRow(contacts.id,$event)"/>
 					                      </div>
 					                     </td>
 					                     <td *ngIf="!isAdd && isCampaignDraftContactList"><!-- [(ngModel)]="contacts.state" -->
 					                     	<div class="form-group">
 						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}" [checked]="contacts.id===contactsPagination.campaignUserListIds[i]"   
-						                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id)">
+						                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id,$event)">
 					                      </div>
 					                     </td>
 					                     
 					                      <td class="text-center sorting_1">{{contacts.createdDate}}</td>
 					                      <td class="text-center">{{contacts.name}}</td>
 					                      <td class="text-center" >
-					                      	<a  class="btn btn-warning" (click)="loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)" data-toggle="modal" data-target="#myModal">
+					                      	<a  class="btn btn-warning" (mouseover)="loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)">
 					                      	<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Download">Preview</i></a>
 					                      </td>
 					                  </tr>
 					                </tbody>
                              </table>
-                             <div>   
+                            		 <div>   
 									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
@@ -593,8 +526,10 @@
 														<div class="portlet-title">
 															<div class="caption">
 																<div class="col-xs-12">
-																	<img *ngIf="emailTemplateId==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
-																	<h4 class="caption-subject uppercase text-center" style="display: inline-block;">{{campaign.emailTemplate.name}}</h4>
+																	<div class="flex">
+																		<img *ngIf="emailTemplateId==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																		<h4 title="{{campaign.emailTemplate.name}}" class="caption-subject text-center ellipsis">{{campaign.emailTemplate.name}}</h4>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -602,7 +537,7 @@
 															<div class="row email-template-container">
 																<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="No Image Selected">
 																<div class="email-template-i-container">
-										       						 <i class="fa fa-info fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
+										       						 <i class="fa fa-eye fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
 										   						 </div>
 															</div>
 														</div>
@@ -617,8 +552,10 @@
 													<div class="portlet-title">
 														<div class="caption">
 															<div class="col-xs-12">
-																<img *ngIf="emailTemplate.id==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
-																<h4 class="caption-subject uppercase text-center" style="display: inline-block;">{{emailTemplate.name}}</h4>
+																<div class="flex">
+																	<img *ngIf="emailTemplate.id==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																	<h4 title="{{emailTemplate.name}}" class="caption-subject text-center ellipsis">{{emailTemplate.name}}</h4>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -626,7 +563,7 @@
 														<div class="row email-template-container">
 															<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="No Image Selected">
 															<div class="email-template-i-container">
-										       						 <i class="fa fa-info fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
+										       						 <i class="fa fa-eye fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(emailTemplate)"></i>
 										   						 </div>
 														</div>
 													</div>
@@ -642,19 +579,19 @@
 									<div *ngIf="emailTemplatesPagination.totalRecords>0" >
 									 <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-                                           <a (click)="setPage(1,'emailTemplates')">First</a>
+                                           <a (click)="setPage(1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">First</a>
                                         </li>
                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-                                            <a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')">Previous</a>
+                                            <a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">Previous</a>
                                          </li>
                                          <li *ngFor="let page of emailTemplatesPagination.pager.pages" [ngClass]="{active:emailTemplatesPagination.pager.currentPage === page}">
                                             <a (click)="setPage(page,'emailTemplates')">{{page}}</a>
                                          </li>
                                          <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-                                             <a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')">Next</a>
+                                             <a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Next</a>
                                          </li>
                                           <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-                                             <a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')">Last</a>
+                                             <a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')"  [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Last</a>
                                          </li>
 					                </ul>
 					                </div>
@@ -666,9 +603,117 @@
 				</div>
 			</div>
 		</div>
-		<!-- --------------------Video FIle Preivew Modal Pop Up -->     
+    </div><!-- End of step 5 -->
+     <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
+        <div class="row setup-content step hiddenStepInfo" id="step-6">
+       <!--  <br> -->
+		<div class="col-xs-12">
+		<div class="portlet light dashboard-stat2">
+			<div class="portlet title">
+				<div class="portlet-title">
+					<div class="caption">
+						<h3>Preview Before publishing</h3>
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body" style="min-height: 420px;">
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngIf="campaignType=='video'">
+					<div class="portlet light border-0">
+						<div class="portlet-title border-none">
+							<div class="col-sm-12 border-none">
+								<div id = "main_video_src">
+								</div>
+								<h3 class="text-left" id="title"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div [attr.class]="lauchTabPreivewDivClass">
+					<div class="portlet light border-0" style="padding: 1.5em;">
+						<div class="portlet-title border-none text-left">
+							<div class="col-xs-4">
+								<div class="flex">
+									<i class="fa fa-users fa-2x" aria-hidden="true" style="color: #86dcfc"></i>
+									<h5 class="h4-text" *ngIf="campaignType == 'video'">Contact List</h5>
+									<h4 class="h4-text" *ngIf="campaignType == 'regular'">Contact List</h4>
+								</div>
+							</div>
+							<div class="col-xs-8 flex">
+								<div class="col-xs-9">
+									<div *ngFor="let contactList of selectedContactLists;let i=index;">
+										<h5 class="h4-text">
+											<a
+												(click)="loadUsers(contactList.id,contactsUsersPagination)"
+												data-toggle="modal" data-target="#myModal">{{contactList.name}}</a>
+										</h5>
+									</div>
+								</div>
+								<div class="col-xs-3 text-right" style="padding-top: 1.3em;">
+									<a class="btn btn-default btn-sm" href="javascript:void(0)"
+										(click)="resetActive($event, 40, 'step-4')">Change</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="portlet light border-0" style="padding: 1.5em;" *ngIf="isEmailTemplate">
+						<div class="portlet-title border-none text-left">
+							<div class="col-xs-4">
+								<div class="flex">
+									<i class="fa fa-envelope fa-2x" aria-hidden="true" style="color: #86dcfc"></i>
+									<h5 class="h4-text" *ngIf="campaignType == 'video'">Email Template</h5>
+									<h4 class="h4-text" *ngIf="campaignType == 'regular'">Email Template</h4>
+								</div>
+							</div>
+							<div class="col-xs-8">
+								<div class="col-xs-9">
+									<h4 class="h4-text"><a (click)="getEmailTemplatePreview(campaign.emailTemplate)">{{campaign.emailTemplate.name}}</a></h4>
+								</div>
+								<div class="col-xs-3 text-right">
+									<a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<form  role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();"	class="form-horizontal form-bordered form-label-stripped">
+					<div class="portlet light border-0" style="padding: 1.5em;">
+						<div class="portlet-title border-none text-left">
+							<div class="col-xs-4" *ngFor="let schedule of sheduleCampaignValues">
+		                		 <label class="label-radio">
+		                		 	<input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule"  formControlName="scheduleCampaign" ngDefaultControl style=" margin-right:1.5em; "/>{{schedule}}
+		                		 </label>
+		                	</div>
+							<div class="col-xs-4 col-xs-offset-4">
+								<font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Please Select Date</font>
+								<input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" style="margin-top: 1em;"/>
+							</div>
+							<div class="col-xs-4 text-right">
+								<button type="submit" class="btn green"	[disabled]="!campaignLaunchForm.valid" style="margin-top: 1em;">Launch</button>
+							</div>
+						</div>
+					</div>
+					</form>
+			</div>
+		</div>
+		</div>
+        </div>
+   		<div class="col-xs-12">
+			<div class="portlet light dashboard-stat2" style="padding-top: 2em;">
+				<div class="portlet-title border-none">
+				<div class="col-xs-6 text-right">
+						<button type="button"	class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;min-width: 10em;">← Previous</button>
+					</div>
+					<div class="col-xs-6 text-left">
+						<button type="submit" class="btn green" (click)="addEmailId()">Send Test Email</button>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+	</div><!-- End Of Line 18 -->
+	</div>
+	<!-- --------------------Email Template -->     
         <div class="modal" id="show_email_template_preivew" >
-	    <div class="modal-dialog modal-lg">
+	    <div class="modal-dialog modal-lg" style="width: 75%;">
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -680,79 +725,41 @@
 	            </div>
 	        </div>
 	    </div>
-    </div><!-- End of step 5 -->
-     <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
-        <div class="row setup-content step hiddenStepInfo" id="step-6">
-       <!--  <br> -->
-        <div class="col-xs-12">
-        <form  role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();"
-			class="form-horizontal form-bordered form-label-stripped">
-         <button type="button" style="float:left" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')">Previous</button>
-            <div class="col-md-12 well text-center" style="margin-top: 10px;">
-            	<h4>Selected Campaign Details.</h4>
-				<table id="myTable">
-				<tr *ngIf="campaignType=='video'">
-					<th>Selected Video</th>
-					<th *ngIf="!is360Video">
-					<video id="campaignVideo" class="video-js vjs-default-skin" controls width="542" height="299" poster="{{poster}}"
-							data-setup='{"example_option":true }'>
-						<!-- <source [src]=selectedVideoFilePath type="application/x-mpegURL" /> -->
-						<source [src]=selectedVideoFilePath type="application/x-mpegURL" />
-						<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
-					</video>
-					</th>
-					<th *ngIf="is360Video">
-					 <video id="campaignVideo" class="video-js vjs-default-skin" width="542" height="299"  poster="{{poster}}"  crossorigin="anonymous" controls >
-            					<source [src]=selectedVideoFilePath type="video/mp4" />
-            					<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type='video/mp4'> -->
-        				</video>
-					</th>
-				</tr>
-				<tr>
-					<td>Selected Contact List</td>
-					<td>{{selectedContactListNames}}</td>
-				</tr>
-				<tr>
-					<td>Selected Email Template</td>
-					<td>{{selectedEmailTemplateName}}</td>
-				</tr>
-			</table>
-            <hr>
-            <br>
-            
-        	 <div *ngIf="campaignLaunchForm.hasError('invalidSchedule')"  class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        		<strong>Please Select Date</strong>
-        	</div>
-                <div class="row">
-                <div class="form-group">
-                	<div class="col-md-4" *ngFor="let schedule of sheduleCampaignValues">
-                		 <input type="radio"  name="scheduleCampaign" [value]="schedule"  formControlName="scheduleCampaign" ngDefaultControl/>
-                		   <p>{{schedule}}</p>
-                	</div>
-              </div>
-                
-                 </div> 
-				  <div class="row">
-                	<div class="col-md-4 col-md-offset-4">                    
-                      <input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" />
-                      
-                      </div>
-                    </div>  
-                </div>
-                   <div style="float: right">
-				    <button type="submit" class="btn green" 
-				    [disabled]="!campaignLaunchForm.valid">
-					  LaunchCampaign</button>
-				</div>	
-				<div style="float: left;">
-				    <button type="button" class="btn green" (click)="addEmailId()">Send Test Email</button>
-				</div>
-				</form>
-            </div><hr><br>
-            <hr>
-             <!-- <div [innerHtml]="emailTemplateHtmlPreivew"></div> -->
-        </div>
-    
-	</div><!-- End Of Line 18 -->
-	</div>
+	   </div>
+	   <!-- ----------------------------------Contact Lists -->
+	       <div class="modal fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div>
+        							<h4 class="modal-title" id="user-list-name" align="center"><b>List Of Users</b></h4>
+        							</div>
+     						 </div>
+     					 <div class="modal-body" id="users-modal-body">
+      					</div>
+      					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination" style="margin-left: 10px;">
+                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+                                <a (click)="setPage(1,'contactUsers')">First</a>
+                             </li>
+                             <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+                                 <a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
+                              </li>
+                              <li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
+                                 <a (click)="setPage(page,'contactUsers')">{{page}}</a>
+                              </li>
+                              <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
+                                  <a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
+                              </li>
+                               <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
+                                  <a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
+                              </li>
+                         </ul>
+  				
+      					<div class="modal-footer">
+        					<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
 </div><!-- End of Line 1 -->

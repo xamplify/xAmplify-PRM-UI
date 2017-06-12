@@ -1,34 +1,6 @@
-<style type="text/css">
-h6 {
-     background: #e3e3e3;
-     background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
-     background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#c8c8c8));
-     padding: 10px 20px;
-     margin-left: -20px;
-     margin-top: 0;
-     position: relative;
-     width: 70%;
- 
-    -moz-box-shadow: 1px 1px 3px #292929;
-    -webkit-box-shadow: 1px 1px 3px #292929;
-       box-shadow: 1px 1px 3px #292929;
- 
-    color: #454545;
-    }
-        .arrow {
-     width: 0; height: 0;
-     line-height: 0;
-     border-left: 20px solid transparent;
-     border-top: 10px solid #c8c8c8;
-     top: 104%;
-     left: 0;
-     position: absolute;
-}
-
-    </style>
 <div class="page-content">
   <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
-	 	 Campaign <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
+	 	 <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
 	 </div>
 	  <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
 	 	<strong>Please Delete Associated Campaign(s)</strong>
@@ -41,122 +13,89 @@ h6 {
 			<li>Manage Templates
 			</li>
 		</ul>
-
 	</div>
-			<div class="row">
-				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-					<div class="col-md-12">
-						<div class="tabbable tabbable-custom tabbable-noborder">
-							<div class="tab-content">
-								<div class="tab-pane active">
-									<!-- BEGIN FILTER -->
-									
-									<div class="page-toolbar">
-									<div class="btn-group pull-right">
-										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px">
-												<select class="form-control"
-													    [(ngModel)]="selectedSortedOption" 
-													    (ngModelChange)="getSortedResult($event)">
-													  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
-													    {{sortOption.name}}
-													  </option>
-											</select>
-											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right">
-													<i class="icon-magnifier"  (click)="searchTemplates()"></i>
-													<input type="text" 
-													 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
-												</div>
-											</div>
-										</div>
-									</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="portlet light">
+				<div class="portlet-title">
+					<div class="caption">
+						<div class="row">
+						<div class="colxs-12 col-sm-9">
+						<div>
+							<ul class="mix-filter">
+								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All Email Template's</li>
+								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic Template's</li>
+								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich Template's</li>
+								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video Template's</li>
+								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">RichVideo Template's</li>
+								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Template</li>
+								<li class="filter" style="display: none;">Own Template</li>
+							</ul>
+						</div>
+						</div>
+						<div class="colxs-12 col-sm-3">
+						<div class="inputs regular_emails" align="right" style="float: right">
+							<div class="portlet-input input-inline input-small">
+								<div class="input-icon right">
+									<i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
+									<input type="search" 
+									 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
 								</div>
-									
-									
-									<div class="margin-top-10" >
-									
-									<div  align="right"  style="width:24%">
-                                             <select class="form-control" 
-													    [(ngModel)]="selectedTemplate" 
-													    (ngModelChange)="getSelectedEmailTemplate($event)">
-													  <option *ngFor="let templateType of templatesDropDown" [ngValue]="templateType">
-													    {{templateType.name}}
-													  </option>
-											</select>
-										</div>
-										<div class="row mix-grid" style="margin-top: 15px;margin-left:4px;" *ngIf="emailTemplates">
-										  <div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
-											<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;" id="emailTemplateListDiv_{{emailTemplate.id}}">
-											    <div id="container"> <h3>{{emailTemplate.description}}<span class="arrow"></span> </h3> </div>
-												<div class="mix-inner" style="background-color: #536372">
-													<img class="img-responsive" src="{{emailTemplate.subject}}" alt="" style="margin-left: 85px;">
-													<div class="mix-details" style="z-index: 700;">
-														<h4>{{emailTemplate.name}}</h4>
-														<div style="top: 3%; position: relative; margin-left: 5px;">
-														<a class="mix-preview1 fancybox-button"  title="Edit Template" data-rel="fancybox-button" (click)="edit(emailTemplate.id)">
-															<i class="fa fa-pencil-square-o"></i>
-														</a>
-														<a class="mix-preview6 fancybox-button" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"  onMouseOver="this.style.color='#fff'" title="Delete Template" data-rel="fancybox-button" style="left:50%;"> 
-								                             <i class="fa fa-trash" style="color: red; !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
-							                             </a>
-							                             
-														</div>
-														<div style="top: 31%; position: relative;">
-														</div>
-														<span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
-														<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{emailTemplate.createdDate}}</span>
-													</div>
-												</div>
-											</div>
-											</div>
-											
-											
-										</div>
-										 <div *ngIf="totalRecords<=0"  class="alert alert-info"><strong>No Templates Found</strong></div>
-										</div>
-									</div>
-										
-									<!-- END FILTER -->
-								</div>
-								   
-								<!--pager here  -->
-									    <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                                                <a (click)="setPage(1)">First</a>
-                                             </li>
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                                                 <a (click)="setPage(pagination.pager.currentPage - 1)">Previous</a>
-                                              </li>
-                                              <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page)">{{page}}</a>
-                                              </li>
-                                              <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.currentPage + 1)">Next</a>
-                                              </li>
-                                               <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.totalPages)">Last</a>
-                                              </li>
-                                          </ul>
-                                  		 <div class="col-xs-2" style="float: right;margin-top: -8px;">
-											  <label for="ex1"></label>
-<!-- 											  <input disabled="disabled" style="color: blue;"  class="form-control" id="ex1" type="text" value="Showing  {{totalRecords}} Records">
- -->										</div>
-										<!-- <div class="col-xs-2" style="float: right;margin-top: 10px;margin-right:-196px;width:10%;">
-											<select class="form-control"
-													    [(ngModel)]="itemsSize" 
-													    (ngModelChange)="getNumberOfItemsPerPage($event)">
-													  <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">
-													    {{itemPerPage.name}}
-													  </option>
-											</select>
-										</div> -->
-										
-										<!-- pager end here -->
 							</div>
 						</div>
 						</div>
+						</div>
 					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+								<div class="portlet light block">
+									<div class="portlet-title">
+										<div class="caption">
+											<h4 class="caption-subject font-purple-intense uppercase text-center">{{emailTemplate.name}}</h4>
+										</div>
+									</div>
+									<div class="portlet-body">
+										<div class="row email-template-container">
+											<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+											<div class="email-template-i-container">
+										       <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true" (click)="edit(emailTemplate.id)"></i>
+										       <i class="fa fa-trash fa-3x" aria-hidden="true" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete Template"></i>
+										      <!--  <span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
+												<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{emailTemplate.createdDate}}</span> -->
+										    </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				<div *ngIf="pagination.totalRecords>0">
+					  <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+                          <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+                             <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+                          </li>
+                          <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+                              <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+                           </li>
+                           <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+                              <a (click)="setPage(page)">{{page}}</a>
+                           </li>
+                           <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                               <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+                           </li>
+                            <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                               <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+                           </li>
+                      </ul>
+				</div>
+				<div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>	
+			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+	</div>
+						
+</div>
 				<!-- END PAGE CONTENT-->
 		<!-- END CONTENT -->

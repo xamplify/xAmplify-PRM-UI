@@ -48,8 +48,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaign(pagination:Pagination) {
-        var url =this.URL+"admin/listCampaign?access_token="+this.authenticationService.access_token;
+    listCampaign(pagination:Pagination,userId:number) {
+        var url =this.URL+"admin/listCampaign/"+userId+"?access_token="+this.authenticationService.access_token;
         return this.http.post(url, pagination)
         .map(this.extractData)
         .catch(this.handleError);   

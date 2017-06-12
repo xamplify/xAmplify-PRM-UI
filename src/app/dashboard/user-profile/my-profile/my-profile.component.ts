@@ -26,7 +26,7 @@ export class MyProfileComponent implements OnInit {
 updatePasswordForm:FormGroup;
 updatePasswordSuccess=false;
 profileUploadSuccess = false;
-userProfileImage:string= "../../assets/admin/pages/media/profile/icon-user-default.png";
+userProfileImage:string= "assets/admin/pages/media/profile/icon-user-default.png";
 userData:User;
 displayName:string = "";
 profilePicutrePath:string="";//"../../assets/admin/pages/media/profile/icon-user-default.png";
@@ -41,9 +41,8 @@ constructor(private fb: FormBuilder,private userService:UserService,private auth
     this.uploader = new FileUploader({ 
         
         allowedMimeType: ['image/jpeg','image/pjpeg','image/jpeg','image/pjpeg','image/png'],
-  
          maxFileSize: 100*1024*1024 ,// 100 MB
-            url : this.authenticationService.REST_URL+"admin/uploadProfilePicture?access_token="+this.authenticationService.access_token
+            url : this.authenticationService.REST_URL+"admin/uploadProfilePicture/"+this.userData.id+"?access_token="+this.authenticationService.access_token
             });
         
   
@@ -55,6 +54,7 @@ constructor(private fb: FormBuilder,private userService:UserService,private auth
           console.log(imageFilePath);
           this.userProfileImage = imageFilePath['message'];
           this.profilePicutrePath = imageFilePath['message'];
+          alert(this.profilePicutrePath);
           this.uploader.queue.length = 0;
           this.clearImage();
           this.profileUploadSuccess = true;

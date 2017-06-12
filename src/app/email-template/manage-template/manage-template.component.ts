@@ -8,6 +8,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 
 import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
@@ -23,11 +24,11 @@ export class ManageTemplateComponent implements OnInit {
     emailTemplates: any[];
     pager: any = {};
     pagedItems: any[];
-    public totalRecords: number = 1;
     public searchKey: string = "";
     isEmailTemplateDeleted:boolean = false;
     isCampaignEmailTemplate:boolean  = false;
     selectedEmailTemplateName:string = "";
+    selectedTemplateTypeIndex:number = 0;
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -57,18 +58,20 @@ export class ManageTemplateComponent implements OnInit {
     public selectedTemplate: any = this.templatesDropDown[0];
     public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
-
+      loggedInUserId:number = 0;
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, private pagination: Pagination ) {
+        if ( this.userService.loggedInUserData != undefined ) {
+            this.loggedInUserId = this.userService.loggedInUserData.id;
+        }
     }
 
     listEmailTemplates( pagination: Pagination ) {
         try {
-            this.emailTemplateService.listTemplates( pagination, this.userService.loggedInUserData.id )
+            this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
                     this.emailTemplates = data.emailTemplates;
-                    this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
                     this.refService.showInfo( "Finished listEmailTemplates in manageTemplatesComponent", this.emailTemplates );
@@ -227,6 +230,7 @@ export class ManageTemplateComponent implements OnInit {
                     this.isEmailTemplateDeleted = true;
                     this.isCampaignEmailTemplate = false;
                     setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
+                    this.listEmailTemplates(this.pagination);
                 }else{
                     this.isEmailTemplateDeleted = false;
                     this.isCampaignEmailTemplate = true;
@@ -238,6 +242,16 @@ export class ManageTemplateComponent implements OnInit {
             );
     }
 
-
+    filterTemplates(type:EmailTemplateType,isVideoTemplate:boolean,index:number){
+        this.pagination.emailTemplateType =type;
+        this.selectedTemplateTypeIndex = index;//This is to highlight the tab
+        this.pagination.pageIndex = 1;
+        if(isVideoTemplate){
+            this.pagination.filterBy = "VideoEmail";
+        }else{
+            this.pagination.filterBy = "RegularEmail";
+        }
+        this.listEmailTemplates(this.pagination);
+    }
 
 }
