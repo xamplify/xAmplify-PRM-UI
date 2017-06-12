@@ -530,6 +530,7 @@ export class AddContactsComponent implements OnInit {
     removeCsv() {
         this.fileTypeError = false;
        // this.removeCsvName = false;
+        $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
         $( "button#copyFromClipBoard" ).prop( 'disabled', false );
         $( "button#addContacts" ).prop( 'disabled', false );
