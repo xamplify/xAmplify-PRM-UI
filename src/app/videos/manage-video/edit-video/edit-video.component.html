@@ -150,7 +150,7 @@
 											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
 											</label>
 											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="margin-left: 17%; background: #194A7E; color: #FFF;"
-												(click)="embedCode('embed_code')">Copy to Clipboard
+												(click)="embedCode()">Copy to Clipboard
 											</button>
 										</div>
 									</span>
@@ -255,14 +255,11 @@
 											 <strong>Upload your own Thumbnail</strong>
 											</label>
 										</div>
-										<div class="col-md-9">
+										<div class="col-md-9" style="top: 7px; position: relative;">
 											<div *ngIf="openOwnThumbnail">
 												<input type="file" ng2FileSelect [uploader]="uploader"  *ngIf="uploader.queue.length==0" #input>
-												<p class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
-											<!--	<div *ngFor="let filesrc of file_srcs">
-													<img src="{{filesrc}}" style="height: 71px; width: 98px">
-												</div> -->
-											<div>
+												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
+										    <div>
 												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();removeOwnThumbnail()">&times;</span>
 												<img *ngIf="imageUrlPath" [src] = imageUrlPath  style="height: 71px; width: 98px">
 											</div>

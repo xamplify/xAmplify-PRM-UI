@@ -40,7 +40,7 @@ export const routes: Routes = [
     { path: 'logout', component: LoginComponent },
     {path: ':social/login', component: SocialLoginComponent},
     {path: ':social/callback', component: SocialCallbackComponent},
-    {path: 'embed-video/:typealias', component: ShareVideoComponent},
+    {path: 'embed-video/:type/:alias', component: ShareVideoComponent},
 
 ];
 

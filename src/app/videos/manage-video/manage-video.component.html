@@ -82,49 +82,54 @@
 								</div>
 									
 									
-									<div class="margin-top-10" >
-										 <div style="width:28%">
-                                              <select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
-                                                <option  [value]="0" class="form-control">All Categories</option>
-                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
-                                             </select>
-										</div>
-										<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos">
-										  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-											<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
-											    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
-												<div class="mix-inner">
-													<img class="img-responsive" src="{{videoFile.imagePath}}" alt="">
-													<div class="mix-details" style="z-index: 700;padding: 7px;">
-														<h4>{{videoFile.title}}</h4>
-														<div style="top: 2%; position: relative; margin-left: 5px;">
-														<a class="mix-preview2 fancybox-button" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="fancybox-button">
-															<i class="fa fa-play"></i>
-														</a>
-														<a class="mix-preview1 fancybox-button"  (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="fancybox-button">
-															<i class="fa fa-pencil-square-o"></i>
-														</a>
-														<a class="mix-preview3 fancybox-button" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile) " title="Video Based Reports"  data-rel="fancybox-button">
-															<i class="fa fa-line-chart"></i>
-														</a>
-														</div>
-														<div style="top: 30%; position: relative;">
-														<a class="mix-preview2 fancybox-button"  routerLink="../../campaigns" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
-															<i class="fa fa-bullhorn"></i>
-														</a>
-														 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
-								                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
-							                             </a>
-														</div>
-														<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>
-													    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
-														<span align="left" style="bottom: 10px; left: 10px; position: absolute;">#{{videoFile.id}}</span>
+								<div class="margin-top-10" >
+									 <div style="width:28%">
+                                             <select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
+                                               <option  [value]="0" class="form-control">All Categories</option>
+                                               <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
+                                            </select>
+									</div>
+									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos">
+									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
+										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
+											<div class="mix-inner">
+												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="">
+												<div class="mix-details" style="z-index: 700;padding: 7px;">
+													<h4>{{videoFile.title}}</h4>
+													<div style="top: 2%; position: relative; margin-left: 5px;">
+													<a class="mix-preview2 fancybox-button" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="fancybox-button">
+														<i class="fa fa-play"></i>
+													</a>
+													<a class="mix-preview1 fancybox-button"  (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="fancybox-button">
+														<i class="fa fa-pencil-square-o"></i>
+													</a>
+													<a class="mix-preview3 fancybox-button" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile) " 
+													title="Video Based Reports"  data-rel="fancybox-button">
+														<i class="fa fa-line-chart"></i>
+													</a>
 													</div>
+													<div style="top: 30%; position: relative;">
+													<a class="mix-preview2 fancybox-button"  routerLink="../../campaigns" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
+														<i class="fa fa-bullhorn"></i>
+													</a>
+													 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" 
+													 title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
+							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
+						                             </a>
+													</div>
+													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>
+												    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
+													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">#{{videoFile.id}}</span>
 												</div>
 											</div>
+											<div>
+											
 											</div>
 										</div>
 										</div>
+									</div>
+									</div>
 									</div>
 									
 									<!-- END FILTER -->

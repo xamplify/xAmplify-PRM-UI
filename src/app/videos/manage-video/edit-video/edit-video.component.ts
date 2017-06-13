@@ -227,8 +227,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit {
 
   shareClick() {
      const routerPath = this.saveVideoFile.viewBy +'%'+ this.saveVideoFile.alias;
-      this.router.navigate(['/embed-video', routerPath]);
-      this.router.navigate(['/embed-video', routerPath]);
+   //   this.router.navigate(['/embed-video', routerPath]);
+    //  this.router.navigate(['/embed-video', routerPath]);
+     this.router.navigate(['/embed-video', this.saveVideoFile.viewBy,this.saveVideoFile.alias]);
   }
   // image path and gif image path methods
     removeOwnThumbnail() {

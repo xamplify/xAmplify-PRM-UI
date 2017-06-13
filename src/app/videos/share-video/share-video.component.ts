@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit, Renderer} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import {Observable} from 'rxjs';
 import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
@@ -10,10 +12,8 @@ import { UtilService } from '../services/util.service';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-// import {DomAdapter, getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
 declare var $, videojs: any;
 // import {BrowserDomAdapter} from 'angular2/platform/browser';
-// import { Meta ,MetaDefinition} from '../../core/services/angular2-meta.service';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Component({
@@ -57,15 +57,22 @@ public routerType: string;
 public sub: Subscription;
 public title: string;
 public description: string;
- // private _dom: DomAdapter = getDOM();
-// @Inject(DOCUMENT) private document:any , ,private metaService:Meta
+public shareUrl : string;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private utilService: UtilService, private metaService: Meta,
-            @Inject(DOCUMENT) private document: any, private renderer: Renderer) {
+            private _logger: Logger, private utilService: UtilService, private metaService: Meta,private http: Http,
+            private renderer: Renderer) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.embedUrl = document.location.href;
-        }
+             }
+  
+  shareMetaTags(){
+	  return this.http.get(this.shareUrl)
+      .map( this.extractData )
+      .catch( this.handleError )
+      .subscribe((result: any) => { });
+   }
+  
   getVideo(alias: string , viewby: string) {
     this.videoFileService.getVideo(alias, viewby)
         .subscribe(
@@ -107,6 +114,13 @@ public description: string;
        { this.defaultVideoControllers();}
         this.defaultValues();
             console.log(this.videoUrl);
+         this.embedVideoFile.gifImagePath = 'http://www.googlecover.com/_asset/_thumb/Sparrow_832_thumbimg.jpeg';
+         var res = encodeURIComponent(this.embedVideoFile.gifImagePath);
+         this.embedUrl='https://stackoverflow.com';
+         this.shareUrl = 'http://aravindu.com/share?url='+this.embedUrl+'&title='+this.embedVideoFile.title+
+        '&description='+this.embedVideoFile.description+'&image='+res+'&redirecturl='+this.embedUrl;
+         console.log(this.shareUrl);   
+         this.shareMetaTags();
           // twitter og info
             const twiettrDec = 'Xtremand is the only complete studio album by Jeff Buckley, released on August 23,';
             const twitterCard: MetaDefinition = { property: 'twitter:card', content: 'Tags summary' };
@@ -124,38 +138,31 @@ public description: string;
             // const ogImage: MetaDefinition = { property: 'og:image', content: this.imgURL};
             //  this.metaService.addTags([ogtitle, ogSiteproperty, ogdesc, ogUrl, ogImage, twitterCard, twitterSite, twitterTitle,
             //  twitterDesc, twitterImage, twitterUrl], true);
-            //  this.metaService.addTag({ property: 'og:title', content: 'Xtremand Videos' });
-            //  this.metaService.addTag({ property: 'og:description', content: ogDescription });
-            //  this.metaService.addTag({ property: 'og:site_name', content: 'My Favourite Albums'});
-            //  this.metaService.addTag({ property: 'og:url', content: this.embedUrl});
-            //  this.metaService.addTag({ property: 'og:image', content: this.imgURL});
             const selector = 'property="og:title"';
             const contentValue =   this.metaService.getTag(selector);
             this.metaService.getTag(selector);
          //  let contentValue =  document.head.querySelector("[property=og:title]");
-           console.log(contentValue);
+            console.log(contentValue);
             this.metaService.updateTag({ content: 'New Updated tags info'}, "property='og:title'");
             this.metaService.updateTag({content:'Embed videos'},"property ='twitter:card'");
-         console.log(this.metaService.getTag(selector));
+            console.log(this.metaService.getTag(selector));
     });
   }
   ngAfterViewInit(){
-    //  alert("called ngafter");
-  //    $(".addthis_sharing_toolbox").load(location.href + " .addthis_sharing_toolbox");
   }
   ngOnInit() {
      $('#overlay-modal').hide();
      console.log('Share video component ngOnInit called');
-    // this.routerType = this.route.snapshot.params['type'];
-    // this.routerAlias = this.route.snapshot.params['alias'];
-     this.sub = this.route.params.subscribe(
+     this.routerType = this.route.snapshot.params['type'];
+     this.routerAlias = this.route.snapshot.params['alias'];
+   /*  this.sub = this.route.params.subscribe(
         (params: any) => {
             const typealias = params.typealias;
             const type = typealias.split("%");
             this.routerType = type[0];
             this.routerAlias = type[1];
          }
-        );
+        );*/
      console.log( this.routerType  + ' and ' + this.routerAlias);
      this.getVideo(this.routerAlias, this.routerType);
      console.log(this.embedVideoFile);
@@ -176,6 +183,7 @@ this.facebookButtons = new ShareButton(
        "<img src='assets/images/facebook.png' style='height: 32px;'>",    // set button template
        'fb'                           // set button classes
      );
+
   }
    defaultValues() {
         this.valueRange = this.embedVideoFile.transparency;
@@ -469,13 +477,24 @@ const str = '<video id=videoId class="video-js vjs-default-skin" crossorigin="an
         const self = this;
         this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
     }
+   extractData( res: Response ) {
+       const body = res.json();
+       console.log(body);
+       return body || {};
+    }
+
+    handleError( error: any ) {
+        const errMsg = ( error.message ) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+        return Observable.throw( errMsg );
+     }
   ngOnDestroy() {
      console.log('Deinit - Destroyed Component');
      if(this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();
           $('.p-video').remove();
-     this.sub.unsubscribe();
+   //  this.sub.unsubscribe();
     // og info
     //  this.metaService.removeTag("property='og:title'");
     //  this.metaService.removeTag("property='og:site_name'");

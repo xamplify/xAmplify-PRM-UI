@@ -84,7 +84,7 @@ export class UploadVideoComponent implements OnInit {
             this.isFileProgress = false;
             // this.stopButtonShow = false;
             this.textAreaDisable = true;
-            this.maxTimeDuration = 3600;
+            this.maxTimeDuration = 3400;
 
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
@@ -388,7 +388,7 @@ export class UploadVideoComponent implements OnInit {
                  // user clicked the record button and started recording
          self.player.on('startRecord', function()
                  {
-                     console.log('started recording!');
+        	         console.log('started recording!');
                      self.closeModalId = false; // close button disabled for modal pop up
                      $( "#script-text" ).scrollTop( 0 );
                      self.stopButtonShow  = false; // stop button hide in modal pop up
@@ -404,9 +404,17 @@ export class UploadVideoComponent implements OnInit {
                      self.discardVideo = false; // discard button disabled
                  });
                  // user completed recording and stream is available
+         self.player.on('pause', function()
+                 {
+        	   //   alert('paue video');
+                 });
+         self.player.on('resume', function()
+                 {
+               //   alert('resume video');
+                 });
          self.player.on('finishRecord', function()
                  {
-                     self.saveVideo = true; // save button enabled
+        	         self.saveVideo = true; // save button enabled
                      self.discardVideo = true; // discard button enabled
                      self.testSpeeddisabled = false; // enabled the test speed button
                      self.closeModalId = true; // close button enabled

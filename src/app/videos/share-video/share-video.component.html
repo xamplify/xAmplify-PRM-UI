@@ -78,8 +78,9 @@
             </div>
    </div>
   <!--  <div class="addthis_sharing_toolbox"></div> -->
-  <div class="addthis_sharing_toolbox"></div>
-        	<share-button [button]='twitterButtons'  [url]="embedUrl" ></share-button> 
-		    <share-button [button]='googleButtons'  [url]= "embedUrl" ></share-button> 
-		    <share-button [button]='facebookButtons'  [url]="embedUrl"></share-button> 
+        	<!-- <share-button [button]='twitterButtons'  [url]="shareUrl" ></share-button> 
+		    <share-button [button]='googleButtons'  [url]= "shareUrl" ></share-button> 
+		    <share-button [button]='facebookButtons'  [url]="shareUrl"></share-button>  -->
+		    
+     <share-buttons [url]="shareUrl"></share-buttons>
 </div>
