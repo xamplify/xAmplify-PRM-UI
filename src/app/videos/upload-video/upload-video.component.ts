@@ -8,6 +8,7 @@ import { UploadCloudvideoService} from '../services/upload-cloudvideo.service';
 import { Router} from '@angular/router';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
 
 @Component({
@@ -20,7 +21,7 @@ declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloa
 export class UploadVideoComponent implements OnInit {
 
     public processVideoResp: SaveVideoFile;
-    public URL = this.authenticationService.REST_URL+'admin/uploadVideo?access_token=';
+    public URL = this.authenticationService.REST_URL+'admin/uploadVideo?userName='+this.refService.userName+'&access_token=';
     public uploader: FileUploader;
     public file_srcs: string[] = [];
     public hasBaseDropZoneOver  = false;
@@ -68,7 +69,7 @@ export class UploadVideoComponent implements OnInit {
     public sweetAlertMesg:string;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
-        private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer) {
+        private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer, private refService : ReferenceService) {
         try {
             this.isChecked = false;
             this.isDisable = false;
