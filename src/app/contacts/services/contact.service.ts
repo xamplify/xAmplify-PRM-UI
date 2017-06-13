@@ -14,6 +14,7 @@ import { Pagination } from '../../core/models/pagination';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import {ReferenceService} from '../../core/services/reference.service';
 
 declare var swal: any;
 @Injectable()
@@ -33,7 +34,7 @@ export class ContactService {
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
-    constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: Logger, private activatedRoute: ActivatedRoute ) {
+    constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: Logger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
 
@@ -46,7 +47,7 @@ export class ContactService {
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
         pagination.maxResults = 12
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.url + "userlist?" + "access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "userlist?" + 'userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -54,7 +55,7 @@ export class ContactService {
     loadContactLists1( pagination: Pagination ): Observable<ContactList[]> {
         pagination.maxResults = 1000;
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.url + "userlist?" + "access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "userlist?" +"access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -68,7 +69,7 @@ export class ContactService {
 
     loadContactsCount() {
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.url + "contacts_count?" + "access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.url + "contacts_count?" + 'userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -145,7 +146,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.url + "save_user_list?userListName=" + contactListName + "&access_token=" + this.authenticationService.access_token;
+        var url = this.url + "save_user_list?userListName=" + contactListName + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
