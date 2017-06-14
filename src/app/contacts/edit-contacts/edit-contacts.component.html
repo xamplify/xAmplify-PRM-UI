@@ -250,6 +250,11 @@
 							<strong>Success!</strong>Contact list Users has been Deleted
 							successfully.
 						</div>
+						<div *ngIf="deleteErrorMessage" id="campaignError"
+			class="alert alert-danger alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Danger!</strong>{{Campaign}}
+		</div>
 					</div>
 					<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>

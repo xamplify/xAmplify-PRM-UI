@@ -49,6 +49,8 @@ export class EditContactsComponent implements OnInit {
     pagedItems: any[];
     isAvailable = false;
     fileTypeError:boolean;
+    Campaign : string;
+    deleteErrorMessage: boolean;
     public clipboardUsers: Array<User>;
     public csvFileUsers: Array<User>;
     public uploader: FileUploader;
@@ -332,7 +334,16 @@ export class EditContactsComponent implements OnInit {
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
-            error => this.logger.error( error ),
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    //swal( 'Campaign contact!', error, 'error' );
+                    this.Campaign = error;
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
+            },
+           // error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.deleteSucessMessage = false;

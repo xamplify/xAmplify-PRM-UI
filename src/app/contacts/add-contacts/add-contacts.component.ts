@@ -122,31 +122,12 @@ export class AddContactsComponent implements OnInit {
         console.log(list);
         if($.inArray(contactName, list) > -1){
             this.isValidContactName = true;  
+            //$('.ng-valid[required], .ng-valid.required ').css({"background-color":"solid #a94442"});
+            $(".ng-valid[required], .ng-valid.required").css("color", "red");
         }else{
+            $(".ng-valid[required], .ng-valid.required").css("color", "Black");
             this.isValidContactName = false;
         }
-       /* for(var i = 0;i< list.length; i++){
-            if(contactName == list[i]){
-                this.isValidContactName = true; 
-            }else if(contactName != list[i]){
-                this.isValidContactName = false;
-            }
-        }*/
-       /*// if(this.isAdd){
-            if($.inArray(contactName, list) > -1){
-                this.isValidContactName = false;  
-            }else{
-                this.isValidContactName = true;
-           // }
-        }else{
-            console.log(this.editedContactName+":::::::::"+contactName);
-            if($.inArray(contactName, list) > -1 && this.editedContactName!=contactName){
-                this.isValidContactName = false;  
-            }else{
-                this.isValidContactName = true;
-            }
-        }*/
-        
     }
 
     

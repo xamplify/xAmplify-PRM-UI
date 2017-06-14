@@ -572,8 +572,10 @@ export class ManageContactsComponent implements OnInit {
         var list = this.names;
         console.log(list);
         if($.inArray(contactName, list) > -1){
-            this.isValidContactName = true;  
+            this.isValidContactName = true;
+            $(".ng-valid[required], .ng-valid.required").css("color", "red");
         }else{
+            $(".ng-valid[required], .ng-valid.required").css("color", "black");
             this.isValidContactName = false;
         }
     }

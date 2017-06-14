@@ -71,24 +71,11 @@
 									minlength="4" maxlength="20"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
-									<span *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</span>
+									<div *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</div>
 									<div style="margin-left: 167px" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
 												class="alert alert-danger">
 												Minimum 4 letters required.
 											</div>
-											
-											
-											<!-- <div class="col-md-9">
-											<input type="text" id="contactName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" />
-											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
-										</div> -->
-											
-											
-											
-								<!-- <div style="margin-left: 170px"
-									[hidden]="contactListName.valid || contactListName.pristine"
-									class="alert alert-danger">Name is required</div> -->
-  <!-- <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div> -->
 							<div style="margin-left: 167px" class="alert alert-danger alert-dismissable fade in" *ngIf="contactListNameError">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
      Please enter the contact list name.
