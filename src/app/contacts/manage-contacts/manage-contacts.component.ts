@@ -56,6 +56,7 @@ export class ManageContactsComponent implements OnInit {
     contactListUsersError: boolean;
     emptyContacts: boolean;
     emptyContactsUsers: boolean;
+    hidingContactUsers : boolean;
     public contactListName: string;
     public model: any = {};
     public removeIds: number;
@@ -554,11 +555,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.allContactUsers );
                     this.logger.log( data );
                 }
-                if (this.allContactUsers.length !== 0) {
-                    this.noContactsFound = false;
+                if (this.allContactUsers.length == 0) {
+                    this.emptyContactsUsers = true;
+                    this.hidingContactUsers = false;
                  }
                  else {
-                     this.noContactsFound = true;
+                     this.emptyContactsUsers = false;
+                     this.hidingContactUsers = true;
                      this.pagedItems = null ;
                  }
             },
@@ -639,11 +642,14 @@ export class ManageContactsComponent implements OnInit {
                     this.logger.log( data );
                 }
                 
-                if (this.activeContactUsers.length !== 0) {
-                    this.noContactsFound = false;
+                if (this.activeContactUsers.length == 0) {
+                    this.emptyContactsUsers = true;
+                    this.hidingContactUsers = false;
                  }
                  else {
-                     this.noContactsFound = true;
+                     this.emptyContactsUsers = false;
+                    // $( "#hidingOfContactUsers" ).hide();
+                     this.hidingContactUsers = true;
                      this.pagedItems = null ;
                  }
             },
@@ -668,11 +674,13 @@ export class ManageContactsComponent implements OnInit {
                     this.logger.info( this.userListIds );
                 }
                 
-                if (this.invalidContactUsers.length !== 0) {
-                    this.noContactsFound = false;
+                if (this.invalidContactUsers.length == 0) {
+                    this.emptyContactsUsers = true;
+                    this.hidingContactUsers = false;
                  }
                  else {
-                     this.noContactsFound = true;
+                     this.emptyContactsUsers = false;
+                     this.hidingContactUsers = true;
                      this.pagedItems = null ;
                  }
             },
@@ -694,11 +702,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                     this.logger.log( data );
                 }
-                if (this.unsubscribedContactUsers.length !== 0) {
-                    this.noContactsFound = false;
+                if (this.unsubscribedContactUsers.length == 0) {
+                    this.emptyContactsUsers = true;
+                    this.hidingContactUsers = false;
                  }
                  else {
-                     this.noContactsFound = true;
+                     this.emptyContactsUsers = false;
+                     this.hidingContactUsers = true;
                      this.pagedItems = null ;
                  }
             },
@@ -720,11 +730,13 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                     this.logger.log( data );
                 }
-                if (this.nonActiveContactUsers.length !== 0) {
-                    this.noContactsFound = false;
+                if (this.nonActiveContactUsers.length == 0) {
+                    this.emptyContactsUsers = true;
+                    this.hidingContactUsers = false;
                  }
                  else {
-                     this.noContactsFound = true;
+                     this.emptyContactsUsers = false;
+                     this.hidingContactUsers = true;
                      this.pagedItems = null ;
                  }
             },

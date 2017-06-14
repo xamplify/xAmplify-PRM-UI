@@ -476,7 +476,8 @@
 			<strong>Info!</strong> No Non Active Contacts found.
 		</div>
 	</div>
-	<div class="col-md-12" style="margin-top: 12px">
+	<div *ngIf="hidingListUsersTable">
+	<div class="col-md-12" style="margin-top: 12px" *ngIf="hidingListUsersTable" id="hidingListOfUsersTable">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box blue">
 			<div class="portlet-title">
@@ -569,6 +570,7 @@
 		</ul>
 		<!-- pager end here -->
 		<!-- END EXAMPLE TABLE PORTLET-->
+	</div>
 	</div>
 </div>
 <!-- END PAGE CONTENT -->

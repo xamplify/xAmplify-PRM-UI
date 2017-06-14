@@ -521,7 +521,7 @@
 								<strong>Info!</strong> No Contacts found please add the contact
 								lists.
 							</div>
-							<div class="portlet box blue">
+							<div class="portlet box blue" *ngIf="hidingContactUsers" id="hidingOfContactUsers">
 								<div class="portlet-title">
 									<div class="caption" *ngIf="allContactData==true">
 										<i class="fa fa-edit"></i>List of All Contacts

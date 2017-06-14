@@ -59,6 +59,7 @@ export class EditContactsComponent implements OnInit {
     public successMessage: boolean;
     noContactsFound : boolean;
     noContactsFound1 : boolean;
+    hidingListUsersTable : boolean;
 
     public users: Array<User>;
     activeUsersCount: number;
@@ -667,11 +668,13 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                     this.logger.log( data );
                 }
-                if (this.activeContactUsers.length !== 0) {
-                    this.noContactsFound1 = false;
+                if (this.activeContactUsers.length == 0) {
+                    this.noContactsFound1 = true;
+                    this.hidingListUsersTable = false;
                  }
                  else {
-                     this.noContactsFound1 = true;
+                     this.noContactsFound1 = false;
+                     this.hidingListUsersTable = true;
                      this.pagedItems = null ;
                  }
             },
@@ -693,11 +696,13 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
                     this.logger.log( data );
                 }
-                if (this.invalidContactUsers.length !== 0) {
-                    this.noContactsFound1 = false;
+                if (this.invalidContactUsers.length == 0) {
+                    this.noContactsFound1 = true;
+                    this.hidingListUsersTable = false;
                  }
                  else {
-                     this.noContactsFound1 = true;
+                     this.noContactsFound1 = false;
+                     this.hidingListUsersTable = true;
                      this.pagedItems = null ;
                  }
             },
@@ -719,11 +724,13 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                     this.logger.log( data );
                 }
-                if (this.unsubscribedContactUsers.length !== 0) {
-                    this.noContactsFound1 = false;
+                if (this.unsubscribedContactUsers.length == 0) {
+                    this.noContactsFound1 = true;
+                    this.hidingListUsersTable = false;
                  }
                  else {
-                     this.noContactsFound1 = true;
+                     this.noContactsFound1 = false;
+                     this.hidingListUsersTable = true;
                      this.pagedItems = null ;
                  }
             },
@@ -746,11 +753,13 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                     this.logger.log( data );
                 }
-                if (this.nonActiveContactUsers.length !== 0) {
-                    this.noContactsFound1 = false;
+                if (this.nonActiveContactUsers.length == 0) {
+                    this.noContactsFound1 = true;
+                    this.hidingListUsersTable = false;
                  }
                  else {
-                     this.noContactsFound1 = true;
+                     this.noContactsFound1 = false;
+                     this.hidingListUsersTable = true;
                      this.pagedItems = null ;
                  }
             },
