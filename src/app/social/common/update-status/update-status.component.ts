@@ -342,9 +342,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 for ( var i in data ) {
-                    let socialStatusProvider: SocialStatusProvider = data[i];
-                    socialStatusProvider.profileImagePath = this.MEDIA_URL + socialStatusProvider.profileImagePath;
-                    this.socialStatus.socialStatusProviders.push( socialStatusProvider );
+                    this.socialStatus.socialStatusProviders.push(data[i]);
                 }
             },
             error => console.log( error ),

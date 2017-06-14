@@ -62,12 +62,16 @@ export class LoginComponent implements OnInit {
     public login() {
         this.loading = true;
         this.refService.userName = this.model.username;
-        this.authenticationService.login( this.model.username, this.model.password ).subscribe( result => {
-            console.log( "result: " + result );
-            if ( result === true ) {
+        
+        var authorization = 'Basic ' + btoa( 'my-trusted-client:');
+        var body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
+        
+        this.authenticationService.login(authorization, body, this.model.username).subscribe( result => {
+            const loggedInUser = localStorage.getItem("currentUser");
+            if (loggedInUser != undefined) {
                 this.initializeTwitterNotification();
                 //if user is coming from login
-                //this.getLoggedInUserDetails();
+             //   this.getLoggedInUserDetails();
                 this.router.navigate( [''] );
                 //if user is coming from any link
 
@@ -86,7 +90,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate( ['/login'] );
     }
 
-    public getLoggedInUserDetails() {
+  /*  public getLoggedInUserDetails() {
         this.userService.getUserData()
             .subscribe(
             data => {
@@ -104,11 +108,12 @@ export class LoginComponent implements OnInit {
             },
             () => console.log( "Done" )
             );
-    }
+    }*/
     ngOnInit() {
         try {
             console.log( "ngOnInit(): LoginComponent" );
             this.authenticationService.logout();
+          //  this.getLoggedInUserDetails();
             Metronic.init();
             Layout.init();
             Login.init();

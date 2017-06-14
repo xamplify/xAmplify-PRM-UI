@@ -1,51 +1,70 @@
 <div class="page-content">
-    <div class="page-bar square-box margin-bottom-10px">
-        <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a [routerLink]="['../../../dashboard']">Home</a> <i class="fa fa-angle-right"></i></li>
-            <li><a [routerLink]="['../../facebook-accounts']">Facebook Accounts</a> <i class="fa fa-angle-right"></i></li>
-            <li>Posts</li>
-        </ul>
-    </div>
+	<div class="page-bar square-box margin-bottom-10px">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a
+				[routerLink]="['../../../dashboard']">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li><a [routerLink]="['../../facebook-accounts']">Facebook
+					Accounts</a> <i class="fa fa-angle-right"></i></li>
+			<li>Posts</li>
+		</ul>
+	</div>
 
 
-
-    <div class="col-xs-12 col-sm-12">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption caption-md">
-                    <i class="icon-bar-chart theme-font hide"></i>
-                    <span class="caption-subject font-blue-madison bold uppercase">Customer Support</span>
-                    <span class="caption-helper">45 pending</span>
-                </div>
-                <div class="inputs">
-                    <div class="portlet-input input-inline input-small ">
-                        <div class="input-icon right">
-                            <i class="icon-magnifier"></i>
-                            <input type="text" class="form-control form-control-solid" placeholder="search...">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div class="slimScrollDiv">
-                    <div class="scroller">
-                        <div class="general-item-list">
-                            <div class="item" *ngFor="let post of posts">
-                                <div class="item-head">
-                                    <div class="item-details">
-                                        <img class="item-pic" src="../../assets/admin/layout3/img/avatar2.jpg">
-                                        <a href="" class="item-name primary-link">{{post.from.name}}</a>
-                                        <span class="item-label">4 hrs ago</span>
-                                    </div>
-                                </div>
-                                <div class="item-body">
-                                    <span [innerHTML]="post.message"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6">
+			<div class="portlet light block rounded-0" *ngFor="let post of posts">
+				<div class="portlet-title">
+					<div class="caption">
+						<div class="col-xs-12 flex">
+							<img class="profile-image" alt="{{post.from.name}}" src="{{profileImage}}">
+							<div style="margin-left: 1em;">
+								<h4 *ngIf="post.type == 'video' || post.type == 'photo'" class="caption-subject text-left">{{post.story}}</h4>
+								<h4 *ngIf="post.type == 'link'" class="caption-subject text-left">{{post.from.name}}</h4>
+								<h5>{{post.createdTime | date: 'short'}}</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="portlet-body container-fluid">
+					<div *ngIf="post.type == 'video'">
+						<div *ngIf="post.application !== null">
+							<div *ngIf="post.application.name == 'youtube'">
+								<iframe [src]="post.source"></iframe>
+							</div>
+						</div>
+						<video *ngIf="post.application === null" src="{{post.source}}" controls="controls"></video>
+						<h4>{{post.description}}</h4>
+					</div>
+					<div *ngIf="post.type == 'photo'">
+						<h4 [innerHTML]="post.message"></h4>
+						<img alt="{{post.description}}" src="{{post.fullPicture}}"
+							class="img-responsive">
+					</div>
+					<div *ngIf="post.type == 'link'">
+						<h4 [innerHTML]="post.message"></h4>
+						<a target="_blank" href="{{post.link}}"
+							style="text-decoration: none">
+							<div class="portlet-body">
+								<img alt="{{post.name}}" src="{{post.fullPicture}}"
+									class="img-responsive">
+								<h3>{{post.name}}</h3>
+								<p>{{post.description}}</p>
+								<h3 class="uppercase">{{post.caption}}</h3>
+							</div>
+						</a>
+					</div>
+					<div class="flex">
+						<app-facebook-reactions [postId]="post.id"></app-facebook-reactions>
+						<app-facebook-comments [postId]="post.id"></app-facebook-comments>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hidden-xs hidden-sm col-md-6">
+			<div class="portlet light block rounded-0">
+				<h1 style="padding: 7em;">Blank Space</h1>
+			</div>
+		</div>
+	</div>
 </div>

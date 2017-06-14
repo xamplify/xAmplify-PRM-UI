@@ -4,7 +4,11 @@ import { Logger } from "angular2-logger/core";
 
 import {DashboardService} from '../dashboard.service';
 import {TwitterService} from '../../social/services/twitter.service';
+import { SocialService } from '../../social/services/social.service';
+import { UserService } from '../../core/services/user.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
+import { SocialStatusProvider } from '../../social/models/social-status-provider';
 
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
 
@@ -24,8 +28,9 @@ export class DashboardComponent implements OnInit {
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
-
-    constructor(private router: Router, private _dashboardService: DashboardService, private twitterService: TwitterService, private logger: Logger ) {}
+    socialConnections: any[] = new Array<any>();
+    constructor(private router: Router, private _dashboardService: DashboardService, private twitterService: TwitterService, 
+            private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger, private userService: UserService ) {}
 
     dashboardStats() {
         console.log( "dashboardStats() : DashBoardComponent" );
@@ -110,7 +115,7 @@ export class DashboardComponent implements OnInit {
     }
 
     facebookSparklineData() {
-        $( "#sparkline_bar_facebook" ).sparkline([28,25,24,26,24,22,26], {
+        $( ".sparkline_bar_facebook" ).sparkline([28,25,24,26,24,22,26], {
             type: 'bar',
             padding: '5px',
             barWidth: '4',
@@ -195,8 +200,22 @@ export class DashboardComponent implements OnInit {
         );
     }
     
+    listSocialAccounts() {
+        this.socialService.listAccounts(4968, 'all')
+            .subscribe(
+            data => {
+                this.socialConnections = data;
+            },
+            error => console.log( error ),
+            () => console.log( 'getFacebookAccounts() Finished.' )
+            );
+
+}
+    
     ngOnInit() {
         try {
+            console.log("dashboard:"+this.userService.loggedInUserData);
+
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -227,6 +246,9 @@ export class DashboardComponent implements OnInit {
             this.getTotalCountOfTFFF();
             this.getGenderDemographics();
             this.getWeeklyTweets();
+            
+            console.log(this.userService.loggedInUserData);
+            this.listSocialAccounts();
 
         } catch (err) {
             console.log(err);

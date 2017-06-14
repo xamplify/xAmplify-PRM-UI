@@ -16,7 +16,7 @@ export class SocialManageComponent implements OnInit {
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService, 
             private authenticationService: AuthenticationService) { }
     
-    listAccounts( providerName: string ) {
+    listAccounts( providerName: string ) {/*
         this.socialService.listAccounts( providerName )
             .subscribe(
             result => {
@@ -24,7 +24,7 @@ export class SocialManageComponent implements OnInit {
             },
             error => console.log( error ),
             () => console.log( 'login() Complete' ) );
-    }
+    */}
     ngOnInit() {
         try {
             let providerName = this.route.snapshot.params['social'];

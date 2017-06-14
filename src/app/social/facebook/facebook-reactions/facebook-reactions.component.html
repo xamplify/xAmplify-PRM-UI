@@ -1,0 +1,29 @@
+<div *ngIf="reactions?.length > 0">
+	<div class="reactions">
+		<a data-toggle="modal" attr.data-target="#reactions{{postId}}">
+			<i class="fa fa-thumbs-o-up" aria-hidden="true">&nbsp;</i>{{reactions?.length}}
+		</a>
+	</div>
+</div>
+
+<div class="modal fade" id="reactions{{postId}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">People who have liked</h4>
+      </div>
+      <div class="modal-body">
+        <span *ngFor="let reaction of reactions;">
+        	<p *ngIf="reaction.type == 'LIKE'"><i class="fa fa-thumbs-o-up" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
+        	<p *ngIf="reaction.type == 'LOVE'"><i class="fa fa-heart-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
+        	<p *ngIf="reaction.type == 'HAHA'"><i class="fa fa-smile-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
+        	<p *ngIf="reaction.type == 'SAD'"><i class="fa fa-frown-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
+		</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

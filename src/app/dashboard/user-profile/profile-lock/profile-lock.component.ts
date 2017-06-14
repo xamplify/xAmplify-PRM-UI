@@ -47,9 +47,13 @@ ngOnInit() {
 
   lockScreenLogin() {
        console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
-        this.authenticationService.login( this.userData.emailId, this.password ).subscribe( result => {
-            console.log( 'result: ' + result );
-            if ( result === true ) {
+
+       var authorization = 'Basic ' + btoa( 'my-trusted-client:');
+       var body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
+
+        this.authenticationService.login(authorization, body, this.userData.emailId).subscribe( result => {
+            const loggedInUser = localStorage.getItem("currentUser");
+            if ( loggedInUser !== undefined) {
                 this.router.navigate( [''] );
             } else {
                 this.logError();

@@ -37,6 +37,7 @@ export const routes: Routes = [
     },
     { path: 'userlock', component: ProfileLockComponent},
     { path: 'home/dashboard/userlock', redirectTo: 'userlock'},
+    { path: 'home/dashboard/myprofile/dashboard', redirectTo: 'home/dashboard'},
     { path: 'logout', component: LoginComponent },
     {path: ':social/login', component: SocialLoginComponent},
     {path: ':social/callback', component: SocialCallbackComponent},

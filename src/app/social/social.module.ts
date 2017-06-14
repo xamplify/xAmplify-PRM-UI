@@ -26,13 +26,15 @@ import { UpdateStatusComponent } from './common/update-status/update-status.comp
 import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebook-analytics.component';
 import { FacebookInsightGenderAgeComponent } from './facebook/facebook-insight-gender-age/facebook-insight-gender-age.component';
 import { FacebookInsightFansCountryComponent } from './facebook/facebook-insight-fans-country/facebook-insight-fans-country.component';
+import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebook-reactions.component';
+import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
 
 @NgModule({
   imports: [ CommonModule, SharedModule, SocialRoutingModule, FormsModule],
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent, 
                  TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
                  TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent, FacebookAnalyticsComponent, 
-                 FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent],
+                 FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent],
   providers: [TwitterService, FacebookService, SocialService, UtilService]
 })
 export class SocialModule { }

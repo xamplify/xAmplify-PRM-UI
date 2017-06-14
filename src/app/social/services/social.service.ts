@@ -55,9 +55,9 @@ export class SocialService {
         .catch(this.handleError);
     }
     
-    listAccounts(socialProvider:string){
-        return this.http.get(this.URL+socialProvider+"/accounts?access_token="+
-                this.authenticationService.access_token+"&accessToken=EAATKxofcScwBAPeulr2DRil5MeRPr5pS996A4Xp83dQBzgrjdcGPZBmi6zX497uJwbjmmXmWhTGAR1WxnQ7RFZCGTqHHcm0tOFJhsbZCHEIoTqzf8xHADZBMvZB212DZBrkBpRpXog4OpzZAazYRLzOdZBQR7JM6bRoaQ8hxBlwWWgZDZD")
+    listAccounts(userId: number, source: string){
+        return this.http.get(this.URL+'social/accounts?access_token='+
+                this.authenticationService.access_token+'&userId='+userId+'&source='+source)
         .map(this.extractData)
         .catch(this.handleError); 
     }
@@ -112,42 +112,5 @@ export class SocialService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw(errMsg);
     }
-    
-xtremandlogin(client_id:string, client_secret:string){
-        
-        var url = this.REST_URL+'oauth/token';
-        // var url = 'http://localhost:8080/xtremand-rest/oauth/token';
-       
-       var headers = new Headers();
-       headers.append('Content-Type', 'application/x-www-form-urlencoded');
-       headers.append('Authorization', 'Basic' + btoa(client_id+':'));
-       
-       var body = 'client_id='+client_id+'&client_secret='+client_secret+'&grant_type=client_credentials';
-       var options = {
-           headers: headers
-       };
-       console.log("authentication service "+body);
-      return this.http.post(url, body, options)
-           .map(response => {
-               // login successful if there's a jwt token in the response
-               let access_token = response.json() && response.json().access_token;
-               let refresh_token = response.json() && response.json().refresh_token;
-               let expires_in = response.json() && response.json().expires_in;
-               console.log("Authenticated : "+access_token+", "+refresh_token);
-               if (access_token) {
-                   // set token property
-                   this.access_token = access_token;
-
-                   // store username and jwt token in local storage to keep user logged in between page refreshes
-
-                   // return true to indicate successful login
-                   return true;
-               } else {
-                   // return false to indicate failed login
-                   console.log("Error : "+response);
-                   return false;
-               }
-           });
-   }
     
 }

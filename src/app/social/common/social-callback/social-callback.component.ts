@@ -40,30 +40,16 @@ export class SocialCallbackComponent implements OnInit {
                     client_secret = "d3xQ5hPlPZtQdeMkNAjlejXFvwRrPSalwbpyApncxi49Pf4lFi";
                 }
                 
-                this.socialService.xtremandlogin( client_id, client_secret )
-                .subscribe( result => {
-                    console.log( "result: " + result );
-                    if ( result === true ) {
-                        let abcd =  this.socialService.access_token;
-                        let expires_in = 60;
-                        let username= this.refService.userName;
-                        localStorage.removeItem('currentUser');
-                        localStorage.setItem('currentUser', JSON.stringify(
-                                {   username: this.refService.userName, 
-                                    access_token: this.socialService.access_token, 
-                                    refresh_token : abcd,
-                                    expires_in: expires_in
-                                }
-                            ));
-                        this.authenticationService.access_token=this.socialService.access_token;
-                        
-                        //if user is coming from login
-                        //this.getLoggedInUserDetails();
-                        this.router.navigate( [''] );
-                        //if user is coming from any link
+                var authorization = 'Basic' + btoa(client_id+':');
+                var body = 'client_id='+client_id+'&client_secret='+client_secret+'&grant_type=client_credentials';
 
+                this.authenticationService.login(authorization, body, this.refService.userName)
+                .subscribe( result => {
+                    console.log( "result: " + this.authenticationService.user );
+                    if ( this.authenticationService.user ) {
+                        this.router.navigate( [''] );
                     } else {
-                      console.log("hi");
+                        this.router.navigate( ['/logout'] );
                     }
                 },
                     err => console.log(),

@@ -12,8 +12,22 @@ export class FacebookService {
     constructor( private http: Http, private authenticationService: AuthenticationService ) { }
 
     getPosts( facebookAccessToken: string, ownerId: string ) {
-        return this.http.get( this.URL + 'insights' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+        return this.http.get( this.URL + 'posts' + this.QUERY_PARAMETERS + '&facebookAccessToken='
             + facebookAccessToken + '&ownerId=' + ownerId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getReactions( facebookAccessToken: string, postId: string ) {
+        return this.http.get( this.URL + 'reactions' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+            + facebookAccessToken + '&postId=' + postId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getComments( facebookAccessToken: string, postId: string ) {
+        return this.http.get( this.URL + 'comments' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+            + facebookAccessToken + '&postId=' + postId )
             .map( this.extractData )
             .catch( this.handleError );
     }

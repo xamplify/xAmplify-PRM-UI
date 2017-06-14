@@ -119,7 +119,7 @@
 				<div class="clearfix"></div>
 				<div class="row"> 
 				 
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                             <div class="dashboard-stat2">
                                 <div class="display">
                                     <a [routerLink]="['../../social/twitter-tweets']">
@@ -156,7 +156,7 @@
                         </div>
 
 
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                             <div class="dashboard-stat2 ">
                                 <div class="display">
                                     <div class="number">
@@ -187,7 +187,7 @@
                                 
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                             <div class="dashboard-stat2 ">
                                 <div class="display">
                                     <div class="number">
@@ -209,9 +209,9 @@
 										<h5><span class="nummber" style="color: #3b5998; font-weight: 600;display: inline;">123</span> New Mention's<br>(Past 7 days)</h5>	
 									</div>
 
-									<!-- <div class=" col-xs-4 text-right bar-sparkline icon" style="padding: 5px;" sparktype="bar" sparkbarcolor="#3b5998" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
+									<div class=" col-xs-4 text-right bar-sparkline icon" style="padding: 5px;" sparktype="bar" sparkbarcolor="#3b5998" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
 										28,15,40,12,13,20,17
-									</div> -->
+									</div>
 									
 									<div class=" col-xs-4 text-right sparkline-chart icon">
 											<div class="number" id="sparkline_bar_facebook"><canvas width="46" height="20" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
@@ -219,8 +219,54 @@
                                 </div>
                                 
                             </div>
+                        </div> -->
+                        
+                        <section *ngFor="let socialConnection of socialConnections">
+                        	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" *ngIf="socialConnection.source == 'FACEBOOK'">
+                        	<div class="dashboard-stat2 ">
+							<div class="display">
+								<a
+									[routerLink]="['../../social/facebook-posts', socialConnection.profileId]">
+									<div class="number">
+										<h3 class="font-blue-steel">
+											<span data-counter="counterup" data-value="567">12</span>
+										</h3>
+										<small>{{socialConnection.firstName}}</small>
+									</div>
+									<div class="icon">
+										<img class="img-circle" alt="{{socialConnection.firstName}}" src="{{socialConnection.profileImage}}" width="52px" height="52px" 
+											style="border: 1px solid rgba(17, 17, 17, 0.2);padding: 4px;">
+										<img class="img-circle" alt="" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png" 
+										style="position: absolute;top: 52px;right: 30px;">
+									</div>
+								</a>
+								<div class="col-xs-12">
+									<hr
+										style="background-color: #3b5998; height: 1px; border: 0; margin-top: 5px;">
+								</div>
+			
+								<div class="col-xs-8 text-left"
+									style="padding-left: 0px; padding-right: 0px;">
+									<h5>
+										<span class="nummber"
+											style="color: #3b5998; font-weight: 600; display: inline;">123</span>
+										New Mention's<br>(Past 7 days)
+									</h5>
+								</div>
+			
+								<div class=" col-xs-4 text-right sparkline-chart icon">
+									<div class="number sparkline_bar_facebook">
+										<canvas width="46" height="20"
+											style="padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas>
+									</div>
+								</div>
+							</div>
+			
+						</div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        </section>
+                        
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                             <div class="dashboard-stat2 ">
                                 <div class="display">
                                     <div class="number">
