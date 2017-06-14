@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import {Category} from '../models/category';
 import {Pagination} from '../../core/models/pagination';
+import {ReferenceService} from '../../core/services/reference.service';
 
 @Injectable()
 export class UploadCloudvideoService {
@@ -13,13 +14,13 @@ export class UploadCloudvideoService {
 
     public URL: string = this.authenticationService.REST_URL + 'admin/';
 
-    constructor(private http: Http, private authenticationService: AuthenticationService) {
+    constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log("cloud service constructor");
     }
 
     downloadFromDropbox(downloadLink: string, fileName: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userName='+this.refService.userName;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );
@@ -27,7 +28,7 @@ export class UploadCloudvideoService {
 
     downloadFromBox(downloadLink: string, fileName: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userName='+this.refService.userName;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );
@@ -35,7 +36,7 @@ export class UploadCloudvideoService {
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName + "oauthToken " + oauthToken);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken+ '&userName='+this.refService.userName;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );

@@ -62,7 +62,7 @@ export class ContactService {
 
     loadAllContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadAllContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=all" + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "contacts?contactType=all" + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -76,28 +76,28 @@ export class ContactService {
 
     loadActiveContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadActiveContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=active" + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "contacts?contactType=active" + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     loadNonActiveContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadNonActiveContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=non-active" + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "contacts?contactType=non-active" + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     loadInvalidContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadInvalidContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=invalid" + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "contacts?contactType=invalid" + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     loadUnSubscribedContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadUnSubscribedContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=all" + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.url + "contacts?contactType=all" + '&userName='+this.refService.userName+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -162,7 +162,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.url + "userlist/" + contactListId + "/update?&access_token=" + this.authenticationService.access_token;
+        var url = this.url + "userlist/" + contactListId + "/update?"+ 'userName='+this.refService.userName +"&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -171,7 +171,7 @@ export class ContactService {
 
     removeContactList( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( contactListId + "--" + removeUserIds );
-        var newUrl = this.url + "userlist/" + contactListId + "/removeUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.url + "userlist/" + contactListId + "/removeUsers?"+ 'userName='+this.refService.userName + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() )
            .catch( this.handleErrorDeleteUsers);
