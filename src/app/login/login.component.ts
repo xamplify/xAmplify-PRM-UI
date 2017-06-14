@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { User } from '../core/models/user';
 
 import { AuthenticationService } from '../core/services/authentication.service';
+import { UtilService } from '../core/services/util.service';
 import { UserService } from '../core/services/user.service';
 import {matchingPasswords} from '../form-validator';
 import { ReferenceService } from '../core/services/reference.service';
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     passwordSuccess = false;
 
     constructor( private router: Router,
-        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, private userService: UserService, private refService :ReferenceService ) {
+        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, 
+        private userService: UserService, private refService :ReferenceService, private utilService: UtilService ) {
       
     	this.signUpForm = new FormGroup({
             fullName: new FormControl(),
@@ -67,8 +69,7 @@ export class LoginComponent implements OnInit {
         var body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
         
         this.authenticationService.login(authorization, body, this.model.username).subscribe( result => {
-            const loggedInUser = localStorage.getItem("currentUser");
-            if (loggedInUser != undefined) {
+            if (this.utilService.userToken.accessToken != null) {
                 this.initializeTwitterNotification();
                 //if user is coming from login
              //   this.getLoggedInUserDetails();

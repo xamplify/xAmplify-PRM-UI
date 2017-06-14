@@ -5,8 +5,8 @@ import { Logger } from "angular2-logger/core";
 import {DashboardService} from '../dashboard.service';
 import {TwitterService} from '../../social/services/twitter.service';
 import { SocialService } from '../../social/services/social.service';
-import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { UtilService } from '../../core/services/util.service';
 
 import { SocialStatusProvider } from '../../social/models/social-status-provider';
 
@@ -30,7 +30,10 @@ export class DashboardComponent implements OnInit {
     twitterTotalFollowersCount: any;
     socialConnections: any[] = new Array<any>();
     constructor(private router: Router, private _dashboardService: DashboardService, private twitterService: TwitterService, 
-            private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger, private userService: UserService ) {}
+            private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger, 
+            private utilService: UtilService) {
+        console.log(this.utilService.loggedInUser);
+    }
 
     dashboardStats() {
         console.log( "dashboardStats() : DashBoardComponent" );
@@ -200,11 +203,18 @@ export class DashboardComponent implements OnInit {
         );
     }
     
-    listSocialAccounts() {
-        this.socialService.listAccounts(4968, 'all')
+    listSocialAccounts(userId: number) {
+        this.socialService.listAccounts(userId, 'all')
             .subscribe(
             data => {
                 this.socialConnections = data;
+                if(this.socialConnections.length > 0){
+                    for(var i in this.socialConnections){
+                        if(this.socialConnections[i].source == "TWITTER"){
+                            //alert(this.socialConnections[i].profileId);
+                        }
+                    }
+                }
             },
             error => console.log( error ),
             () => console.log( 'getFacebookAccounts() Finished.' )
@@ -214,7 +224,7 @@ export class DashboardComponent implements OnInit {
     
     ngOnInit() {
         try {
-            console.log("dashboard:"+this.userService.loggedInUserData);
+            console.log(this.utilService.loggedInUser);
 
             Metronic.init();
             Layout.init();
@@ -243,12 +253,10 @@ export class DashboardComponent implements OnInit {
 
             //this.showGaugeMeter();
             
-            this.getTotalCountOfTFFF();
+            /*this.getTotalCountOfTFFF();
             this.getGenderDemographics();
-            this.getWeeklyTweets();
-            
-            console.log(this.userService.loggedInUserData);
-            this.listSocialAccounts();
+            this.getWeeklyTweets();*/
+            this.listSocialAccounts(this.utilService.loggedInUser.id);
 
         } catch (err) {
             console.log(err);

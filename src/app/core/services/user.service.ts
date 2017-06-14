@@ -65,18 +65,6 @@ updateUserProfile(data:any){
     .catch(this.handleError);
 }
 
-
-
-
-getUserData(): Observable<User> {
-// get users from api
-console.log(this.refService.userName);
-let userName = this.refService.userName;
- return this.http.post(this.URL+"admin/getUserByUserName/?userName="+userName+"&access_token="+this.authenticationService.access_token,"")
-.map(this.extractData)
-.catch(this.handleError);
-}
-
 private extractData(res: Response) {
     console.log(res);
     let body = res;

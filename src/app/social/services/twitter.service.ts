@@ -12,6 +12,7 @@ import {TwitterProfile} from '../models/twitter-profile';
 import {DirectMessage} from '../models/direct-message';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { UtilService } from '../../core/services/util.service';
 
 @Injectable()
 export class TwitterService {
@@ -21,8 +22,8 @@ export class TwitterService {
     currentUser: string;
     
     constructor(private http: Http, private router: Router, private authService: AuthenticationService, 
-                private activatedRoute: ActivatedRoute) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private activatedRoute: ActivatedRoute, private utilService: UtilService) {
+        console.log(this.utilService.loggedInUser);
     }
     updateStatus(status: string){
         return this.http.get(this.URL+"update-status?access_token="+this.authService.access_token+"&status="+status)

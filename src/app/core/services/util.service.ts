@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-
+import {User} from '../models/user';
+import {UserToken} from '../models/user-token';
 @Injectable()
 export class UtilService {
-
-    constructor() { }
+    public loggedInUser: User;
+    public userToken: UserToken;
+    constructor() { 
+        this.loggedInUser = new User();
+        this.userToken = new UserToken();
+    }
     
     intlNumberFormat( num ) {
         return new Intl.NumberFormat().format( Math.round( num * 10 ) / 10 );

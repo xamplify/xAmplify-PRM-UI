@@ -15,8 +15,6 @@ export class TopnavbarComponent implements OnInit {
     notifications:any;
     notificationsCount: number = 0;
     constructor( private router: Router,private userService:UserService, private twitterService: TwitterService) {
-        this.getLoggedInUserDetails();
-        //this.testSpringSecurity();
     }
     
     loggedInUser:User;
@@ -58,39 +56,6 @@ export class TopnavbarComponent implements OnInit {
     
     ngOnInit(){
         this.listTwitterNotifications();
-    }
-    
-    public getLoggedInUserDetails(){
-        this.userService.getUserData()
-        .subscribe(
-            data => {
-                var body = data['_body'];
-                if(body!=""){
-                    var response = JSON.parse(body);
-                    this.userService.loggedInUserData = response;
-                    console.log(this.userService.loggedInUserData);
-                    if(response.firstName!=null){
-                        this.displayName = response.firstName;
-                    }else{
-                        this.displayName = response.emailId;
-                    }
-                    if(!(response.profileImagePath.indexOf(null)>-1)){
-                        this.profilePicutrePath = response.profileImagePath;
-                    }else{
-                        this.profilePicutrePath =  "assets/admin/pages/media/profile/icon-user-default.png";
-                    }
-                    console.log(this.profilePicutrePath);
-                }else{
-                    swal("Please Contact Admin",data,"error");
-                }
-                
-            },
-            error => {
-                swal(error,"","error");
-            },
-            () => console.log("Done")
-        );
-    
     }
     
 }

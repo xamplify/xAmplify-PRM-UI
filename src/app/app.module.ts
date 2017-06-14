@@ -1,5 +1,5 @@
-import { NgModule} from '@angular/core';
-import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { HashLocationStrategy, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +28,7 @@ import { FacebookService } from './social/services/facebook.service';
 import { SocialService } from './social/services/social.service';
 import { UserService } from './core/services/user.service';
 import { HttpService } from './core/services/http.service';
+import { UtilService } from './core/services/util.service';
 import { VideoFileService } from './videos/services/video-file.service';
 import { UploadCloudvideoService } from './videos/services/upload-cloudvideo.service';
 import { ReferenceService } from './core/services/reference.service';
@@ -38,23 +39,23 @@ import { CampaignService } from './campaigns/services/campaign.service';
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
-@NgModule({
-  declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent, ShareVideoComponent],
-  imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
-    CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-    MetaModule.forRoot()],
-  providers: [{
-    provide: Http,
-    useFactory: httpService,
-    deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
-  },
-    UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
-    VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
-  bootstrap: [AppComponent]
+@NgModule( {
+    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent, ShareVideoComponent],
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
+        CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+        MetaModule.forRoot()],
+    providers: [{
+        provide: Http,
+        useFactory: httpService,
+        deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
+    },
+        UtilService, UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
+    bootstrap: [AppComponent]
 
 })
 export class AppModule { }
 
-export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService) {
-  return new HttpService(backend, options, slimLoadingBarService);
+export function httpService( backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService ) {
+    return new HttpService( backend, options, slimLoadingBarService );
 }

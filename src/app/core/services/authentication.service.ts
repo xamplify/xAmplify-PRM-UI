@@ -5,6 +5,9 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map'
 
 import {User} from '../models/user';
+import {UserToken} from '../models/user-token';
+import {UtilService} from '../services/util.service';
+
 @Injectable()
 export class AuthenticationService {
     public access_token: string;
@@ -12,17 +15,13 @@ export class AuthenticationService {
     public expires_in: number;
     public logged_in_time: Date;
     public REST_URL: string;
-    public MEDIA_URL = "https://aravindu.com/vod/";
-    public user: User;
+    public MEDIA_URL: string;
+    public user: User = new User();
     map:any;
-constructor(private http: Http) {
-    // set token if saved in local storage
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.access_token = currentUser && currentUser.access_token;
-    this.refresh_token = currentUser && currentUser.refresh_token;
-    this.expires_in = currentUser && currentUser.expires_in;
+constructor(private http: Http, private utilService: UtilService) {
     // this.REST_URL = "https://aravindu.com/xtremand-rest/";
     this.REST_URL = "http://localhost:8080/xtremand-rest/";
+    this.MEDIA_URL = "https://aravindu.com/vod/";
 }
 
 getOptions() : RequestOptions{
@@ -42,7 +41,7 @@ getOptions() : RequestOptions{
     return options;
 }
 
-    login(authorization: string, body: string, username: string) {
+    login(authorization: string, body: string, userName: string) {
 
         var url = this.REST_URL + 'oauth/token';
 
@@ -59,17 +58,18 @@ getOptions() : RequestOptions{
             this.map = res.json();
             return this.map;
         })
-        .flatMap(( map ) => this.http.post( this.REST_URL + "admin/getUserByUserName/?userName=" + username + "&access_token=" + this.map.access_token, "" )
+        .flatMap(( map ) => this.http.post( this.REST_URL + "admin/getUserByUserName/?userName=" + userName + "&access_token=" + this.map.access_token, "" )
             .map(( res: Response ) => {
-                    localStorage.setItem( 'currentUser', JSON.stringify(
-                        {
-                            username: username,
-                            access_token: this.map.access_token,
-                            refresh_token: this.map.refresh_token,
-                            expires_in: this.map.expires_in
-                        }
-                    ) );
-                    this.user = res.json();
+                    
+                    var userToken = new UserToken();
+                    userToken.userName = userName;
+                    userToken.accessToken = this.map.access_token;
+                    userToken.refreshToken = this.map.refresh_token;
+                    userToken.expiresIn = this.map.expires_in;
+                    
+                    this.utilService.userToken = userToken;
+                    this.utilService.loggedInUser = res.json();
+                    
                     this.access_token = this.map.access_token;
                 	this.refresh_token = this.map.refresh_token;
         }) );
