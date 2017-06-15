@@ -17,6 +17,7 @@ export class AuthenticationService {
     public REST_URL: string;
     public MEDIA_URL: string;
     public user: User = new User();
+    public userToken: UserToken = new UserToken();
     map:any;
 constructor(private http: Http, private utilService: UtilService) {
     // this.REST_URL = "https://aravindu.com/xtremand-rest/";
@@ -67,8 +68,8 @@ getOptions() : RequestOptions{
                     userToken.refreshToken = this.map.refresh_token;
                     userToken.expiresIn = this.map.expires_in;
                     
-                    this.utilService.userToken = userToken;
-                    this.utilService.loggedInUser = res.json();
+                    this.userToken = userToken;
+                    this.user= res.json();
                     
                     this.access_token = this.map.access_token;
                 	this.refresh_token = this.map.refresh_token;

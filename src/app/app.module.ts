@@ -35,6 +35,7 @@ import { ReferenceService } from './core/services/reference.service';
 import { PagerService } from './core/services/pager.service';
 import { EmailTemplateService } from './email-template/services/email-template.service';
 import { CampaignService } from './campaigns/services/campaign.service';
+import { AuthenticationService } from './core/services/authentication.service';
 
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
@@ -49,7 +50,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
-        UtilService, UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
+    AuthenticationService, UtilService, UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 

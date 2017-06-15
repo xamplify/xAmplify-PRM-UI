@@ -7,7 +7,6 @@ import { BottomnavbarComponent } from './bottomnavbar/bottomnavbar.component';
 import { LeftsidebarComponent } from './leftsidebar/leftsidebar.component';
 import { HomeComponent } from './home/home.component';
 
-import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from '../auth.guard';
 import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
@@ -16,6 +15,6 @@ import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-ba
     declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],
     exports: [
         TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],
-    providers: [AuthenticationService, AuthGuard, SlimLoadingBarService]
+    providers: [ AuthGuard, SlimLoadingBarService]
 })
 export class CoreModule { }

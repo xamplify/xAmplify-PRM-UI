@@ -54,7 +54,7 @@ ngOnInit() {
        var body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
 
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe( result => {
-            if (this.utilService.userToken.accessToken != null) {
+            if (this.authenticationService.userToken.accessToken != null) {
                 this.router.navigate( [''] );
             } else {
                 this.logError();

@@ -2,6 +2,7 @@ import { Component, OnInit,Input  } from '@angular/core';
 import { Router ,RouterModule} from '@angular/router';
 import { UserService } from '../services/user.service';
 import {TwitterService} from "../../social/services/twitter.service";
+import {SocialService} from "../../social/services/social.service";
 import { User } from '../models/user';
 
 declare var swal: any;
@@ -14,7 +15,7 @@ export class TopnavbarComponent implements OnInit {
     @Input('displayName') displayName: string;
     notifications:any;
     notificationsCount: number = 0;
-    constructor( private router: Router,private userService:UserService, private twitterService: TwitterService) {
+    constructor( private router: Router,private userService:UserService, private twitterService: TwitterService, private socialService: SocialService) {
     }
     
     loggedInUser:User;
@@ -55,7 +56,7 @@ export class TopnavbarComponent implements OnInit {
     }
     
     ngOnInit(){
-        this.listTwitterNotifications();
+        //this.listTwitterNotifications();
     }
     
 }

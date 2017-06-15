@@ -352,7 +352,7 @@ export class UpdateStatusComponent implements OnInit {
     }
     
     getUserProfileImage( userId: string){
-        this.facebookService.getUserProfileImage( localStorage.getItem( 'facebook' ), userId )
+        this.facebookService.getUserProfileImage(userId )
         .subscribe(
         data => this.profileImage = data,
         error => console.log( error ),

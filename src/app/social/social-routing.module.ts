@@ -23,8 +23,8 @@ const routes: Routes = [
     { path: 'twitter-user/:id', component: TwitterProfileComponent },
 
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
-    { path: 'facebook-posts/:ownerId', component: FacebookPostsComponent },
-    { path: 'facebook-analytics/:ownerId', component: FacebookAnalyticsComponent },
+    { path: 'facebook-posts/:profileId', component: FacebookPostsComponent },
+    { path: 'facebook-analytics/:profileId', component: FacebookAnalyticsComponent },
     ];
 
 

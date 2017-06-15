@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { FacebookService } from '../../services/facebook.service';
+import { SocialService } from '../../services/social.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
+import {SocialConnection} from '../../models/social-connection';
 @Component( {
     selector: 'app-facebook-posts',
     templateUrl: './facebook-posts.component.html',
@@ -10,40 +13,25 @@ import { FacebookService } from '../../services/facebook.service';
 })
 export class FacebookPostsComponent implements OnInit {
     posts: any;
-    profileImage: string;
-    constructor( private route: ActivatedRoute, private facebookService: FacebookService, private sanitizer: DomSanitizer ) { }
-    getPosts( ownerId: string ) {
-        this.facebookService.getPosts( localStorage.getItem( 'facebook' ), ownerId )
+    socialConnection: SocialConnection;
+    constructor( private route: ActivatedRoute, private facebookService: FacebookService,
+        private authenticationService: AuthenticationService, private socialService: SocialService ) { }
+    getPosts(socialConnection: SocialConnection) {
+        this.facebookService.getPosts( socialConnection )
             .subscribe(
-            data => {
-                this.posts = data["data"];
-                for(var i in this.posts){
-                    if(this.posts[i].type == 'video'){
-                        if(this.posts[i].source.indexOf('www.youtube.com/embed/') >= 0 ){
-                            this.posts[i].source = this.sanitizer.bypassSecurityTrustResourceUrl(this.posts[i].source);
-                        }
-                    }
-                }
-            },
+            data => this.posts = data['data'],
             error => console.log( error ),
             () => console.log( 'getPosts() Finished.' )
             );
     }
 
-    getUserProfileImage( userId: string ) {
-        this.facebookService.getUserProfileImage( localStorage.getItem( 'facebook' ), userId )
-            .subscribe(
-            data => this.profileImage = data,
-            error => console.log( error ),
-            () => console.log( 'getUserProfileImage() Finished.' )
-            );
-
-    }
     ngOnInit() {
         try {
-            const ownerId = this.route.snapshot.params['ownerId'];
-            this.getUserProfileImage( ownerId );
-            this.getPosts( ownerId );
+            const profileId = this.route.snapshot.params['profileId'];
+            const userId = this.authenticationService.user.id
+            this.socialConnection  = this.socialService.getSocialConnection( profileId, userId );
+
+            this.getPosts(this.socialConnection);
         } catch ( err ) {
             console.log( err );
         }
