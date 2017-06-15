@@ -549,6 +549,12 @@
 									<div class="table-toolbar">
 										<div class="row">
 											<div class="col-md-12" style="align: right">
+    								<div class="btn-group pull-left">
+    								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeSalesforceDropdown($event)">
+	    					    		<option selected value="page">12</option>
+	    					   	 		<option value="all"> All </option>
+  					       			</select>
+										</div>	
 												<div class="btn-group pull-right">
 													<button class="btn dropdown-toggle" data-toggle="dropdown">
 														Tools <i class="fa fa-angle-down"></i>
@@ -569,7 +575,8 @@
 										id="sample_editable_1" *ngIf="allContacts">
 										<thead>
 											<tr>
-												<th *ngIf="allContactData==true"><input type="checkbox"
+												<th *ngIf="allContactData==true">
+												<input type="checkbox"
 													[checked]="isAvailable"
 													(change)="checked($event.target.checked)"></th>
 												<th *ngIf="invalidContactData==true"><input

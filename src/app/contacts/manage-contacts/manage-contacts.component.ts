@@ -63,6 +63,7 @@ export class ManageContactsComponent implements OnInit {
     public invalidIds: Array<UserListIds>;
     public alias: any;
     public contactType: string;
+    selectedDropDown : string;
     public userName: string;
     public password: string;
     public getZohoConatacts: any;
@@ -538,6 +539,43 @@ export class ManageContactsComponent implements OnInit {
         //this.showAll = true;
        // this.showEdit = false; 
         this.backToManageContactPage();
+    }
+    
+    onChangeSalesforceDropdown( event: Event ) {
+        this.selectedDropDown = event.target["value"];
+        if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
+            this.pagination.maxResults = this.totalRecords;
+            this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "all" ) {
+            this.pagination.maxResults = this.totalRecords;
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.nonActive_Contacts( this.pagination );
+        }
+        
+        else if( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
+            this.pagination.maxResults = 12;
+            this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "page" ) {
+            this.pagination.maxResults = 12;
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.nonActive_Contacts( this.pagination );
+        }
     }
     
     all_Contacts( pagination: Pagination ) {
