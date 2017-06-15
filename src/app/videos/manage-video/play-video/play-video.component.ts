@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
 import { VideoFileService } from '../../services/video-file.service';
-import { UtilService } from '../../services/util.service';
+import { VideoUtilService } from '../../services/video-util.service';
 declare var Metronic, Layout, Demo, $, videojs: any;
 
 @Component({
@@ -15,7 +15,7 @@ declare var Metronic, Layout, Demo, $, videojs: any;
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css']
 })
-export class PlayVideoComponent implements OnInit, AfterViewInit {
+export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     @Input() videos: Array<SaveVideoFile>;
     @Input() selectedVideo: SaveVideoFile;
     private _elementRef: ElementRef;
@@ -67,15 +67,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
     public new360video: string;
     public video360running: boolean;
     public viewBy: string;
-    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,private router: Router,
-    private videoFileService: VideoFileService, private userService: UserService , private utilService: UtilService) {
+    public embedUrl: string;
+    public ClipboardName: string;
+    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
+    private videoFileService: VideoFileService, private videoUtilService: VideoUtilService) {
         this._elementRef = elementRef;
-        this.videoSizes = this.utilService.videoSizes;
+        this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
         this.likesValues = 2;
         this.isFullscreen = true;
+        this.ClipboardName = 'Copy to ClipBoard';
     }
-    embedSourcePath(alias: string, viewBy: string){
+    embedSourcePath(alias: string, viewBy: string) {
     this.embedSrcPath = document.location.href;
     this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '#/embedVideo' + viewBy + alias;
     console.log(this.embedSrcPath);
@@ -85,15 +88,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
             this.overLayValue = 'StartOftheVideo';
             this.videoOverlaySubmit = 'PLAY';
             this.isPlay = true;
-        //    localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); 
-        }
-        else if(this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
+        //    localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
+        } else if (this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
             this.overLayValue = 'EndOftheVideo';
             this.isPlay = false;
             this.videoOverlaySubmit = 'SUBMIT';
-         //   localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); 
-        }
-        else {
+         //   localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
+        } else {
             this.overLayValue = 'removeCallAction';
        //     localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
         }
@@ -123,8 +124,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.alias = this.selectedVideo.alias;
         this.is360Value = this.selectedVideo.is360video;
         this.viewBy = this.selectedVideo.viewBy;
-        this.embedSourcePath(this.alias ,this.viewBy);
-    }
+        this.embedSourcePath(this.alias , this.viewBy);
+        this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
+      }
    showOverlayModal(){
         //  $("#videoId").append($("#overlay-modal").show());
          $("#modalDialog").append($("#overlay-modal").show());
@@ -152,9 +154,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.posterImg =  this.selectedVideo.imagePath;
         this.checkCallToActionAvailable();
    //    $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
-        if(this.selectedVideo.is360video){
+        if (this.selectedVideo.is360video) {
             this.play360Video();
-        }else{
+        }else {
         $("#newPlayerVideo").empty();
         $("#videoId").remove();
         this.playNormalVideoFiles();
@@ -172,7 +174,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
              this.videoJSplayer = videojs('videoId', {}, function() {
                 const player = this;
                 const document: any = window.document;
-              //  let isValid = JSON.parse(localStorage.getItem('isOverlayValue')); 
+              //  let isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                 const isValid = self.overLayValue;
                this.ready(function() {
                       $(".video-js .vjs-tech").css("width", "100%");
@@ -182,14 +184,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                         //  $("#overlay-modal").css("display","block !important");
                             self.showOverlayModal();
                             player.pause();
-                     }
-                     else if(isValid !== 'StartOftheVideo' ) {
+                     } else if (isValid !== 'StartOftheVideo' ) {
                         $('#overlay-modal').hide();
                          $('.vjs-big-play-button').css('display', 'block');
                          player.play();
-                        }
-                 //   else if (isValid === 'removeCallAction'){ $('#overlay-modal').hide();player.play(); }
-                     else {
+                     } else {
                          $('#overlay-modal').hide();
                           $('.vjs-big-play-button').css('display', 'block');
                          player.play(); }
@@ -205,27 +204,25 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                 });
                 this.on('ended', function() {
                 //  isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
-                    var whereYouAt = player.currentTime();
+                    const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
                      if (isValid === 'EndOftheVideo') {
                       //   $('#play_video_player_demo1').append( $('#overlay-modal').show());
                        self.showOverlayModal();
-                     }
-                     else if(isValid !== 'EndOftheVideo') {
-                         $('#overlay-modal').hide(); player.pause();}
-                   //  else if (isValid === 'removeCallAction'){$('#overlay-modal').hide(); player.pause();}
-                     else {
+                     } else if (isValid !== 'EndOftheVideo') {
+                         $('#overlay-modal').hide(); player.pause();
+                        } else {
                          $('#overlay-modal').hide();
                          player.pause();
                          $('.vjs-big-play-button').css('display', 'none'); }
                 });
                 this.on('fullscreenchange', function () {
-                    var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                    var event = state ? 'FullscreenOn' : 'FullscreenOff';
-                    if(event === "FullscreenOn"){
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === "FullscreenOn") {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
-                    }else if(event==="FullscreenOff"){
+                    }else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                     }
@@ -278,43 +275,47 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         this.disLikesValues += 1;
     }
     embedFulScreenValue() {
-        if ( this.isFullscreen === true ) {this.embedFullScreen = 'allowfullscreen';}
-        else{ this.embedFullScreen = ''; }
+        if ( this.isFullscreen === true ) {this.embedFullScreen = 'allowfullscreen';
+        } else{ this.embedFullScreen = ''; }
     }
     embedVideoSizes() {
-        if (this.videosize === this.videoSizes[0]) { this.embedWidth = '1280'; this.embedHeight = '720'; }
-        else if (this.videosize === this.videoSizes[1]) { this.embedWidth = '560'; this.embedHeight = '315'; }
-        else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480'; }
-        else { this.embedWidth = '640'; this.embedHeight = '360'; }
+        if (this.videosize === this.videoSizes[0]) { this.embedWidth = '1280'; this.embedHeight = '720';
+        } else if (this.videosize === this.videoSizes[1]) { this.embedWidth = '560'; this.embedHeight = '315';
+        } else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480';
+        } else { this.embedWidth = '640'; this.embedHeight = '360'; }
     }
     checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.utilService.validateEmail(this.model.email_id)
+        if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
         && this.firstName.length !== 0 && this.lastName.length !== 0) {
         this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
-        }
-        else if (this.isFistNameChecked === false && this.utilService.validateEmail(this.model.email_id)) { this.isOverlay = false; }
-        else { this.isOverlay = true; }
+        } else if (this.isFistNameChecked === false && this.videoUtilService.validateEmail(this.model.email_id)) {
+            this.isOverlay = false;
+        } else { this.isOverlay = true; }
     }
     embedCode() {
+        this.ClipboardName = 'Copied !';
         (<HTMLInputElement>document.getElementById('embed_code')).select();
         document.execCommand('copy');
+    }
+    closeEmbedModal() {
+        this.ClipboardName = 'Copy to ClipBoard';
     }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
     }
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
-        if(this.videoJSplayer){
-        if(this.videoOverlaySubmit === 'PLAY'){ this.videoJSplayer.play(); }
-        else { this.videoJSplayer.pause(); }}
+        if (this.videoJSplayer) {
+        if (this.videoOverlaySubmit === 'PLAY') {
+            this.videoJSplayer.play();
+         }else { this.videoJSplayer.pause(); }}
         console.log(this.model.email_id);
-        if (this.userService.loggedInUserData.emailId === this.model.email_id) {
+        if (this.authenticationService.user.emailId === this.model.email_id) {
             this.user.emailId = this.model.email_id;
-            this.user.firstName = this.userService.loggedInUserData.firstName;
-            this.user.lastName = this.userService.loggedInUserData.lastName;
-        }
-        else {
+            this.user.firstName = this.authenticationService.user.firstName;
+            this.user.lastName = this.authenticationService.user.lastName;
+        } else {
             this.user.emailId = this.model.email_id;
             this.user.firstName = this.firstName;
             this.user.lastName = this.lastName;
@@ -329,9 +330,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
        if (this.videoJSplayer) {
         this.videoJSplayer.play(); }
      }
-     skipOverlay(){
+     skipOverlay() {
         $('#overlay-modal').hide();
-        if(this.videoJSplayer){
+        if (this.videoJSplayer){
         this.videoJSplayer.play();}
     }
     ngOnInit() {
@@ -342,12 +343,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
           }
         }
         this.setValueForSrc = true;
-        this.model.email_id = this.userService.loggedInUserData.emailId;
-        this.firstName = this.userService.loggedInUserData.firstName;
-        this.lastName = this.userService.loggedInUserData.lastName;
+        this.model.email_id = this.authenticationService.user.emailId;
+        this.firstName = this.authenticationService.user.firstName;
+        this.lastName = this.authenticationService.user.lastName;
 
-        if (this.utilService.validateEmail(this.model.email_id)) { this.isOverlay = false; }
-        else {this.isOverlay = true; }
+        if (this.videoUtilService.validateEmail(this.model.email_id)) { this.isOverlay = false;
+         } else {this.isOverlay = true; }
 
         this.playVideoInfo(this.selectedVideo);
         this.checkCallToActionAvailable();
@@ -360,16 +361,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         $('.vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
         if (this.selectedVideo.allowFullscreen === false) {
            $('.video-js .vjs-fullscreen-control').hide();
-        }
-        else { 	$('.video-js .vjs-fullscreen-control').show();
+        } else { 	$('.video-js .vjs-fullscreen-control').show();
         }
     }
     defaultVideoControllers() {
-        if (this.selectedVideo.enableVideoController === false) { $('.video-js .vjs-control-bar').hide(); }
-        else { $('.video-js .vjs-control-bar').show(); }
+        if (this.selectedVideo.enableVideoController === false) {
+             $('.video-js .vjs-control-bar').hide();
+         } else {
+              $('.video-js .vjs-control-bar').show();
+         }
     }
       transperancyControllBar(value: any) {
-        const rgba = this.utilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
+        const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
         console.log(this.valueRange);
@@ -384,7 +387,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
          $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
   $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
          $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
-     var str = '<video id=videoId  poster=' +this.posterImg +' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+     let str = '<video id=videoId  poster='+this.posterImg +' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#newPlayerVideo").append(str);
              this.videoUrl = this.selectedVideo.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -442,33 +445,28 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                     //  $('#videoId').append( $('#overlay-modal').show());
                       self.showOverlayModal();
                       player.pause();
-                  }
-                    else if(isValid !== 'StartOftheVideo' ) {
-                      $('#overlay-modal').hide(); player.play(); }
-               //    else if (isValid === 'removeCallAction'){ $('#overlay-modal').hide(); player.play(); }
-                    else { $('#overlay-modal').hide();
+                    } else if (isValid !== 'StartOftheVideo' ) {
+                      $('#overlay-modal').hide(); player.play();
+                    } else { $('#overlay-modal').hide();
                         player.play();
-                     }
+                    }
                       $('#skipOverlay').click(function(){
                          $('#overlay-modal').hide();
                          player.play();
                       });
                       $('#playorsubmit').click(function(){
                          $('#overlay-modal').hide();
-                         if(self.videoOverlaySubmit === 'PLAY'){ player.play(); }
+                         if (self.videoOverlaySubmit === 'PLAY') { player.play(); }
                      });
                  });
                  player.on('ended', function() {
                      $('.vjs-big-play-button').css('display', 'none');
                      if (isValid === 'EndOftheVideo') {
-                    // $('#videoId').append( $('#overlay-modal').show());
                       self.showOverlayModal();
                      $('.video-js .vjs-control-bar').hide();
-                    }
-                     else if(isValid !== 'EndOftheVideo') {
-                        $('#overlay-modal').hide(); player.pause();}
-                   //  else if (isValid === 'removeCallAction'){ $('#overlay-modal').hide(); player.pause();}
-                     else { $('#overlay-modal').hide(); player.pause(); }
+                    } else if (isValid !== 'EndOftheVideo') {
+                        $('#overlay-modal').hide(); player.pause();
+                    } else { $('#overlay-modal').hide(); player.pause(); }
                       $('#repeatPlay').click(function(){
                         player.play();
                       });
@@ -509,25 +507,21 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
         const self = this;
         this.videoJSplayer = videojs('videoId', {}, function() {
             const player = this;
-            console.log('testing url value is :'+self.videoUrl);
-            var document:any = window.document;
+            const document: any = window.document;
              $(".video-js .vjs-tech").css("width", "100%");
              $(".video-js .vjs-tech").css("height", "100%");
             const aspectRatio = 320/640;
          //   let isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
-            let isValid = self.overLayValue;
+            const isValid = self.overLayValue;
             this.ready(function() {
                  if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
                     //  $("#overlay-modal").css("display","block !important");
                    //   $('#videoId').append( $('#overlay-modal').show());
                      self.showOverlayModal();
-                    }
-                 else if(isValid !== 'StartOftheVideo' ) {
+                    } else if (isValid !== 'StartOftheVideo' ) {
                      $('#overlay-modal').hide(); player.play();
-                    }
-                // else if (isValid === 'removeCallAction'){$('#overlay-modal').hide(); }
-                 else { $('#overlay-modal').hide(); }
+                    } else { $('#overlay-modal').hide(); }
             });
             this.on('seeking', function() {
                 // Mobinar.logging.logAction(data.id,'videoPlayer_slideSlider',startDuration,trimCurrentTime(player.currentTime()));
@@ -557,18 +551,16 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                  if (isValid === 'EndOftheVideo') {
                   //   $('#videoId').append( $('#overlay-modal').show());
                     self.showOverlayModal();
-                    }
-                 else if(isValid !== 'EndOftheVideo') {
-                     $('#overlay-modal').hide(); player.pause();}
-              //   else if (isValid === 'removeCallAction'){ $('#overlay-modal').hide(); player.pause();}
-                 else {
+                    }  else if (isValid !== 'EndOftheVideo') {
+                     $('#overlay-modal').hide(); player.pause();
+                    } else {
                      $('#overlay-modal').hide();
                      player.pause();
                      $('.vjs-big-play-button').css('display', 'none'); }
             });
             this.on('fullscreenchange', function () {
-                var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                var event = state ? 'FullscreenOn' : 'FullscreenOff';
+                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                const event = state ? 'FullscreenOn' : 'FullscreenOff';
                 if(event==="FullscreenOn"){
                     $(".vjs-tech").css("width", "100%");
                     $(".vjs-tech").css("height", "100%");
@@ -589,10 +581,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                  },
                  customKeys: {
                      simpleKey: {
-                         key: function(e: any) {  return (e.which === 83);},
+                         key: function(e: any) {  return (e.which === 83); },
                          handler: function(player: any, options: any, e: any) {
-                             if (player.paused()) {  player.play();} else { player.pause(); }  } },
-                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68);},
+                             if (player.paused()) {  player.play(); } else { player.pause(); }  } },
+                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68); },
                          handler: function(player: any, options: any, event: any) {
                              if (options.enableMute) { player.muted(!player.muted()); }}
                      },
@@ -606,33 +598,30 @@ export class PlayVideoComponent implements OnInit, AfterViewInit {
                                  var number = event.which - sub;
                                  player.currentTime(player.duration() * number * 0.1); }  } },
                      emptyHotkey: { },
-                     withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler');}},
+                     withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler'); }},
                      withoutHandler: { key: function(e: any) { return true;}},
-                     malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
+                     malformedKey: { key: function() {  console.log(' The Key function must return a boolean.'); },
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
     }
   ngAfterViewInit() {
        console.log('called ng after view init');
         $('#newPlayerVideo').empty();
-      if(this.selectedVideo.is360video !== true) {
+      if (this.selectedVideo.is360video !== true) {
         this.playNormalVideoFiles();
         this.is360Value = false;
         this.playNormalVideo();
-      } // if close
-      else {
+      } else {
           this.play360Video();
       }
         this.defaultVideoOptions();
         this.transperancyControllBar(this.valueRange);
-        if (this.selectedVideo.enableVideoController === false)
-         { this.defaultVideoControllers(); }
+        if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
      }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
         if (this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
-      //  localStorage.removeItem('isOverlayValue');
         $('.h-video').remove();
         $('.p-video').remove();
     }

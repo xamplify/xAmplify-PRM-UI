@@ -2,6 +2,7 @@
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
 	.emailCustomCss { }    /*margin top 93px*/
+	 .clipboard{ padding: 6px 44px;}
 	/*.isLowerTextCss {margin-top: 43px !important;}*/
 	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
 	.isLowerTextCss{ }
@@ -123,21 +124,19 @@
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
 				</div>
-				<div class="addthis_sharing_toolbox"></div>
-
 				<!-- Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<button type="button" class="closeModal" data-dismiss="modal"(click)="closeEmbedModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<h4 class="modal-title" id="myModalLabel"><strong>Get Embed Code</strong></h4>
 							</div>
 							<div class="modal-body">
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
+											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
 									</div>
 									<span class="input-group-btn">
 										<div style="margin-top: 4px;">
@@ -149,8 +148,9 @@
 											<label style="font-size: 16px;margin-left: 6px;">allow full screen :
 											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
 											</label>
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="margin-left: 17%; background: #194A7E; color: #FFF;"
-												(click)="embedCode()">Copy to Clipboard
+											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"
+											  style=" position:absolute ;right:0px; background: #194A7E; color: #FFF;"
+												(click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
 											</button>
 										</div>
 									</span>

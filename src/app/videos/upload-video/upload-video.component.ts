@@ -14,7 +14,7 @@ declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloa
 @Component({
   selector: 'app-upload-video',
   templateUrl: './upload-video.component.html',
-  styleUrls :['./upload-video.component.css']
+  styleUrls :['./upload-video.component.css','../../../assets/css/video-css/video-js.custom.css']
 
 //   '../../../assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css',
 })
@@ -267,9 +267,9 @@ export class UploadVideoComponent implements OnInit {
        );
   }
   removeRecordVideo(){
-     //  this.player.recorder.stopDevice();
-     //  this.player.recorder.getDevice();
-       this.player.recorder.reset();
+      this.player.recorder.stopDevice();
+      this.player.recorder.getDevice();
+     // this.player.recorder.reset();
        this.saveVideo = false;
        this.discardVideo = false;
        this.hideSaveDiscard = true;
@@ -388,7 +388,7 @@ export class UploadVideoComponent implements OnInit {
                  // user clicked the record button and started recording
          self.player.on('startRecord', function()
                  {
-        	         console.log('started recording!');
+                     console.log('started recording!');
                      self.closeModalId = false; // close button disabled for modal pop up
                      $( "#script-text" ).scrollTop( 0 );
                      self.stopButtonShow  = false; // stop button hide in modal pop up
@@ -404,17 +404,8 @@ export class UploadVideoComponent implements OnInit {
                      self.discardVideo = false; // discard button disabled
                  });
                  // user completed recording and stream is available
-         self.player.on('pause', function()
-                 {
-        	   //   alert('paue video');
-                 });
-         self.player.on('resume', function()
-                 {
-               //   alert('resume video');
-                 });
-         self.player.on('finishRecord', function()
-                 {
-        	         self.saveVideo = true; // save button enabled
+        self.player.on('finishRecord', function()
+                 {   self.saveVideo = true; // save button enabled
                      self.discardVideo = true; // discard button enabled
                      self.testSpeeddisabled = false; // enabled the test speed button
                      self.closeModalId = true; // close button enabled

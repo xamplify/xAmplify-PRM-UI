@@ -1,10 +1,10 @@
 import {Category} from '../models/category';
-import { FileDropDirective,FileItem } from 'ng2-file-upload';
+import { FileDropDirective, FileItem } from 'ng2-file-upload';
 export class SaveVideoFile {
     id: number;
     title: string;
     categoryId: number;
-    categories :Category[];
+    categories: Category[];
     viewBy: string;
     tags: string[];
     customerId: number;
@@ -13,7 +13,7 @@ export class SaveVideoFile {
     gifImagePath: string;
     description: string;
     playerColor: string;
-    enableVideoController: boolean
+    enableVideoController: boolean;
     controllerColor: string;
     allowSharing: boolean;
     enableSettings: boolean;
@@ -22,15 +22,15 @@ export class SaveVideoFile {
     allowLikes: boolean;
     enableCasting: boolean;
     allowEmbed: boolean;
-    transparency:number;
+    transparency: number;
     action: string;
-    callACtion:boolean;
+    callACtion: boolean;
     name: boolean;
     skip: boolean;
     upperText: string;
     lowerText: string;
-    startOfVideo:boolean;
-    endOfVideo:boolean;
+    startOfVideo: boolean;
+    endOfVideo: boolean;
     imageFiles: string[];
     error: string;
     gifFiles: string[];
@@ -40,5 +40,5 @@ export class SaveVideoFile {
     uploadedDate: Date;
     uploadedBy: string;
     alias: string;
-    is360video :boolean;
-}
+    is360video: boolean;
+ }
