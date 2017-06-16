@@ -186,7 +186,7 @@ export class ContactService {
 
     downloadContactList( contactListId: number ): Observable<Response> {
         this.logger.info( contactListId );
-        return this._http.get( this.url + "userlist/" + contactListId + "/download?access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.url + "userlist/" + contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
 

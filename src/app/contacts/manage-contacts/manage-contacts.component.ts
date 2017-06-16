@@ -340,22 +340,30 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.info( "download completed" )
             );
     }
-
+/*
     downloadFile(data: any){
         var blob = new Blob([data], { type: 'text/csv' });
         var url= window.URL.createObjectURL(blob);
         window.open(url);
-    }
+    }*/
     
-    /*downloadFile(res){ 
-        var link = document.createElement("a");
-        link.download = "a";
-        link.href = res.link;
-        document.body.appendChild(link);
-        link.click();
+    downloadFile(data: any) {
+        let parsedResponse = data.text();
+        let blob = new Blob([parsedResponse], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
 
-         }
-    */
+        if(navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(blob, 'UserList.csv');
+        } else {
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'UserList.csv';
+            document.body.appendChild(a);
+            a.click();        
+            document.body.removeChild(a);
+        }
+        window.URL.revokeObjectURL(url);
+    }
    /*downloadFile( data ) {
     let blob: Blob = data.blob();
     window['saveAs']( blob, 'UserList.csv' );
