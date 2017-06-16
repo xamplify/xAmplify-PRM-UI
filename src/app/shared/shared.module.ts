@@ -16,16 +16,17 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
+import {LoaderComponent} from '../loader/loader.component';
 
 @NgModule({
 	 imports: [ CommonModule,RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
 	           TagInputModule, HttpModule, CKEditorModule, Ng2FilterPipeModule ],
 	           
-	 declarations: [ ColorPickerDirective ],
+	 declarations: [ ColorPickerDirective,LoaderComponent ],
 	 
 	 exports :[ FileSelectDirective, ColorPickerDirective, FileDropDirective, FormsModule, CommonModule, RouterModule,
 	           FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule, 
-	           HttpModule, CKEditorModule, Ng2FilterPipeModule ],
+	           HttpModule, CKEditorModule, Ng2FilterPipeModule,LoaderComponent ],
 	              
 	 providers: [ ColorPickerService ],  
 })

@@ -17,7 +17,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light">
-				<div class="portlet-title">
+				<div class="portlet-title"><!--  -->
 					<div class="caption">
 						<div class="row">
 						<div class="colxs-12 col-sm-9">
@@ -49,6 +49,7 @@
 				</div>
 				<div class="portlet-body">
 					<div class="row">
+					<app-loader *ngIf="pagination.isLoading"></app-loader>
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 								<div class="portlet light block">
 									<div class="portlet-title">
@@ -62,14 +63,14 @@
 											<div class="email-template-i-container">
 										       <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true" (click)="edit(emailTemplate.id)"></i>
 										       <i class="fa fa-trash fa-3x" aria-hidden="true" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete Template"></i>
-										      <!--  <span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
+										       <!-- <span align="right" style="bottom: -1px; float: right; position: absolute; right: 10px;"><b>Created By</b><br>{{emailTemplate.createdBy}}</span>
 												<span align="left" style="bottom: -1px; left: 10px; position: absolute;"><b>Created Date</b><br>{{emailTemplate.createdDate}}</span> -->
 										    </div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+					</div>
 				</div>
 				<div *ngIf="pagination.totalRecords>0">
 					  <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">

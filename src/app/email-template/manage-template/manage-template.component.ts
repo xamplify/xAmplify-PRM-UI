@@ -9,6 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
@@ -58,22 +59,20 @@ export class ManageTemplateComponent implements OnInit {
     public selectedTemplate: any = this.templatesDropDown[0];
     public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
-      loggedInUserId:number = 0;
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, private refService: ReferenceService, private pagination: Pagination ) {
-        if ( this.userService.loggedInUserData != undefined ) {
-            this.loggedInUserId = this.userService.loggedInUserData.id;
-        }
+        private pagerService: PagerService, private refService: ReferenceService, private pagination: Pagination,private authenticationService:AuthenticationService ) {
     }
 
     listEmailTemplates( pagination: Pagination ) {
         try {
-            this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
+            pagination.isLoading = true;
+            this.emailTemplateService.listTemplates( pagination, this.authenticationService.user.id)
                 .subscribe(
                 ( data: any ) => {
                     this.emailTemplates = data.emailTemplates;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
+                    pagination.isLoading = false;
                     this.refService.showInfo( "Finished listEmailTemplates in manageTemplatesComponent", this.emailTemplates );
                 },
                 ( error: string ) => {
