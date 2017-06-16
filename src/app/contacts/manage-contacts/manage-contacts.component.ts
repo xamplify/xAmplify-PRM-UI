@@ -95,6 +95,7 @@ export class ManageContactsComponent implements OnInit {
     public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
     public currentContactType: string = null;
+    //downloadUrl = this.authenticationService.REST_URL + "admin/"
 
     sortContacts = [
         { 'name': 'Sort By', 'value': '' },
@@ -330,6 +331,7 @@ export class ManageContactsComponent implements OnInit {
         })
     }
 
+   // http://aravindu.com/xtremand-rest/admin/userlist/{{contactList.id}}/download?access_token={{access_token}}"
     downloadContactList( contactListId: number ) {
         this.contactService.downloadContactList( contactListId )
             .subscribe(
@@ -339,6 +341,25 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
+    downloadFile(data: any){
+        var blob = new Blob([data], { type: 'text/csv' });
+        var url= window.URL.createObjectURL(blob);
+        window.open(url);
+    }
+    
+    /*downloadFile(res){ 
+        var link = document.createElement("a");
+        link.download = "a";
+        link.href = res.link;
+        document.body.appendChild(link);
+        link.click();
+
+         }
+    */
+   /*downloadFile( data ) {
+    let blob: Blob = data.blob();
+    window['saveAs']( blob, 'UserList.csv' );
+}*/
     googleContactsSynchronizationAuthentication( contactListId: number ) {
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         this.contactService.googleLogin()
@@ -488,10 +509,6 @@ export class ManageContactsComponent implements OnInit {
         this.synchronizationSucessMessage = false;
     }
 
-    downloadFile( data: Response ) {
-        let blob: Blob = data.blob();
-        window['saveAs']( blob, 'UserList.csv' );
-    }
 
     editContactList( contactSelectedListId: number ) {
         this.selectedContactListId = contactSelectedListId;
@@ -541,7 +558,7 @@ export class ManageContactsComponent implements OnInit {
         this.backToManageContactPage();
     }
     
-    onChangeSalesforceDropdown( event: Event ) {
+    onChangeAllContactUsers( event: Event ) {
         this.selectedDropDown = event.target["value"];
         if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;

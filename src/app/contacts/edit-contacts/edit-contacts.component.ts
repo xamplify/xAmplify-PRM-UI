@@ -50,6 +50,7 @@ export class EditContactsComponent implements OnInit {
     isAvailable = false;
     fileTypeError:boolean;
     Campaign : string;
+    selectedDropDown : string;
     deleteErrorMessage: boolean;
     public clipboardUsers: Array<User>;
     public csvFileUsers: Array<User>;
@@ -173,7 +174,43 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-
+    onChangeAllContactsUsers( event: Event ) {
+        this.selectedDropDown = event.target["value"];
+        if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
+            this.pagination.maxResults = this.totalRecords;
+            //this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "all" ) {
+            this.pagination.maxResults = this.totalRecords;
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "all") {
+            this.pagination.maxResults = this.totalRecords;
+            this.nonActive_Contacts( this.pagination );
+        }
+        
+        else if( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
+            this.pagination.maxResults = 12;
+            //this.all_Contacts( this.pagination );
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "page" ) {
+            this.pagination.maxResults = 12;
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page") {
+            this.pagination.maxResults = 12;
+            this.nonActive_Contacts( this.pagination );
+        }
+    }
+    
 
     checked( event: boolean ) {
         this.logger.info( "check value" + event )

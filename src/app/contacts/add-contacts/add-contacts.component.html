@@ -125,7 +125,7 @@
 												id="uploadCSV" style="padding: 10px 40px;">
 												<i class="fa fa-file-excel-o fa-5x"
 													style="font-size: 50px; padding-top: 15px;"></i> <br>
-												<br> Upload a .CSV <input type="file" ng2FileSelect
+												<br> Upload a .CSV <input type="file" ng2FileSelect *ngIf="uploader.queue.length==0"
 													[uploader]="uploader" (change)="fileChange(input)" accept=".csv" #input />
 											</button>
 										</p>
