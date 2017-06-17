@@ -111,12 +111,9 @@ public shareUrl: string;
           }
         this.defaultValues();
             console.log(this.videoUrl);
-         this.embedVideoFile.gifImagePath = 'https://aravindu.com/vod/images/4747/18052017/1495106211697_7.jpg';
         // const res = encodeURIComponent(this.embedVideoFile.gifImagePath);
-         this.embedUrl = 'http://aravindu.com/xtremand-share';
-         this.shareUrl = 'http://aravindu.com/xtremand-share?url=' + this.embedUrl + '&title=' + this.embedVideoFile.title +
-        '&description=' + this.embedVideoFile.description + '&image=' +
-         this.embedVideoFile.gifImagePath + '&redirecturl=https://google.com';
+ this.shareUrl = 'http://aravindu.com/xtremand-share/video?viewBy='+this.embedVideoFile.viewBy+'&alias=' + this.embedVideoFile.alias;
+         this.imgURL = this.embedVideoFile.gifImagePath;
          console.log(this.shareUrl);
          this.shareMetaTags();
           // twitter og info
@@ -211,7 +208,7 @@ public shareUrl: string;
     $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
 $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
     $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
-const str = '<video id=videoId class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $('#newPlayerVideo').append(str);
              this.videoUrl = this.embedVideoFile.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -326,7 +323,7 @@ const str = '<video id=videoId class="video-js vjs-default-skin" crossorigin="an
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
         this.is360Value = false;
-  const str = '<video id="videoId"  poster=' + this.posterImagePath + 'preload="none"  class="video-js vjs-default-skin" controls></video>';
+  const str = '<video id="videoId" poster=' + this.posterImagePath +'  preload="none"  class="video-js vjs-default-skin" controls></video>';
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.embedVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));

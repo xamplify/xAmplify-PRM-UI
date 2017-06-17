@@ -2,6 +2,7 @@
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
 	.emailCustomCss { }    /*margin top 93px*/
+	.paddingCss{ padding: 1em;}
 	 .clipboard{ padding: 6px 44px;}
 	/*.isLowerTextCss {margin-top: 43px !important;}*/
 	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
@@ -51,16 +52,16 @@
                   </div>
                  <div style="width: 500px;top: 38% !important;position: absolute;">
                  <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
-                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group"   (ngModelChange)="checkingCallToActionValues()"
+                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group paddingCss"   (ngModelChange)="checkingCallToActionValues()"
                      placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
                  </div>  
                  <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
-                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group"  (ngModelChange)="checkingCallToActionValues()"
+                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group paddingCss"  (ngModelChange)="checkingCallToActionValues()"
                      placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
                 </div> 
                   <div id="maimessage" [class.emailCustomCss]="isPlayButton==false" style="width: 500px;"> 
                     <div style=" width: 106px;">
-                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group" (ngModelChange)="checkingCallToActionValues()"
+                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group paddingCss" (ngModelChange)="checkingCallToActionValues()"
                    placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;" 
                    pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 				    #email_id="ngModel">

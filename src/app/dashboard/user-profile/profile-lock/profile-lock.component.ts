@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { UtilService } from '../../../core/services/util.service';
-
 declare var Metronic , Layout, Demo: any;
 
 @Component({
@@ -19,13 +17,14 @@ export class ProfileLockComponent implements OnInit {
  displayName: string;
  password: string;
  error: string;
- constructor(private userService: UserService, private authenticationService:  AuthenticationService, private router: Router, private utilService: UtilService)
+ constructor(private userService: UserService, private authenticationService:  AuthenticationService,
+  private router: Router)
  {
      this.password = '';
  }
 ngOnInit() {
       try {
-            this.userData = this.userService.loggedInUserData;
+            this.userData = this.authenticationService.user;
             if (!(this.userData.profileImagePath.indexOf(null)>-1)) {
                 this.userProfileImage = this.userData.profileImagePath;
             }
@@ -41,8 +40,7 @@ ngOnInit() {
            Demo.init();
            console.log(this.displayName);
            this.authenticationService.logout();
-      }
-      catch (err) {
+      } catch (err) {
           console.log('error' + err);
       }
   }
@@ -50,8 +48,8 @@ ngOnInit() {
   lockScreenLogin() {
        console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
 
-       var authorization = 'Basic ' + btoa( 'my-trusted-client:');
-       var body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
+       const authorization = 'Basic ' + btoa( 'my-trusted-client:');
+       const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
 
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe( result => {
             if (this.authenticationService.userToken.accessToken != null) {
@@ -66,10 +64,9 @@ ngOnInit() {
  }
 
 logError() {
-       if(this.password !== ''){
+       if (this.password !== '') {
         this.error = 'Password is incorrect';
-       }
-       else {
+       }else {
          this.error = "Password should't be empty";
        }
         console.log( 'error : ' + this.error );

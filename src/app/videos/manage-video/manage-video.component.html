@@ -55,18 +55,20 @@
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					   <strong> {{deleteVideoName}} video deleted Successfully!</strong> 
 			      </div> 
+				  <div *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
+						 <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>{{deleteVideoName}} {{campaignVideoMesg}}</strong>
+			     </div>
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">
 							<div class="tab-content">
 								<div class="tab-pane active">
-									<!-- BEGIN FILTER -->
-									
-									
+									<!-- BEGIN FILTER -->	
 									<div class="page-toolbar">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px">
-												<select class="form-control" [(ngModel)]="videoSort"  (ngModelChange)="selectedSortByValue($event)">
+												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 											</div>
@@ -80,15 +82,15 @@
 										</div>
 									</div>
 								</div>
-									
-									
+														
 								<div class="margin-top-10" >
 									 <div style="width:28%">
-                                             <select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
+                                             <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
 									</div>
+									<app-loader *ngIf="pagination.isLoading"></app-loader>
 									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos">
 									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
@@ -135,7 +137,7 @@
 									<!-- END FILTER -->
 								</div>
 								
-								<div >   
+								<div *ngIf="!isvideoThere">   
 								<!--pager here  -->
 									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">

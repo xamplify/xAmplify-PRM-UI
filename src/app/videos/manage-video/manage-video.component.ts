@@ -17,7 +17,6 @@ declare var swal , require, $: any;
   })
 export class ManageVideoComponent implements OnInit , OnDestroy {
 
-    title = 'Videos';
     manageVideos = true;
     editVideo = false;
     playVideo = false;
@@ -33,7 +32,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     showUpdatevalue = false;
     showMessage = false;
     imagepath: string;
-    pager: any = {};
     pagedItems: any[];
     isvideosLength: boolean;
     selectedVideoFile: SaveVideoFile;
@@ -52,6 +50,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     public searchDisable = true;
     public deletedVideo = false;
     public deleteVideoName: string;
+    public campaignVideo: boolean;
+    public campaignVideoMesg: string;
     sortVideos  = [
                        {'name': 'Sort By', 'value': ''},
                        {'name': 'Title(A-Z)', 'value': 'title-ASC'},
@@ -60,7 +60,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                        {'name': 'Created Time(DESC)', 'value': 'createdTime-DESC'},
                        {'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC'},
                        {'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC'},
-                       ];
+                 ];
    public videoSort: any = this.sortVideos[0];
    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
     private authenticationService: AuthenticationService,
@@ -100,19 +100,20 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             }
           this.loadVideos(this.pagination);
           console.log('manage videos js completed');
-        }
-        catch(err) {
+        } catch (err) {
             console.log('error ' + err);
         }
     }
       loadVideos(pagination: Pagination) {
       try {
-      this.videoFileService.loadVideoFiles(pagination)
+          this.pagination.isLoading = true;
+    	  this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-                this.videos = result.listOfMobinars;
+            	this.pagination.isLoading = false;
+            	this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
-                if (this.isCategoryThere === false || this.isCategoryUpdated === true){
+                if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                      this.categories = result.categories;
                      this.categories.sort(function(a: any, b: any) { return (a.id) - (b.id); });
                 }
@@ -120,13 +121,15 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 console.log(this.videos);
                 if (this.videos.length !== 0) {
                     this.isvideoThere = false;
-                 }
-                 else {
+                 } else {
                      this.isvideoThere = true;
                      this.pagedItems = null ;
                  }
-                if (this.videos.length === 0) { this.isvideosLength = true; }
-                else { this.isvideosLength = false;  }
+                if (this.videos.length === 0) {
+                     this.isvideosLength = true;
+                 } else {
+                     this.isvideosLength = false;
+                      }
                 for (let i = 0; i < this.videos.length; i++) {
                     this.imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
                     this.videos[i].imagePath = this.imagepath;
@@ -135,13 +138,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.isCategoryUpdated = false;
                 pagination = this.pagerService.getPagedItems(pagination, this.videos);
             });
-            ()=> console.log('load videos completed:' + this.videos );
-        }
-         catch(error){
-           this.referenceService.showError(error, 'Error in loadvideos() in manage-videos.ts file',"");
+            () => console.log('load videos completed:' + this.videos );
+        } catch (error) {
+         //  this.referenceService.showError(error, 'Error in loadvideos() in manage-videos.ts file',"");
         }
     }
-
     setPage(page: number) {
      if  (page !== this.pagination.pageIndex){
         this.pagination.pageIndex = page;
@@ -150,8 +151,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.showMessage = false;
      }
     }
-
-    getCategoryNumber(){
+    getCategoryNumber() {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.isvideoThere = false;
@@ -160,14 +160,14 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
-    searchDisableValue(){
+    searchDisableValue() {
         console.log(this.searchKey);
         if (this.searchKey !== null || this.searchKey.length !== 0) {
         this.searchDisable = false; }
         if (this.searchKey.length === 0 || this.searchKey === '') {
             this.searchDisable = true; }
     }
-    searchVideoTitelName(){
+    searchVideoTitelName() {
      // if ( this.searchKey !== null && this.searchDisable === false ){
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -177,12 +177,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.loadVideos(this.pagination);
      // }
     }
-    selectedSortByValue( event: any ){
+    selectedSortByValue( event: any ) {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.videoSort = event;
          const sortedValue = this.videoSort.value;
-         if( sortedValue !== '') {
+         if ( sortedValue !== '') {
              const options: string[] = sortedValue.split('-');
              this.sortcolumn = options[0];
              this.sortingOrder = options[1];
@@ -206,8 +206,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.editDetails = saveVideoFile;
                 if (saveVideoFile.imageFiles == null) {
                     saveVideoFile.imageFiles = []; }
-                if ( saveVideoFile.gifFiles == null )
-                {  saveVideoFile.gifFiles = []; }
+                if ( saveVideoFile.gifFiles == null ) {  saveVideoFile.gifFiles = []; }
                 this.videoFileService.saveVideoFile = this.editDetails;
                 console.log('show edit vidoe object :');
                 console.log(this.videoFileService.saveVideoFile);
@@ -246,9 +245,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.deletedVideo = false;
     }
 
-    deleteVideoFile(alias: string, position: number, videoName:string) {
+    deleteVideoFile(alias: string, position: number, videoName: string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
-      //  this.pagedItems.splice(position, 1);
         this.videoFileService.deleteVideoFile(alias)
         .subscribe(
         data => {
@@ -257,14 +255,18 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             this.pagination.pagedItems.splice(position, 1);
             this.deletedVideo = true;
             this.deleteVideoName = videoName;
+            this.loadVideos(this.pagination);
+            if (this.pagination.pagedItems.length === 0) {
+              this.isvideoThere = true;
+            }
             setTimeout(function() {
-                  $("#deleteMesg").slideUp(500);
+                  $('#deleteMesg').slideUp(500);
               }, 2000);
         },
        (error: any) => {
-    	  // str.search("worlds") != -1)
-         if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns')!= -1){
-                     swal( 'Campaign Video!', error, 'error' );
+         if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+                   //  swal( 'Campaign Video!', error, 'error' );
+                     this.campaignVideoMesg = error;
                  }
                  console.log(error);
            },
@@ -308,16 +310,14 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
         const timevalue = this;
         setTimeout(function() {
-        if( timevalue.showUpdatevalue === true) {
+        if ( timevalue.showUpdatevalue === true) {
               $('#showUpdatevalue').slideUp(500);
-            }
-            else{ $('#message').slideUp(500); };
+            } else { $('#message').slideUp(500); };
           }, 3000);
 
         if ( videoFile == null ) {
             this.showVideoName = '';
-         }
-         else { this.showVideoName = videoFile.title ;  }
+         } else { this.showVideoName = videoFile.title ;  }
         console.log('update method called ' + this.showVideoName);
     }
     goToManageVideos() {

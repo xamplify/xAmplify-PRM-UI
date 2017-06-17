@@ -147,15 +147,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         console.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
-    //    console.log(this.userService.loggedInUserData);
         this.isFullscreen = true;
         this.showOverLay = true;
-        this.model.email_id = this.authenticationService.user.emailId ;  /// need to remove the empty
-        this.firstName = this.authenticationService.user.firstName ;  /// need to remove the empty
-        this.lastName = this.authenticationService.user.lastName ;   /// need to remove the empty
-        // this.model.email_id = '';  /// need to remove the empty
-        // this.firstName = '';  /// need to remove the empty
-        // this.lastName  = '';   /// need to remove the emty
+        this.model.email_id = this.authenticationService.user.emailId;
+        this.firstName = this.authenticationService.user.firstName;
+        this.lastName = this.authenticationService.user.lastName;
         this.is360Value = this.value360 =  this.saveVideoFile.is360video;
         if ( this.videoutilService.validateEmail(this.model.email_id) ) {
               this.isOverlay = false;

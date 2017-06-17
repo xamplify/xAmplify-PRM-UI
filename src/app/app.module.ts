@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShareButtonsModule } from 'ng2-sharebuttons';
+// import { ShareButtonsModule} from 'ngx-sharebuttons';
 import { ContactService } from './contacts/services/contact.service';
 
 import { CoreModule } from './core/core.module';

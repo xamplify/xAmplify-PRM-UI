@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
 
 import {User} from '../models/user';
 import {UserToken} from '../models/user-token';
@@ -18,10 +18,11 @@ export class AuthenticationService {
     public MEDIA_URL: string;
     public user: User = new User();
     public userToken: UserToken = new UserToken();
+    public redirectUrl: string;
     map:any;
 constructor(private http: Http, private utilService: UtilService) {
-    // this.REST_URL = "https://aravindu.com/xtremand-rest/";
-    this.REST_URL = "http://localhost:8080/xtremand-rest/";
+    this.REST_URL = "https://aravindu.com/xtremand-rest/";
+    //this.REST_URL = "http://localhost:8080/xtremand-rest/";
     this.MEDIA_URL = "https://aravindu.com/vod/";
 }
 
@@ -77,10 +78,11 @@ getOptions() : RequestOptions{
 }
 
 logout(): void {
-    console.log("logout()");
+    console.log('logout()');
     // clear token remove user from local storage to log user out
     this.access_token = null;
     this.refresh_token = null;
     localStorage.removeItem('currentUser');
+    this.userToken = undefined;
 }
 }
