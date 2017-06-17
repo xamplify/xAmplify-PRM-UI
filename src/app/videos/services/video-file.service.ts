@@ -26,8 +26,8 @@ export class VideoFileService {
     }
     processVideoFile(responsePath: any): Observable<any> {
         console.log('response path in service ' + responsePath);
-        const url = this.URL + 'process_video?path=' + responsePath + '&userName=' +
-            this.refService.userName + '&access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'process_video?path=' + responsePath + '&userId=' +
+        this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, '')
             .map(this.extractData)
             .catch(this.handleError);
@@ -42,7 +42,7 @@ export class VideoFileService {
         if (this.viewBytemp === 'DRAFT') {
             saveVideoFile.action = 'save';
         }
-        const url = this.URL + 'save' + '?userName=' + this.refService.userName + '&access_token=' +
+        const url = this.URL + 'save' + '?userId=' + this.authenticationService.user.id + '&access_token=' +
             this.authenticationService.access_token;
         return this.http.post(url, saveVideoFile)
             .map(this.extractData)
@@ -54,7 +54,7 @@ export class VideoFileService {
         pagination.maxResults = 12;
         console.log(pagination);
         const url = this.URL + 'listVideosNew/' + pagination.filterBy +
-            '?userName=' + this.refService.userName + '&access_token=' + this.authenticationService.access_token;
+            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
         return this.http.post(url, pagination, '')
             .map(this.extractData)

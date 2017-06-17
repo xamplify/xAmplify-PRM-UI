@@ -20,7 +20,7 @@ export class UploadCloudvideoService {
 
     downloadFromDropbox(downloadLink: string, fileName: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userName='+this.refService.userName;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userId='+this.authenticationService.user.id;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );
@@ -28,7 +28,7 @@ export class UploadCloudvideoService {
 
     downloadFromBox(downloadLink: string, fileName: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userName='+this.refService.userName;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName+ '&userId='+this.authenticationService.user.id;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );
@@ -36,7 +36,7 @@ export class UploadCloudvideoService {
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
         console.log("file path in service " + downloadLink + "file name" + fileName + "oauthToken " + oauthToken);
-        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken+ '&userName='+this.refService.userName;
+        var url = this.URL + 'uploadCloudVideo?access_token=' + this.authenticationService.access_token + '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken+ '&userId='+this.authenticationService.user.id;
         return this.http.post(url,"")
         .map( this.extractData )
         .catch( this.handleError );

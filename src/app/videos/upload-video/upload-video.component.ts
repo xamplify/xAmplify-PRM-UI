@@ -21,7 +21,7 @@ declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloa
 export class UploadVideoComponent implements OnInit {
 
     public processVideoResp: SaveVideoFile;
-    public URL = this.authenticationService.REST_URL+'admin/uploadVideo?userName='+this.refService.userName+'&access_token=';
+    public URL = this.authenticationService.REST_URL+'admin/uploadVideo?userId='+this.authenticationService.user.id+'&access_token=';
     public uploader: FileUploader;
     public file_srcs: string[] = [];
     public hasBaseDropZoneOver  = false;
