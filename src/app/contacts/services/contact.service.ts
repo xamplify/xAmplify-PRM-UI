@@ -192,7 +192,7 @@ export class ContactService {
 
     googleLogin() {
         this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.get( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token )
+        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id, "")
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -205,7 +205,7 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });
-        return this._http.get( this.authenticationService.REST_URL + "googleOauth/callback" + queryParam + "&access_token=" + this.authenticationService.access_token + "&userAlias=" + localStorage.getItem( 'userAlias' ) )
+        return this._http.get( this.authenticationService.REST_URL + "googleOauth/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' ) )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -221,7 +221,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token;
+        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id;
         this.logger.info( "testURlpost" + url, options, requestoptions );
         this.logger.info( "contactService getGoogleContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, socialContact )
