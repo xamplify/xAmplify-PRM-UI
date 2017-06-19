@@ -1185,7 +1185,7 @@ export class AddContactsComponent implements OnInit {
 
     loadContactLists( pagination: Pagination ) {
         this.pagination.maxResults = 2000;
-        this.contactService.loadContactLists1( pagination )
+        this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
