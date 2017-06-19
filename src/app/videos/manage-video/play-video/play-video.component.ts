@@ -31,8 +31,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     isFullscreen: boolean;
     public videoUrl: string;
     private videoJSplayer: any;
-    private videoJSplayerNew: any;
-    public setValueForSrc: boolean;
     public posterImg: string;
     public likes: boolean;
     public comments: boolean;
@@ -40,8 +38,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public embedVideo: boolean;
     public isPlayButton: boolean;
     public isSkipChecked: boolean;
-    public upperTextValue: string;
-    public lowerTextValue: string;
     public isOverlay: boolean;
     public videoOverlaySubmit: string;
     public isPlay: boolean;
@@ -52,21 +48,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public isFistNameChecked: boolean;
     public videoStartTime: number;
     public durationTime: number;
-    public startOfthevideo: boolean;
-    public endOfthevideo: boolean;
-    public checkCalltoAction = false;
-    public videoId = false;
     public likesValues: number;
     public disLikesValues: number;
-    public title: string;
     public shareValues: boolean;
-    public alias: string;
-    public valueRange: number;
-    public selectedVideoAlias: string;
     public is360Value: boolean;
-    public new360video: string;
-    public video360running: boolean;
-    public viewBy: string;
     public embedUrl: string;
     public ClipboardName: string;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
@@ -101,18 +86,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     }
 
     playVideoInfo(selectedVideo: SaveVideoFile) {
-        this.selectedVideoAlias = this.selectedVideo.alias;
         this.posterImg = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
        // call to action values
-        this.valueRange = this.selectedVideo.transparency;
-        this.lowerTextValue = this.selectedVideo.lowerText;
-        this.upperTextValue = this.selectedVideo.upperText;
         this.isFistNameChecked = this.selectedVideo.name; // need  the value from server 
         this.isPlayButton = this.selectedVideo.name;  // need to get the value from server
         this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
-        this.startOfthevideo =  this.selectedVideo.startOfVideo;
-        this.endOfthevideo  = this.selectedVideo.endOfVideo;
        // this.checkCalltoAction = this.selectedVideo.callACtion;
        // video controlls
         this.likes = this.selectedVideo.allowLikes;
@@ -120,11 +99,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.shareVideo = this.selectedVideo.allowSharing;
         this.embedVideo = this.selectedVideo.allowEmbed;
         console.log(this.selectedVideo);
-        this.title = this.selectedVideo.title;
-        this.alias = this.selectedVideo.alias;
         this.is360Value = this.selectedVideo.is360video;
-        this.viewBy = this.selectedVideo.viewBy;
-        this.embedSourcePath(this.alias , this.viewBy);
+        this.embedSourcePath(this.selectedVideo.alias , this.selectedVideo.viewBy);
         this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
       }
    showOverlayModal(){
@@ -263,7 +239,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                          } }  }); });
                   }
        this.defaultVideoOptions();
-       this.transperancyControllBar(this.valueRange);
+       this.transperancyControllBar(this.selectedVideo.transparency);
        if (this.selectedVideo.enableVideoController === false)
           { this.defaultVideoControllers(); }
       });
@@ -332,17 +308,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
      }
      skipOverlay() {
         $('#overlay-modal').hide();
-        if (this.videoJSplayer){
-        this.videoJSplayer.play();}
+        if (this.videoJSplayer) {
+        this.videoJSplayer.play(); } 
     }
     ngOnInit() {
+      $('#overlay-modal').hide();
         for (let i = 0; i < this.videos.length; i ++) {
           if (this.selectedVideo.id === this.videos[i].id) {
               this.videos.splice(i, 1);
               break;
           }
         }
-        this.setValueForSrc = true;
         this.model.email_id = this.authenticationService.user.emailId;
         this.firstName = this.authenticationService.user.firstName;
         this.lastName = this.authenticationService.user.lastName;
@@ -374,12 +350,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
       transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
-        this.valueRange = value;
-        console.log(this.valueRange);
     }
    play360Video() {
         this.is360Value = true;
-        this.video360running = true;
          $("#newPlayerVideo").empty();
          $('.h-video').remove();
          $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
@@ -393,7 +366,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
              this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
             // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; /// need to comment
-             this.new360video = this.videoUrl;
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
              $("#videoId").css("height", "318");
              $("#videoId").css("width", "auto");
@@ -615,7 +587,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
           this.play360Video();
       }
         this.defaultVideoOptions();
-        this.transperancyControllBar(this.valueRange);
+        this.transperancyControllBar(this.selectedVideo.transparency);
         if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
      }
     ngOnDestroy() {

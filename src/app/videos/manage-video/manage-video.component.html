@@ -4,29 +4,26 @@
 </style> 
 <div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Modal title</h4>
-							</div>
-							<div class="modal-body">
-								 Widget settings form goes here
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn blue">Save changes</button>
-								<button type="button" class="btn default" data-dismiss="modal">Close</button>
-							</div>
+			<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+								Widget settings form goes here
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn blue">Save changes</button>
+							<button type="button" class="btn default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
-					<!-- /.modal-dialog -->
 				</div>
+				<!-- /.modal-dialog -->
+			</div>
 				<!-- END STYLE CUSTOMIZER -->
 				<!-- BEGIN PAGE HEADER-->
-			<!-- 	<h3 class="page-title">
-				{{title}} <small></small>
-				</h3> -->
 			<div >	
 		  	<div class="page-bar">
 		        <ul class="page-breadcrumb">
@@ -126,18 +123,15 @@
 												</div>
 											</div>
 											<div>
-											
-											</div>
+										 </div>
 										</div>
 										</div>
 									</div>
 									</div>
 									</div>
-									
 									<!-- END FILTER -->
 								</div>
-								
-								<div *ngIf="!isvideoThere">   
+							<div *ngIf="!isvideoThere">   
 								<!--pager here  -->
 									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">

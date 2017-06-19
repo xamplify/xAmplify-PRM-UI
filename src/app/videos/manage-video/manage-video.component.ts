@@ -201,12 +201,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.deletedVideo = false;
         this.selectedVideoFile = video;
         this.videoFileService.getVideo(video.alias, video.viewBy)
-            .subscribe((saveVideoFile: SaveVideoFile) => {
+            .subscribe((editVideoFile: SaveVideoFile) => {
                 console.log('enter the show edit vidoe method');
-                this.editDetails = saveVideoFile;
-                if (saveVideoFile.imageFiles == null) {
-                    saveVideoFile.imageFiles = []; }
-                if ( saveVideoFile.gifFiles == null ) {  saveVideoFile.gifFiles = []; }
+                this.editDetails = editVideoFile;
+                if (editVideoFile.imageFiles == null) {
+                    editVideoFile.imageFiles = []; }
+                if ( editVideoFile.gifFiles == null ) {  editVideoFile.gifFiles = []; }
                 this.videoFileService.saveVideoFile = this.editDetails;
                 console.log('show edit vidoe object :');
                 console.log(this.videoFileService.saveVideoFile);
@@ -221,9 +221,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     showPlayVideo(video: SaveVideoFile) {
         console.log('MangeVideoComponent playVideo:');
       this.videoFileService.getVideo(video.alias, video.viewBy)
-        .subscribe((saveVideoFile: SaveVideoFile) => {
-        console.log(saveVideoFile);
-        this.selectedVideo = saveVideoFile;
+        .subscribe((playVideoFile: SaveVideoFile) => {
+        console.log(playVideoFile);
+        this.selectedVideo = playVideoFile;
         this.manageVideos = false;
         this.editVideo = false;
         this.playVideo = true;
@@ -235,14 +235,17 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
 
     showCampaignVideoReport(video: SaveVideoFile) {
         console.log('ManageVideoComponent campaign report:');
+        this.videoFileService.getVideo(video.alias, video.viewBy)
+        .subscribe((campaignVideoFile: SaveVideoFile) => {
         console.log(video);
-        this.selectedVideo = video;
+        this.selectedVideo = campaignVideoFile;
         this.campaignReport = true;
         this.manageVideos = false;
         this.editVideo = false;
         this.playVideo = false;
         this.pageBar = true;
         this.deletedVideo = false;
+        });
     }
 
     deleteVideoFile(alias: string, position: number, videoName: string) {
@@ -268,7 +271,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                    //  swal( 'Campaign Video!', error, 'error' );
                      this.campaignVideoMesg = error;
                  }
-                 console.log(error);
+              console.log(error);
            },
         () => console.log( 'deleted functionality' )
         );

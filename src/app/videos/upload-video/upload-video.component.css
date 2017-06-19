@@ -76,5 +76,14 @@
 
 /deep/ .vjs-record-button.vjs-control{
 	 margin-left:259px !important;
-	
+}
+ 
+/deep/ .video-js .vjs-time-control{
+    line-height : 3.3em;
+  }
+/deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
+	line-height: 2.455em;
+}  
+.video-js .vjs-fullscreen-control {
+	display: none !important;
 }

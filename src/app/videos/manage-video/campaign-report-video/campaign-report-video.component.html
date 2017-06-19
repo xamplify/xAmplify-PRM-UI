@@ -1,10 +1,24 @@
-<!-- BEGIN PAGE HEADER-->
-<!-- <h3 class="page-title">Dashboard</h3> -->
-<!-- END PAGE HEADER-->
-<!-- BEGIN DASHBOARD STATS -->
-<!-- BEGIN PAGE CONTENT-->
-
 <!-- END CONTAINER -->
+<style type="text/css">
+	.isPlayButtonCss{ margin-top: -66px !important;}
+	.ownThumnailCss{margin-top: -22px;}
+    .paddingCss{ padding: 1em;}
+	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
+	.upperTextCssDiv{ font-size: 22px;color: white; word-break: break-all;
+       line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
+       text-align: center; width: 100%; top: 23px;
+	}
+	.lowerTextCssDiv{    position: absolute;top: 218px; line-height: 17px; font-size: 22px;
+    text-align: center !important;  color: white; word-break: break-all;
+    line-height: 1.0em; margin: -19px 20px; left: 0; right: 0;}
+	.isOffirstname {  margin-top: -43px !important ;}
+	.isPlaySubmit{ padding: 9px 43px !important; border-radius: 0px;}
+    .isSubmitCss{  padding: 9px 21px !important;}
+	/*#embed_video_player {width:auto;}*/
+	 #newPlayerVideo{width:auto;}
+     #overlay-modal{width:auto;}
+	 .overlaySet{margin-top:-299px;}
+</style>
 <div class="row">
 	<div class="col-md-12">
 		<div class="col-md-6">
@@ -13,14 +27,53 @@
 				data-setup='{"example_option":true}' [src]=videoUrl>
 				<source [src]=videoUrl type="video/mp4" />
 			</video>-->
-	        <div *ngIf="is360Value==false">
-				 <video id="campaign_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
-                 data-setup='{"example_option":true }'>
-				</video> 
-			</div>
-			<div  *ngIf="is360Value==true">
-				<div id="newPlayerVideo"></div>
-			</div>
+				 <div>
+				  <div id="newPlayerVideo"></div>
+             </div>
+			 <div id="overLayDialog"></div>
+			  <div id="overlay-modal" class="video-js" 
+              style="width:532px;height: 250px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
+               <label style="margin-top: 23px;"> </label>
+                <form #f="ngForm" novalidate>
+                  <div>
+                  <p class="upperTextCssDiv">{{selectedVideo.upperText}}</p>
+                  </div>
+                 <div style="width: 500px;top: 29% !important;position: absolute;right: 37px;">
+                 <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
+                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group paddingCss"   (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
+                 </div>  
+                 <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
+                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group paddingCss"  (ngModelChange)="checkingCallToActionValues()"
+                     placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
+                </div> 
+                  <div id="maimessage" style="width: 500px;"> 
+                    <div style=" width: 106px;">
+                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group paddingCss" (ngModelChange)="checkingCallToActionValues()"
+                   placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;" 
+                   pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+				    #email_id="ngModel">
+				    </div>
+				       <div  [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 33px;margin-left: 339px; margin-top: -66px;">  
+                 <a><button id="playorsubmit" type="button" class="btn green button isPlaySubmit" [class.isSubmitCss]= "isPlay==false"
+                 [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
+                 <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
+              </div>
+             </div> 
+               </div>
+                <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
+                 <p style="font-size: 16px;">{{selectedVideo.lowerText}}</p>
+                </div> 
+                   <div style="position: absolute; top: 225px; right: 11px;">
+                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -420pxpx; top: -5px;" (click)="repeatPlayVideo()">
+						 <i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; top: 4px;position: absolute;right: 11px;" [class.changeRepeat]="isSkipChecked==false"></i></label>
+                      <label *ngIf="isSkipChecked==true" id="skipOverlay" (click)="skipClose()"
+                      style="float:right;color:white;cursor:pointer;">
+                      <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;"></i>
+                      <b style="font-size: 13px; color:white;" >skip</b></label>
+                 </div>  
+                </form>     
+            </div>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-light blue-soft"
@@ -120,7 +173,7 @@
 					<div class="col-md-4">
 						<div class="easy-pie-chart">
 							<div class="number transactions" data-percent="55">
-								<span> +55 </span> %
+								<span> +{{percent}} </span> %
 							</div>
 							<a class="title" href="javascript:;"> Watched Fully </a>
 						</div>
@@ -220,10 +273,6 @@
 		</div>
 		<!-- END PORTLET-->
 	</div>
-
-
-
-
 	<div class="row">
 		<div class="col-md-6 col-sm-6">
 			<!-- BEGIN REGIONAL STATS PORTLET-->

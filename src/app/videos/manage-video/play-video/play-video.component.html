@@ -30,7 +30,7 @@
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
                   <div>
-                  <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin:0;">{{upperTextValue}}</p>
+                  <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin:0;">{{selectedVideo.upperText}}</p>
                   </div>
                  <div style="width: 500px;margin-top: 26px;">
                  <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 63px; float: left; width: 236px;">
@@ -55,7 +55,7 @@
                  </div> 
                </div>
                 <div [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
+                 <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{selectedVideo.lowerText}}</p>
                 </div> 
                    <div>
                      <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
@@ -96,7 +96,7 @@
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedUrl}}" target="_blank">{{title}}</a></textarea>
+											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedUrl}}" target="_blank">{{selectedVideo.title}}</a></textarea>
 									</div>
 									<span class="input-group-btn">
 										<div style="margin-top: 4px;">

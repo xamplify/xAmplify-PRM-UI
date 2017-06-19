@@ -273,6 +273,7 @@ export class UploadVideoComponent implements OnInit {
        this.saveVideo = false;
        this.discardVideo = false;
        this.hideSaveDiscard = true;
+       $(".video-js .vjs-fullscreen-control").hide();
     }
  closeRecordPopup(){
         $("#myModal").modal("hide");
@@ -337,9 +338,6 @@ export class UploadVideoComponent implements OnInit {
              $(".vjs-time-control .vjs-time-divider").css("display","none !important");
              $(".video-js .vjs-duration").css("display","none");
              $(".video-js .vjs-fullscreen-control").hide();
-          //   $(".video-js .vjs-fullscreen-control").css("display","none !important");
-          //  $(".vjs-fullscreen-control .vjs-control vjs-button").css("display","none !important");
-
          const self = this;
          self.player = videojs("myVideo",
               {
@@ -399,6 +397,7 @@ export class UploadVideoComponent implements OnInit {
                      self.testSpeed();
                      self.rageDisabled = true;
                      console.log('started recording!');
+                     $(".video-js .vjs-fullscreen-control").hide();
                     // $("#script-text").animate({ scrollTop: $("#script-text").prop("scrollHeight") }, volume);
                      self.saveVideo = false; // save button disabled
                      self.discardVideo = false; // discard button disabled
@@ -676,7 +675,6 @@ export class UploadVideoComponent implements OnInit {
            this.player.recorder.destroy();
           // this.player.recorder.stopDevice();
         }
-           console.log('Destroyed Component completed');
            this.isChecked= false;
            if(this.processing ==  true) {
                 this.redirectPge = true;

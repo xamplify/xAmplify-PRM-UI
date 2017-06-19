@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -939,7 +938,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 if (this.videoFileService.actionValue === 'Save') {
                     this.newTags[i] = tags[i]['value'];
                 } else {
-                    let tag = tags[i];
+                    const tag = tags[i];
                     if (tag['value'] !== undefined) {
                         this.newTags[i] = tag['value'];
                     } else {
@@ -972,14 +971,13 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             return this.videoFileService.saveVideo(this.saveVideoFile)
                 .subscribe((result: any) => {
                     if (this.saveVideoFile != null) { this.saveVideoFile = result;
-                        this.notifyParent.emit(this.saveVideoFile); }
-                    else {
+                        this.notifyParent.emit(this.saveVideoFile);
+                    } else {
                         console.log('save video data object is null please try again:' + this.saveVideoFile);
                         swal('ERROR', this.saveVideoFile.error, 'error');
                     }
                 }),
                 () => console.log(this.saveVideoFile);
-      
     }
     saveCallToActionUserForm() {
      /*  $('#overlay-modal').hide();
@@ -1003,7 +1001,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         console.log(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe(
-            (result: any) => { console.log('Save user Form call to acton is successfull' +result);},
+            (result: any) => { console.log('Save user Form call to acton is successfull' + result); },
             (error: string) => {// this.referenceService.showError(error, "save call to action user","Edit Video Component")
              } );
         }
@@ -1015,9 +1013,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
-      if( this.is360Value !== true){
+      if ( this.is360Value !== true) {
           this.videoJSplayer.dispose();
-       } else if(this.videoJSplayer){
+       } else if (this.videoJSplayer) {
             this.videoJSplayer.dispose();
        } else { }
         this.videoFileService.actionValue = ''; // need to change to empty
