@@ -216,15 +216,15 @@
 											<label class="col-md-3 control-label customCss"></label>
 											<div class="radio-list">
 												<label class="radio-inline" (click)="changeImgRadio1()">
-													<input type="hidden" value="{{imageValue1}}" name="imagePath" formControlName="imagePath">
+													<input type="hidden"  name="imagePath" formControlName="imagePath">
 													 <img [ngClass]="{colorImg:imgBoolean1==true ,colorShade :imgBoolean1==false}" src="{{imageFilesfirst}}" class="sizeImg">
 												</label>
 												<label class="radio-inline" (click)="changeImgRadio2()">
-													<input type="hidden" value="{{imageValue2}}" name="imagePath" formControlName="imagePath"> 
+													<input type="hidden" name="imagePath" formControlName="imagePath"> 
 													<img [ngClass]="{colorImg:imgBoolean2==true ,colorShade :imgBoolean2==false}" src="{{imageFilessecond}}" class="sizeImg">
 												</label>
 												 <label class="radio-inline" (click)="changeImgRadio3()">
-													<input type="hidden" value="{{imageValue3}}" name="imagePath" formControlName="imagePath">
+													<input type="hidden" name="imagePath" formControlName="imagePath">
 													 <img [ngClass]="{colorImg:imgBoolean3==true ,colorShade :imgBoolean3==false}"src="{{imageFilesthird}}" class="sizeImg">
 												</label>
 											</div>
@@ -256,14 +256,14 @@
 										<div class="col-md-9">
 											<div class="radio-list">
 												<label class="radio-inline" (click)="changeGifRadio1()">
-													<input type="hidden" value="{{gifValue1}}" name="gifImagePath" formControlName="gifImagePath">
+													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
 												</label>
 												 <label class="radio-inline" (click)="changeGifRadio2()">
-													<input type="hidden" value="{{gifValue2}}" name="gifImagePath" formControlName="gifImagePath">
+													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" class="sizeImg">
 												</label> <label class="radio-inline" (click)="changeGifRadio3()">
-													<input type="hidden" value="{{gifValue3}}" name="gifImagePath" formControlName="gifImagePath">
+													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" class="sizeImg">
 												</label>
 												<div *ngIf="formErrors.gifImagePath" class="alert alert-danger">{{formErrors.gifImagePath}}</div>

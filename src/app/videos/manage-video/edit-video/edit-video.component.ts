@@ -32,7 +32,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public user: User = new User();
     videoForm: FormGroup;
     public fileItem: FileItem;
-    public fileObject: File;
     public imageUrlPath: SafeUrl;
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
@@ -45,15 +44,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public imageFilesfirst: string;
     public imageFilessecond: string;
     public imageFilesthird: string;
-    public imageValue1: string;
-    public imageValue2: string;
-    public imageValue3: string;
     public giffirst: string;
     public gifsecond: string;
     public gifthird: string;
-    public gifValue1: string;
-    public gifValue2: string;
-    public gifValue3: string;
     public newTags: string[] = [];
     submitted = false;
     active = true;
@@ -113,7 +106,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public characterleft = 0;
     public publish: any;
     public formErrors: any;
-    public selectedVideoFilePath: string;
     public value360: boolean;
     public isCallAction: string;
     public embedSrcPath: string;
@@ -181,7 +173,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.videoViews = 0;
         console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;
-        this.fileObject = null;
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
@@ -225,7 +216,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.saveVideoFile.imagePath = this.imageValue1;
+        this.saveVideoFile.imagePath = this.saveVideoFile.imageFiles[0];
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.imgBoolean1 = true;
@@ -235,7 +226,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.saveVideoFile.imagePath = this.imageValue2;
+        this.saveVideoFile.imagePath = this.saveVideoFile.imageFiles[1];
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.imgBoolean2 = true;
@@ -245,7 +236,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.openOwnThumbnail = false;
         this.ownThumbnail = false;
         this.saveVideoFile.imageFile = null;
-        this.saveVideoFile.imagePath = this.imageValue3;
+        this.saveVideoFile.imagePath = this.saveVideoFile.imageFiles[2];
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.imgBoolean1 = this.imgBoolean2 = false;
@@ -262,28 +253,26 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.openOwnThumbnail = false;
         this.thumbnailRadioOpen = true;
         this.ownThumbnail = false;
-        this.fileObject = null;
         this.isThumb = true;
     }
     changeGifRadio1() {
         this.gifBoolean1 = true;
         this.gifBoolean2 = this.gifBoolean3 = false;
-        this.saveVideoFile.gifImagePath = this.gifValue1;
+        this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[0];
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
     changeGifRadio2() {
         this.gifBoolean2 = true;
         this.gifBoolean1 = this.gifBoolean3 = false;
-        this.saveVideoFile.gifImagePath = this.gifValue2;
+        this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[1];
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
     changeGifRadio3() {
         this.gifBoolean1 = this.gifBoolean2 = false;
         this.gifBoolean3 = true;
-        this.saveVideoFile.gifImagePath = this.gifValue3;
+        this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2];
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
-
 // div hide and show methods
     titleDivChange(event: boolean) {
         this.titleDiv = event;
@@ -522,11 +511,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
               this.isPlay = true;
             } else if (event === true && this.saveVideoFile.endOfVideo === true) {
                if (this.videoJSplayer) {
-                //  $('#edit_video_player').append( $('#overlay-modal').show() );
                    $('#overLayDialog').append( $('#overlay-modal').show());
                   this.videoJSplayer.pause();
                 } else {
-                //  $('#videoId').append( $('#overlay-modal').show() );
                    $('#overLayDialog').append( $('#overlay-modal').show());
                  }
               this.videoOverlaySubmit = 'SUBMIT';
@@ -607,20 +594,24 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     // default methods when component initilized
     defaultImagePaths() {
-        if (this.saveVideoFile.imagePath === this.imageValue1) {
+        if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[0]) {
         this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false;
-        } else if (this.saveVideoFile.imagePath === this.imageValue2) {
+        } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[1]) {
         this.imgBoolean2 = true; this.imgBoolean1 = this.imgBoolean3 = false;
-       } else { this.imgBoolean3 = true; this.imgBoolean1 = this.imgBoolean2 = false; }
+       } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[2]) {
+            this.imgBoolean3 = true; this.imgBoolean1 = this.imgBoolean2 = false;
+       } else { this.imgBoolean1 = this.imgBoolean2 = this.imgBoolean3 = false; }
     }
     defaultGifPaths() {
-        if (this.saveVideoFile.gifImagePath === this.gifValue1) {
+        if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[0]) {
              this.gifBoolean1 = true; this.gifBoolean2 = this.gifBoolean3 = false;
-        } else if (this.saveVideoFile.gifImagePath === this.gifValue2) {
+        } else if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[1]) {
              this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false;
-        } else { this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false; }
+        } else if ( this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2]) {
+            this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false;
+        } else { this.gifBoolean1 = this.gifBoolean2 = this.gifBoolean3 = false; }
     }
-    defaultValues() {
+    defaultVideoControllValues() {
         this.likes = this.saveVideoFile.allowLikes;
         this.comments = this.saveVideoFile.allowComments;
         this.shareValues = this.saveVideoFile.allowSharing;
@@ -642,11 +633,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     showEditModalDialog() {
       $('#overLayDialog').append( $('#overlay-modal').show());
-      // $('#edit_video_player').append( $('#overlay-modal').show());
     }
-    show360ModalDialog(){
+    show360ModalDialog() {
      $('#overLayDialog').append( $('#overlay-modal').show());
-    // $('#videoId').append( $('#overlay-modal').show());
    }
    embedSourcePath(alias: string, viewBy: string) {
     this.embedSrcPath = document.location.href;
@@ -662,17 +651,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.imageFilesfirst = this.saveVideoFile.imageFiles[0] + '?access_token=' + this.authenticationService.access_token;
         this.imageFilessecond = this.saveVideoFile.imageFiles[1] + '?access_token=' + this.authenticationService.access_token;
         this.imageFilesthird = this.saveVideoFile.imageFiles[2] + '?access_token=' + this.authenticationService.access_token;
-        this.imageValue1 = this.saveVideoFile.imageFiles[0];
-        this.imageValue2 = this.saveVideoFile.imageFiles[1];
-        this.imageValue3 = this.saveVideoFile.imageFiles[2];
         this.giffirst = this.saveVideoFile.gifFiles[0] + '?access_token=' + this.authenticationService.access_token;
         this.gifsecond = this.saveVideoFile.gifFiles[1] + '?access_token=' + this.authenticationService.access_token;
         this.gifthird = this.saveVideoFile.gifFiles[2] + '?access_token=' + this.authenticationService.access_token;
-
-        this.gifValue1 = this.saveVideoFile.gifFiles[0];
-        this.gifValue2 = this.saveVideoFile.gifFiles[1];
-        this.gifValue3 = this.saveVideoFile.gifFiles[2];
-
         if (this.videoFileService.actionValue === 'Save' && this.saveVideoFile.playerColor === 'FFFFFF'
          && this.saveVideoFile.controllerColor === 'FFFFFF') {
             this.compPlayerColor = '#f5f5f5';
@@ -728,7 +709,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         };
         try {
         this.buildForm();
-        this.defaultValues();
+        this.defaultVideoControllValues();
         this.defaultImagePaths();
         this.defaultGifPaths();
         this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
