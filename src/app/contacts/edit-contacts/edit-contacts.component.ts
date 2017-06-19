@@ -693,7 +693,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     active_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadActiveContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -722,7 +722,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     invalid_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadInvalidContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -751,7 +751,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     unSubscribed_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadUnSubscribedContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -780,7 +780,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     nonActive_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadNonActiveContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {

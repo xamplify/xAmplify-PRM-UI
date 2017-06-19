@@ -587,25 +587,25 @@ export class ManageContactsComponent implements OnInit {
         }
         
         else if( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.all_Contacts( this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.active_Contacts( this.pagination );
         } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.invalid_Contacts( this.pagination );
         } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "page" ) {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.unSubscribed_Contacts( this.pagination );
         } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.nonActive_Contacts( this.pagination );
         }
     }
     
     all_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.logger.log( pagination );
         this.contactService.loadAllContacts( pagination )
             .subscribe(
@@ -694,7 +694,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     active_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadActiveContacts( pagination )
             .subscribe(
             ( data: any ) => {
@@ -725,7 +725,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     invalid_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+       // this.pagination.maxResults = 12;
         this.contactService.loadInvalidContacts( pagination )
             .subscribe(
             ( data: any ) => {
@@ -757,7 +757,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     unSubscribed_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadUnSubscribedContacts( pagination )
             .subscribe(
             ( data: any ) => {
@@ -786,7 +786,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     nonActive_Contacts( pagination: Pagination ) {
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.contactService.loadNonActiveContacts( pagination )
             .subscribe(
             ( data: any ) => {
