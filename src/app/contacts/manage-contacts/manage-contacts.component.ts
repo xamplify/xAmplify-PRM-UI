@@ -238,6 +238,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     loadContactLists( pagination: Pagination ) {
+        this.pagination.maxResults = 12;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {

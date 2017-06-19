@@ -45,7 +45,6 @@ export class ContactService {
     }
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
-        pagination.maxResults = 12
         this.logger.info( "Service class loadContact() completed" );
         return this._http.post( this.url + "userlist?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -53,7 +52,6 @@ export class ContactService {
     }
 
     loadContactLists1( pagination: Pagination ): Observable<ContactList[]> {
-        pagination.maxResults = 1000;
         this.logger.info( "Service class loadContact() completed" );
         return this._http.post( this.url + "userlist?" +"access_token=" + this.authenticationService.access_token, pagination+'&userId='+this.authenticationService.user.id)
             .map( this.extractData )
