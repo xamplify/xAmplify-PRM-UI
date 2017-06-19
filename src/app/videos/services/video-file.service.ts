@@ -38,6 +38,20 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    saveOwnThumbnailFile(file: any) {
+        const formData: FormData = new FormData();
+        formData.append('file', file);
+        const headers = new Headers();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        console.log(formData);
+        const options = new RequestOptions({ headers: headers });
+        const url = this.URL + 'uploadOwnThumbnail?access_token=' + this.authenticationService.access_token +
+         '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url , formData  )
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     saveVideo(saveVideoFile: SaveVideoFile) {
         if (this.viewBytemp === 'DRAFT') {
             saveVideoFile.action = 'save';

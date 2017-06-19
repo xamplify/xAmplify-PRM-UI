@@ -46,11 +46,6 @@ public overLayValue: string;
 public posterImagePath: string;
 public is360Value: boolean;
 public valueRange: number;
-
-twitterButtons: any;
-googleButtons: any;
-facebookButtons: any;
-metatags: any;
 public embedUrl: string;
 public routerAlias: string;
 public routerType: string;

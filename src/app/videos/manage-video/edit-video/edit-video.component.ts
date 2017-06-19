@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -9,8 +10,6 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { ReferenceService } from '../../../core/services/reference.service';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
-import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
-import { CeiboShare } from 'ng2-social-share';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user.service';
 import { VideoUtilService } from '../../services/video-util.service';
@@ -27,10 +26,6 @@ import { Meta, MetaDefinition } from '@angular/platform-browser';
 })
 export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
 
-    public imgURL = '';
-    // public imgURL = 'http://139.59.1.205:9090/vod/images/125/03022017/flight1486153663429_play1.gif';
-    public linkurl = 'http://aravindu.com/embed-video/e47c4a80-1be0-4b32-8098-a327baac05f2';
-    public encodeImage = encodeURIComponent(this.imgURL);
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
     public saveVideoFile: SaveVideoFile;
     public categories: Category[];
@@ -39,17 +34,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     videoForm: FormGroup;
     public fileItem: FileItem;
     public fileObject: File;
-    metatags: Object;
     public imageUrlPath: SafeUrl;
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
     private compPlayerColor = '#eeeefd';
     private compControllerColor = '#eeeefe';
-    twitterButton: any;
-    sharevideo: any;
-    googleButton: any;
-    facebookButton: any;
     private videoJSplayer: any;
     public playlist: any;
     public videoUrl: string;
@@ -82,8 +72,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public colorControl: boolean;
     public callaction: boolean;
     public controlPlayers: boolean;
-    public share: boolean;
-    public shareVideos: boolean;
     public shareValues: boolean;
     public embedVideo:  boolean;
     public imgBoolean1: boolean;
@@ -106,7 +94,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     isFullscreen: boolean;
     fullScreen: boolean;
     enableCalltoAction: boolean;
-    public callActionValue: boolean;
     public valueRange: number;
     public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
     public email_id: string;
@@ -133,16 +120,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public embedSrcPath: string;
     public embedUrl: string;
     public ClipboardName: string;
-    constructor(private referenceService: ReferenceService,
+      constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
         private authenticationService: AuthenticationService,
-        private sanitizer: DomSanitizer , private videoutilService: VideoUtilService , public metaService: Meta) {
+        private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService , public metaService: Meta) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.titleOfVideo = this.videoFileService.actionValue;
-        this.videoSizes = this.videoutilService.videoSizes;
-        this.publish = this.videoutilService.publishUtil;
-        this.formErrors  = this.videoutilService.formErrors;
+        this.videoSizes = this.videoUtilService.videoSizes;
+        this.publish = this.videoUtilService.publishUtil;
+        this.formErrors  = this.videoUtilService.formErrors;
          this.ClipboardName = 'Copy to Clipboard';
         console.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -153,12 +140,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.firstName = this.authenticationService.user.firstName;
         this.lastName = this.authenticationService.user.lastName;
         this.is360Value = this.value360 =  this.saveVideoFile.is360video;
-        if ( this.videoutilService.validateEmail(this.model.email_id) ) {
+        if ( this.videoUtilService.validateEmail(this.model.email_id) ) {
               this.isOverlay = false;
             } else { this.isOverlay = true; }
 
         this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
-        this.callActionValue = this.saveVideoFile.callACtion;
         this.startCalltoAction = this.saveVideoFile.startOfVideo;
         this.endCalltoAction = this.saveVideoFile.endOfVideo;
 
@@ -172,21 +158,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             this.endCalltoAction = false;
             this.videoOverlaySubmit = 'PLAY';
             this.isPlay = true;
-        //    localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value true here in localstorge
         } else if ( this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
             this.endCalltoAction = true;
             this.startCalltoAction = false;
             this.overLayValue = 'EndOftheVideo';
             this.isPlay = false;
             this.videoOverlaySubmit = 'SUBMIT';
-          //  localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue)); /// setted the value false here in localstorge
         } else {
             this.overLayValue = 'removeCallAction';
-         //   localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
         }
         // share details
-        this.share = true;
-        this.sharevideo = this.saveVideoFile.videoPath;
         this.lowerTextValue = this.saveVideoFile.lowerText;
         this.upperTextValue = this.saveVideoFile.upperText;
 
@@ -212,6 +193,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
               this.ownThumbnail = false;
               this.imageUrlPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
          };
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+             console.log('success');
+            }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
      // need to modify this code for embed video modal popup
@@ -227,6 +211,19 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
       this.imageUrlPath = false;
       this.ownThumb = false;
       this.ownThumbnail = true;
+    }
+  fileChange(event: any) {
+    const fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+     this.videoFileService.saveOwnThumbnailFile(file)
+      .subscribe( (result: any) =>{
+          console.log(result);
+          this.isThumb = true;
+          this.saveVideoFile.imagePath = result.path;
+          this.defaultSaveImagePath = this.saveVideoFile.imagePath;
+      });
+    }
     }
     changeImgRadio1() {
         this.openOwnThumbnail = false;
@@ -358,7 +355,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
              this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
           //   this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-            const newValue = this;
+            const newThis = this;
             const player = videojs('videoId').ready(function() {
                   this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
@@ -399,12 +396,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 callback: function () {
                 // const isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                  // player.ready();
-                 const isValid = newValue.overLayValue;
+                 const isValid = newThis.overLayValue;
                 player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
                     //  $('#videoId').append( $('#overlay-modal').show());
                     $('.vjs-big-play-button').css('display', 'none');
-                    newValue.show360ModalDialog();
+                    newThis.show360ModalDialog();
                     } else if (isValid !== 'StartOftheVideo' ) {
                       $('#overlay-modal').hide(); player.play(); }
                   //  if (isValid === 'removeCallAction'){ $('#overlay-modal').hide();player.play(); }
@@ -423,7 +420,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                  player.on('ended', function() {
                      if (isValid === 'EndOftheVideo') {
                    //  $('#videoId').append( $('#overlay-modal').show());
-                     newValue.show360ModalDialog();
+                     newThis.show360ModalDialog();
                      $('.video-js .vjs-control-bar').hide();
                     } else if (isValid !== 'EndOftheVideo') {
                         $('#overlay-modal').hide(); player.pause();}
@@ -452,7 +449,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     // video controller methods
       transperancyControllBar(value: any) {
-        const rgba = this.videoutilService.convertHexToRgba(this.saveVideoFile.controllerColor, value);
+        const rgba = this.videoUtilService.convertHexToRgba(this.saveVideoFile.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
         console.log(this.valueRange);
@@ -561,12 +558,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.videoJSplayer.play(); }
    }
     checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.videoutilService.validateEmail(this.model.email_id)
+        if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
          && this.firstName.length !== 0 && this.lastName.length !== 0) {
         this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
         } else if (this.isFistNameChecked === false
-         && this.videoutilService.validateEmail(this.model.email_id)) { this.isOverlay = false;
+         && this.videoUtilService.validateEmail(this.model.email_id)) { this.isOverlay = false;
           } else { this.isOverlay = true; }
     }
 
@@ -926,8 +923,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     };
 
     saveVideo() {
-        if ((this.fileObject == undefined && this.ownThumbnail == false && this.openOwnThumbnail == false) ||
-            (this.fileObject != undefined && this.ownThumbnail == false && this.ownThumb == true)) {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.playerColor = this.compPlayerColor;
@@ -938,18 +933,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
             console.log('savevideo file controller value is ' + this.saveVideoFile.controllerColor);
             console.log('controller value is ' + this.compControllerColor);
-
-            if (this.fileObject == undefined) {
-                console.log('file object for form data in image file :');
-                this.saveVideoFile.imageFile = null;
-                console.log(this.saveVideoFile.imageFile);
-            }
-            else {
-                const formData: FormData = new FormData();
-                formData.append('file', this.fileObject);
-                this.saveVideoFile.imageFile = formData;
-                // this.saveVideoFile.imageFile = this.fileObject;
-            }
             console.log(this.saveVideoFile.tags);
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
@@ -971,8 +954,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             console.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
             this.saveVideoFile.is360video = this.value360;
-
-            if (this.videoFileService.actionValue == 'Save') {
+            this.saveVideoFile.imageFile = null;
+            if (this.videoFileService.actionValue === 'Save') {
                 this.saveVideoFile.action = 'save';
                 this.videoFileService.showSave = true;
                 this.videoFileService.showUpadte = false;
@@ -996,12 +979,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                     }
                 }),
                 () => console.log(this.saveVideoFile);
-        } else {
-            console.log('image file is :');
-            console.log(this.fileObject);
-            console.log(this.saveVideoFile.imageFile);
-
-        }
+      
     }
     saveCallToActionUserForm() {
      /*  $('#overlay-modal').hide();
@@ -1024,7 +1002,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
       //  }
         console.log(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
-            .subscribe( (result: any) => { console.log('Save user Form call to acton is successfull' +result);},
+            .subscribe(
+            (result: any) => { console.log('Save user Form call to acton is successfull' +result);},
             (error: string) => {// this.referenceService.showError(error, "save call to action user","Edit Video Component")
              } );
         }

@@ -8,11 +8,19 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="col-md-6">
-			<video id="example_video_12" class="video-js vjs-default-skin"
+			<!--<video id="example_video_12" class="video-js vjs-default-skin"
 				controls width="532" height="250"
 				data-setup='{"example_option":true}' [src]=videoUrl>
 				<source [src]=videoUrl type="video/mp4" />
-			</video>
+			</video>-->
+	        <div *ngIf="is360Value==false">
+				 <video id="campaign_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
+                 data-setup='{"example_option":true }'>
+				</video> 
+			</div>
+			<div  *ngIf="is360Value==true">
+				<div id="newPlayerVideo"></div>
+			</div>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-light blue-soft"

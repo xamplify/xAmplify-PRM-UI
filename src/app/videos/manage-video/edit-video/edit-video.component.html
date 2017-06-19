@@ -1,12 +1,9 @@
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
-	.emailCustomCss { }    /*margin top 93px*/
 	.paddingCss{ padding: 1em;}
 	 .clipboard{ padding: 6px 44px;}
-	/*.isLowerTextCss {margin-top: 43px !important;}*/
 	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
-	.isLowerTextCss{ }
 	.upperTextCssDiv{ font-size: 22px;color: white; word-break: break-all;
        line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
        text-align: center; width: 100%; top: 23px;
@@ -59,7 +56,7 @@
                     <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group paddingCss"  (ngModelChange)="checkingCallToActionValues()"
                      placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
                 </div> 
-                  <div id="maimessage" [class.emailCustomCss]="isPlayButton==false" style="width: 500px;"> 
+                  <div id="maimessage"  style="width: 500px;"> 
                     <div style=" width: 106px;">
                     <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group paddingCss" (ngModelChange)="checkingCallToActionValues()"
                    placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;" 
@@ -73,7 +70,7 @@
                  </div> 
                </div>
                 <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;" [class.isLowerTextCss]="isPlayButton==false">{{lowerTextValue}}</p>
+                 <p style="font-size: 16px;">{{lowerTextValue}}</p>
                 </div> 
                    <div style="position: absolute; top: 258px; right: 11px;">
                      <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -494px; top: -5px;" (click)="repeatPlayVideo()">
@@ -95,23 +92,8 @@
 					</span>
 				</div>
 				<div>
-					<!-- 	<share-button [button]='twitterButton'  [url]="linkurl" ></share-button> 
-		    <share-button [button]='googleButton'  [url]= "linkurl" ></share-button> 
-		   <share-button [button]='facebookButton'  [url]="linkurl"></share-button>  -->
-
-					<!--  <share-buttons [url]="linkurl" [description]="sdescription" [tags]="stags"></share-buttons> -->
 				</div>
-				<!-- <div  *ngIf="shareVideos">
-					<button ceiboShare [facebook]="{u: repoUrl,media: imgURL}">Facebook</button>
-					<button ceiboShare [linkedIn]="{url:repoUrl}">Linkedin</button>
-					<button ceiboShare [googlePlus]="{url:repoUrl,media: imgURL}">Google
-						Plus</button>
-					<button ceiboShare
-						[twitter]="{url:repoUrl,media: imgURL , text:'Checkout this awesome ng2 social share directive', hashtags:'angular2, social, ceiboIT'}">Twitter</button>
-					<button ceiboShare
-						[pinterest]="{url:repoUrl, media: imgURL, description:'Checkout this awesome angular2 directive'}">Pinterest</button>
-			</div> 
-			 -->
+			
 				<!-- <a class="btn btn-primary" (click)="openWindow()"> -->
 				<div>
 					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
@@ -258,13 +240,13 @@
 										</div>
 										<div class="col-md-9" style="top: 7px; position: relative;">
 											<div *ngIf="openOwnThumbnail">
-												<input type="file" ng2FileSelect [uploader]="uploader"  *ngIf="uploader.queue.length==0" #input>
+												<input type="file" ng2FileSelect [uploader]="uploader" (change)="fileChange($event)" *ngIf="uploader.queue.length==0">
 												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
 										    <div>
 												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();removeOwnThumbnail()">&times;</span>
 												<img *ngIf="imageUrlPath" [src] = imageUrlPath  style="height: 71px; width: 98px">
 											</div>
-												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required</div>
+												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required,max 10mb </div>
 												<!--  <div *ngIf="formErrors.imageFile" class="alert alert-danger">{{formErrors.imageFile}}</div> -->
 											</div>
 										</div>

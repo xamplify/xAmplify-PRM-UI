@@ -257,7 +257,7 @@ export class DashboardComponent implements OnInit {
             this.getTotalCountOfTFFF();
             this.getGenderDemographics();
             this.getWeeklyTweets();
-            alert(userId);
+           // alert(userId);
             this.listSocialAccounts(userId);
 
         } catch (err) {

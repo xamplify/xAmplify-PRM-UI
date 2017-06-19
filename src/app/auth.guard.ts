@@ -1,20 +1,30 @@
-import { Injectable } from '@angular/core';
-import { Router, CanActivate } from '@angular/router';
+import { Injectable }  from '@angular/core';
+import {  CanActivate, Router, ActivatedRouteSnapshot,RouterStateSnapshot, CanActivateChild }   from '@angular/router';
 import {AuthenticationService} from './core/services/authentication.service';
+ 
 @Injectable()
-export class AuthGuard implements CanActivate {
-
-    constructor(private router: Router, private authenticationService: AuthenticationService) { }
-
-    canActivate() {
-    	console.log("canActivate() : AuthGuard");
-        if (this.authenticationService.userToken != undefined) {
-            // logged in so return true
-            return true;
+export class AuthGuard implements CanActivate, CanActivateChild {
+  constructor(private authService: AuthenticationService, private router: Router) {}
+ 
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    let url: string = state.url;
+ 
+    return this.checkLogin(url);
+  }
+ 
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    return this.canActivate(route, state);
+  }
+ 
+  checkLogin(url: string): boolean {
+    if (this.authService.userToken !== undefined && this.authService.user.id !== undefined) { 
+    	 	return true;
         }
-        console.log("canActivate() router.navigate : /login");
-        // not logged in so redirect to login page
-        this.router.navigateByUrl('/login');
-        return false;
-    }
+ 
+    // Store the attempted URL for redirecting
+   // this.authService.redirectUrl = url;
+    // Navigate to the login page
+    this.router.navigate(['/login']);
+    return false;
+  }
 }
