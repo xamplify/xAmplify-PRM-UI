@@ -238,11 +238,13 @@ export class ManageContactsComponent implements OnInit {
     }
 
     loadContactLists( pagination: Pagination ) {
+        this.pagination.isLoading = true;
         this.pagination.maxResults = 12;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
+                this.pagination.isLoading = false;
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
