@@ -521,7 +521,7 @@ export class AddContactsComponent implements OnInit {
         $( "button#microsoftContact_button" ).prop( 'disabled', false );
         $( "button#uploadCSV" ).prop( 'disabled', false );
         $( "input[type='file']" ).attr( "disabled", false );
-        this.model.contactListName = null;
+        //this.model.contactListName = null;
     }
 
     addRow() {
