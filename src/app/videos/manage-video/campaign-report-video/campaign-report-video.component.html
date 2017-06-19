@@ -17,7 +17,7 @@
 	/*#embed_video_player {width:auto;}*/
 	 #newPlayerVideo{width:auto;}
      #overlay-modal{width:auto;}
-	 .overlaySet{margin-top:-299px;}
+	 .overlaySet{ position: absolute; top: 0px }
 </style>
 <div class="row">
 	<div class="col-md-12">
@@ -31,7 +31,7 @@
 				  <div id="newPlayerVideo"></div>
              </div>
 			 <div id="overLayDialog"></div>
-			  <div id="overlay-modal" class="video-js" 
+			  <div id="overlay-modal" class="video-js" [ngClass]="['overlaySet']"
               style="width:532px;height: 250px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"> </label>
                 <form #f="ngForm" novalidate>
@@ -173,7 +173,7 @@
 					<div class="col-md-4">
 						<div class="easy-pie-chart">
 							<div class="number transactions" data-percent="55">
-								<span> +{{percent}} </span> %
+								<span> +55 </span> %
 							</div>
 							<a class="title" href="javascript:;"> Watched Fully </a>
 						</div>

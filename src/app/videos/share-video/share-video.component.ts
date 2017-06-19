@@ -38,14 +38,11 @@ public firstName: string;
 public lastName: string;
 public isSkipChecked: boolean; // isSkiped means to hide the videojs overlay for users
 public showOverLay: boolean; // for show the videojs overlay modal at the start or end of the video
-public isFistpropertyChecked: boolean;
-public lowerTextValue: string;
-public upperTextValue: string;
+public isFistNameChecked: boolean;
 public videoOverlaySubmit: string;
 public overLayValue: string;
 public posterImagePath: string;
 public is360Value: boolean;
-public valueRange: number;
 public embedUrl: string;
 public routerAlias: string;
 public routerType: string;
@@ -73,8 +70,6 @@ public shareUrl: string;
           this.embedVideoFile = data;
           console.log(data);
           this.posterImagePath = this.embedVideoFile.imagePath;
-          this.lowerTextValue = this.embedVideoFile.lowerText;
-          this.upperTextValue = this.embedVideoFile.upperText;
           this.is360Value  =  this.embedVideoFile.is360video;
           this.imgURL =  this.embedVideoFile.gifImagePath;
           this.title = this.embedVideoFile.title;
@@ -100,14 +95,13 @@ public shareUrl: string;
         }
        this.checkingCallToActionValues();
        this.defaultVideoSettings();
-       this.transperancyControllBar(this.valueRange);
+       this.transperancyControllBar(this.embedVideoFile.transparency);
        if (this.embedVideoFile.enableVideoController === false) {
            this.defaultVideoControllers();
           }
-        this.defaultValues();
+        this.defaultCallToActionValues();
             console.log(this.videoUrl);
-        // const res = encodeURIComponent(this.embedVideoFile.gifImagePath);
- this.shareUrl = 'http://aravindu.com/xtremand-share/video?viewBy='+this.embedVideoFile.viewBy+'&alias=' + this.embedVideoFile.alias;
+ this.shareUrl = 'http://aravindu.com/xtremand-share/video?viewBy=' + this.embedVideoFile.viewBy + '&alias=' + this.embedVideoFile.alias;
          this.imgURL = this.embedVideoFile.gifImagePath;
          console.log(this.shareUrl);
          this.shareMetaTags();
@@ -153,9 +147,8 @@ public shareUrl: string;
      this.getVideo(this.routerAlias, this.routerType);
      console.log(this.embedVideoFile);
   }
-   defaultValues() {
-        this.valueRange = this.embedVideoFile.transparency;
-        this.isFistpropertyChecked = this.embedVideoFile.name;
+   defaultCallToActionValues() {
+        this.isFistNameChecked = this.embedVideoFile.name;
         this.isSkipChecked = this.embedVideoFile.skip;
     }
     defaultVideoSettings() {
@@ -166,15 +159,15 @@ public shareUrl: string;
         $('.video-js .vjs-control-bar').css('background-color', this.embedVideoFile.controllerColor);
         if (this.embedVideoFile.allowFullscreen === false) {
            $('.video-js .vjs-fullscreen-control').hide();
-        } else { 	$('.video-js .vjs-fullscreen-control').show();
+        } else { $('.video-js .vjs-fullscreen-control').show();
         }
     }
     checkingCallToActionValues() {
-        if (this.isFistpropertyChecked === true && this.validateEmail(this.model.email_id)
+        if (this.isFistNameChecked === true && this.validateEmail(this.model.email_id)
          && this.firstName.length !== 0 && this.lastName.length !== 0) {
         this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last property ' + this.lastName);
-        } else if (this.isFistpropertyChecked === false
+        } else if (this.isFistNameChecked === false
          && this.validateEmail(this.model.email_id)) { this.isOverlay = false;
          } else { this.isOverlay = true; }
     }
@@ -300,16 +293,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             $('#videoId').css('width', '640px');
             $('#videoId').css('height', '318px');
     }
-    showEditModalDialog() {
-    //  $('#overLayDialog').append( $('#overlay-modal').show());
-      // $('#edit_video_player').append( $('#overlay-modal').show());
-      $('#overlay-modal').hide();
-    }
-    show360ModalDialog() {
-    // $('#overLayDialog').append( $('#overlay-modal').show());
-    // $('#videoId').append( $('#overlay-modal').show());
-    $('#overlay-modal').hide();
-  }
     playNormalVideo() {
        $('.p-video').remove();
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
@@ -338,7 +321,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                       $('.video-js .vjs-tech').css('height', '100%');
                   if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
-                    //  self.showEditModalDialog();
                       $('#videoId').append( $('#overlay-modal').show());
                     } else if (isValid !== 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
@@ -357,7 +339,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
                      $('#videoId').append( $('#overlay-modal').show());
-                   //  self.showEditModalDialog();
                  } else if (isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#overlay-modal').hide(); player.pause();
@@ -415,8 +396,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.embedVideoFile.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
-        this.valueRange = value;
-        console.log(this.valueRange);
     }
     videoPlayListSourceM3U8() {
       this.videoUrl = this.embedVideoFile.videoPath;
@@ -437,7 +416,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
        console.log(body);
        return body || {};
     }
-
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';

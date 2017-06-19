@@ -38,7 +38,7 @@
                <label style="margin-top: 23px;"> </label>
                 <form #f="ngForm" novalidate>
                   <div>
-                  <p class="upperTextCssDiv">{{upperTextValue}}</p>
+                  <p class="upperTextCssDiv">{{embedVideoFile.upperText}}</p>
                   </div>
                  <div style="width: 500px;top: 35% !important;position: absolute;right: 87px;">
                  <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
@@ -64,7 +64,7 @@
              </div> 
                </div>
                 <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;">{{lowerTextValue}}</p>
+                 <p style="font-size: 16px;">{{embedVideoFile.lowerText}}</p>
                 </div> 
                    <div style="position: absolute; top: 258px; right: 11px;">
                      <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -494px; top: -5px;" (click)="repeatPlayVideo()">

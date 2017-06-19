@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, OnDestroy,AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import {SaveVideoFile} from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
@@ -10,7 +10,6 @@ declare var videojs, Metronic, Layout, $ , Demo, QuickSidebar, Index, Tasks, req
     styleUrls: ['./campaign-report-video.component.css', '../../../../assets/css/video-css/video-js.custom.css']
 })
 export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterViewInit {
-
     @Input() selectedVideo: SaveVideoFile;
     private _elementRef: ElementRef;
     private videoJSplayer: any;
@@ -25,9 +24,26 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
     public videoOverlaySubmit: string;
     public isSkipChecked: boolean;
     model: any = {};
+    public percent: number;
+    public options: any;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
      private videoUtilService: VideoUtilService) {
-        this._elementRef = elementRef;
+            this._elementRef = elementRef;
+            this.percent = 80;
+            this.options = {
+            barColor: '#ef1e25',
+            trackColor: '#f9f9f9',
+            scaleColor: '#dfe0e0',
+            scaleLength: 5,
+            lineCap: 'round',
+            lineWidth: 3,
+            size: 180,
+            rotate: 0,
+            animate: {
+                duration: 1000,
+                enabled: true
+            }
+            };
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -66,10 +82,10 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
         if (this.selectedVideo.callACtion === true && this.selectedVideo.startOfVideo === true) {
         this.videoOverlaySubmit = 'PLAY';
         this.overLayValue = 'StartOftheVideo';
-        } else if (this.selectedVideo.callACtion === true && this.selectedVideo.endOfVideo === true){
+        } else if (this.selectedVideo.callACtion === true && this.selectedVideo.endOfVideo === true) {
             this.videoOverlaySubmit = 'SUBMIT';
               this.overLayValue = 'EndOftheVideo';
-        } else{
+        } else {
              this.overLayValue = 'removeCallAction';
         }
     }
@@ -82,6 +98,10 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
         this.videoJSplayer.play(); }
+   }
+     show360ModalDialog() {
+     $('#overLayDialog').append( $('#overlay-modal').show());
+    // $('#videoId').append( $('#overlay-modal').show());
    }
     ngOnInit() {
         this.posterImagePath = this.selectedVideo.imagePath;
@@ -110,14 +130,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
        if (this.selectedVideo.enableVideoController === false) {
            this.defaultVideoControllers(); }
     } // ng After view closed
-      videoPlayListSourceM3U8() {
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
-    }
-    playNormalVideo() {
+     playNormalVideo() {
         $('.p-video').remove();
          $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
          $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
@@ -125,11 +138,11 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
          $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
          $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
          this.is360Value = false;
-const str = '<video id="videoId" poster=' + this.posterImagePath +' preload="none"  class="video-js vjs-default-skin" controls></video>';
+const str = '<video id="videoId" poster=' + this.posterImagePath + 'preload="none"  class="video-js vjs-default-skin" controls></video>';
              $('#newPlayerVideo').append(str);
              this.videoUrl = this.selectedVideo.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-             this.videoUrl =  this.videoUrl + '_mobinar.m3u8';
+             this.videoUrl = this.videoUrl + '._mobinar.m3u8?access_token=' + this.authenticationService.access_token;
              $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
               $('#videoId').css('height', '250px');
               $('#videoId').css('width', '532px');
@@ -145,8 +158,8 @@ const str = '<video id="videoId" poster=' + this.posterImagePath +' preload="non
                        $('.video-js .vjs-tech').css('height', '100%');
                    if (isValid === 'StartOftheVideo' ) {
                        $('.vjs-big-play-button').css('display', 'none');
-                     //  self.showEditModalDialog();
-                       $('#videoId').append( $('#overlay-modal').show());
+                       self.show360ModalDialog();
+                     //  $('#videoId').append( $('#overlay-modal').show());
                      } else if (isValid !== 'StartOftheVideo' ) {
                        $('.vjs-big-play-button').css('display', 'none');
                        $('#overlay-modal').hide(); player.play();
@@ -164,7 +177,7 @@ const str = '<video id="videoId" poster=' + this.posterImagePath +' preload="non
                   if (isValid === 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#videoId').append( $('#overlay-modal').show());
-                    //  self.showEditModalDialog();
+                      self.show360ModalDialog();
                   } else if (isValid !== 'EndOftheVideo') {
                        $('.vjs-big-play-button').css('display', 'none');
                        $('#overlay-modal').hide(); player.pause();
@@ -213,22 +226,21 @@ const str = '<video id="videoId" poster=' + this.posterImagePath +' preload="non
                       malformedKey: { key: function() {  console.log(' The Key function must return a boolean.'); },
                           handler: function(player: any, options: any, event: any) { }
                       } }  }); });
-   //    this.videoPlayListSourceM3U8();
     }
     play360Video() {
         this.is360Value = true;
         console.log('Loaded 360 Video');
         $('.h-video').remove();
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-$('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript" class="p-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript" class="p-video" />');
+        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
+$('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript" class="p-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
 const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
                 $('#newPlayerVideo').append(str);
                  this.videoUrl = this.selectedVideo.videoPath;
                  this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-                 this.videoUrl = this.videoUrl + '.mp4';
+                 this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
                 // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
                  $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
                 const newValue = this;
@@ -275,9 +287,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      const isValid = newValue.overLayValue;
                     player.ready(function() {
                         if (isValid === 'StartOftheVideo' ) {
-                          $('#videoId').append( $('#overlay-modal').show());
+                        //  $('#videoId').append( $('#overlay-modal').show());
                           $('.vjs-big-play-button').css('display', 'block');
-                       // newValue.show360ModalDialog();
+                        newValue.show360ModalDialog();
                         } else if (isValid !== 'StartOftheVideo' ) {
                           $('#overlay-modal').hide(); player.play();
                         } else { $('#overlay-modal').hide();
@@ -294,8 +306,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      });
                      player.on('ended', function() {
                          if (isValid === 'EndOftheVideo') {
-                         $('#videoId').append( $('#overlay-modal').show());
-                    //     newValue.show360ModalDialog();
+                    //     $('#videoId').append( $('#overlay-modal').show());
+                         newValue.show360ModalDialog();
                          $('.video-js .vjs-control-bar').hide();
                         } else if (isValid !== 'EndOftheVideo') {
                             $('#overlay-modal').hide(); player.pause();

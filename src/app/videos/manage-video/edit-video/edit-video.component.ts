@@ -192,9 +192,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
               this.ownThumbnail = false;
               this.imageUrlPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
          };
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-             console.log('success');
-            }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
      // need to modify this code for embed video modal popup
@@ -213,10 +210,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     }
   fileChange(event: any) {
     const fileList: FileList = event.target.files;
-    if(fileList.length > 0) {
-        let file: File = fileList[0];
+    if (fileList.length > 0) {
+        const file: File = fileList[0];
      this.videoFileService.saveOwnThumbnailFile(file)
-      .subscribe( (result: any) =>{
+      .subscribe( (result: any) => {
           console.log(result);
           this.isThumb = true;
           this.saveVideoFile.imagePath = result.path;
@@ -402,9 +399,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                     $('.vjs-big-play-button').css('display', 'none');
                     newThis.show360ModalDialog();
                     } else if (isValid !== 'StartOftheVideo' ) {
-                      $('#overlay-modal').hide(); player.play(); }
-                  //  if (isValid === 'removeCallAction'){ $('#overlay-modal').hide();player.play(); }
-                    else { $('#overlay-modal').hide();
+                      $('#overlay-modal').hide(); player.play();
+                     } else { $('#overlay-modal').hide();
                         player.play();
                      }
                       $('#skipOverlay').click(function(){
@@ -422,9 +418,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                      newThis.show360ModalDialog();
                      $('.video-js .vjs-control-bar').hide();
                     } else if (isValid !== 'EndOftheVideo') {
-                        $('#overlay-modal').hide(); player.pause();}
-                   //  if (isValid === 'removeCallAction'){$('#overlay-modal').hide(); player.pause();}
-                     else { $('#overlay-modal').hide(); player.pause(); }
+                        $('#overlay-modal').hide(); player.pause();
+                    } else { $('#overlay-modal').hide(); player.pause(); }
                       $('#repeatPlay').click(function(){
                         player.play();
                       });
@@ -526,7 +521,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
               this.videoOverlaySubmit = 'PLAY';
               this.isPlay = true;
             } else if (event === true && this.saveVideoFile.endOfVideo === true) {
-               if (this.videoJSplayer){
+               if (this.videoJSplayer) {
                 //  $('#edit_video_player').append( $('#overlay-modal').show() );
                    $('#overLayDialog').append( $('#overlay-modal').show());
                   this.videoJSplayer.pause();
@@ -537,9 +532,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
               this.videoOverlaySubmit = 'SUBMIT';
               this.isPlay = false;
             } else {
-                //   (<HTMLInputElement>document.getElementById("asknames")).disabled = true;
              $('#overlay-modal').hide();
-              if (this.videoJSplayer){
+              if (this.videoJSplayer) {
                 this.videoJSplayer.pause();
              }
         }
