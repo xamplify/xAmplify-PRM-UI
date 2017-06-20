@@ -8,14 +8,14 @@ import 'rxjs/add/operator/map';
 import {Category} from '../../videos/models/category';
 import { Logger } from "angular2-logger/core";
 import {User} from '../models/user';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 @Injectable()
 export class ReferenceService{
 
     public refcategories: Category[];
     public userName: any;
     public selectedCampaignType:string = "";
-    isCampaignCreated:boolean = false;
-    isCampaignUpdated:boolean = false;
+    campaignSuccessMessage:string = "";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
 
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger:Logger) {
@@ -34,6 +34,17 @@ export class ReferenceService{
     showError(cause:string,methodName:string,componentName:string){
        let message = "Error In "+methodName+"() "+componentName;
        this.logger.error(message+":",cause);
+    }
+    
+    showServerError(httpRequestLoader:HttpRequestLoader){
+        httpRequestLoader.isLoading = false;
+        httpRequestLoader.isServerError = true;
+        httpRequestLoader.statusCode = 500;
+        return httpRequestLoader;
+    }
+    
+    loading(httpRequestLoader:HttpRequestLoader,isLoading:boolean){
+        httpRequestLoader.isLoading = isLoading;
     }
     
     showInfo(info:string,data:any){

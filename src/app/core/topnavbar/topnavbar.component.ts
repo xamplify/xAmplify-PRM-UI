@@ -4,7 +4,7 @@ import { UserService } from '../services/user.service';
 import {TwitterService} from "../../social/services/twitter.service";
 import {SocialService} from "../../social/services/social.service";
 import { User } from '../models/user';
-
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var swal: any;
 @Component({
   selector: 'app-topnavbar',
@@ -12,14 +12,40 @@ declare var swal: any;
   styleUrls: ['./topnavbar.component.css']
 })
 export class TopnavbarComponent implements OnInit { 
-    @Input('displayName') displayName: string;
+   
     notifications:any;
     notificationsCount: number = 0;
-    constructor( private router: Router,private userService:UserService, private twitterService: TwitterService, private socialService: SocialService) {
-    }
-    
-    loggedInUser:User;
+    isUserUpdated:boolean;
+
     @Input('profilePicutrePath') profilePicutrePath:string;
+    @Input('displayName') displayName: string;
+    
+    constructor( private router: Router,private userService:UserService, private twitterService: TwitterService,
+            private socialService: SocialService,private authenticationService:AuthenticationService) {
+        const loggedInUser = this.authenticationService.user;
+        console.log(loggedInUser);
+      //  this.isUserUpdated = this.authenticationService.isUserUpdated;
+        if(!this.isEmpty(loggedInUser)) {
+            // Object is empty (Would return true in this example)
+            if(loggedInUser.firstName!=null){
+                this.displayName = loggedInUser.firstName;
+            }else{
+                this.displayName = loggedInUser.emailId;
+            }
+            if(!(loggedInUser.profileImagePath.indexOf(null)>-1)){
+                this.profilePicutrePath = loggedInUser.profileImagePath;
+            }else{
+                this.profilePicutrePath =  "assets/admin/pages/media/profile/icon-user-default.png";
+            }
+        }
+    }
+    isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
     
     listTwitterNotifications(){
         setInterval(() => {

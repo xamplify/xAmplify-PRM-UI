@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 $.fn.highlightCode = function(codeType,htmlText) {
     var self = this;
     var functions = {

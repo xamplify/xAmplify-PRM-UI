@@ -6,7 +6,7 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
-
+import { AuthenticationService } from '../../core/services/authentication.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 
@@ -31,9 +31,10 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     model: any = {};
     public availableTemplateNames: Array<string>;
 
-    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, private emailTemplate: EmailTemplate, private logger: Logger) {
+    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
+            private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService) {
         logger.debug("updateTemplateComponent() Loaded");
-        emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id).subscribe(
+        emailTemplateService.getAvailableNames(this.authenticationService.user.id).subscribe(
             (data: any) => {
                 this.availableTemplateNames = data;
             },

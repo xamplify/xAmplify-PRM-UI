@@ -6,12 +6,12 @@ import { TopnavbarComponent } from './topnavbar/topnavbar.component';
 import { BottomnavbarComponent } from './bottomnavbar/bottomnavbar.component';
 import { LeftsidebarComponent } from './leftsidebar/leftsidebar.component';
 import { HomeComponent } from './home/home.component';
-
 import { AuthGuard } from '../auth.guard';
 import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-bar';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
-    imports: [CommonModule, RouterModule, SlimLoadingBarModule.forRoot()],
+    imports: [CommonModule, RouterModule, SlimLoadingBarModule.forRoot(),SharedModule],
     declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],
     exports: [
         TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent],

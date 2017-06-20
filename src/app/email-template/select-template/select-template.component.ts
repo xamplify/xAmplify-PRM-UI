@@ -6,13 +6,15 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { Logger } from 'angular2-logger/core';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var Metronic , Layout , Demo, swal , Portfolio: any;
 
 @Component({
   selector: 'app-select-template',
   templateUrl: './select-template.component.html',
   styleUrls: ['./select-template.component.css'],
-  providers :[EmailTemplate],
+  providers :[EmailTemplate,HttpRequestLoader],
 })
 export class SelectTemplateComponent implements OnInit,OnDestroy {
 
@@ -20,10 +22,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     public filteredEmailTemplates  : Array<EmailTemplate> = new Array<EmailTemplate>();
     public templateSearchKey: string = "";
     templateFilter: any = { name: '' };
-    constructor(private emailTemplateService:EmailTemplateService, private userService: UserService,
-    		private emailTemplate:EmailTemplate,private router:Router,private authenticationService:AuthenticationService,
-    		private logger:Logger) {
-  
+    errorPrepender:string  = "Error In";
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    
+    constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
+        private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
+        private logger: Logger,private refService:ReferenceService) {
+
      }
      
     ngOnInit(){
@@ -31,28 +36,27 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             Metronic.init();
             Layout.init();
             Demo.init();
-            //Portfolio.init();
             this.listDefaultTemplates();
          }
          catch(error){
-             let errorMessage = "Error In ngOnInit() In  selectTemplatesComponent";
-             this.logger.error(errorMessage, error);
-         
+             this.logger.error(this.errorPrepender+" ngOnInit():", error);
          }
        }       
     
        listDefaultTemplates(){
-           this.emailTemplateService.listDefaultTemplates()
+          this.refService.loading(this.httpRequestLoader, true);
+          this.emailTemplateService.listDefaultTemplates()
            .subscribe(
                (data:any) => {
                    this.allEmailTemplates = data;
                    this.filteredEmailTemplates = data;
+                   this.refService.loading(this.httpRequestLoader, false);
                },
                (error:string) => {
-                   var cause = "Error In listDefaultTemplates() in selectTemplatesComponent";
-                   this.logger.error(cause+":"+error);
+                   this.logger.error(this.errorPrepender+" listDefaultTemplates():"+error);
+                   this.refService.showServerError(this.httpRequestLoader);
                },
-               () =>this.logger.debug("Got List Of Default Templates From listDefaultTemplates() in selectTemplatesComponent",this.allEmailTemplates)
+               () =>this.logger.info("Finished listDefaultTemplates()")
            );
        }
        
@@ -203,9 +207,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                 this.emailTemplateService.emailTemplate = data;
                    this.router.navigate(["/home/emailtemplate/createTemplate"]);
                },
-               (error:any) => {
+               (error:string) => {
+                   this.logger.error(this.errorPrepender+" showTemplateById():"+error);
+                   this.refService.showServerError(this.httpRequestLoader);
                },
-               () => console.log("Got Email Template")
+               () => this.logger.info("Got Email Template")
            );
        }else if(index==17 || index==1){
            //This is normal template

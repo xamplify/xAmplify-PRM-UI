@@ -35,32 +35,6 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
     
- /*   list(userId:number,pageIndex:number,selectedTemplate:string,selectedSortedOption:any,searchKey:string){
-        try{
-           // let value = selectedSortedOption.value;
-            let sortColumn:string = null;
-            let sortingOrder:string = null;
-            if(selectedSortedOption!=""){
-                let options:string[] = selectedSortedOption.split("-");
-                sortColumn = options[0];
-                sortingOrder = options[1];
-            }
-           this.pagination = {
-                    'pageIndex': pageIndex,
-                    'maxResults': 12,
-                    'sortcolumn': sortColumn,
-                    'sortingOrder': sortingOrder,
-                    'searchKey':searchKey
-                   }
-            var url =this.URL+"admin/listEmailTemplates/"+userId+"/"+selectedTemplate+"?access_token="+this.authenticationService.access_token;
-            return this.http.post(url, this.pagination, "")
-            .map(this.extractData)
-            .catch(this.handleError); 
-        }catch(error){
-           this.refService.showError(error, "Error in list() in emailTemplate.service.ts");
-        }
-       
-    }*/
     
     listTemplates(pagination:Pagination,userId:number){
         console.log(pagination);
@@ -114,7 +88,6 @@ export class EmailTemplateService {
 
     private handleError(error: any) {
         if (error.status === 500) {
-            console.log(error);
             var response =  JSON.parse(error['_body']);
             return Observable.throw(new Error(response.message));
         }

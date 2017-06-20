@@ -49,6 +49,8 @@
 				</div>
 				<div class="portlet-body">
 					<div class="row">
+					<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+					<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
 								<div class="portlet light block">
 									<div class="portlet-title">

@@ -7,6 +7,7 @@ import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { Logger } from "angular2-logger/core";
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
@@ -34,9 +35,10 @@ export class UploadEmailTemplateComponent implements OnInit {
     isFileDrop: boolean;
     isFileProgress: boolean;
 
-    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, private emailTemplate: EmailTemplate, private logger: Logger) {
+    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
+            private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
-        emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id).subscribe(
+        emailTemplateService.getAvailableNames(this.authenticationService.user.id).subscribe(
             (data: any) => {
                 this.availableTemplateNames = data;
             },

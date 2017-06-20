@@ -1,12 +1,14 @@
 <div class="page-content">
- 	<div *ngIf="isCampaignCreated" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
-	 	<strong>Campaign Created Successfully</strong>
+	  <div *ngIf="campaignSuccessMessage?.length > 0" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
+	 	<strong>{{campaignSuccessMessage}}</strong>
 	 </div>
-	  <div *ngIf="isCampaignUpdated" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
-	 	<strong>Campaign Updated Successfully</strong>
-	 </div>
+	 
 	  <div *ngIf="isCampaignDeleted" id="deleteSuccess" class="alert alert-success alert-dismissable fade in">
 	 	<strong>Campaign Deleted Successfully</strong>
+	 </div>
+	 
+	   <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
+	 	<strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
 	 </div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -52,11 +54,12 @@
 									</div>
 								</div>
 							</div>
-				
-				
 					<div class="tab-pane active">
 						<div class="margin-top-10" >
-							<div class="row mix-grid" style="margin-top: 10px" *ngIf="totalRecords > 0">
+							<div class="row mix-grid" style="margin-top: 10px">
+							<app-loader *ngIf="pagination.isLoading"></app-loader>
+							<app-error-pages *ngIf="isError"></app-error-pages>
+							<ng-container *ngIf="totalRecords > 0 && !pagination.isLoading && !isError">
 								<div *ngFor="let campaign of pagination.pagedItems">
 									<div class="col-md-3 col-sm-4 mix category_1 mix_all"	style="display: block; opacity: 1;" id="campaignListDiv_{{campaign.campaignId}}">
 										<div class="mix-inner">
@@ -82,11 +85,12 @@
 										</div>
 									</div>
 								</div>
+							</ng-container>	
 							</div>
 						</div><!-- End of 24 -->
 					</div>
 				</div><!-- End Of tab Content -->
-				<div *ngIf="totalRecords > 0">   
+				<div *ngIf="totalRecords > 0 && !pagination.isLoading && !isError">   
 					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 	                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
 	                           <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>

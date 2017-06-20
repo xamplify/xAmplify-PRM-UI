@@ -77,9 +77,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     contactsPagination:Pagination = new Pagination();
     campaignContactLists: Array<ContactList>;
     numberOfContactsPerPage = [
-                               {'name':'12','value':'12'},
-                               {'name':'24','value':'24'},
-                               {'name':'48','value':'48'},
+                               {'name':'10','value':'10'},
+                               {'name':'20','value':'20'},
+                               {'name':'30','value':'30'},
                                {'name':'---All---','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
@@ -108,6 +108,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     public sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
     isLaunched:boolean = false;
     lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
+    loggedInUserId:number = 0;
+    buttonName:string = "Launch";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute, private refService:ReferenceService,
                 private logger:Logger,private videoFileService:VideoFileService,
@@ -117,9 +119,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.campaign = new Campaign();
-        if ( this.userService.loggedInUserData != undefined ) {
-            this.campaign.userId = this.userService.loggedInUserData.id;
-            this.loadCampaignNames( this.userService.loggedInUserData.id );
+        if ( this.authenticationService.user != undefined ) {
+            this.loggedInUserId = this.authenticationService.user.id;
+            this.campaign.userId = this.loggedInUserId;
+            this.loadCampaignNames( this.loggedInUserId );
             }
         if(this.campaignService.campaign!=undefined){
             $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
@@ -464,9 +467,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     destroyPreview(){
         var player = videojs("videoId");
         if(player){
-            player.dispose();
-            $("#main_video").empty();
+            console.log(player.currentType_);
+            let videoType = player.currentType_;
+            if(videoType=="application/x-mpegURL"){
+                console.log("Clearing Normal Video");
+                player.dispose();
+                $("#main_video").empty();
+            }else{
+              console.log("Clearing 360 video");
+                player.panorama({
+                    autoMobileOrientation: true,
+                    clickAndDrag: true,
+                    clickToToggle: true,
+                    callback: function () {
+                        player.pause();
+                        $("#main_video").empty();
+                    }
+                  });
+                
+            }
         }
+        
     }
     playVideo(){
         $('#main_video_src').empty();
@@ -730,7 +751,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){
         pagination.campaignDefaultTemplate = true;
-        this.emailTemplateService.listTemplates(pagination,this.userService.loggedInUserData.id)
+        this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
                 this.campaignEmailTemplates = data.emailTemplates;
@@ -757,7 +778,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<mobinarImgURL>",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("http://139.59.1.205:9090/vod/images/125/14032017/DhoniRetires12Sec1489482713198_play1.gif",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
         }else{
             $("#htmlContent").append(emailTemplate.body);
@@ -804,6 +825,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     onLaunchValueChanged( data?: any ) {
         if ( !this.campaignLaunchForm ) { return; }
         const form = this.campaignLaunchForm;
+        let value = this.campaignLaunchForm['_value'].scheduleCampaign;
+        if(value=="NOW"){
+            this.buttonName = "Launch";
+        }else if(value=="SAVE"){
+            this.buttonName = "Save";
+        }else if(value=="SCHEDULE"){
+            this.buttonName = "Schedule";
+        }
         if(this.campaignLaunchForm['_value'].scheduleCampaign!=null){this.isScheduleSelected=true}
         for ( const field in this.formErrors ) {
             // clear previous error message (if any)
@@ -858,7 +887,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 'videoPlayed': this.campaign.videoPlayed,
                 'replyVideo': this.campaign.replyVideo,
                 'socialSharingIcons': this.campaign.socialSharingIcons,
-                'userId':this.userService.loggedInUserData.id,
+                'userId':this.loggedInUserId,
                 'selectedVideoId':this.campaign.selectedVideoId,
                 'userListIds':this.campaign.userListIds,
                 "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
@@ -935,17 +964,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     launchCampaign(){
         var data = this.getCampaignData("");
         console.log(data);
+        this.refService.campaignSuccessMessage = data.scheduleCampaign;
         this.campaignService.saveCampaign( data )
         .subscribe(
-        data => {
-            console.log(data);
-            if(data.message=="success"){
+        response => {
+            console.log(response);
+            if(response.message=="success"){
                 this.isLaunched = true;
-                if(this.isAdd){
-                    this.refService.isCampaignCreated  = true;
-                }else{
-                    this.refService.isCampaignUpdated = true;
-                }
                 this.router.navigate(["/home/campaigns/managepublish"]);
             }else{
             }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { Logger } from 'angular2-logger/core';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
-
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var BeePlugin,swal,Promise:any;
 
 @Component({
@@ -17,17 +17,23 @@ declare var BeePlugin,swal,Promise:any;
   providers :[EmailTemplate]
 })
 export class CreateTemplateComponent implements OnInit {
-	constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
-	private emailTemplate:EmailTemplate,private router:Router, private logger :Logger) {
+	
+    loggedInUserId:number;
+    constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
+                private emailTemplate:EmailTemplate,private router:Router, private logger :Logger,
+                private authenticationService:AuthenticationService) {
 		console.log(emailTemplateService.emailTemplate);
+		this.loggedInUserId = this.authenticationService.user.id;
 	    var names:any = [];
-	    emailTemplateService.getAvailableNames(this.userService.loggedInUserData.id) .subscribe(
-	            (data:any) => {
-	               names = data;
-	            },
-	            error => console.log( error ),
-	            () => console.log( "Got List Of Available Email Template Names")
-	            );
+        emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+            ( data: any ) => {
+	              names = data;
+            },
+            error => {
+                this.logger.error("error in listCampaign()", error);
+            },
+            () =>  this.logger.info("Finished getAvailableNames()")
+        );
 	    
 	    
 	    var request = function(method, url, data, type, callback) {
@@ -114,16 +120,7 @@ export class CreateTemplateComponent implements OnInit {
 	                  emailTemplate.id = emailTemplateService.emailTemplate.id;
 	                  emailTemplateService.update(emailTemplate) .subscribe(
 	                          data => {
-	                              
-	                              swal({
-	                                  title: 'Template Updated Successfully',
-	                                  type: 'success',
-	                                  confirmButtonColor: '#3085d6',
-	                                  allowOutsideClick: false,
-	                                }).then(function () {
-	                                    router.navigate(["/home/emailtemplate/manageTemplates"]);
-	                                })
-	                              
+	                             router.navigate(["/home/emailtemplate/manageTemplates"]);
 	                          },
 	                          error => console.log( error ),
 	                          () => console.log( "Email Template Updated" )
@@ -192,7 +189,7 @@ export class CreateTemplateComponent implements OnInit {
 	        name: 'content 2',
 	        value: '[content1]'
 	      }];
-	      var beeUserId = "bee-"+userService.loggedInUserData.id;
+	      var beeUserId = "bee-"+authenticationService.user.id;
 	      var beeConfig = {  
 	        uid: beeUserId,
 	        container: 'bee-plugin-container',

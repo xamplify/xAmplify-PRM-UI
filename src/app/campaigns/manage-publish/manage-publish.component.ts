@@ -13,6 +13,7 @@ import { ContactList } from '../../contacts/models/contact-list';
 import { Logger } from 'angular2-logger/core';
 import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: any;
 
 
@@ -28,9 +29,9 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     pagedItems: any[];
     public totalRecords :number=1;
     public searchKey :string="";
-    isCampaignCreated:boolean = false;
-    isCampaignUpdated:boolean = false;
     isCampaignDeleted:boolean = false;
+    campaignSuccessMessage:string = "";
+    isScheduledCampaignLaunched:boolean=false;
         sortByDropDown  = [
                    {'name':'Sort By','value':''},
                    {'name':'Name(A-Z)','value':'campaign-ASC'},
@@ -50,30 +51,45 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         
         public selectedSortedOption:any = this.sortByDropDown[0];
         public itemsSize:any = this.numberOfItemsPerPage[0];
-                                                       
-        
+        public isError:boolean = false;
         
     constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,
-            private pagination:Pagination,private pagerService: PagerService,private refService:ReferenceService,private userService:UserService) {
-        this.isCampaignCreated = this.refService.isCampaignCreated;
-        this.isCampaignUpdated = this.refService.isCampaignUpdated;
-        if(this.isCampaignCreated || this.isCampaignUpdated){
-            setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 2000);
+            private pagination:Pagination,private pagerService: PagerService,
+            private refService:ReferenceService,private userService:UserService,private authenticationService:AuthenticationService) {
+        if(this.refService.campaignSuccessMessage=="SCHEDULE"){
+            this.showMessageOnTop();
+            this.campaignSuccessMessage = "Campaign Scheduled Successfully";
+        }else if(this.refService.campaignSuccessMessage=="SAVE"){
+            this.showMessageOnTop();
+            this.campaignSuccessMessage = "Campaign Saved Successfully";
+        }else if(this.refService.campaignSuccessMessage=="NOW"){
+            this.showMessageOnTop();
+            this.campaignSuccessMessage = "Campaign Launched Successfully";
         }
        
     }
+    showMessageOnTop(){
+        $(window).scrollTop(0);
+        setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+    }
     
     listCampaign(pagination:Pagination){
-        this.campaignService.listCampaign(pagination,this.userService.loggedInUserData.id)
+        this.pagination.isLoading = true;
+        this.isError = false;
+        this.campaignService.listCampaign(pagination,this.authenticationService.user.id)
         .subscribe(
             data => {
                 this.campaigns = data.campaigns;
                 this.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                this.pagination.isLoading = false;
             },
             error => {
                 this.logger.error("error in listCampaign()", error);
+                this.isError = true;
+                this.pagination.isLoading = false;
+                
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
         );
@@ -136,12 +152,19 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         data => {
            this.campaignService.campaign=data;
            console.log(this.campaignService.campaign);
-           this.router.navigate(["/home/campaigns/create-campaign"]);
+           let isLaunched = this.campaignService.campaign.launched;
+           if(isLaunched){
+               this.isScheduledCampaignLaunched = true;
+               setTimeout( function() { $( "#scheduleCompleted" ).slideUp( 1000 ); }, 5000 );
+           }else{
+               this.router.navigate(["/home/campaigns/create-campaign"]);
+           }
+           
         },
         error => console.log( error ),
         () => console.log()
         )
-        
+        this.isScheduledCampaignLaunched = false;
     }
     
     confirmDeleteCampaign(id:number){
@@ -166,7 +189,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         data => {
             this.isCampaignDeleted = true;
             $( '#campaignListDiv_' + id ).remove();
-            setTimeout( function() { $( "#deleteSuccess" ).slideUp( 500 ); }, 2000 );
+            setTimeout( function() { $( "#deleteSuccess" ).slideUp( 500 ); }, 5000 );
             this.listCampaign(this.pagination);
         },
         error => { console.log(error)},
@@ -176,9 +199,8 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     }
 
     ngOnDestroy() {
-        this.refService.isCampaignCreated = false;
-        this.refService.isCampaignUpdated = false;
         this.isCampaignDeleted = false;
+        this.refService.campaignSuccessMessage = "";
         
     }
     
