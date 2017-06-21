@@ -23,6 +23,7 @@ import { SocialLoginComponent } from './social/common/social-login/social-login.
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
+import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 
 import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
@@ -42,7 +43,8 @@ import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
 @NgModule( {
-    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent, ShareVideoComponent],
+    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent,
+                   ShareVideoComponent, CampaignVideoComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         MetaModule.forRoot()],

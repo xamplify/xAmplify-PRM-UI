@@ -6,16 +6,16 @@ import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './core/home/home.component';
 import { VideosModule } from './videos/videos.module';
 import { ContactsModule } from './contacts/contacts.module';
-import { EmailTemplateModule } from './email-template/email-template.module'
+import { EmailTemplateModule } from './email-template/email-template.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
 import { TeamModule } from './team/team.module';
 
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
+import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
-
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 
 export const routes: Routes = [
@@ -39,9 +39,10 @@ export const routes: Routes = [
     { path: 'home/dashboard/userlock', redirectTo: 'userlock'},
     { path: 'home/dashboard/myprofile/dashboard', redirectTo: 'home/dashboard'},
     { path: 'logout', component: LoginComponent },
-    {path: ':social/login', component: SocialLoginComponent},
-    {path: ':social/callback', component: SocialCallbackComponent},
-    {path: 'embed-video/:type/:alias', component: ShareVideoComponent},
+    { path: ':social/login', component: SocialLoginComponent },
+    { path: ':social/callback', component: SocialCallbackComponent },
+    { path: 'embed-video/:type/:alias', component: ShareVideoComponent },
+    { path: 'campaign-video/:type/:alias', component: CampaignVideoComponent},
 
 ];
 

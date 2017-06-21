@@ -5,15 +5,12 @@ import { Observable } from 'rxjs/Observable';
 import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
-import { Category} from '../models/category';
-import { AuthenticationService} from '../../core/services/authentication.service';
 import { Logger } from 'angular2-logger/core';
 import { VideoUtilService } from '../services/video-util.service';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 declare var $, videojs: any;
-// import {BrowserDomAdapter} from 'angular2/platform/browser';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Component({
@@ -29,7 +26,6 @@ public imgURL: string;
 public videoUrl: string;
 model: any = {};
 public isPlay = false;
-public isThumb: boolean;
 public isPlayButton: boolean;
 public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
 public email_id: string;
