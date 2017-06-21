@@ -13,7 +13,6 @@ import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user.service';
 import { VideoUtilService } from '../../services/video-util.service';
 declare var $, videojs, swal: any;
-import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Component({
    selector: 'app-edit-video',
@@ -115,13 +114,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
         private authenticationService: AuthenticationService,
-        private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService , public metaService: Meta) {
+        private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.titleOfVideo = this.videoFileService.actionValue;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         this.formErrors  = this.videoUtilService.formErrors;
-         this.ClipboardName = 'Copy to Clipboard';
+        this.ClipboardName = 'Copy to Clipboard';
         console.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -334,7 +333,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
 $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
     $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
 const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#newPlayerVideo").append(str);
+            $('#newPlayerVideo').append(str);
              this.videoUrl = this.saveVideoFile.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
              this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
@@ -424,7 +423,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                      });
                   });
                player.on('click', function(){
-               })
+               } );
               }
               });
             $('#videoId').css('width', 'auto');
@@ -463,7 +462,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     changeFullscreen(event: any) {
         this.saveVideoFile.allowFullscreen = event;
-        if (this.saveVideoFile.allowFullscreen === false){ $('.video-js .vjs-fullscreen-control').hide();
+        if (this.saveVideoFile.allowFullscreen === false) { $('.video-js .vjs-fullscreen-control').hide();
        } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     allowSharing(event: boolean) {
@@ -476,7 +475,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     enableVideoControllers(event: boolean) {
         this.saveVideoFile.enableVideoController = event;
         if (this.saveVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();
-        }  else { $('.video-js .vjs-control-bar').show();}
+        }  else { $('.video-js .vjs-control-bar').show(); }
     }
     defaultVideoControllers() {
         if (this.saveVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();
@@ -534,7 +533,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     repeatPlayVideo() {
         $('#overlay-modal').hide();
      //   $('.video-js .vjs-control-bar').show();
-        if(this.videoJSplayer) {
+        if (this.videoJSplayer) {
         this.videoJSplayer.play(); }
    }
     checkingCallToActionValues() {
@@ -598,9 +597,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false;
         } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[1]) {
         this.imgBoolean2 = true; this.imgBoolean1 = this.imgBoolean3 = false;
-       } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[2]) {
+        } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[2]) {
             this.imgBoolean3 = true; this.imgBoolean1 = this.imgBoolean2 = false;
-       } else { this.imgBoolean1 = this.imgBoolean2 = this.imgBoolean3 = false; }
+        } else { this.imgBoolean1 = this.imgBoolean2 = this.imgBoolean3 = false; }
     }
     defaultGifPaths() {
         if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[0]) {
@@ -628,7 +627,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
         if (this.saveVideoFile.allowFullscreen === false) {
            $('.video-js .vjs-fullscreen-control').hide();
-        } else { 	$('.video-js .vjs-fullscreen-control').show();
+        } else { $('.video-js .vjs-fullscreen-control').show();
         }
     }
     showEditModalDialog() {
@@ -636,8 +635,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     show360ModalDialog() {
      $('#overLayDialog').append( $('#overlay-modal').show());
-   }
-   embedSourcePath(alias: string, viewBy: string) {
+    }
+    embedSourcePath(alias: string, viewBy: string) {
     this.embedSrcPath = document.location.href;
     this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '/embed-video' + viewBy + alias;
     console.log(this.embedSrcPath);
@@ -720,7 +719,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     ngAfterViewInit() {
         $('#edit_video_player').empty();
         $('#newPlayerVideo').empty();
-      if(this.saveVideoFile.is360video !== true) {
+      if (this.saveVideoFile.is360video !== true) {
         $('.p-video').remove();
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
@@ -739,11 +738,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                       $('.vjs-big-play-button').css('display', 'none');
                       callactionValue.showEditModalDialog();
                    //   $('#edit_video_player').append( $('#overlay-modal').show());
-                    } else if(isValid !== 'StartOftheVideo' ) {
+                    } else if (isValid !== 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.play(); }
-                // if (isValid === 'removeCallAction'){ $('#overlay-modal').hide(); }
-                 else { $('#overlay-modal').hide(); }
+                      $('#overlay-modal').hide(); player.play();
+                    } else { $('#overlay-modal').hide(); }
                      $('#skipOverlay').click(function(){
                        $('#overlay-modal').hide();
                        player.play();
@@ -756,15 +754,11 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
              this.on('ended', function() {
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
-                   //  $('#edit_video_player').append( $('#overlay-modal').show());
                      callactionValue.showEditModalDialog();
-                } else if(isValid !== 'EndOftheVideo') {
+                } else if (isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.pause();}
-               /*  if (isValid === 'removeCallAction'){
-                      $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.pause();} */
-                 else { $('#overlay-modal').hide(); player.pause(); }
+                      $('#overlay-modal').hide(); player.pause();
+                    }else { $('#overlay-modal').hide(); player.pause(); }
                     $('#repeatPlay').click(function(){
                        player.play();
                     });
@@ -787,9 +781,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                  },
                  customKeys: {
                      simpleKey: {
-                         key: function(e: any) {  return (e.which === 83);},
+                         key: function(e: any) {  return (e.which === 83); },
                          handler: function(player: any, options: any, e: any) {
-                             if (player.paused()) {  player.play();} else { player.pause(); }  } },
+                             if (player.paused()) {  player.play(); } else { player.pause(); }  } },
                      complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68); },
                          handler: function(player: any, options: any, event: any) {
                              if (options.enableMute) { player.muted(!player.muted()); }}

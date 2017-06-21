@@ -87,8 +87,8 @@
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
 									</div>
-									<app-loader *ngIf="pagination.isLoading"></app-loader>
-									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos">
+									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
 									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
 										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
@@ -161,7 +161,7 @@
 					</div>
 				<!-- END PAGE CONTENT-->
 				<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
-				<app-play-video *ngIf="playVideo" [videos] = "videos" [selectedVideo]="selectedVideo"></app-play-video>
+				<app-play-video *ngIf="playVideo" [totalRecords]="totalRecords" [selectedVideo]="selectedVideo"></app-play-video>
 				<app-campaign-report-video *ngIf="campaignReport" [selectedVideo]="selectedVideo"></app-campaign-report-video>
 			</div>
 		<!-- END CONTENT -->

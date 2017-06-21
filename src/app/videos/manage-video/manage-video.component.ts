@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input , AfterViewInit} from '@angular/core';
 import { SaveVideoFile } from '.././models/save-video-file';
 import { Category } from '.././models/category';
 import { Pagination } from '../../core/models/pagination';
@@ -7,16 +7,17 @@ import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Logger } from 'angular2-logger/core';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var swal , require, $: any;
 
 @Component({
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
   styleUrls: ['./manage-video.component.css'],
-  providers: [ Pagination]
+  providers: [ Pagination, HttpRequestLoader ]
   })
-export class ManageVideoComponent implements OnInit , OnDestroy {
-
+export class ManageVideoComponent implements OnInit , OnDestroy , AfterViewInit {
+    allVideos: Array<SaveVideoFile>;
     manageVideos = true;
     editVideo = false;
     playVideo = false;
@@ -52,6 +53,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     public deleteVideoName: string;
     public campaignVideo: boolean;
     public campaignVideoMesg: string;
+    public allvideosRecords: number;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    public errorPrepender: 'Error In:';
     sortVideos  = [
                        {'name': 'Sort By', 'value': ''},
                        {'name': 'Title(A-Z)', 'value': 'title-ASC'},
@@ -99,24 +103,28 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.showUpdatevalue = false;
             }
           this.loadVideos(this.pagination);
-          console.log('manage videos js completed');
-        } catch (err) {
-            console.log('error ' + err);
+          console.log('manage videos ngOnInit completed');
+        } catch (error) {
+            this.logger.error('erro in ng oninit :' + error);
         }
     }
+    ngAfterViewInit() {
+    }
       loadVideos(pagination: Pagination) {
-      try {
-          this.pagination.isLoading = true;
-    	  this.videoFileService.loadVideoFiles(pagination)
+       this.pagination.maxResults = 12;
+       try {
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
-            	this.pagination.isLoading = false;
-            	this.videos = result.listOfMobinars;
+                this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
-                pagination.totalRecords = this.totalRecords;
+              ///  pagination.totalRecords = this.totalRecords;
+                this.pagination.maxResults = 12;
                 if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                      this.categories = result.categories;
                      this.categories.sort(function(a: any, b: any) { return (a.id) - (b.id); });
                 }
+                this.referenceService.loading(this.httpRequestLoader, false);
                 console.log(this.categories);
                 console.log(this.videos);
                 if (this.videos.length !== 0) {
@@ -137,14 +145,19 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.isCategoryThere = true;
                 this.isCategoryUpdated = false;
                 pagination = this.pagerService.getPagedItems(pagination, this.videos);
-            });
-            () => console.log('load videos completed:' + this.videos );
+            },
+            (error: string) => {
+              this.logger.error(this.errorPrepender + ' Loading Videos():' + error);
+              this.referenceService.showServerError(this.httpRequestLoader);
+            },
+            () => console.log('load videos completed:' + this.videos ),
+            );
         } catch (error) {
-         //  this.referenceService.showError(error, 'Error in loadvideos() in manage-videos.ts file',"");
+            this.logger.error('erro in load videos :' + error);
         }
-    }
+    };
     setPage(page: number) {
-     if  (page !== this.pagination.pageIndex){
+     if (page !== this.pagination.pageIndex) {
         this.pagination.pageIndex = page;
         this.loadVideos(this.pagination);
         this.showUpdatevalue = false;
@@ -215,7 +228,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
-            });
+            },
+            (error: string) => {
+            this.logger.error(this.errorPrepender + 'show edit videos ():' + error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+            }
+         );
     }
 
     showPlayVideo(video: SaveVideoFile) {
@@ -230,9 +248,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.campaignReport = false;
         this.pageBar = true;
         this.deletedVideo = false;
-      });
+      },
+      (error: string) => {
+          this.logger.error(this.errorPrepender + ' show play videos ():' + error);
+          this.referenceService.showServerError(this.httpRequestLoader);
+       }
+      );
     }
-
     showCampaignVideoReport(video: SaveVideoFile) {
         console.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
@@ -245,8 +267,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.playVideo = false;
         this.pageBar = true;
         this.deletedVideo = false;
-        });
-    }
+        },
+        (error: string) => {
+            this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+         });
+     }
 
     deleteVideoFile(alias: string, position: number, videoName: string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
@@ -266,16 +292,19 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
                   $('#deleteMesg').slideUp(500);
               }, 2000);
         },
-       (error: any) => {
-         if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+        (error: any) => {
+           if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                    //  swal( 'Campaign Video!', error, 'error' );
                      this.campaignVideoMesg = error;
-                 }
+           } else {
+              this.logger.error(this.errorPrepender + ' delete videos ():' + error);
+              this.referenceService.showServerError(this.httpRequestLoader);
+           }
               console.log(error);
            },
-        () => console.log( 'deleted functionality' )
+        () => console.log( 'deleted functionality done')
         );
-        this.deletedVideo = false;
+       this.deletedVideo = false;
     }
 
     deleteAlert(alias: string, position: number, videoName: string) {

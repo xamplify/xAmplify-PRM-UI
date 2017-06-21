@@ -65,7 +65,6 @@ export class VideoFileService {
 
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         if (pagination.filterBy == null) { pagination.filterBy = 0; }
-        pagination.maxResults = 12;
         console.log(pagination);
         const url = this.URL + 'listVideosNew/' + pagination.filterBy +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
@@ -117,9 +116,22 @@ export class VideoFileService {
     }
 
     handleError(error: any) {
-        const errMsg = (error.message) ? error.message :
+    /*    const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw(errMsg);
+        return Observable.throw(errMsg); */
+        if (error.status === 500) {
+            var response =  JSON.parse(error['_body']);
+            return Observable.throw(new Error(response.message));
+        }
+        else if (error.status === 400) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 409) {
+            return Observable.throw(new Error(error.status));
+        }
+        else if (error.status === 406) {
+            return Observable.throw(new Error(error.status));
+        }
     }
     handleErrorDelete(error: any) {
         const errMsg = (error.message) ? error.message :

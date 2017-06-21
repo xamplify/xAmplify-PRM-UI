@@ -261,13 +261,11 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-
 		<div class="col-md-5" style="margin-top: -10px;">
 			<div class="tabbable tabbable-custom tabbable-noborder">
 
-				<div class="tab-content" *ngIf="videos">
+				<div class="tab-content">
 					<div class="tab-pane active" style="margin-top: -13px;">
 						<!-- BEGIN FILTER -->
 						<div class="margin-top-10">
@@ -277,8 +275,7 @@
 									<div class="row mix-grid" style="margin-top: 10px">
 										
 										<div class="col-md-6 col-sm-8 mix category_1 mix_all"
-											style="display: block; opacity: 1;" *ngFor="let videoFile of videos; let i = index;"
-											>
+											style="display:block; opacity: 1;" *ngFor="let videoFile of allVideos; let i = index;">
 											<div class="mix-inner">
 												<img class="img-responsive"
 											     src="{{videoFile.imagePath}}" alt="">

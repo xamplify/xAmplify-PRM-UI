@@ -24,7 +24,6 @@ import { Meta, MetaDefinition } from '@angular/platform-browser';
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
 embedVideoFile: SaveVideoFile;
-saveVideoFile: SaveVideoFile;
 private videoJSplayer: any;
 public imgURL: string;
 public videoUrl: string;
@@ -48,6 +47,8 @@ public routerAlias: string;
 public routerType: string;
 public sub: Subscription;
 public title: string;
+public upperTextValue: string;
+public lowerTextValue: string;
 public description: string;
 public shareUrl: string;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
@@ -66,17 +67,19 @@ public shareUrl: string;
   getVideo(alias: string , viewby: string) {
     this.videoFileService.getVideo(alias, viewby)
         .subscribe(
-        data => {
-          this.embedVideoFile = data;
-          console.log(data);
+         (result: SaveVideoFile) => {
+          this.embedVideoFile = result;
+          console.log(result);
           this.posterImagePath = this.embedVideoFile.imagePath;
           this.is360Value  =  this.embedVideoFile.is360video;
           this.imgURL =  this.embedVideoFile.gifImagePath;
           this.title = this.embedVideoFile.title;
           this.description = this.embedVideoFile.description;
+          this.upperTextValue = this.embedVideoFile.upperText;
+          this.lowerTextValue = this.embedVideoFile.lowerText;
         if (this.embedVideoFile.startOfVideo === true) {
             this.videoOverlaySubmit = 'PLAY';
-       } else {  this.videoOverlaySubmit = 'SUBMIT'; }
+        } else {  this.videoOverlaySubmit = 'SUBMIT'; }
 
         if (this.embedVideoFile.startOfVideo === true && this.embedVideoFile.callACtion === true ) {
             this.overLayValue = 'StartOftheVideo';
