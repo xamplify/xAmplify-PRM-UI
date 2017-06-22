@@ -131,7 +131,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         $('#newPlayerVideo').empty();
         $('#videoId').remove();
         this.playNormalVideoFiles();
-    const str = '<video id="videoId"  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls></video>';
+    const str = '<video id="videoId"  poster=' + this.posterImg + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.selectedVideo.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));

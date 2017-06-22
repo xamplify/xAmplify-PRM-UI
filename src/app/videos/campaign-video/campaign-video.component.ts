@@ -74,6 +74,9 @@ LoginThroghCampaign() {
         $('.video-js .vjs-volume-level').css('background-color', this.campaignVideoFile.playerColor);
         $('.video-js .vjs-control-bar').css('background-color', this.campaignVideoFile.controllerColor);
    }
+    trimCurrentTime(currentTime) {
+        return Math.round(currentTime * 100) / 100;
+    }
    play360Video() {
     this.is360Value = true;
     console.log('Loaded 360 Video');
@@ -91,7 +94,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
            //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
             const newValue = this;
-            const player = videojs('videoId').ready(function() {
+            const player = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }).ready(function() {
                   this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
                  enableFullscreen: false, enableNumbers: false,
@@ -128,15 +131,54 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 autoMobileOrientation: true,
                 clickAndDrag: true,
                 clickToToggle: true,
-                callback: function () {
-                player.ready(function() {
-                      this.play();
-                 });
-                 player.on('ended', function() {
-                      console.log('done !');
+                 callback: function () {
+                    const playerVideo = this;
+                    let replyVideo = 0;
+                    const document: any = window.document;
+                    let startDuration;
+                   this.ready(function() {
+                    console.log('video is ready state');
+                   });
+                    this.on('seeking', function() {
+                     console.log('slider done');
+                     console.log("slider start time" + startDuration);
+                     let seekigTime  = newValue.trimCurrentTime(player.currentTime());
+                     console.log('seeking slider end time'+ seekigTime);
+                   });
+                    this.on('timeupdate', function() {
+                      startDuration = newValue.trimCurrentTime(player.currentTime());
+                    });
+                    this.on('play', function() {
+                        $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time'+newValue.trimCurrentTime(player.currentTime()));
+                    });
+                    this.on('pause', function() {
+                    console.log('pused and current time' + newValue.trimCurrentTime(player.currentTime()));
                   });
+                this.on('ended', function() {
+                    const whereYouAt = player.currentTime();
+                    console.log(whereYouAt);
+                    playerVideo.pause();
+                    replyVideo = replyVideo + 1;
+                    $('.vjs-big-play-button').css('display', 'block');
+                    console.log('video ended attempts'+ replyVideo);
+                    console.log('video ended attempts'+ replyVideo);
+                });
+                this.on('fullscreenchange', function () {
+                    console.log('fullscreen changed');
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === "FullscreenOn") {
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    }else if (event === "FullscreenOff") {
+                        $("#videoId").css("width", "auto");
+                        $("#videoId").css("height", "318px");
+                    }
+                });
                player.on('click', function(){
-               });
+               console.log('clicked function '); 
+              });
               }
               });
             $('#videoId').css('width', '640px');
@@ -150,31 +192,67 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
         this.is360Value = false;
-  const str = '<video id="videoId" poster = " " preload="none"  class="video-js vjs-default-skin" controls></video>';
+  const str = '<video id="videoId" poster = "" preload="none" autoplay = "false"  class="video-js vjs-default-skin" controls></video>';
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.campaignVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-         //   this.videoUrl =  this.videoUrl + '_mobinar.m3u8';
-            this.videoUrl =  'http://vjs.zencdn.net/v/oceans.mp4';
-          //  $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-             $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
+           this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+          //  this.videoUrl =  'http://vjs.zencdn.net/v/oceans.mp4';
+            $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+        //     $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
              $('#videoId').css('height', '318px');
              $('#videoId').css('width', '640px');
              $('.video-js .vjs-tech').css('width', '100%');
              $('.video-js .vjs-tech').css('height', '100%');
               const self = this;
-             this.videoJSplayer = videojs('videoId', {}, function() {
-                const player = this;
-                const document: any = window.document;
-               this.ready(function() {
-                   player.play();
+             this.videoJSplayer = videojs('videoId',  { "controls": true, "autoplay": false, "preload": "auto" }, function() {
+                    const player = this;
+                    let replyVideo = 0;
+                    const document: any = window.document;
+                    let startDuration;
+                   this.ready(function() {
+                    console.log('video is ready state');
+                   });
+                    this.on('seeking', function() {
+                     console.log('slider done');
+                     console.log("slider start time" + startDuration);
+                     let seekigTime  = self.trimCurrentTime(player.currentTime());
+                     console.log('seeking slider end time'+ seekigTime);
+                   });
+                    this.on('timeupdate', function() {
+                      startDuration = self.trimCurrentTime(player.currentTime());
+                    });
+                    this.on('play', function() {
+                        $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time'+self.trimCurrentTime(player.currentTime()));
+                    });
+                    this.on('pause', function() {
+                    console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                   });
-             this.on('ended', function() {
-                    console.log('done !');
-             });
-             this.on('contextmenu', function(e) {
-                 e.preventDefault();
-             });
+                this.on('ended', function() {
+                    const whereYouAt = player.currentTime();
+                    console.log(whereYouAt);
+                    player.pause();
+                    replyVideo = replyVideo + 1;
+                    $('.vjs-big-play-button').css('display', 'block');
+                    console.log('video ended attempts'+ replyVideo);
+                    console.log('video ended attempts'+ replyVideo);
+                });
+                this.on('fullscreenchange', function () {
+                    console.log('fullscreen changed');
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === "FullscreenOn") {
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    }else if (event === "FullscreenOff") {
+                        $("#videoId").css("width", "auto");
+                        $("#videoId").css("height", "318px");
+                    }
+                });
+               player.on('click', function(){
+               console.log('clicked function ');
+              });
              this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
                  enableFullscreen: false, enableNumbers: false,

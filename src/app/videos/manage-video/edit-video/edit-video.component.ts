@@ -378,12 +378,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 clickAndDrag: true,
                 clickToToggle: true,
                 callback: function () {
-                // const isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                  // player.ready();
                  const isValid = newThis.overLayValue;
                 player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
-                    //  $('#videoId').append( $('#overlay-modal').show());
                     $('.vjs-big-play-button').css('display', 'none');
                     newThis.show360ModalDialog();
                     } else if (isValid !== 'StartOftheVideo' ) {
