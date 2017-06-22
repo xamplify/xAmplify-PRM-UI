@@ -19,22 +19,25 @@ private videoJSplayer: any;
 public videoUrl: string;
 public posterImagePath: string;
 public is360Value: boolean;
-public routerAlias: string;
-public routerType: string;
 public title: string;
 public description: string;
 public publicRouterUrl: string;
+public typeValue: string;
+public videoAlias: string;
+public campaignAlias: string;
+public userAlias: string;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private http: Http,private authenticationService: AuthenticationService ) {
+            private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
+            private activatedRoute: ActivatedRoute ) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
           }
 LoginThroghCampaign() {
    this.router.navigate( ['/login']);
-} 
-  getCampaignVideo(alias: string , viewby: string) {
-    this.videoFileService.getVideo(alias, viewby)
+}
+  getCampaignVideo() {
+    this.videoFileService.showCampaignVideo(this.typeValue, this.videoAlias, this.campaignAlias, this.userAlias)
         .subscribe(
          (result: SaveVideoFile) => {
           this.campaignVideoFile = result;
@@ -54,19 +57,15 @@ LoginThroghCampaign() {
   }
   ngOnInit() {
      console.log('public video component ngOnInit called');
-     this.routerType = this.route.snapshot.params['type'];
-     this.routerAlias = this.route.snapshot.params['alias'];
-   /*  this.sub = this.route.params.subscribe(
-        (params: any) => {
-            const typealias = params.typealias;
-            const type = typealias.split("%");
-            this.routerType = type[0];
-            this.routerAlias = type[1];
-         }
-        );*/
-     console.log( this.routerType  + ' and ' + this.routerAlias);
-     this.getCampaignVideo(this.routerAlias, this.routerType);
-     console.log(this.campaignVideoFile);
+    // this.routerType = this.route.snapshot.params['showVideo'];
+        this.activatedRoute.queryParams.subscribe(
+            ( param: any ) => {
+                this.typeValue = param['type'];
+                this.videoAlias = param['videoAlias'];
+                this.campaignAlias = param['campaignAlias'];
+                this.userAlias = param['userAlias'];
+            });
+     this.getCampaignVideo();
   }
     defaultVideoSettings() {
         console.log('default settings called');

@@ -42,7 +42,7 @@ export const routes: Routes = [
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'embed-video/:type/:alias', component: ShareVideoComponent },
-    { path: 'campaign-video/:type/:alias', component: CampaignVideoComponent},
+    { path: 'user/showCampaignVideo', component: CampaignVideoComponent},
 
 ];
 

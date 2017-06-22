@@ -161,7 +161,7 @@
 					</div>
 				<!-- END PAGE CONTENT-->
 				<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
-				<app-play-video *ngIf="playVideo" [totalRecords]="totalRecords" [selectedVideo]="selectedVideo"></app-play-video>
+				<app-play-video *ngIf="playVideo" [totalRecords] = "allRecords" [selectedVideo] = "selectedVideo"></app-play-video>
 				<app-campaign-report-video *ngIf="campaignReport" [selectedVideo]="selectedVideo"></app-campaign-report-video>
 			</div>
 		<!-- END CONTENT -->

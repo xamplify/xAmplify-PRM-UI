@@ -77,15 +77,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             this.overLayValue = 'StartOftheVideo';
             this.videoOverlaySubmit = 'PLAY';
             this.isPlay = true;
-        //    localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
         } else if (this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
             this.overLayValue = 'EndOftheVideo';
             this.isPlay = false;
             this.videoOverlaySubmit = 'SUBMIT';
-         //   localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
         } else {
             this.overLayValue = 'removeCallAction';
-       //     localStorage.setItem('isOverlayValue', JSON.stringify(this.overLayValue));
         }
     }
 
@@ -96,7 +93,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.isFistNameChecked = this.selectedVideo.name; // need  the value from server
         this.isPlayButton = this.selectedVideo.name;  // need to get the value from server
         this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
-       // this.checkCalltoAction = this.selectedVideo.callACtion;
        // video controlls
         this.likes = this.selectedVideo.allowLikes;
         this.comments = this.selectedVideo.allowComments;
@@ -328,10 +324,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
           this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
                 this.allVideos = result.listOfMobinars;
-              //  this.allvideosRecords = result.totalRecords;
-              for (let i = 0; i < this.allVideos.length; i++){
+              for (let i = 0; i < this.allVideos.length; i++) {
                 this.imagepath = this.allVideos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
-                this.allVideos[i].imagePath = this.imagepath;
+                this.allVideos[i].imagePath = this.imagepath;  // this piece code need to remove 
               }
                 for (let i = 0; i < this.allVideos.length; i ++) {
                 if (this.selectedVideo.id === this.allVideos[i].id) {
@@ -428,13 +423,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 clickAndDrag: true,
                 clickToToggle: true,
                 callback: function () {
-                // const isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                  const isValid = self.overLayValue;
-                 // player.ready();
                   player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
-                    //  $('#videoId').append( $('#overlay-modal').show());
                       self.showOverlayModal();
                       player.pause();
                     } else if (isValid !== 'StartOftheVideo' ) {
@@ -503,13 +495,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
              $(".video-js .vjs-tech").css("width", "100%");
              $(".video-js .vjs-tech").css("height", "100%");
             const aspectRatio = 320/640;
-         //   let isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
             const isValid = self.overLayValue;
             this.ready(function() {
                  if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
                     //  $("#overlay-modal").css("display","block !important");
-                   //   $('#videoId').append( $('#overlay-modal').show());
                      self.showOverlayModal();
                     } else if (isValid !== 'StartOftheVideo' ) {
                      $('#overlay-modal').hide(); player.play();
@@ -537,11 +527,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 // trimCurrentTime(player.currentTime()));
             });
             this.on('ended', function() {
-           //   isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                 const whereYouAt = player.currentTime();
                 console.log(whereYouAt);
                  if (isValid === 'EndOftheVideo') {
-                  //   $('#videoId').append( $('#overlay-modal').show());
                     self.showOverlayModal();
                     }  else if (isValid !== 'EndOftheVideo') {
                      $('#overlay-modal').hide(); player.pause();
