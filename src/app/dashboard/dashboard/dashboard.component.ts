@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit {
     }
 
     listSocialAccounts(userId: number) {
-        this.socialService.listAccounts(userId, 'all')
+        this.socialService.listSocialConnections(userId)
             .subscribe(
             data => {
                 this.socialConnections = data;
@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         try {
-            const userId =this.authenticationService.getLoggedInUser();
+            const userId = this.authenticationService.user.id;
             Metronic.init();
             Layout.init();
             Demo.init();

@@ -60,7 +60,7 @@ getOptions() : RequestOptions{
             this.map = res.json();
             return this.map;
         })
-        .flatMap(( map ) => this.http.post( this.REST_URL + "admin/getUserByUserName/?userName=" + userName + "&access_token=" + this.map.access_token, "" )
+        .flatMap(( map ) => this.http.post( this.REST_URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.map.access_token, "" )
             .map(( res: Response ) => {
 
                 var userToken = {
@@ -73,16 +73,14 @@ getOptions() : RequestOptions{
                 localStorage.setItem( 'currentUser', JSON.stringify( userToken ) );
                 this.access_token = this.map.access_token;
                 this.refresh_token = this.map.refresh_token;
+                this.user = res.json();
         }) );
 }
     
-getLoggedInUser(): number {
-    let currentUser =  localStorage.getItem( 'currentUser' );
-    if(currentUser){
-        return JSON.parse(currentUser)['userId'];
-    }else{
-        return null;
-    }
+getUserByUserName(userName: string){
+    return this.http.post( this.REST_URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.access_token, "" )
+    .map(( res: Response ) => { return res.json()})
+    .catch(( error: any) => { return error});
 }    
 
 logout(): void {

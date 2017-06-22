@@ -3,7 +3,7 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanAc
 import { AuthenticationService } from './core/services/authentication.service';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-    constructor( private authService: AuthenticationService, private router: Router ) { }
+    constructor( private authenticationService: AuthenticationService, private router: Router ) { }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
         return this.checkLogin( url );
@@ -12,7 +12,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.canActivate( route, state );
     }
     checkLogin( url: string ): boolean {
-        if ( localStorage.getItem( 'currentUser' ) ) {
+        let currentUser = localStorage.getItem( 'currentUser' );
+        if ( currentUser ) {
+            this.authenticationService.access_token = JSON.parse( currentUser )['accessToken'];
+            this.authenticationService.refresh_token = JSON.parse( currentUser )['refreshToken'];
+            const userName = JSON.parse( currentUser )['userName'];
+
+            if ( !this.authenticationService.user.id ) {
+                this.getUserByUserName( userName );
+            }
+
             return true;
         }
         // Store the attempted URL for redirecting
@@ -20,5 +29,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         // Navigate to the login page
         this.router.navigate( ['/login'] );
         return false;
+    }
+
+    getUserByUserName( userName: string ) {
+        this.authenticationService.getUserByUserName( userName )
+            .subscribe(
+            data => {
+                this.authenticationService.user = data;
+            },
+            error => {console.log( error ); this.router.navigate( ['/login'] );},
+            () => { }
+            );
     }
  }
