@@ -16,8 +16,7 @@ declare var swal , require, $: any;
   styleUrls: ['./manage-video.component.css'],
   providers: [ Pagination, HttpRequestLoader ]
   })
-export class ManageVideoComponent implements OnInit , OnDestroy , AfterViewInit {
-    allVideos: Array<SaveVideoFile>;
+export class ManageVideoComponent implements OnInit , OnDestroy {
     manageVideos = true;
     editVideo = false;
     playVideo = false;
@@ -48,12 +47,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy , AfterViewInit 
     sortingOrder: string = null;
     isvideoThere: boolean;
     public isCategoryThere: boolean;
+    public checkTotalRecords: boolean;
+    public allRecords: number;
     public searchDisable = true;
     public deletedVideo = false;
     public deleteVideoName: string;
     public campaignVideo: boolean;
     public campaignVideoMesg: string;
-    public allvideosRecords: number;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     public errorPrepender: 'Error In:';
     sortVideos  = [
@@ -102,13 +102,12 @@ export class ManageVideoComponent implements OnInit , OnDestroy , AfterViewInit 
                 this.showMessage = false;
                 this.showUpdatevalue = false;
             }
+         this.checkTotalRecords = true;
           this.loadVideos(this.pagination);
           console.log('manage videos ngOnInit completed');
         } catch (error) {
             this.logger.error('erro in ng oninit :' + error);
         }
-    }
-    ngAfterViewInit() {
     }
       loadVideos(pagination: Pagination) {
        this.pagination.maxResults = 12;
@@ -118,8 +117,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy , AfterViewInit 
             .subscribe((result: any) => {
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
-              ///  pagination.totalRecords = this.totalRecords;
-                this.pagination.maxResults = 12;
+                pagination.totalRecords = this.totalRecords;
+                if (this.checkTotalRecords === true) {
+                     this.allRecords = this.totalRecords;
+                     this.checkTotalRecords = false;
+                 }
                 if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                      this.categories = result.categories;
                      this.categories.sort(function(a: any, b: any) { return (a.id) - (b.id); });

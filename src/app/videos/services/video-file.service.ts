@@ -109,6 +109,17 @@ export class VideoFileService {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
+    showCampaignVideo(typeValue: string, videoAlias: string, campaignAlias: string, userAlias: string) {
+       try {
+            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue + '&videoAlias=' +
+            videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
+            return this.http.get(url,"")
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) {
+	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
+        }
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
