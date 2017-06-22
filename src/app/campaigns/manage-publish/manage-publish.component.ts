@@ -14,6 +14,7 @@ import { Logger } from 'angular2-logger/core';
 import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: any;
 
 
@@ -21,7 +22,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise: an
   selector: 'app-manage-publish',
   templateUrl: './manage-publish.component.html',
   styleUrls: ['./manage-publish.component.css'],
-  providers:[Pagination]
+  providers:[Pagination,HttpRequestLoader]
 })
 export class ManagePublishComponent implements OnInit,OnDestroy {
     campaigns:Campaign[];
@@ -52,7 +53,8 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         public selectedSortedOption:any = this.sortByDropDown[0];
         public itemsSize:any = this.numberOfItemsPerPage[0];
         public isError:boolean = false;
-        
+        httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+                                
     constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,
             private pagination:Pagination,private pagerService: PagerService,
             private refService:ReferenceService,private userService:UserService,private authenticationService:AuthenticationService) {
@@ -74,8 +76,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     }
     
     listCampaign(pagination:Pagination){
-        this.pagination.isLoading = true;
-        this.isError = false;
+        this.refService.loading(this.httpRequestLoader, true);
         this.campaignService.listCampaign(pagination,this.authenticationService.user.id)
         .subscribe(
             data => {
@@ -83,13 +84,11 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
                 this.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.pagination.isLoading = false;
+                this.refService.loading(this.httpRequestLoader, false);
             },
             error => {
-                this.logger.error("error in listCampaign()", error);
-                this.isError = true;
-                this.pagination.isLoading = false;
-                
+                this.logger.error(this.refService.errorPrepender+" listCampaign():"+error);
+                this.refService.showServerError(this.httpRequestLoader);
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
         );

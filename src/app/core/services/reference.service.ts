@@ -9,6 +9,7 @@ import {Category} from '../../videos/models/category';
 import { Logger } from "angular2-logger/core";
 import {User} from '../models/user';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+declare var  $: any;
 @Injectable()
 export class ReferenceService{
 
@@ -16,6 +17,9 @@ export class ReferenceService{
     public userName: any;
     public selectedCampaignType:string = "";
     campaignSuccessMessage:string = "";
+    isCreated:boolean = false;
+    isUpdated:boolean = false;
+    errorPrepender:string  = "Error In";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
 
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger:Logger) {
@@ -62,5 +66,8 @@ export class ReferenceService{
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( errMsg );
      }
-    
+     
+    goToTop(){
+        $(window).scrollTop(0);
+    }
 }

@@ -258,6 +258,13 @@
 									</tr>
 								</thead>
 								<tbody class="row_selected">
+								<tr>
+										<td colspan="5">
+											<app-loader *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
+											<app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError"></app-error-pages>
+										</td>
+									</tr>
+								<ng-container *ngIf=" videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	
 								<!-- ------------------Selected Video Row-->
 									<tr *ngIf="!isAdd && isCampaignDraftVideo" class="active" id="selectedVideoRow" (click)="setClickedRow(campaign.campaignVideoFile)">
 									<!-- --------------Thumbnail--------------------------- -->
@@ -297,7 +304,6 @@
 											<img src="assets/images/success.png" *ngIf="campaign.campaignVideoFile.viewBy!='DRAFT'">
 										</td>
 									</tr>
-								
 									<!-- --------------------Avalilable Campaign Videos------------ -->	
 									<tr role="row" class="odd" *ngFor="let videoFile of videosPagination.pagedItems;let i =  index" 
 									(click)="setClickedRow(videoFile)" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
@@ -343,9 +349,10 @@
 											<img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
 										</td>
 									</tr>
+									</ng-container>
 								</tbody>
 							</table>
-								<div *ngIf="!isvideoThere">   
+								<div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">   
 								<!--pager here  -->
 								 	 <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
@@ -394,8 +401,11 @@
     <div class="row setup-content step hiddenStepInfo" id="step-4">
     <!-- <br> -->
     <div *ngIf="contactsPagination.totalRecords==0" class="alert alert-danger"><strong>No Contacts Found</strong></div> 
-        <div class="col-xs-12" *ngIf="contactsPagination.totalRecords>0" style="margin-top: 10px;">
+        <div class="col-xs-12" style="margin-top: 10px;">
             <div class="col-md-12 well text-center">
+            <app-loader *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
+			<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
+			<ng-container *ngIf=" contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                 <div class="row" id="user_list_table_view">
 				          <div class="col-lg-12">
 				            <div class="portlet box blue-hoki">
@@ -447,8 +457,8 @@
 					                      </td>
 					                  </tr>
 					                </tbody>
-                             </table>
-                            		 <div>   
+                            	 </table>
+                            		 <div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">   
 									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
@@ -481,6 +491,7 @@
                  </div>
               </div>
             </div>
+            </ng-container>
              <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-3');">Previous</button>
              <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default"  (click)="resetActive($event, 40, 'step-2')">Previous</button>
        		<button type="submit"  style="float: right;" class="btn btn-default btn green"  (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List"  >Next</button>
@@ -513,7 +524,10 @@
 					<div class="row">
 						<form role="form" class="form-horizontal form-bordered form-label-stripped">
 								<div class="col-xs-12">
-									<div class="row" id="user_list_table_view" *ngIf="emailTemplatesPagination.totalRecords>0">
+								<app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
+								<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
+								<ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+									<div class="row" id="user_list_table_view">
 										<div class="portlet-body" style="background-color: white;">
 											<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
 											<div class="row-fluid">
@@ -575,8 +589,9 @@
 											</div>
 										</div>
 									</div>
+									</ng-container>
 									<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>
-									<div *ngIf="emailTemplatesPagination.totalRecords>0" >
+									<div *ngIf="emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
 									 <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
                                         <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
                                            <a (click)="setPage(1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">First</a>

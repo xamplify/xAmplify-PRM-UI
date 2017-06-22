@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
-import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { Logger } from 'angular2-logger/core';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var BeePlugin,swal,Promise:any;
@@ -19,9 +19,9 @@ declare var BeePlugin,swal,Promise:any;
 export class CreateTemplateComponent implements OnInit {
 	
     loggedInUserId:number;
-    constructor(private emailTemplateService:EmailTemplateService, private userService:UserService,
+    constructor(private emailTemplateService:EmailTemplateService,
                 private emailTemplate:EmailTemplate,private router:Router, private logger :Logger,
-                private authenticationService:AuthenticationService) {
+                private authenticationService:AuthenticationService,private refService:ReferenceService) {
 		console.log(emailTemplateService.emailTemplate);
 		this.loggedInUserId = this.authenticationService.user.id;
 	    var names:any = [];
@@ -120,7 +120,8 @@ export class CreateTemplateComponent implements OnInit {
 	                  emailTemplate.id = emailTemplateService.emailTemplate.id;
 	                  emailTemplateService.update(emailTemplate) .subscribe(
 	                          data => {
-	                             router.navigate(["/home/emailtemplate/manageTemplates"]);
+	                              refService.isUpdated = true;
+	                              router.navigate(["/home/emailtemplate/manageTemplates"]);
 	                          },
 	                          error => console.log( error ),
 	                          () => console.log( "Email Template Updated" )
@@ -128,7 +129,7 @@ export class CreateTemplateComponent implements OnInit {
 	                 
 	              }else{
 	                  emailTemplate.user = new User();
-	                  emailTemplate.user.userId = userService.loggedInUserData.id;
+	                  emailTemplate.user.userId = authenticationService.user.id;
 	                  emailTemplate.userDefined = true;
 	                  emailTemplate.beeRegularTemplate = emailTemplateService.emailTemplate.beeRegularTemplate;
 	                  emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
@@ -143,17 +144,8 @@ export class CreateTemplateComponent implements OnInit {
 	                  }
 	                  emailTemplateService.save(emailTemplate) .subscribe(
 	                          data => {
-	                              
-	                              swal({
-	                                  title: 'Template Saved Successfully',
-	                                  type: 'success',
-	                                  confirmButtonColor: '#3085d6',
-	                                  allowOutsideClick: false,
-	                                }).then(function () {
-	                                    router.navigate(["/home/emailtemplate/manageTemplates"]);
-	                                })
-	                              
-	                              //swal("Email Template Saved Successfully", "", "success")
+	                              refService.isCreated = true;
+                                  router.navigate(["/home/emailtemplate/manageTemplates"]);
 	                          },
 	                          error => console.log( error ),
 	                          () => console.log( "Email Template Saved" )

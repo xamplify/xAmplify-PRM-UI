@@ -9,15 +9,15 @@ import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
-
-
+import { ReferenceService } from '../../core/services/reference.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
     selector: 'app-update-template',
     templateUrl: './update-template.component.html',
     styleUrls: ['./update-template.component.css', './CodeHighlighter.css'],
-    providers: [EmailTemplate]
+    providers: [EmailTemplate,HttpRequestLoader]
 })
 export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
@@ -30,9 +30,11 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     public htmlText: string;
     model: any = {};
     public availableTemplateNames: Array<string>;
-
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
-            private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService) {
+            private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,
+            private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
         emailTemplateService.getAvailableNames(this.authenticationService.user.id).subscribe(
             (data: any) => {
@@ -45,7 +47,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.isPreview = true;
             this.htmlText = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
-            $('.html').highlightCode('html', this.htmlText);
+           // $('.html').highlightCode('html', this.htmlText);
         }
 
     }
@@ -92,7 +94,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
     }
     updateHtmlTemplate() {
-        swal({ title: 'Updating Template', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif", allowOutsideClick: false });
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.body = $('#textarea').text();
@@ -101,23 +102,15 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             (data: string) => {
                 console.log(data);
                 if (data == "success") {
-                    let self = this;
-                    swal({
-                        title: 'Template Updated Successfully',
-                        type: 'success',
-                        confirmButtonColor: '#3085d6',
-                        allowOutsideClick: false,
-                    }).then(function() {
-                        self.router.navigate(["/home/emailtemplate/manageTemplates"]);
-                    })
-                } else {
-                    swal(data, "", "error");
+                    this.refService.isUpdated = true;
+                    this.router.navigate(["/home/emailtemplate/manageTemplates"]);
                 }
             },
             (error: string) => {
-                swal(error, "", "error");
+                this.logger.error(this.refService.errorPrepender+" listDefaultTemplates():"+error);
+                this.refService.showServerError(this.httpRequestLoader);
             },
-            () => console.log("Html Template Updated Successfully")
+            () => this.logger.info("Finished updateHtmlTemplate()")
             );
 
     }

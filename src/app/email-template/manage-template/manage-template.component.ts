@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { EmailTemplateService } from '../services/email-template.service';
@@ -10,15 +10,17 @@ import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Logger } from 'angular2-logger/core';
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination]
+    providers: [Pagination,HttpRequestLoader]
 })
-export class ManageTemplateComponent implements OnInit {
+export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
     emailTemplate: EmailTemplate;
     emailPreview: string;
@@ -59,30 +61,41 @@ export class ManageTemplateComponent implements OnInit {
     public selectedTemplate: any = this.templatesDropDown[0];
     public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
+    public message:string;   
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+        
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, private refService: ReferenceService, private pagination: Pagination,private authenticationService:AuthenticationService ) {
+        private pagerService: PagerService, private refService: ReferenceService, 
+        private pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
+        if(refService.isCreated){
+           this.message = "Template Created Successfully";
+           this.showMessageOnTop();
+        }else if(refService.isUpdated){
+            this.message = "Template Updated Successfully";
+            this.showMessageOnTop();
+        }
     }
+    showMessageOnTop(){
+        $(window).scrollTop(0);
+        setTimeout(function() { $("#templateCreationSuccessDiv").slideUp(500); }, 5000);
+    }
+    
 
     listEmailTemplates( pagination: Pagination ) {
-        try {
-            pagination.isLoading = true;
+            this.refService.loading(this.httpRequestLoader, true);
             this.emailTemplateService.listTemplates( pagination, this.authenticationService.user.id)
                 .subscribe(
                 ( data: any ) => {
                     this.emailTemplates = data.emailTemplates;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
-                    pagination.isLoading = false;
-                    this.refService.showInfo( "Finished listEmailTemplates in manageTemplatesComponent", this.emailTemplates );
+                    this.refService.loading(this.httpRequestLoader, false);
                 },
                 ( error: string ) => {
-                    this.refService.showError( error, "listEmailTemplates", "ManageTemplatesComponent" )
+                    this.logger.error(this.refService.errorPrepender+" listEmailTemplates():"+error);
+                    this.refService.showServerError(this.httpRequestLoader);
                 }
                 );
-        } catch ( error ) {
-            this.refService.showError( error, "listEmailTemplates", "ManageTemplatesComponent" )
-        }
-
     }
 
     setPage( page: number ) {
@@ -136,7 +149,8 @@ export class ManageTemplateComponent implements OnInit {
             }
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
-            this.refService.showError( error, "getAllFilteredResults", "ManageTemplatesComponent" )
+            this.logger.error(this.refService.errorPrepender+" getAllFilteredResults():"+error);
+            this.refService.showServerError(this.httpRequestLoader);
         }
     }
 
@@ -169,11 +183,11 @@ export class ManageTemplateComponent implements OnInit {
                 } else {
                     this.router.navigate( ["/home/emailtemplate/createTemplate"] );
                 }
-                this.refService.showInfo( "Finsished edit() in manageTemplatesComponent", data )
 
             },
             ( error: string ) => {
-                this.refService.showError( error, "edit", "ManageTemplatesComponent" );
+                this.logger.error(this.refService.errorPrepender+" edit():"+error);
+                this.refService.showServerError(this.httpRequestLoader);
             }
             );
 
@@ -211,12 +225,14 @@ export class ManageTemplateComponent implements OnInit {
                 self.deleteEmailTemplate( id,name );
             })
         } catch ( error ) {
-            this.refService.showError( error, "confirmDeleteEmailTemplate", "ManageTemplatesComponent" );
+            this.logger.error(this.refService.errorPrepender+" confirmDeleteEmailTemplate():"+error);
+            this.refService.showServerError(this.httpRequestLoader);
         }
 
     }
 
     deleteEmailTemplate( id: number,name:string ) {
+       this.refService.goToTop();
         this.isEmailTemplateDeleted = false;
         this.isCampaignEmailTemplate = false;
         this.emailTemplateService.delete( id )
@@ -237,7 +253,10 @@ export class ManageTemplateComponent implements OnInit {
                 }
                 
             },
-            ( error: string ) => { this.refService.showError( error, "deleteEmailTemplate", "ManageTemplatesComponent" ); }
+            ( error: string ) => { 
+                this.logger.error(this.refService.errorPrepender+" deleteEmailTemplate():"+error);
+                this.refService.showServerError(this.httpRequestLoader); 
+                }
             );
     }
 
@@ -253,4 +272,11 @@ export class ManageTemplateComponent implements OnInit {
         this.listEmailTemplates(this.pagination);
     }
 
+    
+    ngOnDestroy() {
+        this.refService.isCreated = false;
+        this.refService.isUpdated = false;
+        this.message = "";
+        
+    }
 }

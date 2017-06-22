@@ -5,6 +5,10 @@
 	  <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
 	 	<strong>Please Delete Associated Campaign(s)</strong>
 	 </div>
+	  <div *ngIf="message?.length>0" id="templateCreationSuccessDiv" class="alert alert-success alert-dismissable fade in">
+	 	<strong>{{message}}</strong>
+	 </div>
+	 
 <div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a
@@ -49,7 +53,8 @@
 				</div>
 				<div class="portlet-body">
 					<div class="row">
-					<app-loader *ngIf="pagination.isLoading"></app-loader>
+							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 								<div class="portlet light block">
 									<div class="portlet-title">

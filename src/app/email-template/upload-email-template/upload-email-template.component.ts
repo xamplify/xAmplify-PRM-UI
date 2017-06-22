@@ -8,13 +8,15 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { Logger } from "angular2-logger/core";
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
     selector: 'app-upload-email-template',
     templateUrl: './upload-email-template.component.html',
     styleUrls: ['./upload-email-template.component.css','../update-template/CodeHighlighter.css'],
-    providers: [EmailTemplate]
+    providers: [EmailTemplate,HttpRequestLoader]
 })
 export class UploadEmailTemplateComponent implements OnInit {
 
@@ -34,11 +36,15 @@ export class UploadEmailTemplateComponent implements OnInit {
     public availableTemplateNames: Array<string>;
     isFileDrop: boolean;
     isFileProgress: boolean;
-
+    loggedInUserId:number = 0;
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    isVideoTagError:boolean = false;
+    videoTagsError:string = "";
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
-            private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService) {
+            private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
-        emailTemplateService.getAvailableNames(this.authenticationService.user.id).subscribe(
+        this.loggedInUserId = this.authenticationService.user.id;
+        emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
             (data: any) => {
                 this.availableTemplateNames = data;
             },
@@ -145,9 +151,8 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     /************Save Html Template****************/
     saveHtmlTemplate() {
-        swal({ title: 'Saving Template', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif", allowOutsideClick: false });
         this.emailTemplate.user = new User();
-        this.emailTemplate.user.userId = this.userService.loggedInUserData.id;
+        this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.body = $('#textarea').text();
         this.emailTemplate.userDefined = true;
@@ -163,25 +168,19 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplateService.save(this.emailTemplate)
             .subscribe(
             data => {
-                console.log(data);
                 if (data == "success") {
-                    let self = this;
-                    swal({
-                        title: 'Template Added Successfully',
-                        type: 'success',
-                        confirmButtonColor: '#3085d6',
-                        allowOutsideClick: false,
-                    }).then(function() {
-                        self.router.navigate(["/home/emailtemplate/manageTemplates"]);
-                    })
-                } else {
-                    swal(data, "", "error");
+                this.refService.isCreated = true;
+                this.router.navigate(["/home/emailtemplate/manageTemplates"]);
+                } else{
+                    this.isVideoTagError = true;
+                    this.videoTagsError = data;
                 }
             },
             error => {
-                swal(error, "", "error");
+                this.logger.error(this.refService.errorPrepender+" saveHtmlTemplate():"+error);
+                this.refService.showServerError(this.httpRequestLoader);
             },
-            () => console.log("Video Html Template Saved Successfully")
+            () => console.log(" Completed saveHtmlTemplate()")
             );
     }
 

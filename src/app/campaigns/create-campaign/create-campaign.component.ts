@@ -14,17 +14,22 @@ import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
 import { Campaign } from '../models/campaign';
+import { CampaignVideo } from '../models/campaign-video';
+import { CampaignEmailTemplate } from '../models/campaign-email-template';
+import { CampaignContact } from '../models/campaign-contact';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery:any;
 
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
-  styleUrls: ['./create-campaign.component.css']
+  styleUrls: ['./create-campaign.component.css'],
+providers:[HttpRequestLoader]
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedRow:Number;
@@ -37,6 +42,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     imagePath:string;
     //campaignForm: FormGroup;
     campaign:Campaign;
+    campaignVideo:CampaignVideo=new CampaignVideo();
+    campaignContact:CampaignContact=new CampaignContact();
+    campaignEmailTemplate:CampaignEmailTemplate = new CampaignEmailTemplate();
     names:string[]=[];
     editedCampaignName:string = "";
     isAdd:boolean = true;
@@ -407,7 +415,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     loadCampaignVideos(pagination:Pagination) {
-             this.videoFileService.loadVideoFiles(pagination)
+        this.refService.loading(this.campaignVideo.httpRequestLoader, true);
+        this.videoFileService.loadVideoFiles(pagination)
             .subscribe(
             (result:any) => {
                 this.campaignVideos = result.listOfMobinars;
@@ -433,9 +442,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCategoryThere = true;
                 this.isCategoryUpdated = false;
                this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
+               this.refService.loading(this.campaignVideo.httpRequestLoader, false);
             },
             (error:string) => {
-                this.logger.error("error in loadCampaignVideos()", error);
+                this.logger.error(this.refService.errorPrepender+" loadCampaignVideos():"+error);
+                this.refService.showServerError(this.campaignVideo.httpRequestLoader);
             },
             () => this.logger.info("Finished loadCampaignVideos()", this.videosPagination)
             )
@@ -575,6 +586,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    
     /*************************************************************Contact List***************************************************************************************/
     loadCampaignContacts(contactsPagination:Pagination) {
+        this.refService.loading(this.campaignContact.httpRequestLoader, true);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data:any) => {
@@ -588,9 +600,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }
                 }
                 this.contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
+                this.refService.loading(this.campaignContact.httpRequestLoader, false);
             },
             (error:string) => {
-                this.logger.error("error in loadCampaignContacts()", error);
+                this.logger.error(this.refService.errorPrepender+" loadCampaignContacts():"+error);
+                this.refService.showServerError(this.campaignContact.httpRequestLoader);
             },
             () => this.logger.info("Finished loadCampaignContacts()", this.contactsPagination)
             )
@@ -750,6 +764,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){
+        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         pagination.campaignDefaultTemplate = true;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
@@ -760,9 +775,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                     this.isEmailTemplate = false;
                 }
+                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
             },
             (error:string) => {
-                this.logger.error("error in loadEmailTemplates()", error);
+                this.logger.error(this.refService.errorPrepender+" loadEmailTemplates():"+error);
+                this.refService.showServerError(this.campaignEmailTemplate.httpRequestLoader);
             },
             () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
             )
@@ -777,7 +794,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#email-template-title").append(emailTemplate.name);
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<mobinarImgURL>",selectedVideoGifPath);
+            let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
             updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
         }else{

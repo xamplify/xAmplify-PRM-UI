@@ -22,7 +22,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     public filteredEmailTemplates  : Array<EmailTemplate> = new Array<EmailTemplate>();
     public templateSearchKey: string = "";
     templateFilter: any = { name: '' };
-    errorPrepender:string  = "Error In";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
@@ -39,7 +38,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.listDefaultTemplates();
          }
          catch(error){
-             this.logger.error(this.errorPrepender+" ngOnInit():", error);
+             this.logger.error(this.refService.errorPrepender+" ngOnInit():", error);
          }
        }       
     
@@ -53,7 +52,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                    this.refService.loading(this.httpRequestLoader, false);
                },
                (error:string) => {
-                   this.logger.error(this.errorPrepender+" listDefaultTemplates():"+error);
+                   this.logger.error(this.refService.errorPrepender+" listDefaultTemplates():"+error);
                    this.refService.showServerError(this.httpRequestLoader);
                },
                () =>this.logger.info("Finished listDefaultTemplates()")
@@ -200,7 +199,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
    
     
     showTemplateById(id:number,index:number){
-       if(id!=undefined){
+        if(id!=undefined){
            this.emailTemplateService.getById(id)
            .subscribe(
                (data:any) => {
@@ -208,7 +207,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                    this.router.navigate(["/home/emailtemplate/createTemplate"]);
                },
                (error:string) => {
-                   this.logger.error(this.errorPrepender+" showTemplateById():"+error);
+                   this.logger.error(this.refService.errorPrepender+" showTemplateById():"+error);
                    this.refService.showServerError(this.httpRequestLoader);
                },
                () => this.logger.info("Got Email Template")
