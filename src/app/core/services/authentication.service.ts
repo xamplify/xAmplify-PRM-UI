@@ -21,8 +21,8 @@ export class AuthenticationService {
     public redirectUrl: string;
     map:any;
 constructor(private http: Http, private utilService: UtilService) {
-    this.REST_URL = "https://aravindu.com/xtremand-rest/";
-    //this.REST_URL = "http://localhost:8080/xtremand-rest/";
+    // this.REST_URL = "https://aravindu.com/xtremand-rest/";
+    this.REST_URL = "http://localhost:8080/xtremand-rest/";
     this.MEDIA_URL = "https://aravindu.com/vod/";
 }
 
@@ -62,20 +62,28 @@ getOptions() : RequestOptions{
         })
         .flatMap(( map ) => this.http.post( this.REST_URL + "admin/getUserByUserName/?userName=" + userName + "&access_token=" + this.map.access_token, "" )
             .map(( res: Response ) => {
-                    
-                    var userToken = new UserToken();
-                    userToken.userName = userName;
-                    userToken.accessToken = this.map.access_token;
-                    userToken.refreshToken = this.map.refresh_token;
-                    userToken.expiresIn = this.map.expires_in;
-                    
-                    this.userToken = userToken;
-                    this.user= res.json();
-                    
-                    this.access_token = this.map.access_token;
-                	this.refresh_token = this.map.refresh_token;
+
+                var userToken = {
+                    'userName': userName,
+                    'userId': res.json().id,
+                    'accessToken': this.map.access_token,
+                    'refreshToken': this.map.refresh_token,
+                    'expiresIn': this.map.expires_in
+                };
+                localStorage.setItem( 'currentUser', JSON.stringify( userToken ) );
+                this.access_token = this.map.access_token;
+                this.refresh_token = this.map.refresh_token;
         }) );
 }
+    
+getLoggedInUser(): number {
+    let currentUser =  localStorage.getItem( 'currentUser' );
+    if(currentUser){
+        return JSON.parse(currentUser)['userId'];
+    }else{
+        return null;
+    }
+}    
 
 logout(): void {
     console.log('logout()');
@@ -83,6 +91,5 @@ logout(): void {
     this.access_token = null;
     this.refresh_token = null;
     localStorage.removeItem('currentUser');
-    this.userToken = undefined;
 }
 }

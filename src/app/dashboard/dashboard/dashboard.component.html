@@ -118,43 +118,39 @@
 				<!-- END DASHBOARD STATS -->
 				<div class="clearfix"></div>
 				<div class="row"> 
-				 
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                            <div class="dashboard-stat2">
-                                <div class="display">
-                                    <a [routerLink]="['../../social/twitter-tweets']">
-                                    <div class="number col-xs-8 text-left" style="padding-left:5px;padding-right:0px;">
-                                        <h3 class="font-blue">
-                                            <span data-counter="counterup">{{twitterTotalTweetsCount}}</span>
-										</h3>
-										<small>TOTAL TWEETS</small>
-                                    </div>
-                                    <div class="icon col-xs-4 text-right">
-                                        <i class="fa fa-twitter" style="color: #00ACED" ></i>
-                                    </div>
-									</a>
-									
-									<div class="col-xs-12">
-										<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
-									</div>
-
-									<div class="col-xs-8 text-left" style="padding-left:0px;padding-right:0px;">
-										<h5><span class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyTweetsCount}}</span> New Tweet's<br>(Past 7 days)</h5>	
-									</div>
-                                  <!--  <div class=" col-xs-4 text-right bar-sparkline" style="padding: 5px;" sparktype="bar" sparkbarcolor="#00ACED" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
-										28,15,40,12,13,20,17
-									</div> -->
-									<div class=" col-xs-4 text-right sparkline-chart icon">
-											<div class="number" id="sparkline_bar_twitter"><canvas width="46" height="20" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
-								    </div>
-									
-                                </div>
-
-                            </div>
-							
-							
-                        </div>
-
+				 		<section *ngFor="let socialConnection of socialConnections">
+	                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" *ngIf="socialConnection.source === 'TWITTER'">
+	                            <div class="dashboard-stat2">
+	                                <div class="display">
+	                                    <a [routerLink]="['../../social/twitter-tweets', socialConnection.profileId]">
+	                                    <div class="number col-xs-8 text-left" style="padding-left:5px;padding-right:0px;">
+	                                        <h3 class="font-blue">
+	                                            <span data-counter="counterup">{{twitterTotalTweetsCount}}</span>
+											</h3>
+											<small>TOTAL TWEETS</small>
+	                                    </div>
+	                                    <div class="icon col-xs-4 text-right">
+	                                        <i class="fa fa-twitter" style="color: #00ACED" ></i>
+	                                    </div>
+										</a>
+										
+										<div class="col-xs-12">
+											<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
+										</div>
+	
+										<div class="col-xs-8 text-left" style="padding-left:0px;padding-right:0px;">
+											<h5><span class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyTweetsCount}}</span> New Tweet's<br>(Past 7 days)</h5>	
+										</div>
+	                                  <!--  <div class=" col-xs-4 text-right bar-sparkline" style="padding: 5px;" sparktype="bar" sparkbarcolor="#00ACED" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
+											28,15,40,12,13,20,17
+										</div> -->
+										<div class=" col-xs-4 text-right sparkline-chart icon">
+												<div class="number" id="sparkline_bar_twitter"><canvas width="46" height="20" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
+									    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+						</section>
 
                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
                             <div class="dashboard-stat2 ">
@@ -369,8 +365,9 @@
 							</div>
 							<div class="portlet-body">
 								<div class="row">
-									<div class="col-md-3">
-										  <a [routerLink]="['../../social/twitter-analytics']" style="text-decoration: none;">
+									<section *ngFor="let socialConnection of socialConnections">
+									<div class="col-md-3" *ngIf="socialConnection.source == 'TWITTER'">
+										  <a [routerLink]="['../../social/twitter-analytics', socialConnection.profileId]" style="text-decoration: none;">
 											<div class="sparkline-chart">
 												<div class="visual" style="color: #007bb6; font-size: 60px;">
 													<i class="fa fa-twitter"
@@ -386,7 +383,7 @@
 											</div>
 										</a>
 									</div>
-									
+									</section>
 									<div class="col-md-3">
 										  <div class="sparkline-chart">
 											<div class="visual" style="color: #007bb6;font-size: 60px;">

@@ -8,10 +8,11 @@ import { FacebookService } from '../../services/facebook.service';
 })
 export class FacebookCommentsComponent implements OnInit {
     @Input( 'postId' ) postId: string;
+    @Input( 'facebookAccessToken' ) facebookAccessToken: string;
     comments: any;
     constructor( private facebookService: FacebookService ) { }
     getComments() {
-        this.facebookService.getComments( localStorage.getItem( 'facebook' ), this.postId )
+        this.facebookService.getComments( this.postId, this.facebookAccessToken )
             .subscribe(
             data => this.comments = data["data"],
             error => console.log( error ),

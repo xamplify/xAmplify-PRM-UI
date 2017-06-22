@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChartModule  } from 'angular2-highcharts';
 import {TwitterService} from '../../services/twitter.service';
+import { SocialConnection } from '../../models/social-connection';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 declare var Highcharts: any;
 @Component( {
@@ -9,10 +11,12 @@ declare var Highcharts: any;
 })
 
 export class TwitterAreaChartComponent implements OnInit {
-    constructor( private twitterService: TwitterService ) {
+    @Input( 'socialConnection' ) socialConnection: SocialConnection;
+
+    constructor( private twitterService: TwitterService, private authenticationService: AuthenticationService ) {
     }
-    getFollowersHistory() {
-        this.twitterService.getfollowersHistory()
+    getFollowersHistory(userId: number) {
+        this.twitterService.getfollowersHistory(this.socialConnection, userId)
             .subscribe(
             data => {
                 var values: Array<any> = [
@@ -74,7 +78,8 @@ export class TwitterAreaChartComponent implements OnInit {
      
     }
     ngOnInit() {
-        this.getFollowersHistory();
+        const userId = this.authenticationService.user.id;
+        this.getFollowersHistory(userId);
     }
 
 }

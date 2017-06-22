@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         var body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
         
         this.authenticationService.login(authorization, body, this.model.username).subscribe( result => {
-            if (this.authenticationService.userToken.accessToken != null) {
+            if ( localStorage.getItem( 'currentUser' ) ) {
                 this.initializeTwitterNotification();
                 //if user is coming from login
              //   this.getLoggedInUserDetails();

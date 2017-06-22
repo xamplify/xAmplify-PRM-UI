@@ -49,7 +49,7 @@ export class TopnavbarComponent implements OnInit {
     
     listTwitterNotifications(){
         setInterval(() => {
-            this.twitterService.listNotifications()
+            this.twitterService.listNotifications(null)
             .subscribe(
                 data => {
                     this.notifications = data;
@@ -71,7 +71,7 @@ export class TopnavbarComponent implements OnInit {
     }
     
     markAllAsRead(){
-        this.twitterService.markAllAsRead()
+        this.twitterService.markAllAsRead(null)
         .subscribe(
             data => {
                 this.notificationsCount = 0;

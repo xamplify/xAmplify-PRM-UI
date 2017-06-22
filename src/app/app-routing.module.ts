@@ -32,7 +32,7 @@ export const routes: Routes = [
             { path: 'campaigns' , loadChildren : 'app/campaigns/campaigns.module#CampaignsModule'},
             { path: 'upgrade' , loadChildren : 'app/upgrade/upgrade.module#UpgradeModule'},
             { path: 'team' , loadChildren : 'app/team/team.module#TeamModule'},
-            {path: ':social/manage', component: SocialManageComponent}
+            {path: 'manage/:social', component: SocialManageComponent}
         ]
     },
     { path: 'userlock', component: ProfileLockComponent},

@@ -17,7 +17,7 @@
 								<div class="portlet-title col-xs-12">
 									<h6 title="{{socialStatusProvider.profileName}}" class="ellipsis pull-left"><b>{{socialStatusProvider.profileName}}</b></h6>
 									<i class="fa fa-social pull-right" 
-										[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.providerName ==='facebook', 'fa-twitter fa-twitter-color': socialStatusProvider.providerName ==='twitter'}"></i>
+										[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.providerName ==='FACEBOOK', 'fa-twitter fa-twitter-color': socialStatusProvider.providerName ==='TWITTER'}"></i>
 								</div>
 								<div class="portlet-body">
 									<div class="row inline-block">
@@ -54,10 +54,10 @@
                     <h2>Selected Account(s)</h2><br/>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
 						<div class="btn btn-xs square-box" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
-						[ngClass]="{'btn-facebook': socialStatusProvider.providerName ==='facebook', 'btn-twitter': socialStatusProvider.providerName ==='twitter'}">
+						[ngClass]="{'btn-facebook': socialStatusProvider.providerName ==='FACEBOOK', 'btn-twitter': socialStatusProvider.providerName ==='TWITTER'}">
 							<div class="col-xs-12" style="display: inline-flex;">
 								<i class="fa fa-social pull-right" 
-										[ngClass]="{'fa-facebook': socialStatusProvider.providerName ==='facebook', 'fa-twitter': socialStatusProvider.providerName ==='twitter'}"></i>
+										[ngClass]="{'fa-facebook': socialStatusProvider.providerName ==='FACEBOOK', 'fa-twitter': socialStatusProvider.providerName ==='TWITTER'}"></i>
 								<h5>{{socialStatusProvider.profileName}}</h5>
 							</div>
 						</div>

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import {TwitterProfile} from '../../models/twitter-profile';
 
 import {TwitterService} from '../../services/twitter.service';
 import { UtilService } from '../../../core/services/util.service';
+import { SocialService } from '../../services/social.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+
+import { SocialConnection } from '../../models/social-connection';
 
 @Component({
   selector: 'app-twitter-friends',
@@ -14,10 +18,13 @@ import { UtilService } from '../../../core/services/util.service';
 })
 export class TwitterFriendsComponent implements OnInit{
     twitterProfiles:any;
-    constructor(private router: Router, private twitterService: TwitterService, private utilService: UtilService) {}
+    socialConnection: SocialConnection;
+
+    constructor(private route: ActivatedRoute, private twitterService: TwitterService, private utilService: UtilService, 
+            private authenticationService: AuthenticationService, private socialService: SocialService ) {}
     
-    getFriends(){
-        this.twitterService.listTwitterProfiles("friends")
+    getFriends(socialConnection: SocialConnection){
+        this.twitterService.listTwitterProfiles(socialConnection, "friends")
         .subscribe(
             data => {
                 this.twitterProfiles = data["twitterProfiles"];
@@ -32,7 +39,11 @@ export class TwitterFriendsComponent implements OnInit{
     
     ngOnInit(){
         try{
-             this.getFriends();
+            const profileId = this.route.snapshot.params['profileId'];
+            const userId = this.authenticationService.user.id;
+            this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
+
+             this.getFriends(this.socialConnection);
         }
         catch(err){
             console.log(err);

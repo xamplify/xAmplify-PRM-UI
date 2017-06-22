@@ -10,24 +10,24 @@
 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12" style="margin-bottom: 20px;" *ngFor="let twitterProfile of twitterProfiles" data-test-selector="ProfileTimelineUser" role="presentation">
     <div class="js-stream-item" role="listitem" id="{{twitterProfile.id}}" data-item-type="user">
       <div class="ProfileCard js-actionable-user">
-  <a *ngIf="twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" [routerLink]="['../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-image': 'url(' + twitterProfile.profileBannerUrl + ')'}"></a>
-  <a *ngIf="!twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" [routerLink]="['../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-color': '#'+twitterProfile.linkColor}"></a>
+  <a *ngIf="twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" [routerLink]="['../../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-image': 'url(' + twitterProfile.profileBannerUrl + ')'}"></a>
+  <a *ngIf="!twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" [routerLink]="['../../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-color': '#'+twitterProfile.linkColor}"></a>
 	
   <div class="ProfileCard-content">
-    <a class="ProfileCard-avatarLink js-nav js-tooltip" [routerLink]="['../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true">
+    <a class="ProfileCard-avatarLink js-nav js-tooltip" [routerLink]="['../../twitter-user', twitterProfile.id]" tabindex="-1" aria-hidden="true">
       <img class="ProfileCard-avatarImage js-action-profile-avatar" src="{{twitterProfile.profileImageUrl}}" alt="">
     </a>
     
     <div class="ProfileCard-userFields">
 <div class="ProfileNameTruncated">
   <div class="u-textTruncate u-inlineBlock ProfileNameTruncated-withBadges ProfileNameTruncated-withBadges--1">
-    <a class="ProfileNameTruncated-link u-textInheritColor js-nav js-action-profile-name" [routerLink]="['../twitter-user', twitterProfile.id]" data-aria-label-part="">{{twitterProfile.name}}</a>
+    <a class="ProfileNameTruncated-link u-textInheritColor js-nav js-action-profile-name" [routerLink]="['../../twitter-user', twitterProfile.id]" data-aria-label-part="">{{twitterProfile.name}}</a>
   	<img *ngIf="twitterProfile.verified && true" alt="Verified account" src="https://www.trolldor.com/assets/img/verificado.png" style="float: right;width: 20px;height: 20px;margin-left: 2px;">
   </div>
 </div>
       
       <span class="ProfileCard-screenname u-dir" dir="ltr">
-        <a [routerLink]="['../twitter-user', twitterProfile.id]" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">@<span class="u-linkComplex-target">{{twitterProfile.screenName}}</span></a>
+        <a [routerLink]="['../../twitter-user', twitterProfile.id]" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">@<span class="u-linkComplex-target">{{twitterProfile.screenName}}</span></a>
       </span>
 <div class="ProfileCardStats">
 	<ul class="ProfileCardStats-statList Arrange Arrange--bottom Arrange--equal">

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FacebookService } from '../../services/facebook.service';
+import { SocialService } from '../../services/social.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
-import {FacebookFansGenderAge} from "../../models/facebook-fans-gender-age";
+import { FacebookFansGenderAge } from "../../models/facebook-fans-gender-age";
+import { SocialConnection } from '../../models/social-connection';
 
 declare var Highcharts: any;
 @Component( {
@@ -17,17 +20,19 @@ export class FacebookAnalyticsComponent implements OnInit {
     pageFansGenderAge: any;
     pageFansCountry: any;
     metricsArray = ['page_fans_gender_age', 'page_fans_country'];
+    socialConnection: SocialConnection;
 
     facebookFansGenderAge: FacebookFansGenderAge = new FacebookFansGenderAge();
-    
-    constructor( private route: ActivatedRoute, private facebookService: FacebookService ) {
+
+    constructor( private route: ActivatedRoute, private facebookService: FacebookService,
+        private authenticationService: AuthenticationService, private socialService: SocialService ) {
     }
-    ngAfterContentInit(){
+    ngAfterContentInit() {
         this.pageFanAddsVsRemoves();
         this.pageImpressions();
     }
-    getPage( pageId: string ) {
-        this.facebookService.getPage( localStorage.getItem( 'facebook' ), pageId )
+    getPage( socialConnection: SocialConnection, pageId: string ) {
+        this.facebookService.getPage( socialConnection, pageId )
             .subscribe(
             data => {
                 this.page = data;
@@ -63,44 +68,44 @@ export class FacebookAnalyticsComponent implements OnInit {
             this.facebookFansGenderAge.femaleFollowers += this.facebookFansGenderAge.femaleFollowersData[i];
         this.facebookFansGenderAge.totalFollowers = this.facebookFansGenderAge.maleFollowers + this.facebookFansGenderAge.femaleFollowers;
 
-        Highcharts.chart('insight-gender-age', {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'People who have liked your page'
-        },
-        colors: ['#007bb6', '#ff2c82'],
-        xAxis: {
-            categories: this.facebookFansGenderAge.ageRange
-        },
-        yAxis: {
-            min: 0,
+        Highcharts.chart( 'insight-gender-age', {
+            chart: {
+                type: 'bar'
+            },
             title: {
-                text: 'Gender Demographics'
-            }
-        },
-        legend: {
-            reversed: true
-        },
-        plotOptions: {
-            series: {
-                stacking: 'normal'
-            }
-        },
-        series: [{
-            name: 'Male',
-            data: this.facebookFansGenderAge.maleFollowersData
-        }, {
-            name: 'Female',
-            data: this.facebookFansGenderAge.femaleFollowersData
-        }]
-    });
+                text: 'People who have liked your page'
+            },
+            colors: ['#007bb6', '#ff2c82'],
+            xAxis: {
+                categories: this.facebookFansGenderAge.ageRange
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Gender Demographics'
+                }
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                name: 'Male',
+                data: this.facebookFansGenderAge.maleFollowersData
+            }, {
+                name: 'Female',
+                data: this.facebookFansGenderAge.femaleFollowersData
+            }]
+        });
     }
 
-    getInsight( ownerId: string, metrics: string, period: string ) {
+    getInsight( socialConnection: SocialConnection, ownerId: string, metrics: string, period: string ) {
         console.log( metrics );
-        this.facebookService.getInsight( localStorage.getItem( 'facebook' ), ownerId, metrics, period )
+        this.facebookService.getInsight( socialConnection, ownerId, metrics, period )
             .subscribe(
             data => {
                 switch ( metrics ) {
@@ -118,20 +123,20 @@ export class FacebookAnalyticsComponent implements OnInit {
                 console.log( metrics + this.pageFansGenderAge );
             },
             error => console.log( error ),
-            () => console.log( 'getInsight() Finished.' )        
+            () => console.log( 'getInsight() Finished.' )
             );
     }
-    
-    renderMap(){
+
+    renderMap() {
         let countryData = this.pageFansCountry.values[this.pageFansCountry.values.length - 1].value;
         var data = [];
-        for(var i in countryData){
-            var arr = [i.toLowerCase(), parseInt(countryData[i])];
-            data.push(arr);
+        for ( var i in countryData ) {
+            var arr = [i.toLowerCase(), parseInt( countryData[i] )];
+            data.push( arr );
         }
 
         // Create the chart
-        Highcharts.mapChart('insight-fans-country', {
+        Highcharts.mapChart( 'insight-fans-country', {
             chart: {
                 map: 'custom/world'
             },
@@ -164,9 +169,9 @@ export class FacebookAnalyticsComponent implements OnInit {
         });
 
     }
-    
-    pageFanAddsVsRemoves(){
-        Highcharts.chart('insight-fan-adds-removes', {
+
+    pageFanAddsVsRemoves() {
+        Highcharts.chart( 'insight-fan-adds-removes', {
             chart: {
                 zoomType: 'xy'
             },
@@ -216,7 +221,7 @@ export class FacebookAnalyticsComponent implements OnInit {
                 verticalAlign: 'top',
                 y: 100,
                 floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                backgroundColor: ( Highcharts.theme && Highcharts.theme.legendBackgroundColor ) || '#FFFFFF'
             },
             series: [{
                 name: 'New Fans',
@@ -237,9 +242,9 @@ export class FacebookAnalyticsComponent implements OnInit {
             }]
         });
     }
-    
-    pageImpressions(){
-        Highcharts.chart('page-impressions', {
+
+    pageImpressions() {
+        Highcharts.chart( 'page-impressions', {
             chart: {
                 type: 'column'
             },
@@ -250,7 +255,7 @@ export class FacebookAnalyticsComponent implements OnInit {
                 text: 'Source: WorldClimate.com'
             },
             xAxis: {
-                categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 crosshair: true
             },
             yAxis: {
@@ -262,7 +267,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -283,10 +288,13 @@ export class FacebookAnalyticsComponent implements OnInit {
 
     ngOnInit() {
         try {
-            const ownerId = this.route.snapshot.params['ownerId'];
-            this.getPage( ownerId );
+            const profileId = this.route.snapshot.params['profileId'];
+            const userId = this.authenticationService.user.id;
+            this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
+
+            this.getPage( this.socialConnection, profileId );
             for ( var i in this.metricsArray )
-                this.getInsight( ownerId, this.metricsArray[i], 'lifetime' );
+                this.getInsight( this.socialConnection, profileId, this.metricsArray[i], 'lifetime' );
         } catch ( err ) {
             console.log( err );
         }

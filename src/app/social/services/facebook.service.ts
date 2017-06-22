@@ -8,60 +8,56 @@ import {SocialConnection} from '../models/social-connection';
 @Injectable()
 export class FacebookService {
     URL = this.authenticationService.REST_URL + 'facebook/';
-    QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
-
-    constructor(private http: Http, private authenticationService: AuthenticationService, private utilService: UtilService) {
-        this.QUERY_PARAMETERS += '&userId=' + this.authenticationService.user.id;
-    }
+    
+    constructor(private http: Http, private authenticationService: AuthenticationService, private utilService: UtilService) {}
 
     getPosts(socialConnection: SocialConnection) {
-        return this.http.post(this.URL + 'posts' + this.QUERY_PARAMETERS,socialConnection)
+        return this.http.post(this.URL + 'posts' + '?access_token=' + this.authenticationService.access_token,socialConnection)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getReactions(facebookAccessToken: string, postId: string) {
-        return this.http.get(this.URL + 'reactions' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+    getReactions(postId: string, facebookAccessToken: string) {
+        return this.http.get(this.URL + 'reactions' + '?access_token=' + this.authenticationService.access_token + '&facebookAccessToken='
             + facebookAccessToken + '&postId=' + postId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getComments(facebookAccessToken: string, postId: string) {
-        return this.http.get(this.URL + 'comments' + this.QUERY_PARAMETERS + '&facebookAccessToken='
+    getComments(postId: string, facebookAccessToken: string) {
+        return this.http.get(this.URL + 'comments' + '?access_token=' + this.authenticationService.access_token + '&facebookAccessToken='
             + facebookAccessToken + '&postId=' + postId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     listPages(facebookAccessToken: string) {
-        return this.http.get(this.URL + 'pages' + this.QUERY_PARAMETERS + '&facebookAccessToken=' + facebookAccessToken)
+        return this.http.get(this.URL + 'pages' + '?access_token=' + this.authenticationService.access_token + '&facebookAccessToken=' + facebookAccessToken)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getPage(facebookAccessToken: string, pageId: string) {
-        return this.http.get(this.URL + 'page' + this.QUERY_PARAMETERS + '&facebookAccessToken=' + facebookAccessToken
-            + '&pageId=' + pageId)
+    getPage(socialConnection: SocialConnection, pageId: string) {
+        return this.http.get(this.URL + 'page' + '?access_token=' + this.authenticationService.access_token + '&pageId=' + pageId + '&facebookAccessToken='+socialConnection.accessToken)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     listAccounts(facebookAccessToken: string) {
-        return this.http.get(this.URL + 'accounts' + this.QUERY_PARAMETERS + '&accessToken=' + facebookAccessToken)
+        return this.http.get(this.URL + 'accounts' + '?access_token=' + this.authenticationService.access_token + '&accessToken=' + facebookAccessToken)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     getUserProfileImage(profileId: string) {
-        return this.http.get(this.URL + 'profile-image' + this.QUERY_PARAMETERS + '&profileId=' + profileId)
+        return this.http.get(this.URL + 'profile-image' + '?access_token=' + this.authenticationService.access_token + '&profileId=' + profileId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getInsight(facebookAccessToken: string, ownerId: string, metrics: string, period: string) {
-        return this.http.get(this.URL + 'insights' + this.QUERY_PARAMETERS + '&facebookAccessToken='
-            + facebookAccessToken + '&ownerId=' + ownerId + '&metrics=' + metrics + '&period=' + period)
+    getInsight(socialConnection: SocialConnection, ownerId: string, metrics: string, period: string) {
+        return this.http.get(this.URL + 'insights' + '?access_token=' + this.authenticationService.access_token 
+                + '&ownerId=' + ownerId + '&metrics=' + metrics + '&period=' + period + '&facebookAccessToken='+socialConnection.accessToken)
             .map(this.extractData)
             .catch(this.handleError);
     }

@@ -1,16 +1,27 @@
 .redirect {
-    background: #FFF;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-family: monospace;
+	background: #FFF;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	font-family: monospace;
 }
-.error{
+
+.error {
 	color: red;
+}
+
+.fa-exclamation {
+	font-size: 1em;
+}
+
+.retry {
+	min-width: 15em;
+	border-radius: 0;
+	margin: 1em 0;
 }

@@ -43,6 +43,7 @@ export class UpdateStatusComponent implements OnInit {
     MEDIA_URL = this.authenticationService.MEDIA_URL;
     accessToken = this.authenticationService.access_token;
     profileImage: string;
+    userId: number;
 
     constructor( private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
@@ -165,7 +166,7 @@ export class UpdateStatusComponent implements OnInit {
         this.socialStatus.socialStatusProviders = socialStatusProviders;
         console.log( this.socialStatus );
         swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
-        this.socialService.updateStatus( this.socialStatus )
+        this.socialService.updateStatus(this.userId, this.socialStatus )
             .subscribe(
             data => {
                 this.initializeSocialStatus();
@@ -238,22 +239,28 @@ export class UpdateStatusComponent implements OnInit {
         this.socialStatus.statusMessage = "";
         this.socialStatus.shareNow = true;
 
-        this.socialStatus.socialStatusProviders = this.listSocialStatusProviders();
+        this.listSocialStatusProviders();
     }
 
     listSocialStatusProviders() {
-        let socialStatusProviders: Array<SocialStatusProvider> = new Array<SocialStatusProvider>();
-        let socialStatusProvider: SocialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider.id = 1;
-        socialStatusProvider.providerName = "twitter";
-        socialStatusProvider.profileImagePath = "https://instagram.fhyd2-1.fna.fbcdn.net/t51.2885-19/s150x150/13397667_966003090179916_1274276788_a.jpg";
-        socialStatusProvider.profileName = "manas sahoo";
+        const socialConnections = this.socialService.socialConnections;
+        this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
+        for(const i in socialConnections){
+            let socialStatusProvider = new SocialStatusProvider();
+            
+            socialStatusProvider.providerId = socialConnections[i].profileId;
+            socialStatusProvider.providerName = socialConnections[i].source;
+            socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
+            socialStatusProvider.profileName = socialConnections[i].profileName;
 
-        socialStatusProviders.push( socialStatusProvider );
-
-        this.getFacebookAccounts();
-
-        return socialStatusProviders;
+            if(('TWITTER' === socialConnections[i].source)){
+                socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
+                socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
+            }else{
+                socialStatusProvider.accessToken = socialConnections[i].accessToken;
+            }
+            this.socialStatus.socialStatusProviders.push(socialStatusProvider);
+        }
     }
     openListVideosModal() {
         $( '#listVideosModal' ).modal( 'show' );
@@ -301,7 +308,7 @@ export class UpdateStatusComponent implements OnInit {
 
     listEvents() {
         let self = this;
-        this.socialService.listEvents()
+        this.socialService.listEvents(this.userId)
             .subscribe(
             data => {
                 this.socialStatusList = data;
@@ -331,13 +338,13 @@ export class UpdateStatusComponent implements OnInit {
         $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
         //this.initializeSocialStatus();
         this.socialStatus = socialStatus;
-        this.socialStatus.socialStatusProviders = this.listSocialStatusProviders();
+        this.listSocialStatusProviders();
 
     }
     showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
     hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
     
-    getFacebookAccounts() {
+/*    getFacebookAccounts() {
         this.facebookService.listAccounts( localStorage.getItem( 'facebook' ) )
             .subscribe(
             data => {
@@ -349,7 +356,7 @@ export class UpdateStatusComponent implements OnInit {
             () => console.log( 'getAccounts() Finished.' )
             );
 
-    }
+    }*/
     
     getUserProfileImage( userId: string){
         this.facebookService.getUserProfileImage(userId )
@@ -368,6 +375,7 @@ export class UpdateStatusComponent implements OnInit {
     }
     
     ngOnInit() {
+        this.userId = this.authenticationService.user.id;
         this.listEvents();
         this.constructCalendar();
         this.initializeSocialStatus();

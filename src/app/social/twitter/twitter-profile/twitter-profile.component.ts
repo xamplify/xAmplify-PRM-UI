@@ -7,6 +7,10 @@ import {DirectMessage} from "../../models/direct-message";
 
 import {TwitterService} from "../../services/twitter.service";
 import { UtilService } from '../../../core/services/util.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { SocialService } from '../../services/social.service';
+
+import { SocialConnection } from '../../models/social-connection';
 
 declare var $: any;
 
@@ -24,12 +28,14 @@ export class TwitterProfileComponent implements OnInit{
     directMessageText: string;
     kloutScore: KloutScore;
     tweets:any;
-    constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService, private utilService: UtilService) {
+    socialConnection: SocialConnection;
+    constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService, 
+            private utilService: UtilService, private authenticationService: AuthenticationService, private socialService: SocialService) {
         
     }
     
-    getTwitterProfile(id: number){
-        this.twitterService.getTwitterProfile(id)
+    getTwitterProfile(socialConnection: SocialConnection, id: number){
+        this.twitterService.getTwitterProfile(socialConnection, id)
             .subscribe(
             data => {
                 this.twitterProfile = data;
@@ -42,8 +48,8 @@ export class TwitterProfileComponent implements OnInit{
         );
     }
     
-    getConversation(id: number){
-        this.twitterService.getConversation(id)
+    getConversation(socialConnection: SocialConnection, id: number){
+        this.twitterService.getConversation(socialConnection, id)
         .subscribe(
             data => {
                 this.directMessages = data;
@@ -53,8 +59,8 @@ export class TwitterProfileComponent implements OnInit{
         );
     }
     
-    getKloutScore(id: number){
-        this.twitterService.getKloutScore(id)
+    getKloutScore(socialConnection: SocialConnection, id: number){
+        this.twitterService.getKloutScore(socialConnection, id)
         .subscribe(
             data => {
                 this.kloutScore = data;
@@ -78,7 +84,7 @@ export class TwitterProfileComponent implements OnInit{
             }
         );
     }
-    deleteDirectMessage(){
+    deleteDirectMessage(socialConnection: SocialConnection){
         $('.DMDeleteMessage').show();
         console.log("messageId: "+this.directMessageId);
         this.twitterService.deleteDirectMessage(this.directMessageId)
@@ -98,8 +104,8 @@ export class TwitterProfileComponent implements OnInit{
     hideDeleteDirectMessageNotice(){
         $('.DMDeleteMessage').hide('1000');
     }
-    getTweets(id:number){
-        this.twitterService.getTweets(id,100)
+    getTweets(socialConnection: SocialConnection, id:number){
+        this.twitterService.getTweets(socialConnection, id,100)
         .subscribe(
             data => {
                 for (var i in data){
@@ -131,11 +137,19 @@ export class TwitterProfileComponent implements OnInit{
     }
 
     ngOnInit(){
-        let id = +this.route.snapshot.params['id'];
-        this.getTwitterProfile(id);
-        this.getTweets(id);
-        this.getConversation(id);
-        this.getKloutScore(id);
+        const profileId = this.route.snapshot.params['profileId'];
+        const userId = this.authenticationService.user.id;
+        const socialConnections = this.socialService.socialConnections;
+        for(const i in socialConnections){
+            if(socialConnections[i].source === 'TWITTER'){
+                this.socialConnection = socialConnections[i];
+            }
+        }
+        
+        this.getTwitterProfile(this.socialConnection, profileId);
+        this.getTweets(this.socialConnection, profileId);
+        this.getConversation(this.socialConnection, profileId);
+        this.getKloutScore(this.socialConnection, profileId);
     }       
 
 }

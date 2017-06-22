@@ -1,6 +1,7 @@
-export class UserToken{
-	userName: string;
-	accessToken:string;
-	refreshToken:string;
-	expiresIn:string;
+export class UserToken {
+    userName: string;
+    userId: number;
+    accessToken: string;
+    refreshToken: string;
+    expiresIn: string;
 }

@@ -7,8 +7,11 @@ export class SocialConnection {
     oAuthTokenValue: string;
     oAuthTokenSecret: string;
     profileId: string;
+    profileName: string;
     profileImage: string;
     firstName: string;
     lastName: string;
     emailId: string;
+    active: boolean;
+    existingUser: boolean;
 }

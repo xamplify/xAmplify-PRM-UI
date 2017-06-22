@@ -8,10 +8,11 @@ import { FacebookService } from '../../services/facebook.service';
 })
 export class FacebookReactionsComponent implements OnInit {
     @Input( 'postId' ) postId: string;
+    @Input( 'facebookAccessToken' ) facebookAccessToken: string;
     reactions: any;
     constructor( private facebookService: FacebookService ) { }
     getReactions() {
-        this.facebookService.getReactions( localStorage.getItem( 'facebook' ), this.postId )
+        this.facebookService.getReactions( this.postId, this.facebookAccessToken )
             .subscribe(
             data => this.reactions = data["data"],
             error => console.log( error ),

@@ -15,4 +15,6 @@ export class SocialStatusProvider {
     updatedBy: Number;
 
     accessToken: string;
+    oAuthTokenValue: string;
+    oAuthTokenSecret: string;
 }

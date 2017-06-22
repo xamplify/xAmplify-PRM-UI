@@ -17,17 +17,20 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<div class="col-xs-12 flex">
-							<img class="profile-image" alt="{{post.from.name}}" src="{{profileImage}}">
+							<img class="profile-image" alt="{{post.from.name}}"
+								src="{{socialConnection.profileImage}}">
 							<div style="margin-left: 1em;">
-								<h4 *ngIf="post.type == 'video' || post.type == 'photo'" class="caption-subject text-left">{{post.story}}</h4>
-								<h4 *ngIf="post.type == 'link'" class="caption-subject text-left">{{post.from.name}}</h4>
+								<h4 *ngIf="post.type == 'video' || post.type == 'photo'"
+									class="caption-subject text-left">{{post.story}}</h4>
+								<h4 *ngIf="post.type == 'link'"
+									class="caption-subject text-left">{{post.from.name}}</h4>
 								<h5>{{post.createdTime | date: 'short'}}</h5>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="portlet-body container-fluid">
-					<div *ngIf="post.type == 'video'">
+					<div *ngIf="post.type == 'video'" style="padding-top: 1em;">
 						<div *ngIf="post.application !== null">
 							<div *ngIf="post.application.name == 'youtube'">
 								<iframe [src]="post.source"></iframe>
@@ -55,8 +58,10 @@
 						</a>
 					</div>
 					<div class="flex">
-						<app-facebook-reactions [postId]="post.id"></app-facebook-reactions>
-						<app-facebook-comments [postId]="post.id"></app-facebook-comments>
+						<app-facebook-reactions [postId]="post.id"
+							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-reactions>
+						<app-facebook-comments [postId]="post.id"
+							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-comments>
 					</div>
 				</div>
 			</div>

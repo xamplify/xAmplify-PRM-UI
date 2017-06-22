@@ -41,11 +41,11 @@
 			<div class="icon col-xs-6 text-right">
 	
 				<b>Total Followers</b>
-				<a [routerLink]="['../twitter-followers']">
+				<a [routerLink]="['../../twitter-followers', socialConnection.profileId]">
 				<span style="color: #00aced; font-weight: 600; display: inline;">{{twitterProfile.followersCount}}</span>
 				</a>
 				<br>
-				<a [routerLink]="['../twitter-friends']">
+				<a [routerLink]="['../../twitter-friends', socialConnection.profileId]">
 				<span style="color: #00aced; font-weight: 900; display: inline;">{{twitterProfile.friendsCount}} connections</span>
 				</a>
 				<br>
@@ -283,7 +283,7 @@
 						</div>
 						</div>
 						<div class="col-md-8 col-sm-8 col-xs-12">
-							<app-twitter-area-chart></app-twitter-area-chart>
+							<app-twitter-area-chart [socialConnection]='socialConnection'></app-twitter-area-chart>
 						</div>
 					</div>
 				</div>

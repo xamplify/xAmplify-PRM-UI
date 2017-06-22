@@ -16,11 +16,11 @@ import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebo
 const routes: Routes = [
     { path: 'update-status', component: UpdateStatusComponent },
 
-    { path: 'twitter-tweets', component: TwitterTweetsComponent },
-    { path: 'twitter-friends', component: TwitterFriendsComponent },
-    { path: 'twitter-followers', component: TwitterFollowersComponent },
-    { path: 'twitter-analytics', component: TwitterAnalyticsComponent },
-    { path: 'twitter-user/:id', component: TwitterProfileComponent },
+    { path: 'twitter-tweets/:profileId', component: TwitterTweetsComponent },
+    { path: 'twitter-friends/:profileId', component: TwitterFriendsComponent },
+    { path: 'twitter-followers/:profileId', component: TwitterFollowersComponent },
+    { path: 'twitter-analytics/:profileId', component: TwitterAnalyticsComponent },
+    { path: 'twitter-user/:profileId', component: TwitterProfileComponent },
 
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
     { path: 'facebook-posts/:profileId', component: FacebookPostsComponent },

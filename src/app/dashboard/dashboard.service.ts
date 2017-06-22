@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from '../core/services/authentication.service';
-
+import {SocialConnection} from '../social/models/social-connection';
 
 @Injectable()
 export class DashboardService {
@@ -46,8 +46,9 @@ export class DashboardService {
         .catch(this.handleError);
 
     }
-    getGenderDemographics():Observable<Object>{
-        return this.http.get(this.authenticationService.REST_URL+"twitter/gender-demographics"+this.QUERY_PARAMETERS)
+    getGenderDemographics(socialConnection: SocialConnection):Observable<Object>{
+        return this.http.get(this.authenticationService.REST_URL+"twitter/gender-demographics"+this.QUERY_PARAMETERS
+                + '&oAuthTokenValue=' + socialConnection.oAuthTokenValue + '&oAuthTokenSecret=' + socialConnection.oAuthTokenSecret)
         .map(this.extractData)
         .catch(this.handleError);
     }

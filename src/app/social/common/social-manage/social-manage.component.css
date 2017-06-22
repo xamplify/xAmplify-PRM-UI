@@ -33,9 +33,30 @@
 	cursor: hand;
 }
 
+h4 {
+	margin: 0.5em;
+	font-weight: 500;
+}
+
 h5 {
 	display: inline;
 	font-weight: 600;
 }
 
-.btn{min-width: 10em;}
+.btn {
+	min-width: 10em;
+}
+
+.profile-picture {
+	height: 170px;
+	width: auto;
+}
+
+.checked {
+	border: 1px solid #FF9800;
+}
+
+.unchecked {
+	opacity: 0.5;
+	border: 1px solid #FFF;
+}

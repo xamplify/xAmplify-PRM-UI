@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from 'angular2-logger/core';
 
+import {SocialConnection} from '../../social/models/social-connection';
+
 import { DashboardService } from '../dashboard.service';
 import { TwitterService } from '../../social/services/twitter.service';
 import { SocialService } from '../../social/services/social.service';
@@ -28,7 +30,7 @@ export class DashboardComponent implements OnInit {
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
-    socialConnections: any[] = new Array<any>();
+    socialConnections: SocialConnection[] = new Array<SocialConnection>();
     constructor(private router: Router, private _dashboardService: DashboardService, private twitterService: TwitterService,
         private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
         private utilService: UtilService) {
@@ -55,8 +57,8 @@ export class DashboardComponent implements OnInit {
             'linkedIn': '276'
         };
     }
-    getGenderDemographics() {
-        this._dashboardService.getGenderDemographics()
+    getGenderDemographics(socialConnection: SocialConnection) {
+        this._dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
             data => {
                 this.logger.info(data);
@@ -164,9 +166,9 @@ export class DashboardComponent implements OnInit {
     }
 
     // TFFF == TweetsFriendsFollowersFavorites
-    getTotalCountOfTFFF() {
+    getTotalCountOfTFFF(socialConnection: SocialConnection) {
         this.logger.log('getTotalCountOfTFFF() method invoke started.');
-        this.twitterService.getTotalCountOfTFFF()
+        this.twitterService.getTotalCountOfTFFF(socialConnection)
             .subscribe(
             data => {
                 this.logger.log(data);
@@ -178,9 +180,8 @@ export class DashboardComponent implements OnInit {
             );
     }
 
-    getWeeklyTweets() {
-        this.logger.log('getWeeklyTweets():');
-        this.twitterService.getWeeklyTweets()
+    getWeeklyTweets(socialConnection: SocialConnection) {
+        this.twitterService.getWeeklyTweets(socialConnection)
             .subscribe(
             data => {
                 $('#sparkline_bar_twitter').sparkline(data, {
@@ -214,7 +215,9 @@ export class DashboardComponent implements OnInit {
                 if (this.socialConnections.length > 0) {
                     for (const i in this.socialConnections) {
                         if (this.socialConnections[i].source === 'TWITTER') {
-                            console.log(this.socialConnections[i].profileId);
+                            this.getTotalCountOfTFFF(this.socialConnections[i]);
+                            this.getGenderDemographics(this.socialConnections[i]);
+                            this.getWeeklyTweets(this.socialConnections[i]);
                         }
                     }
                 }
@@ -226,7 +229,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         try {
-            const userId = this.authenticationService.user.id;
+            const userId =this.authenticationService.getLoggedInUser();
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -250,14 +253,7 @@ export class DashboardComponent implements OnInit {
             this.googleplusSparklineData();
             this.facebookSparklineData();
             this.linkdinSparklineData();
-
-
             // this.showGaugeMeter();
-
-            this.getTotalCountOfTFFF();
-            this.getGenderDemographics();
-            this.getWeeklyTweets();
-           // alert(userId);
             this.listSocialAccounts(userId);
 
         } catch (err) {

@@ -10,6 +10,7 @@ import 'rxjs/add/observable/throw';
 import { Tweet } from '../models/tweet';
 import { TwitterProfile } from '../models/twitter-profile';
 import { DirectMessage } from '../models/direct-message';
+import {SocialConnection} from '../models/social-connection';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
@@ -25,67 +26,73 @@ export class TwitterService {
         private activatedRoute: ActivatedRoute, private utilService: UtilService) {
         console.log(this.authService.user);
     }
+    
+    appendQueryParameters( socialConnection: SocialConnection ) {
+        return '?access_token=' + this.authService.access_token
+            + '&oAuthTokenValue=' + socialConnection.oAuthTokenValue + '&oAuthTokenSecret=' + socialConnection.oAuthTokenSecret;
+    }
+    
     updateStatus(status: string) {
         return this.http.get(this.URL + 'update-status?access_token=' + this.authService.access_token + '&status=' + status)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getTwitterProfile(id: number) {
-        return this.http.get(this.URL + 'user/' + id + '?access_token=' + this.authService.access_token)
+    getTwitterProfile(socialConnection: SocialConnection, id: number) {
+        return this.http.get(this.URL + 'user/' + id + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getTweets(userId: number, pageSize: number): Observable<Object> {
-        return this.http.get(this.URL + 'tweets' + '?access_token=' + this.authService.access_token 
+    getTweets(socialConnection: SocialConnection, userId: number, pageSize: number): Observable<Object> {
+        return this.http.get(this.URL + 'tweets' + this.appendQueryParameters(socialConnection)
         + '&userId=' + userId + '&pageSize=' + pageSize)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getTrends() {
-        return this.http.get(this.URL + 'trends' + '?access_token=' + this.authService.access_token)
+    getTrends(socialConnection: SocialConnection) {
+        return this.http.get(this.URL + 'trends' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getTweet(tweetId: number): Observable<Tweet> {
-        return this.http.get(this.URL + 'tweet' + '?access_token=' + this.authService.access_token + '&tweetId=' + tweetId)
+    getTweet(socialConnection: SocialConnection, tweetId: number): Observable<Tweet> {
+        return this.http.get(this.URL + 'tweet' + this.appendQueryParameters(socialConnection) + '&tweetId=' + tweetId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listTwitterProfiles(type: string): Observable<Object> {
-        return this.http.get(this.URL + 'list' + '?access_token=' + this.authService.access_token + '&type=' + type)
+    listTwitterProfiles(socialConnection: SocialConnection, type: string): Observable<Object> {
+        return this.http.get(this.URL + 'list' + this.appendQueryParameters(socialConnection) + '&type=' + type)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getAnalytics(): Observable<Object> {
-        return this.http.get(this.URL + 'analytics' + '?access_token=' + this.authService.access_token)
+    getAnalytics(socialConnection: SocialConnection): Observable<Object> {
+        return this.http.get(this.URL + 'analytics' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getKloutData(): Observable<Object> {
-        return this.http.get(this.URL + 'klout' + '?access_token=' + this.authService.access_token)
+    getKloutData(socialConnection: SocialConnection): Observable<Object> {
+        return this.http.get(this.URL + 'klout' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getWeeklyReport(): Observable<Object> {
-        return this.http.get(this.URL + 'weekly-report' + '?access_token=' + this.authService.access_token)
+    getWeeklyReport(socialConnection: SocialConnection, userId: number): Observable<Object> {
+        return this.http.get(this.URL + 'weekly-report' + this.appendQueryParameters(socialConnection)+'&userId='+userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getfollowersHistory() {
-        return this.http.get(this.URL + 'followers-history' + '?access_token=' + this.authService.access_token)
+    getfollowersHistory(socialConnection: SocialConnection, userId: number) {
+        return this.http.get(this.URL + 'followers-history' + this.appendQueryParameters(socialConnection)+'&userId='+userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    reply(id: number, text: string): Observable<Object> {
-        return this.http.get(this.URL + 'reply' + '?access_token=' + this.authService.access_token + '&statusId=' + id + '&status=' + text)
+    reply(socialConnection: SocialConnection, id: number, text: string): Observable<Object> {
+        return this.http.get(this.URL + 'reply' + this.appendQueryParameters(socialConnection) + '&statusId=' + id + '&status=' + text)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -103,32 +110,32 @@ export class TwitterService {
             .catch(this.handleError);
     }
 
-    getConversation(toUserId: number) {
-        return this.http.get(this.URL + 'conversation' + '?access_token=' + this.authService.access_token + '&toUserId=' + toUserId)
+    getConversation(socialConnection: SocialConnection, toUserId: number) {
+        return this.http.get(this.URL + 'conversation' + this.appendQueryParameters(socialConnection) + '&toUserId=' + toUserId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getKloutScore(twitterId: number) {
-        return this.http.get(this.URL + 'klout-score' + '?access_token=' + this.authService.access_token + '&twitterId=' + twitterId)
+    getKloutScore(socialConnection: SocialConnection, twitterId: number) {
+        return this.http.get(this.URL + 'klout-score' + this.appendQueryParameters(socialConnection) + '&twitterId=' + twitterId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getTotalCountOfTFFF(): Observable<Object> {
-        return this.http.get(this.URL + 'total-count' + '?access_token=' + this.authService.access_token)
+    getTotalCountOfTFFF(socialConnection: SocialConnection): Observable<Object> {
+        return this.http.get(this.URL + 'total-count' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getWeeklyTweets(): Observable<Array<number>> {
-        return this.http.get(this.URL + 'weekly-tweets' + '?access_token=' + this.authService.access_token)
+    getWeeklyTweets(socialConnection: SocialConnection): Observable<Array<number>> {
+        return this.http.get(this.URL + 'weekly-tweets' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getGenderDemographics() {
-        return this.http.get(this.URL + 'gender-demographics' + '?access_token=' + this.authService.access_token)
+    getGenderDemographics(socialConnection: SocialConnection) {
+        return this.http.get(this.URL + 'gender-demographics' + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -153,20 +160,20 @@ export class TwitterService {
             .catch(this.handleError);
     }
 
-    initializeNotification() {
-        return this.http.get(this.URL + 'initialize-notification?access_token=' + this.authService.access_token)
+    initializeNotification(socialConnection: SocialConnection, userId:number) {
+        return this.http.get(this.URL + 'initialize-notification?access_token=' + this.authService.access_token+ this.appendQueryParameters(socialConnection)+'&userId='+userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listNotifications() {
-        return this.http.get(this.URL + 'list-notifications?access_token=' + this.authService.access_token)
+    listNotifications(userId:number) {
+        return this.http.get(this.URL + 'list-notifications?access_token=' + this.authService.access_token+'&userId='+userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    markAllAsRead() {
-        return this.http.get(this.URL + 'mark-all-as-read?access_token=' + this.authService.access_token)
+    markAllAsRead(userId:number) {
+        return this.http.get(this.URL + 'mark-all-as-read?access_token=' + this.authService.access_token+'&userId='+userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
