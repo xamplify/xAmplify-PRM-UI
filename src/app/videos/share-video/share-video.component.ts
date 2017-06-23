@@ -94,7 +94,7 @@ public shareUrl: string;
         }
        this.checkingCallToActionValues();
        this.defaultVideoSettings();
-       this.transperancyControllBar(this.embedVideoFile.transparency);
+     //  this.transperancyControllBar(this.embedVideoFile.transparency);
        if (this.embedVideoFile.enableVideoController === false) {
            this.defaultVideoControllers();
           }

@@ -120,6 +120,16 @@ export class VideoFileService {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
+    logVideoActions(actionId:any,startTime:any, endTime:any) {
+        try {
+            const url = this.authenticationService.REST_URL + ''+actionId+startTime+endTime;
+            return this.http.get(url,"")
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) {
+	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
+        }
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
