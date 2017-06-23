@@ -181,7 +181,7 @@
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Contact lists found.. !!!</strong>
 			                </div>
-		<app-loader *ngIf="pagination.isLoading"></app-loader>                
+		<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>               
 		<div class="row mix-grid" style="margin-top: 10px">
 			<div *ngFor="let contactList of pagination.pagedItems">
 				<div class="col-md-3 col-sm-4 mix category_1 mix_all"

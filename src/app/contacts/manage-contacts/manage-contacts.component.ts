@@ -12,6 +12,8 @@ import { SocialContact } from '../models/social-contact';
 import { UserListIds } from '../models/user-listIds';
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { ReferenceService } from '../../core/services/reference.service';
 
 declare var swal: any;
 declare var $: any;
@@ -95,6 +97,7 @@ export class ManageContactsComponent implements OnInit {
     public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
     public currentContactType: string = null;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     //downloadUrl = this.authenticationService.REST_URL + "admin/"
 
     sortContacts = [
@@ -118,7 +121,7 @@ export class ManageContactsComponent implements OnInit {
     public contactsUsersSort: any = this.sortContactUsers[0];
 
     constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
-        private pagerService: PagerService, private pagination: Pagination ) {
+        private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, ) {
         this.show = false;
         this.showAll = true;
         this.showEdit = false;
@@ -238,13 +241,14 @@ export class ManageContactsComponent implements OnInit {
     }
 
     loadContactLists( pagination: Pagination ) {
-        this.pagination.isLoading = true;
+        //this.pagination.isLoading = true;
+        this.referenceService.loading(this.httpRequestLoader, true);
         this.pagination.maxResults = 12;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
-                this.pagination.isLoading = false;
+                //this.pagination.isLoading = false;
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
@@ -263,6 +267,7 @@ export class ManageContactsComponent implements OnInit {
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
                   this.names.push(data.listOfUserLists[i].name);
                 }
+                this.referenceService.loading(this.httpRequestLoader, false);
             },
             error => {
                 this.logger.error( error )
