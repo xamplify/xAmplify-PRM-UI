@@ -7,11 +7,32 @@ import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Logger } from 'angular2-logger/core';
+import { XtremandLog } from '../models/xtremand-log';
 declare var $, videojs: any;
+import { Ng2DeviceService } from 'ng2-device-detector';
+
+enum LogAction {
+    playVideo = 1,
+    pauseVideo = 2,
+    contactButtonPressed= 3,
+    callButtonPressed = 4,
+    emailButtonPressed = 5,
+    chatButtonPressed = 6,
+    applePayButtonPressed = 7,
+    videoPlayer_slideSlider = 8,
+    videoPlayer_movieReachEnd = 9,
+    replyVideo = 10,
+    videoStopped = 11,
+    shareMobinar = 12,
+    email_Opened = 13,
+    email_GIF_clicked = 14,
+}
+
 @Component({
   selector: 'app-public-video',
   templateUrl: './campaign-video.component.html',
-  styleUrls: ['./campaign-video.component.css']
+  styleUrls: ['./campaign-video.component.css'],
+  providers: [XtremandLog]
 })
 export class CampaignVideoComponent implements OnInit , OnDestroy {
 campaignVideoFile: SaveVideoFile;
@@ -26,16 +47,56 @@ public typeValue: string;
 public videoAlias: string;
 public campaignAlias: string;
 public userAlias: string;
+public locationJson: any;
+public deviceInfo: any;
+ LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
-            private activatedRoute: ActivatedRoute ) {
+            private activatedRoute: ActivatedRoute, private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
-          }
+         //   this.setLocationJson();
+            }
 LoginThroghCampaign() {
    this.router.navigate( ['/login']);
 }
+deviceDectorInfo() {
+      console.log('device info in component');
+      this.deviceInfo = this.deviceService.getDeviceInfo();
+      console.log(this.deviceInfo);
+     // this.setLocationJson();
+      this.loacationDetails();
+ }
+ /* setLocationJson() {
+  const data = this;
+   $.getJSON("https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq", function(json){
+       data.locationJson = json;
+       console.log(data.locationJson);
+   });
+ } */
+ xtremandLogDefaultActions() {
+        // router info
+        this.xtremandLog.userAlias =  this.userAlias;
+        this.xtremandLog.videoAlias = this.videoAlias;
+        this.xtremandLog.campaignAlias = this.campaignAlias;
+        // device detector
+        this.xtremandLog.deviceType = this.deviceInfo.device;
+        this.xtremandLog.os = this.deviceInfo.os;
+        // location detector
+         console.log(this.xtremandLog);
+      }
+    defaultLocationJsonValues(data: any) {
+        this.xtremandLog.city = data.city;
+        this.xtremandLog.country = data.country;
+        this.xtremandLog.isp = data.isp;
+        this.xtremandLog.ipAddress = data.query;
+        this.xtremandLog.state = data.regionName;
+        this.xtremandLog.zip = data.zip;
+        this.xtremandLog.latitude = data.lat;
+        this.xtremandLog.longitude = data.lon;
+        this.xtremandLog.countryCode = data.countryCode;
+    }
   getCampaignVideo() {
     this.videoFileService.showCampaignVideo(this.typeValue, this.videoAlias, this.campaignAlias, this.userAlias)
         .subscribe(
@@ -55,16 +116,27 @@ LoginThroghCampaign() {
           console.log(this.videoUrl);
     });
   }
+  loacationDetails(){
+    this.videoFileService.getJSONLocation()
+    .subscribe(
+     (data:any) => {
+       this.defaultLocationJsonValues(data);
+        console.log(data);
+        },
+     error => console.log(error));
+  }
   ngOnInit() {
      console.log('public video component ngOnInit called');
-    // this.routerType = this.route.snapshot.params['showVideo'];
-        this.activatedRoute.queryParams.subscribe(
-            ( param: any ) => {
-                this.typeValue = param['type'];
-                this.videoAlias = param['videoAlias'];
-                this.campaignAlias = param['campaignAlias'];
-                this.userAlias = param['userAlias'];
-            });
+     this.deviceDectorInfo();
+     // this.loacationDetails();
+     this.activatedRoute.queryParams.subscribe(
+        ( param: any ) => {
+            this.typeValue = param['type'];
+            this.videoAlias = param['videoAlias'];
+            this.campaignAlias = param['campaignAlias'];
+            this.userAlias = param['userAlias'];
+        });
+     this.xtremandLogDefaultActions();
      this.getCampaignVideo();
   }
     defaultVideoSettings() {
@@ -77,8 +149,8 @@ LoginThroghCampaign() {
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
     }
-    videoLogAction(action: any, startTime: any, endTime: any) {
-       this.videoFileService.logVideoActions(action, startTime, endTime).subscribe(
+    videoLogAction(xtremandLog: XtremandLog) {
+       this.videoFileService.logVideoActions(xtremandLog).subscribe(
        (result: any) => {
          console.log('successfully logged the actions');
      });
@@ -144,37 +216,45 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     let startDuration;
                    this.ready(function() {
                     console.log('video is ready state');
-                   });
-                    this.on('seeking', function() {
-                     console.log('slider done');
-                     console.log("slider start time" + startDuration);
-                     let seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
-                     console.log('seeking slider end time'+ seekigTime);
-                     selfPanorama.videoLogAction('slider', startDuration, seekigTime);
-                   });
-                    this.on('timeupdate', function() {
-                      startDuration = selfPanorama.trimCurrentTime(player.currentTime());
-                       selfPanorama.videoLogAction('timeupdate', startDuration, startDuration);
                     });
                     this.on('play', function() {
-                        $('.vjs-big-play-button').css('display', 'none');
-                    console.log('play button clicked and current time'+selfPanorama.trimCurrentTime(player.currentTime()));
-                     selfPanorama.videoLogAction('played', startDuration, selfPanorama.trimCurrentTime(player.currentTime()));
+                    $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
+                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
+                     selfPanorama.xtremandLog.startTime = player.currentTime();
+                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                     });
                     this.on('pause', function() {
                     console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
-                    selfPanorama.videoLogAction('paused', startDuration, selfPanorama.trimCurrentTime(player.currentTime()));
+                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
+                     selfPanorama.xtremandLog.startTime = player.currentTime();
+                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                   });
-                this.on('ended', function() {
+                    this.on('seeking', function() {
+                     const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
+                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
+                     selfPanorama.xtremandLog.startTime = startDuration;
+                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
+                   });
+                    this.on('timeupdate', function() {
+                      startDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                    });
+                  this.on('ended', function() {
                     const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
                     playerVideo.pause();
                     replyVideo = replyVideo + 1;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts'+ replyVideo);
-                    selfPanorama.videoLogAction('ended', startDuration, selfPanorama.trimCurrentTime(player.currentTime()));
-                });
-                this.on('fullscreenchange', function () {
+                    console.log('video ended attempts' + replyVideo);
+                    selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_movieReachEnd;
+                    selfPanorama.xtremandLog.startTime = player.currentTime();
+                    selfPanorama.xtremandLog.endTime = player.currentTime();
+                    selfPanorama.videoLogAction(selfPanorama.xtremandLog);
+                  });
+                  this.on('fullscreenchange', function () {
                     console.log('fullscreen changed');
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
@@ -185,10 +265,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                     }
-                    selfPanorama.videoLogAction('fullscreenChnaged', startDuration, selfPanorama.trimCurrentTime(player.currentTime()));
                 });
                player.on('click', function(){
-               console.log('clicked function '); 
+               console.log('clicked function ');
               });
               }
               });
@@ -221,36 +300,47 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     let replyVideo = 0;
                     const document: any = window.document;
                     let startDuration;
-                   this.on('seeking', function() {
-                     console.log('slider done');
-                     console.log("slider start time" + startDuration);
-                     let seekigTime  = self.trimCurrentTime(player.currentTime());
-                     console.log('seeking slider end time'+ seekigTime);
-                     self.videoLogAction('slider', startDuration, seekigTime);
-                   });
-                    this.on('timeupdate', function() {
-                      startDuration = self.trimCurrentTime(player.currentTime());
-                       self.videoLogAction('timeupdate', startDuration, startDuration);
+                     this.ready(function() {
+                    console.log('video is ready state');
                     });
                     this.on('play', function() {
-                        $('.vjs-big-play-button').css('display', 'none');
-                    console.log('play button clicked and current time'+self.trimCurrentTime(player.currentTime()));
-                     self.videoLogAction('played', startDuration, self.trimCurrentTime(player.currentTime()));
+                    $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
+                     self.xtremandLog.actionId = self.LogAction.playVideo;
+                     self.xtremandLog.startTime = player.currentTime();
+                     self.xtremandLog.endTime = player.currentTime();
+                     self.videoLogAction(self.xtremandLog);
                     });
                     this.on('pause', function() {
                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                    self.videoLogAction('paused', startDuration, self.trimCurrentTime(player.currentTime()));
+                     self.xtremandLog.actionId = self.LogAction.pauseVideo;
+                     self.xtremandLog.startTime = player.currentTime();
+                     self.xtremandLog.endTime = player.currentTime();
+                     self.videoLogAction(self.xtremandLog);
                   });
-                this.on('ended', function() {
+                   this.on('timeupdate', function() {
+                      startDuration = self.trimCurrentTime(player.currentTime());
+                    });
+                    this.on('seeking', function() {
+                    const seekigTime  = self.trimCurrentTime(player.currentTime());
+                    self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                    self.xtremandLog.startTime = startDuration;
+                    self.xtremandLog.endTime = player.currentTime();
+                    self.videoLogAction(self.xtremandLog);
+                  });
+                  this.on('ended', function() {
                     const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
                     player.pause();
                     replyVideo = replyVideo + 1;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts'+ replyVideo);
-                    self.videoLogAction('ended', startDuration, self.trimCurrentTime(player.currentTime()));
-                });
-                this.on('fullscreenchange', function () {
+                    console.log('video ended attempts' + replyVideo);
+                    self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
+                    self.xtremandLog.startTime = player.currentTime();
+                    self.xtremandLog.endTime = player.currentTime();
+                    self.videoLogAction(self.xtremandLog);
+                  });
+                 this.on('fullscreenchange', function () {
                     console.log('fullscreen changed');
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
@@ -261,7 +351,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                     }
-                    self.videoLogAction('fullscreenChnaged', startDuration, self.trimCurrentTime(player.currentTime()));
                 });
                player.on('click', function(){
                console.log('clicked function ');

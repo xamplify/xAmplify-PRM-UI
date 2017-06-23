@@ -17,6 +17,7 @@ declare var swal , require, $: any;
   providers: [ Pagination, HttpRequestLoader ]
   })
 export class ManageVideoComponent implements OnInit , OnDestroy {
+    deviceInfo = null;
     manageVideos = true;
     editVideo = false;
     playVideo = false;
@@ -54,6 +55,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     public deleteVideoName: string;
     public campaignVideo: boolean;
     public campaignVideoMesg: string;
+    public locationJson:any;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     public errorPrepender: 'Error In:';
     sortVideos  = [
@@ -79,6 +81,13 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.isCategoryThere = false;
         this.searchKey = null;
     }
+   truncateHourZeros(length){
+    const val = length.split(":");
+    if (val.length == 3 && val[0] == "00") {
+        length = val[1]+":"+val[2];
+    }
+    return length;
+   }
     ngOnInit() {
         console.log('MangeVideosComponent ngOnInit()');
         this.logger.log('This is a priority level 5 log message...');

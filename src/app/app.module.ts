@@ -8,6 +8,7 @@ import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShareButtonsModule } from 'ng2-sharebuttons';
 // import { ShareButtonsModule} from 'ngx-sharebuttons';
+import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { ContactService } from './contacts/services/contact.service';
 
 import { CoreModule } from './core/core.module';
@@ -48,7 +49,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
                    ShareVideoComponent, CampaignVideoComponent, DummyComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        MetaModule.forRoot()],
+        MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot() ],
     providers: [{
         provide: Http,
         useFactory: httpService,

@@ -1,14 +1,15 @@
 import { Injectable, OnInit} from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import {SaveVideoFile} from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import {ReferenceService} from '../../core/services/reference.service';
-import {Observable} from 'rxjs/Observable';
+import { ReferenceService} from '../../core/services/reference.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import {Category} from '../models/category';
-import {Pagination} from '../../core/models/pagination';
-import {User} from '../../core/models/user';
+import { SaveVideoFile } from '../models/save-video-file';
+import { Category } from '../models/category';
+import { Pagination } from '../../core/models/pagination';
+import { XtremandLog } from '../models/xtremand-log';
+import { User } from '../../core/models/user';
 declare var swal: any;
 
 @Injectable()
@@ -19,6 +20,7 @@ export class VideoFileService {
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
+    public xtremandLog: XtremandLog;
     public viewBytemp: string;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
@@ -101,7 +103,8 @@ export class VideoFileService {
     saveCalltoActionUser(user: User) {
         console.log(user);
         try {
-            const url = this.authenticationService.REST_URL + 'register/callAction/user?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'register/callAction/user?access_token=' + 
+            this.authenticationService.access_token;
             return this.http.post(url, user)
                 .map(this.extractData)
                 .catch(this.handleError);
@@ -115,27 +118,37 @@ export class VideoFileService {
             videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
             return this.http.get(url,"")
                 .map(this.extractData)
-                .catch(this.handleError);
+                .catch(this.handleErrorLogAction);
         } catch (error) {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
-    logVideoActions(actionId:any,startTime:any, endTime:any) {
+    logVideoActions(xtremandlog: XtremandLog) {
         try {
-            const url = this.authenticationService.REST_URL + ''+actionId+startTime+endTime;
-            return this.http.get(url,"")
+            const url = this.authenticationService.REST_URL + 'user/logVideoAction';
+            return this.http.post(url, xtremandlog)
                 .map(this.extractData)
                 .catch(this.handleError);
         } catch (error) {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
+    getJSONLocation(): Observable<any> {
+      const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
+        return this.http.get(locationurl,"")
+        .map(this.extractData)
+        .catch(this.handleErrorLogAction);
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
         return body || {};
     }
-
+    handleErrorLogAction( error: any ) {
+        const errMsg = ( error.message ) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+        return Observable.throw( errMsg );
+     }
     handleError(error: any) {
     /*    const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
@@ -143,14 +156,11 @@ export class VideoFileService {
         if (error.status === 500) {
             var response =  JSON.parse(error['_body']);
             return Observable.throw(new Error(response.message));
-        }
-        else if (error.status === 400) {
+        } else if (error.status === 400) {
             return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 409) {
+        } else if (error.status === 409) {
             return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 406) {
+        } else if (error.status === 406) {
             return Observable.throw(new Error(error.status));
         }
     }

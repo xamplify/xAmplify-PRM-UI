@@ -59,6 +59,7 @@
     "metronic": "^0.2.5",
     "ng2-ckeditor": "^1.1.4",
     "ng2-datetime": "^1.2.2",
+    "ng2-device-detector": "^1.0.0",
     "ng2-dropdown": "0.0.21",
     "ng2-file-upload": "^1.2.1",
     "ng2-filter-pipe": "^0.1.7",
