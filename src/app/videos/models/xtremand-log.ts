@@ -4,6 +4,8 @@ export class XtremandLog {
         videoId: number = null ;
         startTime: Date;
         endTime: Date;
+        startDuration: string;
+        stopDuration: string;
         deviceType: string;
         campaignId: number = null;
         os: string;
@@ -20,4 +22,5 @@ export class XtremandLog {
         userAlias: string;
         videoAlias: string;
         campaignAlias: string;
+        sessionId: string;
 }

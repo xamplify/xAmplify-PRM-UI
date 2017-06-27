@@ -10,7 +10,7 @@ import { Logger } from 'angular2-logger/core';
 import { XtremandLog } from '../models/xtremand-log';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
-
+import { UUID } from 'angular2-uuid';
 enum LogAction {
     playVideo = 1,
     pauseVideo = 2,
@@ -49,6 +49,7 @@ public campaignAlias: string;
 public userAlias: string;
 public locationJson: any;
 public deviceInfo: any;
+public sessionId: string = null;
  LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
@@ -56,7 +57,6 @@ public deviceInfo: any;
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
-         //   this.setLocationJson();
             }
 LoginThroghCampaign() {
    this.router.navigate( ['/login']);
@@ -65,16 +65,8 @@ deviceDectorInfo() {
       console.log('device info in component');
       this.deviceInfo = this.deviceService.getDeviceInfo();
       console.log(this.deviceInfo);
-     // this.setLocationJson();
       this.loacationDetails();
  }
- /* setLocationJson() {
-  const data = this;
-   $.getJSON("https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq", function(json){
-       data.locationJson = json;
-       console.log(data.locationJson);
-   });
- } */
  xtremandLogDefaultActions() {
         // router info
         this.xtremandLog.userAlias =  this.userAlias;
@@ -85,6 +77,7 @@ deviceDectorInfo() {
         this.xtremandLog.os = this.deviceInfo.os;
         // location detector
          console.log(this.xtremandLog);
+        this.xtremandLog.sessionId = this.sessionId;
       }
     defaultLocationJsonValues(data: any) {
         this.xtremandLog.city = data.city;
@@ -125,10 +118,14 @@ deviceDectorInfo() {
         },
      error => console.log(error));
   }
+  createSessionId() {
+    this.sessionId = UUID.UUID();
+    console.log(this.sessionId);
+  }
   ngOnInit() {
+     this.createSessionId();
      console.log('public video component ngOnInit called');
      this.deviceDectorInfo();
-     // this.loacationDetails();
      this.activatedRoute.queryParams.subscribe(
         ( param: any ) => {
             this.typeValue = param['type'];
@@ -214,47 +211,58 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     let replyVideo = 0;
                     const document: any = window.document;
                     let startDuration;
-                   this.ready(function() {
-                    console.log('video is ready state');
-                    });
-                    this.on('play', function() {
+                    player.on('play', function() {
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
+                       if (replyVideo === 0) {
+                          selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
+                     } else {
+                          selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.replyVideo;
+                     }
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
-                     selfPanorama.xtremandLog.startTime = player.currentTime();
-                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.xtremandLog.startTime = new Date();
+                     selfPanorama.xtremandLog.endTime = new Date();
+                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                     });
-                    this.on('pause', function() {
-                    console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
+                    player.on('pause', function() {
+                     if (selfPanorama.xtremandLog.actionId !== selfPanorama.LogAction.videoPlayer_movieReachEnd) {
+                     console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
-                     selfPanorama.xtremandLog.startTime = player.currentTime();
-                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.xtremandLog.startTime = new Date();
+                     selfPanorama.xtremandLog.endTime = new Date();
+                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
+                     }
                   });
-                    this.on('seeking', function() {
+                    player.on('seeking', function() {
                      const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
-                     selfPanorama.xtremandLog.startTime = startDuration;
-                     selfPanorama.xtremandLog.endTime = player.currentTime();
+                     selfPanorama.xtremandLog.startTime = new Date();
+                     selfPanorama.xtremandLog.endTime = new Date();
+                     selfPanorama.xtremandLog.startDuration = startDuration;
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                    });
-                    this.on('timeupdate', function() {
+                    player.on('timeupdate', function() {
                       startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                     });
-                  this.on('ended', function() {
+                  player.on('ended', function() {
                     const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
-                    playerVideo.pause();
                     replyVideo = replyVideo + 1;
                     $('.vjs-big-play-button').css('display', 'block');
                     console.log('video ended attempts' + replyVideo);
                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_movieReachEnd;
-                    selfPanorama.xtremandLog.startTime = player.currentTime();
-                    selfPanorama.xtremandLog.endTime = player.currentTime();
+                    selfPanorama.xtremandLog.startTime = new Date();
+                    selfPanorama.xtremandLog.endTime = new Date();
+                    selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                    selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                   });
-                  this.on('fullscreenchange', function () {
+                  player.on('fullscreenchange', function () {
                     console.log('fullscreen changed');
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
@@ -282,11 +290,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
         this.is360Value = false;
-  const str = '<video id="videoId" poster = "" preload="none" autoplay = "false"  class="video-js vjs-default-skin" controls></video>';
+  const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls></video>';
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.campaignVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-           this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+           this.videoUrl =  this.videoUrl + '_mobinar.m3u8';
           //  this.videoUrl =  'http://vjs.zencdn.net/v/oceans.mp4';
             $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         //     $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
@@ -300,22 +308,27 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     let replyVideo = 0;
                     const document: any = window.document;
                     let startDuration;
-                     this.ready(function() {
-                    console.log('video is ready state');
-                    });
                     this.on('play', function() {
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                     self.xtremandLog.actionId = self.LogAction.playVideo;
-                     self.xtremandLog.startTime = player.currentTime();
-                     self.xtremandLog.endTime = player.currentTime();
+                     if (replyVideo === 0) {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.replyVideo;
+                     }
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.xtremandLog);
                     });
                     this.on('pause', function() {
                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                      self.xtremandLog.actionId = self.LogAction.pauseVideo;
-                     self.xtremandLog.startTime = player.currentTime();
-                     self.xtremandLog.endTime = player.currentTime();
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.xtremandLog);
                   });
                    this.on('timeupdate', function() {
@@ -324,21 +337,26 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     this.on('seeking', function() {
                     const seekigTime  = self.trimCurrentTime(player.currentTime());
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                    self.xtremandLog.startTime = startDuration;
-                    self.xtremandLog.endTime = player.currentTime();
+                    // self.xtremandLog.startTime = startDuration;
+                    // self.xtremandLog.endTime = player.currentTime();
+                     self.xtremandLog.startDuration = startDuration;
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
                     self.videoLogAction(self.xtremandLog);
                   });
                   this.on('ended', function() {
                     const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
-                    player.pause();
                     replyVideo = replyVideo + 1;
                     $('.vjs-big-play-button').css('display', 'block');
                     console.log('video ended attempts' + replyVideo);
-                    self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
-                    self.xtremandLog.startTime = player.currentTime();
-                    self.xtremandLog.endTime = player.currentTime();
-                    self.videoLogAction(self.xtremandLog);
+                     self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.videoLogAction(self.xtremandLog);
                   });
                  this.on('fullscreenchange', function () {
                     console.log('fullscreen changed');

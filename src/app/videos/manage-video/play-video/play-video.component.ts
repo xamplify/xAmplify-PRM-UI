@@ -172,6 +172,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                     $('.vjs-big-play-button').css('display', 'none');
                 });
                 this.on('pause', function() {
+                    console.log('player paused');
                 });
                 this.on('ended', function() {
                 //  isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
@@ -443,6 +444,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                          if (self.videoOverlaySubmit === 'PLAY') { player.play(); }
                      });
                  });
+                 player.on('pause', function() {
+                    console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                  });
+                 player.on('play', function() {
+                    console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                  });
                  player.on('ended', function() {
                      $('.vjs-big-play-button').css('display', 'none');
                      if (isValid === 'EndOftheVideo') {
@@ -450,7 +457,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      $('.video-js .vjs-control-bar').hide();
                     } else if (isValid !== 'EndOftheVideo') {
                         $('#overlay-modal').hide(); player.pause();
-                    } else { $('#overlay-modal').hide(); player.pause(); }
+                    } else { $('#overlay-modal').hide(); // player.pause();
+                     }
                       $('#repeatPlay').click(function(){
                         player.play();
                       });
@@ -515,17 +523,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             });
             this.on('play', function() {
                 $('.vjs-big-play-button').css('display', 'none');
-                //   console.log('play:'+player.duration());
-                // Mobinar.logging.logAction(data.id,'playVideo',trimCurrentTime(player.currentTime()),
-                // trimCurrentTime(player.currentTime()));
-
+                 const seekigTime  = self.trimCurrentTime(player.currentTime());
+                 console.log('ply button pressed ');
             });
-            this.on('pause', function() {
-                //      $('.vjs-big-play-button').css('display', 'block');
-                //  console.log("video paused at "+player.currentTime());
-                //  Mobinar.logging.logAction(data.id,'pauseVideo',trimCurrentTime(player.currentTime()),
-                // trimCurrentTime(player.currentTime()));
-            });
+          this.on('pause', function() {
+                    console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                  });
             this.on('ended', function() {
                 const whereYouAt = player.currentTime();
                 console.log(whereYouAt);

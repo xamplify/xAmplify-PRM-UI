@@ -22,6 +22,7 @@ export class VideoFileService {
     public pagination: Pagination;
     public xtremandLog: XtremandLog;
     public viewBytemp: string;
+    public logEnded: number;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -124,11 +125,14 @@ export class VideoFileService {
         }
     }
     logVideoActions(xtremandlog: XtremandLog) {
+       console.log(xtremandlog);
         try {
+        //    if(xtremandlog.actionId !== this.logEnded) {
             const url = this.authenticationService.REST_URL + 'user/logVideoAction';
             return this.http.post(url, xtremandlog)
                 .map(this.extractData)
-                .catch(this.handleError);
+                .catch(this.handleErrorLogAction);
+        //    }
         } catch (error) {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
