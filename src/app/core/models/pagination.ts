@@ -13,5 +13,6 @@ export class Pagination {
 		campaignUserListIds:number[]=[];
         campaignDefaultTemplate:boolean=false;
         emailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
+        isLoading:boolean = false;
 
 }

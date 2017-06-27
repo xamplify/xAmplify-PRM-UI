@@ -10,6 +10,7 @@ import { Logger } from "angular2-logger/core";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
@@ -157,6 +158,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.body = $('#textarea').text();
         this.emailTemplate.userDefined = true;
         this.emailTemplate.subject = "assets/images/file_upload_icon.png";
+        this.emailTemplate.type = EmailTemplateType.UPLOADED;
         console.log(this.emailTemplate);
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;

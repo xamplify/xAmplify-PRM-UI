@@ -393,7 +393,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#campaign_video_id_'+videoId).prop( "checked", true );
             this.launchVideoPreview = videoFile;
             this.isVideo = true;
-            if(!(this.isAdd)){
+            if(!(this.isAdd) && this.campaign.campaignVideoFile!=undefined){
                 if(videoId==this.campaign.campaignVideoFile.id){
                     $('#selectedVideoRow').addClass("active");
                 }else{

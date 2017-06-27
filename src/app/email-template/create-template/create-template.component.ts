@@ -142,6 +142,7 @@ export class CreateTemplateComponent implements OnInit {
 	                  }else if(emailTemplateService.emailTemplate.name.indexOf('Upload')>-1){
 	                      emailTemplate.type = EmailTemplateType.UPLOADED;
 	                  }
+	                  console.log(emailTemplate);
 	                  emailTemplateService.save(emailTemplate) .subscribe(
 	                          data => {
 	                              refService.isCreated = true;

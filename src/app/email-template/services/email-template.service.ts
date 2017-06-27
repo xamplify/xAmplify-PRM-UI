@@ -68,6 +68,12 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
     
+    get(id:number){
+        return this.http.get(this.URL+"/emailTemplate/"+id)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     delete(id:number){
         return this.http.get(this.URL+"admin/deleteEmailTemplate/"+id+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
