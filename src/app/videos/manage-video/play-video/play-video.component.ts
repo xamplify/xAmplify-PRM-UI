@@ -183,7 +183,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                           $('.vjs-big-play-button').css('display', 'none');
                         //  $("#overlay-modal").css("display","block !important");
                             self.showOverlayModal();
-                          //  player.pause();
+                            player.pause();
                      } else if (isValid !== 'StartOftheVideo' ) {
                         $('#overlay-modal').hide();
                          $('.vjs-big-play-button').css('display', 'none');
@@ -499,7 +499,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                     if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
                       self.showOverlayModal();
-                    //  player.pause();
+                      player.pause();
                     } else if (isValid !== 'StartOftheVideo' ) {
                       $('#overlay-modal').hide(); player.play();
                     } else { $('#overlay-modal').hide();
@@ -626,6 +626,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                       $('.vjs-big-play-button').css('display', 'none');
                     //  $("#overlay-modal").css("display","block !important");
                      self.showOverlayModal();
+                     player.pause();
                     } else if (isValid !== 'StartOftheVideo' ) {
                      $('#overlay-modal').hide(); player.play();
                     } else { $('#overlay-modal').hide(); player.play(); }
