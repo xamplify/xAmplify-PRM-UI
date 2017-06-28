@@ -268,7 +268,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token;
+        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id;
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
             .catch( this.handleError );
