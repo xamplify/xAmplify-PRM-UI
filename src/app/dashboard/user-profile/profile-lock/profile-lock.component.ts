@@ -18,8 +18,7 @@ export class ProfileLockComponent implements OnInit {
  password: string;
  error: string;
  constructor(private userService: UserService, private authenticationService:  AuthenticationService,
-  private router: Router)
- {
+  private router: Router){
      this.password = '';
  }
 ngOnInit() {
@@ -52,7 +51,7 @@ ngOnInit() {
        const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
 
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe( result => {
-            if (this.authenticationService.userToken.accessToken != null) {
+            if (localStorage.getItem( 'currentUser' )) {
                 this.router.navigate( [''] );
             } else {
                 this.logError();

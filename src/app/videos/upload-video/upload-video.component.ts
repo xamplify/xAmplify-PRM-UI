@@ -519,7 +519,7 @@ export class UploadVideoComponent implements OnInit {
        } // close if condition
     }
         dropbox(files:any){
-          swal({ title: 'Retriving video from dropbox...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+          swal({ title: 'Retriving video from dropbox...!', text: "Please Wait...It's processing",allowOutsideClick: false, showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
           console.log("files "+files);
            this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
            .subscribe((result: any) => {
@@ -544,7 +544,7 @@ export class UploadVideoComponent implements OnInit {
             let self = this;
             boxSelect.success(function(files:any) {
              if (self.isVideo(files[0].name)) {
-                 swal({ title: 'Retriving video from box...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                 swal({ title: 'Retriving video from box...!', text: "Please Wait...It's processing", allowOutsideClick: false,showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
                  console.log(files);
                     self.cloudUploadService.downloadFromBox(files[0].url, files[0].name)
                     .subscribe((result: any) => {
@@ -615,7 +615,7 @@ export class UploadVideoComponent implements OnInit {
            let self = this;
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
                 var doc = data[google.picker.Response.DOCUMENTS][0];
-                swal({ title: 'Retriving video from Google Drive...!', text: "Please Wait...It's processing", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                swal({ title: 'Retriving video from Google Drive...!', text: "Please Wait...It's processing", allowOutsideClick: false, showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
                 self.downloadGDriveFile(doc.id , doc.name);
             }
             else if (data[google.picker.Response.ACTION] == google.picker.Action.CANCEL) {

@@ -50,7 +50,8 @@ public userAlias: string;
 public locationJson: any;
 public deviceInfo: any;
 public sessionId: string = null;
- LogAction: typeof LogAction = LogAction;
+public videoLength: string;
+LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
             private activatedRoute: ActivatedRoute, private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
@@ -100,6 +101,8 @@ deviceDectorInfo() {
           this.is360Value  =  this.campaignVideoFile.is360video;
           this.title = this.campaignVideoFile.title;
           this.description = this.campaignVideoFile.description;
+          this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
+          console.log(this.videoLength);
         if (this.campaignVideoFile.is360video === true) {
          this.play360Video();
         } else {
@@ -109,6 +112,26 @@ deviceDectorInfo() {
           console.log(this.videoUrl);
     });
   }
+ truncateHourZeros(length){
+    const val = length.split(":");
+    if (val.length == 3 && val[0] == "00") {
+        length = val[1]+":"+val[2];
+    }
+    return length;
+   }
+     timeConversion(totalSeconds: number) {
+        const MINUTES_IN_AN_HOUR = 60;
+        const SECONDS_IN_A_MINUTE = 60;
+        const seconds = totalSeconds % SECONDS_IN_A_MINUTE;
+        const totalMinutes = totalSeconds / SECONDS_IN_A_MINUTE;
+        const minutes = totalMinutes % MINUTES_IN_AN_HOUR;
+        const hours = totalMinutes / MINUTES_IN_AN_HOUR;
+        return this.addZeros(hours)+ ":" + this.addZeros(minutes) + ":" + this.addZeros(seconds);
+    }
+     addZeros(val: number) {
+       const value = val;
+        return value.toString().length == 1 ? "0" + value: value;
+    }
   loacationDetails(){
     this.videoFileService.getJSONLocation()
     .subscribe(
@@ -323,13 +346,20 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.videoLogAction(self.xtremandLog);
                     });
                     this.on('pause', function() {
-                    console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                     self.xtremandLog.actionId = self.LogAction.pauseVideo;
-                     self.xtremandLog.startTime = new Date();
-                     self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.videoLogAction(self.xtremandLog);
+                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                     const time =  self.timeConversion(player.currentTime());
+                     console.log(time);
+                     console.log(self.truncateHourZeros(time).toString());
+                     if (time){
+                           console.log('ended event ');
+                     } else {
+                        self.xtremandLog.actionId = self.LogAction.pauseVideo;
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                        self.videoLogAction(self.xtremandLog);
+                     }
                   });
                    this.on('timeupdate', function() {
                       startDuration = self.trimCurrentTime(player.currentTime());
@@ -337,8 +367,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     this.on('seeking', function() {
                     const seekigTime  = self.trimCurrentTime(player.currentTime());
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                    // self.xtremandLog.startTime = startDuration;
-                    // self.xtremandLog.endTime = player.currentTime();
                      self.xtremandLog.startDuration = startDuration;
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.xtremandLog.startTime = new Date();
