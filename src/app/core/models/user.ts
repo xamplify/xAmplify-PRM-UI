@@ -12,12 +12,12 @@ export class User {
     interests: string;
     occupation: string;
     description: string;
-    websiteUrl: string
+    websiteUrl: string;
     profileImagePath: string;
     displayName: string;
     id: number;
     userId: number;
     isChecked: boolean;
-    userListIds : number[];
-
+    userListIds: number[];
+    alias: string;
 }

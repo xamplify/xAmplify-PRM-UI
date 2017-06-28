@@ -24,26 +24,9 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
     public videoOverlaySubmit: string;
     public isSkipChecked: boolean;
     model: any = {};
-    public percent: number;
-    public options: any;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
      private videoUtilService: VideoUtilService) {
             this._elementRef = elementRef;
-            this.percent = 80;
-            this.options = {
-            barColor: '#ef1e25',
-            trackColor: '#f9f9f9',
-            scaleColor: '#dfe0e0',
-            scaleLength: 5,
-            lineCap: 'round',
-            lineWidth: 3,
-            size: 180,
-            rotate: 0,
-            animate: {
-                duration: 1000,
-                enabled: true
-            }
-            };
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -142,7 +125,7 @@ const str = '<video id="videoId" poster=' + this.posterImagePath + 'preload="non
              $('#newPlayerVideo').append(str);
              this.videoUrl = this.selectedVideo.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-             this.videoUrl = this.videoUrl + '._mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+             this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
              $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
               $('#videoId').css('height', '250px');
               $('#videoId').css('width', '532px');
@@ -333,6 +316,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 $('#videoId').css('width', '532px');
                 $('#videoId').css('height', '250px');
         }
+    saveCallToActionUserForm(){
+        console.log('save call to action form ');
+    }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
       if ( this.is360Value !== true) {

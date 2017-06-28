@@ -29,47 +29,47 @@ export class UploadVideoComponent implements OnInit {
     public videoPreviewPath: SafeUrl;
     loading: boolean ;
     processing = false;
-    isChecked :boolean ;
-    isFileDrop :boolean;
+    isChecked: boolean ;
+    isFileDrop:boolean;
     isFileProgress:boolean;
-    public videopath :string;
     public tempr:any;
     public pickerApiLoaded = false;
-    public cloudDropbox :boolean;
-    public cloudBox :boolean;
+    public cloudDropbox: boolean;
+    public cloudBox: boolean;
     public cloudDrive:boolean;
     public camera:boolean;
     public cloudOneDrive:boolean;
-    public isDisable :boolean;
+    public isDisable: boolean;
     public isOndrive  = true;
     public checkSpeedValue = false;
     public maxSubscription = false;
     public redirectPge = false;
     public player:any;
     public playerInit  = false;
-    public recordedVideo :any;
-    public responsePath :string;
+    public recordedVideo: any;
+    public responsePath: string;
     public RecordSave = false;
     public rageDisabled = false;
-    public saveVideo :boolean;
-    public discardVideo :boolean;
-    public closeModalId :boolean;
-    public testSpeeddisabled :boolean;
-    public testSpeedshow :boolean;
-    public stopButtonDisabled :boolean;
-    public stopButtonShow :boolean;
-    public textAreaValue  = '';
+    public saveVideo: boolean;
+    public discardVideo: boolean;
+    public closeModalId: boolean;
+    public testSpeeddisabled: boolean;
+    public testSpeedshow: boolean;
+    public stopButtonDisabled: boolean;
+    public stopButtonShow: boolean;
+    public textAreaValue = '';
     public changeVolume = 1;
     public target:any;
-    public textAreaDisable:boolean;
-    public hideSaveDiscard:boolean;
-    public maxTimeDuration :number;
+    public textAreaDisable: boolean;
+    public hideSaveDiscard: boolean;
+    public maxTimeDuration: number;
     public source: string;
-    public sweetAlertDisabled :boolean;
+    public sweetAlertDisabled: boolean;
     public sweetAlertMesg:string;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
-        private videoFileService: VideoFileService,private cloudUploadService:UploadCloudvideoService,private sanitizer: DomSanitizer, private refService : ReferenceService) {
+        private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
+        private sanitizer: DomSanitizer, private refService: ReferenceService) {
         try {
             this.isChecked = false;
             this.isDisable = false;
@@ -79,7 +79,7 @@ export class UploadVideoComponent implements OnInit {
             this.discardVideo = false;
             this.closeModalId = true;
             this.testSpeedshow = true;
-            this.testSpeeddisabled= true;
+            this.testSpeeddisabled = true;
             this.hideSaveDiscard = true;
             this.isFileProgress = false;
             // this.stopButtonShow = false;
@@ -134,7 +134,7 @@ export class UploadVideoComponent implements OnInit {
                 console.log(result);
                 this.loading = false;
                 this.processing = false;
-                if (this.processVideoResp != null && this.processVideoResp.error==null) {
+                if (this.processVideoResp != null && this.processVideoResp.error === null) {
                     console.log('process video data :' + this.processVideoResp);
                     this.videoFileService.saveVideoFile = this.processVideoResp;
                     if (this.videoFileService.saveVideoFile.imageFiles == null){
@@ -143,21 +143,19 @@ export class UploadVideoComponent implements OnInit {
                         this.videoFileService.saveVideoFile.gifFiles = []; }
                     this.videoFileService.actionValue = "Save";
                     console.log(this.videoFileService.actionValue);
-                    if(this.playerInit === true){
+                    if(this.playerInit === true) {
                         this.closeRecordPopup();}
-                    if(this.redirectPge  === false){
-                        this.router.navigateByUrl('/home/videos/manage_videos');}
-                     else {
+                    if(this.redirectPge  === false) {
+                        this.router.navigateByUrl('/home/videos/manage_videos');
+                    }  else {
                          this.videoFileService.actionValue = '';
                      }
-                }
-                else {
+                } else {
                     if(this.processVideoResp.error === 'Maximum Disk Space Reached for you subscription')
                      {   this.processing =  false;
                          this.defaultSettings();
                          this.maxSubscription = true;
-                      }
-                    else {
+                      }  else {
                           console.log('process video data object is null please try again:');
                           swal("Contact Admin" ,this.processVideoResp.error,'error');
                          if(this.RecordSave === true){
@@ -168,13 +166,13 @@ export class UploadVideoComponent implements OnInit {
                       }
                    }
             }),
-            () => console.log('process video is:'+ this.processVideoResp);
+            () => console.log('process video is:' + this.processVideoResp);
     }
 
     public fileOverBase(e: any): void {
-        if(this.isFileDrop == false && this.isFileProgress===false){
-            this.hasBaseDropZoneOver= e;}
-        else {
+        if(this.isFileDrop == false && this.isFileProgress === false){
+            this.hasBaseDropZoneOver = e;
+        } else {
             this.hasBaseDropZoneOver = false;
          }
     }
@@ -182,13 +180,12 @@ export class UploadVideoComponent implements OnInit {
     public fileOverAnother(e: any): void {
         this.hasAnotherDropZoneOver = e;
     }
-    fileDropPreview(file:File):void{
-        if(this.isFileDrop == false){ 
-         console.log("file got it" +file);
+    fileDropPreview(file:File):void {
+        if(this.isFileDrop == false) {
+         console.log("file got it" + file);
        //  this.readFiles(file);
          this.defaultDesabled();
-         }
-        else{
+         } else {
             // this.isDisable = true;
             this.isFileDrop = true;
             file = null;
@@ -203,7 +200,7 @@ export class UploadVideoComponent implements OnInit {
     }
     fileDropEnabled(){
         this.isChecked = false;
-        this.isFileDrop =false;
+        this.isFileDrop = false;
     }
     fileChange(inputFile:any,event:any) {
         this.readFiles(inputFile.files);
@@ -239,11 +236,11 @@ export class UploadVideoComponent implements OnInit {
     } 
   uploadRecordedVideo(){
       this.RecordSave = true;
-      this.saveVideo= false;
+      this.saveVideo = false;
       this.discardVideo = false;
       this.testSpeeddisabled = true;
       this.closeModalId = false;
-      this.textAreaDisable =false; // not using ,need to check
+      this.textAreaDisable = false; // not using ,need to check
       this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
       (<HTMLInputElement>document.getElementById("script-text")).disabled = true;
       (<HTMLInputElement>document.getElementById("rangeDisabled")).disabled = true;
@@ -279,7 +276,7 @@ export class UploadVideoComponent implements OnInit {
         $("#myModal").modal("hide");
         this.defaultSettings();
         this.stop();
-        this.isFileDrop =false;
+        this.isFileDrop = false;
        // this.player.recorder.stopDevice();
        this.player.recorder.reset();
         this.saveVideo = false;
@@ -298,10 +295,10 @@ export class UploadVideoComponent implements OnInit {
         $("#script-text").stop(true);
     }
   testSpeed(){
-      const self = this; 
+      const self = this;
       $("#script-text").stop(true);
          $( "#script-text" ).scrollTop( 0 );
-        if($("#script-text").val()==""){
+        if($("#script-text").val() === ""){
             // swal("Please Add your script and Test it back");
         }else{
           this.stopButtonShow  = true; // stop button show 
@@ -309,7 +306,7 @@ export class UploadVideoComponent implements OnInit {
           this.testSpeedshow = false; // hide the test speed button
           this.rageDisabled = true;
           this.checkSpeedValue = true;
-          let volume = this.changeVolume*60000;
+          let volume = this.changeVolume * 60000;
              $( "#script-text" ).animate({scrollTop: $("#script-text").prop("scrollHeight")},
                         {
                         duration: volume,
@@ -319,9 +316,9 @@ export class UploadVideoComponent implements OnInit {
                   });
         }
     }
-
      cameraChange(){
-        if(this.isChecked != true&&this.cloudDrive== false&&this.cloudDropbox==false &&this.cloudOneDrive==false&&this.cloudBox==false){
+        if(this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+        this.cloudOneDrive === false && this.cloudBox === false) {
         this.camera = true;
         this.isDisable = true;
         this.isFileDrop = true;
@@ -417,7 +414,8 @@ export class UploadVideoComponent implements OnInit {
        }
     }
     dropBoxChange(){
-        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false && this.sweetAlertMesg=='DropBox') swal("Oops...", "You minimized DropBox window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false &&
+         this.sweetAlertMesg=='DropBox') swal("Oops...", "You minimized DropBox window!", "error");
         if(this.isChecked != true&&this.cloudDrive == false &&this.camera==false &&this.cloudOneDrive==false&&this.cloudBox==false){
         this.cloudDropbox = true;
         this.isDisable = true;
@@ -435,7 +433,8 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     boxChange(){
-        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false && this.sweetAlertMesg=='Box') swal("Oops...", "You minimized Box window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled == false &&
+         this.sweetAlertMesg=='Box') swal("Oops...", "You minimized Box window!", "error");
         if(this.isChecked != true &&this.cloudDrive==false&&this.camera==false &&this.cloudOneDrive==false&&this.cloudDropbox==false){
         this.cloudBox = true;
         this.isDisable = true;
@@ -455,7 +454,8 @@ export class UploadVideoComponent implements OnInit {
         }
     }
     googleDriveChange(){
-        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled ==false && this.sweetAlertMesg=='Drive') swal("Oops...", "You minimized Google Drive window!", "error");
+        if(this.isChecked==true &&  this.processing!=true && this.sweetAlertDisabled ==false &&
+         this.sweetAlertMesg=='Drive') swal("Oops...", "You minimized Google Drive window!", "error");
         if(this.isChecked != true &&this.cloudBox==false&&this.camera==false &&this.cloudOneDrive == false&&this.cloudDropbox==false){  
         this.cloudDrive = true;
         this.isDisable = true;
@@ -519,8 +519,9 @@ export class UploadVideoComponent implements OnInit {
        } // close if condition
     }
         dropbox(files:any){
-          swal({ title: 'Retriving video from dropbox...!', text: "Please Wait...It's processing",allowOutsideClick: false, showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-          console.log("files "+files);
+          swal({ title: 'Retriving video from dropbox...!', text: 'Please Wait...It`s processing',
+          allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif' });
+          console.log('files ' +files);
            this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
            .subscribe((result: any) => {
                swal.close();
@@ -538,13 +539,14 @@ export class UploadVideoComponent implements OnInit {
                 multiselect: false,
             };
             var boxSelect = new BoxSelect(options);
-            if(value.processing != true){ 
+            if(value.processing != true) { 
                boxSelect.launchPopup();
             }
             let self = this;
             boxSelect.success(function(files:any) {
              if (self.isVideo(files[0].name)) {
-                 swal({ title: 'Retriving video from box...!', text: "Please Wait...It's processing", allowOutsideClick: false,showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                 swal({ title: 'Retriving video from box...!', text: 'Please Wait...It`s processing',
+                  allowOutsideClick: false,showConfirmButton: false, imageUrl: 'assets/images/loader.gif' });
                  console.log(files);
                     self.cloudUploadService.downloadFromBox(files[0].url, files[0].name)
                     .subscribe((result: any) => {
@@ -554,26 +556,26 @@ export class UploadVideoComponent implements OnInit {
                         self.processVideo(result.path);
                     });
               } else {
-                 swal("Only video files can be uploaded.");
+                 swal('Only video files can be uploaded.');
                 } 
             });
             // Register a cancel callback handler
             boxSelect.cancel(function() {
-                console.log("The user clicked cancel or closed the popup");
+                console.log('The user clicked cancel or closed the popup');
                 self.defaultSettings();
             });
         };
-     /* google drive retreive videos */   
+     /* google drive retreive videos */
       onApiLoad() {
          if(this.processing != true){  // for not clicking again on the google drive
-         let self = this;
-            //gapi.load('auth', {'callback': self.onAuthApiLoad});
+         const self = this;
+            // gapi.load('auth', {'callback': self.onAuthApiLoad});
             gapi.load('auth', {'callback': self.onAuthApiLoad.bind(this)});
             gapi.load('picker', {'callback': self.onPickerApiLoad.bind(this)});
         }
      }
         onAuthApiLoad() {
-           let self = this;
+           const self = this;
            window['gapi'].auth.authorize(
                     {
                         'client_id': "516784406032-okvpndbvngrrev2vq0gdd3n2tng5joq8.apps.googleusercontent.com",
@@ -583,8 +585,8 @@ export class UploadVideoComponent implements OnInit {
                     this.handleAuthResult.bind(this));
         }
         handleAuthResult(authResult:any) {
-          console.log("close window google drive");
-           let self = this;
+          console.log('close window google drive');
+           const self = this;
             if (authResult && !authResult.error) {
                 this.tempr = authResult.access_token;
                 self.createPicker();
@@ -592,12 +594,12 @@ export class UploadVideoComponent implements OnInit {
 
         }
         onPickerApiLoad() {
-           let self = this;
+           const self = this;
             this.pickerApiLoaded = true;
             self.createPicker();
           }
         createPicker() {
-           let self = this;
+           const self = this;
             if ( this.tempr) {
                 var pickerBuilder = new google.picker.PickerBuilder();
                 var picker = pickerBuilder
@@ -609,24 +611,22 @@ export class UploadVideoComponent implements OnInit {
                 .build();
                 picker.setVisible(true);
             }
-          
         }
         pickerCallback(data:any) {
-           let self = this;
+           const self = this;
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-                var doc = data[google.picker.Response.DOCUMENTS][0];
-                swal({ title: 'Retriving video from Google Drive...!', text: "Please Wait...It's processing", allowOutsideClick: false, showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+                const doc = data[google.picker.Response.DOCUMENTS][0];
+                swal({ title: 'Retriving video from Google Drive...!', text: 'Please Wait...It`s processing',
+                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif' });
                 self.downloadGDriveFile(doc.id , doc.name);
-            }
-            else if (data[google.picker.Response.ACTION] == google.picker.Action.CANCEL) {
+            } else if (data[google.picker.Response.ACTION] == google.picker.Action.CANCEL) {
                 self.defaultSettings();
             }
         }
-
         downloadGDriveFile(fileId:any, name:string){
-            let self = this;
-            if(this.isVideo(name)){
-                var downloadLink = "https://www.googleapis.com/drive/v3/files/"+fileId+"?alt=media";
+            const self = this;
+            if(this.isVideo(name)) {
+                const downloadLink = 'https://www.googleapis.com/drive/v3/files/'+fileId+'?alt=media';
                 self.cloudUploadService.downloadFromGDrive(downloadLink, name,  this.tempr)
                 .subscribe((result: any) => {
                     console.log(result);
@@ -634,15 +634,14 @@ export class UploadVideoComponent implements OnInit {
                     this.processing  = true;
                     this.processVideo(result.path);
                 });
-            }
-            else{
+            } else {
                 swal('Only video files can be uploaded');
             }
         }
 
         isVideo(filename:any) {
-             var parts = filename.split('.');
-             var ext  = parts[parts.length - 1];
+             const parts = filename.split('.');
+             const ext  = parts[parts.length - 1];
              switch (ext.toLowerCase()) {
               case 'm4v':
               case 'avi':
@@ -664,14 +663,13 @@ export class UploadVideoComponent implements OnInit {
        ngOnInit() {
            try {
                this.defaultSettings();
-               }
-        catch (err) {
+               } catch (err) {
                 console.error('ERROR : FileUploadComponent : ngOnInit() ' + err);
             }
           }
        ngOnDestroy() {
            console.log('Deinit - Destroyed Component');
-           if(this.playerInit==true){
+           if(this.playerInit==true) {
            this.player.recorder.destroy();
           // this.player.recorder.stopDevice();
         }

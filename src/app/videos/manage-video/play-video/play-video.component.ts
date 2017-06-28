@@ -183,7 +183,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                           $('.vjs-big-play-button').css('display', 'none');
                         //  $("#overlay-modal").css("display","block !important");
                             self.showOverlayModal();
-                            player.pause();
+                          //  player.pause();
                      } else if (isValid !== 'StartOftheVideo' ) {
                         $('#overlay-modal').hide();
                          $('.vjs-big-play-button').css('display', 'none');
@@ -247,10 +247,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                       //   $('#play_video_player_demo1').append( $('#overlay-modal').show());
                        self.showOverlayModal();
                      } else if (isValid !== 'EndOftheVideo') {
-                         $('#overlay-modal').hide(); player.pause();
+                         $('#overlay-modal').hide();// player.pause();
                         } else {
                          $('#overlay-modal').hide();
-                         player.pause();
+                         // player.pause();
                          $('.vjs-big-play-button').css('display', 'block'); }
                 });
                 this.on('fullscreenchange', function () {
@@ -499,7 +499,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                     if (isValid === 'StartOftheVideo' ) {
                       $('.vjs-big-play-button').css('display', 'none');
                       self.showOverlayModal();
-                      player.pause();
+                    //  player.pause();
                     } else if (isValid !== 'StartOftheVideo' ) {
                       $('#overlay-modal').hide(); player.play();
                     } else { $('#overlay-modal').hide();
@@ -552,7 +552,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      self.videoLogAction(self.xtremandLog);
                 });
                 player.on('timeupdate', function() {
-                   startDuration = player.trimCurrentTime(player.currentTime());
+                   startDuration = self.trimCurrentTime(player.currentTime());
                 });
                  player.on('ended', function() {
                     const whereYouAt = player.currentTime();
@@ -571,7 +571,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                       self.showOverlayModal();
                      $('.video-js .vjs-control-bar').hide();
                     } else if (isValid !== 'EndOftheVideo') {
-                        $('#overlay-modal').hide(); player.pause();
+                        $('#overlay-modal').hide(); // player.pause();
                     } else { $('#overlay-modal').hide(); // player.pause();
                      }
                       $('#repeatPlay').click(function(){
@@ -579,12 +579,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                       });
                       $('#skipOverlay').click(function(){
                          $('#overlay-modal').hide();
-                         player.pause();
+                        // player.pause();
                      //    $('.video-js .vjs-control-bar').hide();
                       });
                       $('#playorsubmit').click(function(){
                          $('#overlay-modal').hide();
-                         player.pause();
+                       //  player.pause();
                      //    $('.video-js .vjs-control-bar').hide();
                      });
                   });
@@ -628,7 +628,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      self.showOverlayModal();
                     } else if (isValid !== 'StartOftheVideo' ) {
                      $('#overlay-modal').hide(); player.play();
-                    } else { $('#overlay-modal').hide(); }
+                    } else { $('#overlay-modal').hide(); player.play(); }
             });
             this.on('seeking', function() {
             const seekigTime  = self.trimCurrentTime(player.currentTime());
@@ -688,10 +688,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                  if (isValid === 'EndOftheVideo') {
                     self.showOverlayModal();
                     }  else if (isValid !== 'EndOftheVideo') {
-                     $('#overlay-modal').hide(); player.pause();
+                     $('#overlay-modal').hide(); // player.pause();
                     } else {
                      $('#overlay-modal').hide();
-                     player.pause();
+                   //  player.pause();
                      $('.vjs-big-play-button').css('display', 'none'); }
             });
             this.on('fullscreenchange', function () {
@@ -772,7 +772,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
  }
  xtremandLogDefaultActions() {
         // router info
-        this.xtremandLog.userAlias =  null;
+        this.xtremandLog.userAlias = this.authenticationService.user.alias;
         this.xtremandLog.videoAlias = this.selectedVideo.alias;
         this.xtremandLog.campaignAlias = null;
         // device detector
