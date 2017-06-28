@@ -53,9 +53,9 @@ export class AddContactsComponent implements OnInit {
     public saveGoogleContactUsers: boolean;
     public saveZohoContactUsers: boolean;
     public saveSalesforceContactUsers: boolean;
-    public zohoImage: string = 'assets/images/crm/Zoho_gear.png';
+    public zohoImage: string;
     public googleImage: string;
-    public salesforceImage: string = 'assets/images/crm/sf_check.png';
+    public salesforceImage: string;
     public contactListNameError: boolean;
     public listViewName: string;
     public uploadvalue = true;
@@ -1148,17 +1148,27 @@ export class AddContactsComponent implements OnInit {
         }
     }
 
-    googleContactImage() {
-        this.socialContact.socialNetwork = "GOOGLE";
-        this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
-        this.contactService.googleLogin()
+    socialContactImage() {
+        //this.socialContact.socialNetwork = "GOOGLE";
+        //this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+        this.contactService.socialContactImages()
             .subscribe(
             data => {
                 this.storeLogin = data;
-                if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                if ( this.storeLogin.GOOGLE == true) {
                     this.googleImage = 'assets/images/crm/google_check.png';
                 } else {
                     this.googleImage = 'assets/images/crm/google_gear.png';
+                }
+                if ( this.storeLogin.SALESFORCE == true) {
+                    this.salesforceImage = 'assets/images/crm/sf_check.png';
+                } else {
+                    this.salesforceImage = 'assets/images/crm/sf_gear.png';
+                }
+                if ( this.storeLogin.ZOHO == true) {
+                    this.zohoImage = 'assets/images/crm/Zoho_check.png';
+                } else {
+                    this.zohoImage = 'assets/images/crm/Zoho_gear.png';
                 }
             },
             error => this.logger.error( error ),
@@ -1166,7 +1176,7 @@ export class AddContactsComponent implements OnInit {
             );
     }
 
-    salesforceContactImage() {
+    /*salesforceContactImage() {
         this.socialContact.socialNetwork = "salesforce";
         this.contactService.salesforceLogin()
             .subscribe(
@@ -1181,19 +1191,19 @@ export class AddContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.log( "AddContactsComponent googleContacts() finished." )
             );
-    }
+    }*/
 
     loadContactLists( pagination: Pagination ) {
-        this.pagination.maxResults = 2000;
+        this.pagination.maxResults = 20000;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                    if ( data.listOfUserLists[i].socialNetwork == "ZOHO" ) {
+                    /*if ( data.listOfUserLists[i].socialNetwork == "ZOHO" ) {
                         this.zohoImage = 'assets/images/crm/Zoho_check.png';
-                    } /*else {
+                    } else {
                         this.zohoImage = 'assets/images/crm/Zoho_gear.png';
                     }*/
                   this.names.push(data.listOfUserLists[i].name);
@@ -1207,8 +1217,8 @@ export class AddContactsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.googleContactImage();
-        this.salesforceContactImage();
+        this.socialContactImage();
+        //this.salesforceContactImage();
         this.gContactsValue = true;
         this.loadContactLists( this.pagination );
         if ( this.contactService.googleCallBack == true ) {
@@ -1221,8 +1231,8 @@ export class AddContactsComponent implements OnInit {
         $( "#Zfile_preview" ).hide();
         $( "#Sfile_preview" ).hide();
         $( "#popupForListviews" ).hide();
-        this.googleContactImage();
-        this.salesforceContactImage();
+       // this.googleContactImage();
+        //this.salesforceContactImage();
         this.gContactsValue = true;
         this.zohoContactsValue = true;
         this.salesforceContactsValue = true;

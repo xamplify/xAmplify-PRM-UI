@@ -187,6 +187,13 @@ export class ContactService {
         return this._http.get( this.url + "userlist/" + contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
+    
+    socialContactImages() {
+        this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
+        return this._http.get( this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     googleLogin() {
         this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
