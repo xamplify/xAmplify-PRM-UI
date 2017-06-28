@@ -189,7 +189,7 @@ export class ContactService {
     }
     
     socialContactImages() {
-        this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
+        this.logger.info(this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id);
         return this._http.get( this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id)
             .map( this.extractData )
             .catch( this.handleError );
