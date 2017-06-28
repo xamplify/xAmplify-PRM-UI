@@ -47,6 +47,7 @@ sendPassword(emailId:string){
 }
 
 updatePassword(data:any){
+  console.log(data);
     return this.http.post(this.URL+"admin/updatePassword?access_token="+this.authenticationService.access_token,data)
     .map(this.extractData)
     .catch(this.handleError);
@@ -58,9 +59,9 @@ comparePassword(data:any){
     .catch(this.handleError);
 }
 
-updateUserProfile(data:any){
+updateUserProfile(data:any,userId:number){
     
-    return this.http.post(this.URL+"admin/updateUser?access_token="+this.authenticationService.access_token,data)
+    return this.http.post(this.URL+"admin/updateUser/"+userId+"?access_token="+this.authenticationService.access_token,data)
     .map(this.extractData)
     .catch(this.handleError);
 }

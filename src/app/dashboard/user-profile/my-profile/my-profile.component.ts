@@ -8,7 +8,7 @@ import {matchingPasswords} from '../../../form-validator';
 import { Observable }     from 'rxjs/Rx';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Logger } from "angular2-logger/core";
-
+import { ReferenceService } from '../../../core/services/reference.service';
 declare var swal: any;
 declare var $: any;
 declare var Metronic : any;
@@ -28,20 +28,25 @@ export class MyProfileComponent implements OnInit {
     profileUploadSuccess = false;
     userProfileImage: string = "assets/admin/pages/media/profile/icon-user-default.png";
     userData: User;
-    displayName: string = "";
-    profilePicutrePath: string = "";//"../../assets/admin/pages/media/profile/icon-user-default.png";
+    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     public uploader: FileUploader;
-    constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService, private logger: Logger ) {
+    constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService, private logger: Logger,private refService:ReferenceService ) {
         //  System.import('../../assets/global/plugins/dropzone/dropzone.js').then((dz) => this.initDropzone(dz));
         this.userData = this.authenticationService.user;
+        if(this.userData.firstName!=null){
+            this.parentModel.displayName =  this.userData.firstName;
+        }else{
+            this.parentModel.displayName =  this.userData.emailId;
+        }
         if ( !( this.userData.profileImagePath.indexOf( null ) > -1 ) ) {
             this.userProfileImage = this.userData.profileImagePath;
+            this.parentModel.profilePicutrePath = this.userData.profileImagePath;
         }
         this.uploader = new FileUploader( {
 
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 100 * 1024 * 1024,// 100 MB
-            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.userData.id + "?access_token=" + this.authenticationService.access_token
+            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
         });
 
 
@@ -53,12 +58,11 @@ export class MyProfileComponent implements OnInit {
             var imageFilePath = JSON.parse( response );
             console.log( imageFilePath );
             this.userProfileImage = imageFilePath['message'];
-            this.profilePicutrePath = imageFilePath['message'];
-            this.authenticationService.user.profileImagePath = this.profilePicutrePath;
+            this.parentModel.profilePicutrePath = imageFilePath['message'];
             this.uploader.queue.length = 0;
             this.clearImage();
             this.profileUploadSuccess = true;
-           // this.authenticationService.isUserUpdated = true;
+            setTimeout( function() { $( "#profile-pic-upload-div" ).slideUp( 500 ); }, 5000 );
         };
 
     }
@@ -110,14 +114,13 @@ export class MyProfileComponent implements OnInit {
 
 
     updatePassword() {
-        swal( { title: 'Updating Password', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         console.log( this.updatePasswordForm.value );
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
-            'newPassword': this.updatePasswordForm.value.newPassword
+            'newPassword': this.updatePasswordForm.value.newPassword,
+            'userId':this.authenticationService.user.id
         }
-
-        this.userService.updatePassword( userPassword )
+        this.userService.updatePassword(userPassword)
             .subscribe(
             data => {
                 var body = data['_body'];
@@ -126,22 +129,21 @@ export class MyProfileComponent implements OnInit {
                     var message = response.message;
                     if ( message == "Wrong Password" ) {
                         this.formErrors['oldPassword'] = message;
-                        swal.close();
                     } else if ( response.message == "Password Updated Successfully" ) {
                         this.updatePasswordSuccess = true;
                         this.updatePasswordForm.reset();
-                        swal.close();
+                        setTimeout( function() { $( "#update-password-div" ).slideUp( 500 ); }, 5000 );
                     } else {
-                        swal( data, "", "error" );
+                        this.logger.error(this.refService.errorPrepender+" updatePassword():"+data);
                     }
 
                 } else {
-                    swal( "Please Contact Admin", data, "error" );
+                    this.logger.error(this.refService.errorPrepender+" updatePassword():"+data);
                 }
 
             },
             error => {
-                swal( error, "", "error" );
+                this.logger.error(this.refService.errorPrepender+" updatePassword():"+error);
             },
             () => console.log( "Done" )
             );
@@ -151,10 +153,9 @@ export class MyProfileComponent implements OnInit {
 
 
     checkPassword( event: any ) {
-        swal( { title: 'Comparing Password ', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         var password = event.target.value;
         if ( password != "" ) {
-            var user = { 'oldPassword': password };
+            var user = { 'oldPassword': password, 'userId':this.authenticationService.user.id };
             this.userService.comparePassword( user )
                 .subscribe(
                 data => {
@@ -163,14 +164,13 @@ export class MyProfileComponent implements OnInit {
                         var response = JSON.parse( body );
                         var message = response.message;
                         this.formErrors['oldPassword'] = message;
-                        swal.close();
                     } else {
-                        swal( body, "", "error" );
+                        this.logger.error(this.refService.errorPrepender+" checkPassword():"+data);
                     }
 
                 },
                 error => {
-                    swal( error, "", "error" );
+                    this.logger.error(this.refService.errorPrepender+" checkPassword():"+error);
                 },
                 () => console.log( "Done" )
                 );
@@ -310,9 +310,8 @@ export class MyProfileComponent implements OnInit {
 
 
     updateUserProfile() {
-        swal( { title: 'Updating Personal Info', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         console.log( this.updateUserProfileForm.value );
-        this.userService.updateUserProfile( this.updateUserProfileForm.value )
+        this.userService.updateUserProfile( this.updateUserProfileForm.value,this.authenticationService.user.id )
             .subscribe(
             data => {
                 var body = data['_body'];
@@ -323,19 +322,19 @@ export class MyProfileComponent implements OnInit {
                         this.updateProfileSuccess = true;
                         this.userData = this.updateUserProfileForm.value;
                         this.userData.displayName = this.updateUserProfileForm.value.firstName;
-                        this.displayName = this.updateUserProfileForm.value.firstName;
-                        swal.close();
+                        this.parentModel.displayName =this.updateUserProfileForm.value.firstName;
+                        setTimeout( function() { $( "#update-profile-div-id" ).slideUp( 500 ); }, 5000 );
                     } else {
-                        swal( data, "", "error" );
+                        this.logger.error(this.refService.errorPrepender+" updateUserProfile():"+data);
                     }
 
                 } else {
-                    swal( "Please Contact Admin", data, "error" );
+                    this.logger.error(this.refService.errorPrepender+" updateUserProfile():"+data);
                 }
 
             },
             error => {
-                swal( error, "", "error" );
+                this.logger.error(this.refService.errorPrepender+" updateUserProfile():"+error);
             },
             () => console.log( "Done" )
             );

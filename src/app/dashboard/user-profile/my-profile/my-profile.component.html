@@ -25,8 +25,7 @@
 				<!-- BEGIN PAGE HEADER-->
 				<h3 class="page-title">
 				User Account <small>user account page sample</small>
-				<app-topnavbar [profilePicutrePath]="profilePicutrePath"></app-topnavbar>
-				<app-topnavbar [displayName]="displayName"></app-topnavbar>
+				<app-topnavbar [model]="parentModel"></app-topnavbar>
 				</h3>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
@@ -36,11 +35,11 @@
 							<i class="fa fa-angle-right"></i>
 						</li>
 						<li>
-							<a href="#">Pages</a>
+							<a>Pages</a>
 							<i class="fa fa-angle-right"></i>
 						</li>
 						<li>
-							<a href="#">User Account</a>
+							<a>User Account</a>
 						</li>
 					</ul>
 					<div class="page-toolbar">
@@ -193,7 +192,9 @@
 											<div class="tab-content">
 												<!-- PERSONAL INFO TAB -->
 												<div class="tab-pane active" id="tab_1_1">
-													<div *ngIf="updateProfileSuccess"  class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Profile Updated Successfully</strong></div>
+													<div *ngIf="updateProfileSuccess"  class="alert alert-success" id="update-profile-div-id">
+														<strong>Profile Updated Successfully</strong>
+													</div>
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 														<div class="form-group">
 															<label class="control-label">First Name</label>
@@ -237,8 +238,8 @@
 												<!-- END PERSONAL INFO TAB -->
 												<!-- CHANGE AVATAR TAB -->
 												<div class="tab-pane" id="tab_1_2">
-													<div *ngIf="profileUploadSuccess" class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Profile Picture Updated Successfully</strong></div>
-													
+													<div *ngIf="profileUploadSuccess" class="alert alert-success" id="profile-pic-upload-div">
+													<strong>Profile Picture Updated Successfully</strong></div>
 													<p>
 														 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
 													</p>
@@ -305,7 +306,8 @@
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
 												<div class="tab-pane" id="tab_1_3">
-													<div *ngIf="updatePasswordSuccess"  class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Password Updated Successfully</strong></div>
+													<div *ngIf="updatePasswordSuccess" id="update-password-div" class="alert alert-success">
+														<strong>Password Updated Successfully</strong></div>
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
 														<div class="form-group">
 															<label class="control-label">Current Password</label>

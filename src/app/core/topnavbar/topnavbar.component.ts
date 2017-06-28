@@ -16,26 +16,22 @@ export class TopnavbarComponent implements OnInit {
     notifications:any;
     notificationsCount: number = 0;
     isUserUpdated:boolean;
-
-    @Input('profilePicutrePath') profilePicutrePath:string;
-    @Input('displayName') displayName: string;
-    
+    @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     constructor( private router: Router,private userService:UserService, private twitterService: TwitterService,
             private socialService: SocialService,private authenticationService:AuthenticationService) {
         const loggedInUser = this.authenticationService.user;
         console.log(loggedInUser);
-      //  this.isUserUpdated = this.authenticationService.isUserUpdated;
         if(!this.isEmpty(loggedInUser)) {
             // Object is empty (Would return true in this example)
             if(loggedInUser.firstName!=null){
-                this.displayName = loggedInUser.firstName;
+                this.model.displayName = loggedInUser.firstName;
             }else{
-                this.displayName = loggedInUser.emailId;
+                this.model.displayName = loggedInUser.emailId;
             }
             if(!(loggedInUser.profileImagePath.indexOf(null)>-1)){
-                this.profilePicutrePath = loggedInUser.profileImagePath;
+                this.model.profilePicutrePath = loggedInUser.profileImagePath;
             }else{
-                this.profilePicutrePath =  "assets/admin/pages/media/profile/icon-user-default.png";
+                this.model.profilePicutrePath =  "assets/admin/pages/media/profile/icon-user-default.png";
             }
         }
     }
