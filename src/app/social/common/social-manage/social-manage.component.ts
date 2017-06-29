@@ -21,7 +21,7 @@ export class SocialManageComponent implements OnInit {
                 this.socialConnections = result;
             },
             error => console.log( error ),
-            () => console.log( 'login() Complete' ) );
+            () => console.log( 'listAccounts() Complete' ) );
     }
     
     save(){
@@ -29,15 +29,20 @@ export class SocialManageComponent implements OnInit {
             .subscribe(
             result => {
                 alert(result);
+                this.router.navigate( [''] );
             },
             error => console.log( error ),
-            () => console.log( 'login() Complete' ) );
+            () => console.log( 'save() Complete' ) );
     
+    }
+    
+    cancel(){
+        this.router.navigate( [''] );
     }
     ngOnInit() {
         try {
             let providerName = this.route.snapshot.params['social'];
-            const userId = this.authenticationService.user.id;
+            let userId = this.authenticationService.getUserId();
             this.listAccounts( userId, providerName );
         }
         catch ( err ) {

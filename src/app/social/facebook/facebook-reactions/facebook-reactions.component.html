@@ -1,11 +1,10 @@
-<div *ngIf="reactions?.length > 0">
-	<div class="reactions">
-		<a data-toggle="modal" attr.data-target="#reactions{{postId}}">
-			<i class="fa fa-thumbs-o-up" aria-hidden="true">&nbsp;</i>{{reactions?.length}}
-		</a>
-	</div>
+<div *ngIf="totalCount > 0">
+<div class="reactions">
+	<a data-toggle="modal" (click)="getReactions()" attr.data-target="#reactions{{postId}}">
+		<i class="fa fa-thumbs-o-up" aria-hidden="true">&nbsp;</i>{{totalCount}}
+	</a>
 </div>
-
+</div>
 <div class="modal fade" id="reactions{{postId}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

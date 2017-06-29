@@ -17,4 +17,5 @@ export class SocialStatus{
     updatedBy: Number;
 
     shareNow: boolean;
+    isEnable: boolean;
 }

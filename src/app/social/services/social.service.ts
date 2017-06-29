@@ -27,17 +27,18 @@ export class SocialService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    listSocialConnections(userId: number){
-        if(!userId){
+    
+    listSocialConnections( userId: number ) {
+        if ( !userId ) {
             let currentUser = localStorage.getItem( 'currentUser' );
             userId = JSON.parse( currentUser )['userId'];
         }
-        return this.listAccounts(userId, 'all');   
+        return this.listAccounts( userId, 'all' );
     }
-    
+
     getSocialConnection( profileId: string, userId: number ) {
-        if(this.socialConnections.length === 0){
-            this.listSocialConnections(userId);
+        if ( this.socialConnections.length === 0 ) {
+            this.listSocialConnections( userId );
         }
         for ( const i in this.socialConnections ) {
             if ( ( profileId === this.socialConnections[i].profileId ) && ( userId === this.socialConnections[i].userId ) ) {
@@ -48,6 +49,7 @@ export class SocialService {
 
     callback( socialProvider: string ): Observable<SocialConnection> {
         let queryParam: string;
+
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
                 const oauth_token = param['oauth_token'];
@@ -68,6 +70,11 @@ export class SocialService {
                     queryParam = '?code=' + code;
                 }
             });
+        let currentUser = localStorage.getItem( 'currentUser' );
+        if ( currentUser ) {
+            const userId = JSON.parse( currentUser )['userId'];
+            queryParam += '&userId='+userId;
+        }
         return this.http.get( this.URL + socialProvider + '/callback' + queryParam )
             .map( this.extractData )
             .catch( this.handleError );

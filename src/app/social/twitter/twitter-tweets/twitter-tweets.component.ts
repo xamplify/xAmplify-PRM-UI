@@ -31,7 +31,7 @@ export class TwitterTweetsComponent implements OnInit {
             .subscribe(
             data => {
                 for ( var i in data ) {
-                    var splitted = data[i].text.split( " " );
+                    var splitted = data[i].unmodifiedText.split( " " );
                     var updatedText = "";
                     for ( var j in splitted ) {
                         var eachWord = "";
@@ -48,7 +48,7 @@ export class TwitterTweetsComponent implements OnInit {
                         updatedText = updatedText + eachWord + " ";
                     }
                     updatedText = updatedText.trim();
-                    data[i].text = updatedText;
+                    data[i].unmodifiedText = updatedText;
                 }
                 this.tweets = data
             },

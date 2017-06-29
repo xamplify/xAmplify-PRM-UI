@@ -9,6 +9,8 @@ import { FacebookService } from '../../services/facebook.service';
 export class FacebookCommentsComponent implements OnInit {
     @Input( 'postId' ) postId: string;
     @Input( 'facebookAccessToken' ) facebookAccessToken: string;
+    @Input( 'totalCount' ) totalCount: number;
+
     comments: any;
     constructor( private facebookService: FacebookService ) { }
     getComments() {
@@ -20,7 +22,7 @@ export class FacebookCommentsComponent implements OnInit {
             );
     }
     ngOnInit() {
-        this.getComments();
+        // this.getComments();
     }
 
 }

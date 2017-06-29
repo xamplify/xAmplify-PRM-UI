@@ -19,7 +19,7 @@ declare var swal, $, flatpickr, videojs: any;
 @Component( {
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
-    styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css' ],
+    styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
     providers: [PagerService, Pagination]
 })
 export class UpdateStatusComponent implements OnInit {
@@ -47,7 +47,7 @@ export class UpdateStatusComponent implements OnInit {
 
     constructor( private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private pagination: Pagination ) {
+        private pagerService: PagerService, private pagination: Pagination, private router: Router ) {
     }
     count( statusMessage: string ) {
         if ( this.maxlength > statusMessage.length ) {
@@ -57,22 +57,22 @@ export class UpdateStatusComponent implements OnInit {
             this.socialStatus.statusMessage = statusMessage.substr( 0, statusMessage.length - 1 );
         }
     }
-    
+
     previewVideo( videoFile: SaveVideoFile ) {
         this.selectedVideo = videoFile;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring( 0, this.videoUrl.lastIndexOf( "." ) );
-        this.videoUrl =  this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        
-        this.videoPlayListSource(this.videoUrl);
-        this.videoPlayListSource(this.videoUrl);
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+
+        this.videoPlayListSource( this.videoUrl );
+        this.videoPlayListSource( this.videoUrl );
         this.videoJSplayer.play();
     }
 
     addVideo() {
         console.log( this.socialStatus );
         this.errorMessage = "";
-        if ( this.socialStatus.socialStatusContents.length > 0 &&  (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")  ) {
+        if ( this.socialStatus.socialStatusContents.length > 0 && ( Array.from( this.socialStatus.socialStatusContents )[0].fileType != "video" ) ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
         } else {
             this.socialStatus.statusMessage = this.selectedVideo.title;
@@ -92,7 +92,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 $( "#preview-" + i ).remove( 'slow' );
-                this.socialStatus.socialStatusContents.splice(i);
+                this.socialStatus.socialStatusContents.splice( i );
                 this.errorMessage = "";
             },
             error => console.log( error ),
@@ -107,7 +107,7 @@ export class UpdateStatusComponent implements OnInit {
         if ( ( uploadedFilesCount + existingFilesCount ) > 4 ) {
             this.errorMessage = "You can upload maximum 4 images.";
             return false;
-        } else if ( ( this.socialStatus.socialStatusContents.length == 1 ) && ( Array.from(this.socialStatus.socialStatusContents)[0].fileType == "video" ) ) {
+        } else if ( ( this.socialStatus.socialStatusContents.length == 1 ) && ( Array.from( this.socialStatus.socialStatusContents )[0].fileType == "video" ) ) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
             return false;
         }
@@ -160,13 +160,13 @@ export class UpdateStatusComponent implements OnInit {
 
     updateStatus() {
         let socialStatusProviders = this.socialStatus.socialStatusProviders;
-        socialStatusProviders = socialStatusProviders.filter(function( obj ) {
+        socialStatusProviders = socialStatusProviders.filter( function( obj ) {
             return obj.selected === true;
         });
         this.socialStatus.socialStatusProviders = socialStatusProviders;
         console.log( this.socialStatus );
         swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
-        this.socialService.updateStatus(this.userId, this.socialStatus )
+        this.socialService.updateStatus( this.userId, this.socialStatus )
             .subscribe(
             data => {
                 this.initializeSocialStatus();
@@ -181,8 +181,8 @@ export class UpdateStatusComponent implements OnInit {
             () => console.log( "Finished" )
             );
     }
-    
-    schedule(){
+
+    schedule() {
         this.socialStatus.shareNow = false;
         this.updateStatus();
     }
@@ -245,27 +245,27 @@ export class UpdateStatusComponent implements OnInit {
     listSocialStatusProviders() {
         const socialConnections = this.socialService.socialConnections;
         this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
-        for(const i in socialConnections){
+        for ( const i in socialConnections ) {
             let socialStatusProvider = new SocialStatusProvider();
-            
+
             socialStatusProvider.providerId = socialConnections[i].profileId;
             socialStatusProvider.providerName = socialConnections[i].source;
             socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
             socialStatusProvider.profileName = socialConnections[i].profileName;
 
-            if(('TWITTER' === socialConnections[i].source)){
+            if ( ( 'TWITTER' === socialConnections[i].source ) ) {
                 socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
                 socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
-            }else{
+            } else {
                 socialStatusProvider.accessToken = socialConnections[i].accessToken;
             }
-            this.socialStatus.socialStatusProviders.push(socialStatusProvider);
+            this.socialStatus.socialStatusProviders.push( socialStatusProvider );
         }
     }
     openListVideosModal() {
         $( '#listVideosModal' ).modal( 'show' );
         if ( this.videos.length == 0 ) {
-            $("#preview-section").hide();
+            $( "#preview-section" ).hide();
             this.listVideos( this.pagination );
         }
     }
@@ -273,15 +273,15 @@ export class UpdateStatusComponent implements OnInit {
         this.videoFileService.loadVideoFiles( pagination )
             .subscribe(( result: any ) => {
                 swal.close();
-                $("#preview-section").show();
+                $( "#preview-section" ).show();
                 this.videos = result.listOfMobinars;
                 this.totalRecords = result.totalRecords;
                 pagination.totalRecords = this.totalRecords;
                 console.log( this.videos );
                 pagination = this.pagerService.getPagedItems( pagination, this.videos );
-                
-                this.videoJSplayer = videojs("videojs-video");
-                this.previewVideo(this.videos[0]);
+
+                this.videoJSplayer = videojs( "videojs-video" );
+                this.previewVideo( this.videos[0] );
             }),
             () => console.log( "load videos completed:" + this.videos );
     }
@@ -308,7 +308,7 @@ export class UpdateStatusComponent implements OnInit {
 
     listEvents() {
         let self = this;
-        this.socialService.listEvents(this.userId)
+        this.socialService.listEvents( this.userId )
             .subscribe(
             data => {
                 this.socialStatusList = data;
@@ -328,7 +328,7 @@ export class UpdateStatusComponent implements OnInit {
                 flatpickr( '.flatpickr', {
                     enableTime: true,
                     minDate: new Date()
-                } );
+                });
                 console.log( "listEvents() finished" )
             }
             );
@@ -343,37 +343,42 @@ export class UpdateStatusComponent implements OnInit {
     }
     showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
     hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
+
+    /*    getFacebookAccounts() {
+            this.facebookService.listAccounts( localStorage.getItem( 'facebook' ) )
+                .subscribe(
+                data => {
+                    for ( var i in data ) {
+                        this.socialStatus.socialStatusProviders.push(data[i]);
+                    }
+                },
+                error => console.log( error ),
+                () => console.log( 'getAccounts() Finished.' )
+                );
     
-/*    getFacebookAccounts() {
-        this.facebookService.listAccounts( localStorage.getItem( 'facebook' ) )
+        }*/
+
+    getUserProfileImage( userId: string ) {
+        this.facebookService.getUserProfileImage( userId )
             .subscribe(
-            data => {
-                for ( var i in data ) {
-                    this.socialStatus.socialStatusProviders.push(data[i]);
-                }
-            },
+            data => this.profileImage = data,
             error => console.log( error ),
-            () => console.log( 'getAccounts() Finished.' )
+            () => console.log( 'getUserProfileImage() Finished.' )
             );
 
-    }*/
-    
-    getUserProfileImage( userId: string){
-        this.facebookService.getUserProfileImage(userId )
-        .subscribe(
-        data => this.profileImage = data,
-        error => console.log( error ),
-        () => console.log( 'getUserProfileImage() Finished.' )
-        );
+    }
 
-}
-    
-    videoPlayListSource(videoUrl: string){
+    videoPlayListSource( videoUrl: string ) {
         this.videoUrl = videoUrl;
         const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+        this.videoJSplayer.playlist( [{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }] );
     }
-    
+
+    socialLogin( providerName: string ) {
+        $( '#myModal' ).modal( 'toggle' );
+        this.router.navigate( [providerName + '/login'] );
+    }
+
     ngOnInit() {
         this.userId = this.authenticationService.user.id;
         this.listEvents();

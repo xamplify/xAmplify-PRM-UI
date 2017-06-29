@@ -9,6 +9,7 @@ import { FacebookService } from '../../services/facebook.service';
 export class FacebookReactionsComponent implements OnInit {
     @Input( 'postId' ) postId: string;
     @Input( 'facebookAccessToken' ) facebookAccessToken: string;
+    @Input('totalCount') totalCount: number;
     reactions: any;
     constructor( private facebookService: FacebookService ) { }
     getReactions() {
@@ -20,7 +21,7 @@ export class FacebookReactionsComponent implements OnInit {
             );
     }
     ngOnInit() {
-        this.getReactions();
+        // this.getReactions();
     }
 
 }

@@ -51,16 +51,16 @@
 							<div class="portlet-body">
 								<img alt="{{post.name}}" src="{{post.fullPicture}}"
 									class="img-responsive">
-								<h3>{{post.name}}</h3>
+								<h4>{{post.name}}</h4>
 								<p>{{post.description}}</p>
-								<h3 class="uppercase">{{post.caption}}</h3>
+								<h4 class="uppercase">{{post.caption}}</h4>
 							</div>
 						</a>
 					</div>
 					<div class="flex">
-						<app-facebook-reactions [postId]="post.id"
+						<app-facebook-reactions [postId]="post.id" [totalCount]="post.likes.totalCount"
 							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-reactions>
-						<app-facebook-comments [postId]="post.id"
+						<app-facebook-comments [postId]="post.id" [totalCount]="post.comments.totalCount"
 							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-comments>
 					</div>
 				</div>
