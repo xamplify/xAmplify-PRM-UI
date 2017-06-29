@@ -350,16 +350,16 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      const time =  self.timeConversion(player.currentTime());
                      console.log(time);
                      console.log(self.truncateHourZeros(time).toString());
-                     if (time){
-                           console.log('ended event ');
-                     } else {
+                    //  if (time){
+                    //        console.log('ended event ');
+                    //  } else {
                         self.xtremandLog.actionId = self.LogAction.pauseVideo;
                         self.xtremandLog.startTime = new Date();
                         self.xtremandLog.endTime = new Date();
                         self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.videoLogAction(self.xtremandLog);
-                     }
+                    //  }
                   });
                    this.on('timeupdate', function() {
                       startDuration = self.trimCurrentTime(player.currentTime());
