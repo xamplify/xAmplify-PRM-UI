@@ -23,6 +23,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
     public isOverlay: boolean;
     public videoOverlaySubmit: string;
     public isSkipChecked: boolean;
+    public isPlay: boolean;
     model: any = {};
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService,
      private videoUtilService: VideoUtilService) {
@@ -65,9 +66,11 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
         if (this.selectedVideo.callACtion === true && this.selectedVideo.startOfVideo === true) {
         this.videoOverlaySubmit = 'PLAY';
         this.overLayValue = 'StartOftheVideo';
+        this.isPlay = true;
         } else if (this.selectedVideo.callACtion === true && this.selectedVideo.endOfVideo === true) {
             this.videoOverlaySubmit = 'SUBMIT';
               this.overLayValue = 'EndOftheVideo';
+              this.isPlay = false;
         } else {
              this.overLayValue = 'removeCallAction';
         }
@@ -121,7 +124,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
          $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
          $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
          this.is360Value = false;
-const str = '<video id="videoId" poster=' + this.posterImagePath + 'preload="none"  class="video-js vjs-default-skin" controls></video>';
+const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
              $('#newPlayerVideo').append(str);
              this.videoUrl = this.selectedVideo.videoPath;
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -219,7 +222,7 @@ const str = '<video id="videoId" poster=' + this.posterImagePath + 'preload="non
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
 $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript" class="p-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
-const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+const str = '<video id=videoId poster=' + this.posterImagePath +'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
                 $('#newPlayerVideo').append(str);
                  this.videoUrl = this.selectedVideo.videoPath;
                  this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
