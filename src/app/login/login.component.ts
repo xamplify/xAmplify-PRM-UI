@@ -9,7 +9,7 @@ import { UtilService } from '../core/services/util.service';
 import { UserService } from '../core/services/user.service';
 import {matchingPasswords} from '../form-validator';
 import { ReferenceService } from '../core/services/reference.service';
-
+import { Logger } from "angular2-logger/core";
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component({
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, 
-        private userService: UserService, private refService :ReferenceService, private utilService: UtilService ) {
+        private userService: UserService, private refService :ReferenceService, private utilService: UtilService,private logger:Logger ) {
       
     	this.signUpForm = new FormGroup({
             fullName: new FormControl(),
@@ -167,26 +167,24 @@ export class LoginComponent implements OnInit {
                     var response = JSON.parse( body );
                     if ( response.message == "USER CREATED SUCCESSFULLY" ) {
                         this.signUpForm.reset();
-                        this.showLogin();
                         this.userActive = true;
-        //                swal.close();
+                        this.showLogin();
+                        $('#user-created').show();
+                        setTimeout( function() { $( "#user-created" ).hide( 500 );this.userActive = false; }, 5000 );
                     }
                 } else {
-                    swal( "Please Contact Admin", "", "error" );
+                    this.logger.error(this.refService.errorPrepender+" signUp():"+data);
                 }
 
             },
             error => {
                 if ( error == "USERNAME IS ALREADY EXISTING" ) {
                     this.formErrors['userName'] = error;
-                    swal.close();
                 } else if ( error == "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
-                	
                     this.formErrors['emailId'] = 'Email Id already exists';
-                    swal.close();
                 }
                 else{
-                	  swal( "Please Contact Admin", "", "error" );
+                    this.logger.error(this.refService.errorPrepender+" signUp():"+error);
                 }
             },
             () => console.log( "Done" )
@@ -336,18 +334,18 @@ export class LoginComponent implements OnInit {
                     var response = JSON.parse( body );
                     if ( response.message == "An email has been sent. Please login with the credentials" ) {
                         this.forgotPasswordForm.reset();
-                        this.showLogin();
                         this.passwordSuccess = true;
-                       // swal.close();
+                        this.showLogin();
+                        $('#password-success').show();
+                        setTimeout( function() { $( "#password-success" ).hide(500);}, 5000 );
                     }
                 } else {
-                    swal( "Please Contact Admin", "", "error" );
+                    this.logger.error(this.refService.errorPrepender+" sendPassword():"+data);
                 }
 
             },
             error => {
                 this.formErrors['forgotPasswordEmailId'] = error.toLowerCase();
-                swal.close();
             },
             () => console.log( "Done" )
             );

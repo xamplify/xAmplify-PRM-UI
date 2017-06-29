@@ -28,8 +28,12 @@
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	<div *ngIf="userActive"  class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>User Created Successfully</strong></div>
-	<div *ngIf="passwordSuccess" class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Password Sent Successfully</strong></div>
+	<div *ngIf="userActive"  class="alert alert-success alert-dismissable fade in" id="user-created">
+		<strong>User Created Successfully</strong>
+	</div>
+	<div *ngIf="passwordSuccess" class="alert alert-success alert-dismissable fade in" id="password-success">
+	<strong>Password Sent Successfully</strong>
+	</div>
 	<div class="row" *ngIf="model">
 		<form class="login-form" (ngSubmit)="login()">
 			<h3 class="form-title">Sign In</h3>

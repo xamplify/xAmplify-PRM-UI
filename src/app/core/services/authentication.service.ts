@@ -18,6 +18,7 @@ export class AuthenticationService {
     public REST_URL: string;
     public MEDIA_URL: string;
     public user: User = new User();
+    public userProfile:User = new User();
     public userToken: UserToken = new UserToken();
     public redirectUrl: string;
     map: any;
@@ -75,6 +76,7 @@ export class AuthenticationService {
                     this.access_token = this.map.access_token;
                     this.refresh_token = this.map.refresh_token;
                     this.user = res.json();
+                    this.userProfile  = res.json();
                 }) );
     }
 

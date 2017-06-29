@@ -66,6 +66,11 @@ updateUserProfile(data:any,userId:number){
     .catch(this.handleError);
 }
 
+getUserByUserName(userName: string){
+    return this.http.post( this.URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.authenticationService.access_token, "" )
+    .map(( res: Response ) => { return res.json()})
+    .catch(( error: any) => { return error});
+} 
 private extractData(res: Response) {
     console.log(res);
     let body = res;

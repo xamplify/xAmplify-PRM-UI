@@ -32,7 +32,8 @@ export class MyProfileComponent implements OnInit {
     public uploader: FileUploader;
     constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService, private logger: Logger,private refService:ReferenceService ) {
         //  System.import('../../assets/global/plugins/dropzone/dropzone.js').then((dz) => this.initDropzone(dz));
-        this.userData = this.authenticationService.user;
+        this.userData = this.authenticationService.userProfile;
+        console.log(this.userData);
         if(this.userData.firstName!=null){
             this.parentModel.displayName =  this.userData.firstName;
         }else{
@@ -62,7 +63,10 @@ export class MyProfileComponent implements OnInit {
             this.uploader.queue.length = 0;
             this.clearImage();
             this.profileUploadSuccess = true;
-            setTimeout( function() { $( "#profile-pic-upload-div" ).slideUp( 500 ); }, 5000 );
+            $("#profile-pic-upload-div" ).show();
+            this.refService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+            this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+            setTimeout( function() { $( "#profile-pic-upload-div" ).hide( 500 ); }, 5000 );
         };
 
     }
@@ -131,8 +135,9 @@ export class MyProfileComponent implements OnInit {
                         this.formErrors['oldPassword'] = message;
                     } else if ( response.message == "Password Updated Successfully" ) {
                         this.updatePasswordSuccess = true;
+                        $("#update-password-div" ).show();
                         this.updatePasswordForm.reset();
-                        setTimeout( function() { $( "#update-password-div" ).slideUp( 500 ); }, 5000 );
+                        setTimeout( function() { $( "#update-password-div" ).hide( 500 ); }, 5000 );
                     } else {
                         this.logger.error(this.refService.errorPrepender+" updatePassword():"+data);
                     }
@@ -320,10 +325,20 @@ export class MyProfileComponent implements OnInit {
                     var message = response.message;
                     if ( message == "User Updated" ) {
                         this.updateProfileSuccess = true;
+                        $( "#update-profile-div-id" ).show();
                         this.userData = this.updateUserProfileForm.value;
                         this.userData.displayName = this.updateUserProfileForm.value.firstName;
                         this.parentModel.displayName =this.updateUserProfileForm.value.firstName;
-                        setTimeout( function() { $( "#update-profile-div-id" ).slideUp( 500 ); }, 5000 );
+                        this.refService.topNavBarUserDetails.displayName = this.parentModel.displayName;
+                        setTimeout( function() { $( "#update-profile-div-id" ).hide( 500 ); }, 5000 );
+                        this.userService.getUserByUserName(this.authenticationService.user.emailId).
+                        subscribe(
+                                res => {
+                                   this.authenticationService.userProfile = res;
+                                },
+                                error => {this.logger.error(this.refService.errorPrepender+" updateUserProfile():"+error)},
+                                () => console.log("Finished")
+                            );
                     } else {
                         this.logger.error(this.refService.errorPrepender+" updateUserProfile():"+data);
                     }

@@ -95,7 +95,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         reader.onload = (e) => {
             let htmlText: string = reader.result;
             this.htmlText = htmlText;
-           // $('.html').highlightCode('html', htmlText);
+            $('.html').highlightCode('html', htmlText);
             swal.close();
         }
         reader.readAsText(file);

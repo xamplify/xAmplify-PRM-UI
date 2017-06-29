@@ -22,6 +22,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     public filteredEmailTemplates  : Array<EmailTemplate> = new Array<EmailTemplate>();
     public templateSearchKey: string = "";
     templateFilter: any = { name: '' };
+    selectedTemplateTypeIndex:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
@@ -65,9 +66,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         //  this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
     
-    showAllTemplates(){
+    showAllTemplates(index:number){
         this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.filteredEmailTemplates=this.allEmailTemplates;
+        this.selectedTemplateTypeIndex = index;
     }
     
     
@@ -104,9 +106,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         }
     }
     
-    showUploadTemplates(){
+    showUploadTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var name = this.allEmailTemplates[i].name;
                 if(name.indexOf("Upload")>-1){
@@ -121,9 +124,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         }
     }
     
-    showBasicTemplates(){
+    showBasicTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
@@ -139,9 +143,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         }
     }
     
-    showRichTemplates(){
+    showRichTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
@@ -158,9 +163,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     
     }
     
-    showBasicVideoTemplates(){
+    showBasicVideoTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
@@ -177,9 +183,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     
     }
     
-    showRichVideoTemplates(){
+    showRichVideoTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
@@ -214,12 +221,14 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            );
        }else if(index==17 || index==1){
            //This is normal template
-           this.emailTemplateService.isRegularUpload = true;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+           alert("In Progress");
+          /* this.emailTemplateService.isRegularUpload = true;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);*/
        }else if(index==16 || index==0){
            //This is video template
-           this.emailTemplateService.isRegularUpload = false;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+           alert("In Progress");
+           /*this.emailTemplateService.isRegularUpload = false;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);*/
        }
     }
     

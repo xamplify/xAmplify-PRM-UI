@@ -66,5 +66,7 @@ h1 {
 	position: absolute;
 }
 
-
+.emailtemplate-selected{
+	background-color: #6dcff6;
+}
 

@@ -8,8 +8,12 @@ import {ReferenceService} from '../services/reference.service';
 })
 
 export class HomeComponent implements OnInit {
-	  public refcategories: any;
-	    constructor(private referenceService: ReferenceService ) { }
+    
+        public refcategories: any;
+
+	    constructor(private referenceService: ReferenceService ) {
+	    
+	    }
 	    getCategorisService() {
 	        this.referenceService.getCategories()
 	            .subscribe((result: any) => {

@@ -47,7 +47,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.isPreview = true;
             this.htmlText = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
-           // $('.html').highlightCode('html', this.htmlText);
+            $('.html').highlightCode('html', this.htmlText);
         }
 
     }
