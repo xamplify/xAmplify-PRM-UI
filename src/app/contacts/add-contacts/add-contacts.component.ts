@@ -66,6 +66,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceListViewId: string;
     public salesforceListViewName: string;
     public socialNetwork: string;
+    dublicateEmailId : boolean = false;
     csvData: any;
     fileTypeError:boolean;
     removeCsvName : boolean;
@@ -83,6 +84,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceListViewsData: Array<any> = [];
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv","application/vnd.ms-excel", "text/plain", "text/csv"] });
     contacts: User[];
+    public results = [];
     private socialContactType: string;
     constructor( private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
@@ -324,30 +326,60 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveContactList( isValid: boolean ) {
+        this.dublicateEmailId = false;
+        var emails=[];
+        for(var i=0;i<= this.newUsers.length;i++){
+            if(this.newUsers[i+1] == this.newUsers[0])
+                emails.push(this.newUsers[0].emailId);
+        }
+        
+        var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+    var res = [];
+        for (var i = 0; i < emails.length - 1; i++) {
+           if (sorted_arr[i + 1] == sorted_arr[i]) {
+               res.push(sorted_arr[i]);
+           }
+        }
+        this.results = res;
+        this.logger.log(res);
+        this.logger.info("GOT Emails"+emails)
+        var valueArr = this.newUsers.map(function(item){ return item.emailId });
+        var isDuplicate = valueArr.some(function(item, idx){
+           return valueArr.indexOf(item) != idx
+        });
+        console.log(isDuplicate);
         if ( this.model.contactListName != '' ) {
             this.logger.info( this.newUsers[0].emailId );
             if ( this.newUsers[0].emailId != undefined ) {
-                this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
-                this.contactService.saveContactList( this.model.contactListName, this.newUsers )
-                    .subscribe(
-                    data => {
-                        data = data;
-                        this.logger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
-                        this.contactService.successMessage = true;
-                    },
-
-                    error => this.logger.info( error ),
-                    () => this.logger.info( "addcontactComponent saveacontact() finished" )
-                    )
-            } else
+                  if(!isDuplicate){
+                    this.saveValidEmails();
+                 }else{
+                     this.dublicateEmailId = true;
+                 }     
+           }else
                 this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
         else {
             this.contactListNameError = true;
             this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
+    }
+    saveValidEmails(){
+            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
+            this.contactService.saveContactList( this.model.contactListName, this.newUsers )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.logger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.contactService.successMessage = true;
+                },
+
+                error => this.logger.info( error ),
+                () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                )
+        this.dublicateEmailId = false;
     }
 
     saveClipBoardContactList( isclick: boolean ) {
@@ -943,7 +975,16 @@ export class AddContactsComponent implements OnInit {
         }
     }
 
+    showModal(){
+        $( "#salesforceModal" ).show();
+    }
+    
+    hideModal(){
+        $( "#salesforceModal" ).hide();
+    }    
+    
     salesforceContacts() {
+        //this.showModal();
         this.removeCsv();
         this.socialContact.socialNetwork = "salesforce";
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
@@ -953,13 +994,16 @@ export class AddContactsComponent implements OnInit {
                 this.storeLogin = data;
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                    //$( "#myModal1" ).show();
+                    this.showModal();
                     console.log( "AddContactComponent salesforce() Authentication Success" );
-                    if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
+                    this.checkingPopupValues();
+                    /*if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
                         this.getSalesforceListViewContacts( this.contactType );
                     } else {
                         this.getSalesforceContacts( this.contactType );
                     }
-                } else {
+*/                } else {
                     localStorage.setItem( "userAlias", data.userAlias )
                     console.log( data.redirectUrl );
                     console.log( data.userAlias );
@@ -970,8 +1014,17 @@ export class AddContactsComponent implements OnInit {
             () => this.logger.log( "addContactComponent salesforceContacts() login finished." )
             );
     }
+    
+    checkingPopupValues(){
+        if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
+            this.getSalesforceListViewContacts( this.contactType );
+        } else {
+            this.getSalesforceContacts( this.contactType );
+        }
+    }
 
     getSalesforceContacts( contactType: any ) {
+        //$( "#myModal1" ).hide();
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
@@ -1020,7 +1073,9 @@ export class AddContactsComponent implements OnInit {
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( "#myModal1 .close" ).click()
+                   // $( "#myModal1 .close" ).click()
+                   // $( "#myModal1" ).hide();
+                    this.hideModal();
                 }
             },
             error => this.logger.error( error ),
@@ -1029,6 +1084,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     getSalesforceListViewContacts( contactType: any ) {
+        //$( "#myModal1" ).hide();
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
@@ -1077,7 +1133,9 @@ export class AddContactsComponent implements OnInit {
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( "#myModal1 .close" ).click()
+                    //$( "#myModal1 .close" ).click()
+                    //$( "#myModal1" ).hide();
+                    this.hideModal();
                 }
             },
             error => this.logger.error( error ),
@@ -1218,14 +1276,17 @@ export class AddContactsComponent implements OnInit {
 
     ngOnInit() {
         this.socialContactImage();
+        this.hideModal();
         //this.salesforceContactImage();
         this.gContactsValue = true;
         this.loadContactLists( this.pagination );
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
-            $( "#salesforceModalPopup" ).show();
+            this.showModal();
+            this.contactService.salesforceContactCallBack = false;
         }
+        
         this.contactListName = '';
         $( "#Gfile_preview" ).hide();
         $( "#Zfile_preview" ).hide();
@@ -1260,5 +1321,8 @@ export class AddContactsComponent implements OnInit {
     ngDestroy() {
         this.contactService.googleCallBack = false;
         this.contactService.salesforceContactCallBack = false;
+        //$('#modal1').modal().hide();
+        this.hideModal();
+
     }
 }

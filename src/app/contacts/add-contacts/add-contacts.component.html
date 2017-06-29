@@ -140,7 +140,7 @@
 							
 							<div class="col-md-6">
 								<p>Import from available cloud service</p>
-								<button id="salesforceContact_button" style="margin: -8px; background-color: white" data-toggle="modal" data-target="#myModal1">
+								<button id="salesforceContact_button" style="margin: -8px; background-color: white" (click) = "salesforceContacts()">
 									<img src="{{salesforceImage}}"
 										title="Click here To access user list from your Salesforce account"
 										height="100" width="100"
@@ -211,7 +211,7 @@
   				</div>
 			</div>
 			<div id="salesforceId">
-			<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+			<div class="modal" id="salesforceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
@@ -250,8 +250,8 @@
   					        </form>
       					</div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       						<button type="button" class="btn btn-primary" (click)="salesforceContacts()">Submit</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideModal()">Close</button>
+       						<button type="button" class="btn btn-primary" (click)="checkingPopupValues()">Submit</button>
      		 			</div>
     				</div>
   				</div>
@@ -317,6 +317,10 @@
 	<div *ngIf="fileTypeError" id="csvFileTypeError"
 			class="alert alert-danger alert-dismissable" style="width:50%">
 			<b>File type not allowed please select the .csv file only..</b>
+		</div>	
+		<div *ngIf="dublicateEmailId" id="dublicateEmail"
+			class="alert alert-danger alert-dismissable" style="width:50%">
+			<b>Duplicate EmailId Exist Please Remove..{{results}}</b>
 		</div>					
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
