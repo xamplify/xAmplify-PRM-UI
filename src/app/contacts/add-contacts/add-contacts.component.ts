@@ -394,6 +394,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveClipBoardContactList( isclick: boolean ) {
+        this.clipboardShowPreview();
         this.logger.info( "addclipboardTesting" );
         var emails=[];
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
