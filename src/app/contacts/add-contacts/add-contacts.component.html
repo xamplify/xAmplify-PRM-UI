@@ -314,6 +314,12 @@
 									</table>
 								</div>
 						</div>
+						
+						<div *ngIf="isContactsThere" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Contacts found.. !!!</strong>
+			                </div>
+						
 	<div *ngIf="fileTypeError" id="csvFileTypeError"
 			class="alert alert-danger alert-dismissable" style="width:50%">
 			<b>File type not allowed please select the .csv file only..</b>

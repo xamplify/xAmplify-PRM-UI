@@ -67,6 +67,7 @@ export class AddContactsComponent implements OnInit {
     public salesforceListViewName: string;
     public socialNetwork: string;
     dublicateEmailId : boolean = false;
+    isContactsThere : boolean;
     csvData: any;
     fileTypeError:boolean;
     removeCsvName : boolean;
@@ -153,6 +154,7 @@ export class AddContactsComponent implements OnInit {
 
     fileChange( input: any ) {
         this.readFiles( input.files );
+        this.isContactsThere = false;
         //this.removeCsvName = false;
         //this.removeCsv();
         /*this.saveCsvUsers = true;
@@ -598,6 +600,7 @@ export class AddContactsComponent implements OnInit {
 
     addRow() {
         this.removeCsv();
+        this.isContactsThere = false;
         //$( "#removeCsv" ).hide();
         this.saveAddCotactsUsers = true;
         this.saveClipBoardUsers = false;
@@ -627,6 +630,7 @@ export class AddContactsComponent implements OnInit {
     copyFromClipboard() {
         this.removeCsv();
         this.clipboardTextareaText = "";
+        this.isContactsThere = false;
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = true;
         this.saveCsvUsers = false;
@@ -647,6 +651,7 @@ export class AddContactsComponent implements OnInit {
 
     googleContacts() {
         this.removeCsv();
+        this.isContactsThere = false;
         this.logger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
         this.socialContact.lastName = '';
@@ -695,6 +700,9 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getGoogleConatacts = data;
+                if(this.getGoogleConatacts.contacts.length == 0){
+                    this.isContactsThere = true;
+                }
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -720,6 +728,7 @@ export class AddContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
+        this.isContactsThere = false;
     }
 
     saveGoogleContacts( isValid: boolean ) {
@@ -856,6 +865,7 @@ export class AddContactsComponent implements OnInit {
 
     zohoContacts() {
         this.removeCsv();
+        this.isContactsThere = false;
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         if ( selectedDropDown == "DEFAULT" ) {
             alert( "Please Select the which you like to import from:" );
@@ -889,6 +899,11 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
+                if(this.getZohoConatacts.contacts.length == 0){
+                    this.isContactsThere = true;
+                    $( "#myModal .close" ).click()
+                }
+                    
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -914,7 +929,7 @@ export class AddContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
-
+        this.isContactsThere = false;
     }
 
     saveZohoContacts( isValid: boolean ) {
@@ -1025,6 +1040,7 @@ export class AddContactsComponent implements OnInit {
     
     salesforceContacts() {
         //this.showModal();
+        this.isContactsThere = false;
         this.removeCsv();
         this.socialContact.socialNetwork = "salesforce";
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
@@ -1094,6 +1110,10 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getSalesforceConatactList = data;
+                if(this.getSalesforceConatactList.contacts.length == 0){
+                    this.isContactsThere = true;
+                    this.hideModal();
+                }
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1121,6 +1141,7 @@ export class AddContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
+        this.isContactsThere = false;
     }
 
     getSalesforceListViewContacts( contactType: any ) {
@@ -1154,6 +1175,10 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getSalesforceConatactList = data;
+                if(this.getSalesforceConatactList.contacts.length == 0){
+                    this.isContactsThere = true;
+                    this.hideModal();
+                }
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1181,6 +1206,7 @@ export class AddContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
+        this.isContactsThere = false;
     }
 
     saveSalesforceContactSelectedUsers( isValid: boolean ) {
