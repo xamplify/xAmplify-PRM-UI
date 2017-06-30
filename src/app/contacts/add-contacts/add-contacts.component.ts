@@ -336,7 +336,7 @@ export class AddContactsComponent implements OnInit {
         }
         
         var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
-    var res = [];
+        var res = [];
         for (var i = 0; i < emails.length - 1; i++) {
            if (sorted_arr[i + 1] == sorted_arr[i]) {
                res.push(sorted_arr[i]);
@@ -517,6 +517,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             this.newUsers.length = 0;
             this.model.contactListName = null;
+            this.dublicateEmailId = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == true && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             this.clipBoard = false;
@@ -530,7 +531,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             this.model.contactListName = null;
-
+            this.dublicateEmailId = false;
             this.clipboardUsers.length = 0;
             $( "#file_preview" ).hide();
             $( '#copyFromclipTextArea' ).val( '' );
