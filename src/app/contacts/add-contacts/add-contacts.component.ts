@@ -324,9 +324,11 @@ export class AddContactsComponent implements OnInit {
     validateName( name: string ) {
         return ( name.trim().length > 0 );
     }
-
+    
     saveContactList( isValid: boolean ) {
         this.dublicateEmailId = false;
+        var array = [] = this.remove_duplicates(this.newUsers);
+        this.logger.log(array);
         var emails=[];
         for(var i=0;i<= this.newUsers.length;i++){
             if(this.newUsers[i+1] == this.newUsers[0])
@@ -342,7 +344,6 @@ export class AddContactsComponent implements OnInit {
         }
         this.results = res;
         this.logger.log(res);
-        this.logger.info("GOT Emails"+emails)
         var valueArr = this.newUsers.map(function(item){ return item.emailId });
         var isDuplicate = valueArr.some(function(item, idx){
            return valueArr.indexOf(item) != idx
@@ -353,8 +354,10 @@ export class AddContactsComponent implements OnInit {
             if ( this.newUsers[0].emailId != undefined ) {
                   if(!isDuplicate){
                     this.saveValidEmails();
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                  }else{
                      this.dublicateEmailId = true;
+                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                  }     
            }else
                 this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
@@ -364,6 +367,14 @@ export class AddContactsComponent implements OnInit {
             this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
     }
+    
+    remove_duplicates(arr:any) {
+        let obj = {};   for (let i = 0; i < arr.length; i++) { 
+            obj[arr[i]] = true;   }   arr = [];   for (let key in obj) { 
+                arr.push(key);  
+                }   
+            return arr;
+                }
     saveValidEmails(){
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
             this.contactService.saveContactList( this.model.contactListName, this.newUsers )
@@ -384,27 +395,54 @@ export class AddContactsComponent implements OnInit {
 
     saveClipBoardContactList( isclick: boolean ) {
         this.logger.info( "addclipboardTesting" );
+        var emails=[];
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         if ( this.model.contactListName.trim().length == 0 ) {
             $( "#clipBoardValidationMessage > h4" ).empty();
             $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>Please Enter the Contact List Name</h4>" );
         } else {
-            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
-            this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
-                .subscribe(
-                data => {
-                    data = data;
-                    this.logger.info( "update Contacts ListUsers:" + data );
-                    $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
-                },
-
-                error => this.logger.error( error ),
-                () => this.logger.info( "addcontactComponent saveacontact() finished" )
-                )
+            
+            var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+            var res = [];
+                for (var i = 0; i < emails.length - 1; i++) {
+                   if (sorted_arr[i + 1] == sorted_arr[i]) {
+                       res.push(sorted_arr[i]);
+                   }
+                }
+                this.results = res;
+                this.logger.log(res);
+                var valueArr = this.clipboardUsers.map(function(item){ return item.emailId });
+                var isDuplicate = valueArr.some(function(item, idx){
+                   return valueArr.indexOf(item) != idx
+                });
+                console.log(isDuplicate);
+                if(!isDuplicate){
+                    this.saveCsvValidEmails();
+                 }else{
+                     this.dublicateEmailId = true;
+                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                 }    
+            
         }
     }
 
+    saveCsvValidEmails(){
+        this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
+        this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
+            .subscribe(
+            data => {
+                data = data;
+                this.logger.info( "update Contacts ListUsers:" + data );
+                $( "#uploadContactsMessage" ).show();
+                this.router.navigateByUrl( '/home/contacts/manageContacts' )
+            },
+
+            error => this.logger.error( error ),
+            () => this.logger.info( "addcontactComponent saveacontact() finished" )
+            )
+    this.dublicateEmailId = false;
+}
+    
     saveCsvContactList( isValid: boolean ) {
         if ( this.model.contactListName != '' ) {
             if ( this.contacts.length > 0 ) {
