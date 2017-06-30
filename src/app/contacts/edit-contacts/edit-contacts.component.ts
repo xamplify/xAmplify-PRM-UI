@@ -103,12 +103,12 @@ export class EditContactsComponent implements OnInit {
 
     sortContacts = [
         { 'name': 'Sort By', 'value': '' },
-        { 'name': 'EmailId(A-Z)', 'value': 'emailId-ASC' },
-        { 'name': 'EmailId(Z-A)', 'value': 'emailId-DESC' },
-        { 'name': 'FirstName(ASC)', 'value': 'firstName-ASC' },
-        { 'name': 'FirstName(DESC)', 'value': 'firstName-DESC' },
-        { 'name': 'LastName(ASC)', 'value': 'lastName-ASC' },
-        { 'name': 'LastName(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
     ];
     public contactsSort: any = this.sortContacts[0];
 
