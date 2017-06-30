@@ -77,7 +77,7 @@ export class EditContactsComponent implements OnInit {
     invalidContactData: boolean;
     unsubscribedContactsData: boolean;
     nonActiveContactsData: boolean;
-    public currentContactType: string = null;
+    public currentContactType: string = "all_contacts";
     public activeContactUsers: Array<ContactList>;
     public invalidContactUsers: Array<ContactList>;
     public unsubscribedContactUsers: Array<ContactList>;
@@ -135,7 +135,7 @@ export class EditContactsComponent implements OnInit {
             console.log( this.searchKey );
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
-            if ( this.currentContactType == null|| (this.currentContactType == null && this.searchKey == "") ) {
+            if ( this.currentContactType == "all_contacts"|| (this.currentContactType == "all_contacts" && this.searchKey == "") ) {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             } else if ( this.currentContactType == "active_contacts" || (this.currentContactType == "active_contacts" && this.searchKey == "") ) {
                 this.active_Contacts( this.pagination );
@@ -161,7 +161,7 @@ export class EditContactsComponent implements OnInit {
         this.pagination.pageIndex = 1;
         this.pagination.sortcolumn = this.sortcolumn;
         this.pagination.sortingOrder = this.sortingOrder;
-        if ( this.currentContactType == null ) {
+        if ( this.currentContactType == "all_contacts" ) {
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         } else if ( this.currentContactType == "active_contacts" ) {
             this.active_Contacts( this.pagination );
@@ -178,6 +178,7 @@ export class EditContactsComponent implements OnInit {
         this.selectedDropDown = event.target["value"];
         if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             //this.all_Contacts( this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all") {
             this.pagination.maxResults = this.totalRecords;
@@ -194,19 +195,20 @@ export class EditContactsComponent implements OnInit {
         }
         
         else if( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             //this.all_Contacts( this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.active_Contacts( this.pagination );
         } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.invalid_Contacts( this.pagination );
         } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "page" ) {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.unSubscribed_Contacts( this.pagination );
         } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page") {
-            this.pagination.maxResults = 12;
+            this.pagination.maxResults = 10;
             this.nonActive_Contacts( this.pagination );
         }
     }
@@ -591,6 +593,7 @@ export class EditContactsComponent implements OnInit {
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
         this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;
+        this.currentContactType = "all_contacts";
         this.contactService.loadUsersOfContactList( contactSelectedListId, pagination ).subscribe(
             ( data: any ) => {
                 this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
@@ -625,7 +628,7 @@ export class EditContactsComponent implements OnInit {
     }
     setPage( page: number, ) {
         this.pagination.pageIndex = page;
-        if ( this.currentContactType == null ) {
+        if ( this.currentContactType == "all_contacts" ) {
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         } else if ( this.currentContactType == "active_contacts" ) {
             this.active_Contacts( this.pagination );
