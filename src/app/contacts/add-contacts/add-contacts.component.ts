@@ -1040,6 +1040,7 @@ export class AddContactsComponent implements OnInit {
     
     salesforceContacts() {
         //this.showModal();
+        this.contactType = "";
         this.isContactsThere = false;
         this.removeCsv();
         this.socialContact.socialNetwork = "salesforce";
