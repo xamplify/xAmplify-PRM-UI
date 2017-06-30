@@ -178,19 +178,23 @@ export class EditContactsComponent implements OnInit {
         this.selectedDropDown = event.target["value"];
         if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
+            this.pagination.pageIndex = 1;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-            //this.all_Contacts( this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all") {
             this.pagination.maxResults = this.totalRecords;
+            this.pagination.pageIndex = 1;
             this.active_Contacts( this.pagination );
         } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "all") {
             this.pagination.maxResults = this.totalRecords;
+            this.pagination.pageIndex = 1;
             this.invalid_Contacts( this.pagination );
         } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
+            this.pagination.pageIndex = 1;
             this.unSubscribed_Contacts( this.pagination );
         } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "all") {
             this.pagination.maxResults = this.totalRecords;
+            this.pagination.pageIndex = 1;
             this.nonActive_Contacts( this.pagination );
         }
         
