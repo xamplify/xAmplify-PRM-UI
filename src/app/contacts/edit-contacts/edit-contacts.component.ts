@@ -571,6 +571,30 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateContactListFromClipBoard( contactListId: number, isValid: boolean, isclick: boolean ) {
+        var emails=[];
+        var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+        var res = [];
+            for (var i = 0; i < emails.length - 1; i++) {
+               if (sorted_arr[i + 1] == sorted_arr[i]) {
+                   res.push(sorted_arr[i]);
+               }
+            }
+            this.results = res;
+            this.logger.log(res);
+            var valueArr = this.clipboardUsers.map(function(item){ return item.emailId });
+            var isDuplicate = valueArr.some(function(item, idx){
+               return valueArr.indexOf(item) != idx
+            });
+            console.log(isDuplicate);
+            if(!isDuplicate){
+                this.saveClipboardValidEmails();
+             }else{
+                 this.dublicateEmailId = true;
+                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+             }   
+    }
+    
+    saveClipboardValidEmails(){
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.contactService.updateContactList( this.contactListId, this.clipboardUsers )
             .subscribe(
@@ -596,7 +620,9 @@ export class EditContactsComponent implements OnInit {
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.successMessage = false;
-    }
+        this.dublicateEmailId = false;
+}
+
 
     saveContacts( contactListId: number ) {
         if ( this.saveAddcontactUsers == true && this.saveCopyfromClipboardUsers == false && this.saveCsvFileUsers == false ) {

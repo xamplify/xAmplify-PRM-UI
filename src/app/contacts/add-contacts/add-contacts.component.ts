@@ -125,7 +125,6 @@ export class AddContactsComponent implements OnInit {
         console.log(list);
         if($.inArray(contactName, list) > -1){
             this.isValidContactName = true;  
-            //$('.ng-valid[required], .ng-valid.required ').css({"background-color":"solid #a94442"});
             $(".ng-valid[required], .ng-valid.required").css("color", "red");
         }else{
             $(".ng-valid[required], .ng-valid.required").css("color", "Black");
@@ -1326,11 +1325,6 @@ export class AddContactsComponent implements OnInit {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                    /*if ( data.listOfUserLists[i].socialNetwork == "ZOHO" ) {
-                        this.zohoImage = 'assets/images/crm/Zoho_check.png';
-                    } else {
-                        this.zohoImage = 'assets/images/crm/Zoho_gear.png';
-                    }*/
                   this.names.push(data.listOfUserLists[i].name);
                 }
             },

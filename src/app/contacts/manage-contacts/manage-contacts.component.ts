@@ -305,6 +305,12 @@ export class ManageContactsComponent implements OnInit {
                 this.loadContactLists( this.pagination );
                 this.deleteSucessMessage = true;
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
+                if (this.pagination.pagedItems.length === 1) {
+                    this.isvideoThere = true;
+                    this.pagination.pageIndex  = 1;
+                    this.loadContactLists(this.pagination);
+
+              }
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
@@ -317,6 +323,10 @@ export class ManageContactsComponent implements OnInit {
             },
             () => this.logger.info( "deleted completed" )
             );
+       /* if (this.contactLists.length==null) {
+            this.pagination.pageIndex = 1;
+            this.loadContactLists( this.pagination );
+         }*/
         this.deleteSucessMessage = false;
         this.deleteErrorMessage = false;
     }
