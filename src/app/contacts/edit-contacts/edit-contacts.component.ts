@@ -51,6 +51,7 @@ export class EditContactsComponent implements OnInit {
     isAvailable = false;
     fileTypeError:boolean;
     Campaign : string;
+    userSelectedIds : any[];
     selectedDropDown : string;
     deleteErrorMessage: boolean;
     public clipboardUsers: Array<User>;
@@ -264,6 +265,8 @@ export class EditContactsComponent implements OnInit {
            this.filePrevew = true;
            $( "button#add_contact" ).prop( 'disabled', true );
            $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
+           $( "button#upload_csv" ).prop( 'disabled', true );
+           $( "input[type='file']" ).attr( "disabled", true );
            let reader = new FileReader();
         reader.readAsText( files[0] );
         this.logger.info( files[0] );
@@ -390,7 +393,9 @@ export class EditContactsComponent implements OnInit {
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
+           // this.userSelectedIds.push( id );
         });
+        //this.logger.log("SELECTEDiDS: "+ this.userSelectedIds);
         this.logger.info( removeUserIds );
         this.contactService.removeContactList( this.contactListId, removeUserIds )
             .subscribe(
@@ -478,6 +483,8 @@ export class EditContactsComponent implements OnInit {
         this.filePrevew = false;
         $( "#sample_editable_1" ).show();
         this.csvFileUsers.length = null;
+        $( "button#upload_csv" ).prop( 'disabled', false );
+        $( "input[type='file']" ).attr( "disabled", false );
     }
 
     copyFromClipboard() {
