@@ -42,10 +42,11 @@ import { AuthenticationService } from './core/services/authentication.service';
 
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
+import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 
 @NgModule( {
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent,
-                   ShareVideoComponent, CampaignVideoComponent, DummyComponent],
+                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot() ],
