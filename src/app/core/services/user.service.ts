@@ -71,6 +71,11 @@ getUserByUserName(userName: string){
     .map(( res: Response ) => { return res.json()})
     .catch(( error: any) => { return error});
 } 
+activateAccount(alias: string){
+	 return this.http.get(this.URL+"register/verifyemail/user?alias="+alias)
+	    .map(this.extractData)
+	    .catch(this.handleError);
+}
 private extractData(res: Response) {
     console.log(res);
     let body = res;

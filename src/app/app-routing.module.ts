@@ -18,6 +18,7 @@ import { SocialCallbackComponent } from './social/common/social-callback/social-
 import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 import { DummyComponent } from './loader/dummy/dummy.component';
+import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -45,6 +46,7 @@ export const routes: Routes = [
     { path: 'embed-video/:type/:alias', component: ShareVideoComponent },
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent},
     { path: 'dummyPage', component: DummyComponent},
+    { path: 'register/verifyemail/user', component: ActivateAccountComponent},
 
 ];
 
