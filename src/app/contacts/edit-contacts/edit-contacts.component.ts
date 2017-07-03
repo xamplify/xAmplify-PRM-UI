@@ -40,7 +40,8 @@ export class EditContactsComponent implements OnInit {
     editContacts : User;
     @Output() notifyParent: EventEmitter<User>;
     
-    
+    public results = [];
+    dublicateEmailId : boolean = false;
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
@@ -291,36 +292,69 @@ export class EditContactsComponent implements OnInit {
 
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
         if ( this.users[0].emailId != undefined && this.validateEmailAddress(this.users[0].emailId) ) {
-            this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
-            this.contactService.updateContactList( this.contactListId, this.users )
-                .subscribe(
-                ( data: any ) => {
-                    data = data;
-                    this.activeUsersCount = data.activecontacts;
-                    this.inActiveUsersCount = data.nonactiveUsers;
-                    this.allContacts = data.allcontacts;
-                    this.allUsers = this.allContacts;
-                    this.invlidContactsCount = data.invalidUsers;
-                    this.unsubscribedContacts = data.unsubscribedUsers;
-                    this.logger.info( "update Contacts ListUsers:" + data );
-                    this.manageContact.editContactList( this.contactListId );
-                    $( "tr.new_row" ).each( function() {
-                        $( this ).remove();
-                        $( "button#upload_csv" ).prop( 'disabled', false );
-                        $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
-                    });
-                    this.successMessage = true;
-                    setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
-                    this.checkingLoadContactsCount = true;
-                    this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                    this.cancelContacts();
-                },
-                error => this.logger.error( error ),
-                () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
-                )
-            this.successMessage = false;
-        }
-    }
+            this.dublicateEmailId = false;
+           // var array = [] = this.remove_duplicates(this.newUsers);
+            //this.logger.log(array);
+            var emails=[];
+            /*for(var i=0;i<= this.newUsers.length;i++){
+                if(this.newUsers[i+1] == this.newUsers[0])
+                    emails.push(this.newUsers[0].emailId);
+            }*/
+            
+            var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+            var res = [];
+            for (var i = 0; i < emails.length - 1; i++) {
+               if (sorted_arr[i + 1] == sorted_arr[i]) {
+                   res.push(sorted_arr[i]);
+               }
+            }
+            this.results = res;
+            this.logger.log(res);
+            var valueArr = this.users.map(function(item){ return item.emailId });
+            var isDuplicate = valueArr.some(function(item, idx){
+               return valueArr.indexOf(item) != idx
+            });
+            console.log(isDuplicate);
+                this.logger.info( this.users[0].emailId );
+                      if(!isDuplicate){
+                        this.saveValidEmails();
+                     }else{
+                         this.dublicateEmailId = true;
+                     }     
+               }
+         }
+    
+    saveValidEmails(){
+        this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
+        this.contactService.updateContactList( this.contactListId, this.users )
+            .subscribe(
+            ( data: any ) => {
+                data = data;
+                this.activeUsersCount = data.activecontacts;
+                this.inActiveUsersCount = data.nonactiveUsers;
+                this.allContacts = data.allcontacts;
+                this.allUsers = this.allContacts;
+                this.invlidContactsCount = data.invalidUsers;
+                this.unsubscribedContacts = data.unsubscribedUsers;
+                this.logger.info( "update Contacts ListUsers:" + data );
+                this.manageContact.editContactList( this.contactListId );
+                $( "tr.new_row" ).each( function() {
+                    $( this ).remove();
+                    $( "button#upload_csv" ).prop( 'disabled', false );
+                    $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
+                });
+                this.successMessage = true;
+                setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
+                this.checkingLoadContactsCount = true;
+                this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                this.cancelContacts();
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )
+        this.successMessage = false;
+    this.dublicateEmailId = false;
+}
 
     updateCsvContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.csvFileUsers ) );
@@ -583,6 +617,7 @@ export class EditContactsComponent implements OnInit {
             $( "button#upload_csv" ).prop( 'disabled', false );
             $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
             $( "input[type='file']" ).attr( "disabled", false );
+            this.dublicateEmailId = false;
             this.users.length = 0;
         }
         if ( this.saveAddcontactUsers == false && this.saveCopyfromClipboardUsers == true ) {
@@ -591,6 +626,7 @@ export class EditContactsComponent implements OnInit {
             $( "button#upload_csv" ).prop( 'disabled', false );
             $( "input[type='file']" ).attr( "disabled", false );
             this.clipboardUsers.length = null;
+            this.dublicateEmailId = false;
         }
     }
 

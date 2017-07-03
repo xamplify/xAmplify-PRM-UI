@@ -420,7 +420,7 @@ export class AddContactsComponent implements OnInit {
                 });
                 console.log(isDuplicate);
                 if(!isDuplicate){
-                    this.saveCsvValidEmails();
+                    this.saveClipboardValidEmails();
                  }else{
                      this.dublicateEmailId = true;
                      $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -429,7 +429,7 @@ export class AddContactsComponent implements OnInit {
         }
     }
 
-    saveCsvValidEmails(){
+    saveClipboardValidEmails(){
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
             .subscribe(
