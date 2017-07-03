@@ -89,12 +89,12 @@
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
 						     *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
-					 <div style="float: left; width: 113px;">
+					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
 							[disabled]="!uploader.getNotUploadedItems().length || loading==true || fileChecked==true">
 							<span class="glyphicon glyphicon-upload"></span> Upload all
 						</button> </div>
-					 <div style="float: left; width: 113px;">
+					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue();removefileUploadVideo()"
 							[disabled]="!uploader.queue.length || loading==true || fileChecked==true">
 							<span class="glyphicon glyphicon-trash"></span> Remove all
@@ -175,7 +175,7 @@
 						</p>
 						<div [class.customDisableCss]='isDisable==true || fileChecked==true ||isFileProgress ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 							(fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone" >
-							<h3>Drop Files here</h3>
+							<h3>Drop Video File </h3>
 						</div>
 					</div>
 					<div class="col-md-6" style="padding-top: 69px;">

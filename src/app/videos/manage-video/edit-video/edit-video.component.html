@@ -82,8 +82,22 @@
                  </div>  
                 </form>     
             </div>
-               	       	<!-- video overlay modal popup end -->
-
+            <!-- video overlay modal popup end -->
+                    <!--video preview in modalpopup for share-->
+        <div class="modal" id="show_preview">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="destroyPreview()">×</button>
+	                 <h4 class="modal-title" id="modal-title"></h4>
+	            </div>
+	            <div class="modal-body"><div id = "main_video"></div></div>
+	            <div class="modal-footer"> <a href="javascript:void(0)" (click)="destroyPreview()" data-dismiss="modal" class="btn btn-default">Close</a>
+	            </div>
+	        </div>
+	    </div>
+	    </div>
+		    <!--video preview closed -->
 				<p align="left">{{videoViews}} Views</p>
 				<div *ngIf="likes==true">
 					<span style="float: right">
@@ -132,7 +146,7 @@
 											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
 											</label>
 											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"
-											  style=" position:absolute ;right:0px; background: #194A7E; color: #FFF;"
+											  style=" position:absolute ;right:0px; background: #00a6e8; color: #FFF;"
 												(click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
 											</button>
 										</div>
@@ -308,7 +322,7 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label" style="margin-top:-6px">Enable Video Controller:</label>
 											<div class="col-md-9">
-												<ui-switch color="lightgreen" size="large" formControlName="enableVideoController" (change)="enableVideoControllers($event)"></ui-switch>
+												<ui-switch color="lightgreen"  formControlName="enableVideoController" (change)="enableVideoControllers($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
@@ -438,12 +452,12 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Call To Action:</label>
 									<div class="col-md-6">
-										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
+										<div class="checkbox-list">
 										<!-- 	<label > <ui-switch  [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" color="lightgreen"
 													size="large" (change)="enableCallToActionMethodTest($event)"></ui-switch>
 											</label> -->
-											<label > <ui-switch  formControlName="callACtion"  color="lightgreen"
-													size="large" (change)="enableCallToActionMethodTest($event)"></ui-switch>
+											<label style="position: absolute;top: 3px;"> <ui-switch  formControlName="callACtion"  color="lightgreen"
+													 (change)="enableCallToActionMethodTest($event)"></ui-switch>
 											</label>
 											
 										</div>
@@ -452,8 +466,9 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Call To Action At:</label>
 									<div class="col-md-6">
-										<div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">
-											<label style="margin-top: 8px;"> start Of the video</label><label style="margin-left: 116px;  margin-top: -29px;">
+										<div class="checkbox-list">
+											<label style="position: relative;top:8px;"> start Of the video</label>
+											<label style="position: relative; top: -21px;left: 117px;">
 											<ui-switch  color="lightgreen"
 												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"	(change)="startCallToactionOverlay($event)">
 											</ui-switch>
@@ -462,9 +477,10 @@
 											</label>
 									    </div>
 									</div>
-									<div class="col-md-6">
-									    <div class="checkbox-list" style="margin-left: -10px; margin-bottom: -10px;">			
-												<label style="margin-top: 8px;"> end Of the video</label><label  style="margin-left: 116px;  margin-top: -29px;">
+									<div class="col-md-6" style="position: absolute">
+									    <div class="checkbox-list">			
+												<label style="position: relative;right: -137px; top: 44px;"> end Of the video</label>
+												<label  style="position: relative; top: 17px; right: -251px;">
 												<ui-switch  color="lightgreen"
 													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"(change)="endCallToactionOverlay($event)">
 												</ui-switch>
@@ -502,7 +518,7 @@
 									<label class="col-md-3 control-label" style="margin-top:-6px">Upper Text:</label>
 									<div class="col-md-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
-											style="width: 316px; height: 52px;"placeholder="Hey I am here!" maxlength="120" #uppertext></textarea>
+											style="width: 173px; height: 52px;"placeholder="Hey I am here!" maxlength="120" #uppertext></textarea>
 											<label>{{characterleft}} character(s) left</label>
 									</div>
 								</div>

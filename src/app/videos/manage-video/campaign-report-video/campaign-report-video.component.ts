@@ -48,50 +48,8 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy , AfterVi
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
     }
-      checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
-         && this.firstName.length !== 0 && this.lastName.length !== 0) {
-        this.isOverlay = false;
-            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
-        } else if (this.isFistNameChecked === false
-         && this.videoUtilService.validateEmail(this.model.email_id)) { this.isOverlay = false;
-          } else { this.isOverlay = true; }
-    }
-    campaignVideoCallToAction() {
-        this.isFistNameChecked = this.selectedVideo.name;
-        this.firstName = this.authenticationService.user.firstName;
-        this.lastName = this.authenticationService.user.lastName;
-        this.isSkipChecked = this.selectedVideo.skip;
-        this.model.email_id = this.authenticationService.user.emailId;
-        if (this.selectedVideo.callACtion === true && this.selectedVideo.startOfVideo === true) {
-        this.videoOverlaySubmit = 'PLAY';
-        this.overLayValue = 'StartOftheVideo';
-        this.isPlay = true;
-        } else if (this.selectedVideo.callACtion === true && this.selectedVideo.endOfVideo === true) {
-            this.videoOverlaySubmit = 'SUBMIT';
-              this.overLayValue = 'EndOftheVideo';
-              this.isPlay = false;
-        } else {
-             this.overLayValue = 'removeCallAction';
-        }
-    }
-    skipClose() {
-         $('#overlay-modal').hide();
-         if (this.videoJSplayer) {
-         this.videoJSplayer.play(); }
-    }
-    repeatPlayVideo() {
-        $('#overlay-modal').hide();
-        if (this.videoJSplayer) {
-        this.videoJSplayer.play(); }
-   }
-     show360ModalDialog() {
-     $('#overLayDialog').append( $('#overlay-modal').show());
-    // $('#videoId').append( $('#overlay-modal').show());
-   }
     ngOnInit() {
         this.posterImagePath = this.selectedVideo.imagePath;
-        this.campaignVideoCallToAction();
         QuickSidebar.init();
         Index.init();
         Index.initDashboardDaterange();
@@ -142,42 +100,11 @@ const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="n
                 this.ready(function() {
                        $('.video-js .vjs-tech').css('width', '100%');
                        $('.video-js .vjs-tech').css('height', '100%');
-                   if (isValid === 'StartOftheVideo' ) {
-                       $('.vjs-big-play-button').css('display', 'none');
-                       self.show360ModalDialog();
-                     //  $('#videoId').append( $('#overlay-modal').show());
-                     } else if (isValid !== 'StartOftheVideo' ) {
-                       $('.vjs-big-play-button').css('display', 'none');
-                       $('#overlay-modal').hide(); player.play();
-                       } else { $('#overlay-modal').hide(); }
-                      $('#skipOverlay').click(function(){
-                        $('#overlay-modal').hide();
-                        player.play();
-                     });
-                     $('#playorsubmit').click(function(){
-                        $('#overlay-modal').hide();
-                        player.play();
-                     });
+                     player.play();
                    });
               this.on('ended', function() {
-                  if (isValid === 'EndOftheVideo') {
-                      $('.vjs-big-play-button').css('display', 'none');
-                      $('#videoId').append( $('#overlay-modal').show());
-                      self.show360ModalDialog();
-                  } else if (isValid !== 'EndOftheVideo') {
-                       $('.vjs-big-play-button').css('display', 'none');
-                       $('#overlay-modal').hide(); player.pause();
-                      } else { $('#overlay-modal').hide(); player.pause(); }
-                     $('#repeatPlay').click(function(){
-                        player.play();
-                     });
-                      $('#skipOverlay').click(function(){
-                        $('#overlay-modal').hide();
-                     });
-                     $('#playorsubmit').click(function(){
-                        $('#overlay-modal').hide();
-                     });
-              });
+                console.log('video done');
+               });
               this.on('contextmenu', function(e) {
                   e.preventDefault();
               });
@@ -222,7 +149,7 @@ const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="n
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
 $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript" class="p-video" />');
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
-const str = '<video id=videoId poster=' + this.posterImagePath +'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+const str = '<video id=videoId poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
                 $('#newPlayerVideo').append(str);
                  this.videoUrl = this.selectedVideo.videoPath;
                  this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -268,60 +195,18 @@ const str = '<video id=videoId poster=' + this.posterImagePath +'  class="video-
                     clickAndDrag: true,
                     clickToToggle: true,
                     callback: function () {
-                    // const isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
-                     // player.ready();
                      const isValid = newValue.overLayValue;
                     player.ready(function() {
-                        if (isValid === 'StartOftheVideo' ) {
-                        //  $('#videoId').append( $('#overlay-modal').show());
-                          $('.vjs-big-play-button').css('display', 'block');
-                        newValue.show360ModalDialog();
-                        } else if (isValid !== 'StartOftheVideo' ) {
-                          $('#overlay-modal').hide(); player.play();
-                        } else { $('#overlay-modal').hide();
-                            player.play();
-                         }
-                          $('#skipOverlay').click(function(){
-                             $('#overlay-modal').hide();
-                             player.play();
-                          });
-                          $('#playorsubmit').click(function(){
-                             $('#overlay-modal').hide();
-                             player.play();
-                         });
+                     player.play();
                      });
                      player.on('ended', function() {
-                         if (isValid === 'EndOftheVideo') {
-                    //     $('#videoId').append( $('#overlay-modal').show());
-                         newValue.show360ModalDialog();
-                         $('.video-js .vjs-control-bar').hide();
-                        } else if (isValid !== 'EndOftheVideo') {
-                            $('#overlay-modal').hide(); player.pause();
-                        } else { $('#overlay-modal').hide(); player.pause(); }
-                          $('#repeatPlay').click(function(){
-                            player.play();
-                          });
-                          $('#skipOverlay').click(function(){
-                             $('#overlay-modal').hide();
-                             player.pause();
-                         //    $('.video-js .vjs-control-bar').hide();
-                          });
-                          $('#playorsubmit').click(function(){
-                             $('#overlay-modal').hide();
-                             player.pause();
-                         //    $('.video-js .vjs-control-bar').hide();
-                         });
+                       console.log('video done');
                       });
-                   player.on('click', function(){
-                   });
                   }
                   });
                 $('#videoId').css('width', '532px');
                 $('#videoId').css('height', '250px');
         }
-    saveCallToActionUserForm(){
-        console.log('save call to action form ');
-    }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
       if ( this.is360Value !== true) {

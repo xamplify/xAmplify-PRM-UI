@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule }       from '@angular/common';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-//import { UiSwitchModule } from '../../../node_modules/angular2-ui-switch/src';
+// import { UiSwitchModule } from '../../../node_modules/angular2-ui-switch/src';
 import { UiSwitchModule } from 'ngx-ui-switch/src';
-//import { NKDatetimeModule } from 'ng2-datetime';
 
-import { ColorPickerService } from 'angular2-color-picker';
-import { ColorPickerDirective } from 'angular2-color-picker';
+// import { ColorPickerService } from 'angular2-color-picker';
+// import { ColorPickerDirective } from 'angular2-color-picker';
+import { ColorPickerModule } from 'ngx-color-picker';
 import { TagInputModule } from 'ng2-tag-input';
 import { HttpModule } from '@angular/http';
 import { CKEditorModule } from 'ng2-ckeditor';
@@ -20,16 +20,13 @@ import {LoaderComponent} from '../loader/loader.component';
 import { ErrorPagesComponent } from '../error-pages/error-pages.component';
 
 @NgModule({
-	 imports: [ CommonModule,RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-	           TagInputModule, HttpModule, CKEditorModule, Ng2FilterPipeModule ],
-	           
-	 declarations: [ ColorPickerDirective,LoaderComponent,ErrorPagesComponent ],
-	 
-	 exports :[ FileSelectDirective, ColorPickerDirective, FileDropDirective, FormsModule, CommonModule, RouterModule,
-	           FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule, 
-	           HttpModule, CKEditorModule, Ng2FilterPipeModule,LoaderComponent,ErrorPagesComponent ],
-	              
-	 providers: [ ColorPickerService ],  
+       imports: [ CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
+                TagInputModule, HttpModule, CKEditorModule, Ng2FilterPipeModule,  ColorPickerModule ],
+                declarations: [ LoaderComponent, ErrorPagesComponent ],
+        exports : [ FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
+                FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
+                HttpModule, CKEditorModule, Ng2FilterPipeModule, LoaderComponent, ErrorPagesComponent ],
+       providers: [  ],
 })
 
 export class SharedModule { }

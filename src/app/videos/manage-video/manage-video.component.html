@@ -103,13 +103,13 @@
 													<a class="mix-preview1 fancybox-button"  (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="fancybox-button">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
-													<a class="mix-preview3 fancybox-button" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile) " 
+													<a class="mix-preview3 fancybox-button" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" 
 													title="Video Based Reports"  data-rel="fancybox-button">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													</div>
 													<div style="top: 30%; position: relative;">
-													<a class="mix-preview2 fancybox-button"  routerLink="../../campaigns" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
+													<a class="mix-preview2 fancybox-button"  (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													</a>
 													 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" 

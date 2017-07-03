@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input , AfterViewInit} from '@angular/core';
+import { Router} from '@angular/router';
 import { SaveVideoFile } from '.././models/save-video-file';
 import { Category } from '.././models/category';
 import { Pagination } from '../../core/models/pagination';
@@ -70,7 +71,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
    public videoSort: any = this.sortVideos[0];
    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
     private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private logger: Logger, private pagination: Pagination) {
+        private pagerService: PagerService, private logger: Logger, private pagination: Pagination, private router: Router) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -278,6 +279,21 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.playVideo = false;
         this.pageBar = true;
         this.deletedVideo = false;
+        },
+        (error: string) => {
+            this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+         });
+     }
+    campaignRouter(video: SaveVideoFile) {
+        console.log('ManageVideoComponent campaign router:');
+        this.videoFileService.getVideo(video.alias, video.viewBy)
+        .subscribe((videoFile: SaveVideoFile) => {
+        console.log(video);
+        this.referenceService.campaignVideoFile = videoFile;
+        console.log(this.referenceService.campaignVideoFile);
+        this.router.navigateByUrl('/home/campaigns');
+        this
         },
         (error: string) => {
             this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
