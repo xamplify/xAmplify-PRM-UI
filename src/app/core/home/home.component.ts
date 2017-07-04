@@ -8,23 +8,18 @@ import {ReferenceService} from '../services/reference.service';
 })
 
 export class HomeComponent implements OnInit {
-    
         public refcategories: any;
-
-	    constructor(private referenceService: ReferenceService ) {
-	    
-	    }
+	    constructor(private referenceService: ReferenceService ) {  }
 	    getCategorisService() {
 	        this.referenceService.getCategories()
 	            .subscribe((result: any) => {
 	                this.refcategories = result;
 	                this.referenceService.refcategories = this.refcategories;
 	               // console.log(this.refcategories);
-	            }),
+	            });
               () => console.log('categoriss  are in the manage vidoes :' + this.refcategories);
-	    }
-
-        ngOnInit(){
+	    } 
+        ngOnInit() {
            this.getCategorisService();
        }
 
