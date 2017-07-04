@@ -499,10 +499,80 @@ export class EditContactsComponent implements OnInit {
         $( "input[type='file']" ).attr( "disabled", true );
     }
 
+    
     clipboardShowPreview() {
-        var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+        var selectedDropDown = $( "select.options:visible option:selected " ).val();
         var splitValue;
+        if ( this.clipboardTextareaText == undefined ) {
+            swal( "value can't be null" );
+        }
         if ( selectedDropDown == "DEFAULT" ) {
+            swal( "Please Select the Delimeter Type" );
+            return false;
+        }
+        else {
+            if ( selectedDropDown == "CommaSeperated" )
+                splitValue = ",";
+            else if ( selectedDropDown == "TabSeperated" )
+                splitValue = "\t";
+        }
+        this.logger.info( "selectedDropDown:" + selectedDropDown );
+        this.logger.info( splitValue );
+        var startTime = new Date();
+        $( "#clipBoardValidationMessage" ).html( '' );
+        var self = this;
+        var allTextLines = this.clipboardTextareaText.split( "\n" );
+        this.logger.info( "allTextLines: " + allTextLines );
+        this.logger.info( "allTextLines Length: " + allTextLines.length );
+        var isValidData: boolean = true;
+        for ( var i = 0; i < allTextLines.length; i++ ) {
+            var data = allTextLines[i].split( splitValue );
+            if ( !this.validateEmailAddress( data[0] ) ) {
+                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[0] + "</h4>" );
+                isValidData = false;
+            }
+            this.clipboardUsers.length = 0;
+            this.pagination.pagedItems.length = 0;
+        }
+        if ( isValidData ) {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            for ( var i = 0; i < allTextLines.length; i++ ) {
+                var data = allTextLines[i].split( splitValue );
+                let user = new User();
+                switch ( data.length ) {
+                    case 1:
+                        user.emailId = data[0];
+                        break;
+                    case 2:
+                        user.emailId = data[0];
+                        user.firstName = data[1];
+                        break;
+                    case 3:
+                        user.emailId = data[0];
+                        user.firstName = data[1];
+                        user.lastName = data[2];
+                        break;
+                }
+                this.logger.info( user );
+                this.clipboardUsers.push( user );
+                self.pagination.pagedItems.push( user );
+                $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            }
+            var endTime = new Date();
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
+            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>" );
+        } else {
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( "#clipBoardValidationMessage" ).show();
+            this.filePrevew = false;
+        }
+        this.logger.info( this.clipboardUsers );
+    }
+    /*clipboardShowPreview() {
+        var selectedDelimeterType = $( "select.options:visible option:selected " ).val();
+        var splitValue;
+        if ( selectedDelimeterType == "DEFAULT" ) {
             swal( "Please Select the Delimeter Type" );
             return false;
         }
@@ -510,12 +580,12 @@ export class EditContactsComponent implements OnInit {
             swal( "value can't be null" );
         }
         else {
-            if ( selectedDropDown == "commaSeperated" )
+            if ( selectedDelimeterType == "commaSeperated" )
                 splitValue = ",";
-            else if ( selectedDropDown == "TabSeperated" )
+            else if ( selectedDelimeterType == "TabSeperated" )
                 splitValue = "\t";
         }
-        this.logger.info( "selectedDropDown:" + selectedDropDown );
+        this.logger.info( "selectedDropDown:" + selectedDelimeterType );
         this.logger.info( splitValue );
         var startTime = new Date();
         $( "#clipBoardValidationMessage" ).html( '' );
@@ -567,7 +637,7 @@ export class EditContactsComponent implements OnInit {
             this.filePrevew = false;
         }
         this.logger.info( this.clipboardUsers );
-    }
+    }*/
 
     validateEmailAddress( emailId: string ) {
         var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -660,6 +730,7 @@ export class EditContactsComponent implements OnInit {
             $( "input[type='file']" ).attr( "disabled", false );
             this.clipboardUsers.length = null;
             this.dublicateEmailId = false;
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         }
     }
 

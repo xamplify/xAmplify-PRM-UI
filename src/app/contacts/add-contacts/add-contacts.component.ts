@@ -120,8 +120,31 @@ export class AddContactsComponent implements OnInit {
     }
 
     validateContactName(contactName:string){
-        console.log(contactName);
+        let lowerCaseCampaignName = contactName.toLowerCase().trim();
         var list = this.names;
+        console.log(list);
+            if($.inArray(lowerCaseCampaignName, list) > -1){
+                this.isValidContactName = true; 
+                $(".ng-valid[required], .ng-valid.required").css("color", "red");
+            }else{
+                this.isValidContactName = false;
+                $(".ng-valid[required], .ng-valid.required").css("color", "Black");
+        }
+            //console.log(this.editedCampaignName+":::::::::"+lowerCaseCampaignName);
+            if($.inArray(lowerCaseCampaignName, list) > -1 && this.contactListName!=lowerCaseCampaignName){
+                this.isValidContactName = true;  
+                $(".ng-valid[required], .ng-valid.required").css("color", "red");
+            }else{
+                this.isValidContactName = false;
+                $(".ng-valid[required], .ng-valid.required").css("color", "Black");
+        }
+        
+    
+        
+        
+        
+        console.log(contactName);
+       /* var list = this.names;
         console.log(list);
         if($.inArray(contactName, list) > -1){
             this.isValidContactName = true;  
@@ -129,7 +152,7 @@ export class AddContactsComponent implements OnInit {
         }else{
             $(".ng-valid[required], .ng-valid.required").css("color", "Black");
             this.isValidContactName = false;
-        }
+        }*/
     }
 
     
