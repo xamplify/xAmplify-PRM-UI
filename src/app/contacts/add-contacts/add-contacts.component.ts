@@ -120,42 +120,18 @@ export class AddContactsComponent implements OnInit {
     }
 
     validateContactName(contactName:string){
-        let lowerCaseCampaignName = contactName.toLowerCase().trim();
+        let lowerCaseContactName = contactName.toLowerCase().trim();
         var list = this.names;
         console.log(list);
-            if($.inArray(lowerCaseCampaignName, list) > -1){
-                this.isValidContactName = true; 
-                $(".ng-valid[required], .ng-valid.required").css("color", "red");
-            }else{
-                this.isValidContactName = false;
-                $(".ng-valid[required], .ng-valid.required").css("color", "Black");
-        }
-            //console.log(this.editedCampaignName+":::::::::"+lowerCaseCampaignName);
-            if($.inArray(lowerCaseCampaignName, list) > -1 && this.contactListName!=lowerCaseCampaignName){
-                this.isValidContactName = true;  
-                $(".ng-valid[required], .ng-valid.required").css("color", "red");
-            }else{
-                this.isValidContactName = false;
-                $(".ng-valid[required], .ng-valid.required").css("color", "Black");
-        }
-        
-    
-        
-        
-        
-        console.log(contactName);
-       /* var list = this.names;
-        console.log(list);
-        if($.inArray(contactName, list) > -1){
+        if($.inArray(lowerCaseContactName, list) > -1){
             this.isValidContactName = true;  
             $(".ng-valid[required], .ng-valid.required").css("color", "red");
         }else{
             $(".ng-valid[required], .ng-valid.required").css("color", "Black");
             this.isValidContactName = false;
-        }*/
+        }
     }
 
-    
     checked( event: boolean ) {
         this.logger.info( "selected check value" + event )
         this.newUsers.forEach(( contacts ) => {
@@ -1348,7 +1324,7 @@ export class AddContactsComponent implements OnInit {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                  this.names.push(data.listOfUserLists[i].name);
+                  this.names.push(data.listOfUserLists[i].name.toLowerCase().trim());
                 }
             },
             error => {

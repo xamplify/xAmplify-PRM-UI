@@ -265,7 +265,7 @@ export class ManageContactsComponent implements OnInit {
                      this.pagedItems = null ;
                  }
                 for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                  this.names.push(data.listOfUserLists[i].name);
+                  this.names.push(data.listOfUserLists[i].name.toLowerCase().trim());
                 }
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
@@ -658,14 +658,14 @@ export class ManageContactsComponent implements OnInit {
     }
     
     validateContactName(contactName:string){
-        console.log(contactName);
+        let lowerCaseContactName = contactName.toLowerCase().trim();
         var list = this.names;
         console.log(list);
-        if($.inArray(contactName, list) > -1){
-            this.isValidContactName = true;
+        if($.inArray(lowerCaseContactName, list) > -1){
+            this.isValidContactName = true;  
             $(".ng-valid[required], .ng-valid.required").css("color", "red");
         }else{
-            $(".ng-valid[required], .ng-valid.required").css("color", "black");
+            $(".ng-valid[required], .ng-valid.required").css("color", "Black");
             this.isValidContactName = false;
         }
     }
