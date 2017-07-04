@@ -64,6 +64,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public sweetAlertDisabled: boolean;
     public sweetAlertMesg: string;
     public MultipleVideo = false;
+    public maxVideoSize: number;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
@@ -82,18 +83,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.isFileProgress = false;
             // this.stopButtonShow = false;
             this.textAreaDisable = true;
-            this.maxTimeDuration = 3400;
+            this.maxTimeDuration = 3400; // record video time
+            this.maxVideoSize = 800; // upload video size in MB's
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
-                maxFileSize: 800 * 1024 * 1024, // 800 MB
+                maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
                 this.videoPreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
-                console.log(fileItem);
+                console.log(fileItem._file.size);
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;

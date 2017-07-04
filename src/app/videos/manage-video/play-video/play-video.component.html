@@ -7,6 +7,7 @@
      #overlay-modal{width:auto;}
 	 .showVideoDiv{margin-top: -317px}
 	 .clipboard{ padding: 6px 44px;}
+	 a.disabled { pointer-events: none; cursor: not-allowed; }
 </style>
 <div class="portlet light">
 <div class="portlet-body">
@@ -275,7 +276,7 @@
 									<div class="row mix-grid" style="margin-top: 10px">
 										
 										<div class="col-md-6 col-sm-8 mix category_1 mix_all"
-											style="display:block; opacity: 1;" *ngFor="let videoFile of allVideos; let i = index;">
+											style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
 											<div class="mix-inner">
 												<img class="img-responsive"
 											     src="{{videoFile.imagePath}}" alt="">
@@ -300,6 +301,25 @@
 								<!-- END FILTER -->
 							</div>
 						</div>
+						<!--pager here  -->
+									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+                                                <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+                                                 <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+                                              </li>
+                                              <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+                                                 <a (click)="setPage(page)">{{page}}</a>
+                                              </li>
+                                              <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                                                  <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+                                              </li>
+                                               <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+                                                  <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+                                              </li>
+                                          </ul>
+						<!-- pager end here -->
 					</div>
 				</div>
 			</div>

@@ -3,6 +3,7 @@ import { Router} from '@angular/router';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { UserService } from '../../../core/services/user.service';
+import { PagerService } from '../../../core/services/pager.service';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { VideoFileService } from '../../services/video-file.service';
@@ -84,7 +85,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     LogAction: typeof LogAction = LogAction;
    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
     private videoFileService: VideoFileService, private videoUtilService: VideoUtilService , private pagination: Pagination,
-    private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
+    private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
         this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
@@ -143,9 +144,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             this.selectedVideo = saveVideoFile;
             this.xtremandLogDefaultActions();  // loggin info method
             console.log(this.selectedVideo);
-             for (let i = 0; i < this.allVideos.length; i ++) {
-              if (this.selectedVideo.id === this.allVideos[i].id) {
-                this.allVideos.splice(i, 1);
+             for (let i = 0; i < this.pagination.pagedItems.length; i ++) {
+              if (this.selectedVideo.id === this.pagination.pagedItems[i].id) {
+                this.pagination.pagedItems.splice(i, 1);
                 break;
               }
            }
@@ -174,7 +175,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 const document: any = window.document;
                 let startDuration;
                 let replyVideo = 0;
-              //  let isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                 const isValid = self.overLayValue;
                this.ready(function() {
                       $(".video-js .vjs-tech").css("width", "100%");
@@ -200,7 +200,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      self.xtremandLog.endTime = new Date();
                      self.xtremandLog.startDuration = startDuration;
                      self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.videoLogAction(self.xtremandLog);
+                     console.log(self.xtremandLog);
+                    // self.videoLogAction(self.xtremandLog);
                 });
                 this.on('timeupdate', function() {
                      startDuration = self.trimCurrentTime(player.currentTime());
@@ -208,7 +209,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 this.on('play', function() {
                      $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                       if (replyVideo === 0) {
+                     if (replyVideo === 0) {
                           self.xtremandLog.actionId = self.LogAction.playVideo;
                      } else {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
@@ -388,11 +389,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.checkCallToActionAvailable();
     }
      loadAllVideos(pagination: Pagination) {
-     this.pagination.maxResults = this.totalRecords;
+      this.pagination.maxResults = 13;
+      // this.pagination.maxResults = this.totalRecords;
       try {
           this.videoFileService.loadVideoFiles(pagination)
             .subscribe((result: any) => {
                 this.allVideos = result.listOfMobinars;
+                this.totalRecords = result.totalRecords;
+                pagination.totalRecords = this.totalRecords;
               for (let i = 0; i < this.allVideos.length; i++) {
                 this.imagepath = this.allVideos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
                 this.allVideos[i].imagePath = this.imagepath;  // this piece code need to remove 
@@ -402,7 +406,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                    this.allVideos.splice(i, 1);
                    break;
                  }
-          }
+             }
+            pagination = this.pagerService.getPagedItems(pagination, this.allVideos);
             },
             (error: string) => {
              console.log(error);
@@ -412,6 +417,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         } catch (error) {
          //   this.logger.error('erro in load All videos :' + error);
         }
+    }
+     setPage(page: number) {
+     if (page !== this.pagination.pageIndex) {
+        this.pagination.pageIndex = page;
+        this.loadAllVideos(this.pagination);
+     }
     }
     defaultVideoOptions() {
         $('.video-js').css('color', this.selectedVideo.playerColor);

@@ -110,6 +110,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public embedSrcPath: string;
     public embedUrl: string;
     public ClipboardName: string;
+    public disableStart: boolean;
+    public disableEnd: boolean;
+    public loadCallToAction: boolean;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -137,7 +140,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
         this.startCalltoAction = this.saveVideoFile.startOfVideo;
         this.endCalltoAction = this.saveVideoFile.endOfVideo;
-
         if (this.saveVideoFile.startOfVideo === true) {
             this.videoOverlaySubmit = 'PLAY';
          } else {  this.videoOverlaySubmit = 'SUBMIT'; }
@@ -160,7 +162,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         // share details
         this.lowerTextValue = this.saveVideoFile.lowerText;
         this.upperTextValue = this.saveVideoFile.upperText;
-
         if (this.saveVideoFile.upperText == null) {
             this.characterleft = this.maxLengthvalue;
          } else { this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length; }
@@ -184,20 +185,20 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
          };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
-     // need to modify this code for embed video modal popup
-}  // closed constructor
-  shareClick() {
+       // need to modify this code for embed video modal popup
+     }  // closed constructor
+    shareClick() {
      // this.router.navigate(['/embed-video', this.saveVideoFile.viewBy, this.saveVideoFile.alias]);
-  //   this.showPreview();
+    //   this.showPreview();
      this.openWindow();
-  }
-  // image path and gif image path methods
+    }
+    // image path and gif image path methods
     removeOwnThumbnail() {
       this.imageUrlPath = false;
       this.ownThumb = false;
       this.ownThumbnail = true;
-    }
-  fileChange(event: any) {
+     }
+    fileChange(event: any) {
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
         const file: File = fileList[0];
@@ -207,8 +208,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
           this.isThumb = true;
           this.saveVideoFile.imagePath = result.path;
           this.defaultSaveImagePath = this.saveVideoFile.imagePath;
-      });
-    }
+        });
+      }
     }
     changeImgRadio1() {
         this.openOwnThumbnail = false;
@@ -288,6 +289,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     callToActionChange(event: any) {
         this.callaction = event;
         this.controlPlayers = this.colorControl = this.titleDiv  = false;
+         if (this.loadCallToAction === true) {
+          const disable = this;
+          setTimeout(function() {
+              if (disable.saveVideoFile.callACtion === true) {
+                 disable.disableCalltoAction(false);
+              } else {
+                 disable.disableCalltoAction(true);
+              }
+            disable.loadCallToAction = false;
+          }, 1);
+         }
     }
   // like and dis like methods
     likesValuesDemo() {
@@ -495,36 +507,37 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     enableCallToActionMethodTest(event: any) {
        this.enableCalltoAction = this.saveVideoFile.callACtion = event;
         if (event === true && this.saveVideoFile.startOfVideo === true) {
-             this.saveVideoFile.upperText = '';
-             this.saveVideoFile.lowerText = '';
+              this.disableCalltoAction(false);
               if (this.videoJSplayer) {
-              // $('#edit_video_player').append(  $('#overlay-modal').show());
                  $('#overLayDialog').append( $('#overlay-modal').show());
-               this.videoJSplayer.pause();
-              } else {
-                // $('#videoId').append(  $('#overlay-modal').show());
-                   $('#overLayDialog').append( $('#overlay-modal').show());
-              }
+                 this.videoJSplayer.pause();
+              } else { $('#overLayDialog').append( $('#overlay-modal').show());  }
               this.videoOverlaySubmit = 'PLAY';
               this.isPlay = true;
-            } else if (event === true && this.saveVideoFile.endOfVideo === true) {
+      } else if (event === true && this.saveVideoFile.endOfVideo === true) {
+                this.disableCalltoAction(false);
                if (this.videoJSplayer) {
                    $('#overLayDialog').append( $('#overlay-modal').show());
-                  this.videoJSplayer.pause();
-                } else {
+                   this.videoJSplayer.pause();
+               } else {
                    $('#overLayDialog').append( $('#overlay-modal').show());
-                 }
-              this.videoOverlaySubmit = 'SUBMIT';
-              this.isPlay = false;
-            } else {
-                 this.saveVideoFile.upperText = ' ';
-                 this.saveVideoFile.lowerText = ' ';
-                 $('#overlay-modal').hide();
-                 if (this.videoJSplayer) {
-                  this.videoJSplayer.pause();
-                 }
-            }
+               }
+               this.videoOverlaySubmit = 'SUBMIT';
+               this.isPlay = false;
+      } else {
+              this.disableCalltoAction(true);
+              $('#overlay-modal').hide();
+              if (this.videoJSplayer) { this.videoJSplayer.pause(); }
+         }
       }
+   disableCalltoAction(event: boolean) {
+        (<HTMLInputElement> document.getElementById('names')).disabled = event;
+        (<HTMLInputElement> document.getElementById('isSkiped')).disabled = event;
+        (<HTMLInputElement> document.getElementById('upperValue')).disabled = event;
+        (<HTMLInputElement> document.getElementById('lowerValue')).disabled = event;
+         this.disableStart = event;
+         this.disableEnd = event;
+   }
     skipClose() {
          $('#overlay-modal').hide();
        //  $('.video-js .vjs-control-bar').show();
@@ -549,7 +562,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
 
     callToActionNames() {
         console.log(this.saveVideoFile.name + 'after changed value');
-        const event = (<HTMLInputElement>document.getElementById('asknames')).checked;
+        const event = (<HTMLInputElement>document.getElementById('names')).checked;
         this.isPlayButton = this.isFistNameChecked = this.saveVideoFile.name = event;
     }
     allowViewersToSkipped() {
@@ -628,8 +641,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
         if (this.saveVideoFile.allowFullscreen === false) {
            $('.video-js .vjs-fullscreen-control').hide();
-        } else { $('.video-js .vjs-fullscreen-control').show();
-        }
+        } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     showEditModalDialog() {
       $('#overLayDialog').append( $('#overlay-modal').show());
@@ -642,103 +654,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '/embed-video' + viewBy + alias;
     console.log(this.embedSrcPath);
 }
-
-/************Showing Video Preview****************/
-    showPreview(){
-        this.appendVideoData(this.saveVideoFile, "main_video", "modal-title");
-        $("#show_preview").modal({backdrop: 'static', keyboard: false});
-    }
-    destroyPreview(){
-        var player = videojs("videoIdModal");
-        if(player){
-            console.log(player.currentType_);
-            let videoType = player.currentType_;
-            if(videoType=="application/x-mpegURL"){
-                console.log("Clearing Normal Video");
-                player.dispose();
-                $("#main_video").empty();
-            }else{
-              console.log("Clearing 360 video");
-                player.panorama({
-                    autoMobileOrientation: true,
-                    clickAndDrag: true,
-                    clickToToggle: true,
-                    callback: function () {
-                        player.pause();
-                        $("#main_video").empty();
-                    }
-                  });
-              }
-        }
-    }
-    appendVideoData(videoFile: SaveVideoFile, divId: string, titleId: string){
-       console.log(videoFile);
-        var alias = videoFile.alias;
-        var fullImagePath = videoFile.imagePath;
-        var title = videoFile.title;
-        var videoPath = videoFile.videoPath;
-        var is360 = videoFile.is360video;
-        $("#"+divId).empty();
-        $("#"+titleId).empty();
-        if(is360){
-            console.log("Loaded 360 Video");
-     const str = '<video id=videoIdModal poster='+fullImagePath+' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#"+titleId).append(title);
-            $("#"+divId).append(str);
-            videoPath = videoPath.replace(".m3u8",".mp4");
-            console.log("Updated 360 video path"+videoPath);
-          //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
-            $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
-            var player = videojs('videoIdModal');
-            player.panorama({
-                autoMobileOrientation: true,
-                clickAndDrag: true,
-                clickToToggle: true,
-                callback: function () {
-                  player.ready();
-                }
-              });
-            $("#videoIdModal").css("width", "550px");
-            $("#videoIdModal").css("height", "310px");
-            $("#videoIdModal").css("max-width", "100%");
-        }else{
-            console.log("Loaded Normal Video");
-            var str = '<video id=videoIdModal  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
-            $("#"+titleId).append(title);
-            $("#"+divId).append(str);
-            videoPath = videoPath.substring(0,videoPath.lastIndexOf('.'));
-            videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-            console.log("Normal Video Updated Path:::"+videoPath);
-           $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
-            $("#videoIdModal").css("width", "550px");
-            $("#videoIdModal").css("height", "310px");
-            $("#vidvideoIdModaleoId").css("max-width", "100%");
-            var document:any = window.document;
-            var player = videojs("videoIdModal");
-            console.log(player);
-            if(player){
-                player.on('fullscreenchange', function () {
-                    var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                    var event = state ? 'FullscreenOn' : 'FullscreenOff';
-                    if(event==="FullscreenOn"){
-                        $(".vjs-tech").css("width", "100%");
-                        $(".vjs-tech").css("height", "100%");
-                    }else if(event==="FullscreenOff"){
-                        $("#videoIdModal").css("width", "550px");
-                
-                    }
-                     
-                });
-            }
-        }
-        $("video").bind("contextmenu",function(){
-            return false;
-            });
-        
-    }
-/////// closed video append method
     ngOnInit() {
         $('#overlay-modal').hide();
+        this.loadCallToAction = true;
         console.log('EditVideoComponent ngOnit: ');
         this.categories = this.referenceService.refcategories;
         console.log(this.saveVideoFile);
@@ -944,8 +862,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'callACtion' :[this.saveVideoFile.callACtion],
             'name': [this.saveVideoFile.name],
             'skip': [this.saveVideoFile.skip],
-            'upperText': [this.saveVideoFile.upperText, Validators.required],
-            'lowerText': [this.saveVideoFile.lowerText, Validators.required],
+            'upperText': [this.saveVideoFile.upperText],
+            'lowerText': [this.saveVideoFile.lowerText],
             'startOfVideo': [this.saveVideoFile.startOfVideo],
             'endOfVideo': [this.saveVideoFile.endOfVideo],
             'is360video': [this.saveVideoFile.is360video],
