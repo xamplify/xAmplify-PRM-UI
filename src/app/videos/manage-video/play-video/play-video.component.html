@@ -76,10 +76,11 @@
 				</div>
 			</div>
 		   	<div>
-				<a *ngIf="shareVideo==true" class="btn btn-primary" style="color:white"
-					[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">
+				<a *ngIf="shareVideo==true" class="btn btn-primary" style="color:white; background-color: #00a6e8"
+				(click)="shareClick()">
+					<!--[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
+					</a> <a *ngIf="embedVideo==true" class="btn btn-primary" style="background-color: #00a6e8"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>

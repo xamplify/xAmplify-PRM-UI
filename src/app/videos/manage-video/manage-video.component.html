@@ -31,6 +31,12 @@
 			         <a [routerLink]="['../../dashboard']">Home</a><i class="fa fa-angle-right"></i></li>
 			         <li><a (click)="goToManageVideos()">Manage Videos</a> 
 			        </li>
+					 <li *ngIf="editVideo"><i class="fa fa-angle-right"></i><a>Edit Video</a> 
+			        </li>
+					 <li *ngIf="playVideo"><i class="fa fa-angle-right"></i><a>Play Videos</a> 
+			        </li>
+					 <li *ngIf="campaignReport"><i class="fa fa-angle-right"></i><a>campaign Report Video</a> 
+			        </li>
 		       </ul>
 		   </div>
 		   </div>

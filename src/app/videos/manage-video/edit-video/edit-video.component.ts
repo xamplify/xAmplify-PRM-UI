@@ -113,6 +113,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public disableStart: boolean;
     public disableEnd: boolean;
     public loadCallToAction: boolean;
+    public upperTextValid: boolean;
+    public lowerTextValid: boolean;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -500,9 +502,14 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     changeUpperText(upperText: string) {
         this.upperTextValue = this.saveVideoFile.upperText = upperText;
         this.characterleft = this.maxLengthvalue - upperText.length;
+        if ( upperText.length === 0) {
+            this.upperTextValid = false;
+        } else { this.upperTextValid = true; }
     }
     changeLowerText(lowerText: string) {
         this.lowerTextValue = this.saveVideoFile.lowerText = lowerText;
+        if (lowerText.length === 0) { this.lowerTextValid = false;
+        } else { this.lowerTextValid = true; }
     }
     enableCallToActionMethodTest(event: any) {
        this.enableCalltoAction = this.saveVideoFile.callACtion = event;
@@ -514,7 +521,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
               } else { $('#overLayDialog').append( $('#overlay-modal').show());  }
               this.videoOverlaySubmit = 'PLAY';
               this.isPlay = true;
-      } else if (event === true && this.saveVideoFile.endOfVideo === true) {
+        } else if (event === true && this.saveVideoFile.endOfVideo === true) {
                 this.disableCalltoAction(false);
                if (this.videoJSplayer) {
                    $('#overLayDialog').append( $('#overlay-modal').show());
@@ -524,7 +531,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                }
                this.videoOverlaySubmit = 'SUBMIT';
                this.isPlay = false;
-      } else {
+        } else {
               this.disableCalltoAction(true);
               $('#overlay-modal').hide();
               if (this.videoJSplayer) { this.videoJSplayer.pause(); }
@@ -537,6 +544,25 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         (<HTMLInputElement> document.getElementById('lowerValue')).disabled = event;
          this.disableStart = event;
          this.disableEnd = event;
+          if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === false){
+              this.upperTextValid = false;
+              this.lowerTextValid = false;
+          } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0) && event === false) {
+              this.upperTextValid = false;
+              this.lowerTextValid = false;
+         }  else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
+              this.upperTextValid = true;
+              this.lowerTextValid = true;
+         }  else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false ) {
+              this.upperTextValid = false;
+              this.lowerTextValid = true;
+         } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
+              this.lowerTextValid = false;
+              this.upperTextValid = true;
+         } else {
+              this.upperTextValid = true;
+              this.lowerTextValid = true;
+         }
    }
     skipClose() {
          $('#overlay-modal').hide();
@@ -726,8 +752,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.defaultImagePaths();
         this.defaultGifPaths();
         this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
-        } catch (err) {
-            console.log('error' + err);
+        } catch (error) {
+            console.log('error' + error);
         }
     }
     ngAfterViewInit() {
@@ -910,7 +936,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.saveVideoFile.controllerColor = this.compControllerColor;
             this.saveVideoFile.startOfVideo = this.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.endCalltoAction;
-
             console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
             console.log('savevideo file controller value is ' + this.saveVideoFile.controllerColor);
             console.log('controller value is ' + this.compControllerColor);

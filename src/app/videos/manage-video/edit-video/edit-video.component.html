@@ -32,7 +32,6 @@
 				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
                  data-setup='{"example_option":true }'>
 				  <source [src] = videoUrl  type: 'application/x-mpegURL' />
-				<!--  <source [src] = videoUrl  type="video/mp4" /> -->
 				</video> 
 				</div>
                 <div  *ngIf="is360Value==true">
@@ -65,7 +64,6 @@
 				    </div>
 				     <div  [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
                       <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
-                      <!-- <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
                     </div>
                  </div> 
                </div>
@@ -81,8 +79,7 @@
                       <b style="font-size: 13px; color:white;" >skip</b></label>
                  </div>  
                 </form>     
-            </div>
-       
+             </div>
 				<p align="left">{{videoViews}} Views</p>
 				<div *ngIf="likes==true">
 					<span style="float: right">
@@ -92,16 +89,14 @@
 				</div>
 				<div>
 				</div>
-			
-				<!-- <a class="btn btn-primary" (click)="openWindow()"> -->
 				<div>
-					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
+					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white;background-color: #00a6e8"
 						(click)="shareClick()">
 					<!--	<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
 						[routerLink]="['../../../embed-video', saveVideoFile.alias]">
 							[routerLink]="['../../../embed-video', saveVideoFile.viewBy,saveVideoFile.alias]"-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-					</a> <a *ngIf="embedVideo==true" class="btn btn-primary"
+					</a> <a *ngIf="embedVideo==true" class="btn btn-primary" style="color:white;background-color: #00a6e8"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
@@ -150,7 +145,8 @@
 						<div class="row">
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
-									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false">Save</button>
+									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
+									|| lowerTextValid==false">Save</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
 								</div>
 							</div>
@@ -358,12 +354,6 @@
 												<ui-switch color="red"   formControlName="enableSettings" checked></ui-switch>
 											</div>
 										</div>
-										<!--<div class="form-group">
-											<label class="col-md-6 control-label">Enable Settings:</label>
-											<div class="col-md-3">
-												<ui-switch color="red" size="large"  formControlName="enableSettings" checked></ui-switch>
-											</div>
-										</div> -->
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-md-3">
@@ -374,12 +364,6 @@
 												<ui-switch color="lightblue"  formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
 											</div>
 										</div>
-										<!--<div class="form-group">
-											<label class="col-md-6 control-label">Allow Comments:</label>
-											<div class="col-md-3">
-												<ui-switch color="lightblue" size="large" formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
-											</div>
-										</div>-->
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Likes:</label>
 											<div class="col-md-3">
@@ -391,12 +375,6 @@
 											</div>
 
 										</div>
-										<!--<div class="form-group">
-											<label class="col-md-6 control-label">Enable Casting:</label>
-											<div class="col-md-3">
-												<ui-switch color="orange" size="large" formControlName="enableCasting"></ui-switch>
-											</div>
-										</div>-->
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Embed:</label>
 											<div class="col-md-3">
@@ -407,12 +385,6 @@
 											 <ui-switch color="blue"  formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
 											</div>
 										</div>
-										<!--<div class="form-group">
-											<label class="col-md-6 control-label">360 video:</label>
-											<div class="col-md-3">
-											 <ui-switch color="blue" size="large" formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
-											</div>
-										</div>-->
 									</div>
 								</div>
 								<!-- </form> -->
@@ -438,9 +410,6 @@
 									<label class="col-md-3 control-label">Call To Action:</label>
 									<div class="col-md-6">
 										<div class="checkbox-list">
-										<!-- 	<label > <ui-switch  [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" color="lightgreen"
-													size="large" (change)="enableCallToActionMethodTest($event)"></ui-switch>
-											</label> -->
 											<label style="position: absolute;top: 3px;"> <ui-switch  formControlName="callACtion"  color="lightgreen"
 													 (change)="enableCallToActionMethodTest($event)"></ui-switch>
 											</label>
@@ -458,8 +427,6 @@
 												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableStart == true"
 												(change)="startCallToactionOverlay($event)">
 											</ui-switch>
-											<!-- <ui-switch  color="lightgreen" formControlName="startOfVideo"   (change)="startCallToactionOverlay($event)">
-											</ui-switch> -->
 											</label>
 									    </div>
 									</div>
@@ -471,8 +438,6 @@
 													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableEnd == true"
 													 (change)="endCallToactionOverlay($event)">
 												</ui-switch>
-												<!-- <ui-switch  color="lightgreen"  formControlName="endOfVideo" (change)="endCallToactionOverlay($event)">
-												</ui-switch> -->
 												</label>
 										</div>
 									</div>
@@ -508,6 +473,7 @@
 									<div class="col-md-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
 											style="width: 173px; height: 52px;"placeholder="Hey I am here!" maxlength="120" #uppertext></textarea>
+											<label *ngIf="upperTextValid == false" style="position:absolute;color:red;bottom: 29px">required</label>
 											<label>{{characterleft}} character(s) left</label>
 									</div>
 								</div>
@@ -516,10 +482,7 @@
 									<div class="col-md-9">
 										<input id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
 											placeholder="Hey I am here!" #lowertext>
-											<!-- <input type="range"  id="newRange" min="0" max="100"  value="0"
-											placeholder="Hey I am here!">
-												<input type="range"  id="newRange2" min="0" max="100"  value="1"
-											placeholder="Hey I am here!"> -->
+											<label *ngIf="lowerTextValid == false" style="color:red">required</label>
 									</div>
 								</div>
 									<!-- <div class="form-actions right"

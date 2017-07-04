@@ -132,6 +132,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
    showOverlayModal() {
          $('#modalDialog').append($('#overlay-modal').show());
     }
+    shareClick() {
+          window.open('http://localhost:4200/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
+            'mywindow', 'menubar=1,resizable=1,width=670,height=420');
+    }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id
        console.log('videoComponent showVideo() ' + position);
@@ -248,7 +252,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                       //   $('#play_video_player_demo1').append( $('#overlay-modal').show());
                        self.showOverlayModal();
                      } else if (isValid !== 'EndOftheVideo') {
-                         $('#overlay-modal').hide();// player.pause();
+                         $('#overlay-modal').hide(); // player.pause();
                         } else {
                          $('#overlay-modal').hide();
                          // player.pause();
@@ -399,7 +403,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 pagination.totalRecords = this.totalRecords;
               for (let i = 0; i < this.allVideos.length; i++) {
                 this.imagepath = this.allVideos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
-                this.allVideos[i].imagePath = this.imagepath;  // this piece code need to remove 
+                this.allVideos[i].imagePath = this.imagepath;  // this piece code need to remove
               }
                 for (let i = 0; i < this.allVideos.length; i ++) {
                 if (this.selectedVideo.id === this.allVideos[i].id) {
@@ -709,7 +713,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             this.on('fullscreenchange', function () {
                 const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                 const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                if(event==="FullscreenOn"){
+                if(event === "FullscreenOn"){
                     $(".vjs-tech").css("width", "100%");
                     $(".vjs-tech").css("height", "100%");
                 }else if(event==="FullscreenOff"){
