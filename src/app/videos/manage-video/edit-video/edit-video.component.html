@@ -162,7 +162,7 @@
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="titleDiv">
+							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
 								<div class="form-body">
 									<div class="form-group">
 										<label class="col-md-3 control-label">Title:</label>
@@ -288,11 +288,19 @@
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="colorControl">
+							<div class="portlet-body form" *ngIf="colorControl" [@fadeInOut]>
 								<!-- <form class="form-horizontal" role="form"> -->
 								<div class="portlet-body form" data-initialized="1"
 									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
+									   <div class="form-group">
+											<label class="col-md-3 control-label" style="margin-top:-6px">Default settings:</label>
+											<div class="col-md-9">
+											 <ui-switch  color="lightgreen" [(ngModel)]="defaultColorValue" [ngModelOptions]="{standalone: true}" 
+											  (change)="defaultPlayerSettings($event)"></ui-switch>
+											</div>
+										</div>
+									<div *ngIf="defaultColors == false" [@fadeInOut]>
 										<div class="form-group">
 											<label class="col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
 											<div class="col-md-9">
@@ -316,11 +324,12 @@
 										<div class="form-group">
 											 <div>
 											   <label class="col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
-							            	   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 42%;display:inline;"  
+							            	   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 42%;"  
 							            	   (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
 										     </div>
 										     <div style="margin-left: 399px;margin-top: -26px;"><label>{{valueRange}}</label></div>
 										 </div>
+									  </div>
 									</div>
 								</div>
 								<!-- </form> -->
@@ -339,7 +348,7 @@
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="controlPlayers">
+							<div class="portlet-body form" *ngIf="controlPlayers" [@fadeInOut]>
 								<!-- <form class="form-horizontal" role="form" style="margin-left: 25%;"> -->
 								<div class="portlet-body form" data-initialized="1"
 									style="overflow: hidden; width: auto; height: auto">
@@ -404,7 +413,7 @@
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="callaction" style="padding: 12px !important;">
+							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
 								<!-- <form class="form-horizontal" role="form"> -->
 								<div class="form-group">
 									<label class="col-md-3 control-label">Call To Action:</label>

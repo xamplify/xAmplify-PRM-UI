@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit,
+style, state, animate, transition, trigger } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -20,7 +21,18 @@ declare var $, videojs, swal: any;
    styleUrls : ['./edit-video.component.css', './foundation-themes.scss', '../../../../assets/css/video-css/video-js.custom.css' ,
    '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
    '../../../../assets/css/about-us.css', '../../../../assets/css/todo.css',
-   '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css']
+   '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css'],
+   animations: [
+            trigger('fadeInOut', [
+            transition(':enter', [   // :enter is alias to 'void => *'
+                style({opacity:0}),
+                animate(500, style({opacity: 1}))
+            ]),
+            transition(':leave', [   // :leave is alias to '* => void'
+                animate(500, style({opacity: 0}))
+            ])
+            ])
+     ]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
 
@@ -35,8 +47,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
-    private compPlayerColor = '#eeeefd';
-    private compControllerColor = '#eeeefe';
+    private compPlayerColor = '#e6e5e5';
+    private compControllerColor = '#000';
     private videoJSplayer: any;
     public playlist: any;
     public videoUrl: string;
@@ -115,6 +127,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public loadCallToAction: boolean;
     public upperTextValid: boolean;
     public lowerTextValid: boolean;
+    public defaultColors: boolean;
+    public defaultColorValue = false; // get value from server
+    public oldControllColor: string;
+    public oldPlayerColor: string;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -291,7 +307,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     callToActionChange(event: any) {
         this.callaction = event;
         this.controlPlayers = this.colorControl = this.titleDiv  = false;
-         if (this.loadCallToAction === true) {
+     //    if (this.loadCallToAction === true) {
           const disable = this;
           setTimeout(function() {
               if (disable.saveVideoFile.callACtion === true) {
@@ -299,9 +315,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
               } else {
                  disable.disableCalltoAction(true);
               }
-            disable.loadCallToAction = false;
+         //   disable.loadCallToAction = false;
           }, 1);
-         }
+      //   }
     }
   // like and dis like methods
     likesValuesDemo() {
@@ -441,7 +457,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             $('#videoId').css('height', '299px');
     }
     // video controller methods
-      transperancyControllBar(value: any) {
+    transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.saveVideoFile.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
@@ -456,6 +472,21 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.likes = event;
         this.saveVideoFile.allowLikes = this.likes;
         console.log('allow comments after event' + this.likes);
+    }
+    defaultPlayerSettings(event: boolean) {
+        if (event === true ) {
+            this.defaultColors = true;
+            this.compPlayerColor  = '#e6e5e5';
+            this.compControllerColor = '#000';
+            this.changePlayerColor( this.compPlayerColor);
+            this.changeControllerColor(this.compControllerColor);
+        } else {
+            this.defaultColors = false;
+            this.changeControllerColor(this.oldControllColor);
+            this.changePlayerColor(this.oldPlayerColor);
+            this.compPlayerColor  = this.oldPlayerColor;
+            this.compControllerColor = this.oldControllColor;
+        }
     }
     changePlayerColor(event: any) {
         console.log('player color value changed' + event);
@@ -698,13 +729,17 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.gifthird = this.saveVideoFile.gifFiles[2] + '?access_token=' + this.authenticationService.access_token;
         if (this.videoFileService.actionValue === 'Save' && this.saveVideoFile.playerColor === 'FFFFFF'
          && this.saveVideoFile.controllerColor === 'FFFFFF') {
-            this.compPlayerColor = '#f5f5f5';
+            this.compPlayerColor = '#e6e5e5';
             this.saveVideoFile.playerColor = this.compPlayerColor;
-            this.compControllerColor = '#2f2f2f';
+            this.oldPlayerColor = this.saveVideoFile.playerColor;
+            this.compControllerColor = '#000';
             this.saveVideoFile.controllerColor = this.compControllerColor;
+            this.oldControllColor = this.saveVideoFile.controllerColor;
         } else {
             this.compPlayerColor = this.saveVideoFile.playerColor;
             this.compControllerColor = this.saveVideoFile.controllerColor;
+            this.oldPlayerColor = this.saveVideoFile.playerColor;
+            this.oldControllColor = this.saveVideoFile.controllerColor;
         }
 
         this.saveVideoFile = {
@@ -858,6 +893,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
      this.transperancyControllBar(this.valueRange);
      if (this.saveVideoFile.enableVideoController === false) {
          this.defaultVideoControllers(); }
+     this.defaultPlayerSettings(this.defaultColorValue); //  true ///need to change the true value to dynamic value
     }
     /*********************************Save Video*******************************/
     buildForm(): void {

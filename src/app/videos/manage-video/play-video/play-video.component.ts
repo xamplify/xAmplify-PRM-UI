@@ -138,11 +138,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
           window.open('http://localhost:4200/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
-    titleValidMethod() {
-        const videoTitle = 'The Jungle Book clip';
-        this.persons =  this.videoFileService.getPersons().find(persion => persion.firstName.toLowerCase() === videoTitle.toLowerCase());
-        console.log(this.persons);
-    }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id
        console.log('videoComponent showVideo() ' + position);
@@ -385,7 +380,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.videoJSplayer.play(); }
     }
     ngOnInit() {
-        this.titleValidMethod();
         this.createSessionId();
         this.deviceDectorInfo();
         this.xtremandLogDefaultActions();
