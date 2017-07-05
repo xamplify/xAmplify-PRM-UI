@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { UtilService } from '../../core/services/util.service';
 
 import { SocialStatusProvider } from '../../social/models/social-status-provider';
+import { ContactService } from '../../contacts/services/contact.service';
 
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
 
@@ -26,12 +27,13 @@ export class DashboardComponent implements OnInit {
     socialeMedia: any;
     genderDemographicsMale: number;
     genderDemographicsFemale: number;
+    totalContacts : number;
 
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
-    constructor(private router: Router, private _dashboardService: DashboardService, private twitterService: TwitterService,
+    constructor(private router: Router, private _dashboardService: DashboardService, private contactService: ContactService,private twitterService: TwitterService,
         private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
         private utilService: UtilService) {
     }
@@ -226,6 +228,17 @@ export class DashboardComponent implements OnInit {
             );
 
     }
+    
+    totalContactsCount() {
+        this.contactService.loadContactsCount()
+            .subscribe(
+            data => {
+                this.totalContacts = data.allcontacts;
+            },
+            error => console.log( error ),
+            () => console.log( "LoadContactsCount Finished" )
+            );
+    }
 
     ngOnInit() {
         try {
@@ -242,6 +255,7 @@ export class DashboardComponent implements OnInit {
             Index.initChat();
             // Index.initMiniCharts();
             Tasks.initDashboardWidget();
+            this.totalContactsCount();
 
             this.dashboardStats();
             this.viewsSparklineData();
