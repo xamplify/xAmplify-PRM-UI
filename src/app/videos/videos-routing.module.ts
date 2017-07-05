@@ -7,8 +7,8 @@ import { UploadVideoComponent } from './upload-video/upload-video.component';
 import { UserVideoComponent } from './user-video/user-video.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'fileupload', pathMatch: 'full' },
-    { path: 'fileupload', component: UploadVideoComponent },
+    { path: '', redirectTo: 'upload-video', pathMatch: 'full' },
+    { path: 'upload-video', component: UploadVideoComponent },
     { path: 'manage_videos', component: ManageVideoComponent },
     { path: 'page_portfolio', component: UserVideoComponent }
 

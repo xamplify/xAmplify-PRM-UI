@@ -22,6 +22,7 @@ export class ReferenceService {
     isUpdated:boolean = false;
     errorPrepender:string  = "Error In";
     campaignVideoFile: SaveVideoFile;
+    public videoTitles: string[];
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
     public URL: string = this.authenticationService.REST_URL + 'admin/';
 
@@ -30,7 +31,14 @@ export class ReferenceService {
     }
 
     getCategories(): Observable<Category[]> {
-        var url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    getVideoTitles():Observable<String[]> {
+        const url = this.URL + 'getVideoTitles?access_token=' + this.authenticationService.access_token + ' &userId=' +
+        this.authenticationService.user.id;
         return this.http.get(url, "")
         .map( this.extractData )
         .catch( this.handleError );

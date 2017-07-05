@@ -90,6 +90,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     return length;
    }
     ngOnInit() {
+        console.log(this.referenceService.videoTitles);
         console.log('MangeVideosComponent ngOnInit()');
         this.logger.log('This is a priority level 5 log message...');
         try {

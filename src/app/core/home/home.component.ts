@@ -17,10 +17,17 @@ export class HomeComponent implements OnInit {
 	                this.referenceService.refcategories = this.refcategories;
 	               // console.log(this.refcategories);
 	            });
-              () => console.log('categoriss  are in the manage vidoes :' + this.refcategories);
+				 () => console.log('categoriss  are in the manage vidoes :' + this.refcategories);
 	    } 
+		getVideoTitles() {
+			  this.referenceService.getVideoTitles()
+	            .subscribe((result: string[]) => {
+	                this.referenceService.videoTitles = result;
+	            });
+		}
         ngOnInit() {
            this.getCategorisService();
+		   this.getVideoTitles();
        }
 
 }

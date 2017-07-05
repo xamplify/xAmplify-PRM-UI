@@ -83,6 +83,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public sessionId: string;
     public deviceInfo: any;
     LogAction: typeof LogAction = LogAction;
+    public persons;
+    public replyVideo: boolean;
    constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
     private videoFileService: VideoFileService, private videoUtilService: VideoUtilService , private pagination: Pagination,
     private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
@@ -136,6 +138,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
           window.open('http://localhost:4200/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
+    titleValidMethod() {
+        const videoTitle = 'The Jungle Book clip';
+        this.persons =  this.videoFileService.getPersons().find(persion => persion.firstName.toLowerCase() === videoTitle.toLowerCase());
+        console.log(this.persons);
+    }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id
        console.log('videoComponent showVideo() ' + position);
@@ -178,7 +185,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 const player = this;
                 const document: any = window.document;
                 let startDuration;
-                let replyVideo = 0;
+                 self.replyVideo = false;
                 const isValid = self.overLayValue;
                this.ready(function() {
                       $(".video-js .vjs-tech").css("width", "100%");
@@ -212,13 +219,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 });
                 this.on('play', function() {
                      $('.vjs-big-play-button').css('display', 'none');
-                    console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                     if (replyVideo === 0) {
-                          self.xtremandLog.actionId = self.LogAction.playVideo;
-                     } else {
+                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
+                     console.log('replay video count:' + self.replyVideo);
+                     if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
-                     self.xtremandLog.actionId = self.LogAction.playVideo;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
@@ -237,11 +245,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      }
                 });
                 this.on('ended', function() {
-                    const whereYouAt = player.currentTime();
-                    console.log(whereYouAt);
-                       replyVideo = replyVideo + 1;
+                    const time = player.currentTime();
+                    console.log(time);
+                       self.replyVideo = true;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts' + replyVideo);
+                    console.log('video ended attempts' + self.replyVideo);
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
@@ -377,6 +385,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.videoJSplayer.play(); }
     }
     ngOnInit() {
+        this.titleValidMethod();
         this.createSessionId();
         this.deviceDectorInfo();
         this.xtremandLogDefaultActions();
@@ -508,7 +517,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                 clickToToggle: true,
                 callback: function () {
                  const isValid = self.overLayValue;
-                 let replyVideo;
+                 self.replyVideo = false;
                  let startDuration;
                   player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
@@ -545,10 +554,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                  console.log('ply button pressed ');
                        $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                       if (replyVideo === 0) {
-                          self.xtremandLog.actionId = self.LogAction.playVideo;
-                     } else {
+                       if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
                      self.xtremandLog.actionId = self.LogAction.playVideo;
                      self.xtremandLog.startTime = new Date();
@@ -570,11 +580,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                    startDuration = self.trimCurrentTime(player.currentTime());
                 });
                  player.on('ended', function() {
-                    const whereYouAt = player.currentTime();
-                    console.log(whereYouAt);
-                    replyVideo = replyVideo + 1;
+                    const time = player.currentTime();
+                    console.log(time);
+                    self.replyVideo = true;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts' + replyVideo);
+                    console.log('video ended attempts' + self.replyVideo);
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
@@ -630,7 +640,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.videoJSplayer = videojs('videoId', {}, function() {
             const player = this;
             let startDuration;
-            let replyVideo;
+             self.replyVideo = false;
             const document: any = window.document;
              $(".video-js .vjs-tech").css("width", "100%");
              $(".video-js .vjs-tech").css("height", "100%");
@@ -665,19 +675,20 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                  console.log('ply button pressed ');
                        $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                       if (replyVideo === 0) {
-                          self.xtremandLog.actionId = self.LogAction.playVideo;
-                     } else {
+                       if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
-                     self.xtremandLog.actionId = self.LogAction.playVideo;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     console.log(self.xtremandLog.actionId);
                      self.videoLogAction(self.xtremandLog);
-            });
-          this.on('pause', function() {
+               });
+              this.on('pause', function() {
                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                     if (self.xtremandLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
@@ -692,9 +703,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             this.on('ended', function() {
                    const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
-                       replyVideo = replyVideo + 1;
+                       self.replyVideo = true;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts' + replyVideo);
+                    console.log('video ended attempts' + self.replyVideo);
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
@@ -826,6 +837,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
        this.videoFileService.logVideoActions(xtremandLog).subscribe(
        (result: any) => {
          console.log('successfully logged the actions');
+         console.log(this.xtremandLog.actionId);
      });
     }
 

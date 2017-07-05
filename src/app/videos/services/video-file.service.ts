@@ -27,6 +27,14 @@ export class VideoFileService {
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
     }
+     getPersons(){
+        var persons: any[] = [
+            {id: 1, firstName:'sathish', lastName:'Mustermann', email: 'mustermann@test.com', company:'Test', country:'DE'},
+            {id: 2, firstName:'Muster', lastName:'Mustermann', email: 'mustermann@test.com', company:'test', country:'DE'},
+            {id:3, firstName:'Thomas', lastName:'Mustermann', email: 'mustermannt@tesrt.com', company:'test', country:'DE'}
+        ];
+        return persons;
+      }
     processVideoFile(responsePath: any): Observable<any> {
         console.log('response path in service ' + responsePath);
         const url = this.URL + 'process_video?path=' + responsePath + '&userId=' +

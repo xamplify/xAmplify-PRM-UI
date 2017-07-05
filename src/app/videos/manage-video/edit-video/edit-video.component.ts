@@ -544,25 +544,28 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         (<HTMLInputElement> document.getElementById('lowerValue')).disabled = event;
          this.disableStart = event;
          this.disableEnd = event;
-          if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === false){
+          if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === false) {
               this.upperTextValid = false;
               this.lowerTextValid = false;
+          } else if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === true) {
+              this.upperTextValid = true;
+              this.lowerTextValid = true;
           } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0) && event === false) {
               this.upperTextValid = false;
               this.lowerTextValid = false;
-         }  else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
+          }  else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
               this.upperTextValid = true;
               this.lowerTextValid = true;
-         }  else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false ) {
+          }  else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false ) {
               this.upperTextValid = false;
               this.lowerTextValid = true;
-         } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
+          } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
               this.lowerTextValid = false;
               this.upperTextValid = true;
-         } else {
+          } else {
               this.upperTextValid = true;
               this.lowerTextValid = true;
-         }
+          }
    }
     skipClose() {
          $('#overlay-modal').hide();
