@@ -7,6 +7,7 @@ import { VideoFileService} from '.././services/video-file.service';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { HomeComponent } from '../../core/home/home.component';
 import { Logger } from 'angular2-logger/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var swal , require, $: any;
@@ -15,7 +16,7 @@ declare var swal , require, $: any;
   selector: 'app-manage-video',
   templateUrl: './manage-video.component.html',
   styleUrls: ['./manage-video.component.css'],
-  providers: [ Pagination, HttpRequestLoader ]
+  providers: [ Pagination, HttpRequestLoader, HomeComponent ]
   })
 export class ManageVideoComponent implements OnInit , OnDestroy {
     deviceInfo = null;
@@ -71,7 +72,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
    public videoSort: any = this.sortVideos[0];
    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
     private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private logger: Logger, private pagination: Pagination, private router: Router) {
+        private pagerService: PagerService, private logger: Logger, private pagination: Pagination, private router: Router,
+        private homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -354,6 +356,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     }
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
+        this.homeComponent.getVideoTitles();
         if (videoFile != null) {
             this.pagination.pageIndex = 1;
             this.pagination.filterBy = 0;

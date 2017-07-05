@@ -128,11 +128,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public upperTextValid: boolean;
     public lowerTextValid: boolean;
     public defaultColors: boolean;
-    public defaultColorValue = false; // get value from server
     public oldControllColor: string;
     public oldPlayerColor: string;
-    public isValidTitle :boolean;
-    
+    public isValidTitle: boolean;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -729,13 +727,14 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.giffirst = this.saveVideoFile.gifFiles[0] + '?access_token=' + this.authenticationService.access_token;
         this.gifsecond = this.saveVideoFile.gifFiles[1] + '?access_token=' + this.authenticationService.access_token;
         this.gifthird = this.saveVideoFile.gifFiles[2] + '?access_token=' + this.authenticationService.access_token;
-        if (this.videoFileService.actionValue === 'Save' && this.saveVideoFile.playerColor === 'FFFFFF'
-         && this.saveVideoFile.controllerColor === 'FFFFFF') {
-            this.compPlayerColor = '#e6e5e5';
-            this.saveVideoFile.playerColor = this.compPlayerColor;
+        if (this.videoFileService.actionValue === 'Save') {  // need to change the code here
+           // this.compPlayerColor = '#e6e5e5';
+           // this.compControllerColor = '#000';
+          //  this.saveVideoFile.playerColor = this.compPlayerColor;
             this.oldPlayerColor = this.saveVideoFile.playerColor;
-            this.compControllerColor = '#000';
-            this.saveVideoFile.controllerColor = this.compControllerColor;
+            this.compPlayerColor = this.saveVideoFile.playerColor;
+            this.compControllerColor = this.saveVideoFile.controllerColor;
+          //   this.saveVideoFile.controllerColor = this.compControllerColor;
             this.oldControllColor = this.saveVideoFile.controllerColor;
         } else {
             this.compPlayerColor = this.saveVideoFile.playerColor;
@@ -785,6 +784,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             uploadedBy: this.saveVideoFile.uploadedBy,
             alias: this.saveVideoFile.alias,
             is360video : this.saveVideoFile.is360video,
+            defaultSetting : this.saveVideoFile.defaultSetting
         };
         try {
         this.buildForm();
@@ -895,7 +895,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
      this.transperancyControllBar(this.valueRange);
      if (this.saveVideoFile.enableVideoController === false) {
          this.defaultVideoControllers(); }
-     this.defaultPlayerSettings(this.defaultColorValue); //  true ///need to change the true value to dynamic value
+     this.defaultPlayerSettings(this.saveVideoFile.defaultSetting); //  true ///need to change the true value to dynamic value
     }
     /*********************************Save Video*******************************/
     buildForm(): void {
@@ -926,7 +926,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'controllerColor': [this.saveVideoFile.controllerColor],
             'transparency': [this.saveVideoFile.transparency],
             'action': [this.saveVideoFile.action],
-            'callACtion' :[this.saveVideoFile.callACtion],
+            'callACtion' : [this.saveVideoFile.callACtion],
             'name': [this.saveVideoFile.name],
             'skip': [this.saveVideoFile.skip],
             'upperText': [this.saveVideoFile.upperText],
@@ -934,6 +934,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'startOfVideo': [this.saveVideoFile.startOfVideo],
             'endOfVideo': [this.saveVideoFile.endOfVideo],
             'is360video': [this.saveVideoFile.is360video],
+            'defaultSetting':[this.saveVideoFile.defaultSetting]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
 

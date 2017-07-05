@@ -554,7 +554,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      } else {
                           self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
-                     self.xtremandLog.actionId = self.LogAction.playVideo;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
@@ -588,18 +587,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
                      $('.vjs-big-play-button').css('display', 'none');
                      if (isValid === 'EndOftheVideo') {
                       self.showOverlayModal();
-                     $('.video-js .vjs-control-bar').hide();
-                    } else if (isValid !== 'EndOftheVideo') {
+                      $('.video-js .vjs-control-bar').hide();
+                      } else if (isValid !== 'EndOftheVideo') {
                         $('#overlay-modal').hide(); // player.pause();
-                    } else { $('#overlay-modal').hide(); // player.pause();
-                     }
+                      } else { $('#overlay-modal').hide(); // player.pause();
+                      }
                       $('#repeatPlay').click(function(){
                         player.play();
                       });
                       $('#skipOverlay').click(function(){
                          $('#overlay-modal').hide();
                         // player.pause();
-                     //    $('.video-js .vjs-control-bar').hide();
+                        // $('.video-js .vjs-control-bar').hide();
                       });
                       $('#playorsubmit').click(function(){
                          $('#overlay-modal').hide();

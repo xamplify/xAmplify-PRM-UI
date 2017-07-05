@@ -10,14 +10,34 @@ import { VideoUtilService } from '../services/video-util.service';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
+import { XtremandLog } from '../models/xtremand-log';
 declare var $, videojs: any;
 import { Meta, MetaDefinition } from '@angular/platform-browser';
+import { Ng2DeviceService } from 'ng2-device-detector';
+import { UUID } from 'angular2-uuid';
+// logging info details
+enum LogAction {
+    playVideo = 1,
+    pauseVideo = 2,
+    contactButtonPressed= 3,
+    callButtonPressed = 4,
+    emailButtonPressed = 5,
+    chatButtonPressed = 6,
+    applePayButtonPressed = 7,
+    videoPlayer_slideSlider = 8,
+    videoPlayer_movieReachEnd = 9,
+    replyVideo = 10,
+    videoStopped = 11,
+    shareMobinar = 12,
+    email_Opened = 13,
+    email_GIF_clicked = 14,
+}
 
 @Component({
   selector: 'app-share-video',
   templateUrl: './share-video.component.html',
   styleUrls: ['../../../assets/css/video-css/video-js.custom.css'],
-  providers: [VideoUtilService]
+  providers: [VideoUtilService, XtremandLog]
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
 embedVideoFile: SaveVideoFile;
