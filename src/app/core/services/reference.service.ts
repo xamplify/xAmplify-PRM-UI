@@ -37,7 +37,7 @@ export class ReferenceService {
         .catch( this.handleError );
     }
     getVideoTitles():Observable<String[]> {
-        const url = this.URL + 'getVideoTitles?access_token=' + this.authenticationService.access_token + ' &userId=' +
+        const url = this.URL + 'getVideoTitles?access_token=' + this.authenticationService.access_token + '&userId=' +
         this.authenticationService.user.id;
         return this.http.get(url, "")
         .map( this.extractData )

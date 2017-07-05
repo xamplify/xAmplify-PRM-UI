@@ -131,6 +131,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public defaultColorValue = false; // get value from server
     public oldControllColor: string;
     public oldPlayerColor: string;
+    public isValidTitle :boolean;
+    
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -1025,6 +1027,15 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 }),
                 () => console.log(this.saveVideoFile);
     }
+    validTitle(videoTitle: string) {
+    	this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
+    }
+    
+    checkVideoTitleAvailability(arr, val) {
+    	console.log(arr.indexOf(val) > -1);
+    	return arr.indexOf(val) > -1 ;
+    }
+    
     saveCallToActionUserForm() {
      /*  $('#overlay-modal').hide();
         if(this.videoOverlaySubmit === 'PLAY'){

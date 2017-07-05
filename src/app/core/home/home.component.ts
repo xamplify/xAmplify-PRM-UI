@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit {
 	    } 
 		getVideoTitles() {
 			  this.referenceService.getVideoTitles()
-	            .subscribe((result: string[]) => {
-	                this.referenceService.videoTitles = result;
+	            .subscribe((result: any) => {
+	                this.referenceService.videoTitles = result.titles;
 	            });
 		}
         ngOnInit() {
