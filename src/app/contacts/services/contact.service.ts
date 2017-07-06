@@ -50,6 +50,13 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    loadContactListsNames(): Observable<ContactList[]> {
+        this.logger.info( "Service class loadContactsNames() completed" );
+        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     loadContactLists1( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadContact() completed" );

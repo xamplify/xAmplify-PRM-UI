@@ -264,15 +264,30 @@ export class ManageContactsComponent implements OnInit {
                      this.isvideoThere = true;
                      this.pagedItems = null ;
                  }
-                for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
+                /*for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
                   this.names.push(data.listOfUserLists[i].name.toLowerCase().trim());
-                }
+                }*/
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             error => {
                 this.logger.error( error )
             },
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            )
+    }
+    
+    loadContactListsNames() {
+        this.contactService.loadContactListsNames()
+            .subscribe(
+            ( data: any ) => {
+                this.logger.info( data );
+                this.contactLists = data.listOfUserLists;
+                  this.names.push(data.names);
+            },
+            error => {
+                this.logger.error( error )
+            },
+            () => this.logger.info( "MangeContactsComponent loadContactListsName() finished" )
             )
     }
     
@@ -659,7 +674,7 @@ export class ManageContactsComponent implements OnInit {
     
     validateContactName(contactName:string){
         let lowerCaseContactName = contactName.toLowerCase().trim();
-        var list = this.names;
+        var list = this.names[0];
         console.log(list);
         if($.inArray(lowerCaseContactName, list) > -1){
             this.isValidContactName = true;  
@@ -1016,6 +1031,7 @@ export class ManageContactsComponent implements OnInit {
     ngOnInit() {
         this.loadContactLists( this.pagination );
         this.contactsCount();
+        this.loadContactListsNames();
         try {
             //Metronic.init();
             // Layout.init();

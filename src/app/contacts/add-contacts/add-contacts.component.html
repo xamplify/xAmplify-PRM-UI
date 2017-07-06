@@ -326,7 +326,8 @@
 		</div>	
 		<div *ngIf="dublicateEmailId" id="dublicateEmail"
 			class="alert alert-danger alert-dismissable" style="width:50%">
-			<b>Duplicate EmailId Exist Please Remove..{{results}}</b>
+			 <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<b>Duplicate EmailId Exist Please Remove..{{duplicateEmailIds}}</b>
 		</div>					
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">

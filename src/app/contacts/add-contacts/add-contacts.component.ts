@@ -42,6 +42,7 @@ export class AddContactsComponent implements OnInit {
     names:string[]=[];
     isValidContactName:boolean;
     editedContactName:string = "";
+    duplicateEmailIds : string[]=[];
 
     isAdd:boolean = true;
     public gContactsValue: boolean;
@@ -121,7 +122,7 @@ export class AddContactsComponent implements OnInit {
 
     validateContactName(contactName:string){
         let lowerCaseContactName = contactName.toLowerCase().trim();
-        var list = this.names;
+        var list = this.names[0];
         console.log(list);
         if($.inArray(lowerCaseContactName, list) > -1){
             this.isValidContactName = true;  
@@ -325,25 +326,68 @@ export class AddContactsComponent implements OnInit {
         return ( name.trim().length > 0 );
     }
     
+    
+    compressArray(original) {
+        var compressed = [];
+        var copy = original.slice(0);
+        for (var i = 0; i < original.length; i++) {
+        var myCount = 0;
+        for (var w = 0; w < copy.length; w++) {   
+            if (original[i] == copy[w]) {      
+                // increase amount of times duplicate is found       
+                myCount++;       
+                // sets item to undefined    
+            delete copy[w];      
+            }     
+            }        if (myCount > 0) {     
+                var a :any = new Object();     
+            a.value = original[i];      
+            a.count = myCount;       
+            compressed.push(a);     
+            }   
+            }       
+        return compressed;  
+        };
+      // }
+        //}
+    
+    
     saveContactList( isValid: boolean ) {
+        this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
-        var array = [] = this.remove_duplicates(this.newUsers);
-        this.logger.log(array);
-        var emails=[];
-        for(var i=0;i<= this.newUsers.length;i++){
-            if(this.newUsers[i+1] == this.newUsers[0])
-                emails.push(this.newUsers[0].emailId);
+        var testArray = [];
+        for(var i=0;i<= this.newUsers.length-1;i++){
+                testArray.push(this.newUsers[i].emailId);
         }
         
-        var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
-        var res = [];
-        for (var i = 0; i < emails.length - 1; i++) {
-           if (sorted_arr[i + 1] == sorted_arr[i]) {
-               res.push(sorted_arr[i]);
+        var newArray = this.compressArray(testArray);
+        for(var w = 0; w < newArray.length; w++){
+            if(newArray[w].count>=2){
+                this.duplicateEmailIds.push( newArray[w].value); 
+            }
+            console.log(newArray[w].value);
+            console.log(newArray[w].count);
+         }
+        this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
+        //this.duplicateEmailIds = duplicateEmails;
+//        var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+//        var res = [];
+//        for (var i = 0; i < emails.length - 1; i++) {
+//           if (sorted_arr[i + 1] == sorted_arr[i]) {
+//               res.push(sorted_arr[i]);
+//           }
+//        }
+       // this.results = res;
+       // this.logger.log(res);
+       /* var duplicateEmails : string[]=[];
+        for (var i = 0; i <= this.newUsers.length-1; i++) {
+            for (var j = i + 1 ; j < this.newUsers[i].emailId.length; j++) { 
+             if (this.newUsers[i].emailId[i] == (this.newUsers[i].emailId[j])) {
+                 duplicateEmails.push(this.newUsers[i].emailId);
+              }
+             } 
            }
-        }
-        this.results = res;
-        this.logger.log(res);
+        this.duplicateEmailIds = duplicateEmails;*/
         var valueArr = this.newUsers.map(function(item){ return item.emailId });
         var isDuplicate = valueArr.some(function(item, idx){
            return valueArr.indexOf(item) != idx
@@ -368,13 +412,6 @@ export class AddContactsComponent implements OnInit {
         }
     }
     
-    remove_duplicates(arr:any) {
-        let obj = {};   for (let i = 0; i < arr.length; i++) { 
-            obj[arr[i]] = true;   }   arr = [];   for (let key in obj) { 
-                arr.push(key);  
-                }   
-            return arr;
-                }
     saveValidEmails(){
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
             this.contactService.saveContactList( this.model.contactListName, this.newUsers )
@@ -395,15 +432,31 @@ export class AddContactsComponent implements OnInit {
 
     saveClipBoardContactList( isclick: boolean ) {
         this.clipboardShowPreview();
-        this.logger.info( "addclipboardTesting" );
-        var emails=[];
+        this.duplicateEmailIds = [];
+        this.dublicateEmailId = false;
+        var testArray = [];
+        for(var i=0;i<= this.clipboardUsers.length-1;i++){
+                testArray.push(this.clipboardUsers[i].emailId);
+        }
+        
+        var newArray = this.compressArray(testArray);
+        for(var w = 0; w < newArray.length; w++){
+            if(newArray[w].count>=2){
+                this.duplicateEmailIds.push( newArray[w].value); 
+            }
+            console.log(newArray[w].value);
+            console.log(newArray[w].count);
+         }
+        this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
+       // this.logger.info( "addclipboardTesting" );
+        //var emails=[];
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         if ( this.model.contactListName.trim().length == 0 ) {
             $( "#clipBoardValidationMessage > h4" ).empty();
             $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>Please Enter the Contact List Name</h4>" );
         } else {
             
-            var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
+ /*           var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
             var res = [];
                 for (var i = 0; i < emails.length - 1; i++) {
                    if (sorted_arr[i + 1] == sorted_arr[i]) {
@@ -411,7 +464,7 @@ export class AddContactsComponent implements OnInit {
                    }
                 }
                 this.results = res;
-                this.logger.log(res);
+                this.logger.log(res);*/
                 var valueArr = this.clipboardUsers.map(function(item){ return item.emailId });
                 var isDuplicate = valueArr.some(function(item, idx){
                    return valueArr.indexOf(item) != idx
@@ -1316,21 +1369,18 @@ export class AddContactsComponent implements OnInit {
             );
     }*/
 
-    loadContactLists( pagination: Pagination ) {
-        this.pagination.maxResults = 20000;
-        this.contactService.loadContactLists( pagination )
+    loadContactListsNames() {
+        this.contactService.loadContactListsNames()
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
-                for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                  this.names.push(data.listOfUserLists[i].name.toLowerCase().trim());
-                }
+                  this.names.push(data.names);
             },
             error => {
                 this.logger.error( error )
             },
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            () => this.logger.info( "MangeContactsComponent loadContactListsName() finished" )
             )
     }
 
@@ -1339,7 +1389,7 @@ export class AddContactsComponent implements OnInit {
         this.hideModal();
         //this.salesforceContactImage();
         this.gContactsValue = true;
-        this.loadContactLists( this.pagination );
+        this.loadContactListsNames();
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
