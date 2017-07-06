@@ -12,6 +12,8 @@ import { UtilService } from '../../core/services/util.service';
 
 import { SocialStatusProvider } from '../../social/models/social-status-provider';
 import { ContactService } from '../../contacts/services/contact.service';
+import { VideoFileService} from '../../videos/services/video-file.service';
+import { Pagination } from '../../core/models/pagination';
 
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
 
@@ -19,7 +21,7 @@ declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: 
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService]
+    providers: [DashboardService,Pagination]
 })
 export class DashboardComponent implements OnInit {
 
@@ -28,14 +30,17 @@ export class DashboardComponent implements OnInit {
     genderDemographicsMale: number;
     genderDemographicsFemale: number;
     totalContacts : number;
+    totalUploadedvideos : number;
 
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
-    constructor(private router: Router, private _dashboardService: DashboardService, private contactService: ContactService,private twitterService: TwitterService,
+    constructor(private router: Router, private _dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,private videoFileService: VideoFileService,private twitterService: TwitterService,
         private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
         private utilService: UtilService) {
+            this.totalUploadedvideos = 0;
+            this.totalContacts = 0;
     }
 
     dashboardStats() {
@@ -239,9 +244,38 @@ export class DashboardComponent implements OnInit {
             () => console.log( "LoadContactsCount Finished" )
             );
     }
+    
+    /*uploadedVideosCount() {
+        this.videoFileService.loadTotalUploadedVideos()
+            .subscribe(
+            data => {
+                this.totalUploadedvideos = data;
+            },
+            error => console.log( error ),
+            () => console.log( "LoadContactsCount Finished" )
+            );
+    }*/
+    
+    uploadedVideosCount(pagination: Pagination) {
+        try {
+           this.videoFileService.loadVideoFiles(pagination)
+             .subscribe((result: any) => {
+                 this.totalUploadedvideos = result.totalRecords;
+             },
+             (error: string) => {
+               this.logger.error( ' Loading Videos():' + error);
+             },
+             () => console.log('load videos completed:' ),
+             );
+         } catch (error) {
+             this.logger.error('erro in load videos :' + error);
+         }
+     }
 
     ngOnInit() {
         try {
+            this.uploadedVideosCount(this.pagination);
+            this.totalContactsCount();
             const userId = this.authenticationService.user.id;
             Metronic.init();
             Layout.init();
@@ -255,7 +289,6 @@ export class DashboardComponent implements OnInit {
             Index.initChat();
             // Index.initMiniCharts();
             Tasks.initDashboardWidget();
-            this.totalContactsCount();
 
             this.dashboardStats();
             this.viewsSparklineData();
