@@ -345,7 +345,6 @@ export class EditContactsComponent implements OnInit {
                      }else{
                          this.dublicateEmailId = true;
                      }     
-              
          }
     
     saveValidEmails(){
