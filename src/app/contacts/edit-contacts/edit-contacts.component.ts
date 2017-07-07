@@ -94,6 +94,7 @@ export class EditContactsComponent implements OnInit {
 
     contactUsersId: number;
     contactIds = [];
+    duplicateEmailIds : string[]=[];
 
     public searchKey: string;
     sortingName: string = null;
@@ -292,27 +293,47 @@ export class EditContactsComponent implements OnInit {
           this.uploader.queue.length = 0;
       }
     }
+    
+    compressArray(original) {
+        var compressed = [];
+        var copy = original.slice(0);
+        for (var i = 0; i < original.length; i++) {
+        var myCount = 0;
+        for (var w = 0; w < copy.length; w++) {   
+            if (original[i] == copy[w]) {      
+                // increase amount of times duplicate is found       
+                myCount++;       
+                // sets item to undefined    
+            delete copy[w];      
+            }     
+            }        if (myCount > 0) {     
+                var a :any = new Object();     
+            a.value = original[i];      
+            a.count = myCount;       
+            compressed.push(a);     
+            }   
+            }       
+        return compressed;  
+        };
 
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
-        if ( this.users[0].emailId != undefined && this.validateEmailAddress(this.users[0].emailId) ) {
+            this.duplicateEmailIds = [];
             this.dublicateEmailId = false;
-           // var array = [] = this.remove_duplicates(this.newUsers);
-            //this.logger.log(array);
-            var emails=[];
-            /*for(var i=0;i<= this.newUsers.length;i++){
-                if(this.newUsers[i+1] == this.newUsers[0])
-                    emails.push(this.newUsers[0].emailId);
-            }*/
-            
-            var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
-            var res = [];
-            for (var i = 0; i < emails.length - 1; i++) {
-               if (sorted_arr[i + 1] == sorted_arr[i]) {
-                   res.push(sorted_arr[i]);
-               }
+            var testArray = [];
+            for(var i=0;i<= this.users[0].emailId.length-1;i++){
+                    testArray.push(this.users[0].emailId);
             }
-            this.results = res;
-            this.logger.log(res);
+            
+            var newArray = this.compressArray(testArray);
+            for(var w = 0; w < newArray.length; w++){
+                if(newArray[w].count>=2){
+                    this.duplicateEmailIds.push( newArray[w].value); 
+                }
+                console.log(newArray[w].value);
+                console.log(newArray[w].count);
+             }
+            this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
+            
             var valueArr = this.users.map(function(item){ return item.emailId });
             var isDuplicate = valueArr.some(function(item, idx){
                return valueArr.indexOf(item) != idx
@@ -324,7 +345,7 @@ export class EditContactsComponent implements OnInit {
                      }else{
                          this.dublicateEmailId = true;
                      }     
-               }
+              
          }
     
     saveValidEmails(){
@@ -648,16 +669,22 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateContactListFromClipBoard( contactListId: number, isValid: boolean, isclick: boolean ) {
-        var emails=[];
-        var sorted_arr = emails.slice().sort(); // You can define the comparing function here.
-        var res = [];
-            for (var i = 0; i < emails.length - 1; i++) {
-               if (sorted_arr[i + 1] == sorted_arr[i]) {
-                   res.push(sorted_arr[i]);
-               }
+        this.duplicateEmailIds = [];
+        this.dublicateEmailId = false;
+        var testArray = [];
+        for(var i=0;i<= this.clipboardUsers.length-1;i++){
+                testArray.push(this.clipboardUsers[i].emailId);
+        }
+        
+        var newArray = this.compressArray(testArray);
+        for(var w = 0; w < newArray.length; w++){
+            if(newArray[w].count>=2){
+                this.duplicateEmailIds.push( newArray[w].value); 
             }
-            this.results = res;
-            this.logger.log(res);
+            console.log(newArray[w].value);
+            console.log(newArray[w].count);
+         }
+        this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
             var valueArr = this.clipboardUsers.map(function(item){ return item.emailId });
             var isDuplicate = valueArr.some(function(item, idx){
                return valueArr.indexOf(item) != idx
