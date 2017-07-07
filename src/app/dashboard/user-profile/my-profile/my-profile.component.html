@@ -1,3 +1,9 @@
+		  <style type="text/css">
+		    .portLet{
+				    padding: 5px 5px 172px 10px;  /*92px */
+			}
+			</style>
+
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -167,7 +173,7 @@
 						<div class="profile-content">
 							<div class="row">
 								<div class="col-md-12">
-									<div class="portlet light">
+									<div class="portlet light" [class.portLet] = "PlayerSettingsClicked">
 										<div class="portlet-title tabbable-line">
 											<div class="caption caption-md">
 												<i class="icon-globe theme-font hide"></i>
@@ -175,16 +181,19 @@
 											</div>
 											<ul class="nav nav-tabs">
 												<li class="active">
-													<a href="#tab_1_1" data-toggle="tab">Personal Info</a>
+													<a href="#tab_1_1" data-toggle="tab" (click)="cssSettings(false)">Personal Info</a>
 												</li>
 												<li>
-													<a href="#tab_1_2" data-toggle="tab">Change Avatar</a>
+													<a href="#tab_1_2" data-toggle="tab" (click)="cssSettings(false)">Change Avatar</a>
 												</li>
 												<li>
-													<a href="#tab_1_3" data-toggle="tab">Change Password</a>
+													<a href="#tab_1_3" data-toggle="tab" (click)="cssSettings(false)">Change Password</a>
 												</li>
 												<li>
-													<a href="#tab_1_4" data-toggle="tab">Privacy Settings</a>
+													<a href="#tab_1_4" data-toggle="tab" (click)="cssSettings(false)">Privacy Settings</a>
+												</li>
+												<li>
+													<a href="#tab_1_5" data-toggle="tab" (click)="cssSettings(true)">Default Player Settings</a>
 												</li>
 											</ul>
 										</div>
@@ -387,6 +396,68 @@
 													</form>
 												</div>
 												<!-- END PRIVACY SETTINGS TAB -->
+												<!--video default player settings-->
+													<div class="tab-pane" id="tab_1_5">
+													
+									                 <form role="form" [formGroup]="defaultPlayerForm" (ngSubmit)="UpdatePlayerSettings()">
+													<div class="form-group">
+													  <label class="col-md-3 control-label" style="margin-top:-10px">Default Player Settings:</label>
+														<div class="col-md-9" style="margin-top: -11px;">
+															<ui-switch color="lightgreen" formControlName="defaultSettings"></ui-switch>
+														</div>
+												 	</div>
+														<div class="form-group">
+														<label class="col-md-3 control-label">Player Color:</label>
+														<div class="col-md-9" style="margin-top: 3px;">
+															<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
+																formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-3 control-label" style="margin-top: 11px;">Enable Video Controller:</label>
+														<div class="col-md-9" style="margin-top: 8px;">
+															<ui-switch color="lightgreen" formControlName="enableVideoController"></ui-switch>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-3 control-label" style="margin-top: -1px">Controller Color:</label>
+														<div class="col-md-9" style="margin-top: 5px;">
+															<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+																formControlName="controllerColor"
+																(colorPickerChange)="changeControllerColor($event)" [value]="compControllerColor" />
+														</div>
+													</div>
+													<div class="form-group">
+														<div>
+														<label class="col-md-3 control-label" style="margin-top: 2px;margin-right: 15px;">Transparency:</label>
+														<label style="margin-top: 9px;">
+														<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 135%;"  
+														(input)="transperancyControllBar(Transvalue.value)" #Transvalue> 
+														<p style="position: relative; right: -176px;top: -20px;">{{valueRange}}</p>
+														</label>
+														<!--<label style="position: relative;right: -242px;top: -18px;">{{valueRange}}</label>-->
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-3 control-label" style="margin-top: -42px;">Allow Fullscreen:</label>
+														<div class="col-md-3" style="position: absolute;top: 245px;right: 424px;">
+															<ui-switch color="lightblue" formControlName="allowFullscreen" ></ui-switch>
+														</div>
+												   	 </div>
+													 <!--<div class="form-group">
+														<label class="col-md-3 control-label">Call To Action:</label>
+														<div class="col-md-3">
+																 <ui-switch   color="lightgreen" formControlName="callACtion" > </ui-switch>
+														</div>
+													 </div>-->
+													  <div style="position: absolute;right: 636px;top: 339px;">
+														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
+														<input type="reset"  class="btn default" value="Cancel">
+													  </div>
+													</form>
+												</div>
+												<!--video player settings-->
+												
 											</div>
 										</div>
 									</div>

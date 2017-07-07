@@ -18,7 +18,8 @@ declare var $, videojs, swal: any;
 @Component({
    selector: 'app-edit-video',
    templateUrl: './edit-video.component.html',
-   styleUrls : ['./edit-video.component.css', './foundation-themes.scss', '../../../../assets/css/video-css/video-js.custom.css' ,
+   styleUrls : ['./edit-video.component.css', './foundation-themes.scss', './call-action.css',
+    '../../../../assets/css/video-css/video-js.custom.css' ,
    '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
    '../../../../assets/css/about-us.css', '../../../../assets/css/todo.css',
    '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css'],
@@ -113,7 +114,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public startCalltoAction: boolean;   // not required for start of the video
     public endCalltoAction: boolean;   // not required for end of the video
     public is360Value: boolean;
-    public maxLengthvalue = 120;
+    public maxLengthvalue = 75;
     public characterleft = 0;
     public publish: any;
     public formErrors: any;
@@ -130,7 +131,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public defaultColors: boolean;
     public oldControllColor: string;
     public oldPlayerColor: string;
-    public isValidTitle: boolean;
+    public isValidTitle = false;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -458,7 +459,13 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     // video controller methods
     transperancyControllBar(value: any) {
-        const rgba = this.videoUtilService.convertHexToRgba(this.saveVideoFile.controllerColor, value);
+        let color: any;
+        if (this.saveVideoFile.controllerColor === '#fff') {
+             color = '#fbfbfb';
+        } else {
+             color = this.saveVideoFile.controllerColor;
+        }
+        const rgba = this.videoUtilService.convertHexToRgba(color, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
         console.log(this.valueRange);
@@ -478,10 +485,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.defaultColors = true;
             this.compPlayerColor  = '#e6e5e5';
             this.compControllerColor = '#000';
+            this.valueRange = 100;
             this.changePlayerColor( this.compPlayerColor);
             this.changeControllerColor(this.compControllerColor);
         } else {
             this.defaultColors = false;
+            this.valueRange = this.saveVideoFile.transparency;
             this.changeControllerColor(this.oldControllColor);
             this.changePlayerColor(this.oldPlayerColor);
             this.compPlayerColor  = this.oldPlayerColor;
@@ -497,9 +506,17 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.transperancyControllBar(this.valueRange);
     }
     changeControllerColor(event: any) {
-        console.log('controller color value changed' + event);
-        this.saveVideoFile.controllerColor = event;
-        $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
+        if (event === '#fff') {
+          alert('entered #fff color value');
+           const eventValue = '#fbfbfb';
+            this.saveVideoFile.controllerColor = '#fff';
+            console.log('controller color value changed' + event);
+            $('.video-js .vjs-control-bar').css('background-color',  eventValue);
+        } else {
+            console.log('controller color value changed' + event);
+            this.saveVideoFile.controllerColor = event;
+            $('.video-js .vjs-control-bar').css('background-color',  this.saveVideoFile.controllerColor);
+         }
         this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {
@@ -698,7 +715,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         $('.video-js').css('color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
+        if (this.saveVideoFile.controllerColor === '#fff') {
+            const event = '#fbfbfb';
+           $('.video-js .vjs-control-bar').css('background-color', event);
+        } else { $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor); }
         if (this.saveVideoFile.allowFullscreen === false) {
            $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
@@ -743,7 +763,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.oldControllColor = this.saveVideoFile.controllerColor;
         }
 
-        this.saveVideoFile = {
+    /*    this.saveVideoFile = {
             id: this.saveVideoFile.id,
             title: this.saveVideoFile.title,
             viewBy: this.saveVideoFile.viewBy,
@@ -784,8 +804,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             uploadedBy: this.saveVideoFile.uploadedBy,
             alias: this.saveVideoFile.alias,
             is360video : this.saveVideoFile.is360video,
-            defaultSetting : this.saveVideoFile.defaultSetting
-        };
+        };*/
         try {
         this.buildForm();
         this.defaultVideoControllValues();
@@ -1029,14 +1048,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 () => console.log(this.saveVideoFile);
     }
     validTitle(videoTitle: string) {
-    	this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
+         this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
     }
-    
     checkVideoTitleAvailability(arr, val) {
     	console.log(arr.indexOf(val) > -1);
     	return arr.indexOf(val) > -1 ;
     }
-    
     saveCallToActionUserForm() {
      /*  $('#overlay-modal').hide();
         if(this.videoOverlaySubmit === 'PLAY'){
@@ -1081,5 +1098,4 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
           $('.h-video').remove();
           $('.p-video').remove();
       }
-
    }

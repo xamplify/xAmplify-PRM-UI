@@ -27,7 +27,6 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
     videos: Array<SaveVideoFile>;
     cancel = false;
     editDetails: SaveVideoFile;
-    ownValue = true;
     selectedVideo: SaveVideoFile;
     dropdownTogglevalue = false;
     categories: Category[];

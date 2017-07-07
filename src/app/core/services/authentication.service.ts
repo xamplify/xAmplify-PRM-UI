@@ -24,7 +24,7 @@ export class AuthenticationService {
     map: any;
     constructor( private http: Http, private router: Router ) {
         this.REST_URL = "https://aravindu.com/xtremand-rest/";
-        // this.REST_URL = "http://localhost:8080/xtremand-rest/";
+       // this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = "https://aravindu.com/vod/";
     }
 

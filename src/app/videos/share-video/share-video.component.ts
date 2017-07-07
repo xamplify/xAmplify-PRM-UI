@@ -67,9 +67,15 @@ public upperTextValue: string;
 public lowerTextValue: string;
 public description: string;
 public shareUrl: string;
+// logging info details
+public sessionId: string;
+public deviceInfo: any;
+LogAction: typeof LogAction = LogAction;
+public persons;
+public replyVideo: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta, private http: Http,
-            private renderer: Renderer) {
+            private _logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
+             private http: Http, private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.embedUrl = document.location.href;
@@ -86,6 +92,7 @@ public shareUrl: string;
          (result: SaveVideoFile) => {
           this.embedVideoFile = result;
           console.log(result);
+          this.xtremandLogDefaultActions();
           this.posterImagePath = this.embedVideoFile.imagePath;
           this.is360Value  =  this.embedVideoFile.is360video;
           this.imgURL =  this.embedVideoFile.gifImagePath;
@@ -152,6 +159,9 @@ public shareUrl: string;
   ngOnInit() {
      $('#overlay-modal').hide();
      console.log('Share video component ngOnInit called');
+     this.createSessionId();
+     this.deviceDectorInfo();
+     this.loacationDetails();
      this.routerType = this.route.snapshot.params['type'];
      this.routerAlias = this.route.snapshot.params['alias'];
    /*  this.sub = this.route.params.subscribe(
@@ -333,6 +343,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
               const self = this;
              this.videoJSplayer = videojs('videoId', {}, function() {
                 const player = this;
+                let startDuration;
+                 self.replyVideo = false;
                 const document: any = window.document;
                 const isValid = self.overLayValue;
                this.ready(function() {
@@ -354,14 +366,66 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                        player.play();
                     });
                   });
+               this.on('play', function() {
+                 const seekigTime  = self.trimCurrentTime(player.currentTime());
+                 console.log('ply button pressed ');
+                       $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
+                       if (self.replyVideo === true) {
+                          self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
+                     }
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     console.log(self.xtremandLog.actionId);
+                     self.videoLogAction(self.xtremandLog);
+               });
+                 this.on('pause', function() {
+                  if (self.xtremandLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
+                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                     self.xtremandLog.actionId = self.LogAction.pauseVideo;
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.videoLogAction(self.xtremandLog);
+                     }
+                  });
+                this.on('seeking', function() {
+                      const seekigTime  = self.trimCurrentTime(player.currentTime());
+                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                     self.xtremandLog.startTime = new Date();
+                     self.xtremandLog.endTime = new Date();
+                     self.xtremandLog.startDuration = startDuration;
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.videoLogAction(self.xtremandLog);
+                });
+                this.on('timeupdate', function() {
+                   startDuration = self.trimCurrentTime(player.currentTime());
+                });
              this.on('ended', function() {
+                   const time = player.currentTime();
+                    console.log(time);
+                    self.replyVideo = true;
+                    console.log('video ended attempts' + self.replyVideo);
+                    self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
+                    self.xtremandLog.startTime = new Date();
+                    self.xtremandLog.endTime = new Date();
+                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.videoLogAction(self.xtremandLog);
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
                      $('#videoId').append( $('#overlay-modal').show());
                  } else if (isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.pause();
-                     } else { $('#overlay-modal').hide(); player.pause(); }
+                      $('#overlay-modal').hide(); //  player.pause();
+                     } else { $('#overlay-modal').hide(); // player.pause(); 
+                      }
                     $('#repeatPlay').click(function(){
                        player.play();
                     });
@@ -408,6 +472,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      } }  }); });
   //    this.videoPlayListSourceM3U8();
    }
+    trimCurrentTime(currentTime) {
+        return Math.round(currentTime * 100) / 100;
+    }
     defaultVideoControllers() {
         if (this.embedVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();
       } else { $('.video-js .vjs-control-bar').show(); }
@@ -440,6 +507,57 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( errMsg );
      }
+     // the below code is used for logging //////////////////////////////
+
+ deviceDectorInfo() {
+      console.log('device info in component');
+      this.deviceInfo = this.deviceService.getDeviceInfo();
+      console.log(this.deviceInfo);
+      this.loacationDetails();
+ }
+ xtremandLogDefaultActions() {
+        // router info
+        this.xtremandLog.userAlias = null;
+        this.xtremandLog.videoAlias = this.embedVideoFile.alias;
+        this.xtremandLog.campaignAlias = null;
+        // device detector
+        this.xtremandLog.deviceType = this.deviceInfo.device;
+        this.xtremandLog.os = this.deviceInfo.os;
+        // location detector
+         console.log(this.xtremandLog);
+        this.xtremandLog.sessionId = this.sessionId;
+      }
+    defaultLocationJsonValues(data: any) {
+        this.xtremandLog.city = data.city;
+        this.xtremandLog.country = data.country;
+        this.xtremandLog.isp = data.isp;
+        this.xtremandLog.ipAddress = data.query;
+        this.xtremandLog.state = data.regionName;
+        this.xtremandLog.zip = data.zip;
+        this.xtremandLog.latitude = data.lat;
+        this.xtremandLog.longitude = data.lon;
+        this.xtremandLog.countryCode = data.countryCode;
+    }
+ loacationDetails() {
+    this.videoFileService.getJSONLocation()
+    .subscribe(
+     (data:any) => {
+       this.defaultLocationJsonValues(data);
+        console.log(data);
+        },
+     error => console.log(error));
+  }
+   createSessionId() {
+    this.sessionId = UUID.UUID();
+    console.log(this.sessionId);
+  }
+   videoLogAction(xtremandLog: XtremandLog) {
+       this.videoFileService.logVideoActions(xtremandLog).subscribe(
+       (result: any) => {
+         console.log('successfully logged the actions');
+         console.log(this.xtremandLog.actionId);
+     });
+    }
   ngOnDestroy() {
      console.log('Deinit - Destroyed Component');
      if (this.videoJSplayer) {
