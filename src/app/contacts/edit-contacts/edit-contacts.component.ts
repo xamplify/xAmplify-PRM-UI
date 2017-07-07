@@ -1,4 +1,4 @@
-import { Component, OnInit, Input ,Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
@@ -17,10 +17,8 @@ declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
 declare var Portfolio: any;
-
 declare var $: any;
 declare var swal: any;
-
 
 @Component( {
     selector: 'app-edit-contacts',
@@ -32,27 +30,22 @@ declare var swal: any;
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
     @Input() totalRecords: number;
-
     @Input() contactListId: number;
     @Input() selectedContactListId: number;
-
     @Input( 'value' ) value: number;
-    editContacts : User;
+    editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
-    
-    public results = [];
-    dublicateEmailId : boolean = false;
+
+    dublicateEmailId: boolean = false;
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
     public saveCsvFileUsers: boolean;
     public clipboardTextareaText: string;
     pagedItems: any[];
-    isAvailable = false;
-    fileTypeError:boolean;
-    Campaign : string;
-    userSelectedIds : any[];
-    selectedDropDown : string;
+    fileTypeError: boolean;
+    Campaign: string;
+    selectedDropDown: string;
     deleteErrorMessage: boolean;
     public clipboardUsers: Array<User>;
     public csvFileUsers: Array<User>;
@@ -60,9 +53,9 @@ export class EditContactsComponent implements OnInit {
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
     public successMessage: boolean;
-    noContactsFound : boolean;
-    noContactsFound1 : boolean;
-    hidingListUsersTable : boolean;
+    noContactsFound: boolean;
+    noContactsFound1: boolean;
+    hidingListUsersTable: boolean;
 
     public users: Array<User>;
     activeUsersCount: number;
@@ -91,16 +84,12 @@ export class EditContactsComponent implements OnInit {
     emptyInvalidContactsUsers: boolean;
     emptyUnsubscribedContactsUsers: boolean;
     emptyNonActiveContactsUsers: boolean;
-
     contactUsersId: number;
     contactIds = [];
-    duplicateEmailIds : string[]=[];
-
+    duplicateEmailIds: string[] = [];
     public searchKey: string;
-    sortingName: string = null;
     sortcolumn: string = null;
     sortingOrder: string = null;
-    isvideoThere: boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
 
@@ -115,9 +104,8 @@ export class EditContactsComponent implements OnInit {
     ];
     public contactsSort: any = this.sortContacts[0];
 
-
     constructor( private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private logger: Logger,private router: Router,
+        private authenticationService: AuthenticationService, private logger: Logger, private router: Router,
         private pagerService: PagerService, private pagination: Pagination ) {
         this.users = new Array<User>();
         this.clipboardUsers = new Array<User>();
@@ -125,31 +113,23 @@ export class EditContactsComponent implements OnInit {
         this.notifyParent = new EventEmitter<User>();
     }
 
-    /*searchDisableValue() {
-        console.log( this.searchKey );
-        if ( this.searchKey !== null || this.searchKey.length !== 0 ) {
-            this.searchDisable = false;
-        }
-        if ( this.searchKey.length === 0 || this.searchKey === '' ) {
-            this.searchDisable = true;
-        }
-    }*/
     searchContactsTitelName() {
-            console.log( this.searchKey );
-            this.pagination.searchKey = this.searchKey;
-            this.pagination.pageIndex = 1;
-            if ( this.currentContactType == "all_contacts"|| (this.currentContactType == "all_contacts" && this.searchKey == "") ) {
-                this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-            } else if ( this.currentContactType == "active_contacts" || (this.currentContactType == "active_contacts" && this.searchKey == "") ) {
-                this.active_Contacts( this.pagination );
-            } else if ( this.currentContactType == "invalid_contacts" || (this.currentContactType == "invalid_contacts" && this.searchKey == "") ) {
-                this.invalid_Contacts( this.pagination );
-            } else if ( this.currentContactType == "unSubscribed_contacts" || (this.currentContactType == "unSubscribed_contacts" && this.searchKey == "") ) {
-                this.unSubscribed_Contacts( this.pagination );
-            } else if ( this.currentContactType == "nonActive_contacts" || (this.currentContactType == "nonActive_contacts" && this.searchKey == "") ) {
-                this.nonActive_Contacts( this.pagination );
+        console.log( this.searchKey );
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+        if ( this.currentContactType == "all_contacts" || ( this.currentContactType == "all_contacts" && this.searchKey == "" ) ) {
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+        } else if ( this.currentContactType == "active_contacts" || ( this.currentContactType == "active_contacts" && this.searchKey == "" ) ) {
+            this.active_Contacts( this.pagination );
+        } else if ( this.currentContactType == "invalid_contacts" || ( this.currentContactType == "invalid_contacts" && this.searchKey == "" ) ) {
+            this.invalid_Contacts( this.pagination );
+        } else if ( this.currentContactType == "unSubscribed_contacts" || ( this.currentContactType == "unSubscribed_contacts" && this.searchKey == "" ) ) {
+            this.unSubscribed_Contacts( this.pagination );
+        } else if ( this.currentContactType == "nonActive_contacts" || ( this.currentContactType == "nonActive_contacts" && this.searchKey == "" ) ) {
+            this.nonActive_Contacts( this.pagination );
         }
     }
+    
     selectedSortByValue( event: any ) {
         this.contactsSort = event;
         const sortedValue = this.contactsSort.value;
@@ -183,11 +163,11 @@ export class EditContactsComponent implements OnInit {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all") {
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
             this.active_Contacts( this.pagination );
-        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "all") {
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
             this.invalid_Contacts( this.pagination );
@@ -195,31 +175,29 @@ export class EditContactsComponent implements OnInit {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
             this.unSubscribed_Contacts( this.pagination );
-        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "all") {
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
             this.nonActive_Contacts( this.pagination );
         }
-        
-        else if( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
+
+        else if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-            //this.all_Contacts( this.pagination );
-        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page") {
+        } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
             this.active_Contacts( this.pagination );
-        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page") {
+        } else if ( this.currentContactType == "invalid_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
             this.invalid_Contacts( this.pagination );
         } else if ( this.currentContactType == "unSubscribed_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
             this.unSubscribed_Contacts( this.pagination );
-        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page") {
+        } else if ( this.currentContactType == "nonActive_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
             this.nonActive_Contacts( this.pagination );
         }
     }
-    
 
     checked( event: boolean ) {
         this.logger.info( "check value" + event )
@@ -231,123 +209,108 @@ export class EditContactsComponent implements OnInit {
         })
     }
 
-
-
     fileChange( input: any ) {
         this.fileTypeError = false;
         this.readFiles( input.files );
-        /*this.saveCsvFileUsers = true;
-        this.saveAddcontactUsers = false;
-        this.saveCopyfromClipboardUsers = false;
-        this.readFiles( input.files );
-        this.logger.info( "coontacts preview" );
-        $( "#sample_editable_1" ).hide();
-        this.filePrevew = true;
-        $( "button#add_contact" ).prop( 'disabled', true );
-        $( "button#copyFrom_clipboard" ).prop( 'disabled', true );*/
     }
 
     readFile( file: any, reader: any, callback: any ) {
         reader.onload = () => {
             callback( reader.result );
         }
-
         reader.readAsText( file );
     }
 
     readFiles( files: any, index = 0 ) {
-       if(files[0].type == "application/vnd.ms-excel"){
-           this.fileTypeError = false; 
-           this.saveCsvFileUsers = true;
-           this.saveAddcontactUsers = false;
-           this.saveCopyfromClipboardUsers = false;
-           this.logger.info( "coontacts preview" );
-           $( "#sample_editable_1" ).hide();
-           this.filePrevew = true;
-           $( "button#add_contact" ).prop( 'disabled', true );
-           $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
-           $( "button#upload_csv" ).prop( 'disabled', true );
-           $( "input[type='file']" ).attr( "disabled", true );
-           let reader = new FileReader();
-        reader.readAsText( files[0] );
-        this.logger.info( files[0] );
-        var self = this;
-        reader.onload = function( e: any ) {
-            var contents = e.target.result;
-            var allTextLines = contents.split( /\r\n|\n/ );
-            for ( var i = 1; i < allTextLines.length; i++ ) {
-                var data = allTextLines[i].split( ',' );
-                if ( data[0].trim().length > 0 ) {
-                    let user = new User();
-                    user.emailId = data[0];
-                    user.firstName = data[1];
-                    user.lastName = data[2];
-                    self.csvFileUsers.push( user );
-                    self.contacts.push( user );
+        if ( files[0].type == "application/vnd.ms-excel" ) {
+            this.fileTypeError = false;
+            this.saveCsvFileUsers = true;
+            this.saveAddcontactUsers = false;
+            this.saveCopyfromClipboardUsers = false;
+            this.logger.info( "coontacts preview" );
+            $( "#sample_editable_1" ).hide();
+            this.filePrevew = true;
+            $( "button#add_contact" ).prop( 'disabled', true );
+            $( "button#copyFrom_clipboard" ).prop( 'disabled', true );
+            $( "button#upload_csv" ).prop( 'disabled', true );
+            $( "input[type='file']" ).attr( "disabled", true );
+            let reader = new FileReader();
+            reader.readAsText( files[0] );
+            this.logger.info( files[0] );
+            var self = this;
+            reader.onload = function( e: any ) {
+                var contents = e.target.result;
+                var allTextLines = contents.split( /\r\n|\n/ );
+                for ( var i = 1; i < allTextLines.length; i++ ) {
+                    var data = allTextLines[i].split( ',' );
+                    if ( data[0].trim().length > 0 ) {
+                        let user = new User();
+                        user.emailId = data[0];
+                        user.firstName = data[1];
+                        user.lastName = data[2];
+                        self.csvFileUsers.push( user );
+                        self.contacts.push( user );
+                    }
                 }
+                console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.csvFileUsers ) );
             }
-            console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.csvFileUsers ) );
+        } else {
+            this.fileTypeError = true;
+            this.uploader.queue.length = 0;
         }
-      }else{
-          this.fileTypeError = true; 
-          this.uploader.queue.length = 0;
-      }
     }
-    
-    compressArray(original) {
+
+    compressArray( original ) {
         var compressed = [];
-        var copy = original.slice(0);
-        for (var i = 0; i < original.length; i++) {
-        var myCount = 0;
-        for (var w = 0; w < copy.length; w++) {   
-            if (original[i] == copy[w]) {      
-                // increase amount of times duplicate is found       
-                myCount++;       
-                // sets item to undefined    
-            delete copy[w];      
-            }     
-            }        if (myCount > 0) {     
-                var a :any = new Object();     
-            a.value = original[i];      
-            a.count = myCount;       
-            compressed.push(a);     
-            }   
-            }       
-        return compressed;  
-        };
+        var copy = original.slice( 0 );
+        for ( var i = 0; i < original.length; i++ ) {
+            var myCount = 0;
+            for ( var w = 0; w < copy.length; w++ ) {
+                if ( original[i] == copy[w] ) {
+                    myCount++;
+                    delete copy[w];
+                }
+            } if ( myCount > 0 ) {
+                var a: any = new Object();
+                a.value = original[i];
+                a.count = myCount;
+                compressed.push( a );
+            }
+        }
+        return compressed;
+    };
 
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
-            this.duplicateEmailIds = [];
-            this.dublicateEmailId = false;
-            var testArray = [];
-            for(var i=0;i<= this.users[0].emailId.length-1;i++){
-                    testArray.push(this.users[0].emailId);
+        this.duplicateEmailIds = [];
+        this.dublicateEmailId = false;
+        var testArray = [];
+        for ( var i = 0; i <= this.users[0].emailId.length - 1; i++ ) {
+            testArray.push( this.users[0].emailId );
+        }
+
+        var newArray = this.compressArray( testArray );
+        for ( var w = 0; w < newArray.length; w++ ) {
+            if ( newArray[w].count >= 2 ) {
+                this.duplicateEmailIds.push( newArray[w].value );
             }
-            
-            var newArray = this.compressArray(testArray);
-            for(var w = 0; w < newArray.length; w++){
-                if(newArray[w].count>=2){
-                    this.duplicateEmailIds.push( newArray[w].value); 
-                }
-                console.log(newArray[w].value);
-                console.log(newArray[w].count);
-             }
-            this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
-            
-            var valueArr = this.users.map(function(item){ return item.emailId });
-            var isDuplicate = valueArr.some(function(item, idx){
-               return valueArr.indexOf(item) != idx
-            });
-            console.log(isDuplicate);
-                this.logger.info( this.users[0].emailId );
-                      if(!isDuplicate){
-                        this.saveValidEmails();
-                     }else{
-                         this.dublicateEmailId = true;
-                     }     
-         }
-    
-    saveValidEmails(){
+            console.log( newArray[w].value );
+            console.log( newArray[w].count );
+        }
+        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        var valueArr = this.users.map( function( item ) { return item.emailId });
+        var isDuplicate = valueArr.some( function( item, idx ) {
+            return valueArr.indexOf( item ) != idx
+        });
+        console.log( isDuplicate );
+        this.logger.info( this.users[0].emailId );
+        if ( !isDuplicate ) {
+            this.saveValidEmails();
+        } else {
+            this.dublicateEmailId = true;
+        }
+    }
+
+    saveValidEmails() {
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
@@ -376,8 +339,8 @@ export class EditContactsComponent implements OnInit {
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.successMessage = false;
-    this.dublicateEmailId = false;
-}
+        this.dublicateEmailId = false;
+    }
 
     updateCsvContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.csvFileUsers ) );
@@ -413,9 +376,7 @@ export class EditContactsComponent implements OnInit {
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
-           // this.userSelectedIds.push( id );
         });
-        //this.logger.log("SELECTEDiDS: "+ this.userSelectedIds);
         this.logger.info( removeUserIds );
         this.contactService.removeContactList( this.contactListId, removeUserIds )
             .subscribe(
@@ -439,14 +400,12 @@ export class EditContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    //swal( 'Campaign contact!', error, 'error' );
                     this.Campaign = error;
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 }
                 console.log( error );
             },
-           // error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.deleteSucessMessage = false;
@@ -479,7 +438,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     addRow() {
-        this.fileTypeError = false; 
+        this.fileTypeError = false;
         this.users.push( new User() );
         this.saveAddcontactUsers = true;
         this.saveCopyfromClipboardUsers = false;
@@ -496,7 +455,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     removeCsv() {
-        this.fileTypeError = false; 
+        this.fileTypeError = false;
         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
         $( "button#add_contact" ).prop( 'disabled', false );
         this.users.length = 0;
@@ -508,7 +467,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     copyFromClipboard() {
-        this.fileTypeError = false; 
+        this.fileTypeError = false;
         this.clipboardTextareaText = "";
         this.clickBoard = true;
         this.saveAddcontactUsers = false;
@@ -519,7 +478,6 @@ export class EditContactsComponent implements OnInit {
         $( "input[type='file']" ).attr( "disabled", true );
     }
 
-    
     clipboardShowPreview() {
         var selectedDropDown = $( "select.options:visible option:selected " ).val();
         var splitValue;
@@ -589,75 +547,6 @@ export class EditContactsComponent implements OnInit {
         }
         this.logger.info( this.clipboardUsers );
     }
-    /*clipboardShowPreview() {
-        var selectedDelimeterType = $( "select.options:visible option:selected " ).val();
-        var splitValue;
-        if ( selectedDelimeterType == "DEFAULT" ) {
-            swal( "Please Select the Delimeter Type" );
-            return false;
-        }
-        if ( this.clipboardTextareaText == undefined ) {
-            swal( "value can't be null" );
-        }
-        else {
-            if ( selectedDelimeterType == "commaSeperated" )
-                splitValue = ",";
-            else if ( selectedDelimeterType == "TabSeperated" )
-                splitValue = "\t";
-        }
-        this.logger.info( "selectedDropDown:" + selectedDelimeterType );
-        this.logger.info( splitValue );
-        var startTime = new Date();
-        $( "#clipBoardValidationMessage" ).html( '' );
-        var self = this;
-        var allTextLines = this.clipboardTextareaText.split( "\n" );
-        this.logger.info( "allTextLines: " + allTextLines );
-        this.logger.info( "allTextLines Length: " + allTextLines.length );
-        var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
-            var data = allTextLines[i].split( splitValue );
-            if ( !this.validateEmailAddress( data[0] ) ) {
-                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[0] + "</h4>" );
-                isValidData = false;
-            }
-            this.clipboardUsers.length = 0;
-            this.pagination.pagedItems.length = 0;
-        }
-        if ( isValidData ) {
-            for ( var i = 0; i < allTextLines.length; i++ ) {
-                var data = allTextLines[i].split( splitValue );
-                let user = new User();
-
-                switch ( data.length ) {
-                    case 1:
-                        user.emailId = data[0];
-                        break;
-                    case 2:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        break;
-                    case 3:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        user.lastName = data[2];
-                        break;
-                }
-                this.logger.info( user );
-                this.clipboardUsers.push( user );
-                self.pagination.pagedItems.push( user );
-                $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-            }
-            var endTime = new Date();
-            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
-            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
-            $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>" );
-        } else {
-            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
-            $( "#clipBoardValidationMessage" ).show();
-            this.filePrevew = false;
-        }
-        this.logger.info( this.clipboardUsers );
-    }*/
 
     validateEmailAddress( emailId: string ) {
         var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -671,33 +560,33 @@ export class EditContactsComponent implements OnInit {
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
         var testArray = [];
-        for(var i=0;i<= this.clipboardUsers.length-1;i++){
-                testArray.push(this.clipboardUsers[i].emailId);
+        for ( var i = 0; i <= this.clipboardUsers.length - 1; i++ ) {
+            testArray.push( this.clipboardUsers[i].emailId );
         }
-        
-        var newArray = this.compressArray(testArray);
-        for(var w = 0; w < newArray.length; w++){
-            if(newArray[w].count>=2){
-                this.duplicateEmailIds.push( newArray[w].value); 
+
+        var newArray = this.compressArray( testArray );
+        for ( var w = 0; w < newArray.length; w++ ) {
+            if ( newArray[w].count >= 2 ) {
+                this.duplicateEmailIds.push( newArray[w].value );
             }
-            console.log(newArray[w].value);
-            console.log(newArray[w].count);
-         }
-        this.logger.log("DUPLICATE EMAILS"+ this.duplicateEmailIds);
-            var valueArr = this.clipboardUsers.map(function(item){ return item.emailId });
-            var isDuplicate = valueArr.some(function(item, idx){
-               return valueArr.indexOf(item) != idx
-            });
-            console.log(isDuplicate);
-            if(!isDuplicate){
-                this.saveClipboardValidEmails();
-             }else{
-                 this.dublicateEmailId = true;
-                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-             }   
+            console.log( newArray[w].value );
+            console.log( newArray[w].count );
+        }
+        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        var valueArr = this.clipboardUsers.map( function( item ) { return item.emailId });
+        var isDuplicate = valueArr.some( function( item, idx ) {
+            return valueArr.indexOf( item ) != idx
+        });
+        console.log( isDuplicate );
+        if ( !isDuplicate ) {
+            this.saveClipboardValidEmails();
+        } else {
+            this.dublicateEmailId = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        }
     }
-    
-    saveClipboardValidEmails(){
+
+    saveClipboardValidEmails() {
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.contactService.updateContactList( this.contactListId, this.clipboardUsers )
             .subscribe(
@@ -724,8 +613,7 @@ export class EditContactsComponent implements OnInit {
             )
         this.successMessage = false;
         this.dublicateEmailId = false;
-}
-
+    }
 
     saveContacts( contactListId: number ) {
         if ( this.saveAddcontactUsers == true && this.saveCopyfromClipboardUsers == false && this.saveCsvFileUsers == false ) {
@@ -778,13 +666,13 @@ export class EditContactsComponent implements OnInit {
                     this.invlidContactsCount = data.invalidUsers;
                     this.unsubscribedContacts = data.unsubscribedUsers;
                 }
-                if (this.contacts.length !== 0) {
+                if ( this.contacts.length !== 0 ) {
                     this.noContactsFound = false;
-                 }
-                 else {
-                     this.noContactsFound = true;
-                     this.pagedItems = null ;
-                 }
+                }
+                else {
+                    this.noContactsFound = true;
+                    this.pagedItems = null;
+                }
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
                 this.checkingLoadContactsCount = false;
@@ -794,6 +682,7 @@ export class EditContactsComponent implements OnInit {
             () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
         )
     }
+    
     changEvent( event: any ) {
     }
     setPage( page: number, ) {
@@ -811,23 +700,23 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-    refresh(){
+    refresh() {
         this.editContacts = null;
-        this.notifyParent.emit(this.editContacts);
+        this.notifyParent.emit( this.editContacts );
     }
-    
-    backToEditContacts(){
+
+    backToEditContacts() {
         this.showAllContactData = false;
         this.showEditContactData = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.successMessage = false;
         this.deleteSucessMessage = false;
-        this.activeContactsData=false;
+        this.activeContactsData = false;
         this.invalidContactData = false;
-        this.unsubscribedContactsData=false;
-        this.nonActiveContactsData=false;
+        this.unsubscribedContactsData = false;
+        this.nonActiveContactsData = false;
     }
-    
+
     activeContactsDataShowing() {
         this.showAllContactData = true;
         this.showEditContactData = false;
@@ -866,7 +755,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     active_Contacts( pagination: Pagination ) {
-        //this.pagination.maxResults = 12;
         this.contactService.loadActiveContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -879,15 +767,15 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.activeContactUsers );
                     this.logger.log( data );
                 }
-                if (this.activeContactUsers.length == 0) {
+                if ( this.activeContactUsers.length == 0 ) {
                     this.noContactsFound1 = true;
                     this.hidingListUsersTable = false;
-                 }
-                 else {
-                     this.noContactsFound1 = false;
-                     this.hidingListUsersTable = true;
-                     this.pagedItems = null ;
-                 }
+                }
+                else {
+                    this.noContactsFound1 = false;
+                    this.hidingListUsersTable = true;
+                    this.pagedItems = null;
+                }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -895,7 +783,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     invalid_Contacts( pagination: Pagination ) {
-        //this.pagination.maxResults = 12;
         this.contactService.loadInvalidContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -908,15 +795,15 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.invalidContactUsers );
                     this.logger.log( data );
                 }
-                if (this.invalidContactUsers.length == 0) {
+                if ( this.invalidContactUsers.length == 0 ) {
                     this.noContactsFound1 = true;
                     this.hidingListUsersTable = false;
-                 }
-                 else {
-                     this.noContactsFound1 = false;
-                     this.hidingListUsersTable = true;
-                     this.pagedItems = null ;
-                 }
+                }
+                else {
+                    this.noContactsFound1 = false;
+                    this.hidingListUsersTable = true;
+                    this.pagedItems = null;
+                }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -924,7 +811,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     unSubscribed_Contacts( pagination: Pagination ) {
-        //this.pagination.maxResults = 12;
         this.contactService.loadUnSubscribedContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -937,15 +823,15 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.unsubscribedContactUsers );
                     this.logger.log( data );
                 }
-                if (this.unsubscribedContactUsers.length == 0) {
+                if ( this.unsubscribedContactUsers.length == 0 ) {
                     this.noContactsFound1 = true;
                     this.hidingListUsersTable = false;
-                 }
-                 else {
-                     this.noContactsFound1 = false;
-                     this.hidingListUsersTable = true;
-                     this.pagedItems = null ;
-                 }
+                }
+                else {
+                    this.noContactsFound1 = false;
+                    this.hidingListUsersTable = true;
+                    this.pagedItems = null;
+                }
             },
             error => console.log( error ),
             () => console.log( "finished" )
@@ -953,7 +839,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     nonActive_Contacts( pagination: Pagination ) {
-        //this.pagination.maxResults = 12;
         this.contactService.loadNonActiveContactsUsers( this.contactListId, pagination )
             .subscribe(
             ( data: any ) => {
@@ -966,17 +851,16 @@ export class EditContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.nonActiveContactUsers );
                     this.logger.log( data );
                 }
-                if (this.nonActiveContactUsers.length == 0) {
+                if ( this.nonActiveContactUsers.length == 0 ) {
                     this.noContactsFound1 = true;
                     this.hidingListUsersTable = false;
-                 }
-                 else {
-                     this.noContactsFound1 = false;
-                     this.hidingListUsersTable = true;
-                     this.pagedItems = null ;
-                 }
+                }
+                else {
+                    this.noContactsFound1 = false;
+                    this.hidingListUsersTable = true;
+                    this.pagedItems = null;
+                }
             },
-
             error => console.log( error ),
             () => console.log( "finished" )
             );
@@ -1101,11 +985,6 @@ export class EditContactsComponent implements OnInit {
             return { fileItem, form }
         };
         try {
-            //$( "#saveContactsMessage" ).hide();
-            //$( "#saveContactsMessage1" ).hide();
-            //$( "#saveContactsMessage2" ).hide();
-            //$( "#file_preview" ).hide();
-            //caculations
             Metronic.init(); // init metronic core components
             Layout.init(); // init current layout
             Demo.init(); // init demo features
