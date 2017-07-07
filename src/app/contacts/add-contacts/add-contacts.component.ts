@@ -40,6 +40,8 @@ export class AddContactsComponent implements OnInit {
     model: any = {};
     names: string[] = [];
     isValidContactName: boolean;
+    validCsvContacts : boolean;
+    inValidCsvContacts : boolean; 
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
     public zohoContactsValue: boolean;
@@ -434,6 +436,15 @@ export class AddContactsComponent implements OnInit {
         if ( this.model.contactListName != '' ) {
             if ( this.contacts.length > 0 ) {
                 this.logger.info( isValid );
+                for(let i = 0; i< this.contacts.length;i++){
+                    if(this.validateEmailAddress(this.contacts[i].emailId)){
+                        this.validCsvContacts = true;
+                    }
+                    else {
+                        this.validCsvContacts = false;
+                    }
+                }
+                if(this.validCsvContacts == true) {
                 this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                 this.contactService.saveContactList( this.model.contactListName, this.contacts )
                     .subscribe(
@@ -447,6 +458,9 @@ export class AddContactsComponent implements OnInit {
                     error => this.logger.error( error ),
                     () => this.logger.info( "addcontactComponent saveCsvContactList() finished" )
                     )
+                }else{
+                    this.inValidCsvContacts = true;
+                }
             } else
                 this.logger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
         }
@@ -568,6 +582,7 @@ export class AddContactsComponent implements OnInit {
 
     removeCsv() {
         this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         // this.removeCsvName = false;
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
