@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UpdateStatusComponent } from './common/update-status/update-status.component';
+import { SocialManageComponent } from './common/social-manage/social-manage.component';
 
 import { TwitterTweetsComponent } from './twitter/twitter-tweets/twitter-tweets.component';
 import { TwitterFriendsComponent } from './twitter/twitter-friends/twitter-friends.component';
@@ -15,6 +16,7 @@ import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebo
 
 const routes: Routes = [
     { path: 'update-status', component: UpdateStatusComponent },
+    { path: 'manage/:social', component: SocialManageComponent },
 
     { path: 'twitter-tweets/:profileId', component: TwitterTweetsComponent },
     { path: 'twitter-friends/:profileId', component: TwitterFriendsComponent },
@@ -25,11 +27,11 @@ const routes: Routes = [
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
     { path: 'facebook-posts/:profileId', component: FacebookPostsComponent },
     { path: 'facebook-analytics/:profileId', component: FacebookAnalyticsComponent },
-    ];
+];
 
 
-@NgModule({
-    imports: [RouterModule.forChild(routes)],
+@NgModule( {
+    imports: [RouterModule.forChild( routes )],
     exports: [RouterModule]
 })
 export class SocialRoutingModule { }

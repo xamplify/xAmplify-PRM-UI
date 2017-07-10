@@ -374,11 +374,6 @@ export class UpdateStatusComponent implements OnInit {
         this.videoJSplayer.playlist( [{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }] );
     }
 
-    socialLogin( providerName: string ) {
-        $( '#myModal' ).modal( 'toggle' );
-        this.router.navigate( [providerName + '/login'] );
-    }
-
     ngOnInit() {
         this.userId = this.authenticationService.user.id;
         this.listEvents();

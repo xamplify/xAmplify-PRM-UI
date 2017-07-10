@@ -6,7 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ShareButtonsModule} from 'ngx-sharebuttons';
+import { ShareButtonsModule } from 'ng2-sharebuttons';
+//import { ShareButtonsModule} from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { ContactService } from './contacts/services/contact.service';
 
@@ -21,7 +22,7 @@ import { Logger } from 'angular2-logger/core';
 import { LoginComponent } from './login/login.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
-import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
+
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 import { DummyComponent } from './loader/dummy/dummy.component';
@@ -45,7 +46,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 
 @NgModule( {
-    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent, SocialManageComponent,
+    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
                    ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),

@@ -211,11 +211,12 @@ export class DashboardComponent implements OnInit {
     }
 
     listSocialAccounts(userId: number) {
-        this.socialService.listSocialConnections(userId)
+        this.socialService.listActiveSocialConnections(userId)
             .subscribe(
             data => {
                 this.socialConnections = data;
                 this.socialService.socialConnections = data;
+                this.socialService.setDefaultAvatar(this.socialConnections);
             },
             error => console.log(error),
             () => {

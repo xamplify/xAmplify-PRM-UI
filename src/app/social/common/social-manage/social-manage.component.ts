@@ -3,7 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import {SocialConnection} from '../../../social/models/social-connection';
+import { SocialConnection } from '../../../social/models/social-connection';
+
+declare var swal: any;
 @Component( {
     selector: 'app-social-manage',
     templateUrl: './social-manage.component.html',
@@ -11,32 +13,53 @@ import {SocialConnection} from '../../../social/models/social-connection';
 })
 export class SocialManageComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
+    response : any;
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService ) { }
 
     listAccounts( userId: number, providerName: string ) {
-        this.socialService.listAccounts( userId, providerName )
+        this.socialService.listAccounts( userId, providerName, "ALL" )
             .subscribe(
             result => {
                 this.socialConnections = result;
+                this.socialService.setDefaultAvatar(this.socialConnections);
             },
             error => console.log( error ),
-            () => console.log( 'listAccounts() Complete' ) );
+            () => {});
     }
-    
-    save(){
-        this.socialService.saveAccounts(this.socialConnections)
+
+    save() {
+        this.socialService.saveAccounts( this.socialConnections )
             .subscribe(
             result => {
-                alert(result);
-                this.router.navigate( [''] );
+                this.response = 'success';
             },
             error => console.log( error ),
             () => console.log( 'save() Complete' ) );
-    
+
     }
     
-    cancel(){
+    confirmDialog(socialConnection: SocialConnection){
+        if(! socialConnection.active)
+            socialConnection.active = !socialConnection.active;
+        else {
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "Do you really want to deselect it!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, deselect'
+
+            }).then( function() {
+                socialConnection.active = !socialConnection.active;
+            }).catch( swal.noop );
+        }
+    }
+
+    cancel() {
         this.router.navigate( [''] );
     }
     ngOnInit() {

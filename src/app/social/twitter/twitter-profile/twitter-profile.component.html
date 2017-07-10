@@ -43,13 +43,18 @@
 			<span class="ProfileCardStats-statLabel u-block">Followers</span> 
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{twitterProfile.followersCount}}</span>
 		</li>
-		<li class="ProfileCardStats-stat Arrange-sizeFit" *ngIf="kloutScore">
-			<span class="ProfileCardStats-statLabel u-block label label-default">Score</span> 
-			<span class="ProfileCardStats-statValue" data-is-compact="false">{{kloutScore.score}}</span>
-		</li>
 	</ul>
 </div>
       <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part="">{{twitterProfile.description}}</p>
+<div class="ProfileCardStats" *ngIf="kloutScore">
+    <div class="inner-content text-center">
+        <div class="c100 p{{kloutScore.score}} small center">
+            <span>{{kloutScore.score}}%</span>
+            <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+        </div>
+    </div>
+    <h4 style="text-align: center;font-weight: 500;">score</h4>
+</div>   
     </div>
   </div>
 </div>

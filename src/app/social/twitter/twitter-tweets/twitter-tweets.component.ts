@@ -7,7 +7,10 @@ import { TwitterService } from "../../services/twitter.service";
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
+import { ReferenceService } from '../../../core/services/reference.service';
+
 import { SocialConnection } from '../../models/social-connection';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 
 declare var $: any;
 
@@ -22,11 +25,13 @@ export class TwitterTweetsComponent implements OnInit {
     tweets: any;
     trends: Array<Trend> = [];
     socialConnection: SocialConnection;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 
     constructor( private route: ActivatedRoute, private authenticationService: AuthenticationService,
-        private twitterService: TwitterService, private socialService: SocialService ) { }
+        private twitterService: TwitterService, private socialService: SocialService, private referenceService: ReferenceService ) { }
 
     getTweets( socialConnection: SocialConnection ) {
+        this.referenceService.loading( this.httpRequestLoader, true );
         this.twitterService.getTweets( socialConnection, 0, 100 )
             .subscribe(
             data => {
@@ -50,9 +55,13 @@ export class TwitterTweetsComponent implements OnInit {
                     updatedText = updatedText.trim();
                     data[i].unmodifiedText = updatedText;
                 }
-                this.tweets = data
+                this.tweets = data;
+                this.referenceService.loading( this.httpRequestLoader, false );
             },
-            error => console.log( error ),
+            error => {
+                console.log( error );
+                this.referenceService.showServerError( this.httpRequestLoader );
+            },
             () => console.log( this.tweets.length )
             );
     }
@@ -84,7 +93,7 @@ export class TwitterTweetsComponent implements OnInit {
     }
 
     reply() {
-        this.twitterService.reply(this.socialConnection, $( '.tweet-id' ).val(), $( '.tweet-status' ).val() )
+        this.twitterService.reply( this.socialConnection, $( '.tweet-id' ).val(), $( '.tweet-status' ).val() )
             .subscribe(
             data => {
                 $( '#replyModal' ).modal( 'hide' );

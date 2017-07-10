@@ -20,7 +20,7 @@
 }
 
 .portlet.light .portlet-body {
-	padding: 1em;
+	padding: 0 1em;
 }
 
 .portlet.light.block:hover {
@@ -53,10 +53,36 @@ h5 {
 }
 
 .checked {
-	border: 1px solid #FF9800;
+	border: 2px solid rgba(0, 166, 231, 0.77);
 }
 
 .unchecked {
 	opacity: 0.5;
-	border: 1px solid #FFF;
+	border: 2px solid #FFF;
+}
+
+.fa-facebook-color {
+	color: #3b5998;
+}
+
+.fa-twitter-color {
+	color: #55acee;
+}
+
+.ellipsis {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.alert-success {
+	background: rgb(38, 220, 155);
+	color: #ffffff;
+	border-radius: 0;
+	padding-left: 3em;
+}
+
+.swal2-cancel {
+	background-color: #cfd8dc;
 }

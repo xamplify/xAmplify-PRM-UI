@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {FormsModule, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TwitterProfileComponent } from './twitter/twitter-profile/twitter-profile.component';
 import { TwitterTweetsComponent } from './twitter/twitter-tweets/twitter-tweets.component';
@@ -7,8 +7,8 @@ import { TwitterFriendsComponent } from './twitter/twitter-friends/twitter-frien
 import { TwitterFollowersComponent } from './twitter/twitter-followers/twitter-followers.component';
 import { TwitterAnalyticsComponent } from './twitter/twitter-analytics/twitter-analytics.component';
 
-import{SocialRoutingModule} from './social-routing.module';
-import {SharedModule} from '../shared/shared.module';
+import { SocialRoutingModule } from './social-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { LineChartComponent } from './twitter/line-chart/line-chart.component';
 import { NewFansLineChartComponent } from './twitter/new-fans-line-chart/new-fans-line-chart.component';
@@ -17,19 +17,22 @@ import { TwitterAreaChartComponent } from './twitter/twitter-area-chart/twitter-
 import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
 import { UpdateStatusComponent } from './common/update-status/update-status.component';
+import { SocialManageComponent } from './common/social-manage/social-manage.component';
 
 import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebook-analytics.component';
 import { FacebookInsightGenderAgeComponent } from './facebook/facebook-insight-gender-age/facebook-insight-gender-age.component';
 import { FacebookInsightFansCountryComponent } from './facebook/facebook-insight-fans-country/facebook-insight-fans-country.component';
 import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebook-reactions.component';
 import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
+import { SocialLoaderComponent } from './common/social-loader/social-loader.component';
+import { ConnectAccountsComponent } from './common/connect-accounts/connect-accounts.component';
 
-@NgModule({
-  imports: [ CommonModule, SharedModule, SocialRoutingModule, FormsModule],
-  declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent, 
-                 TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
-                 TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent, FacebookAnalyticsComponent, 
-                 FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent],
-  providers: []
+@NgModule( {
+    imports: [CommonModule, SharedModule, SocialRoutingModule, FormsModule],
+    declarations: [SocialManageComponent,TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
+        TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
+        TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent, FacebookAnalyticsComponent,
+        FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent, SocialLoaderComponent, ConnectAccountsComponent],
+    providers: []
 })
 export class SocialModule { }

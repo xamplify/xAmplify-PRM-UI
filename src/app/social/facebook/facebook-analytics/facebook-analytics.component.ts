@@ -39,7 +39,12 @@ export class FacebookAnalyticsComponent implements OnInit {
                 this.fanCount = data.extraData.fan_count;
             },
             error => console.log( error ),
-            () => console.log( this.page )
+            () => {
+                if(this.fanCount > 30){
+                    for ( var i in this.metricsArray )
+                        this.getInsight( this.socialConnection, this.socialConnection.profileId, this.metricsArray[i], 'lifetime' );
+                }
+            }
             );
     }
 
@@ -293,8 +298,6 @@ export class FacebookAnalyticsComponent implements OnInit {
             this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
 
             this.getPage( this.socialConnection, profileId );
-            for ( var i in this.metricsArray )
-                this.getInsight( this.socialConnection, profileId, this.metricsArray[i], 'lifetime' );
         } catch ( err ) {
             console.log( err );
         }

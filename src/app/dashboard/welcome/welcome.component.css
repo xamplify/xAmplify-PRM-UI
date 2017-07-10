@@ -1,0 +1,143 @@
+.fa-line-chart{
+	font-size: 1em;
+}
+h3 {
+	font-size: 1.5em;
+}
+
+.carousel-control {
+	display: none;
+}
+
+.modal-content {
+	border-radius: 0;
+}
+
+.icon-div {
+	/* margin-left: -1em; */
+	margin-top: 0em;
+}
+
+.portlet.light {
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+	min-width: 12em;
+	font-weight: 600;
+	min-height: 3em;
+}
+
+p {
+	margin: 0 0 10px;
+	font-size: 20px;
+	color: rgba(119, 119, 119, 0.7);
+	text-align: justify;
+	padding: 1em;
+}
+
+.p5 {
+	padding: 2em;
+}
+
+.page-bar {
+	padding: 2em;
+	border-radius: 0;
+}
+
+h1.bold {
+	font-weight: bolder;
+	font-size: 3.2em;
+	text-transform: lowercase;
+	margin: 0
+}
+
+.padding-top-bottom-5 {
+    padding: 2em 0;
+    min-height: 11em;
+}
+
+.flex {
+	display: flex;
+}
+
+.header-text {
+	text-transform: lowercase;
+	background: rgb(38, 204, 204);
+	color: #fff;
+	font-weight: 500;
+	border-radius: 0;
+	/* margin: 0.5em 0; */
+	/* padding: 0.8em; */
+}
+
+.center {
+	text-align: center;
+}
+
+.glyphicon, .fa-3 {
+	font-size: 2em;
+}
+
+.color1, .color1-invert:hover {
+	background-color: #76c9ff;
+	color: #fff;
+	border: 1px solid #76c9ff;
+}
+
+.color1:hover, .color1-invert {
+	color: #76c9ff;
+	background-color: #fff;
+	border: 1px solid #76c9ff;
+}
+
+.color2, .color2-invert:hover {
+	background-color: #00B3B3;
+	color: #fff;
+	border: 1px solid #00B3B3;
+}
+
+.color2:hover, .color2-invert {
+	background-color: #fff;
+	color: #00B3B3;
+	border: 1px solid #00B3B3;
+}
+
+.color3, .color3-invert:hover {
+	background-color: #827596;
+	color: #fff;
+	border: 1px solid #827596;
+}
+
+.color3:hover, .color3-invert {
+	color: #827596;
+	background-color: #fff;
+	border: 1px solid #827596;
+}
+
+.color4, .color4-invert:hover {
+	background-color: #fbb23e;
+	color: #fff;
+	border: 1px solid #fbb23e;
+}
+
+.color4:hover, .color4-invert {
+	color: #fbb23e;
+	background-color: #fff;
+	border: 1px solid #fbb23e;
+}
+
+.color1:hover, .color2:hover, .color3:hover, .color4:hover {
+	cursor: pointer;
+}
+
+.img-responsive {
+	height: 180px;
+	min-width: 100%;
+}
+
+/* https://bootsnipp.com/snippets/gjrj7 */
+body{background-color:#C0E5D9}.container{padding:20px}.profile-card{box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);background-color:#222;margin-bottom:20px}.profile-pic{border-radius:50%;position:absolute;top:-65px;left:0;right:0;margin:auto;z-index:1;max-width:100px;-webkit-transition:all .4s;transition:all .4s}.profile-info{color:#BDBDBD;padding:25px;position:relative;margin-top:15px}.profile-info h2{color:#E8E8E8;letter-spacing:4px;padding-bottom:12px}.profile-info span{display:block;font-size:12px;color:#4CB493;letter-spacing:2px;padding-top:2em;}.profile-info a{color:#4CB493}.profile-info i{padding:15px 35px 0}.profile-card:hover .profile-pic{transform:scale(1.1)}.profile-card:hover .profile-info hr{opacity:1}.hvr-underline-from-center{display:inline-block;vertical-align:middle;-webkit-transform:translateZ(0);transform:translateZ(0);box-shadow:0 0 1px transparent;-webkit-backface-visibility:hidden;backface-visibility:hidden;-moz-osx-font-smoothing:grayscale;position:relative;overflow:hidden}.hvr-underline-from-center:before{content:"";position:absolute;z-index:-1;left:52%;right:52%;bottom:0;background:#FFF;border-radius:50%;height:3px;-webkit-transition-property:all;transition-property:all;-webkit-transition-duration:.2s;transition-duration:.2s;-webkit-transition-timing-function:ease-out;transition-timing-function:ease-out}.profile-card:active .hvr-underline-from-center:before,.profile-card:focus .hvr-underline-from-center:before,.profile-card:hover .hvr-underline-from-center:before{left:0;right:0;height:1px;background:#CECECE}
+
+/* https://bootsnipp.com/snippets/featured/box-material-design */
+.box,.info>a{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}body{padding-top:50px}.box{background: #fff;border-radius:3px;padding:10px 25px;text-align:right;display:block;margin-top:60px}.box-icon{background-color:#57a544;border-radius:50%;display:table;height:100px;margin:-61px auto 0;width:100px}.box-icon span{color:#fff;display:table-cell;text-align:center;vertical-align:middle}.info h4{font-size:26px;letter-spacing:2px;text-transform:uppercase}.info>p{color:#717171;font-size:16px;padding-top:10px;text-align:justify}.info>a,.info>a:hover{color:#fff;transition:all .5s ease 0s}.info>a{background-color:#03a9f4;border-radius:2px}.info>a:hover{background-color:#0288d1;box-shadow:0 2px 3px 0 rgba(0,0,0,.16),0 2px 5px 0 rgba(0,0,0,.12)}

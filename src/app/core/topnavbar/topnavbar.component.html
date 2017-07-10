@@ -11,8 +11,9 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a routerLink="./dashboard">
-			<img src="assets/admin/layout2/img/logo-default.png" alt="logo" class="logo-default"/>
+			<a routerLink="/home/dashboard"> <img
+				src="assets/admin/layout2/img/logo-default.png" alt="logo"
+				class="logo-default" />
 			</a>
 			<div class="menu-toggler sidebar-toggler">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -35,6 +36,8 @@
 					</span>
 				</div>
 			</form>
+			<a [routerLink]="['/home/dashboard/welcome']">welcome</a>
+			
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<div class="top-menu">
@@ -46,13 +49,11 @@
 					</a>
 					</li>
 					<li style="margin-top: 10px;margin-right: 50px;">
-						<!-- <button id="global-new-tweet-button" type="button" data-toggle="modal" (click)="openTweetModalWindow()" class="btn btn-default">
-				          <span class="Icon Icon--tweet Icon--large"></span>
-				          <span class="text">Tweet</span>
-				        </button> -->
-				        <a class="btn btn-warning2" routerLink="./social/update-status" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Update Status
-							<i class="fa fa-share" style="font-size:20px;" data-toggle="tooltip"></i>
-					</a>
+				        <a class="btn btn-warning2" routerLink="./social/update-status"
+						style="padding: 10px 10px; margin-right: -15px; position: relative; border-radius: 6px; box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4); background-color: #00a6e8; color: white;">Update
+							Status <i class="fa fa-share" style="font-size: 20px;"
+							data-toggle="tooltip"></i>
+						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
@@ -252,31 +253,28 @@
 					<!-- END TODO DROPDOWN -->
 					<!-- BEGIN USER LOGIN DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					
-					<li class="dropdown dropdown-user">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						<img alt="" class="img-circle" src="{{model.profilePicutrePath}}"/><!--  -->
-						<span class="username username-hide-on-mobile">
-						{{model.displayName}}</span>
-						<i class="fa fa-angle-down"></i>
-						</a>
+
+					<li class="dropdown dropdown-user"><a href="javascript:;"
+						class="dropdown-toggle" data-toggle="dropdown"
+						data-hover="dropdown" data-close-others="true"> <img alt=""
+							class="img-circle" src="{{model.profilePicutrePath}}" /> <span
+							class="username username-hide-on-mobile">
+								{{model.displayName}}</span> <i class="fa fa-angle-down"></i>
+					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
-							<li>
-								<a routerLink="./dashboard/myprofile">
-								<i class="icon-user"></i> My Profile </a>
-							</li>
-                            <li class="divider">
-							</li>
-							<li>
-								<a routerLink="../userlock">
-								<i class="icon-lock"></i> Lock Screen </a>
-							</li>
-							<li>
-								<a routerLink="/login">
-								<i class="icon-key"></i> Log Out </a>
-							</li>
-						</ul>
-					</li>
+							<li><a [routerLink]="['/home/dashboard/myprofile']"> <i
+									class="icon-user"></i> My Profile
+							</a></li>
+							<li><a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Manage Accounts
+							</a></li>
+							<li class="divider"></li>
+							<li><a [routerLink]="['/userlock']"> <i
+									class="icon-lock"></i> Lock Screen
+							</a></li>
+							<li><a [routerLink]="['/login']"> <i class="icon-key"></i>
+									Log Out
+							</a></li>
+						</ul></li>
 					<!-- END USER LOGIN DROPDOWN -->
 					<!-- BEGIN USER LOGIN DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->

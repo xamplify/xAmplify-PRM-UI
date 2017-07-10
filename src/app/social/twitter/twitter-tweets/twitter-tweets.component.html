@@ -1,86 +1,92 @@
 <div class="page-content">
-	<div class="page-bar square-box margin-bottom-10px">
-		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="['../../dashboard']">Home</a> <i
-				class="fa fa-angle-right"></i></li>
-			<li>Tweets</li>
-		</ul>
-	</div>
-	<div class="row">
-		<div class="col-md-8">
-			<div id="tweets" class="portlet-body">
-				<div class="portlet light block rounded-0" *ngFor="let item of tweets">
-					<div class="portlet-title">
-						<div class="caption">
-							<div class="col-xs-12 flex">
-								<img class="profile-image" src="{{item.profileImageUrl}}" alt="{{item.fromUser}}">
-								<div style="margin-left: 1em;">
-									<h4 class="caption-subject text-left">{{item.user.name}}</h4>
-									<h5>{{item.createdAt | date: 'short'}}</h5>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="portlet-body container-fluid">
-						<div>
-							<h4 [innerHTML]="item.unmodifiedText"></h4>
-							<div class="AdaptiveMedia is-square"
-								*ngIf="item.entities.media.length > 0">
-								<div class="AdaptiveMedia-container js-adaptive-media-container">
-									<div class="AdaptiveMedia-singlePhoto">
-										<div class="AdaptiveMedia-photoContainer js-adaptive-photo "
-											data-element-context="platform_photo_card">
-											<img src="{{item.entities.media[0].mediaSecureUrl}}" style="width: 100%; top: -0px;">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div style="padding: 1em;">
-							<i class="fa fa-comment-o col-sm-4" aria-hidden="true"></i>
-							<i class="fa fa-retweet col-sm-4" aria-hidden="true"></i>
-							<i class="fa fa-heart-o col-sm-4" aria-hidden="true"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div  class="col-md-4">
-			<div id="trends" class="portlet-body portlet light block rounded-0">
-				<div class="portlet-title">
-					<div class="caption">
-						<span class="caption-subject font-red-sunglo bold uppercase">Trending</span>
-					</div>
-				</div>
-				<div class="portlet-body">
-					<p *ngFor="let item of trends"
-						style="margin-bottom: 15px; padding-left: 15px;">
-						<span [innerHTML]="item.name"></span>
-					</p>
-				</div>
-			</div>			
-		</div>
-	</div>
+  <div class="page-bar square-box margin-bottom-10px">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home"></i> <a
+        [routerLink]="['../../../dashboard']">Home</a> <i
+        class="fa fa-angle-right"></i></li>
+      <li>Tweets</li>
+    </ul>
+  </div>
+  <div class="row" style="display: flex;">
+    <div class="col-xs-12 col-sm-12 col-md-8"
+      *ngIf="httpRequestLoader.isLoading">
+      <app-social-loader></app-social-loader>
+    </div>
+    <div class="col-md-8" *ngIf="tweets?.length > 0">
+      <div id="tweets" class="portlet-body">
+        <div class="portlet light block rounded-0"
+          *ngFor="let item of tweets">
+          <div class="portlet-title">
+            <div class="caption">
+              <div class="col-xs-12 flex">
+                <img class="profile-image" src="{{item.profileImageUrl}}"
+                  alt="{{item.fromUser}}">
+                <div style="margin-left: 1em;">
+                  <h4 class="caption-subject text-left">{{item.user.name}}</h4>
+                  <h5>{{item.createdAt | date: 'short'}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="portlet-body container-fluid">
+            <div>
+              <h4 [innerHTML]="item.unmodifiedText"></h4>
+              <div class="AdaptiveMedia is-square"
+                *ngIf="item.entities.media.length > 0">
+                <div class="AdaptiveMedia-container js-adaptive-media-container">
+                  <div class="AdaptiveMedia-singlePhoto">
+                    <div class="AdaptiveMedia-photoContainer js-adaptive-photo "
+                      data-element-context="platform_photo_card">
+                      <img src="{{item.entities.media[0].mediaSecureUrl}}"
+                        style="width: 100%; top: -0px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="padding: 1em;">
+              <i class="fa fa-comment-o col-sm-4" aria-hidden="true"></i> <i
+                class="fa fa-retweet col-sm-4" aria-hidden="true"></i> <i
+                class="fa fa-heart-o col-sm-4" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div id="trends" class="portlet-body portlet light block rounded-0">
+        <div class="portlet-title">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo bold uppercase">Trending</span>
+          </div>
+        </div>
+        <div class="portlet-body">
+          <p *ngFor="let item of trends"
+            style="margin-bottom: 15px; padding-left: 15px;">
+            <span [innerHTML]="item.name"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog"
-	aria-labelledby="replyModalLabel">
-	<div class="modal-dialog" role="document" style="top: 5em;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="replyModalLabel"></h4>
-			</div>
-			<div class="modal-body"></div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="btn-tweet"
-					(click)="reply()">Tweet</button>
-			</div>
-		</div>
-	</div>
+  aria-labelledby="replyModalLabel">
+  <div class="modal-dialog" role="document" style="top: 5em;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="replyModalLabel"></h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-tweet"
+          (click)="reply()">Tweet</button>
+      </div>
+    </div>
+  </div>
 </div>

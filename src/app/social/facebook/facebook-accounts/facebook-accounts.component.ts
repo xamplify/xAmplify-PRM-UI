@@ -1,27 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { FacebookService } from '../../services/facebook.service';
+import { SocialService } from '../../services/social.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
-@Component({
+import { SocialConnection } from '../../models/social-connection';
+
+@Component( {
     selector: 'app-facebook-accounts',
     templateUrl: './facebook-accounts.component.html',
     styleUrls: ['./facebook-accounts.component.css']
 })
 export class FacebookAccountsComponent implements OnInit {
-    pages: any;
-    constructor(private facebookService: FacebookService) { }
-    getAccounts() {
-        this.facebookService.listPages(localStorage.getItem('facebook'))
+    socialConnections: any[] = new Array<any>();
+
+    constructor( private facebookService: FacebookService, private authenticationService: AuthenticationService, private socialService: SocialService ) { }
+
+    listSocialAccounts( userId: number ) {
+        this.facebookService.listPages( userId )
             .subscribe(
-            data => this.pages = data,
-            error => console.log(error),
-            () => console.log('getAccounts() Finished.')
+            data => this.socialConnections = data,
+            error => console.log( error ),
+            () => { }
             );
+
     }
     ngOnInit() {
         try {
-            this.getAccounts();
-        }catch (err) {
-            console.log(err);
+            const userId = this.authenticationService.getUserId();
+            this.listSocialAccounts( userId );
+        } catch ( err ) {
+            console.log( err );
         }
     }
 }

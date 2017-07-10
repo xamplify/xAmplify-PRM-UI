@@ -1,75 +1,80 @@
 <div class="page-content">
-	<div class="page-bar square-box margin-bottom-10px">
-		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="['../../../dashboard']">Home</a> <i
-				class="fa fa-angle-right"></i></li>
-			<li><a [routerLink]="['../../facebook-accounts']">Facebook
-					Accounts</a> <i class="fa fa-angle-right"></i></li>
-			<li>Posts</li>
-		</ul>
-	</div>
-
-
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-6">
-			<div class="portlet light block rounded-0" *ngFor="let post of posts">
-				<div class="portlet-title">
-					<div class="caption">
-						<div class="col-xs-12 flex">
-							<img class="profile-image" alt="{{post.from.name}}"
-								src="{{socialConnection.profileImage}}">
-							<div style="margin-left: 1em;">
-								<h4 *ngIf="post.type == 'video' || post.type == 'photo'"
-									class="caption-subject text-left">{{post.story}}</h4>
-								<h4 *ngIf="post.type == 'link'"
-									class="caption-subject text-left">{{post.from.name}}</h4>
-								<h5>{{post.createdTime | date: 'short'}}</h5>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="portlet-body container-fluid">
-					<div *ngIf="post.type == 'video'" style="padding-top: 1em;">
-						<div *ngIf="post.application !== null">
-							<div *ngIf="post.application.name == 'youtube'">
-								<iframe [src]="post.source"></iframe>
-							</div>
-						</div>
-						<video *ngIf="post.application === null" src="{{post.source}}" controls="controls"></video>
-						<h4>{{post.description}}</h4>
-					</div>
-					<div *ngIf="post.type == 'photo'">
-						<h4 [innerHTML]="post.message"></h4>
-						<img alt="{{post.description}}" src="{{post.fullPicture}}"
-							class="img-responsive">
-					</div>
-					<div *ngIf="post.type == 'link'">
-						<h4 [innerHTML]="post.message"></h4>
-						<a target="_blank" href="{{post.link}}"
-							style="text-decoration: none">
-							<div class="portlet-body">
-								<img alt="{{post.name}}" src="{{post.fullPicture}}"
-									class="img-responsive">
-								<h4>{{post.name}}</h4>
-								<p>{{post.description}}</p>
-								<h4 class="uppercase">{{post.caption}}</h4>
-							</div>
-						</a>
-					</div>
-					<div class="flex">
-						<app-facebook-reactions [postId]="post.id" [totalCount]="post.likes.totalCount"
-							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-reactions>
-						<app-facebook-comments [postId]="post.id" [totalCount]="post.comments.totalCount"
-							[facebookAccessToken]="socialConnection.accessToken"></app-facebook-comments>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="hidden-xs hidden-sm col-md-6">
-			<div class="portlet light block rounded-0">
+  <div class="page-bar square-box margin-bottom-10px">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home"></i> <a
+        [routerLink]="['../../../dashboard']">Home</a> <i
+        class="fa fa-angle-right"></i></li>
+      <li><a [routerLink]="['../../facebook-accounts']">Facebook
+        Accounts</a> <i class="fa fa-angle-right"></i>
+      </li>
+      <li>Posts</li>
+    </ul>
+  </div>
+  <div class="row" style="display: flex;">
+    <div class="col-xs-12 col-sm-12 col-md-6" *ngIf="httpRequestLoader.isLoading">
+      <app-social-loader ></app-social-loader>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6" *ngIf="posts?.length > 0">
+      <div class="portlet light block rounded-0" *ngFor="let post of posts">
+        <div class="portlet-title">
+          <div class="caption">
+            <div class="col-xs-12 flex">
+              <img class="profile-image" alt="{{post.from.name}}"
+                src="{{socialConnection.profileImage}}">
+              <div style="margin-left: 1em;">
+                <h4 *ngIf="post.type == 'video' || post.type == 'photo'"
+                  class="caption-subject text-left">{{post.story}}</h4>
+                <h4 *ngIf="post.type == 'link'"
+                  class="caption-subject text-left">{{post.from.name}}</h4>
+                <h5>{{post.createdTime | date: 'short'}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="portlet-body container-fluid">
+          <div *ngIf="post.type == 'video'" style="padding-top: 1em;">
+            <div *ngIf="post.application !== null">
+              <div *ngIf="post.application.name == 'youtube'">
+                <iframe [src]="post.source"></iframe>
+              </div>
+            </div>
+            <video *ngIf="post.application === null" src="{{post.source}}" controls="controls"></video>
+            <h4>{{post.description}}</h4>
+          </div>
+          <div *ngIf="post.type == 'photo'">
+            <h4 [innerHTML]="post.message"></h4>
+            <img alt="{{post.description}}" src="{{post.fullPicture}}"
+              class="img-responsive">
+          </div>
+          <div *ngIf="post.type == 'link'">
+            <h4 [innerHTML]="post.message"></h4>
+            <a target="_blank" href="{{post.link}}"
+              style="text-decoration: none">
+              <div class="portlet-body">
+                <img alt="{{post.name}}" src="{{post.fullPicture}}"
+                  class="img-responsive">
+                <h4>{{post.name}}</h4>
+                <p>{{post.description}}</p>
+                <h4 class="uppercase">{{post.caption}}</h4>
+              </div>
+            </a>
+          </div>
+          <div class="flex">
+            <app-facebook-reactions [postId]="post.id" [totalCount]="post.likes.totalCount"
+            [facebookAccessToken]="socialConnection.accessToken"></app-facebook-reactions>
+            <app-facebook-comments [postId]="post.id" [totalCount]="post.comments.totalCount"
+            [facebookAccessToken]="socialConnection.accessToken"></app-facebook-comments>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <section *ngIf="socialConnection.emailId === null"><app-facebook-analytics></app-facebook-analytics></section>
+        <section *ngIf="socialConnection.emailId !== null">
+        	<div class="portlet light block rounded-0">
 				<h1 style="padding: 7em;">Blank Space</h1>
 			</div>
-		</div>
-	</div>
+        </section>
+    </div>
+  </div>
 </div>

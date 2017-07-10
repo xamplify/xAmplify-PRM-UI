@@ -23,6 +23,14 @@ import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+
+import { SocialStatus } from "../../social/models/social-status";
+import { SocialStatusContent } from "../../social/models/social-status-content";
+import { SocialStatusProvider } from "../../social/models/social-status-provider";
+
+import { SocialService } from "../../social/services/social.service";
+
+
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery:any;
 
 @Component({
@@ -118,12 +126,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
     loggedInUserId:number = 0;
     buttonName:string = "Launch";
+    
+    socialStatus: SocialStatus = new SocialStatus();
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute, private refService:ReferenceService,
                 private logger:Logger,private videoFileService:VideoFileService,
                 private authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
-                private emailTemplateService:EmailTemplateService,private router:Router
+                private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.campaign = new Campaign();
@@ -902,37 +913,37 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               })
        }
     
-    getCampaignData(emailId:string){
-        if(this.campaignType== "regular"){
+    getCampaignData( emailId: string ) {
+        if ( this.campaignType == "regular" ) {
             this.campaign.regularEmail = true;
-        }else{
+        } else {
             this.campaign.regularEmail = false;
         }
+        this.filteredSocialStatusProviders();
         var data = {
-                'campaignName': this.campaign.campaignName,
-                'fromName': this.campaign.fromName,
-                'subjectLine': this.campaign.subjectLine,
-                'email': this.campaign.email,
-                'preHeader': this.campaign.preHeader,
-                'message': this.campaign.message,
-                'emailOpened': this.campaign.emailOpened,
-                'videoPlayed': this.campaign.videoPlayed,
-                'replyVideo': this.campaign.replyVideo,
-                'socialSharingIcons': this.campaign.socialSharingIcons,
-                'userId':this.loggedInUserId,
-                'selectedVideoId':this.campaign.selectedVideoId,
-                'userListIds':this.campaign.userListIds,
-                "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
-                "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-                'scheduleTime':this.campaignLaunchForm.value.launchTime,
-                'campaignId':this.campaign.campaignId,
-                'selectedEmailTemplateId':this.selectedEmailTemplateRow,
-                'regularEmail':this.campaign.regularEmail,
-                'testEmailId':emailId
-                
+            'campaignName': this.campaign.campaignName,
+            'fromName': this.campaign.fromName,
+            'subjectLine': this.campaign.subjectLine,
+            'email': this.campaign.email,
+            'preHeader': this.campaign.preHeader,
+            'message': this.campaign.message,
+            'emailOpened': this.campaign.emailOpened,
+            'videoPlayed': this.campaign.videoPlayed,
+            'replyVideo': this.campaign.replyVideo,
+            'socialSharingIcons': this.campaign.socialSharingIcons,
+            'userId': this.loggedInUserId,
+            'selectedVideoId': this.campaign.selectedVideoId,
+            'userListIds': this.campaign.userListIds,
+            "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
+            "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
+            'scheduleTime': this.campaignLaunchForm.value.launchTime,
+            'campaignId': this.campaign.campaignId,
+            'selectedEmailTemplateId': this.selectedEmailTemplateRow,
+            'regularEmail': this.campaign.regularEmail,
+            'testEmailId': emailId,
+            'socialStatus': this.socialStatus
         };
         return data;
-        
     }
    
     
@@ -1187,9 +1198,87 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
+                
+                this.initializeSocialStatus()
             }
             
             $( id ).addClass( "activeStepInfo" );
+        }
+        
+        
+        /**
+         * @author Manas Ranjan Sahoo
+         * @since 27/06/2017
+         */
+        
+        initializeSocialStatus() {
+            this.socialStatus.id = null;
+            this.socialStatus.shareNow = true;
+            this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
+
+            if ( this.campaignType == 'regular' ) {
+                this.socialStatus.statusMessage = this.campaign.subjectLine;
+            } else if ( this.campaignType == 'video' ) {
+                this.socialStatus.statusMessage = this.launchVideoPreview.title;
+                let socialStatusContent: SocialStatusContent = new SocialStatusContent();
+                socialStatusContent.id = this.launchVideoPreview.id;
+                socialStatusContent.fileName = this.launchVideoPreview.title;
+                socialStatusContent.fileType = "video";
+                socialStatusContent.filePath = this.launchVideoPreview.videoPath;
+                this.socialStatus.socialStatusContents.push( socialStatusContent );
+            }
+            this.listSocialStatusProviders();
+        }
+
+        listSocialStatusProviders() {
+            const socialConnections = this.socialService.socialConnections;
+            this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
+            for ( const i in socialConnections ) {
+                let socialStatusProvider = new SocialStatusProvider();
+
+                socialStatusProvider.providerId = socialConnections[i].profileId;
+                socialStatusProvider.providerName = socialConnections[i].source;
+                socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
+                socialStatusProvider.profileName = socialConnections[i].profileName;
+
+                if ( ( 'TWITTER' === socialConnections[i].source ) ) {
+                    socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
+                    socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
+                } else {
+                    socialStatusProvider.accessToken = socialConnections[i].accessToken;
+                }
+                this.socialStatus.socialStatusProviders.push( socialStatusProvider );
+            }
+        }
+        
+        filteredSocialStatusProviders(){
+            let socialStatusProviders = this.socialStatus.socialStatusProviders;
+            if(socialStatusProviders !== undefined){
+                socialStatusProviders = socialStatusProviders.filter( function( obj ) {
+                    return obj.selected === true;
+                });
+            }
+            this.socialStatus.socialStatusProviders = socialStatusProviders;
+        }
+        
+        updateStatus() {
+            let socialStatusProviders = this.socialStatus.socialStatusProviders;
+            socialStatusProviders = socialStatusProviders.filter( function( obj ) {
+                return obj.selected === true;
+            });
+            this.socialStatus.socialStatusProviders = socialStatusProviders;
+            console.log( this.socialStatus );
+            swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
+            this.socialService.updateStatus( this.loggedInUserId, this.socialStatus )
+                .subscribe(
+                data => {
+                    this.initializeSocialStatus();
+                },
+                error => {
+                    console.log( error );
+                },
+                () => console.log( "Finished" )
+                );
         }
         
 }

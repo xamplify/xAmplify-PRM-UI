@@ -28,17 +28,17 @@ export class SocialService {
             .catch( this.handleError );
     }
     
-    listSocialConnections( userId: number ) {
+    listActiveSocialConnections( userId: number ) {
         if ( !userId ) {
             let currentUser = localStorage.getItem( 'currentUser' );
             userId = JSON.parse( currentUser )['userId'];
         }
-        return this.listAccounts( userId, 'all' );
+        return this.listAccounts( userId, 'all', 'ACTIVE' );
     }
 
     getSocialConnection( profileId: string, userId: number ) {
         if ( this.socialConnections.length === 0 ) {
-            this.listSocialConnections( userId );
+            this.listActiveSocialConnections( userId );
         }
         for ( const i in this.socialConnections ) {
             if ( ( profileId === this.socialConnections[i].profileId ) && ( userId === this.socialConnections[i].userId ) ) {
@@ -80,9 +80,9 @@ export class SocialService {
             .catch( this.handleError );
     }
 
-    listAccounts( userId: number, source: string ) {
+    listAccounts( userId: number, source: string , type: string) {
         return this.http.get( this.URL + 'social/accounts?access_token=' +
-            this.authenticationService.access_token + '&userId=' + userId + '&source=' + source )
+            this.authenticationService.access_token + '&userId=' + userId + '&source=' + source + '&type='+type)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -131,6 +131,14 @@ export class SocialService {
         return this.http.get( this.URL + 'admin/listVideosNew?access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
+    }
+    
+    setDefaultAvatar(socialConnections: SocialConnection[]){
+        for(var i in socialConnections){
+            if(socialConnections[i].profileImage == null)
+                socialConnections[i].profileImage = 'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/profle-256.png';
+        }
+        return socialConnections;
     }
 
     private extractData( res: Response ) {

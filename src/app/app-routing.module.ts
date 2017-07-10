@@ -15,7 +15,7 @@ import { ShareVideoComponent } from './videos/share-video/share-video.component'
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
-import { SocialManageComponent } from './social/common/social-manage/social-manage.component';
+
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 import { DummyComponent } from './loader/dummy/dummy.component';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
@@ -34,12 +34,9 @@ export const routes: Routes = [
             { path: 'campaigns' , loadChildren : 'app/campaigns/campaigns.module#CampaignsModule'},
             { path: 'upgrade' , loadChildren : 'app/upgrade/upgrade.module#UpgradeModule'},
             { path: 'team' , loadChildren : 'app/team/team.module#TeamModule'},
-            {path: 'manage/:social', component: SocialManageComponent}
         ]
     },
     { path: 'userlock', component: ProfileLockComponent},
-    { path: 'home/dashboard/userlock', redirectTo: 'userlock'},
-    { path: 'home/dashboard/myprofile/dashboard', redirectTo: 'home/dashboard'},
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },

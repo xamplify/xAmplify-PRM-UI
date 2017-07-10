@@ -69,7 +69,7 @@ export class SocialCallbackComponent implements OnInit {
 
     redirect() {
         if ( !this.socialConnection.existingUser )
-            this.router.navigate( ['./home/manage/' + this.providerName] );
+            this.router.navigate( ['/home/social/manage/' + this.providerName] );
         else
             this.router.navigate( [''] );
     }

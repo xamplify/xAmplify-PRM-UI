@@ -31,8 +31,8 @@ export class FacebookService {
             .catch(this.handleError);
     }
 
-    listPages(facebookAccessToken: string) {
-        return this.http.get(this.URL + 'pages' + '?access_token=' + this.authenticationService.access_token + '&facebookAccessToken=' + facebookAccessToken)
+    listPages(userId: number) {
+        return this.http.get(this.URL + 'pages' + '?access_token=' + this.authenticationService.access_token + '&userId=' + userId)
             .map(this.extractData)
             .catch(this.handleError);
     }
