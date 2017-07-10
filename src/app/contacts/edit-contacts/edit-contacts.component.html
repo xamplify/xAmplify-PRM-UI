@@ -248,7 +248,11 @@
 						<div *ngIf="fileTypeError" id="csvFileTypeError"
 			class="alert alert-danger alert-dismissable" style="width:50%">
 			<b>File type not allowed please select the .csv file only..</b>
-		</div>		
+		</div>	
+		<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
+			class="alert alert-danger alert-dismissable" style="width:80%">
+			<b>We found invalid emailIds please remove those and Re Upload..</b>
+		</div>	
 						<div *ngIf="successMessage" id="saveContactsMessage"
 							class="alert alert-success alert-dismissable">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

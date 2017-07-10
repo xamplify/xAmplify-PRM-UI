@@ -37,6 +37,8 @@ export class EditContactsComponent implements OnInit {
     @Output() notifyParent: EventEmitter<User>;
 
     dublicateEmailId: boolean = false;
+    validCsvContacts : boolean;
+    inValidCsvContacts : boolean;
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
@@ -343,7 +345,49 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateCsvContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
-        this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.csvFileUsers ) );
+        if ( this.csvFileUsers.length > 0 ) {
+            this.logger.info( isValid );
+            for(let i = 0; i< this.csvFileUsers.length;i++){
+                if(this.validateEmailAddress(this.csvFileUsers[i].emailId)){
+                    this.validCsvContacts = true;
+                }
+                else {
+                    this.validCsvContacts = false;
+                }
+            }
+            if(this.validCsvContacts == true) {
+                this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.csvFileUsers ) );
+                this.contactService.updateContactList( this.contactListId, this.csvFileUsers )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.logger.info( "update Contacts ListUsers:" + data );
+                        this.manageContact.editContactList( this.contactListId );
+                        $( "tr.new_row" ).each( function() {
+                            $( this ).remove();
+                        });
+                        this.users.length = 0;
+                        this.successMessage = true;
+                        setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
+                        $( "button#add_contact" ).prop( 'disabled', false );
+                        $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
+                        $( "#uploadCsvUsingFile" ).hide();
+                        $( "#sample_editable_1" ).show();
+                        this.filePrevew = false;
+                        this.checkingLoadContactsCount = true;
+                        this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                    },
+                    error => this.logger.error( error ),
+                    () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+                    )
+                this.successMessage = false;
+            }else{
+                this.inValidCsvContacts = true;
+            }
+        }
+        
+        
+        /*this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.csvFileUsers ) );
         this.contactService.updateContactList( this.contactListId, this.csvFileUsers )
             .subscribe(
             data => {
@@ -354,7 +398,6 @@ export class EditContactsComponent implements OnInit {
                     $( this ).remove();
                 });
                 this.users.length = 0;
-                //$( "#saveContactsMessage2" ).show();
                 this.successMessage = true;
                 setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
                 $( "button#add_contact" ).prop( 'disabled', false );
@@ -368,7 +411,7 @@ export class EditContactsComponent implements OnInit {
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
-        this.successMessage = false;
+        this.successMessage = false;*/
     }
 
     removeContactListUsers( contactListId: number ) {
@@ -456,6 +499,7 @@ export class EditContactsComponent implements OnInit {
 
     removeCsv() {
         this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
         $( "button#add_contact" ).prop( 'disabled', false );
         this.users.length = 0;
