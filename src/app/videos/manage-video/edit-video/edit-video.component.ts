@@ -11,6 +11,7 @@ import { ReferenceService } from '../../../core/services/reference.service';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
+import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { UserService } from '../../../core/services/user.service';
 import { VideoUtilService } from '../../services/video-util.service';
 declare var $, videojs, swal: any;
@@ -42,6 +43,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public categories: Category[];
     public uploader: FileUploader;
     public user: User = new User();
+    public defaultPlayerValues: DefaultVideoPlayer;
     videoForm: FormGroup;
     public fileItem: FileItem;
     public imageUrlPath: SafeUrl;
@@ -131,6 +133,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public oldPlayerColor: string;
     public isValidTitle = false;
     public editVideoTitle: string;
+    public defaultDisabled = true;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -460,11 +463,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     // video controller methods
     transperancyControllBar(value: any) {
         let color: any;
-        if (this.saveVideoFile.controllerColor === '#fff') {
-             color = '#fbfbfb';
-        } else {
-             color = this.saveVideoFile.controllerColor;
-        }
+        if (this.saveVideoFile.controllerColor === '#fff') { color = '#fbfbfb';
+        } else { color = this.saveVideoFile.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
@@ -483,7 +483,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     defaultPlayerSettings(event: boolean) {
         if (event === true ) {
             this.defaultColors = true;
-            this.compPlayerColor  = '#e6e5e5';
+            this.compPlayerColor  = "#4wet";
             this.compControllerColor = '#000';
             this.valueRange = 100;
             this.changePlayerColor( this.compPlayerColor);
@@ -506,17 +506,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.transperancyControllBar(this.valueRange);
     }
     changeControllerColor(event: any) {
-        if (event === '#fff') {
-          alert('entered #fff color value');
-           const eventValue = '#fbfbfb';
-            this.saveVideoFile.controllerColor = '#fff';
-            console.log('controller color value changed' + event);
-            $('.video-js .vjs-control-bar').css('background-color',  eventValue);
-        } else {
-            console.log('controller color value changed' + event);
-            this.saveVideoFile.controllerColor = event;
-            $('.video-js .vjs-control-bar').css('background-color',  this.saveVideoFile.controllerColor);
-         }
+        this.saveVideoFile.controllerColor = event;
+        $('.video-js .vjs-control-bar').css('background-color',  this.saveVideoFile.controllerColor);
         this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {

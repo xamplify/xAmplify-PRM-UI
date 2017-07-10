@@ -39,6 +39,11 @@
 						</li>
 					</ul>
 				</div>
+				<div *ngIf="defaultPlayerSuccess" class="col-md-6"  id="defaultPlayerSettings"
+						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					   <strong> default player settings updated Successfully!</strong> 
+			      </div> 
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">
@@ -167,9 +172,10 @@
 										<div class="portlet-body">
 											<div class="tab-content">
 												<!-- PERSONAL INFO TAB -->
-												<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
+											<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
+											<!-- 		<div class="tab-pane active" id="tab_1_1" > -->
 													<div  class="alert alert-success alert-dismissable" id="update-profile-div-id" style="display: none">
-													 <a (click)="hideDiv('update-profile-div-id')" class="close" aria-label="close">×</a>
+													 <a (click)="hideDiv('update-profile-div-id')" class="close" aria-label="close">ï¿½</a>
 														<strong>Profile Updated Successfully</strong>
 													</div>
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
@@ -215,7 +221,7 @@
 											<!-- CHANGE AVATAR TAB -->
 												<div class="tab-pane" id="tab_1_2">
 													<div class="alert alert-success" id="profile-pic-upload-div" style="display: none">
-														<a (click)="hideDiv('profile-pic-upload-div')" class="close" aria-label="close">×</a>
+														<a (click)="hideDiv('profile-pic-upload-div')" class="close" aria-label="close">ï¿½</a>
 														<strong>Profile Picture Updated Successfully</strong>
 													</div>
 													<div *ngIf="profilePictueError" class="alert alert-danger">
@@ -282,12 +288,13 @@
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
 												<div class="tab-pane" id="tab_1_3" [ngBusy]="{busy: updatePasswordBusy, message: 'Please Wait...'}">
+													<!--  <div class="tab-pane" id="tab_1_3"> -->
 													<div id="update-password-div" class="alert alert-success" style="display: none;">
-														<a (click)="hideDiv('update-password-div')" class="close" aria-label="close">×</a>
+														<a (click)="hideDiv('update-password-div')" class="close" aria-label="close">ï¿½</a>
 														<strong>Password Updated Successfully</strong>
 													</div>
 													<div id="update-password-error-div" class="alert alert-danger" style="display: none;">
-														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">×</a>
+														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">ï¿½</a>
 														<strong>New Password should not be same as Current password</strong>
 													</div>
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
@@ -372,13 +379,13 @@
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5">
 													
-									                 <form role="form" [formGroup]="defaultPlayerForm" (ngSubmit)="UpdatePlayerSettings()">
-													<div class="form-group">
+									                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
+													<!--<div class="form-group">
 													  <label class="col-md-3 control-label" style="margin-top:-10px">Default Player Settings:</label>
 														<div class="col-md-9" style="margin-top: -11px;">
 															<ui-switch color="lightgreen" formControlName="defaultSettings"></ui-switch>
 														</div>
-												 	</div>
+												 	</div>-->
 														<div class="form-group">
 														<label class="col-md-3 control-label">Player Color:</label>
 														<div class="col-md-9" style="margin-top: 3px;">
@@ -411,82 +418,73 @@
 														<!--<label style="position: relative;right: -242px;top: -18px;">{{valueRange}}</label>-->
 														</div>
 													</div>
-													<div class="form-group">
+													<!--<div class="form-group">
 														<label class="col-md-3 control-label" style="margin-top: -42px;">Allow Fullscreen:</label>
 														<div class="col-md-3" style="position: absolute;top: 245px;right: 424px;">
 															<ui-switch color="lightblue" formControlName="allowFullscreen" ></ui-switch>
 														</div>
-												   	 </div>
-																<div class="portlet box red">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-cogs "></i>Controls of the player
-								</div>
-								<div class="tools">
-									<a> <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
-											size="small" (change)="controlPlayerChange($event)"></ui-switch>
-									</a> <a href="" class="reload"></a>
-								</div>
-							</div>
-							<div class="portlet-body form" *ngIf="controlPlayers">
-								<!-- <form class="form-horizontal" role="form" style="margin-left: 25%;"> -->
-								<div class="portlet-body form" data-initialized="1"
-									style="overflow: hidden; width: auto; height: auto">
-									<div class="form-body">
-										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Sharing:</label>
-											<div class="col-md-3">
-												<ui-switch color="lightblue" ></ui-switch>
-											</div>
-											<label class="col-md-3 control-label">Enable Settings:</label>
-											<div class="col-md-3">
-												<ui-switch color="red"  checked></ui-switch>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Fullscreen:</label>
-											<div class="col-md-3">
-												<ui-switch color="lightblue" ></ui-switch>
-											</div>
-											<label class="col-md-3 control-label">Allow Comments:</label>
-											<div class="col-md-3">
-												<ui-switch color="lightblue" ></ui-switch>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Likes:</label>
-											<div class="col-md-3">
-												<ui-switch color="lightblue" ></ui-switch>
-											</div>
-                                           	<label class="col-md-3 control-label">Enable Casting:</label>
-											<div class="col-md-3">
-												<ui-switch color="orange" ></ui-switch>
-											</div>
-
-										</div>
-										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Embed:</label>
-											<div class="col-md-3">
-											 <ui-switch color="red"  ></ui-switch>
-											</div>
-												<label class="col-md-3 control-label">360 video:</label>
-											<div class="col-md-3">
-											 <ui-switch color="blue"  ></ui-switch>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- </form> -->
-							</div>
-						</div>
-													 <!--<div class="form-group">
-														<label class="col-md-3 control-label">Call To Action:</label>
+												   	 </div>-->
+													<div class="form-group">
+														<label class="col-md-3 control-label">Allow Sharing:</label>
 														<div class="col-md-3">
-																 <ui-switch   color="lightgreen" formControlName="callACtion" > </ui-switch>
+															<ui-switch color="green" formControlName="allowSharing" (change)="allowSharing($event)"></ui-switch>
 														</div>
-													 </div>-->
-													  <div style="position: absolute;right: 646px; top: 511px;">
-														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
+														<label class="col-md-3 control-label">Enable Settings:</label>
+														<div class="col-md-3">
+															<ui-switch color="red"  formControlName="enableSettings"  checked></ui-switch>
+														</div>
+													 </div>
+														<div class="form-group">
+															<label class="col-md-3 control-label">Allow Fullscreen:</label>
+															<div class="col-md-3">
+																<ui-switch color="lightgreen" formControlName="allowFullscreen" (change)="changeFullscreen($event)" ></ui-switch>
+															</div>
+															<label class="col-md-3 control-label">Allow Comments:</label>
+															<div class="col-md-3">
+																<ui-switch color="lightblue"  formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-md-3 control-label">Allow Likes:</label>
+															<div class="col-md-3">
+																<ui-switch color="lightblue"  formControlName="allowLikes" (change)="allowLikes($event)"></ui-switch>
+															</div>
+															<label class="col-md-3 control-label">Enable Casting:</label>
+															<div class="col-md-3">
+																<ui-switch color="orange" formControlName="enableCasting"></ui-switch>
+															</div>
+														</div>											
+													<div class="form-group">
+														<label class="col-md-3 control-label">Allow Embed:</label>
+														<div class="col-md-3">
+														<ui-switch color="red" formControlName="allowEmbed" ></ui-switch>
+														</div>
+															<label class="col-md-3 control-label">360 video:</label>
+														<div class="col-md-3">
+														<ui-switch color="blue" formControlName="is360video" ></ui-switch>
+														</div>
+																	<!--</div>-->
+													</div>					
+													<!--<div class="portlet box red">
+													<div class="portlet-title">
+														<div class="caption">
+															<i class="fa fa-cogs "></i>Controls of the player
+														</div>
+														<div class="tools">
+															<a>  <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
+																	size="small" (change)="controlPlayerChange($event)"></ui-switch>
+															</a> <a href="" class="reload"></a>
+														</div>
+														</div>
+														<div class="portlet-body" >
+														<div class="portlet-body form" data-initialized="1"
+															style="overflow: hidden; width: auto; height: auto">
+														</div>
+														</div>
+													</div>-->
+													
+													  <div class="playerButton">
+														<button type="submit"  class="btn green-haze">Save Changes</button>
 														<input type="reset"  class="btn default" value="Cancel">
 													  </div>
 													</form>

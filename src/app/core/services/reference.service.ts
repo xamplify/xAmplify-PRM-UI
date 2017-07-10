@@ -25,15 +25,6 @@ export class ReferenceService {
     public videoTitles: string[];
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
     public URL: string = this.authenticationService.REST_URL + 'admin/';
-    public playerValues = {
-        allowFullscreen : true,
-        controllerColor : '#000',
-        playerColor : '#rrs',
-        enableSettings : true,
-        enableVideoController: true,
-        transparency : 100,
-        defaultSettings : true,
-    }
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger) {
         console.log('reference service constructor');
     }

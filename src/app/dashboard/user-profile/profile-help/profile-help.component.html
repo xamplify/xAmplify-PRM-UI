@@ -23,7 +23,7 @@
 				
 				<!-- BEGIN PAGE HEADER-->
 				<h3 class="page-title">
-				User Help <small>user help page sample</small>
+				User Help <!--<small>user help page sample</small>-->
 				</h3>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
@@ -32,15 +32,15 @@
 							<a [routerLink]="['../../dashboard']">Home</a>
 							<i class="fa fa-angle-right"></i>
 						</li>
-						<li>
+						<!--<li>
 							<a href="#">Pages</a>
 							<i class="fa fa-angle-right"></i>
-						</li>
+						</li>-->
 						<li>
-							<a href="#">User Help</a>
+							<a >User Help</a>
 						</li>
 					</ul>
-					<div class="page-toolbar">
+					<!--<div class="page-toolbar">
 						<div class="btn-group pull-right">
 							<button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
 							Actions <i class="fa fa-angle-down"></i>
@@ -62,28 +62,28 @@
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">
 					<div class="col-md-12">
 						<!-- BEGIN PROFILE SIDEBAR -->
-						<div class="profile-sidebar" style="width:250px;">
+						<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
 								<!-- SIDEBAR USERPIC -->
 								<div class="profile-userpic">
-									<img src="../../assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+									<img src="{{userProfileImage}}" class="img-responsive" alt="">
 								</div>
 								<!-- END SIDEBAR USERPIC -->
 								<!-- SIDEBAR USER TITLE -->
 								<div class="profile-usertitle">
 									<div class="profile-usertitle-name">
-										 Marcus Doe
+										 {{userData.displayName}}
 									</div>
 									<div class="profile-usertitle-job">
-										 C.E.O
+										{{userData.occupation}}
 									</div>
 								</div>
 								<!-- END SIDEBAR USER TITLE -->
@@ -136,8 +136,8 @@
 								</div>
 								<!-- END STAT -->
 								<div>
-									<h4 class="profile-desc-title">About Marcus Doe</h4>
-									<span class="profile-desc-text"> Lorem ipsum dolor sit amet diam nonummy nibh dolore. </span>
+									<h4 class="profile-desc-title">About {{userData.displayName}}</h4>
+									<span class="profile-desc-text">{{userData.description}} </span>
 									<div class="margin-top-20 profile-desc-link">
 										<i class="fa fa-globe"></i>
 										<a href="http://www.keenthemes.com">www.keenthemes.com</a>

@@ -93,7 +93,7 @@
               style="height: 299px; width: -webkit-fill-available;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>
 					<form #f="ngForm" novalidate>
-					<div class="col-xs-12 overlay-main">
+					<div class="col-xs-14 overlay-main">
 						<div class="flex" *ngIf="isFistNameChecked==true" >
 							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
 								class="form-control text-box m21" placeholder="First Name">
@@ -348,7 +348,7 @@
 											  (change)="defaultPlayerSettings($event)"></ui-switch>
 											</div>
 										</div>
-									<div *ngIf="defaultColors == false" [@fadeInOut]>
+									<div>
 										<div class="form-group">
 											<label class="col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
 											<div class="col-md-9">
@@ -543,7 +543,7 @@
 									</label>
 									<div class="col-md-9">
 										<input id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
-											placeholder="Hey I am here!" #lowertext>
+											placeholder="Hey I am here!" maxlength="56" #lowertext>
 											<!--<label *ngIf="lowerTextValid == false" style="color:red">*</label>-->
 									</div>
 								</div>

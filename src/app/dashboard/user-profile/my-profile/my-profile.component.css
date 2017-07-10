@@ -1,3 +1,7 @@
-.portLet{
-				    padding: 5px 5px 172px 10px;  /*92px */
-			}
+ .portLet{  padding: 5px 5px 50px 10px; }
+ .playerButton { position: absolute;right: 646px; top: 487px; }
+ .alertMessageCustom {
+      margin-left: 16px;
+      margin-top: -13px;
+      border-color: #93b593;
+  }

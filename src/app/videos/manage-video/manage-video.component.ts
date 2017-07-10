@@ -326,6 +326,11 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
            if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                    //  swal( 'Campaign Video!', error, 'error' );
                      this.campaignVideoMesg = error;
+                     this.campaignVideo = true;
+                       setTimeout(function() {
+                         $('#campaignVideo').slideUp(500);
+                         this.campaignVideo = false;
+                       }, 5000);
            } else {
               this.logger.error(this.errorPrepender + ' delete videos ():' + error);
               this.referenceService.showServerError(this.httpRequestLoader);
@@ -352,6 +357,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             console.log('ManageVidoes showAlert then()' + myData);
             self.deleteVideoFile(alias, position , videoName);
         });
+    }
+    closeBannerPopup(){
+        this.campaignVideo = false;
     }
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;

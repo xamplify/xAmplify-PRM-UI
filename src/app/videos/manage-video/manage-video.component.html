@@ -58,8 +58,8 @@
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					   <strong> {{deleteVideoName}} video deleted Successfully!</strong> 
 			      </div> 
-				  <div *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
-						 <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				  <div id="campaignVideo" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
+						 <a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
 						<strong>{{deleteVideoName}} {{campaignVideoMesg}}</strong>
 			     </div>
 					<div class="col-md-12">

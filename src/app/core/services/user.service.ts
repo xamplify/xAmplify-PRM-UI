@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import { User } from '../models/user';
-
+import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { AuthenticationService } from '../services/authentication.service';
 import { ReferenceService } from './reference.service';
 
@@ -17,6 +17,7 @@ export class UserService {
     private token: string;
 
     loggedInUserData:User;
+    defaultPlayerSettings: DefaultVideoPlayer;
 
 URL = this.authenticationService.REST_URL;
 
@@ -29,6 +30,18 @@ getUsers(): Observable<User[]> {
     // get users from api
     return this.http.get('/api/users', this.authenticationService.getOptions())
         .map((response: Response) => response.json());
+}
+
+getVideoDefaultSettings() {
+  return this.http.get(this.URL + 'admin/video_default_settings?userId=' + this.authenticationService.user.id+'&access_token='+this.authenticationService.access_token)
+	    .map(this.extractData)
+	    .catch(this.handleError);
+}
+updatePlayerSettings (defaultVideoSettings: DefaultVideoPlayer) {
+  return this.http.post(this.URL + 'admin/video_default_settings?userId=' + this.authenticationService.user.id+'&access_token='+this.authenticationService.access_token
+  , defaultVideoSettings)
+	    .map(this.extractData)
+	    .catch(this.handleError);
 }
 
 signUp(data:User){

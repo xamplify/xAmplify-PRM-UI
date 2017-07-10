@@ -36,23 +36,34 @@ export class MyProfileComponent implements OnInit {
     parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/profile-pic.gif' };
     className:string = "form-control ng-touched ng-dirty ng-valid";
     public uploader: FileUploader;
-    public compPlayerColor = '#a3d816';
-    public compControllerColor = '#d61b1b';
-    public valueRange = 100;
+    public compPlayerColor: string;
+    public compControllerColor: string;
+    public valueRange: number;
     public PlayerSettingsClicked: boolean;
-    public controlPlayers: boolean;
     profilePictueError:boolean = false;
     profilePictureErrorMessage:string  = "";
+    active = false;
+    defaultPlayerSuccess: boolean;
     constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService,
      private logger: Logger, private refService: ReferenceService) {
         this.PlayerSettingsClicked = false;
         this.userData = this.authenticationService.userProfile;
         console.log(this.userData);
-        this.defaultVideoPlayer = this.refService.playerValues;
-        this.compControllerColor = this.defaultVideoPlayer.controllerColor;
-        this.compPlayerColor = this.defaultVideoPlayer.playerColor;
-        this.controlPlayers = true;
-        console.log(this.defaultVideoPlayer);
+            this.defaultPlayerForm = new FormGroup({
+            defaultSettings: new FormControl(),
+            enableVideoController: new FormControl(),
+            playerColor: new FormControl(),
+            controllerColor: new FormControl(),
+            transparency: new FormControl(),
+            allowSharing: new FormControl(),
+            enableSettings: new FormControl(),
+            allowFullscreen: new FormControl(),
+            allowComments: new FormControl(),
+            allowLikes: new FormControl(),
+            enableCasting: new FormControl(),
+            allowEmbed: new FormControl(),
+            is360video:  new FormControl(),
+          }); 
         if (this.userData.firstName !== null ) {
             this.parentModel.displayName =  this.userData.firstName;
         }else {
@@ -121,7 +132,6 @@ export class MyProfileComponent implements OnInit {
         if(!this.profilePictueError){
             this.readFiles( inputFile.files );
         }
-      
     }
     readFile( file: any, reader: any, callback: any ) {
         reader.onload = () => {
@@ -135,7 +145,7 @@ export class MyProfileComponent implements OnInit {
         if ( index in files ) {
             this.readFile( files[index], reader, ( result: any ) => {
                 $( '#priview' ).attr( 'src', result );
-                this.readFiles( files, index + 1 );// Read the next file;
+                this.readFiles( files, index + 1 ); // Read the next file;
             });
         }
     }
@@ -144,10 +154,10 @@ export class MyProfileComponent implements OnInit {
             Metronic.init();
             Layout.init();
             Demo.init();
-            // Profile.init();
+            this.getVideoDefaultSettings();
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
-            this.defaultPlayerbuildForm();
+          //  this.defaultPlayerbuildForm();
             if ( this.userData.firstName != null ) {
                 this.userData.displayName = this.userData.firstName;
             } else {
@@ -424,49 +434,101 @@ export class MyProfileComponent implements OnInit {
             reader.readAsDataURL( input.files[0] );
         }
     }
-    
     hideDiv(divId:string){
         $('#'+divId).hide(600);
     }
-
-    
-    
+    getVideoDefaultSettings() {
+        this.userService.getVideoDefaultSettings().subscribe(
+           (result: any) => {
+               var body = result['_body'];
+                if ( body != "" ) {
+                this.active = true;  
+                var response = JSON.parse( body );
+                console.log(response);
+                this.userService.defaultPlayerSettings = response;
+                this.defaultVideoPlayer = response;
+                this.compControllerColor = response.controllerColor;
+                this.compPlayerColor = response.playerColor;
+                this.valueRange = response.transparency;
+                 this.defaultPlayerbuildForm();
+              }
+            }
+        );
+    }
     cssSettings(event: boolean) {
         this.PlayerSettingsClicked = event;
     }
 
     changeControllerColor(event: any) {
-
+    this.defaultVideoPlayer.controllerColor = event;
+    this.compControllerColor = event;
     }
     changePlayerColor(event: any) {
-
+      this.defaultVideoPlayer.playerColor = event;
+      this.compPlayerColor = event;
     }
     transperancyControllBar(value: any) {
     this.valueRange = value;
+    this.defaultVideoPlayer.transparency = value;
     }
-    UpdatePlayerSettings() {
-         this.defaultVideoPlayer = this.defaultPlayerForm.value;
-         const updateDefaultValues = {
-            'defaultSettings': this.defaultPlayerForm.value.defaultSettings,
-            'enableVideoController': this.defaultPlayerForm.value.enableVideoController,
-            'enableSettings': this.defaultPlayerForm.value.enableSettings,
-            'allowFullscreen': this.defaultPlayerForm.value.allowFullscreen,
-            'playerColor': this.defaultPlayerForm.value.playerColor,
-            'controllerColor': this.defaultPlayerForm.value.controllerColor,
-            'transparency': this.defaultPlayerForm.value.transparency,
-        }
+   allowLikes(event: any) {
+       this.defaultVideoPlayer.allowLikes = event;
+   }
+   allowComments(event: any) {
+       this.defaultVideoPlayer.allowComments = event;
+   }
+   allowSharing(event: any) {
+    this.defaultVideoPlayer.allowSharing = event;
+   }
+   changeFullscreen(event: any) {
+       this.defaultVideoPlayer.allowFullscreen = event;
+   }
+   UpdatePlayerSettingsValues() {
+        //  this.defaultVideoPlayer = this.defaultPlayerForm.value;
+        //  const updateDefaultValues = {
+        //  //   'defaultSettings': this.defaultPlayerForm.value.defaultSettings,
+        //     'enableVideoController': this.defaultPlayerForm.value.enableVideoController,
+        //     'playerColor': this.defaultPlayerForm.value.playerColor,
+        //     'controllerColor': this.defaultPlayerForm.value.controllerColor,
+        //     'transparency': this.defaultPlayerForm.value.transparency,
+        //     'allowSharing': this.defaultVideoPlayer.allowSharing,
+        //     'enableSettings': this.defaultVideoPlayer.enableSettings,
+        //     'allowFullscreen': this.defaultVideoPlayer.allowFullscreen,
+        //     'allowComments': this.defaultVideoPlayer.allowComments,
+        //     'allowLikes': this.defaultVideoPlayer.allowLikes,
+        //     'enableCasting': this.defaultVideoPlayer.enableCasting,
+        //     'allowEmbed': this.defaultVideoPlayer.allowEmbed,
+        //     'is360video': this.defaultVideoPlayer.is360video,
+        // }
+        this.defaultVideoPlayer.playerColor = this.compPlayerColor;
+        this.defaultVideoPlayer.controllerColor = this.compControllerColor;
+        this.defaultVideoPlayer.transparency = this.valueRange;
+
+        this.userService.updatePlayerSettings(this.defaultVideoPlayer)
+        .subscribe(
+            (result: any) => {
+                this.defaultPlayerSuccess = true;
+                this.getVideoDefaultSettings();
+            }
+        );
 
         // write service mthod to save the data in db
     }
     defaultPlayerbuildForm() {
         this.defaultPlayerForm = this.fb.group({
-            'defaultSettings': [this.defaultVideoPlayer.defaultSettings],
-            'enableVideoController': [this.defaultVideoPlayer.enableVideoController, Validators.required],
-            'enableSettings': [this.defaultVideoPlayer.enableSettings, Validators.required],
-            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen, Validators.required],
+          //  'defaultSettings': [this.defaultVideoPlayer.defaultSettings],
+            'enableVideoController': [this.defaultVideoPlayer.enableVideoController],
             'playerColor': [this.defaultVideoPlayer.playerColor],
             'controllerColor': [this.defaultVideoPlayer.controllerColor],
             'transparency': [this.defaultVideoPlayer.transparency],
+            'allowSharing': [this.defaultVideoPlayer.allowSharing],
+            'enableSettings': [this.defaultVideoPlayer.enableSettings, Validators.required],
+            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen, Validators.required],
+            'allowComments': [this.defaultVideoPlayer.allowComments, Validators.required],
+            'allowLikes': [this.defaultVideoPlayer.allowLikes, Validators.required],
+            'enableCasting': [this.defaultVideoPlayer.enableCasting, Validators.required],
+            'allowEmbed': [this.defaultVideoPlayer.allowEmbed, Validators.required],
+            'is360video': [this.defaultVideoPlayer.is360video],
         });
         this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
 
