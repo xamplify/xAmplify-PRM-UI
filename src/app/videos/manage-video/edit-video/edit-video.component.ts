@@ -51,7 +51,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     private compPlayerColor = '#e6e5e5';
     private compControllerColor = '#000';
     private videoJSplayer: any;
-    public playlist: any;
     public videoUrl: string;
     public imageFilesfirst: string;
     public imageFilessecond: string;
@@ -119,7 +118,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public publish: any;
     public formErrors: any;
     public value360: boolean;
-    public isCallAction: string;
     public embedSrcPath: string;
     public embedUrl: string;
     public ClipboardName: string;
@@ -132,6 +130,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public oldControllColor: string;
     public oldPlayerColor: string;
     public isValidTitle = false;
+    public editVideoTitle: string;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -139,6 +138,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.titleOfVideo = this.videoFileService.actionValue;
+        this.editVideoTitle = this.saveVideoFile.title;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         this.formErrors  = this.videoUtilService.formErrors;
@@ -763,7 +763,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.oldControllColor = this.saveVideoFile.controllerColor;
         }
 
-    /*    this.saveVideoFile = {
+        this.saveVideoFile = {
             id: this.saveVideoFile.id,
             title: this.saveVideoFile.title,
             viewBy: this.saveVideoFile.viewBy,
@@ -804,7 +804,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             uploadedBy: this.saveVideoFile.uploadedBy,
             alias: this.saveVideoFile.alias,
             is360video : this.saveVideoFile.is360video,
-        };*/
+            category : this.saveVideoFile.category,
+            defaultSetting : this.saveVideoFile.defaultSetting,
+        };
         try {
         this.buildForm();
         this.defaultVideoControllValues();
@@ -953,7 +955,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'startOfVideo': [this.saveVideoFile.startOfVideo],
             'endOfVideo': [this.saveVideoFile.endOfVideo],
             'is360video': [this.saveVideoFile.is360video],
-            'defaultSetting':[this.saveVideoFile.defaultSetting]
+            'defaultSetting': [this.saveVideoFile.defaultSetting],
+            'category' : [this.saveVideoFile.category],
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
 
@@ -1048,11 +1051,15 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 () => console.log(this.saveVideoFile);
     }
     validTitle(videoTitle: string) {
-         this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
+        if (this.saveVideoFile.action !== 'Save' && videoTitle === this.editVideoTitle) {
+             this.isValidTitle = false;
+         } else {
+           this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
+      }
     }
     checkVideoTitleAvailability(arr, val) {
     	console.log(arr.indexOf(val) > -1);
-    	return arr.indexOf(val) > -1 ;
+    	 return arr.indexOf(val) > -1 ;
     }
     saveCallToActionUserForm() {
      /*  $('#overlay-modal').hide();

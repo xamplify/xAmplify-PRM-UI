@@ -444,13 +444,75 @@
 															<ui-switch color="lightblue" formControlName="allowFullscreen" ></ui-switch>
 														</div>
 												   	 </div>
+																<div class="portlet box red">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class="fa fa-cogs "></i>Controls of the player
+								</div>
+								<div class="tools">
+									<a> <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
+											size="small" (change)="controlPlayerChange($event)"></ui-switch>
+									</a> <a href="" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form" *ngIf="controlPlayers">
+								<!-- <form class="form-horizontal" role="form" style="margin-left: 25%;"> -->
+								<div class="portlet-body form" data-initialized="1"
+									style="overflow: hidden; width: auto; height: auto">
+									<div class="form-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label">Allow Sharing:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" ></ui-switch>
+											</div>
+											<label class="col-md-3 control-label">Enable Settings:</label>
+											<div class="col-md-3">
+												<ui-switch color="red"  checked></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Allow Fullscreen:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" ></ui-switch>
+											</div>
+											<label class="col-md-3 control-label">Allow Comments:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" ></ui-switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Allow Likes:</label>
+											<div class="col-md-3">
+												<ui-switch color="lightblue" ></ui-switch>
+											</div>
+                                           	<label class="col-md-3 control-label">Enable Casting:</label>
+											<div class="col-md-3">
+												<ui-switch color="orange" ></ui-switch>
+											</div>
+
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Allow Embed:</label>
+											<div class="col-md-3">
+											 <ui-switch color="red"  ></ui-switch>
+											</div>
+												<label class="col-md-3 control-label">360 video:</label>
+											<div class="col-md-3">
+											 <ui-switch color="blue"  ></ui-switch>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- </form> -->
+							</div>
+						</div>
 													 <!--<div class="form-group">
 														<label class="col-md-3 control-label">Call To Action:</label>
 														<div class="col-md-3">
 																 <ui-switch   color="lightgreen" formControlName="callACtion" > </ui-switch>
 														</div>
 													 </div>-->
-													  <div style="position: absolute;right: 636px;top: 339px;">
+													  <div style="position: absolute;right: 646px; top: 511px;">
 														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
 														<input type="reset"  class="btn default" value="Cancel">
 													  </div>

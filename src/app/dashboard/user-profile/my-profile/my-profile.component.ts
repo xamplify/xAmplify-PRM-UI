@@ -36,6 +36,7 @@ export class MyProfileComponent implements OnInit {
     public compControllerColor = '#d61b1b';
     public valueRange = 100;
     public PlayerSettingsClicked: boolean;
+    public controlPlayers: boolean;
     constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService,
      private logger: Logger, private refService: ReferenceService) {
         this.PlayerSettingsClicked = false;
@@ -44,6 +45,7 @@ export class MyProfileComponent implements OnInit {
         this.defaultVideoPlayer = this.refService.playerValues;
         this.compControllerColor = this.defaultVideoPlayer.controllerColor;
         this.compPlayerColor = this.defaultVideoPlayer.playerColor;
+        this.controlPlayers = true;
         console.log(this.defaultVideoPlayer);
         if (this.userData.firstName !== null ) {
             this.parentModel.displayName =  this.userData.firstName;
@@ -67,17 +69,17 @@ export class MyProfileComponent implements OnInit {
         };
         this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
             console.log( response );
-            var imageFilePath = JSON.parse( response );
+            const imageFilePath = JSON.parse( response );
             console.log( imageFilePath );
             this.userProfileImage = imageFilePath['message'];
             this.parentModel.profilePicutrePath = imageFilePath['message'];
             this.uploader.queue.length = 0;
             this.clearImage();
             this.profileUploadSuccess = true;
-            $("#profile-pic-upload-div" ).show();
+            $('#profile-pic-upload-div').show();
             this.refService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-            setTimeout( function() { $( "#profile-pic-upload-div" ).hide( 500 ); }, 5000 );
+            setTimeout( function() { $( '#profile-pic-upload-div' ).hide( 500 ); }, 5000 );
         };
 
     }
@@ -103,7 +105,7 @@ export class MyProfileComponent implements OnInit {
         if ( index in files ) {
             this.readFile( files[index], reader, ( result: any ) => {
                 $( '#priview' ).attr( 'src', result );
-                this.readFiles( files, index + 1 );// Read the next file;
+                this.readFiles( files, index + 1 ); // Read the next file;
             });
         }
     }
@@ -128,10 +130,10 @@ export class MyProfileComponent implements OnInit {
 
     updatePassword() {
         console.log( this.updatePasswordForm.value );
-        var userPassword = {
+        const userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
-            'userId':this.authenticationService.user.id
+            'userId': this.authenticationService.user.id
         }
         this.userService.updatePassword(userPassword)
             .subscribe(
@@ -140,7 +142,7 @@ export class MyProfileComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     var message = response.message;
-                    if ( message == "Wrong Password" ) {
+                    if ( message === "Wrong Password" ) {
                         this.formErrors['oldPassword'] = message;
                     } else if ( response.message == "Password Updated Successfully" ) {
                         this.updatePasswordSuccess = true;
