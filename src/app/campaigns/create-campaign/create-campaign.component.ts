@@ -137,6 +137,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
             if(this.campaign.email!=undefined){
                 this.isValidEmail = true;
@@ -205,6 +206,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }//End Of Edit
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
+        }
+        if(this.refService.campaignVideoFile!=undefined){
+            /****************Creating Campaign From Manage VIdeos*******************************/
+            var selectedVideoId  = this.refService.campaignVideoFile.id;
+            if(selectedVideoId>0){
+                this.isVideo = true;
+                this.videoId = selectedVideoId;
+                this.isCampaignDraftVideo = true;
+                this.launchVideoPreview = this.refService.campaignVideoFile;
+                this.campaign.campaignVideoFile = this.refService.campaignVideoFile;
+                this.campaignType = this.refService.selectedCampaignType;
+                this.campaign.selectedVideoId = selectedVideoId;
+            }
         }
     }
    
@@ -393,7 +407,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#campaign_video_id_'+videoId).prop( "checked", true );
             this.launchVideoPreview = videoFile;
             this.isVideo = true;
-            if(!(this.isAdd) && this.campaign.campaignVideoFile!=undefined){
+            if((!(this.isAdd) && this.campaign.campaignVideoFile!=undefined) || this.refService.campaignVideoFile!=undefined){
                 if(videoId==this.campaign.campaignVideoFile.id){
                     $('#selectedVideoRow').addClass("active");
                 }else{
@@ -646,7 +660,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             contactIds.splice( $.inArray(contactId,this.campaign.userListIds) ,1 );
         }
         this.contactsUtility();
-       event.stopPropagation();
+        event.stopPropagation();
     }
     highlightContactRow(contactId:number,event:any){
         let isChecked = $('#'+contactId).is(':checked');
@@ -788,6 +802,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
+        console.log(emailTemplate.body);
         this.selectedEmailTemplateName = emailTemplate.name;
         $("#htmlContent").empty();
         $("#email-template-title").empty();
@@ -1023,7 +1038,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                })
            }
         }
-       
+        this.refService.campaignVideoFile = undefined;
+        this.refService.selectedCampaignType = "";
          }
     
     /*************************************************************Form Errors**************************************************************************************/

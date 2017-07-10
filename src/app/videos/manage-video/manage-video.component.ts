@@ -293,8 +293,8 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         .subscribe((videoFile: SaveVideoFile) => {
         console.log(video);
         this.referenceService.campaignVideoFile = videoFile;
-        console.log(this.referenceService.campaignVideoFile);
-        this.router.navigateByUrl('/home/campaigns');
+        this.referenceService.selectedCampaignType = 'video';
+        this.router.navigateByUrl('/home/campaigns/create-campaign');
         },
         (error: string) => {
             this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);

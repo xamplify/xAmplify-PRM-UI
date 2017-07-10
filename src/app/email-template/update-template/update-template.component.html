@@ -33,20 +33,31 @@
 								<div [hidden]="!duplicateTemplateName" class="alert alert-danger">Duplicate Name</div>
 							</div>
 							<div class="col-xs-0 col-md-6" style="margin-top:23px;">
-								<button type="button" class="btn btn-info" (click)="updateHtmlTemplate()" [disabled]="duplicateTemplateName ||invalidTemplateName ">Update Template</button>
+								<button type="button" class="btn btn-info" (click)="updateHtmlTemplate()" [disabled]="duplicateTemplateName ||invalidTemplateName ">Update</button>
 							</div>
 					</form>
 					<br/>
 				</div>
 				<div class="clearfix" style="margin: 5px;"></div>
 				<div class="panel panel-success">
-					<div class="panel-heading">
-						<button type="button" class="btn btn-link" (click)="showHtmlCode()">Code</button>
-					<button type="button" class="btn btn-link" (click)="showPreview()">Preview</button>
-					</div>
+						<ul class="nav nav-tabs">
+			   			 	<li>
+			   			 		<a data-toggle="tab" href="#code" (click)="showHtmlCode()">Code</a>
+			   			 	</li>
+			    			<li class="active">
+			    			<a data-toggle="tab" href="#preview" (click)="showPreview()">Preview</a></li>
+			  			</ul>
 					 <div class="panel-body">
-						<div [innerHTML]="htmlText" #myDiv *ngIf="isPreview"></div><!-- --Preview Div -->
-						<div class="html" contenteditable="true" id="textarea" [hidden]="showText">{{htmlText}}</div><!-- Content Div -->
+						 <div class="tab-content">
+						    <div id="code" class="tab-pane fade">
+						    	<div class="html" contenteditable="true" id="textarea"	[hidden]="showText" style="white-space:pre;">
+						    	{{htmlText}}
+						    </div>
+						    </div>
+						    <div id="preview" class="tab-pane fade in active">
+						     	 <div [innerHTML]="htmlText" #myDiv *ngIf="isPreview"></div>
+						    </div>
+			  			</div>
 					</div>
 				</div>
 			</div>

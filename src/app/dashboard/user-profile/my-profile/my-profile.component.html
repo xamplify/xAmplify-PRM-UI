@@ -1,9 +1,3 @@
-		  <style type="text/css">
-		    .portLet{
-				    padding: 5px 5px 172px 10px;  /*92px */
-			}
-			</style>
-
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -30,7 +24,7 @@
 				<!-- END STYLE CUSTOMIZER -->
 				<!-- BEGIN PAGE HEADER-->
 				<h3 class="page-title">
-				User Account <small>user account page sample</small>
+				User Account
 				<app-topnavbar [model]="parentModel"></app-topnavbar>
 				</h3>
 				<div class="page-bar">
@@ -41,36 +35,9 @@
 							<i class="fa fa-angle-right"></i>
 						</li>
 						<li>
-							<a>Pages</a>
-							<i class="fa fa-angle-right"></i>
-						</li>
-						<li>
 							<a>User Account</a>
 						</li>
 					</ul>
-					<div class="page-toolbar">
-						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
-							Actions <i class="fa fa-angle-down"></i>
-							</button>
-							<ul class="dropdown-menu pull-right" role="menu">
-								<li>
-									<a href="#">Action</a>
-								</li>
-								<li>
-									<a href="#">Another action</a>
-								</li>
-								<li>
-									<a href="#">Something else here</a>
-								</li>
-								<li class="divider">
-								</li>
-								<li>
-									<a href="#">Separated link</a>
-								</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
@@ -200,8 +167,9 @@
 										<div class="portlet-body">
 											<div class="tab-content">
 												<!-- PERSONAL INFO TAB -->
-												<div class="tab-pane active" id="tab_1_1">
-													<div *ngIf="updateProfileSuccess"  class="alert alert-success" id="update-profile-div-id">
+												<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
+													<div  class="alert alert-success alert-dismissable" id="update-profile-div-id" style="display: none">
+													 <a (click)="hideDiv('update-profile-div-id')" class="close" aria-label="close">×</a>
 														<strong>Profile Updated Successfully</strong>
 													</div>
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
@@ -237,32 +205,33 @@
 														</div>
 														<div class="form-group">
 															<label class="control-label">Website Url</label>
-															<input type="text"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl"  required/>
+															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl"  required/>
 															<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
 														</div>
 														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
-														<input type="reset"  class="btn default" value="Cancel">
 													</form>
 												</div>
 												<!-- END PERSONAL INFO TAB -->
-												<!-- CHANGE AVATAR TAB -->
+											<!-- CHANGE AVATAR TAB -->
 												<div class="tab-pane" id="tab_1_2">
-													<div *ngIf="profileUploadSuccess" class="alert alert-success" id="profile-pic-upload-div">
-													<strong>Profile Picture Updated Successfully</strong></div>
-													<p>
-														 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-													</p>
+													<div class="alert alert-success" id="profile-pic-upload-div" style="display: none">
+														<a (click)="hideDiv('profile-pic-upload-div')" class="close" aria-label="close">×</a>
+														<strong>Profile Picture Updated Successfully</strong>
+													</div>
+													<div *ngIf="profilePictueError" class="alert alert-danger">
+														<strong>{{profilePictureErrorMessage}}</strong>
+													</div>
 													<form action="#" role="form">
 														<div class="form-group">
 															<div class="fileinput fileinput-new" data-provides="fileinput">
 																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-																	<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" id="priview"/>
+																	<img src="assets/images/upload-profile.png" alt="" id="priview"/>
 																</div>
 																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
 																</div>
 																<div>
 																	<span class="btn default btn-file">Select image
-																	<input type="file" ng2FileSelect [uploader]="uploader" 
+																	<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
 																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" #input/> 
 																	</span>
 																	
@@ -270,15 +239,13 @@
 															</div>
 															
 															<div class="clearfix margin-top-10">
-																<span class="label label-danger">NOTE! </span>
-																<span>Attached image thumbnail is supported in Latest Firefox, Chrome, Opera, Safari and Internet Explorer 10 only </span>
+																<span class="label label-danger">NOTE!</span>
+																<span>Uploading Thumbnail is supported in latest browsers</span>
 															</div>
 														</div>
 														
 														<table class="table">
-													
 															<tbody>
-															
 																<tr *ngFor="let item of uploader.queue">
 																	<td><strong>{{ item?.file?.name }}</strong></td>
 																	<!-- <td *ngIf="uploader.isHTML5" nowrap>{{
@@ -303,7 +270,7 @@
 																			<span class="glyphicon glyphicon-upload"></span> Upload
 																		</button>
 																		 <button type="button" class="btn btn-danger btn-xs"
-								                                (click)="item.remove();clearImage()" data-dismiss="fileinput">
+								                                (click)="item.remove();clearImage()" data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading || item.isSuccess">
 								                            <span class="glyphicon glyphicon-trash"></span> Remove
 								                        </button>
 																	</td>
@@ -314,13 +281,19 @@
 												</div>
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
-												<div class="tab-pane" id="tab_1_3">
-													<div *ngIf="updatePasswordSuccess" id="update-password-div" class="alert alert-success">
-														<strong>Password Updated Successfully</strong></div>
+												<div class="tab-pane" id="tab_1_3" [ngBusy]="{busy: updatePasswordBusy, message: 'Please Wait...'}">
+													<div id="update-password-div" class="alert alert-success" style="display: none;">
+														<a (click)="hideDiv('update-password-div')" class="close" aria-label="close">×</a>
+														<strong>Password Updated Successfully</strong>
+													</div>
+													<div id="update-password-error-div" class="alert alert-danger" style="display: none;">
+														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">×</a>
+														<strong>New Password should not be same as Current password</strong>
+													</div>
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
 														<div class="form-group">
 															<label class="control-label">Current Password</label>
-															<input type="password" class="form-control"  formControlName="oldPassword" required="required"/>
+															<input type="password" [class]="className"  formControlName="oldPassword" required="required"/>
 															<div *ngIf="formErrors.oldPassword" class="alert alert-danger">{{formErrors.oldPassword}}</div>
 														</div>
 														<div class="form-group">

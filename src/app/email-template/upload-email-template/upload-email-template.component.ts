@@ -16,7 +16,7 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 @Component({
     selector: 'app-upload-email-template',
     templateUrl: './upload-email-template.component.html',
-    styleUrls: ['./upload-email-template.component.css','../update-template/CodeHighlighter.css'],
+    styleUrls: ['./upload-email-template.component.css'],
     providers: [EmailTemplate,HttpRequestLoader]
 })
 export class UploadEmailTemplateComponent implements OnInit {
@@ -41,9 +41,13 @@ export class UploadEmailTemplateComponent implements OnInit {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     isVideoTagError:boolean = false;
     videoTagsError:string = "";
+    isUploadFileError:boolean = false;
+    uploadFileErrorMessage:string = "";
+    videoTag:string = "";
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
             private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
+        this.videoTag = "<a href='<xtremandURL>'>\n   <img src='<xtremandImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
         this.loggedInUserId = this.authenticationService.user.id;
         emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
             (data: any) => {
@@ -54,7 +58,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         );
         this.uploader = new FileUploader({
             allowedMimeType: ['text/html'],
-            maxFileSize: 10 * 1024 * 1024,// 10 MB
+            maxFileSize:  1*1024*1024,// 10 MB
         });
         this.uploader.onAfterAddingFile = (file) => {
             file.withCredentials = false;
@@ -79,32 +83,50 @@ export class UploadEmailTemplateComponent implements OnInit {
 
 
     /****************Reading Uploaded File********************/
-    readFile(event: any) {
-        console.log(event);
-        swal({ title: 'Uploading File', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif", allowOutsideClick: false });
+    readFile(event: any ) {
+        var self = this;
         this.htmlText = "";
         let file: any;
         if (event.srcElement != undefined) {
             file = event.srcElement.files[0];
         } else {
-            console.log(event[0]);
             file = event[0];
         }
-
-        let reader: FileReader = new FileReader();
-        reader.onload = (e) => {
-            let htmlText: string = reader.result;
-            this.htmlText = htmlText;
-            $('.html').highlightCode('html', htmlText);
-            swal.close();
+        if(file!=undefined){
+            this.isUploadFileError = false;
+            let  extentionsArray = ["html"];
+            console.log(file);
+            let maxSize = 1*1024*1024;//1 Mb
+            let name = file.name;
+            let size = file.size;
+            let type = file.type;
+            console.log(name+"::::::::::"+size+":::::::::::"+type);
+            let ext = name.split('.').pop().toLowerCase();
+            if ($.inArray(ext, extentionsArray) == -1) {
+                this.isUploadFileError = true;
+                this.uploadFileErrorMessage = "Please Upload .html files only";
+            }
+            let fileSize = (size/ 1024 / 1024); //size in MB
+            if (size > maxSize) {
+                this.isUploadFileError = true;
+                this.uploadFileErrorMessage = "Maximum File Size is 10 MB";
+            }
+            if(!this.isUploadFileError){
+                let reader: FileReader = new FileReader();
+                reader.onload = (e) => {
+                        let htmlText: string = reader.result;
+                       this.htmlText= this.emailTemplateService.highLightHtml(htmlText);
+                        $('.html').html(this.htmlText);
+                    }
+            reader.readAsText(file);
+            this.isUploaded = true;
+            this.showText = false;
+            this.isPreview = false;
+            this.disable = true;
+            $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
+            }
         }
-        reader.readAsText(file);
-        this.isUploaded = true;
-        this.showText = false;
-        this.isPreview = false;
-        this.disable = true;
-        $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
-
+        
     }
 
 
@@ -126,6 +148,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.disable = false;
         this.isUploaded = false;
         $(".addfiles").attr("style", "float: left; margin-right: 9px; opacity:1");
+        $('#fileId').val('');
     }
 
     checkAvailableNames(value: any) {
@@ -155,7 +178,11 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = $('#textarea').text();
+        this.emailTemplate.body = $('#textarea').html()
+        .replace(/<br(\s*)\/*>/ig, '\n')
+        .replace(/<[p|div]\s/ig, '\n$0')
+        .replace(/(<([^>]+)>)/ig,"")
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
         this.emailTemplate.userDefined = true;
         this.emailTemplate.subject = "assets/images/file_upload_icon.png";
         this.emailTemplate.type = EmailTemplateType.UPLOADED;
@@ -200,5 +227,9 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     public fileOverAnother(e: any): void {
         this.hasAnotherDropZoneOver = e;
+    }
+    
+    hideDiv(divId:string){
+        $('#'+divId).hide(600);
     }
 }

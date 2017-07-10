@@ -27,4 +27,5 @@ export class Campaign {
     scheduleTime:string;
     regularEmail:boolean;   
     launched:boolean;
+    launchedOn:string = "";
 }

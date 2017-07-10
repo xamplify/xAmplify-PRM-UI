@@ -11,6 +11,7 @@ export class Pagination {
 		totalRecords:number;
 		editCampaign:boolean=false;
 		campaignUserListIds:number[]=[];
+        campaignId:number;
         campaignDefaultTemplate:boolean=false;
         emailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
         isLoading:boolean = false;

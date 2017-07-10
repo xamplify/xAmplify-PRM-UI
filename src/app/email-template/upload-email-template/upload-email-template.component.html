@@ -1,3 +1,13 @@
+<style type="text/css">
+.html {
+white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+
+}
+</style>
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 	<div class="page-content">
@@ -14,25 +24,7 @@
 		<div class="portlet light">
 			<div class="portlet-body">
 					<div class="col-xs-12 col-md-6">
-						<div style="float: left; width: 113px;">
-							<button type="button" class="btn green fileinput-button">
-								<span> <i class="fa fa-plus"></i>Upload File
-								</span>
-								
-								<input type="file" ng2FileSelect [uploader]="uploader"
-									class="form-control" name="htmlFile"
-									(change)="readFile($event)" accept="text/html" *ngIf="uploader.queue.length==0">
-							</button>
-						</div>
-					
-		             <!--  <div class="form-group files color">
-                		<h3>Upload Your File </h3>
-		                <input type="file" class="form-control">
-		              </div> -->
-					</div>
-					
-					<div class="col-xs-12 col-md-6">
-						<form>
+   						<form>
 							<h3>Template Name</h3> 
 							<input type="text" class="form-control ng-touched ng-dirty ng-invalid" id="templateName" required [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50"
 								placeholder="Please Enter Template Name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event)">
@@ -41,70 +33,65 @@
 							<div [hidden]="!duplicateTemplateName" class="alert alert-danger">Duplicate
 								Name</div>
 						</form>
+		              
+		              <div class="form-group files color">
+                		<h3>Upload Your File </h3>
+		                <input type="file" class="form-control"  ng2FileSelect [uploader]="uploader" id="fileId"
+									class="form-control" name="htmlFile"  accept="text/html"
+										(change)="readFile($event)"  #input>
+		              </div>
+		               <div *ngIf="isUploadFileError" class="alert alert-danger" style="margin-top: 40px;" id="upload-error-div">
+							<strong>{{uploadFileErrorMessage}}</strong>
+					 </div>
+					 <div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
 					</div>
-
-					<div class="col-xs-12" style="margin-top: 25px;">
-						<table class="table">
+					<div class="col-xs-12 col-md-6" style="padding: 4em;">
+						<table>
 							<tbody>
 								<tr
 									*ngFor="let item of uploader.queue;let last = last;let index = index">
-									<td *ngIf="last">{{ item?.file?.name }}</td>
-									<td *ngIf="last">
-										<div style="margin-left: 13px;">{{(item?.file?.size/1024/1024/1024).toFixed(2)
-											}} KB</div>
-									</td>
 									<td nowrap *ngIf="last">
-										<button type="button" class="btn btn-success btn-xs"
+										<button type="button" class="btn btn-success"
 											(click)="saveHtmlTemplate()"
 											[disabled]="!isTemplateName ||duplicateTemplateName ">
 											<span class="glyphicon glyphicon-upload"></span> Save
 										</button>
-										<button type="button" class="btn btn-danger btn-xs"
-											(click)="item.remove();removeFile()">
+										<button type="button" class="btn btn-danger"
+											(click)="item.remove();removeFile()"  data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading || item.isSuccess">
 											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
 									</td>
 								</tr>
-
 							</tbody>
 						</table>
-						<div></div>
+						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: 85px;">
+					 		<br><label for="info"><font style="color: red;">***Please copy and add this below content to your HTML template, before you upload</font></label>
+						 	<textarea class="form-control" style="cursor: default;resize: none;"rows="4" id="info" disabled="disabled">{{videoTag}}</textarea>
 					</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<p>
-							<span class="label label-danger"> NOTE: </span> &nbsp; This
-							plugins works only on Latest Chrome, Firefox, Safari, Opera &
-							Internet Explorer 10.
-						</p>
-						<div
-							[class.customDisableCss]='isDisable==true || fileChecked==true ||isFileProgress ==true'
-							ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-							(fileOver)="fileOverBase($event)" (onFileDrop)="readFile($event)"
-							[uploader]="uploader" class="well my-drop-zone">
-							<h3>Drop Files here</h3>
-						</div>
 					</div>
-					<div class="col-md-6">
-						<div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
+					<div class="col-xs-12" *ngIf="isUploaded">
+						<ul class="nav nav-tabs">
+			   			 	<li class="active">
+			   			 		<a data-toggle="tab" href="#code" (click)="showHtmlCode()">Code</a>
+			   			 	</li>
+			    			<li>
+			    			<a data-toggle="tab" href="#preview" (click)="showPreview()">Preview</a></li>
+			  			</ul>
+			
+			  <div class="tab-content">
+			    <div id="code" class="tab-pane fade in active">
+			    	<div class="html" contenteditable="true" id="textarea"	[hidden]="showText" style="white-space:pre;">
+			    	{{htmlText}}
+			    </div>
+			    </div>
+			    <div id="preview" class="tab-pane fade">
+			     	 <div [innerHTML]="htmlText" #myDiv *ngIf="isPreview"></div>
+			    </div>
+			  </div>
 					</div>
-				</div>
+			
 				<div class="clearfix" style="margin: 5px;"></div>
-				<div class="panel panel-success" *ngIf="isUploaded">
-					<div class="panel-heading">
-						<button type="button" class="btn btn-link"
-							(click)="showHtmlCode()">Code</button>
-						<button type="button" class="btn btn-link" (click)="showPreview()">Preview</button>
-					</div>
-					<div class="panel-body">
-						<div [innerHTML]="htmlText" #myDiv *ngIf="isPreview"></div>
-						<!-- --Preview Div -->
-						<div class="html" contenteditable="true" id="textarea"
-							[hidden]="showText">{{htmlText}}</div>
-						<!-- Content Div -->
-					</div>
-				</div>
+				
 			</div>
 			<!-- END PAGE CONTENT-->
 		</div>

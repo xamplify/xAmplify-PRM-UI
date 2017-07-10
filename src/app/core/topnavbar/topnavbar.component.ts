@@ -45,7 +45,6 @@ export class TopnavbarComponent implements OnInit {
                     error => {this.logger.error(this.refService.errorPrepender+" Constructor():"+error)},
                     () => console.log("Finished")
                 );
-      
     }
    
     

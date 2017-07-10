@@ -221,14 +221,12 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            );
        }else if(index==17 || index==1){
            //This is normal template
-           alert("In Progress");
-          /* this.emailTemplateService.isRegularUpload = true;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);*/
+           this.emailTemplateService.isRegularUpload = true;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
        }else if(index==16 || index==0){
            //This is video template
-           alert("In Progress");
-           /*this.emailTemplateService.isRegularUpload = false;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);*/
+           this.emailTemplateService.isRegularUpload = false;
+           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
        }
     }
     

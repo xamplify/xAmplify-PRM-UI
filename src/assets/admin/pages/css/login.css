@@ -9,7 +9,12 @@ Login page
 .login {
   /*background-color: #364150 !important;*/
 }
-
+.custom-label{
+	color: #fff;
+}
+.custom-text-box{
+	color: #fff;
+}
 .login .logo {
   margin: 0 auto;
   margin-top: 60px;

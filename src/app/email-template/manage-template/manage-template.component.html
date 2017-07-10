@@ -31,7 +31,7 @@
 								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic Template's</li>
 								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich Template's</li>
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video Template's</li>
-								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">RichVideo Template's</li>
+								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video Template's</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Template</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
@@ -55,6 +55,7 @@
 					<div class="row">
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 								<div class="portlet light block">
 									<div class="portlet-title">
@@ -73,6 +74,7 @@
 									</div>
 								</div>
 							</div>
+							</ng-container>
 					</div>
 				</div>
 				<div *ngIf="pagination.totalRecords>0">

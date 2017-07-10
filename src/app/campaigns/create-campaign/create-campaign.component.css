@@ -89,7 +89,7 @@ a.disabled {
 
 .step .successstep {
 	/*  color:#00a6e8;  */
-	color: #86dcfc;
+	color: #00a6e8;
 	vertical-align: central;
 }
 
@@ -191,7 +191,7 @@ a.disabled {
 	width: 35px;
 } */
 .table-filter tbody tr.active td {
-	background-color: #123456 !important;
+	background-color: #00a6e8 !important;
 	color: white;
 }
 
@@ -225,7 +225,7 @@ a.disabled {
 }
 
 .table tr.contact-list-selected td {
-	background-color: #123456 !important;
+	background-color: #00a6e8 !important;
 	color: white;
 }
 
@@ -303,7 +303,6 @@ a.disabled {
 	top: 8em;
 	left: 0px;
 	display: block;
-	height: 100%;
 	width: 100%;
 	z-index: 500;
 	text-align: center;

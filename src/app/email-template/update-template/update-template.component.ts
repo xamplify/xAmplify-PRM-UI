@@ -16,7 +16,7 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 @Component({
     selector: 'app-update-template',
     templateUrl: './update-template.component.html',
-    styleUrls: ['./update-template.component.css', './CodeHighlighter.css'],
+    styleUrls: ['./update-template.component.css'],
     providers: [EmailTemplate,HttpRequestLoader]
 })
 export class UpdateTemplateComponent implements OnInit, OnDestroy {
@@ -30,6 +30,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     public htmlText: string;
     model: any = {};
     public availableTemplateNames: Array<string>;
+    isClicked:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
@@ -47,7 +48,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.isPreview = true;
             this.htmlText = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
-            $('.html').highlightCode('html', this.htmlText);
         }
 
     }
@@ -78,7 +78,12 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     showHtmlCode() {
         this.isPreview = false;
         this.showText = false;
-        $('.html').highlightCode('html', $('#textarea').text());
+        if(!this.isClicked){
+            this.isClicked = true;
+            let text =  $('#textarea').text();
+            this.htmlText = this.emailTemplateService.highLightHtml(text);
+            $('.html').html(this.htmlText)
+        }
     }
 
     checkUpdatedAvailableNames(value: any) {
@@ -96,7 +101,11 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     updateHtmlTemplate() {
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = $('#textarea').text();
+        this.emailTemplate.body = $('#textarea').html()
+        .replace(/<br(\s*)\/*>/ig, '\n')
+        .replace(/<[p|div]\s/ig, '\n$0')
+        .replace(/(<([^>]+)>)/ig,"")
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
         this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {

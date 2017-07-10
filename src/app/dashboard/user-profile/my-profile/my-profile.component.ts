@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {Subscription} from 'rxjs';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
@@ -26,17 +27,22 @@ export class MyProfileComponent implements OnInit {
     public defaultVideoPlayer: DefaultVideoPlayer;
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
+    busy:Subscription;
+    updatePasswordBusy:Subscription;
     updatePasswordSuccess = false;
     profileUploadSuccess = false;
     userProfileImage: string = "assets/admin/pages/media/profile/icon-user-default.png";
     userData: User;
-    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/profile-pic.gif' };
+    className:string = "form-control ng-touched ng-dirty ng-valid";
     public uploader: FileUploader;
     public compPlayerColor = '#a3d816';
     public compControllerColor = '#d61b1b';
     public valueRange = 100;
     public PlayerSettingsClicked: boolean;
     public controlPlayers: boolean;
+    profilePictueError:boolean = false;
+    profilePictureErrorMessage:string  = "";
     constructor( private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService,
      private logger: Logger, private refService: ReferenceService) {
         this.PlayerSettingsClicked = false;
@@ -86,12 +92,36 @@ export class MyProfileComponent implements OnInit {
 
     clearImage() {
         $( 'div#previewImage > img' ).remove();
-        $( 'div#previewImage' ).append( '<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"/>' );
-        $( '#priview' ).attr( 'src', 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image' );
+        $( 'div#previewImage' ).append( '<img src="assets/images/upload-profile.png"/>' );
+        $( '#priview' ).attr( 'src', 'assets/images/upload-profile.png' );
 
     }
     fileChange( inputFile: any, event: any ) {
-        this.readFiles( inputFile.files );
+        console.log(inputFile.files);
+        this.refService.goToTop();
+        $("#profile-pic-upload-div" ).hide();
+        this.profilePictueError = false;
+        let  extentionsArray = ["jpg","JPG","jpeg","JPEG","png","PNG"];
+        let maxSize = 100*1024*1024;//100Mb
+        let file = inputFile.files[0];
+        let name = file.name;
+        let size = file.size;
+        let type = file.type;
+        console.log(name+"::::::::::"+size+":::::::::::"+type);
+        let ext = name.split('.').pop().toLowerCase();
+        if ($.inArray(ext, extentionsArray) == -1) {
+            this.profilePictueError = true;
+            this.profilePictureErrorMessage = "Please Upload Image Files Only";
+        }
+        let fileSize = (size/ 1024 / 1024); //size in MB
+        if (fileSize > maxSize) {
+            this.profilePictueError = true;
+            this.profilePictureErrorMessage = "Maximum File Size is 100 MB";
+        }
+        if(!this.profilePictueError){
+            this.readFiles( inputFile.files );
+        }
+      
     }
     readFile( file: any, reader: any, callback: any ) {
         reader.onload = () => {
@@ -105,7 +135,7 @@ export class MyProfileComponent implements OnInit {
         if ( index in files ) {
             this.readFile( files[index], reader, ( result: any ) => {
                 $( '#priview' ).attr( 'src', result );
-                this.readFiles( files, index + 1 ); // Read the next file;
+                this.readFiles( files, index + 1 );// Read the next file;
             });
         }
     }
@@ -130,25 +160,38 @@ export class MyProfileComponent implements OnInit {
 
     updatePassword() {
         console.log( this.updatePasswordForm.value );
-        const userPassword = {
+        $('#update-password-error-div').hide();
+        $("#update-password-div" ).hide();
+        var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
-            'userId': this.authenticationService.user.id
+            'userId':this.authenticationService.user.id
         }
-        this.userService.updatePassword(userPassword)
+        if(this.updatePasswordForm.value.oldPassword==this.updatePasswordForm.value.newPassword){
+            $('#update-password-error-div').show(600);
+        }else{
+            $('#update-password-error-div').hide();
+            this.updatePasswordBusy = this.userService.updatePassword(userPassword)
             .subscribe(
             data => {
                 var body = data['_body'];
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     var message = response.message;
-                    if ( message === "Wrong Password" ) {
+                    if ( message == "Wrong Password" ) {
                         this.formErrors['oldPassword'] = message;
+                        if(this.className=="form-control ng-touched ng-dirty ng-invalid"){
+                            this.className = "form-control ng-dirty ng-invalid ng-touched";
+                        }else if(this.className = "form-control ng-dirty ng-invalid ng-touched"){
+                            this.className = "form-control ng-touched ng-dirty ng-invalid";
+                        }else{
+                            this.className = "form-control ng-touched ng-dirty ng-valid";
+                        }
+                       
+                       
                     } else if ( response.message == "Password Updated Successfully" ) {
-                        this.updatePasswordSuccess = true;
-                        $("#update-password-div" ).show();
+                        $("#update-password-div" ).show(600);
                         this.updatePasswordForm.reset();
-                        setTimeout( function() { $( "#update-password-div" ).hide( 500 ); }, 5000 );
                     } else {
                         this.logger.error(this.refService.errorPrepender+" updatePassword():"+data);
                     }
@@ -163,6 +206,7 @@ export class MyProfileComponent implements OnInit {
             },
             () => console.log( "Done" )
             );
+        }
         return false;
 
     }
@@ -276,7 +320,8 @@ export class MyProfileComponent implements OnInit {
             'required': 'About required.'
         },
         'websiteUrl': {
-            'required': 'WebsiteUrl required.'
+            'required': 'WebsiteUrl required.',
+            'pattern': 'Invalid Url Pattern'
         }
 
 
@@ -284,8 +329,8 @@ export class MyProfileComponent implements OnInit {
 
     /*******************Update User Profile*************************************/
     updateUserProfileForm: FormGroup;
-    updateProfileSuccess = false;
     validateUpdateUserProfileForm() {
+        var urlPatternRegEx = "https?://.+";
         console.log( this.userData );
         this.updateUserProfileForm = this.fb.group( {
             'firstName': [this.userData.firstName, Validators.required],
@@ -294,7 +339,7 @@ export class MyProfileComponent implements OnInit {
             'interests': [this.userData.interests, Validators.required],
             'occupation': [this.userData.occupation, Validators.required],
             'description': [this.userData.description, Validators.required],
-            'websiteUrl': [this.userData.websiteUrl, Validators.required],
+            'websiteUrl': [this.userData.websiteUrl, [Validators.required, Validators.pattern( urlPatternRegEx )]],
 
         });
 
@@ -323,39 +368,13 @@ export class MyProfileComponent implements OnInit {
             }
         }
     }
-    defaultPlayerbuildForm() {
-        this.defaultPlayerForm = this.fb.group({
-            'defaultSettings': [this.defaultVideoPlayer.defaultSettings],
-            'enableVideoController': [this.defaultVideoPlayer.enableVideoController, Validators.required],
-            'enableSettings': [this.defaultVideoPlayer.enableSettings, Validators.required],
-            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen, Validators.required],
-            'playerColor': [this.defaultVideoPlayer.playerColor],
-            'controllerColor': [this.defaultVideoPlayer.controllerColor],
-            'transparency': [this.defaultVideoPlayer.transparency],
-        });
-        this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
 
-        this.onDefaultPlayerValueChanged();
-    }
 
-    onDefaultPlayerValueChanged(data?: any) {
-        if (!this.defaultPlayerForm) { return; }
-        const form = this.defaultPlayerForm;
-        for (const field in this.formErrors) {
-            this.formErrors[field] = '';
-            const control = form.get(field);
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
-     
     updateUserProfile() {
         console.log( this.updateUserProfileForm.value );
-        this.userService.updateUserProfile( this.updateUserProfileForm.value,this.authenticationService.user.id )
+        this.refService.goToTop();
+        $( "#update-profile-div-id" ).hide();
+        this.busy  = this.userService.updateUserProfile( this.updateUserProfileForm.value,this.authenticationService.user.id )
             .subscribe(
             data => {
                 var body = data['_body'];
@@ -363,13 +382,11 @@ export class MyProfileComponent implements OnInit {
                     var response = JSON.parse( body );
                     var message = response.message;
                     if ( message == "User Updated" ) {
-                        this.updateProfileSuccess = true;
-                        $( "#update-profile-div-id" ).show();
+                        setTimeout( function() { $( "#update-profile-div-id" ).show(500); }, 1000 );
                         this.userData = this.updateUserProfileForm.value;
                         this.userData.displayName = this.updateUserProfileForm.value.firstName;
                         this.parentModel.displayName =this.updateUserProfileForm.value.firstName;
                         this.refService.topNavBarUserDetails.displayName = this.parentModel.displayName;
-                        setTimeout( function() { $( "#update-profile-div-id" ).hide( 500 ); }, 5000 );
                         this.userService.getUserByUserName(this.authenticationService.user.emailId).
                         subscribe(
                                 res => {
@@ -407,6 +424,13 @@ export class MyProfileComponent implements OnInit {
             reader.readAsDataURL( input.files[0] );
         }
     }
+    
+    hideDiv(divId:string){
+        $('#'+divId).hide(600);
+    }
+
+    
+    
     cssSettings(event: boolean) {
         this.PlayerSettingsClicked = event;
     }
@@ -434,5 +458,33 @@ export class MyProfileComponent implements OnInit {
 
         // write service mthod to save the data in db
     }
+    defaultPlayerbuildForm() {
+        this.defaultPlayerForm = this.fb.group({
+            'defaultSettings': [this.defaultVideoPlayer.defaultSettings],
+            'enableVideoController': [this.defaultVideoPlayer.enableVideoController, Validators.required],
+            'enableSettings': [this.defaultVideoPlayer.enableSettings, Validators.required],
+            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen, Validators.required],
+            'playerColor': [this.defaultVideoPlayer.playerColor],
+            'controllerColor': [this.defaultVideoPlayer.controllerColor],
+            'transparency': [this.defaultVideoPlayer.transparency],
+        });
+        this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
 
+        this.onDefaultPlayerValueChanged();
+    }
+
+    onDefaultPlayerValueChanged(data?: any) {
+        if (!this.defaultPlayerForm) { return; }
+        const form = this.defaultPlayerForm;
+        for (const field in this.formErrors) {
+            this.formErrors[field] = '';
+            const control = form.get(field);
+            if (control && control.dirty && !control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+    }
 }

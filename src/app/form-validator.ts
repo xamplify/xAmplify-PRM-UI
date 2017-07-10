@@ -13,6 +13,18 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
     }
   }
 
+export function validateCountryName(countryKey: string): ValidatorFn {
+    return (group: FormGroup): {[key: string]: any} => {
+      let country = group.controls[countryKey];
+      alert(country.value);
+      if (country.value !== "Please Select Country") {
+        return {
+          invalidCountry: true
+        };
+      }
+    }
+  }
+
 export function validateCampaignSchedule(scheduleType: string, date: string): ValidatorFn {
     return (group: FormGroup): {[key: string]: any} => {
       let schedule = group.controls[scheduleType];

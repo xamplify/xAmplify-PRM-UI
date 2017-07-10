@@ -61,29 +61,43 @@
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 								<div *ngFor="let campaign of pagination.pagedItems">
-									<div class="col-md-3 col-sm-4 mix category_1 mix_all"	style="display: block; opacity: 1;" id="campaignListDiv_{{campaign.campaignId}}">
-										<div class="mix-inner">
-											<img class="img-responsive"
-												src="assets/admin/pages/media/works/img1.jpg" alt="">
-											<div class="mix-details-fill">
-												<h4>{{campaign.campaignName}}</h4>
-												<div style="top: 7%; position: relative;">
-													<a *ngIf="campaign.launched==false" class="mix-preview4 fancybox-button" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
-														<i class="fa fa-pencil-square-o"></i>
-													</a> 
-													<a class="mix-preview6 fancybox-button" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
-														<i class="fa fa-trash"></i>
-													</a>
+												<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
+										    <div id="container">
+										    	<h3 *ngIf="campaign.launched" class="launched">Launched<span class="launched-arrow"></span></h3> 
+										    	<h3 *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" class="saved">Scheduled<span class="saved-arrow"></span></h3> 
+										    	<h3 *ngIf="!campaign.launched && campaign.launchedOn?.length==0" class="saved">Saved<span class="saved-arrow"></span></h3> 
+										    </div>
+											<div class="mix-inner">
+												<img *ngIf="!campaign.regularEmail && campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 168px;" alt="No Image Found">
+												<img *ngIf="!campaign.regularEmail && !campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 168px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+												<img *ngIf="campaign.regularEmail && campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 168px;" alt="No Image Found">
+												<img *ngIf="campaign.regularEmail && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 168px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+												<div class="mix-details" style="z-index: 700;padding: 7px;">
+													<h4>{{campaign.campaignName}}</h4>
+													<div style="top: 2%; position: relative; margin-left: 5px;">
+													</div>
+													<div style="top: 30%; position: relative;">
+														<a *ngIf="campaign.launched==false" class="mix-preview4 fancybox-button" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
+															<i class="fa fa-pencil-square-o"></i>
+														</a> 
+														<a class="mix-preview6 fancybox-button" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
+															<i class="fa fa-trash"></i>
+														</a>
+													</div>
+													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">
+														<b  *ngIf="campaign.launched">Launched On</b>
+														<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved For</b>
+													</span>
+												    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;" >
+												    	<b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b>
+												    	<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" >{{campaign.endTime}}</b>
+												    </span>
 												</div>
-												<span *ngIf="campaign.launched==false" align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">
-													<img alt="" src="assets/images/draft.png">
-												</span>
-												<span *ngIf="campaign.launched==true" align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">
-													<img alt="" src="assets/images/launched.png">
-												</span>
 											</div>
+											<div>
+										 </div>
 										</div>
-									</div>
 								</div>
 							</ng-container>	
 							</div>
