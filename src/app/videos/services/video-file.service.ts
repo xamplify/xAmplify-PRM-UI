@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import { SaveVideoFile } from '../models/save-video-file';
 import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';
-import { XtremandLog } from '../models/xtremand-log';
+import { ActionLog } from '../models/action';
 import { User } from '../../core/models/user';
 declare var swal: any;
 
@@ -20,7 +20,7 @@ export class VideoFileService {
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
-    public xtremandLog: XtremandLog;
+    public actionLog: ActionLog;
     public viewBytemp: string;
     public logEnded: number;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
@@ -124,12 +124,12 @@ export class VideoFileService {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
-    logVideoActions(xtremandlog: XtremandLog) {
-       console.log(xtremandlog);
+    logVideoActions(actionLog: ActionLog) {
+       console.log(actionLog);
         try {
         //    if(xtremandlog.actionId !== this.logEnded) {
-            const url = this.authenticationService.REST_URL + 'user/logVideoAction';
-            return this.http.post(url, xtremandlog)
+            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
+            return this.http.post(url, actionLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         //    }

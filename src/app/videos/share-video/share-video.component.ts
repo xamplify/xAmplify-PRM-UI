@@ -10,7 +10,7 @@ import { VideoUtilService } from '../services/video-util.service';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
-import { XtremandLog } from '../models/xtremand-log';
+import { ActionLog } from '../models/action';
 declare var $, videojs: any;
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { Ng2DeviceService } from 'ng2-device-detector';
@@ -37,7 +37,7 @@ enum LogAction {
   selector: 'app-share-video',
   templateUrl: './share-video.component.html',
   styleUrls: ['../../../assets/css/video-css/video-js.custom.css'],
-  providers: [VideoUtilService, XtremandLog]
+  providers: [VideoUtilService, ActionLog]
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
 embedVideoFile: SaveVideoFile;
@@ -75,7 +75,7 @@ public persons;
 public replyVideo: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
-             private http: Http, private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
+             private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.embedUrl = document.location.href;
@@ -372,37 +372,37 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                        $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                        if (self.replyVideo === true) {
-                          self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.actionLog.actionId = self.LogAction.replyVideo;
                           self.replyVideo = false;
                      } else {
-                          self.xtremandLog.actionId = self.LogAction.playVideo;
+                          self.actionLog.actionId = self.LogAction.playVideo;
                      }
-                     self.xtremandLog.startTime = new Date();
-                     self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     console.log(self.xtremandLog.actionId);
-                     self.videoLogAction(self.xtremandLog);
+                     self.actionLog.startTime = new Date();
+                     self.actionLog.endTime = new Date();
+                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     console.log(self.actionLog.actionId);
+                     self.videoLogAction(self.actionLog);
                });
                  this.on('pause', function() {
-                  if (self.xtremandLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
+                  if (self.actionLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                     self.xtremandLog.actionId = self.LogAction.pauseVideo;
-                     self.xtremandLog.startTime = new Date();
-                     self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.videoLogAction(self.xtremandLog);
+                     self.actionLog.actionId = self.LogAction.pauseVideo;
+                     self.actionLog.startTime = new Date();
+                     self.actionLog.endTime = new Date();
+                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.videoLogAction(self.actionLog);
                      }
                   });
                 this.on('seeking', function() {
                       const seekigTime  = self.trimCurrentTime(player.currentTime());
-                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                     self.xtremandLog.startTime = new Date();
-                     self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = startDuration;
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.videoLogAction(self.xtremandLog);
+                     self.actionLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                     self.actionLog.startTime = new Date();
+                     self.actionLog.endTime = new Date();
+                     self.actionLog.startDuration = startDuration;
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.videoLogAction(self.actionLog);
                 });
                 this.on('timeupdate', function() {
                    startDuration = self.trimCurrentTime(player.currentTime());
@@ -412,12 +412,12 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     console.log(time);
                     self.replyVideo = true;
                     console.log('video ended attempts' + self.replyVideo);
-                    self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
-                    self.xtremandLog.startTime = new Date();
-                    self.xtremandLog.endTime = new Date();
-                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.videoLogAction(self.xtremandLog);
+                    self.actionLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
+                    self.actionLog.startTime = new Date();
+                    self.actionLog.endTime = new Date();
+                    self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.videoLogAction(self.actionLog);
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
                      $('#videoId').append( $('#overlay-modal').show());
@@ -517,26 +517,24 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
  }
  xtremandLogDefaultActions() {
         // router info
-        this.xtremandLog.userAlias = null;
-        this.xtremandLog.videoAlias = this.embedVideoFile.alias;
-        this.xtremandLog.campaignAlias = null;
+        this.actionLog.videoAlias = this.embedVideoFile.alias;
         // device detector
-        this.xtremandLog.deviceType = this.deviceInfo.device;
-        this.xtremandLog.os = this.deviceInfo.os;
+        this.actionLog.deviceType = this.deviceInfo.device;
+        this.actionLog.os = this.deviceInfo.os;
         // location detector
-         console.log(this.xtremandLog);
-        this.xtremandLog.sessionId = this.sessionId;
+         console.log(this.actionLog);
+        this.actionLog.sessionId = this.sessionId;
       }
     defaultLocationJsonValues(data: any) {
-        this.xtremandLog.city = data.city;
-        this.xtremandLog.country = data.country;
-        this.xtremandLog.isp = data.isp;
-        this.xtremandLog.ipAddress = data.query;
-        this.xtremandLog.state = data.regionName;
-        this.xtremandLog.zip = data.zip;
-        this.xtremandLog.latitude = data.lat;
-        this.xtremandLog.longitude = data.lon;
-        this.xtremandLog.countryCode = data.countryCode;
+        this.actionLog.city = data.city;
+        this.actionLog.country = data.country;
+        this.actionLog.isp = data.isp;
+        this.actionLog.ipAddress = data.query;
+        this.actionLog.state = data.regionName;
+        this.actionLog.zip = data.zip;
+        this.actionLog.latitude = data.lat;
+        this.actionLog.longitude = data.lon;
+        this.actionLog.countryCode = data.countryCode;
     }
  loacationDetails() {
     this.videoFileService.getJSONLocation()
@@ -551,11 +549,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
     this.sessionId = UUID.UUID();
     console.log(this.sessionId);
   }
-   videoLogAction(xtremandLog: XtremandLog) {
-       this.videoFileService.logVideoActions(xtremandLog).subscribe(
+   videoLogAction(actionLog: ActionLog) {
+       this.videoFileService.logVideoActions(actionLog).subscribe(
        (result: any) => {
          console.log('successfully logged the actions');
-         console.log(this.xtremandLog.actionId);
+         console.log(this.actionLog.actionId);
      });
     }
   ngOnDestroy() {

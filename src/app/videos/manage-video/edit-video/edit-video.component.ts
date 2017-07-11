@@ -40,6 +40,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
 
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
     public saveVideoFile: SaveVideoFile;
+    public tempVideoFile: SaveVideoFile;
     public categories: Category[];
     public uploader: FileUploader;
     public user: User = new User();
@@ -50,8 +51,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
-    private compPlayerColor = '#e6e5e5';
-    private compControllerColor = '#000';
+    private compPlayerColor: string;
+    private compControllerColor: string;
     private videoJSplayer: any;
     public videoUrl: string;
     public imageFilesfirst: string;
@@ -97,7 +98,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     videosize = '640 × 360';
     public embedFullScreen = 'allowfullscreen';
     isFullscreen: boolean;
-    fullScreen: boolean;
     enableCalltoAction: boolean;
     public valueRange: number;
     public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
@@ -125,21 +125,33 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public ClipboardName: string;
     public disableStart: boolean;
     public disableEnd: boolean;
-    public loadCallToAction: boolean;
+    public disablePlayerSetting: boolean;
     public upperTextValid: boolean;
     public lowerTextValid: boolean;
-    public defaultColors: boolean;
-    public oldControllColor: string;
-    public oldPlayerColor: string;
     public isValidTitle = false;
     public editVideoTitle: string;
     public defaultDisabled = true;
+    public defaultSettingValue: boolean;
+    newEnableController: boolean;
+    newComments: boolean;
+    newFullScreen: boolean;
+    newAllowLikes: boolean;
+    newAllowEmbed: boolean;
+    newEnableCasting: boolean;
+    newEnableSetting: boolean;
+    newAllowSharing: boolean;
+    newValue360: boolean;
+    disablePlayerSettingnew: boolean;
+    loadRangeDisable: boolean;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
         private authenticationService: AuthenticationService,
         private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
+        this.tempVideoFile = this.videoFileService.saveVideoFile;
+        this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
+        this.defaultSettingValue = this.saveVideoFile.defaultSetting;
         this.titleOfVideo = this.videoFileService.actionValue;
         this.editVideoTitle = this.saveVideoFile.title;
         this.videoSizes = this.videoUtilService.videoSizes;
@@ -154,6 +166,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.model.email_id = this.authenticationService.user.emailId;
         this.firstName = this.authenticationService.user.firstName;
         this.lastName = this.authenticationService.user.lastName;
+        this.isFistNameChecked = this.saveVideoFile.name;
+        this.isSkipChecked = this.saveVideoFile.skip;
         this.is360Value = this.value360 =  this.saveVideoFile.is360video;
         if ( this.videoUtilService.validateEmail(this.model.email_id) ) {
               this.isOverlay = false;
@@ -302,11 +316,30 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     colorControlChange(event: boolean) {
         this.colorControl = event;
         this.titleDiv  = this.controlPlayers = this.callaction = false;
-       // this.transperancyControllBar(this.valueRange);
+        const disable = this;
+        this.loadRangeDisable = false;
+          setTimeout(function() {
+              if (disable.defaultSettingValue === true) {
+                 disable.disableRange(true);
+                 disable.disablePlayerSettingnew = true;
+              } else {
+                 disable.disableRange(false);
+                 disable.disablePlayerSettingnew = false;
+              }
+          }, 1);
     }
     controlPlayerChange(event: any) {
         this.controlPlayers = event;
-        this.colorControl = this.titleDiv = this.callaction = false;
+        this.colorControl = this.titleDiv = this.callaction = false; const disable = this;
+        this.loadRangeDisable = false; 
+          setTimeout(function() {
+              if (disable.defaultSettingValue === true) {
+                 disable.disablePlayerSettingnew = true;
+              } else {
+                 disable.disablePlayerSettingnew = false;
+              }
+          }, 1);
+
     }
     callToActionChange(event: any) {
         this.callaction = event;
@@ -322,6 +355,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
          //   disable.loadCallToAction = false;
           }, 1);
       //   }
+    }
+    disableRange(event: boolean) {
+         (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event;
     }
   // like and dis like methods
     likesValuesDemo() {
@@ -473,33 +509,60 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     allowComments(event: boolean) {
         this.comments = event;
         this.saveVideoFile.allowComments = this.comments;
+        this.newComments = event;
         console.log('allow comments after event' + this.comments);
     }
     allowLikes(event: boolean) {
         this.likes = event;
         this.saveVideoFile.allowLikes = this.likes;
+        this.newAllowLikes = event;
         console.log('allow comments after event' + this.likes);
     }
-    defaultPlayerSettings(event: boolean) {
+    defaultPlayerSettingsValues(event: boolean) {
         if (event === true ) {
-            this.defaultColors = true;
-            this.compPlayerColor  = "#4wet";
-            this.compControllerColor = '#000';
-            this.valueRange = 100;
+            this.disablePlayerSettingnew = true;
+            if (this.loadRangeDisable !== true) {
+                 (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event; }
+            this.compPlayerColor  = this.defaultPlayerValues.playerColor;
+            this.compControllerColor = this.defaultPlayerValues.controllerColor;
+            this.valueRange = this.defaultPlayerValues.transparency;
             this.changePlayerColor( this.compPlayerColor);
             this.changeControllerColor(this.compControllerColor);
+            this.enableVideoControllers(this.defaultPlayerValues.enableVideoController);
+            this.newEnableController = this.defaultPlayerValues.enableVideoController;
+            this.newComments = this.defaultPlayerValues.allowComments;
+            this.newFullScreen =  this.defaultPlayerValues.allowFullscreen;
+            this.newAllowLikes =  this.defaultPlayerValues.allowLikes;
+            this.newAllowEmbed =  this.defaultPlayerValues.allowEmbed;
+            this.newEnableCasting = this.defaultPlayerValues.enableCasting;
+            this.newEnableSetting = this.defaultPlayerValues.enableSettings;
+            this.newAllowSharing =  this.defaultPlayerValues.allowSharing;
+            this.newValue360 = this.defaultPlayerValues.is360video;
         } else {
-            this.defaultColors = false;
-            this.valueRange = this.saveVideoFile.transparency;
-            this.changeControllerColor(this.oldControllColor);
-            this.changePlayerColor(this.oldPlayerColor);
-            this.compPlayerColor  = this.oldPlayerColor;
-            this.compControllerColor = this.oldControllColor;
+           if (this.loadRangeDisable !== true) {
+                (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event;
+            }
+            this.disablePlayerSettingnew = false;
+            this.valueRange = this.tempVideoFile.transparency;
+            this.compPlayerColor  = this.tempVideoFile.playerColor;
+            this.compControllerColor = this.tempVideoFile.controllerColor;
+            this.changeControllerColor(this.tempVideoFile.controllerColor);
+            this.changePlayerColor(this.tempVideoFile.playerColor);
+            this.newEnableController = this.tempVideoFile.enableVideoController;
+            this.newComments = this.tempVideoFile.allowComments;
+            this.newFullScreen =  this.tempVideoFile.allowFullscreen;
+            this.newAllowLikes =  this.tempVideoFile.allowLikes;
+            this.newAllowEmbed =  this.tempVideoFile.allowEmbed;
+            this.newEnableCasting = this.tempVideoFile.enableCasting;
+            this.newEnableSetting = this.tempVideoFile.enableSettings;
+            this.newAllowSharing =  this.tempVideoFile.allowSharing;
+            this.newValue360 = this.tempVideoFile.is360video;
         }
     }
     changePlayerColor(event: any) {
         console.log('player color value changed' + event);
         this.saveVideoFile.playerColor = event;
+        this.compPlayerColor = event;
         $('.video-js').css('color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
@@ -507,20 +570,32 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     changeControllerColor(event: any) {
         this.saveVideoFile.controllerColor = event;
+        this.compControllerColor = event;
         $('.video-js .vjs-control-bar').css('background-color',  this.saveVideoFile.controllerColor);
         this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {
-        this.saveVideoFile.allowFullscreen = event;
+         this.saveVideoFile.allowFullscreen = event;
+         this.newFullScreen = event;
         if (this.saveVideoFile.allowFullscreen === false) { $('.video-js .vjs-fullscreen-control').hide();
        } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     allowSharing(event: boolean) {
         console.log('allow sharing ' + event);
+        this.newAllowSharing = event;
         this.shareValues = this.saveVideoFile.allowSharing = event;
     }
     allowEmbedVideo(event: boolean) {
+        this.newAllowEmbed = event;
         this.embedVideo = this.saveVideoFile.allowEmbed = event;
+    }
+    enableCastings(event: boolean) {
+       this.newEnableCasting = event;
+       this.saveVideoFile.enableCasting = event;
+    }
+    enableSettings(event: boolean){
+       this.newEnableSetting = event;
+       this.saveVideoFile.enableSettings = event;
     }
     enableVideoControllers(event: boolean) {
         this.saveVideoFile.enableVideoController = event;
@@ -532,9 +607,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
        } else { $('.video-js .vjs-control-bar').show(); }
     }
     is360VideoCheck(event: boolean) {
-        if (event === true) { this.saveVideoFile.is360video = true;
+        if (event === true) {
+        this.saveVideoFile.is360video = true;
+        this.newValue360 = true;
         this.value360 = true;
-        }  else { this.saveVideoFile.is360video = false;
+    }  else { this.saveVideoFile.is360video = false;
+        this.newValue360 = false;
         this.value360 = false; }
     }
     // call to action methods
@@ -692,14 +770,11 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false;
         } else { this.gifBoolean1 = this.gifBoolean2 = this.gifBoolean3 = false; }
     }
-    defaultVideoControllValues() {
-        this.likes = this.saveVideoFile.allowLikes;
-        this.comments = this.saveVideoFile.allowComments;
-        this.shareValues = this.saveVideoFile.allowSharing;
-        this.embedVideo = this.saveVideoFile.allowEmbed;
-        this.valueRange = this.saveVideoFile.transparency;
-        this.isFistNameChecked = this.saveVideoFile.name;
-        this.isSkipChecked = this.saveVideoFile.skip;
+    defaultVideoControllValues(videoFile: any) {
+        this.likes = videoFile.allowLikes;
+        this.comments = videoFile.allowComments;
+        this.shareValues = videoFile.allowSharing;
+        this.embedVideo = videoFile.allowEmbed;
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -724,10 +799,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     this.embedSrcPath = document.location.href;
     this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '/embed-video' + viewBy + alias;
     console.log(this.embedSrcPath);
-}
+    }
     ngOnInit() {
+        this.loadRangeDisable = true;
         $('#overlay-modal').hide();
-        this.loadCallToAction = true;
         console.log('EditVideoComponent ngOnit: ');
         this.categories = this.referenceService.refcategories;
         console.log(this.saveVideoFile);
@@ -738,22 +813,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.giffirst = this.saveVideoFile.gifFiles[0] + '?access_token=' + this.authenticationService.access_token;
         this.gifsecond = this.saveVideoFile.gifFiles[1] + '?access_token=' + this.authenticationService.access_token;
         this.gifthird = this.saveVideoFile.gifFiles[2] + '?access_token=' + this.authenticationService.access_token;
-        if (this.videoFileService.actionValue === 'Save') {  // need to change the code here
-           // this.compPlayerColor = '#e6e5e5';
-           // this.compControllerColor = '#000';
-          //  this.saveVideoFile.playerColor = this.compPlayerColor;
-            this.oldPlayerColor = this.saveVideoFile.playerColor;
-            this.compPlayerColor = this.saveVideoFile.playerColor;
-            this.compControllerColor = this.saveVideoFile.controllerColor;
-          //   this.saveVideoFile.controllerColor = this.compControllerColor;
-            this.oldControllColor = this.saveVideoFile.controllerColor;
-        } else {
-            this.compPlayerColor = this.saveVideoFile.playerColor;
-            this.compControllerColor = this.saveVideoFile.controllerColor;
-            this.oldPlayerColor = this.saveVideoFile.playerColor;
-            this.oldControllColor = this.saveVideoFile.controllerColor;
-        }
-
+        this.likes = this.saveVideoFile.allowLikes;
+        this.comments = this.saveVideoFile.allowComments;
+        this.shareValues = this.saveVideoFile.allowSharing;
+        this.embedVideo = this.saveVideoFile.allowEmbed;
         this.saveVideoFile = {
             id: this.saveVideoFile.id,
             title: this.saveVideoFile.title,
@@ -800,7 +863,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         };
         try {
         this.buildForm();
-        this.defaultVideoControllValues();
         this.defaultImagePaths();
         this.defaultGifPaths();
         this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
@@ -903,11 +965,11 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
  } else {   // playing 360 video
         this.play360Video();
     }
+     this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
      this.defaultVideoSettings();
      this.transperancyControllBar(this.valueRange);
      if (this.saveVideoFile.enableVideoController === false) {
          this.defaultVideoControllers(); }
-     this.defaultPlayerSettings(this.saveVideoFile.defaultSetting); //  true ///need to change the true value to dynamic value
     }
     /*********************************Save Video*******************************/
     buildForm(): void {
@@ -987,8 +1049,19 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     saveVideo() {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
+            this.saveVideoFile.defaultSetting = this.defaultSettingValue;
             this.saveVideoFile.playerColor = this.compPlayerColor;
             this.saveVideoFile.controllerColor = this.compControllerColor;
+            this.saveVideoFile.transparency = this.valueRange ;
+            this.saveVideoFile.enableVideoController = this.newEnableController;
+            this.saveVideoFile.allowComments = this.newComments;
+            this.saveVideoFile.allowFullscreen = this.newFullScreen;
+            this.saveVideoFile.allowLikes =  this.newAllowLikes;
+            this.saveVideoFile.allowEmbed =  this.newAllowEmbed;
+            this.saveVideoFile.enableCasting = this.newEnableCasting;
+            this.saveVideoFile.enableSettings = this.newEnableSetting ;
+            this.saveVideoFile.allowSharing = this.newAllowSharing;
+            this.saveVideoFile.is360video = this.newValue360;
             this.saveVideoFile.startOfVideo = this.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.endCalltoAction;
             console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
@@ -1014,7 +1087,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.saveVideoFile.imagePath = this.defaultSaveImagePath;
             console.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
-            this.saveVideoFile.is360video = this.value360;
             this.saveVideoFile.imageFile = null;
             if (this.videoFileService.actionValue === 'Save') {
                 this.saveVideoFile.action = 'save';
@@ -1026,7 +1098,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 this.videoFileService.showUpadte = true;
             }
             // console.log('video object is ' + JSON.stringify(this.saveVideoFile));
-            this.saveVideoFile.transparency = this.valueRange;
             this.saveVideoFile.callACtion = this.enableCalltoAction;
             console.log(this.saveVideoFile.transparency);
             console.log(this.saveVideoFile);
@@ -1095,5 +1166,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
       //  localStorage.removeItem('isOverlayValue');
           $('.h-video').remove();
           $('.p-video').remove();
+         this.tempVideoFile = null;
       }
    }

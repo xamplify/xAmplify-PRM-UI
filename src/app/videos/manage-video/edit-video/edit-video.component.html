@@ -8,6 +8,7 @@
        line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
        text-align: center; width: 100%; top: 23px;
 	}
+	.disablePlayerValues{ pointer-events: none; opacity: 0.6;}
 	.upperText{
 		font-size: 22px;color: white; word-break: break-all;
        line-height: 1.3em;font-weight: 600;text-align: center; position: relative;top: -13px;
@@ -128,7 +129,7 @@
 
 
 				<p align="left">{{videoViews}} Views</p>
-				<div *ngIf="likes==true">
+				<div *ngIf="likes">
 					<span style="float: right">
 						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
 						<button class="fa fa-thumbs-down" style="color: #f3565d;" (click)="disLikesValuesDemo()">{{disLikesValues}}</button>
@@ -137,13 +138,13 @@
 				<div>
 				</div>
 				<div>
-					<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white;background-color: #00a6e8"
+					<a *ngIf="shareValues"  class="btn btn-primary" style="color:white;background-color: #00a6e8"
 						(click)="shareClick()">
 					<!--	<a *ngIf="shareValues==true" class="btn btn-primary" style="color:white"
 						[routerLink]="['../../../embed-video', saveVideoFile.alias]">
 							[routerLink]="['../../../embed-video', saveVideoFile.viewBy,saveVideoFile.alias]"-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-					</a> <a *ngIf="embedVideo==true" class="btn btn-primary" style="color:white;background-color: #00a6e8"
+					</a> <a  *ngIf="embedVideo" class="btn btn-primary" style="color:white;background-color: #00a6e8"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
@@ -344,8 +345,8 @@
 									   <div class="form-group">
 											<label class="col-md-3 control-label" style="margin-top:-6px">Default settings:</label>
 											<div class="col-md-9">
-											 <ui-switch  color="lightgreen" formControlName="defaultSetting"
-											  (change)="defaultPlayerSettings($event)"></ui-switch>
+											 <ui-switch  color="lightgreen" [(ngModel)]="defaultSettingValue" [ngModelOptions]="{standalone: true}"
+											  (change)="defaultPlayerSettingsValues($event);"></ui-switch>
 											</div>
 										</div>
 									<div>
@@ -353,16 +354,17 @@
 											<label class="col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
 											<div class="col-md-9">
 												<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													(colorPickerChange)="changePlayerColor($event)"
+													(colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" 
 													[cpPositionRelativeToArrow]="false" [cpWidth]="'190px'"
 													[cpHeight]="'200px'"
 													 />
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label" style="margin-top:-6px">Enable Video Controller:</label>
+											<label class="col-md-3 control-label" style="margin-top:-5px">Enable Video Controller:</label>
 											<div class="col-md-9">
-												<ui-switch color="lightgreen"  formControlName="enableVideoController" (change)="enableVideoControllers($event)"></ui-switch>
+												<ui-switch color="lightgreen"  [(ngModel)]="newEnableController" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
@@ -370,7 +372,7 @@
 											<div class="col-md-9">
 												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor"
-													 [value]="compControllerColor"
+													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
 													 [cpPositionRelativeToArrow]="false" [cpWidth]="'190px'"
 													 [cpHeight]="'200px'"/>
 											</div>
@@ -379,7 +381,7 @@
 											 <div>
 											   <label class="col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
 							            	   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 42%;"  
-							            	   (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
+							            	  [class.disablePlayerValues]="disablePlayerSettingnew" (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
 											   <label style="position: absolute;top: 344px;right: 148px;">{{valueRange}}</label>
 										     </div>
 										     <!--<div style="margin-left: 399px;margin-top: -26px;"><label>{{valueRange}}</label></div>-->
@@ -411,42 +413,53 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue" formControlName="allowSharing" (change)="allowSharing($event)"></ui-switch>
+												<ui-switch color="lightblue" [(ngModel)]="newAllowSharing" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)"></ui-switch>
 											</div>
 											<label class="col-md-3 control-label">Enable Settings:</label>
 											<div class="col-md-3">
-												<ui-switch color="red"   formControlName="enableSettings" checked></ui-switch>
+												<ui-switch color="red"  [(ngModel)]="newEnableSetting" [ngModelOptions]="{standalone: true}" 
+												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue" formControlName="allowFullscreen" (change)="changeFullscreen($event)"></ui-switch>
+												<ui-switch color="lightblue" [(ngModel)]="newFullScreen" [ngModelOptions]="{standalone: true}" 
+												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)"></ui-switch>
 											</div>
 											<label class="col-md-3 control-label">Allow Comments:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue"  formControlName="allowComments" (change)="allowComments($event)"></ui-switch>
+												<ui-switch color="lightblue" [(ngModel)]="newComments" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Likes:</label>
 											<div class="col-md-3">
-												<ui-switch color="lightblue"  formControlName="allowLikes" (change)="allowLikes($event)"></ui-switch>
+												<ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
+												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch>
 											</div>
                                            	<label class="col-md-3 control-label">Enable Casting:</label>
 											<div class="col-md-3">
-												<ui-switch color="orange"  formControlName="enableCasting"></ui-switch>
+												<ui-switch color="orange" [disabled] ="disablePlayerSetting"
+												 (change)="enableCastings($event)"
+												 [(ngModel)]="disablePlayerSettingnew" [ngModelOptions]="{standalone: true}"
+												 ></ui-switch>
 											</div>
 
 										</div>
 										<div class="form-group">
 											<label class="col-md-3 control-label">Allow Embed:</label>
 											<div class="col-md-3">
-											 <ui-switch color="red"  formControlName="allowEmbed" (change)="allowEmbedVideo($event)"></ui-switch>
+											 <ui-switch color="red" [(ngModel)]="newAllowEmbed" [ngModelOptions]="{standalone: true}"
+											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)"></ui-switch>
 											</div>
 												<label class="col-md-3 control-label">360 video:</label>
 											<div class="col-md-3">
-											 <ui-switch color="blue"  formControlName="is360video" (change)="is360VideoCheck($event)"></ui-switch>
+											 <ui-switch color="blue"   [(ngModel)]="newValue360" [ngModelOptions]="{standalone: true}"
+											  [disabled] ="disablePlayerSettingnew"
+											   (change)="is360VideoCheck($event)"></ui-switch>
 											</div>
 										</div>
 									</div>
@@ -581,12 +594,12 @@
 				</div>
 			</div>
 			<!-- end PROJECT HEAD -->
-			<div *ngIf="comments==false">
+			<div *ngIf="!comments">
 				<h2>
 					<pre>Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
 				</h2>
 			</div>
-			<div class="portlet-body" *ngIf="comments ===true">
+			<div class="portlet-body" *ngIf="comments">
 				<div class="row">
 					<div class="col-md-5 col-sm-4">
 						<div class="slimScrollDiv"

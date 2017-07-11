@@ -399,7 +399,8 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label" style="margin-top: 11px;">Enable Video Controller:</label>
 														<div class="col-md-9" style="margin-top: 8px;">
-															<ui-switch color="lightgreen" formControlName="enableVideoController"></ui-switch>
+															<ui-switch color="lightgreen" formControlName="enableVideoController"
+															(change)="enableVideoController($event)"></ui-switch>
 														</div>
 													</div>
 													<div class="form-group">
@@ -437,7 +438,7 @@
 														</div>
 														<label class="col-md-3 control-label">Enable Settings:</label>
 														<div class="col-md-3">
-															<ui-switch color="red"  formControlName="enableSettings"  checked></ui-switch>
+															<ui-switch color="red"  formControlName="enableSettings"  (change)="enableSettings($event)"></ui-switch>
 														</div>
 													 </div>
 														<div class="form-group">
@@ -457,7 +458,7 @@
 															</div>
 															<label class="col-md-3 control-label">Enable Casting:</label>
 															<div class="col-md-3">
-																<ui-switch color="orange" formControlName="enableCasting"></ui-switch>
+																<ui-switch color="orange" formControlName="enableCasting" (change)="enableCasting($event)"></ui-switch>
 															</div>
 														</div>											
 													<div class="form-group">

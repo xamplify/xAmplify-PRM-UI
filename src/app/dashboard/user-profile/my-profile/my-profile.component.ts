@@ -458,7 +458,9 @@ export class MyProfileComponent implements OnInit {
     cssSettings(event: boolean) {
         this.PlayerSettingsClicked = event;
     }
-
+    enableVideoController(event: any){
+     this.defaultVideoPlayer.enableVideoController = event;
+    }
     changeControllerColor(event: any) {
     this.defaultVideoPlayer.controllerColor = event;
     this.compControllerColor = event;
@@ -476,6 +478,12 @@ export class MyProfileComponent implements OnInit {
    }
    allowComments(event: any) {
        this.defaultVideoPlayer.allowComments = event;
+   }
+   enableSettings(event: any){
+       this.defaultVideoPlayer.enableSettings = event;
+   }
+    enableCasting(event: any){
+       this.defaultVideoPlayer.enableCasting = event;
    }
    allowSharing(event: any) {
     this.defaultVideoPlayer.allowSharing = event;
