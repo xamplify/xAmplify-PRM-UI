@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { Category } from '../../videos/models/category';
 import { Logger } from 'angular2-logger/core';
 import { User } from '../models/user';
+import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var  $: any;
 
@@ -23,6 +24,7 @@ export class ReferenceService {
     errorPrepender:string  = "Error In";
     campaignVideoFile: SaveVideoFile;
     public videoTitles: string[];
+    defaultPlayerSettings: DefaultVideoPlayer;
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger) {

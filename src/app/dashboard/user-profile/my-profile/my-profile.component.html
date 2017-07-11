@@ -39,11 +39,6 @@
 						</li>
 					</ul>
 				</div>
-				<div *ngIf="defaultPlayerSuccess" class="col-md-6"  id="defaultPlayerSettings"
-						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <strong> default player settings updated Successfully!</strong> 
-			      </div> 
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">
@@ -378,7 +373,11 @@
 												<!-- END PRIVACY SETTINGS TAB -->
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5">
-													
+													 <div *ngIf="defaultPlayerSuccess" class=""  id="defaultPlayerSettings"
+														  class="alert alert-success alert-dismissable">
+													 	  <a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+													 	  <strong> default player settings updated Successfully!</strong> 
+														</div>
 									                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 													<!--<div class="form-group">
 													  <label class="col-md-3 control-label" style="margin-top:-10px">Default Player Settings:</label>
@@ -386,11 +385,15 @@
 															<ui-switch color="lightgreen" formControlName="defaultSettings"></ui-switch>
 														</div>
 												 	</div>-->
+														<div>
+								                    	    <p style="font-size: large; margin-top: -7px;color:white; background-color: #00a6e8;"> Apperance of the player</p>
+							                        	</div>
 														<div class="form-group">
 														<label class="col-md-3 control-label">Player Color:</label>
 														<div class="col-md-9" style="margin-top: 3px;">
 															<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
-																formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)" />
+																formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
+																[cpWidth]="'200px'" [cpHeight]="'265px'" />
 														</div>
 													</div>
 													<div class="form-group">
@@ -403,7 +406,7 @@
 														<label class="col-md-3 control-label" style="margin-top: -1px">Controller Color:</label>
 														<div class="col-md-9" style="margin-top: 5px;">
 															<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
-																formControlName="controllerColor"
+																formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" 
 																(colorPickerChange)="changeControllerColor($event)" [value]="compControllerColor" />
 														</div>
 													</div>
@@ -424,6 +427,9 @@
 															<ui-switch color="lightblue" formControlName="allowFullscreen" ></ui-switch>
 														</div>
 												   	 </div>-->
+													<div >
+													<p style="font-size: large; margin-top: -36px; color:white; background-color: #00a6e8;"> Controls of the player</p>
+													</div>
 													<div class="form-group">
 														<label class="col-md-3 control-label">Allow Sharing:</label>
 														<div class="col-md-3">
@@ -485,7 +491,7 @@
 													
 													  <div class="playerButton">
 														<button type="submit"  class="btn green-haze">Save Changes</button>
-														<input type="reset"  class="btn default" value="Cancel">
+														<!--<input type="reset"  class="btn default" value="Cancel">-->
 													  </div>
 													</form>
 												</div>

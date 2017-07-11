@@ -220,11 +220,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
       this.ownThumb = false;
       this.ownThumbnail = true;
      }
-    fileChange(event: any) {
-    const fileList: FileList = event.target.files;
-    if (fileList.length > 0) {
+    ownThumbnailfileChange(event: any) {
+      const fileList: FileList = event.target.files;
+      if (fileList.length > 0) {
         const file: File = fileList[0];
-     this.videoFileService.saveOwnThumbnailFile(file)
+      this.videoFileService.saveOwnThumbnailFile(file)
       .subscribe( (result: any) => {
           console.log(result);
           this.isThumb = true;

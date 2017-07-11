@@ -23,6 +23,7 @@
     "@angular/router": "^4.0.0",
     "@nglibs/meta": "^0.4.0-rc.1",
     "angular2-bootstrap-confirm": "^1.0.4",
+    "angular2-busy": "^2.0.4",
     "angular2-color-picker": "^1.2.1",
     "angular2-highcharts": "^0.4.3",
     "angular2-logger": "^0.5.1",

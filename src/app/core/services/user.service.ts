@@ -13,11 +13,9 @@ import { ReferenceService } from './reference.service';
 
 @Injectable()
 export class UserService {
-    
     private token: string;
 
-    loggedInUserData:User;
-    defaultPlayerSettings: DefaultVideoPlayer;
+    loggedInUserData: User;
 
 URL = this.authenticationService.REST_URL;
 

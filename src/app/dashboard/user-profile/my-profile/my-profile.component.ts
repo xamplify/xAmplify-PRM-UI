@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
@@ -49,21 +49,21 @@ export class MyProfileComponent implements OnInit {
         this.PlayerSettingsClicked = false;
         this.userData = this.authenticationService.userProfile;
         console.log(this.userData);
-            this.defaultPlayerForm = new FormGroup({
-            defaultSettings: new FormControl(),
-            enableVideoController: new FormControl(),
-            playerColor: new FormControl(),
-            controllerColor: new FormControl(),
-            transparency: new FormControl(),
-            allowSharing: new FormControl(),
-            enableSettings: new FormControl(),
-            allowFullscreen: new FormControl(),
-            allowComments: new FormControl(),
-            allowLikes: new FormControl(),
-            enableCasting: new FormControl(),
-            allowEmbed: new FormControl(),
-            is360video:  new FormControl(),
-          }); 
+        //     this.defaultPlayerForm = new FormGroup({
+        //     defaultSettings: new FormControl(),
+        //     enableVideoController: new FormControl(),
+        //     playerColor: new FormControl(),
+        //     controllerColor: new FormControl(),
+        //     transparency: new FormControl(),
+        //     allowSharing: new FormControl(),
+        //     enableSettings: new FormControl(),
+        //     allowFullscreen: new FormControl(),
+        //     allowComments: new FormControl(),
+        //     allowLikes: new FormControl(),
+        //     enableCasting: new FormControl(),
+        //     allowEmbed: new FormControl(),
+        //     is360video:  new FormControl(),
+        //   });
         if (this.userData.firstName !== null ) {
             this.parentModel.displayName =  this.userData.firstName;
         }else {
@@ -440,17 +440,17 @@ export class MyProfileComponent implements OnInit {
     getVideoDefaultSettings() {
         this.userService.getVideoDefaultSettings().subscribe(
            (result: any) => {
-               var body = result['_body'];
+                var body = result['_body'];
                 if ( body != "" ) {
                 this.active = true;  
                 var response = JSON.parse( body );
                 console.log(response);
-                this.userService.defaultPlayerSettings = response;
+                this.refService.defaultPlayerSettings = response;
                 this.defaultVideoPlayer = response;
                 this.compControllerColor = response.controllerColor;
                 this.compPlayerColor = response.playerColor;
                 this.valueRange = response.transparency;
-                 this.defaultPlayerbuildForm();
+                this.defaultPlayerbuildForm();
               }
             }
         );
@@ -485,21 +485,6 @@ export class MyProfileComponent implements OnInit {
    }
    UpdatePlayerSettingsValues() {
         //  this.defaultVideoPlayer = this.defaultPlayerForm.value;
-        //  const updateDefaultValues = {
-        //  //   'defaultSettings': this.defaultPlayerForm.value.defaultSettings,
-        //     'enableVideoController': this.defaultPlayerForm.value.enableVideoController,
-        //     'playerColor': this.defaultPlayerForm.value.playerColor,
-        //     'controllerColor': this.defaultPlayerForm.value.controllerColor,
-        //     'transparency': this.defaultPlayerForm.value.transparency,
-        //     'allowSharing': this.defaultVideoPlayer.allowSharing,
-        //     'enableSettings': this.defaultVideoPlayer.enableSettings,
-        //     'allowFullscreen': this.defaultVideoPlayer.allowFullscreen,
-        //     'allowComments': this.defaultVideoPlayer.allowComments,
-        //     'allowLikes': this.defaultVideoPlayer.allowLikes,
-        //     'enableCasting': this.defaultVideoPlayer.enableCasting,
-        //     'allowEmbed': this.defaultVideoPlayer.allowEmbed,
-        //     'is360video': this.defaultVideoPlayer.is360video,
-        // }
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
@@ -508,10 +493,13 @@ export class MyProfileComponent implements OnInit {
         .subscribe(
             (result: any) => {
                 this.defaultPlayerSuccess = true;
+                 setTimeout(function() {
+                  $('#defaultPlayerSettings').slideUp(500);
+             }, 5000);
                 this.getVideoDefaultSettings();
             }
         );
-
+       this.defaultPlayerSuccess = false;
         // write service mthod to save the data in db
     }
     defaultPlayerbuildForm() {
@@ -522,12 +510,12 @@ export class MyProfileComponent implements OnInit {
             'controllerColor': [this.defaultVideoPlayer.controllerColor],
             'transparency': [this.defaultVideoPlayer.transparency],
             'allowSharing': [this.defaultVideoPlayer.allowSharing],
-            'enableSettings': [this.defaultVideoPlayer.enableSettings, Validators.required],
-            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen, Validators.required],
-            'allowComments': [this.defaultVideoPlayer.allowComments, Validators.required],
-            'allowLikes': [this.defaultVideoPlayer.allowLikes, Validators.required],
-            'enableCasting': [this.defaultVideoPlayer.enableCasting, Validators.required],
-            'allowEmbed': [this.defaultVideoPlayer.allowEmbed, Validators.required],
+            'enableSettings': [this.defaultVideoPlayer.enableSettings],
+            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen],
+            'allowComments': [this.defaultVideoPlayer.allowComments],
+            'allowLikes': [this.defaultVideoPlayer.allowLikes],
+            'enableCasting': [this.defaultVideoPlayer.enableCasting],
+            'allowEmbed': [this.defaultVideoPlayer.allowEmbed],
             'is360video': [this.defaultVideoPlayer.is360video],
         });
         this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
