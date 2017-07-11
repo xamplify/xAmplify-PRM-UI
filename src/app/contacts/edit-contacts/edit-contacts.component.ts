@@ -58,6 +58,7 @@ export class EditContactsComponent implements OnInit {
     noContactsFound: boolean;
     noContactsFound1: boolean;
     hidingListUsersTable: boolean;
+    invalidPatternEmails: string[] = [];
 
     public users: Array<User>;
     activeUsersCount: number;
@@ -350,6 +351,9 @@ export class EditContactsComponent implements OnInit {
             for(let i = 0; i< this.csvFileUsers.length;i++){
                 if(this.validateEmailAddress(this.csvFileUsers[i].emailId)){
                     this.validCsvContacts = true;
+                }
+                if(!this.validateEmailAddress(this.csvFileUsers[i].emailId)){
+                    this.invalidPatternEmails.push(this.csvFileUsers[i].emailId)
                 }
                 else {
                     this.validCsvContacts = false;

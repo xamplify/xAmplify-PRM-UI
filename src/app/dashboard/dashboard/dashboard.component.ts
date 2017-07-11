@@ -44,6 +44,9 @@ export class DashboardComponent implements OnInit {
         private utilService: UtilService) {
             this.totalUploadedvideos = 0;
             this.totalContacts = 0;
+            this.listOfEmailClicked = 0;
+            this.listOfEmailOpened = 0;
+            this.listOfEmailWatched = 0;
     }
 
     dashboardStats() {

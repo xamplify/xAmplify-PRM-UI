@@ -214,8 +214,8 @@
 							<!-- <div class="ribbon" *ngIf="contactList.socialNetwork=='ZOHO'"><span>ZOHO</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='GOOGLE'"><span>GOOGLE</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='SALESFORCE'"><span>SALESFORCE</span></div> -->
-							<h4>{{contactList.name}}</h4>
-							<div style="top: 7%; position: relative;">
+							<h4 style="top: 10%; position: relative;">{{contactList.name}}</h4>
+							<div style="top: 12%; position: relative;">
 								<a class="mix-preview5 fancybox-button" (click)="downloadContactList(contactList.id)"
 									title="Dowload List" data-rel="fancybox-button"> <i
 									class="fa fa-cloud-download"></i>
@@ -233,7 +233,7 @@
 								data-rel="fancybox-button"> <i class="fa fa-refresh" aria-hidden="true"></i>
 							</a> -->
 							</div>
-							<div style="top: 34%; position: relative;"
+							<div style="top: 38%; position: relative;"
 								*ngIf="contactList.socialNetwork=='GOOGLE'">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeGoogleContactList"
@@ -242,7 +242,7 @@
 									class="fa fa-refresh" aria-hidden="true"></i>
 								</a>
 							</div>
-							<div style="top: 34%; position: relative;"
+							<div style="top: 38%; position: relative;"
 								*ngIf="contactList.socialNetwork=='ZOHO'">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeZohoContactList" data-toggle="modal"
@@ -251,7 +251,7 @@
 									aria-hidden="true"></i>
 								</a>
 							</div>
-							<div style="top: 34%; position: relative;"
+							<div style="top: 38%; position: relative;"
 								*ngIf="contactList.socialNetwork=='SALESFORCE'">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeSalesforceContactList"
