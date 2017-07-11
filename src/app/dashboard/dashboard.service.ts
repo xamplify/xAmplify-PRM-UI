@@ -11,7 +11,7 @@ import {SocialConnection} from '../social/models/social-connection';
 
 @Injectable()
 export class DashboardService {
-
+    url = this.authenticationService.REST_URL + "admin/";
     URL = 'demo/values.json';
     QUERY_PARAMETERS = '?access_token='+this.authenticationService.access_token;
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
@@ -73,6 +73,25 @@ export class DashboardService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    loadEmailClickedCount(){
+        return this.http.get( this.url + "contacts_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );  
+    }
+    
+    loadEmailOpenedCount(){
+        return this.http.get( this.url + "contacts_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadEmailWatchedCount(){
+        return this.http.get( this.url + "contacts_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
     private extractData(res: Response) {
         let body = res.json();
         //console.log("response.json(): "+body);

@@ -31,6 +31,9 @@ export class DashboardComponent implements OnInit {
     genderDemographicsFemale: number;
     totalContacts : number;
     totalUploadedvideos : number;
+    listOfEmailClicked : number;
+    listOfEmailOpened : number;
+    listOfEmailWatched : number;
 
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
@@ -273,6 +276,39 @@ export class DashboardComponent implements OnInit {
          }
      }
 
+    emailClickedCount() {
+        this._dashboardService.loadEmailClickedCount()
+            .subscribe(
+            data => {
+                this.listOfEmailClicked = data.allcontacts;
+            },
+            error => console.log( error ),
+            () => console.log( "emailClickedCount completed" )
+            );
+    }
+    
+    emailOpenedCount() {
+        this._dashboardService.loadEmailOpenedCount()
+            .subscribe(
+            data => {
+                this.listOfEmailOpened = data.allcontacts;
+            },
+            error => console.log( error ),
+            () => console.log( "emailOpenedCount completed" )
+            );
+    }
+    
+    emailWatchedCount() {
+        this._dashboardService.loadEmailWatchedCount()
+            .subscribe(
+            data => {
+                this.listOfEmailWatched = data.allcontacts;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
     ngOnInit() {
         try {
             this.uploadedVideosCount(this.pagination);

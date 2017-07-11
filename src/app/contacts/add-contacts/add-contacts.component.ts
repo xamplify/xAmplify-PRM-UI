@@ -39,6 +39,7 @@ export class AddContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     model: any = {};
     names: string[] = [];
+    invalidPatternEmails: string[] = [];
     isValidContactName: boolean;
     validCsvContacts : boolean;
     inValidCsvContacts : boolean; 
@@ -439,6 +440,9 @@ export class AddContactsComponent implements OnInit {
                 for(let i = 0; i< this.contacts.length;i++){
                     if(this.validateEmailAddress(this.contacts[i].emailId)){
                         this.validCsvContacts = true;
+                    }
+                    if(!this.validateEmailAddress(this.contacts[i].emailId)){
+                        this.invalidPatternEmails.push(this.contacts[i].emailId)
                     }
                     else {
                         this.validCsvContacts = false;

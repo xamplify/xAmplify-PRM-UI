@@ -326,7 +326,7 @@
 		</div>	
 		<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
 			class="alert alert-danger alert-dismissable" style="width:50%">
-			<b>We found invalid emailIds please remove those and Re Upload..</b>
+			<b>We found invalid emailIds please remove..<strong style="color:black;font-size:18px">{{invalidPatternEmails}}</strong> and Re Upload..</b>
 		</div>
 		<div *ngIf="dublicateEmailId" id="dublicateEmail"
 			class="alert alert-danger alert-dismissable" style="width:50%">
