@@ -434,6 +434,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveCsvContactList( isValid: boolean ) {
+        this.invalidPatternEmails.length = 0;
         if ( this.model.contactListName != '' && !this.isValidContactName) {
             if ( this.contacts.length > 0 ) {
                 this.logger.info( isValid );
@@ -587,6 +588,7 @@ export class AddContactsComponent implements OnInit {
     removeCsv() {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
+        this.contacts.length = 0;
         // this.removeCsvName = false;
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
