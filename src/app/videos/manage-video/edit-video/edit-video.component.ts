@@ -143,6 +143,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     newValue360: boolean;
     disablePlayerSettingnew: boolean;
     loadRangeDisable: boolean;
+    enableVideoControl:boolean;
       constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -152,6 +153,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
         this.defaultSettingValue = this.saveVideoFile.defaultSetting;
+        this.enableVideoControl = this.saveVideoFile.enableVideoController;
         this.titleOfVideo = this.videoFileService.actionValue;
         this.editVideoTitle = this.saveVideoFile.title;
         this.videoSizes = this.videoUtilService.videoSizes;
@@ -598,12 +600,12 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
        this.saveVideoFile.enableSettings = event;
     }
     enableVideoControllers(event: boolean) {
-        this.saveVideoFile.enableVideoController = event;
-        if (this.saveVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();
-        }  else { $('.video-js .vjs-control-bar').show(); }
+        this.newEnableController = event;
+      //  if (this.newEnableController === false) { $('.video-js .vjs-control-bar').hide();
+      //  }  else { $('.video-js .vjs-control-bar').show(); }
     }
     defaultVideoControllers() {
-        if (this.saveVideoFile.enableVideoController === false) { $('.video-js .vjs-control-bar').hide();
+        if (this.newEnableController === false) { $('.video-js .vjs-control-bar').hide();
        } else { $('.video-js .vjs-control-bar').show(); }
     }
     is360VideoCheck(event: boolean) {
@@ -968,8 +970,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
      this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
      this.defaultVideoSettings();
      this.transperancyControllBar(this.valueRange);
-     if (this.saveVideoFile.enableVideoController === false) {
-         this.defaultVideoControllers(); }
+     if (this.newEnableController === false) {
+        // this.defaultVideoControllers();  
+        }
     }
     /*********************************Save Video*******************************/
     buildForm(): void {
