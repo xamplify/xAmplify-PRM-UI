@@ -349,11 +349,11 @@ export class EditContactsComponent implements OnInit {
         if ( this.csvFileUsers.length > 0 ) {
             this.logger.info( isValid );
             for(let i = 0; i< this.csvFileUsers.length;i++){
-                if(this.validateEmailAddress(this.csvFileUsers[i].emailId)){
-                    this.validCsvContacts = true;
-                }
                 if(!this.validateEmailAddress(this.csvFileUsers[i].emailId)){
                     this.invalidPatternEmails.push(this.csvFileUsers[i].emailId)
+                }
+                if(this.validateEmailAddress(this.csvFileUsers[i].emailId)){
+                    this.validCsvContacts = true;
                 }
                 else {
                     this.validCsvContacts = false;
@@ -504,6 +504,7 @@ export class EditContactsComponent implements OnInit {
     removeCsv() {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
+        this.invalidPatternEmails.length = 0;
         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
         $( "button#add_contact" ).prop( 'disabled', false );
         this.users.length = 0;
