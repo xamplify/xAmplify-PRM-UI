@@ -342,7 +342,7 @@ export class AddContactsComponent implements OnInit {
             return valueArr.indexOf( item ) != idx
         });
         console.log( isDuplicate );
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             this.logger.info( this.newUsers[0].emailId );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
@@ -434,15 +434,15 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveCsvContactList( isValid: boolean ) {
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             if ( this.contacts.length > 0 ) {
                 this.logger.info( isValid );
                 for(let i = 0; i< this.contacts.length;i++){
-                    if(this.validateEmailAddress(this.contacts[i].emailId)){
-                        this.validCsvContacts = true;
-                    }
                     if(!this.validateEmailAddress(this.contacts[i].emailId)){
                         this.invalidPatternEmails.push(this.contacts[i].emailId)
+                    }
+                    if(this.validateEmailAddress(this.contacts[i].emailId)){
+                        this.validCsvContacts = true;
                     }
                     else {
                         this.validCsvContacts = false;
@@ -736,7 +736,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.contactType = "CONTACT";
         this.socialContact.contacts = this.gContacts;
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName ) {
             if ( this.gContacts.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
@@ -772,7 +772,7 @@ export class AddContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -935,7 +935,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.contactType = this.contactType;
         this.socialContact.contacts = this.zContacts;
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             if ( this.zContacts.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
@@ -972,7 +972,7 @@ export class AddContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1236,7 +1236,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contactType = this.contactType;
         this.socialContact.alias = this.salesforceListViewId;
         this.socialContact.contacts = this.salesforceContactUsers;
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName) {
             if ( this.salesforceContactUsers.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
