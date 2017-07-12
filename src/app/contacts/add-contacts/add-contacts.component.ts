@@ -590,6 +590,7 @@ export class AddContactsComponent implements OnInit {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.contacts.length = 0;
+        this.model.contactListName = "";
         // this.removeCsvName = false;
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
