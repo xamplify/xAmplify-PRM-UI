@@ -49,21 +49,6 @@ export class MyProfileComponent implements OnInit {
         this.PlayerSettingsClicked = false;
         this.userData = this.authenticationService.userProfile;
         console.log(this.userData);
-        //     this.defaultPlayerForm = new FormGroup({
-        //     defaultSettings: new FormControl(),
-        //     enableVideoController: new FormControl(),
-        //     playerColor: new FormControl(),
-        //     controllerColor: new FormControl(),
-        //     transparency: new FormControl(),
-        //     allowSharing: new FormControl(),
-        //     enableSettings: new FormControl(),
-        //     allowFullscreen: new FormControl(),
-        //     allowComments: new FormControl(),
-        //     allowLikes: new FormControl(),
-        //     enableCasting: new FormControl(),
-        //     allowEmbed: new FormControl(),
-        //     is360video:  new FormControl(),
-        //   });
         if (this.userData.firstName !== null ) {
             this.parentModel.displayName =  this.userData.firstName;
         }else {
