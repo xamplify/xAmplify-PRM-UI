@@ -68,7 +68,7 @@
 									(ngModelChange)="changEvent($event)" required
 									[(ngModel)]="model.contactListName" name="contactListName"
 									(input)="validateContactName(model.contactListName)"
-									minlength="4" maxlength="20"
+									minlength="4" maxlength="30"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
 									<div *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</div>
