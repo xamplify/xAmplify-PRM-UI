@@ -887,7 +887,7 @@ export class ManageContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != null ) {
+        if ( this.model.contactListName != "" && !this.isValidContactName) {
             if ( selectedUsers.length != 0 ) {
                 this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                     .subscribe(
