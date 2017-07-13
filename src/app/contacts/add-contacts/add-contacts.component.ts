@@ -163,8 +163,9 @@ export class AddContactsComponent implements OnInit {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" ) {
+            var outputstring = files[0].name.substring(0,files[0].name.lastIndexOf("."));
             this.fileTypeError = false;
-            this.model.contactListName = files[0].name;
+            this.model.contactListName = outputstring;
             this.removeCsvName = true;
             $( "#file_preview" ).show();
             $( "button#uploadCSV" ).prop( 'disabled', true );
