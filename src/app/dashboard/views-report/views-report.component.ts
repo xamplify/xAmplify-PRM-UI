@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 
 
 
-declare var Metronic, Layout, Demo, Index, QuickSidebar, Tasks: any;
+declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
 
 @Component( {
     selector: 'app-views-report',
@@ -24,6 +24,7 @@ public totalRecords: number;
 videos: Array<SaveVideoFile>;
 imagepath: string;
 public errorPrepender: 'Error In:';
+private videoJSplayer: any;
 
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,
@@ -31,6 +32,52 @@ public errorPrepender: 'Error In:';
         
     }
 
+    viewsSparklineData(videoFile : number) {
+        const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
+        $('#sparkline_bar_' + videoFile).sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
+    }
+
+    minutesSparklineData(videoFile : number) {
+        const myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
+        $('#sparkline_bar2_' + videoFile).sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
+    }
+
+    averageSparklineData(videoFile : number) {
+        const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
+        $('#sparkline_line_' + videoFile).sparkline(myvalues, {
+            type: 'bar',
+            width: '100',
+            barWidth: 5,
+            height: '55',
+            barColor: '#35aa47',
+            negBarColor: '#e02222'
+        });
+    }
+    
+    /*defaultGifPaths() {
+        if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[0]) {
+             this.gifBoolean1 = true; this.gifBoolean2 = this.gifBoolean3 = false;
+        } else if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[1]) {
+             this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false;
+        } else if ( this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2]) {
+            this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false;
+        } else { this.gifBoolean1 = this.gifBoolean2 = this.gifBoolean3 = false; }
+    }*/
+    
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 12;
         try {
@@ -149,6 +196,13 @@ public errorPrepender: 'Error In:';
             Index.initChat();
             Index.initMiniCharts();
             Tasks.initDashboardWidget();
+            this.viewsSparklineData(videoFile);
+            this.minutesSparklineData(videoFile);
+            this.averageSparklineData(videoFile);
+            var videoFile : any;
+            this.videoJSplayer = videojs(document.getElementById('edit_video_player_' + videoFile), {}, function() {
+                const player = this;
+            });
         }
         catch ( err ) {}
     }

@@ -1,4 +1,3 @@
-
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -198,8 +197,13 @@
 				</div>
 				<div class="col-md-12">
 				<div class="col-md-6">
-						<iframe src="http://player.vimeo.com/video/22439234" style="width:100%; height:250px;border:0" allowfullscreen>
-						</iframe>
+						<!-- <iframe src="http://player.vimeo.com/video/22439234" style="width:100%; height:250px;border:0" allowfullscreen>
+						</iframe> -->
+						<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:83%; height:80%" data-toggle="modal" data-target="#myModal">
+						<!-- <video id="edit_video_player_{{videoFile.id}}" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{videoFile.imagePath}}"
+                 data-setup='{"example_option":true }'>
+				  <source src = "http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>
+				</video> -->
 				</div>
 				<div class="col-md-6 col-sm-6">
 						<div class="portlet light" style="height: 248px;">
@@ -224,7 +228,7 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="sparkline-chart">
-											<div class="number" id="sparkline_bar"><canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas></div>
+											<div class="number" id="sparkline_bar_{{videoFile.id}}"><canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas></div>
 											<a class="title" href="javascript:;">
 											Views
 											</a>
@@ -234,7 +238,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="sparkline-chart">
-											<div class="number" id="sparkline_bar2"><canvas width="107" height="55" style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas></div>
+											<div class="number" id="sparkline_bar2_{{videoFile.id}}"><canvas width="107" height="55" style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas></div>
 											<a class="title" href="javascript:;">
 											Minutes Watched
 											</a>
@@ -244,7 +248,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="sparkline-chart">
-											<div class="number" id="sparkline_line"><canvas width="100" height="55" style="display: inline-block; width: 100px; height: 55px; vertical-align: top;"></canvas></div>
+											<div class="number" id="sparkline_line_{{videoFile.id}}"><canvas width="100" height="55" style="display: inline-block; width: 100px; height: 55px; vertical-align: top;"></canvas></div>
 											<a class="title" href="javascript:;">
 											Average Duration
 											</a>
