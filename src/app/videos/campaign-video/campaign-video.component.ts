@@ -360,25 +360,25 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.videoLogAction(self.xtremandLog);
                     //  }
-                  });
-                   this.on('timeupdate', function() {
+                    });
+                    this.on('timeupdate', function() {
                       startDuration = self.trimCurrentTime(player.currentTime());
                     });
                     this.on('seeking', function() {
-                    const seekigTime  = self.trimCurrentTime(player.currentTime());
-                    self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                     const seekigTime  = self.trimCurrentTime(player.currentTime());
+                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
                      self.xtremandLog.startDuration = startDuration;
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
-                    self.videoLogAction(self.xtremandLog);
+                     self.videoLogAction(self.xtremandLog);
                   });
                   this.on('ended', function() {
-                    const whereYouAt = player.currentTime();
-                    console.log(whereYouAt);
-                    replyVideo = replyVideo + 1;
-                    $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts' + replyVideo);
+                     const whereYouAt = player.currentTime();
+                     console.log(whereYouAt);
+                     replyVideo = replyVideo + 1;
+                     $('.vjs-big-play-button').css('display', 'block');
+                     console.log('video ended attempts' + replyVideo);
                      self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
@@ -386,7 +386,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.xtremandLog);
                   });
-                 this.on('fullscreenchange', function () {
+                  this.on('fullscreenchange', function () {
                     console.log('fullscreen changed');
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
@@ -397,27 +397,27 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                     }
-                });
-               player.on('click', function(){
-               console.log('clicked function ');
-              });
-             this.hotkeys({
-                 volumeStep: 0.1, seekStep: 5, enableMute: true,
-                 enableFullscreen: false, enableNumbers: false,
-                 enableVolumeScroll: true,
-                 fullscreenKey: function(event: any, player: any) {
-                      return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                 },
-                 customKeys: {
-                     simpleKey: {
+                  });
+                  player.on('click', function(){
+                  console.log('clicked function ');
+                  });
+                 this.hotkeys({
+                    volumeStep: 0.1, seekStep: 5, enableMute: true,
+                    enableFullscreen: false, enableNumbers: false,
+                    enableVolumeScroll: true,
+                    fullscreenKey: function(event: any, player: any) {
+                        return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                    },
+                    customKeys: {
+                      simpleKey: {
                          key: function(e: any) {  return (e.which === 83); },
                          handler: function(player: any, options: any, e: any) {
                              if (player.paused()) {  player.play(); } else { player.pause(); }  } },
-                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68); },
+                      complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68); },
                          handler: function(player: any, options: any, event: any) {
                              if (options.enableMute) { player.muted(!player.muted()); }}
-                     },
-                     numbersKey: {
+                      },
+                      numbersKey: {
                          key: function(event: any) { return ((event.which > 47 && event.which < 59) ||
                               (event.which > 95 && event.which < 106)); },
                          handler: function(player: any, options: any, event: any) {

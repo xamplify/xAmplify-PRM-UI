@@ -24,3 +24,8 @@
 .example_video_11{
 	width:100% !important;
 }    
+.iconSize{
+    font-size: x-large;
+    color: white;
+    position: relative;
+}

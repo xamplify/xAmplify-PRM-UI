@@ -60,7 +60,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public textAreaDisable: boolean;
     public hideSaveDiscard: boolean;
     public maxTimeDuration: number;
-    public source: string;
     public sweetAlertDisabled: boolean;
     public sweetAlertMesg: string;
     public MultipleVideo = false;

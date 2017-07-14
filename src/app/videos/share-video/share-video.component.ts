@@ -232,9 +232,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
              this.videoUrl = this.videoUrl + '.mp4';
            //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
              $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-            const newValue = this;
+            const player360 = this;
             const player = videojs('videoId').ready(function() {
-                  this.hotkeys({
+                 this.hotkeys({
                  volumeStep: 0.1, seekStep: 5, enableMute: true,
                  enableFullscreen: false, enableNumbers: false,
                  enableVolumeScroll: true,
@@ -273,7 +273,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 callback: function () {
                 // const isValid = JSON.parse(localStorage.getItem('isOverlayValue'));
                  // player.ready();
-                 const isValid = newValue.overLayValue;
+                 const isValid = player360.overLayValue;
+                 let startDuration;
+                 player360.replyVideo = false;
                 player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
                       $('#videoId').append( $('#overlay-modal').show());
@@ -293,7 +295,58 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                          player.play();
                      });
                  });
+                player.on('play', function() {
+                 const seekigTime  = player360.trimCurrentTime(player.currentTime());
+                 console.log('ply button pressed ');
+                       $('.vjs-big-play-button').css('display', 'none');
+                    console.log('play button clicked and current time' + player360.trimCurrentTime(player.currentTime()));
+                       if (player360.replyVideo === true) {
+                          player360.actionLog.actionId = player360.LogAction.replyVideo;
+                          player360.replyVideo = false;
+                     } else {
+                          player360.actionLog.actionId = player360.LogAction.playVideo;
+                     }
+                     player360.actionLog.startTime = new Date();
+                     player360.actionLog.endTime = new Date();
+                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     console.log(player360.actionLog.actionId);
+                     player360.videoLogAction(player360.actionLog);
+               });
+                 player.on('pause', function() {
+                  if (player360.actionLog.actionId !== player360.LogAction.videoPlayer_movieReachEnd) {
+                     console.log('pused and current time' + player360.trimCurrentTime(player.currentTime()));
+                     player360.actionLog.actionId = player360.LogAction.pauseVideo;
+                     player360.actionLog.startTime = new Date();
+                     player360.actionLog.endTime = new Date();
+                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.videoLogAction(player360.actionLog);
+                     }
+                  });
+                player.on('seeking', function() {
+                      const seekigTime  = player360.trimCurrentTime(player.currentTime());
+                     player360.actionLog.actionId = player360.LogAction.videoPlayer_slideSlider;
+                     player360.actionLog.startTime = new Date();
+                     player360.actionLog.endTime = new Date();
+                     player360.actionLog.startDuration = startDuration;
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.videoLogAction(player360.actionLog);
+                });
+                player.on('timeupdate', function() {
+                   startDuration = player360.trimCurrentTime(player.currentTime());
+                });
                  player.on('ended', function() {
+                     const time = player.currentTime();
+                    console.log(time);
+                    player360.replyVideo = true;
+                    console.log('video ended attempts' + player360.replyVideo);
+                    player360.actionLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
+                    player360.actionLog.startTime = new Date();
+                    player360.actionLog.endTime = new Date();
+                    player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                    player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                    player360.videoLogAction(player360.actionLog);
                      if (isValid === 'EndOftheVideo') {
                      $('#videoId').append( $('#overlay-modal').show());
                 //     newValue.show360ModalDialog();
@@ -427,6 +480,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      } else { $('#overlay-modal').hide(); // player.pause(); 
                       }
                     $('#repeatPlay').click(function(){
+                      self.replyVideo = true;
                        player.play();
                     });
                      $('#skipOverlay').click(function(){

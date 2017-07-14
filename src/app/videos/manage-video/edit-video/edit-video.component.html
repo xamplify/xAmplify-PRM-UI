@@ -1,4 +1,5 @@
 <style type="text/css">
+	 a.disabled { pointer-events: none; cursor: not-allowed; }
 	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
 	.paddingCss{ padding: 1em;}
@@ -194,7 +195,7 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true">Save</button>
+									|| lowerTextValid==false || isValidTitle == true || tagsUndefined == true">Save</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
 								</div>
 							</div>
@@ -206,7 +207,11 @@
 									<i class="fa fa-info-circle"></i>{{titleOfVideo}} Video Info
 								</div>
 								<div class="tools">
-									<a> <ui-switch [(ngModel)]="titleDiv" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" (change)="titleDivChange($event)"></ui-switch>
+									<a [class.disabled]="titleDiv"> 
+									<i *ngIf="titleDiv==false" (click)="titleDivChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
+									<i *ngIf="titleDiv==true"  (click)="titleDivChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
+									 <!--<ui-switch [(ngModel)]="titleDiv" [disabled] ="titleDiv" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small"
+									  (change)="titleDivChange($event)"></ui-switch>-->
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
@@ -246,7 +251,7 @@
 
 									<div class="form-group">
 										<label class="col-md-3 control-label">Tags:</label>
-										<div class="col-md-9"><tag-input (input) = "tagsInput()" formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
+										<div class="col-md-9"><tag-input  (input)="tagsInput()" formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 											<div *ngIf="tagsUndefined" class="alert alert-danger">tags should not be empty</div>
 										</div>
@@ -334,7 +339,11 @@
 									<i class="fa fa-cogs "></i>Apperance of the player
 								</div>
 								<div class="tools">
-									<a> <ui-switch [(ngModel)]="colorControl" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" (change)="colorControlChange($event)"></ui-switch>
+									<a [class.disabled]="colorControl==true">
+									<i *ngIf="colorControl==false" (click)="colorControlChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
+									<i *ngIf="colorControl==true"  (click)="colorControlChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
+									 <!--<ui-switch [(ngModel)]="colorControl" [disabled]="colorControl" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" 
+									(change)="colorControlChange($event)"></ui-switch>-->
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
@@ -401,8 +410,11 @@
 									<i class="fa fa-cogs "></i>Controls of the player
 								</div>
 								<div class="tools">
-									<a> <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
-											size="small" (change)="controlPlayerChange($event)"></ui-switch>
+									<a [class.disabled]="controlPlayers == true"> 
+										<i *ngIf="controlPlayers==false" (click)="controlPlayerChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
+								 	    <i *ngIf="controlPlayers==true"  (click)="controlPlayerChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
+									<!--<ui-switch [(ngModel)]="controlPlayers" [disabled]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
+											size="small" (change)="controlPlayerChange($event)"></ui-switch>-->
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>
@@ -477,8 +489,11 @@
 									<i class="fa fa-cogs "></i>Call to Action
 								</div>
 								<div class="tools">
-									<a> <ui-switch [(ngModel)]="callaction" [ngModelOptions]="{standalone: true}" color="lightgreen"
-											size="small" (change)="callToActionChange($event)"></ui-switch>
+									<a [class.disabled] ="callaction==true">
+										<i *ngIf="callaction==false" (click)="callToActionChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
+								 	    <i *ngIf="callaction==true"  (click)="callToActionChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
+										<!-- <ui-switch [(ngModel)]="callaction" [disabled]="callaction" [ngModelOptions]="{standalone: true}" color="lightgreen"
+											size="small" (change)="callToActionChange($event)"></ui-switch>-->
 									</a> <a href="" class="reload"></a>
 								</div>
 							</div>

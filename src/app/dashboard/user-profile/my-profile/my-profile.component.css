@@ -5,4 +5,7 @@
       margin-top: -13px;
       border-color: #93b593;
   }
-  
+  /deep/.video-js .vjs-big-play-button {
+    top: 57px;
+    left: 120px;
+}

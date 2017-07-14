@@ -64,8 +64,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     submitted = false;
     active = true;
     model: any = {};
-    public manageVideos: boolean;
-    public editVideo: boolean;
     public titleOfVideo: string;
     public ownThumbnail = false;
     public openOwnThumbnail = false;
@@ -316,39 +314,24 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         const disable = this;
         this.loadRangeDisable = false;
           setTimeout(function() {
-              if (disable.defaultSettingValue === true) {
-                 disable.disableRange(true);
+              if (disable.defaultSettingValue === true) { disable.disableRange(true);
                  disable.disablePlayerSettingnew = true;
-              } else {
-                 disable.disableRange(false);
-                 disable.disablePlayerSettingnew = false;
-              }
-          }, 1);
+              } else {  disable.disableRange(false);
+                 disable.disablePlayerSettingnew = false;  } }, 1);
     }
     controlPlayerChange(event: any) {
         this.controlPlayers = event;
         this.colorControl = this.titleDiv = this.callaction = false; const disable = this;
         this.loadRangeDisable = false;
-          setTimeout(function() {
-              if (disable.defaultSettingValue === true) {
-                 disable.disablePlayerSettingnew = true;
-              } else {
-                 disable.disablePlayerSettingnew = false;
-              }
-          }, 1);
-
+        setTimeout(function() { if (disable.defaultSettingValue === true) { disable.disablePlayerSettingnew = true;
+            } else {  disable.disablePlayerSettingnew = false; } }, 1);
     }
     callToActionChange(event: any) {
         this.callaction = event;
         this.controlPlayers = this.colorControl = this.titleDiv  = false;
-          const disable = this;
-          setTimeout(function() {
-              if (disable.saveVideoFile.callACtion === true) {
-                 disable.disableCalltoAction(false);
-              } else {
-                 disable.disableCalltoAction(true);
-              }
-          }, 1);
+        const disable = this;
+        setTimeout(function() { if (disable.saveVideoFile.callACtion === true) {  disable.disableCalltoAction(false);
+            } else { disable.disableCalltoAction(true); }  }, 1);
     }
     disableRange(event: boolean) {
          (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event;
@@ -826,7 +809,6 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.defaultImagePaths();
         this.defaultGifPaths();
         this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
-        this.validVideoTitle(this.editVideoTitle);
         } catch (error) {
             console.log('error' + error);
         }
@@ -1007,6 +989,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         'lowerText': { 'required': 'lower text is required', },
     };
     saveVideo() {
+      this.validVideoTitle(this.saveVideoFile.title);
+      if (this.isValidTitle === false) {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.defaultSetting = this.defaultSettingValue;
@@ -1041,8 +1025,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                     }
                 }
             }
-            if (this.saveVideoFile.tags.length === 1 && tags[0]['value'] === '') {
+            if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '') ) {
                this.tagsUndefined = true;
+               this.saveVideoFile.tags.length = 0;
             }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
@@ -1062,21 +1047,22 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.saveVideoFile.callACtion = this.enableCalltoAction;
             console.log(this.saveVideoFile.transparency);
             console.log(this.saveVideoFile);
-          if (this.tagsUndefined === false) {
             return this.videoFileService.saveVideo(this.saveVideoFile)
                 .subscribe((result: any) => {
                     if (this.saveVideoFile != null) { this.saveVideoFile = result;
                         this.notifyParent.emit(this.saveVideoFile);
+                        this.videoFileService.videoViewBy = 'Save';
                     } else {
                         console.log('save video data object is null please try again:' + this.saveVideoFile);
                         swal('ERROR', this.saveVideoFile.error, 'error');
                     }
                 }),
                 () => console.log(this.saveVideoFile);
-            }
+         }
     }
     validVideoTitle(videoTitle: string) {
-        if ((this.videoFileService.actionValue === 'Update') && (videoTitle === this.editVideoTitle)) {
+        if ((this.videoFileService.videoViewBy !== 'DRAFT' && this.videoFileService.actionValue === 'Update') &&
+         (videoTitle === this.editVideoTitle)) {
             this.isValidTitle = false;
         } else {
          this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
