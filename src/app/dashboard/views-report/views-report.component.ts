@@ -25,6 +25,7 @@ videos: Array<SaveVideoFile>;
 imagepath: string;
 public errorPrepender: 'Error In:';
 private videoJSplayer: any;
+launchVideoPreview:SaveVideoFile = new SaveVideoFile();
 
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,
@@ -180,6 +181,120 @@ private videoJSplayer: any;
          this.loadVideos(this.pagination);
      }
     */
+     
+     showPreview(videoFile:SaveVideoFile){
+         this.appendVideoData(videoFile, "main_video", "modal-title");
+         $("#show_preview").modal({backdrop: 'static', keyboard: false});
+     }
+     destroyPreview(){
+         var player = videojs("videoId");
+         if(player){
+             console.log(player.currentType_);
+             let videoType = player.currentType_;
+             if(videoType=="application/x-mpegURL"){
+                 console.log("Clearing Normal Video");
+                 player.dispose();
+                 $("#main_video").empty();
+             }else{
+               console.log("Clearing 360 video");
+                 player.panorama({
+                     autoMobileOrientation: true,
+                     clickAndDrag: true,
+                     clickToToggle: true,
+                     callback: function () {
+                         player.pause();
+                         $("#main_video").empty();
+                     }
+                   });
+                 
+             }
+         }
+         
+     }
+     playVideo(){
+         $('#main_video_src').empty();
+         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
+     }
+     
+     
+     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
+         console.log(videoFile);
+          var alias = videoFile.alias;
+          var fullImagePath = videoFile.imagePath;
+          var title = videoFile.title;
+          var videoPath = videoFile.videoPath;
+          var is360 = videoFile.is360video;
+          $("#"+divId).empty();
+          $("#"+titleId).empty();
+          $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
+          if(is360){
+              console.log("Loaded 360 Video");
+              $('.h-video').remove();
+              $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+              $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+              $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
+              $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+              var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+              $("#"+titleId).append(title);
+              $("#"+divId).append(str);
+              console.log("360 video path"+videoPath);
+              videoPath = videoPath.replace(".m3u8",".mp4");
+              console.log("Updated 360 video path"+videoPath);
+            //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+              $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
+              var player = videojs('videoId');
+              player.panorama({
+                  autoMobileOrientation: true,
+                  clickAndDrag: true,
+                  clickToToggle: true,
+                  callback: function () {
+                    player.ready();
+                  }
+                });
+              $("#videoId").css("width", "550px");
+              $("#videoId").css("height", "310px");
+              $("#videoId").css("max-width", "100%");
+              
+          }else{
+              console.log("Loaded Normal Video");
+              $('.p-video').remove();
+              $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+              $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
+              var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
+              $("#"+titleId).append(title);
+              $("#"+divId).append(str);
+             // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+              console.log("Video Path:::"+videoPath);
+              videoPath = videoPath.substring(0,videoPath.lastIndexOf('.'));
+              videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+              console.log("Normal Video Updated Path:::"+videoPath);
+             $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
+              $("#videoId").css("width", "550px");
+              $("#videoId").css("height", "310px");
+              $("#videoId").css("max-width", "100%");
+              var document:any = window.document;
+              var player = videojs("videoId");
+              console.log(player);
+              if(player){
+                  player.on('fullscreenchange', function () {
+                      var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                      var event = state ? 'FullscreenOn' : 'FullscreenOff';
+                      if(event==="FullscreenOn"){
+                          $(".vjs-tech").css("width", "100%");
+                          $(".vjs-tech").css("height", "100%");
+                      }else if(event==="FullscreenOff"){
+                          $("#videoId").css("width", "550px");
+                  
+                      }
+                       
+                  });
+              }
+          }
+          $("video").bind("contextmenu",function(){
+              return false;
+              });
+          
+      }
     
     ngOnInit() {
         try {
