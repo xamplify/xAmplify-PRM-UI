@@ -8,8 +8,6 @@ import { VideoFileService} from '../../videos/services/video-file.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
-
-
 declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
 
 @Component( {
@@ -25,7 +23,23 @@ videos: Array<SaveVideoFile>;
 imagepath: string;
 public errorPrepender: 'Error In:';
 private videoJSplayer: any;
+isvideoThere: boolean;
+pagedItems: any[];
+public searchKey: string ;
+sortingName: string = null;
+sortcolumn: string = null;
+sortingOrder: string = null;
 launchVideoPreview:SaveVideoFile = new SaveVideoFile();
+sortVideos  = [
+               {'name': 'Sort By', 'value': ''},
+               {'name': 'Title(A-Z)', 'value': 'title-ASC'},
+               {'name': 'Title(Z-A)', 'value': 'title-DESC'},
+               {'name': 'Created Time(ASC)', 'value': 'createdTime-ASC'},
+               {'name': 'Created Time(DESC)', 'value': 'createdTime-DESC'},
+               {'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC'},
+               {'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC'},
+         ];
+public videoSort: any = this.sortVideos[0];
 
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,
@@ -99,13 +113,13 @@ launchVideoPreview:SaveVideoFile = new SaveVideoFile();
                  this.referenceService.loading(this.httpRequestLoader, false);
                  //console.log(this.categories);
                  //console.log(this.videos);
-                 /*if (this.videos.length !== 0) {
+                 if (this.videos.length !== 0) {
                      this.isvideoThere = false;
                   } else {
                       this.isvideoThere = true;
                       this.pagedItems = null ;
                   }
-                 if (this.videos.length === 0) {
+                 /*if (this.videos.length === 0) {
                       this.isvideosLength = true;
                   } else {
                       this.isvideosLength = false;
@@ -151,11 +165,11 @@ launchVideoPreview:SaveVideoFile = new SaveVideoFile();
          this.searchDisable = false; }
          if (this.searchKey.length === 0 || this.searchKey === '') {
              this.searchDisable = true; }
-     }
+     } */
      searchVideoTitelName() {
       // if ( this.searchKey !== null && this.searchDisable === false ){
-         this.showMessage = false;
-         this.showUpdatevalue = false;
+         //this.showMessage = false;
+         //this.showUpdatevalue = false;
          console.log(this.searchKey);
          this.pagination.searchKey = this.searchKey;
          this.pagination.pageIndex = 1;
@@ -163,8 +177,8 @@ launchVideoPreview:SaveVideoFile = new SaveVideoFile();
       // }
      }
      selectedSortByValue( event: any ) {
-         this.showMessage = false;
-         this.showUpdatevalue = false;
+         //this.showMessage = false;
+         //this.showUpdatevalue = false;
          this.videoSort = event;
           const sortedValue = this.videoSort.value;
           if ( sortedValue !== '') {
@@ -180,7 +194,7 @@ launchVideoPreview:SaveVideoFile = new SaveVideoFile();
          this.pagination.sortingOrder = this.sortingOrder ;
          this.loadVideos(this.pagination);
      }
-    */
+   
      
      showPreview(videoFile:SaveVideoFile){
          this.appendVideoData(videoFile, "main_video", "modal-title");

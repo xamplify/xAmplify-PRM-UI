@@ -32,6 +32,29 @@
 						</li>
 					</ul>
 				</div>
+				<div class="page-toolbar">
+									<div class="btn-group pull-right">
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px">
+												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
+													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+											   </select>
+											</div>
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
+													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
+													 class="form-control input-circle" placeholder="search..."> <!-- (input)="searchDisableValue()" -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>No Videos found.. !!!</strong>
+			                </div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN DASHBOARD STATS -->
 				<!-- BEGIN PAGE CONTENT-->
