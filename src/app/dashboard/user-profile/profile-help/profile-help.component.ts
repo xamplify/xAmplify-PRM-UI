@@ -34,7 +34,6 @@ export class ProfileHelpComponent implements OnInit {
           Metronic.init();
           Layout.init();
           Demo.init();
-    //      Profile.init();
           if ( this.userData.firstName != null ) {
               this.userData.displayName = this.userData.firstName;
           } else {

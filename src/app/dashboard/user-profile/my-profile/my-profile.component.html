@@ -377,17 +377,20 @@
 														  class="alert alert-success alert-dismissable">
 													 	  <a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 													 	  <strong> default player settings updated Successfully!</strong> 
-														</div>
+													</div>
+													<div>
+														<p style="font-size: large; margin-top: -15px;color:white; background-color: #00a6e8;"> Apperance of the player</p>
+													</div>
+														<div style="position: absolute; right: 34px;top: 89px; z-index: 600;">
+														<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160" width="330"
+														  poster="http://vjs.zencdn.net/v/oceans.png"
+														  data-setup='{"example_option":true }' [src]=videoUrl>
+														    <source [src]=videoUrl type="video/mp4" />
+                                                           <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">supports HTML5 video</a></p>
+														</video> 
+													  </div>
+													<div>  
 									                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
-													<!--<div class="form-group">
-													  <label class="col-md-3 control-label" style="margin-top:-10px">Default Player Settings:</label>
-														<div class="col-md-9" style="margin-top: -11px;">
-															<ui-switch color="lightgreen" formControlName="defaultSettings"></ui-switch>
-														</div>
-												 	</div>-->
-														<div>
-								                    	    <p style="font-size: large; margin-top: -7px;color:white; background-color: #00a6e8;"> Apperance of the player</p>
-							                        	</div>
 														<div class="form-group">
 														<label class="col-md-3 control-label">Player Color:</label>
 														<div class="col-md-9" style="margin-top: 3px;">
@@ -412,24 +415,15 @@
 														</div>
 													</div>
 													<div class="form-group">
-														<div>
-														<label class="col-md-3 control-label" style="margin-top: 2px;margin-right: 15px;">Transparency:</label>
-														<label style="margin-top: 9px;">
-														<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 135%;"  
+														<label class="col-md-3 control-label" style="position: relative;top: 7px; right: -1px;">Transparency:</label>
+														<label style="position: relative;left: 16px; bottom: -13px">
+														<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 132%;"  
 														(input)="transperancyControllBar(Transvalue.value)" #Transvalue> 
-														<p style="position: relative; right: -176px;top: -20px;">{{valueRange}}</p>
+														<span style="position: relative; right: -176px;top: -20px;">{{valueRange}}</span>
 														</label>
-														<!--<label style="position: relative;right: -242px;top: -18px;">{{valueRange}}</label>-->
-														</div>
 													</div>
-													<!--<div class="form-group">
-														<label class="col-md-3 control-label" style="margin-top: -42px;">Allow Fullscreen:</label>
-														<div class="col-md-3" style="position: absolute;top: 245px;right: 424px;">
-															<ui-switch color="lightblue" formControlName="allowFullscreen" ></ui-switch>
-														</div>
-												   	 </div>-->
-													<div >
-													<p style="font-size: large; margin-top: -36px; color:white; background-color: #00a6e8;"> Controls of the player</p>
+													<div class="form-group" >
+													<p style="font-size: large;color:white; background-color: #00a6e8;"> Controls of the player</p>
 													</div>
 													<div class="form-group">
 														<label class="col-md-3 control-label">Allow Sharing:</label>
@@ -470,31 +464,13 @@
 														<div class="col-md-3">
 														<ui-switch color="blue" formControlName="is360video" ></ui-switch>
 														</div>
-																	<!--</div>-->
 													</div>					
-													<!--<div class="portlet box red">
-													<div class="portlet-title">
-														<div class="caption">
-															<i class="fa fa-cogs "></i>Controls of the player
-														</div>
-														<div class="tools">
-															<a>  <ui-switch [(ngModel)]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
-																	size="small" (change)="controlPlayerChange($event)"></ui-switch>
-															</a> <a href="" class="reload"></a>
-														</div>
-														</div>
-														<div class="portlet-body" >
-														<div class="portlet-body form" data-initialized="1"
-															style="overflow: hidden; width: auto; height: auto">
-														</div>
-														</div>
-													</div>-->
-													
 													  <div class="playerButton">
 														<button type="submit"  class="btn green-haze">Save Changes</button>
 														<!--<input type="reset"  class="btn default" value="Cancel">-->
 													  </div>
 													</form>
+													</div>
 												</div>
 												<!--video player settings-->
 												

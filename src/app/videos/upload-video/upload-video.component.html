@@ -103,14 +103,10 @@
 					<br />
 					<div class="col-md-12" style="margin-top: 25px;">
 	                <div *ngIf="processing">
-                  <!--  <div class="customLoaderBar"> 
-                      <i class="fa fa-spinner fa-spin" style="font-size:60px"></i> 
-                      <h4 class="h2text"><img src="assets/images/default.gif" style="font-size:6px; width: 53px;"> 
-                         Please wait ..!!! your video got uploaded & we are processing..!!!!</h4> </div>-->
-                 <div  class="col-md-9 alert alert-success alertMessageCustom loaderSymbol" >
-                      <img src="assets/images/default.gif" style="font-size:6px;width: 53px;"> 
-                        <strong >Please wait ..!!! your video got uploaded & we are processing..!!!!</strong>
-	              </div>
+						<div class="col-md-12 alert alert-success alertMessageCustom loaderSymbol" >
+						 <img src="assets/images/loadbar.gif" style="width: 67px;top: -11px;left: -9px; position: absolute;"> 
+							<p style="top: 14px;position: absolute;left: 54px;">Please wait ..!!! your video got uploaded & we are processing..!!!!</p>
+						</div>
                     </div> 
                     <div *ngIf="maxSubscription ==true"  class="alert alert-danger alert-dismissable" style="margin-right: 304px;">
                        <strong>Contact Admin!</strong> Maximum Disk Space Reached for you subscription.!!

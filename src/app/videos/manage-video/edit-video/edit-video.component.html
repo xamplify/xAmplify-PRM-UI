@@ -215,7 +215,7 @@
 									<div class="form-group">
 										<label class="col-md-3 control-label">Title:</label>
 										<div class="col-md-9">
-											<input type="text" (input)="validTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
+											<input type="text" (input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
 												<span *ngIf="!isValidTitle" class="help-block">A block of help text.</span>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
 											<div *ngIf="isValidTitle" style="color: red;">Title Already Exists</div>
@@ -246,8 +246,9 @@
 
 									<div class="form-group">
 										<label class="col-md-3 control-label">Tags:</label>
-										<div class="col-md-9"><tag-input  formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
+										<div class="col-md-9"><tag-input (input) = "tagsInput()" formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
+											<div *ngIf="tagsUndefined" class="alert alert-danger">tags should not be empty</div>
 										</div>
 									</div>
 									<div class="form-group">

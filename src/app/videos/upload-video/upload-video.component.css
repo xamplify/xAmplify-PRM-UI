@@ -50,15 +50,12 @@
 }
 
 .loaderSymbol{
-   height: 57px;
-   padding: 0px;
-   background-color: #d0cede;
-   margin-bottom: 20px;
-   margin-right: 304px; 
-   margin-left: 19px;
-   color: black;
-   border-color: #29101b;
-
+    height: 47px;
+    background-color: #d0cede;
+    margin-bottom: 7px;
+    margin-left: -2px;
+    color: black;
+    border-color: #000000;
  }
 
 .h2text {

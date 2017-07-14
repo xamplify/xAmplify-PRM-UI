@@ -83,9 +83,9 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         this.isCategoryThere = false;
         this.searchKey = null;
     }
-   truncateHourZeros(length){
+   truncateHourZeros(length) {
     const val = length.split(":");
-    if (val.length == 3 && val[0] == "00") {
+    if (val.length === 3 && val[0] === "00") {
         length = val[1]+":"+val[2];
     }
     return length;
@@ -227,6 +227,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
         console.log(video.alias);
         this.deletedVideo = false;
         this.selectedVideoFile = video;
+        this.videoFileService.videoViewBy = video.viewBy;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((editVideoFile: SaveVideoFile) => {
                 console.log('enter the show edit vidoe method');
@@ -358,7 +359,7 @@ export class ManageVideoComponent implements OnInit , OnDestroy {
             self.deleteVideoFile(alias, position , videoName);
         });
     }
-    closeBannerPopup(){
+    closeBannerPopup() {
         this.campaignVideo = false;
     }
     update(videoFile: SaveVideoFile) {

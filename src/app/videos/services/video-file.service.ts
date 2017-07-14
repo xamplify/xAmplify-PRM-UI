@@ -23,6 +23,7 @@ export class VideoFileService {
     public actionLog: ActionLog;
     public viewBytemp: string;
     public logEnded: number;
+    public videoViewBy: string;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');

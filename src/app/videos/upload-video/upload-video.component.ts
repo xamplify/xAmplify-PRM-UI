@@ -26,7 +26,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public hasAnotherDropZoneOver = false;
     public videoPreviewPath: SafeUrl;
     loading: boolean ;
-    processing = false;
+    processing: boolean;
     isChecked: boolean ;
     isFileDrop: boolean;
     isFileProgress: boolean;
