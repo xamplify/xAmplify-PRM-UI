@@ -77,6 +77,14 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    loadVideosCount() {
+        //this.logger.info( "Service class loadContactCount() completed" );
+        return this.http.get( this.URL + "videos_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);

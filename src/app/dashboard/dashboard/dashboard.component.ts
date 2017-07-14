@@ -253,7 +253,7 @@ export class DashboardComponent implements OnInit {
     }
     
     /*uploadedVideosCount() {
-        this.videoFileService.loadTotalUploadedVideos()
+        this.videoFileService.loadVideosCount()
             .subscribe(
             data => {
                 this.totalUploadedvideos = data;
@@ -263,11 +263,11 @@ export class DashboardComponent implements OnInit {
             );
     }*/
     
-    uploadedVideosCount(pagination: Pagination) {
+    uploadedVideosCount() {
         try {
-           this.videoFileService.loadVideoFiles(pagination)
+           this.videoFileService.loadVideosCount()
              .subscribe((result: any) => {
-                 this.totalUploadedvideos = result.totalRecords;
+                 this.totalUploadedvideos = result.videos_count;
              },
              (error: string) => {
                this.logger.error( ' Loading Videos():' + error);
@@ -314,7 +314,7 @@ export class DashboardComponent implements OnInit {
     
     ngOnInit() {
         try {
-            this.uploadedVideosCount(this.pagination);
+            this.uploadedVideosCount();
             this.totalContactsCount();
             const userId = this.authenticationService.user.id;
             Metronic.init();
