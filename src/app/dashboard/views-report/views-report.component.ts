@@ -7,6 +7,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { Category } from '../../videos/models/category';
 
 declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
 
@@ -23,12 +24,16 @@ videos: Array<SaveVideoFile>;
 imagepath: string;
 public errorPrepender: 'Error In:';
 private videoJSplayer: any;
+categories: Category[];
 isvideoThere: boolean;
 pagedItems: any[];
 public searchKey: string ;
 sortingName: string = null;
 sortcolumn: string = null;
 sortingOrder: string = null;
+categoryNum: number ;
+public isCategoryThere: boolean;
+public isCategoryUpdated: boolean;
 launchVideoPreview:SaveVideoFile = new SaveVideoFile();
 sortVideos  = [
                {'name': 'Sort By', 'value': ''},
@@ -44,7 +49,9 @@ public videoSort: any = this.sortVideos[0];
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,
             private pagerService: PagerService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
-        
+        this.categoryNum = 0;
+        this.isCategoryThere = false;
+        //this.categories = this.referenceService.refcategories;
     }
 
     viewsSparklineData(videoFile : number) {
@@ -106,10 +113,10 @@ public videoSort: any = this.sortVideos[0];
                       this.allRecords = this.totalRecords;
                       this.checkTotalRecords = false;
                   }*/
-                 /*if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
+                 if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                       this.categories = result.categories;
                       this.categories.sort(function(a: any, b: any) { return (a.id) - (b.id); });
-                 }*/
+                 }
                  this.referenceService.loading(this.httpRequestLoader, false);
                  //console.log(this.categories);
                  //console.log(this.videos);
@@ -128,8 +135,8 @@ public videoSort: any = this.sortVideos[0];
                      this.imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
                      this.videos[i].imagePath = this.imagepath;
                  }
-                // this.isCategoryThere = true;
-                 //this.isCategoryUpdated = false;
+                 this.isCategoryThere = true;
+                 this.isCategoryUpdated = false;
                  pagination = this.pagerService.getPagedItems(pagination, this.videos);
              },
              (error: string) => {
@@ -150,16 +157,16 @@ public videoSort: any = this.sortVideos[0];
          //this.showMessage = false;
       //}
      }
-     /*getCategoryNumber() {
-         this.showMessage = false;
-         this.showUpdatevalue = false;
+     getCategoryNumber() {
+         //this.showMessage = false;
+         //this.showUpdatevalue = false;
          this.isvideoThere = false;
          console.log(this.categoryNum);
          this.pagination.filterBy = this.categoryNum;
          this.pagination.pageIndex = 1;
          this.loadVideos(this.pagination);
      }
-     searchDisableValue() {
+     /*searchDisableValue() {
          console.log(this.searchKey);
          if (this.searchKey !== null || this.searchKey.length !== 0) {
          this.searchDisable = false; }

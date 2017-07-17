@@ -32,7 +32,14 @@
 						</li>
 					</ul>
 				</div>
-				<div class="page-toolbar">
+				<div class="col-md-12">
+				<div class="col-md-4" style="width:28%;margin-left:-15px">
+                                             <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
+                                               <option  [value]="0" class="form-control">All Categories</option>
+                                               <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
+                                            </select>
+									</div>
+				<div class="col-md-8;page-toolbar">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px">
@@ -50,8 +57,9 @@
 										</div>
 									</div>
 								</div>
+								</div>
 								
-								<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+								<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="margin-top:20px">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Videos found.. !!!</strong>
 			                </div>
