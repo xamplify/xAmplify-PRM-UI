@@ -81,7 +81,7 @@ export class DashboardService {
     }
     
     loadEmailOpenedCount(){
-        return this.http.get( this.url + "contacts_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.authenticationService.REST_URL + "email_open_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
