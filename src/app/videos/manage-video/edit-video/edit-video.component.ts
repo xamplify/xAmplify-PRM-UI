@@ -8,11 +8,11 @@ import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { Logger } from 'angular2-logger/core';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
-import { UserService } from '../../../core/services/user.service';
 import { VideoUtilService } from '../../services/video-util.service';
 declare var $, videojs, swal: any;
 
@@ -144,7 +144,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
-        private authenticationService: AuthenticationService,
+        private authenticationService: AuthenticationService, private logger: Logger,
         private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
@@ -1032,7 +1032,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
             this.saveVideoFile.imagePath = this.defaultSaveImagePath;
-            console.log('image path ' + this.defaultImagePath);
+            this.logger.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
             this.saveVideoFile.imageFile = null;
             if (this.videoFileService.actionValue === 'Save') {
@@ -1045,8 +1045,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                 this.videoFileService.showUpadte = true;
             }
             this.saveVideoFile.callACtion = this.enableCalltoAction;
-            console.log(this.saveVideoFile.transparency);
-            console.log(this.saveVideoFile);
+            this.logger.info(this.saveVideoFile.transparency);
+            this.logger.info(this.saveVideoFile);
             return this.videoFileService.saveVideo(this.saveVideoFile)
                 .subscribe((result: any) => {
                     if (this.saveVideoFile != null) { this.saveVideoFile = result;
@@ -1057,10 +1057,11 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                         swal('ERROR', this.saveVideoFile.error, 'error');
                     }
                 }),
-                () => console.log(this.saveVideoFile);
+                () => this.logger.log(this.saveVideoFile);
          }
     }
     validVideoTitle(videoTitle: string) {
+        this.saveVideoFile.title = videoTitle;
         if ((this.videoFileService.videoViewBy !== 'DRAFT' && this.videoFileService.actionValue === 'Update') &&
          (videoTitle === this.editVideoTitle)) {
             this.isValidTitle = false;
@@ -1068,43 +1069,29 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
          this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
         }
       }
-    checkVideoTitleAvailability(arr, val) { console.log(arr.indexOf(val) > -1);
+    checkVideoTitleAvailability(arr, val) { this.logger.log(arr.indexOf(val) > -1);
     	 return arr.indexOf(val) > -1 ;
     }
     saveCallToActionUserForm() {
-     /*  $('#overlay-modal').hide();
-        if(this.videoOverlaySubmit === 'PLAY'){
+        $('#overlay-modal').hide();
+        if (this.videoJSplayer) {
+         if (this.videoOverlaySubmit === 'PLAY') {
             this.videoJSplayer.play();
+         } else { this.videoJSplayer.pause(); }
         }
-        else {
-             this.videoJSplayer.pause();
-        } */
-         console.log(this.model.email_id);
-      /*  if (this.authenticationService.user.emailId === this.model.email_id) {
-            this.user.emailId = this.model.email_id;
-            this.user.firstName = this.authenticationService.user.firstName;   // need to remove the commets here
-            this.user.lastName = this.authenticationService.user.lastName;
-        } */
-     //   else {
-            this.user.emailId = this.model.email_id;
-            this.user.firstName = this.firstName;
-            this.user.lastName = this.lastName;
-      //  }
-        console.log(this.user);
-        this.videoFileService.saveCalltoActionUser(this.user)
-            .subscribe(
-            (result: any) => { console.log('Save user Form call to acton is successfull' + result); },
-            (error: string) => {// this.referenceService.showError(error, "save call to action user","Edit Video Component")
-             } );
-        }
+        this.user.emailId = this.model.email_id;
+        this.user.firstName = this.firstName;
+        this.user.lastName = this.lastName;
+        this.logger.debug(this.user);
+    }
     cancelVideo() {
-        console.log('EditVideoComponent : cancelVideo() ');
+        this.logger.log('EditVideoComponent : cancelVideo() ');
         this.videoFileService.showSave = false;
         this.videoFileService.showUpadte = false;
         this.notifyParent.emit(null);
     }
     ngOnDestroy() {
-        console.log('Deinit - Destroyed Component');
+        this.logger.info('Deinit - Destroyed Edit-Video Component');
       if ( this.is360Value !== true) {
           this.videoJSplayer.dispose();
        } else if (this.videoJSplayer) {

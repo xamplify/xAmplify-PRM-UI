@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, OnDestroy, Input, AfterViewInit } from '
 import { Router} from '@angular/router';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { UserService } from '../../../core/services/user.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
@@ -775,7 +774,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
      }
     ngOnDestroy() {
-        console.log('Deinit - Destroyed Component');
+        console.log('Deinit - Destroyed Play-Video Component');
         if (this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
         $('.h-video').remove();

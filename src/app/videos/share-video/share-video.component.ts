@@ -7,6 +7,7 @@ import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { Logger } from 'angular2-logger/core';
 import { VideoUtilService } from '../services/video-util.service';
+import { User } from '../../core/models/user';
 import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
@@ -41,6 +42,7 @@ enum LogAction {
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
 embedVideoFile: SaveVideoFile;
+public user: User = new User();
 private videoJSplayer: any;
 public imgURL: string;
 public videoUrl: string;
@@ -74,11 +76,11 @@ LogAction: typeof LogAction = LogAction;
 public persons;
 public replyVideo: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
-             private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
-            console.log('share component constructor called');
-            console.log('url is on angular 2' + document.location.href);
-            this.embedUrl = document.location.href;
+              private logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
+              private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
+                console.log('share component constructor called');
+                console.log('url is on angular 2' + document.location.href);
+                this.embedUrl = document.location.href;
              }
   shareMetaTags() {
     return this.http.get(this.shareUrl)
@@ -593,7 +595,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
  loacationDetails() {
     this.videoFileService.getJSONLocation()
     .subscribe(
-     (data:any) => {
+     (data: any) => {
        this.defaultLocationJsonValues(data);
         console.log(data);
         },
@@ -610,8 +612,23 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
          console.log(this.actionLog.actionId);
      });
     }
+   saveCallToActionUserForm() {
+        $('#overlay-modal').hide();
+        if (this.videoJSplayer) {
+        if (this.videoOverlaySubmit === 'PLAY') {
+            this.videoJSplayer.play();
+         }else { this.videoJSplayer.pause(); }}
+        this.logger.debug(this.model.email_id);
+        this.user.emailId = this.model.email_id;
+        this.user.firstName = this.firstName;
+        this.user.lastName = this.lastName;
+        this.logger.debug(this.user);
+        this.videoFileService.saveCalltoActionUser(this.user)
+            .subscribe( (result: any) => {
+                this.logger.info('Save user Form call to acton is successfull' + result); });
+       }
   ngOnDestroy() {
-     console.log('Deinit - Destroyed Component');
+     this.logger.info('Deinit - Destroyed Share-Video Component');
      if (this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();

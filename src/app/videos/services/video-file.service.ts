@@ -77,14 +77,14 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
     loadVideosCount() {
-        //this.logger.info( "Service class loadContactCount() completed" );
-        return this.http.get( this.URL + "videos_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        // this.logger.info( "Service class loadContactCount() completed" );
+       const url =  this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='
+       + this.authenticationService.access_token;
+        return this.http.get(url)
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);
@@ -113,8 +113,7 @@ export class VideoFileService {
     saveCalltoActionUser(user: User) {
         console.log(user);
         try {
-            const url = this.authenticationService.REST_URL + 'register/callAction/user?access_token=' + 
-            this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
             return this.http.post(url, user)
                 .map(this.extractData)
                 .catch(this.handleError);
@@ -126,7 +125,7 @@ export class VideoFileService {
        try {
             const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue + '&videoAlias=' +
             videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
-            return this.http.get(url,"")
+            return this.http.get(url, '')
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         } catch (error) {
@@ -148,7 +147,7 @@ export class VideoFileService {
     }
     getJSONLocation(): Observable<any> {
       const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
-        return this.http.get(locationurl,"")
+        return this.http.get(locationurl, '')
         .map(this.extractData)
         .catch(this.handleErrorLogAction);
     }
@@ -167,7 +166,7 @@ export class VideoFileService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw(errMsg); */
         if (error.status === 500) {
-            var response =  JSON.parse(error['_body']);
+            const response =  JSON.parse(error['_body']);
             return Observable.throw(new Error(response.message));
         } else if (error.status === 400) {
             return Observable.throw(new Error(error.status));
