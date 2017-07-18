@@ -283,7 +283,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailClickedCount()
             .subscribe(
             data => {
-                this.listOfEmailClicked = data.allcontacts;
+                this.listOfEmailClicked = data.email_gif_clicked_count;
             },
             error => console.log( error ),
             () => console.log( "emailClickedCount completed" )
@@ -305,7 +305,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailWatchedCount()
             .subscribe(
             data => {
-                this.listOfEmailWatched = data.allcontacts;
+                this.listOfEmailWatched = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -317,6 +317,7 @@ export class DashboardComponent implements OnInit {
             this.uploadedVideosCount();
             this.totalContactsCount();
             this.emailOpenedCount();
+            this.emailClickedCount();
             const userId = this.authenticationService.user.id;
             Metronic.init();
             Layout.init();
