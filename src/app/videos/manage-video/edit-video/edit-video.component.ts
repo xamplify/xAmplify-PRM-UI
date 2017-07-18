@@ -1,5 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit,
-style, state, animate, transition, trigger } from '@angular/core';
+import {
+    Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit,
+    style, state, animate, transition, trigger
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -17,26 +19,26 @@ import { VideoUtilService } from '../../services/video-util.service';
 declare var $, videojs, swal: any;
 
 @Component({
-   selector: 'app-edit-video',
-   templateUrl: './edit-video.component.html',
-   styleUrls : ['./edit-video.component.css', './foundation-themes.scss', './call-action.css',
-    '../../../../assets/css/video-css/video-js.custom.css' ,
-   '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
-   '../../../../assets/css/about-us.css', '../../../../assets/css/todo.css',
-   '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css'],
-   animations: [
-            trigger('fadeInOut', [
+    selector: 'app-edit-video',
+    templateUrl: './edit-video.component.html',
+    styleUrls: ['./edit-video.component.css', './foundation-themes.scss', './call-action.css',
+        '../../../../assets/css/video-css/video-js.custom.css',
+        '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
+        '../../../../assets/css/about-us.css', '../../../../assets/css/todo.css',
+        '../../../../assets/css/daterangepicker-bs3.css', '../../../../assets/css/bootstrap-datepicker3.min.css'],
+    animations: [
+        trigger('fadeInOut', [
             transition(':enter', [   // :enter is alias to 'void => *'
-                style({opacity:0}),
-                animate(500, style({opacity: 1}))
+                style({ opacity: 0 }),
+                animate(500, style({ opacity: 1 }))
             ]),
             transition(':leave', [   // :leave is alias to '* => void'
-                animate(500, style({opacity: 0}))
+                animate(500, style({ opacity: 0 }))
             ])
-            ])
-     ]
+        ])
+    ]
 })
-export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
+export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
     public saveVideoFile: SaveVideoFile;
     public tempVideoFile: SaveVideoFile;
@@ -76,7 +78,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public callaction: boolean;
     public controlPlayers: boolean;
     public shareValues: boolean;
-    public embedVideo:  boolean;
+    public embedVideo: boolean;
     public imgBoolean1: boolean;
     public imgBoolean2: boolean;
     public imgBoolean3: boolean;
@@ -91,7 +93,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
     public isPlayButton: boolean;
     embedWidth = '640';
     embedHeight = '360';
-    videoSizes: string[] ;
+    videoSizes: string[];
     videosize = '640 × 360';
     public embedFullScreen = 'allowfullscreen';
     isFullscreen: boolean;
@@ -145,7 +147,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
         private authenticationService: AuthenticationService, private logger: Logger,
-        private sanitizer: DomSanitizer , private videoUtilService: VideoUtilService) {
+        private sanitizer: DomSanitizer, private videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
@@ -155,7 +157,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.editVideoTitle = this.saveVideoFile.title;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
-        this.formErrors  = this.videoUtilService.formErrors;
+        this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';
         console.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -167,23 +169,23 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.lastName = this.authenticationService.user.lastName;
         this.isFistNameChecked = this.saveVideoFile.name;
         this.isSkipChecked = this.saveVideoFile.skip;
-        this.is360Value = this.value360 =  this.saveVideoFile.is360video;
-        if ( this.videoUtilService.validateEmail(this.model.email_id) ) {
-              this.isOverlay = false;
+        this.is360Value = this.value360 = this.saveVideoFile.is360video;
+        if (this.videoUtilService.validateEmail(this.model.email_id)) {
+            this.isOverlay = false;
         } else { this.isOverlay = true; }
-         this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
+        this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
         this.startCalltoAction = this.saveVideoFile.startOfVideo;
         this.endCalltoAction = this.saveVideoFile.endOfVideo;
         if (this.saveVideoFile.startOfVideo === true) {
             this.videoOverlaySubmit = 'PLAY';
-         } else {  this.videoOverlaySubmit = 'SUBMIT'; }
-        if (this.saveVideoFile.startOfVideo === true && this.saveVideoFile.callACtion === true ) {
+        } else { this.videoOverlaySubmit = 'SUBMIT'; }
+        if (this.saveVideoFile.startOfVideo === true && this.saveVideoFile.callACtion === true) {
             this.overLayValue = 'StartOftheVideo';
             this.startCalltoAction = true;
             this.endCalltoAction = false;
             this.videoOverlaySubmit = 'PLAY';
             this.isPlay = true;
-        } else if ( this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
+        } else if (this.saveVideoFile.endOfVideo === true && this.saveVideoFile.callACtion === true) {
             this.endCalltoAction = true;
             this.startCalltoAction = false;
             this.overLayValue = 'EndOftheVideo';
@@ -195,7 +197,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         // share details
         if (this.saveVideoFile.upperText == null) {
             this.characterleft = this.maxLengthvalue;
-         } else { this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length; }
+        } else { this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length; }
         this.isPlayButton = this.saveVideoFile.name;
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
@@ -209,38 +211,38 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
             maxFileSize: 10 * 1024 * 1024, // 10 MB
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
-              fileItem.withCredentials = false;
-              this.ownThumb = true;
-              this.ownThumbnail = false;
-              this.imageUrlPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
-         };
+            fileItem.withCredentials = false;
+            this.ownThumb = true;
+            this.ownThumbnail = false;
+            this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+        };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
-       // need to modify this code for embed video modal popup
-     }  // closed constructor
+        // need to modify this code for embed video modal popup
+    }  // closed constructor
     shareClick() {
-     // this.router.navigate(['/embed-video', this.saveVideoFile.viewBy, this.saveVideoFile.alias]);
-    //   this.showPreview();
-     this.openWindow();
+        // this.router.navigate(['/embed-video', this.saveVideoFile.viewBy, this.saveVideoFile.alias]);
+        //   this.showPreview();
+        this.openWindow();
     }
     // image path and gif image path methods
     removeOwnThumbnail() {
-      this.imageUrlPath = false;
-      this.ownThumb = false;
-      this.ownThumbnail = true;
-     }
+        this.imageUrlPath = false;
+        this.ownThumb = false;
+        this.ownThumbnail = true;
+    }
     ownThumbnailfileChange(event: any) {
-      const fileList: FileList = event.target.files;
-      if (fileList.length > 0) {
-        const file: File = fileList[0];
-      this.videoFileService.saveOwnThumbnailFile(file)
-      .subscribe( (result: any) => {
-          console.log(result);
-          this.isThumb = true;
-          this.saveVideoFile.imagePath = result.path;
-          this.defaultSaveImagePath = this.saveVideoFile.imagePath;
-        });
-      }
+        const fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            const file: File = fileList[0];
+            this.videoFileService.saveOwnThumbnailFile(file)
+                .subscribe((result: any) => {
+                    console.log(result);
+                    this.isThumb = true;
+                    this.saveVideoFile.imagePath = result.path;
+                    this.defaultSaveImagePath = this.saveVideoFile.imagePath;
+                });
+        }
     }
     changeImgRadio1() {
         this.openOwnThumbnail = false;
@@ -303,55 +305,69 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2];
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
-// div hide and show methods
+    // div hide and show methods
     titleDivChange(event: boolean) {
         this.titleDiv = event;
         this.colorControl = this.controlPlayers = this.callaction = false;
     }
     colorControlChange(event: boolean) {
         this.colorControl = event;
-        this.titleDiv  = this.controlPlayers = this.callaction = false;
+        this.titleDiv = this.controlPlayers = this.callaction = false;
         const disable = this;
         this.loadRangeDisable = false;
-          setTimeout(function() {
-              if (disable.defaultSettingValue === true) { disable.disableRange(true);
-                 disable.disablePlayerSettingnew = true;
-              } else {  disable.disableRange(false);
-                 disable.disablePlayerSettingnew = false;  } }, 1);
+        setTimeout(function () {
+            if (disable.defaultSettingValue === true) {
+                disable.disableRange(true);
+                disable.disablePlayerSettingnew = true;
+            } else {
+                disable.disableRange(false);
+                disable.disablePlayerSettingnew = false;
+            }
+        }, 1);
     }
     controlPlayerChange(event: any) {
         this.controlPlayers = event;
         this.colorControl = this.titleDiv = this.callaction = false; const disable = this;
         this.loadRangeDisable = false;
-        setTimeout(function() { if (disable.defaultSettingValue === true) { disable.disablePlayerSettingnew = true;
-            } else {  disable.disablePlayerSettingnew = false; } }, 1);
+        setTimeout(function () {
+            if (disable.defaultSettingValue === true) {
+            disable.disablePlayerSettingnew = true;
+            } else { disable.disablePlayerSettingnew = false; }
+        }, 1);
     }
     callToActionChange(event: any) {
         this.callaction = event;
-        this.controlPlayers = this.colorControl = this.titleDiv  = false;
+        this.controlPlayers = this.colorControl = this.titleDiv = false;
         const disable = this;
-        setTimeout(function() { if (disable.saveVideoFile.callACtion === true) {  disable.disableCalltoAction(false);
-            } else { disable.disableCalltoAction(true); }  }, 1);
+        setTimeout(function () {
+            if (disable.saveVideoFile.callACtion === true) {
+                disable.disableCalltoAction(false);
+            } else { disable.disableCalltoAction(true); }
+        }, 1);
     }
     disableRange(event: boolean) {
-         (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event;
+        (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
     }
-  // like and dis like methods
+    // like and dis like methods
     likesValuesDemo() {
         this.likesValues += 1;
     }
     disLikesValuesDemo() {
         this.disLikesValues += 1;
     }
-  // embed video methods
+    // embed video methods
     embedFulScreenValue() {
-        if ( this.isFullscreen === true ) {this.embedFullScreen = 'allowfullscreen';
-       } else { this.embedFullScreen = ''; }
+        if (this.isFullscreen === true) {
+        this.embedFullScreen = 'allowfullscreen';
+        } else { this.embedFullScreen = ''; }
     }
     embedVideoSizes() {
-        if (this.videosize === this.videoSizes[0]) { this.embedWidth = '1280'; this.embedHeight = '720';
-        } else if (this.videosize === this.videoSizes[1]) { this.embedWidth = '560'; this.embedHeight = '315';
-        } else if (this.videosize === this.videoSizes[2]) { this.embedWidth = '853'; this.embedHeight = '480';
+        if (this.videosize === this.videoSizes[0]) {
+        this.embedWidth = '1280'; this.embedHeight = '720';
+        } else if (this.videosize === this.videoSizes[1]) {
+        this.embedWidth = '560'; this.embedHeight = '315';
+        } else if (this.videosize === this.videoSizes[2]) {
+        this.embedWidth = '853'; this.embedHeight = '480';
         } else { this.embedWidth = '640'; this.embedHeight = '360'; }
     }
     embedCode() {
@@ -360,123 +376,137 @@ export class EditVideoComponent implements OnInit, AfterViewInit , OnDestroy {
         document.execCommand('copy');
     }
     closeEmbedModal() {
-          this.ClipboardName = 'Copy to Clipboard';
+        this.ClipboardName = 'Copy to Clipboard';
     }
- // share window popup
+    // share window popup
     openWindow() {
         window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
-// normal and 360 video methods
+    // normal and 360 video methods
     play360Video() {
-    this.is360Value = true;
-    $('edit_video_player').empty();
-    console.log('Loaded 360 Video');
-    $('.h-video').remove();
-    $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-    $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-    $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-$('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
-    $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
-const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $('#newPlayerVideo').append(str);
-             this.videoUrl = this.saveVideoFile.videoPath;
-             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-             this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-          //   this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
-             $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-            const newThis = this;
-            const player = videojs('videoId').ready(function() {
-                  this.hotkeys({
-                 volumeStep: 0.1, seekStep: 5, enableMute: true,
-                 enableFullscreen: false, enableNumbers: false,
-                 enableVolumeScroll: true,
-                 fullscreenKey: function(event: any, player: any) {
-                      return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                 },
-                 customKeys: {
-                     simpleKey: {
-                         key: function(e: any) {  return (e.which === 83); },
-                         handler: function(player: any, options: any, e: any) {
-                             if (player.paused()) {  player.play(); } else { player.pause(); }  } },
-                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68);},
-                         handler: function(player: any, options: any, event: any) {
-                             if (options.enableMute) { player.muted(!player.muted()); }}
-                     },
-                     numbersKey: {
-                         key: function(event: any) { return ((event.which > 47 && event.which < 59) ||
-                              (event.which > 95 && event.which < 106)); },
-                         handler: function(player: any, options: any, event: any) {
-                             if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                 var sub = 48;
-                                 if (event.which > 95) { sub = 96; }
-                                 var number = event.which - sub;
-                                 player.currentTime(player.duration() * number * 0.1); }  } },
-                     emptyHotkey: { },
-                     withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler'); }},
-                     withoutHandler: { key: function(e: any) { return true; }},
-                     malformedKey: { key: function() {  console.log(' The Key function must return a boolean.');},
-                         handler: function(player: any, options: any, event: any) { }
-                     } }  });
-                });
-            player.panorama({
-                autoMobileOrientation: true,
-                clickAndDrag: true,
-                clickToToggle: true,
-                callback: function () {
-                 // player.ready();
-                 const isValid = newThis.overLayValue;
-                player.ready(function() {
-                    if (isValid === 'StartOftheVideo' ) {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    newThis.show360ModalDialog();
-                    } else if (isValid !== 'StartOftheVideo' ) {
-                      $('#overlay-modal').hide(); player.play();
-                     } else { $('#overlay-modal').hide();
+        this.is360Value = true;
+        $('edit_video_player').empty();
+        console.log('Loaded 360 Video');
+        $('.h-video').remove();
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+        const str = '<video id=videoId poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+        $('#newPlayerVideo').append(str);
+        this.videoUrl = this.saveVideoFile.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        //   this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
+        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        const newThis = this;
+        const player = videojs('videoId').ready(function () {
+            this.hotkeys({
+                volumeStep: 0.1, seekStep: 5, enableMute: true,
+                enableFullscreen: false, enableNumbers: false,
+                enableVolumeScroll: true,
+                fullscreenKey: function (event: any, player: any) {
+                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                },
+                customKeys: {
+                    simpleKey: {
+                        key: function (e: any) { return (e.which === 83); },
+                        handler: function (player: any, options: any, e: any) {
+                            if (player.paused()) { player.play(); } else { player.pause(); }
+                        }
+                    },
+                    complexKey: {
+                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
+                        handler: function (player: any, options: any, event: any) {
+                            if (options.enableMute) { player.muted(!player.muted()); }
+                        }
+                    },
+                    numbersKey: {
+                        key: function (event: any) {
+                            return ((event.which > 47 && event.which < 59) ||
+                                (event.which > 95 && event.which < 106));
+                        },
+                        handler: function (player: any, options: any, event: any) {
+                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                                var sub = 48;
+                                if (event.which > 95) { sub = 96; }
+                                var number = event.which - sub;
+                                player.currentTime(player.duration() * number * 0.1);
+                            }
+                        }
+                    },
+                    emptyHotkey: {},
+                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
+                    withoutHandler: { key: function (e: any) { return true; } },
+                    malformedKey: {
+                        key: function () { console.log(' The Key function must return a boolean.'); },
+                        handler: function (player: any, options: any, event: any) { }
+                    }
+                }
+            });
+        });
+        player.panorama({
+            autoMobileOrientation: true,
+            clickAndDrag: true,
+            clickToToggle: true,
+            callback: function () {
+                // player.ready();
+                const isValid = newThis.overLayValue;
+                player.ready(function () {
+                    if (isValid === 'StartOftheVideo') {
+                        $('.vjs-big-play-button').css('display', 'none');
+                        newThis.show360ModalDialog();
+                    } else if (isValid !== 'StartOftheVideo') {
+                        $('#overlay-modal').hide(); player.play();
+                    } else {
+                        $('#overlay-modal').hide();
                         player.play();
-                     }
-                      $('#skipOverlay').click(function(){
-                         $('#overlay-modal').hide();
-                         player.play();
-                      });
-                      $('#playorsubmit').click(function(){
-                         $('#overlay-modal').hide();
-                         player.play();
-                     });
-                 });
-                 player.on('ended', function() {
-                     if (isValid === 'EndOftheVideo') {
-                   //  $('#videoId').append( $('#overlay-modal').show());
-                     newThis.show360ModalDialog();
-                     $('.video-js .vjs-control-bar').hide();
+                    }
+                    $('#skipOverlay').click(function () {
+                        $('#overlay-modal').hide();
+                        player.play();
+                    });
+                    $('#playorsubmit').click(function () {
+                        $('#overlay-modal').hide();
+                        player.play();
+                    });
+                });
+                player.on('ended', function () {
+                    if (isValid === 'EndOftheVideo') {
+                        //  $('#videoId').append( $('#overlay-modal').show());
+                        newThis.show360ModalDialog();
+                        $('.video-js .vjs-control-bar').hide();
                     } else if (isValid !== 'EndOftheVideo') {
                         $('#overlay-modal').hide(); player.pause();
                     } else { $('#overlay-modal').hide(); player.pause(); }
-                      $('#repeatPlay').click(function(){
+                    $('#repeatPlay').click(function () {
                         player.play();
-                      });
-                      $('#skipOverlay').click(function(){
-                         $('#overlay-modal').hide();
-                         player.pause();
-                     //    $('.video-js .vjs-control-bar').hide();
-                      });
-                      $('#playorsubmit').click(function(){
-                         $('#overlay-modal').hide();
-                         player.pause();
-                     //    $('.video-js .vjs-control-bar').hide();
-                     });
-                  });
-               player.on('click', function(){
-               } );
-              }
-              });
-            $('#videoId').css('width', 'auto');
-            $('#videoId').css('height', '299px');
+                    });
+                    $('#skipOverlay').click(function () {
+                        $('#overlay-modal').hide();
+                        player.pause();
+                        //    $('.video-js .vjs-control-bar').hide();
+                    });
+                    $('#playorsubmit').click(function () {
+                        $('#overlay-modal').hide();
+                        player.pause();
+                        //    $('.video-js .vjs-control-bar').hide();
+                    });
+                });
+                player.on('click', function () {
+                });
+            }
+        });
+        $('#videoId').css('width', 'auto');
+        $('#videoId').css('height', '299px');
     }
     // video controller methods
     transperancyControllBar(value: any) {
         let color: any;
-        if (this.saveVideoFile.controllerColor === '#fff') { color = '#fbfbfb';
+        if (this.saveVideoFile.controllerColor === '#fff') {
+            color = '#fbfbfb';
         } else { color = this.saveVideoFile.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
@@ -496,49 +526,49 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         console.log('allow comments after event' + this.likes);
     }
     defaultPlayerSettingsValues(event: boolean) {
-        if (event === true ) {
+        if (event === true) {
             this.disablePlayerSettingnew = true;
             if (this.loadRangeDisable !== true) {
-               (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event; 
+                (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
             }
-            this.compPlayerColor  = this.defaultPlayerValues.playerColor;
+            this.compPlayerColor = this.defaultPlayerValues.playerColor;
             this.compControllerColor = this.defaultPlayerValues.controllerColor;
             this.valueRange = this.defaultPlayerValues.transparency;
-            this.changePlayerColor( this.compPlayerColor);
+            this.changePlayerColor(this.compPlayerColor);
             this.changeControllerColor(this.compControllerColor);
             if (this.loadNgOninit === false) {
-               this.enableVideoControllers(this.defaultPlayerValues.enableVideoController);
+                this.enableVideoControllers(this.defaultPlayerValues.enableVideoController);
             }
             this.newEnableController = this.defaultPlayerValues.enableVideoController;
             this.newComments = this.defaultPlayerValues.allowComments;
-            this.newFullScreen =  this.defaultPlayerValues.allowFullscreen;
-            this.newAllowLikes =  this.defaultPlayerValues.allowLikes;
-            this.newAllowEmbed =  this.defaultPlayerValues.allowEmbed;
+            this.newFullScreen = this.defaultPlayerValues.allowFullscreen;
+            this.newAllowLikes = this.defaultPlayerValues.allowLikes;
+            this.newAllowEmbed = this.defaultPlayerValues.allowEmbed;
             this.newEnableCasting = this.defaultPlayerValues.enableCasting;
             this.newEnableSetting = this.defaultPlayerValues.enableSettings;
-            this.newAllowSharing =  this.defaultPlayerValues.allowSharing;
+            this.newAllowSharing = this.defaultPlayerValues.allowSharing;
             this.newValue360 = this.defaultPlayerValues.is360video;
         } else {
-           if (this.loadRangeDisable !== true) {
-                (<HTMLInputElement> document.getElementById('rangeValue')).disabled = event;
+            if (this.loadRangeDisable !== true) {
+                (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
             }
             this.disablePlayerSettingnew = false;
             this.valueRange = this.tempVideoFile.transparency;
-            this.compPlayerColor  = this.tempVideoFile.playerColor;
+            this.compPlayerColor = this.tempVideoFile.playerColor;
             this.compControllerColor = this.tempVideoFile.controllerColor;
             this.changeControllerColor(this.tempVideoFile.controllerColor);
             this.changePlayerColor(this.tempVideoFile.playerColor);
             if (this.loadNgOninit === false) {
-               this.enableVideoControllers(this.tempVideoFile.enableVideoController);
+                this.enableVideoControllers(this.tempVideoFile.enableVideoController);
             }
             this.newEnableController = this.tempVideoFile.enableVideoController;
             this.newComments = this.tempVideoFile.allowComments;
-            this.newFullScreen =  this.tempVideoFile.allowFullscreen;
-            this.newAllowLikes =  this.tempVideoFile.allowLikes;
-            this.newAllowEmbed =  this.tempVideoFile.allowEmbed;
+            this.newFullScreen = this.tempVideoFile.allowFullscreen;
+            this.newAllowLikes = this.tempVideoFile.allowLikes;
+            this.newAllowEmbed = this.tempVideoFile.allowEmbed;
             this.newEnableCasting = this.tempVideoFile.enableCasting;
             this.newEnableSetting = this.tempVideoFile.enableSettings;
-            this.newAllowSharing =  this.tempVideoFile.allowSharing;
+            this.newAllowSharing = this.tempVideoFile.allowSharing;
             this.newValue360 = this.tempVideoFile.is360video;
         }
         this.loadNgOninit = false;
@@ -555,14 +585,15 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     changeControllerColor(event: any) {
         this.saveVideoFile.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('background-color',  this.saveVideoFile.controllerColor);
+        $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
         this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {
-         this.saveVideoFile.allowFullscreen = event;
-         this.newFullScreen = event;
-        if (this.saveVideoFile.allowFullscreen === false) { $('.video-js .vjs-fullscreen-control').hide();
-       } else { $('.video-js .vjs-fullscreen-control').show(); }
+        this.saveVideoFile.allowFullscreen = event;
+        this.newFullScreen = event;
+        if (this.saveVideoFile.allowFullscreen === false) {
+            $('.video-js .vjs-fullscreen-control').hide();
+        } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     allowSharing(event: boolean) {
         console.log('allow sharing ' + event);
@@ -574,120 +605,128 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.embedVideo = this.saveVideoFile.allowEmbed = event;
     }
     enableCastings(event: boolean) {
-       this.newEnableCasting = event;
-       this.saveVideoFile.enableCasting = event;
+        this.newEnableCasting = event;
+        this.saveVideoFile.enableCasting = event;
     }
-    enableSettings(event: boolean){
-       this.newEnableSetting = event;
-       this.saveVideoFile.enableSettings = event;
+    enableSettings(event: boolean) {
+        this.newEnableSetting = event;
+        this.saveVideoFile.enableSettings = event;
     }
     enableVideoControllers(event: boolean) {
         this.newEnableController = event;
-        if (this.newEnableController === false) { $('.video-js .vjs-control-bar').hide();
-        }  else { $('.video-js .vjs-control-bar').show(); }
+        if (this.newEnableController === false) {
+            $('.video-js .vjs-control-bar').hide();
+        } else { $('.video-js .vjs-control-bar').show(); }
     }
     defaultVideoControllers() {
-        if (this.newEnableController === false) { $('.video-js .vjs-control-bar').hide();
-       } else { $('.video-js .vjs-control-bar').show(); }
+        if (this.newEnableController === false) {
+            $('.video-js .vjs-control-bar').hide();
+        } else { $('.video-js .vjs-control-bar').show(); }
     }
     is360VideoCheck(event: boolean) {
         if (event === true) {
-        this.saveVideoFile.is360video = true;
-        this.newValue360 = true;
-        this.value360 = true;
-    }  else { this.saveVideoFile.is360video = false;
-        this.newValue360 = false;
-        this.value360 = false; }
+            this.saveVideoFile.is360video = true;
+            this.newValue360 = true;
+            this.value360 = true;
+        } else {
+            this.saveVideoFile.is360video = false;
+            this.newValue360 = false;
+            this.value360 = false;
+        }
     }
     // call to action methods
     changeUpperText(upperText: string) {
         this.saveVideoFile.upperText = upperText;
         this.characterleft = this.maxLengthvalue - upperText.length;
-        if ( upperText.length === 0) {
+        if (upperText.length === 0) {
             this.upperTextValid = false;
         } else { this.upperTextValid = true; }
     }
     changeLowerText(lowerText: string) {
         this.saveVideoFile.lowerText = lowerText;
-        if (lowerText.length === 0) { this.lowerTextValid = false;
+        if (lowerText.length === 0) {
+        this.lowerTextValid = false;
         } else { this.lowerTextValid = true; }
     }
     enableCallToActionMethodTest(event: any) {
-       this.enableCalltoAction = this.saveVideoFile.callACtion = event;
+        this.enableCalltoAction = this.saveVideoFile.callACtion = event;
         if (event === true && this.saveVideoFile.startOfVideo === true) {
-              this.disableCalltoAction(false);
-              if (this.videoJSplayer) {
-                 $('#overLayDialog').append( $('#overlay-modal').show());
-                 this.videoJSplayer.pause();
-              } else { $('#overLayDialog').append( $('#overlay-modal').show());  }
-              this.videoOverlaySubmit = 'PLAY';
-              this.isPlay = true;
+            this.disableCalltoAction(false);
+            if (this.videoJSplayer) {
+                $('#overLayDialog').append($('#overlay-modal').show());
+                this.videoJSplayer.pause();
+            } else { $('#overLayDialog').append($('#overlay-modal').show()); }
+            this.videoOverlaySubmit = 'PLAY';
+            this.isPlay = true;
         } else if (event === true && this.saveVideoFile.endOfVideo === true) {
-                this.disableCalltoAction(false);
-               if (this.videoJSplayer) {
-                   $('#overLayDialog').append( $('#overlay-modal').show());
-                   this.videoJSplayer.pause();
-               } else {
-                   $('#overLayDialog').append( $('#overlay-modal').show());
-               }
-               this.videoOverlaySubmit = 'SUBMIT';
-               this.isPlay = false;
+            this.disableCalltoAction(false);
+            if (this.videoJSplayer) {
+                $('#overLayDialog').append($('#overlay-modal').show());
+                this.videoJSplayer.pause();
+            } else {
+                $('#overLayDialog').append($('#overlay-modal').show());
+            }
+            this.videoOverlaySubmit = 'SUBMIT';
+            this.isPlay = false;
         } else {
-              this.disableCalltoAction(true);
-              $('#overlay-modal').hide();
-              if (this.videoJSplayer) { this.videoJSplayer.pause(); }
-         }
-      }
-   disableCalltoAction(event: boolean) {
-        (<HTMLInputElement> document.getElementById('names')).disabled = event;
-        (<HTMLInputElement> document.getElementById('isSkiped')).disabled = event;
-        (<HTMLInputElement> document.getElementById('upperValue')).disabled = event;
-        (<HTMLInputElement> document.getElementById('lowerValue')).disabled = event;
-         this.disableStart = event;
-         this.disableEnd = event;
-          if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === false) {
-              this.upperTextValid = false;
-              this.lowerTextValid = false;
-          } else if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null ) && event === true) {
-              this.upperTextValid = true;
-              this.lowerTextValid = true;
-          } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0) && event === false) {
-              this.upperTextValid = false;
-              this.lowerTextValid = false;
-          }  else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
-              this.upperTextValid = true;
-              this.lowerTextValid = true;
-          }  else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false ) {
-              this.upperTextValid = false;
-              this.lowerTextValid = true;
-          } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
-              this.lowerTextValid = false;
-              this.upperTextValid = true;
-          } else {
-              this.upperTextValid = true;
-              this.lowerTextValid = true;
-          }
-   }
+            this.disableCalltoAction(true);
+            $('#overlay-modal').hide();
+            if (this.videoJSplayer) { this.videoJSplayer.pause(); }
+        }
+    }
+    disableCalltoAction(event: boolean) {
+        (<HTMLInputElement>document.getElementById('names')).disabled = event;
+        (<HTMLInputElement>document.getElementById('isSkiped')).disabled = event;
+        (<HTMLInputElement>document.getElementById('upperValue')).disabled = event;
+        (<HTMLInputElement>document.getElementById('lowerValue')).disabled = event;
+        this.disableStart = event;
+        this.disableEnd = event;
+        if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null) && event === false) {
+            this.upperTextValid = false;
+            this.lowerTextValid = false;
+        } else if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null) && event === true) {
+            this.upperTextValid = true;
+            this.lowerTextValid = true;
+        } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0) && event === false) {
+            this.upperTextValid = false;
+            this.lowerTextValid = false;
+        } else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
+            this.upperTextValid = true;
+            this.lowerTextValid = true;
+        } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false) {
+            this.upperTextValid = false;
+            this.lowerTextValid = true;
+        } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
+            this.lowerTextValid = false;
+            this.upperTextValid = true;
+        } else {
+            this.upperTextValid = true;
+            this.lowerTextValid = true;
+        }
+    }
     skipClose() {
-         $('#overlay-modal').hide();
-       //  $('.video-js .vjs-control-bar').show();
-         if (this.videoJSplayer) {
-         this.videoJSplayer.play(); }
+        $('#overlay-modal').hide();
+        //  $('.video-js .vjs-control-bar').show();
+        if (this.videoJSplayer) {
+            this.videoJSplayer.play();
+        }
     }
     repeatPlayVideo() {
         $('#overlay-modal').hide();
-     //   $('.video-js .vjs-control-bar').show();
+        //   $('.video-js .vjs-control-bar').show();
         if (this.videoJSplayer) {
-        this.videoJSplayer.play(); }
-   }
+            this.videoJSplayer.play();
+        }
+    }
     checkingCallToActionValues() {
         if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
-         && this.firstName.length !== 0 && this.lastName.length !== 0) {
-        this.isOverlay = false;
+            && this.firstName.length !== 0 && this.lastName.length !== 0) {
+            this.isOverlay = false;
             console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
         } else if (this.isFistNameChecked === false
-         && this.videoUtilService.validateEmail(this.model.email_id)) { this.isOverlay = false;
-          } else { this.isOverlay = true; }
+            && this.videoUtilService.validateEmail(this.model.email_id)) {
+            this.isOverlay = false;
+        } else { this.isOverlay = true; }
     }
 
     callToActionNames() {
@@ -706,51 +745,51 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         if (event === true) {
             this.startCalltoAction = this.saveVideoFile.startOfVideo = true;
             this.endCalltoAction = this.saveVideoFile.endOfVideo = false;
-            }  else {
-             this.endCalltoAction  =  this.saveVideoFile.endOfVideo = true;
-             this.startCalltoAction = this.saveVideoFile.startOfVideo = false;
-           }
+        } else {
+            this.endCalltoAction = this.saveVideoFile.endOfVideo = true;
+            this.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+        }
     }
     endCallToactionOverlay(event: boolean) {
         if (event === true) {
             this.startCalltoAction = this.saveVideoFile.startOfVideo = false;
             this.endCalltoAction = this.saveVideoFile.endOfVideo = true;
-         } else {
+        } else {
             this.startCalltoAction = this.saveVideoFile.startOfVideo = true;
             this.endCalltoAction = this.saveVideoFile.endOfVideo = false;
         }
     }
-  // video source chage methods
+    // video source chage methods
     videoPlayListSourceM3U8() {
         this.videoUrl = this.saveVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
+        this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
     }
-   videoPlayListSourceMP4() {
+    videoPlayListSourceMP4() {
         this.videoUrl = this.saveVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
+        this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'video/mp4' }] }]);
     }
     // default methods when component initilized
     defaultImagePaths() {
         if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[0]) {
-        this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false;
+            this.imgBoolean1 = true; this.imgBoolean2 = this.imgBoolean3 = false;
         } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[1]) {
-        this.imgBoolean2 = true; this.imgBoolean1 = this.imgBoolean3 = false;
+            this.imgBoolean2 = true; this.imgBoolean1 = this.imgBoolean3 = false;
         } else if (this.saveVideoFile.imagePath === this.saveVideoFile.imageFiles[2]) {
             this.imgBoolean3 = true; this.imgBoolean1 = this.imgBoolean2 = false;
         } else { this.imgBoolean1 = this.imgBoolean2 = this.imgBoolean3 = false; }
     }
     defaultGifPaths() {
         if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[0]) {
-             this.gifBoolean1 = true; this.gifBoolean2 = this.gifBoolean3 = false;
+            this.gifBoolean1 = true; this.gifBoolean2 = this.gifBoolean3 = false;
         } else if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[1]) {
-             this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false;
-        } else if ( this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2]) {
+            this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false;
+        } else if (this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2]) {
             this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false;
         } else { this.gifBoolean1 = this.gifBoolean2 = this.gifBoolean3 = false; }
     }
@@ -767,25 +806,25 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
         if (this.saveVideoFile.controllerColor === '#fff') {
             const event = '#fbfbfb';
-           $('.video-js .vjs-control-bar').css('background-color', event);
+            $('.video-js .vjs-control-bar').css('background-color', event);
         } else { $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor); }
         if (this.saveVideoFile.allowFullscreen === false) {
-           $('.video-js .vjs-fullscreen-control').hide();
+            $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     showEditModalDialog() {
-      $('#overLayDialog').append( $('#overlay-modal').show());
+        $('#overLayDialog').append($('#overlay-modal').show());
     }
     show360ModalDialog() {
-     $('#overLayDialog').append( $('#overlay-modal').show());
+        $('#overLayDialog').append($('#overlay-modal').show());
     }
     embedSourcePath(alias: string, viewBy: string) {
-    this.embedSrcPath = document.location.href;
-    this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '/embed-video' + viewBy + alias;
-    console.log(this.embedSrcPath);
+        this.embedSrcPath = document.location.href;
+        this.embedSrcPath = this.embedSrcPath.substring(0, this.embedSrcPath.lastIndexOf('#')) + '/embed-video' + viewBy + alias;
+        console.log(this.embedSrcPath);
     }
     tagsInput() {
-     this.tagsUndefined = false;
+        this.tagsUndefined = false;
     }
     ngOnInit() {
         this.loadRangeDisable = true;
@@ -805,10 +844,10 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
         this.shareValues = this.saveVideoFile.allowSharing;
         this.embedVideo = this.saveVideoFile.allowEmbed;
         try {
-        this.buildForm();
-        this.defaultImagePaths();
-        this.defaultGifPaths();
-        this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
+            this.buildForm();
+            this.defaultImagePaths();
+            this.defaultGifPaths();
+            this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
         } catch (error) {
             console.log('error' + error);
         }
@@ -816,101 +855,114 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     ngAfterViewInit() {
         $('#edit_video_player').empty();
         $('#newPlayerVideo').empty();
-      if (this.saveVideoFile.is360video !== true) {
-        $('.p-video').remove();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-       $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
-        this.is360Value = false;
-        const callactionValue = this;
-        this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function() {
-             const player = this;
-             const isValid = callactionValue.overLayValue;
-             console.log(isValid);
-             this.ready(function() {
-                 if (isValid === 'StartOftheVideo' ) {
-                      $('.vjs-big-play-button').css('display', 'none');
-                      callactionValue.showEditModalDialog();
-                    } else if (isValid !== 'StartOftheVideo' ) {
-                      $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.play();
+        if (this.saveVideoFile.is360video !== true) {
+            $('.p-video').remove();
+            $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
+            $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+            $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
+            this.is360Value = false;
+            const callactionValue = this;
+            this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function () {
+                const player = this;
+                const isValid = callactionValue.overLayValue;
+                console.log(isValid);
+                this.ready(function () {
+                    if (isValid === 'StartOftheVideo') {
+                        $('.vjs-big-play-button').css('display', 'none');
+                        callactionValue.showEditModalDialog();
+                    } else if (isValid !== 'StartOftheVideo') {
+                        $('.vjs-big-play-button').css('display', 'none');
+                        $('#overlay-modal').hide(); player.play();
                     } else { $('#overlay-modal').hide(); }
-                     $('#skipOverlay').click(function(){
-                       $('#overlay-modal').hide();
-                       player.play();
+                    $('#skipOverlay').click(function () {
+                        $('#overlay-modal').hide();
+                        player.play();
                     });
-                    $('#playorsubmit').click(function(){
-                       $('#overlay-modal').hide();
-                       player.play();
+                    $('#playorsubmit').click(function () {
+                        $('#overlay-modal').hide();
+                        player.play();
                     });
-                  });
-             this.on('ended', function() {
-                 if (isValid === 'EndOftheVideo') {
-                     $('.vjs-big-play-button').css('display', 'none');
-                     callactionValue.showEditModalDialog();
-                } else if (isValid !== 'EndOftheVideo') {
-                      $('.vjs-big-play-button').css('display', 'none');
-                      $('#overlay-modal').hide(); player.pause();
-                    }else { $('#overlay-modal').hide(); player.pause(); }
-                    $('#repeatPlay').click(function(){
-                       player.play();
+                });
+                this.on('ended', function () {
+                    if (isValid === 'EndOftheVideo') {
+                        $('.vjs-big-play-button').css('display', 'none');
+                        callactionValue.showEditModalDialog();
+                    } else if (isValid !== 'EndOftheVideo') {
+                        $('.vjs-big-play-button').css('display', 'none');
+                        $('#overlay-modal').hide(); player.pause();
+                    } else { $('#overlay-modal').hide(); player.pause(); }
+                    $('#repeatPlay').click(function () {
+                        player.play();
                     });
-                     $('#skipOverlay').click(function(){
-                       $('#overlay-modal').hide();
+                    $('#skipOverlay').click(function () {
+                        $('#overlay-modal').hide();
                     });
-                    $('#playorsubmit').click(function(){
-                       $('#overlay-modal').hide();
+                    $('#playorsubmit').click(function () {
+                        $('#overlay-modal').hide();
                     });
-             });
-             this.on('contextmenu', function(e) {
-                 e.preventDefault();
-             });
-             this.hotkeys({
-                 volumeStep: 0.1, seekStep: 5, enableMute: true,
-                 enableFullscreen: false, enableNumbers: false,
-                 enableVolumeScroll: true,
-                 fullscreenKey: function(event: any, player: any) {
-                      return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                 },
-                 customKeys: {
-                     simpleKey: {
-                         key: function(e: any) {  return (e.which === 83); },
-                         handler: function(player: any, options: any, e: any) {
-                             if (player.paused()) {  player.play(); } else { player.pause(); }  } },
-                     complexKey: {  key: function(e: any) { return (e.ctrlKey && e.which === 68); },
-                         handler: function(player: any, options: any, event: any) {
-                             if (options.enableMute) { player.muted(!player.muted()); }}
-                     },
-                     numbersKey: {
-                         key: function(event: any) { return ((event.which > 47 && event.which < 59) ||
-                              (event.which > 95 && event.which < 106)); },
-                         handler: function(player: any, options: any, event: any) {
-                             if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                 var sub = 48;
-                                 if (event.which > 95) { sub = 96; }
-                                 var number = event.which - sub;
-                                 player.currentTime(player.duration() * number * 0.1); }  } },
-                     emptyHotkey: { },
-                     withoutKey: { handler: function(player: any, options: any, event: any) { console.log('withoutKey handler'); }},
-                     withoutHandler: { key: function(e: any) { return true;}},
-                     malformedKey: { key: function() {  console.log(' The Key function must return a boolean.'); },
-                         handler: function(player: any, options: any, event: any) { }
-                     } }  }); });
-     if (this.videoFileService.actionValue === 'Save') {
-          this.videoPlayListSourceMP4();
-     } else {
-          this.videoPlayListSourceM3U8();
-     }
- } else {   // playing 360 video
-        this.play360Video();
-    }
-     this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
-     this.defaultVideoSettings();
-     this.transperancyControllBar(this.valueRange);
-     if (this.newEnableController === false) {
-         this.defaultVideoControllers();
+                });
+                this.on('contextmenu', function (e) {
+                    e.preventDefault();
+                });
+                this.hotkeys({
+                    volumeStep: 0.1, seekStep: 5, enableMute: true,
+                    enableFullscreen: false, enableNumbers: false,
+                    enableVolumeScroll: true,
+                    fullscreenKey: function (event: any, player: any) {
+                        return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                    },
+                    customKeys: {
+                        simpleKey: {
+                            key: function (e: any) { return (e.which === 83); },
+                            handler: function (player: any, options: any, e: any) {
+                                if (player.paused()) { player.play(); } else { player.pause(); }
+                            }
+                        },
+                        complexKey: {
+                            key: function (e: any) { return (e.ctrlKey && e.which === 68); },
+                            handler: function (player: any, options: any, event: any) {
+                                if (options.enableMute) { player.muted(!player.muted()); }
+                            }
+                        },
+                        numbersKey: {
+                            key: function (event: any) {
+                                return ((event.which > 47 && event.which < 59) ||
+                                    (event.which > 95 && event.which < 106));
+                            },
+                            handler: function (player: any, options: any, event: any) {
+                                if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                                    var sub = 48;
+                                    if (event.which > 95) { sub = 96; }
+                                    var number = event.which - sub;
+                                    player.currentTime(player.duration() * number * 0.1);
+                                }
+                            }
+                        },
+                        emptyHotkey: {},
+                        withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
+                        withoutHandler: { key: function (e: any) { return true; } },
+                        malformedKey: {
+                            key: function () { console.log(' The Key function must return a boolean.'); },
+                            handler: function (player: any, options: any, event: any) { }
+                        }
+                    }
+                });
+            });
+            if (this.videoFileService.actionValue === 'Save') {
+                this.videoPlayListSourceMP4();
+            } else {
+                this.videoPlayListSourceM3U8();
+            }
+        } else {   // playing 360 video
+            this.play360Video();
+        }
+        this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
+        this.defaultVideoSettings();
+        this.transperancyControllBar(this.valueRange);
+        if (this.newEnableController === false) {
+            this.defaultVideoControllers();
         }
     }
     /*********************************Save Video*******************************/
@@ -942,7 +994,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'controllerColor': [this.saveVideoFile.controllerColor],
             'transparency': [this.saveVideoFile.transparency],
             'action': [this.saveVideoFile.action],
-            'callACtion' : [this.saveVideoFile.callACtion],
+            'callACtion': [this.saveVideoFile.callACtion],
             'name': [this.saveVideoFile.name],
             'skip': [this.saveVideoFile.skip],
             'upperText': [this.saveVideoFile.upperText],
@@ -951,7 +1003,7 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'endOfVideo': [this.saveVideoFile.endOfVideo],
             'is360video': [this.saveVideoFile.is360video],
             'defaultSetting': [this.saveVideoFile.defaultSetting],
-            'category' : [this.saveVideoFile.category],
+            'category': [this.saveVideoFile.category],
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
 
@@ -979,31 +1031,33 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             'maxlength': 'Title cannot be more than 24 characters long.',
         },
         'viewBy': { 'required': 'Publish is required' },
-        'category': {  'required': 'Category is required'  },
-        'tags': {   'required': 'Tag is required'  },
-        'imageFile': {  'required': 'Image file is required'  },
-        'gifImagePath': { 'required': 'Gif is required'  },
-        'description': { 'required': 'Description is required',
-            'minlength': 'Title must be at least 5 characters long.' },
-        'upperText': {  'required': 'upper text is required', },
+        'category': { 'required': 'Category is required' },
+        'tags': { 'required': 'Tag is required' },
+        'imageFile': { 'required': 'Image file is required' },
+        'gifImagePath': { 'required': 'Gif is required' },
+        'description': {
+            'required': 'Description is required',
+            'minlength': 'Title must be at least 5 characters long.'
+        },
+        'upperText': { 'required': 'upper text is required', },
         'lowerText': { 'required': 'lower text is required', },
     };
     saveVideo() {
-      this.validVideoTitle(this.saveVideoFile.title);
-      if (this.isValidTitle === false) {
+        this.validVideoTitle(this.saveVideoFile.title);
+        if (this.isValidTitle === false) {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.defaultSetting = this.defaultSettingValue;
             this.saveVideoFile.playerColor = this.compPlayerColor;
             this.saveVideoFile.controllerColor = this.compControllerColor;
-            this.saveVideoFile.transparency = this.valueRange ;
+            this.saveVideoFile.transparency = this.valueRange;
             this.saveVideoFile.enableVideoController = this.newEnableController;
             this.saveVideoFile.allowComments = this.newComments;
             this.saveVideoFile.allowFullscreen = this.newFullScreen;
-            this.saveVideoFile.allowLikes =  this.newAllowLikes;
-            this.saveVideoFile.allowEmbed =  this.newAllowEmbed;
+            this.saveVideoFile.allowLikes = this.newAllowLikes;
+            this.saveVideoFile.allowEmbed = this.newAllowEmbed;
             this.saveVideoFile.enableCasting = this.newEnableCasting;
-            this.saveVideoFile.enableSettings = this.newEnableSetting ;
+            this.saveVideoFile.enableSettings = this.newEnableSetting;
             this.saveVideoFile.allowSharing = this.newAllowSharing;
             this.saveVideoFile.is360video = this.newValue360;
             this.saveVideoFile.startOfVideo = this.startCalltoAction;
@@ -1025,9 +1079,9 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                     }
                 }
             }
-            if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '') ) {
-               this.tagsUndefined = true;
-               this.saveVideoFile.tags.length = 0;
+            if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '')) {
+                this.tagsUndefined = true;
+                this.saveVideoFile.tags.length = 0;
             }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
@@ -1049,7 +1103,8 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
             this.logger.info(this.saveVideoFile);
             return this.videoFileService.saveVideo(this.saveVideoFile)
                 .subscribe((result: any) => {
-                    if (this.saveVideoFile != null) { this.saveVideoFile = result;
+                    if (this.saveVideoFile != null) {
+                    this.saveVideoFile = result;
                         this.notifyParent.emit(this.saveVideoFile);
                         this.videoFileService.videoViewBy = 'Save';
                     } else {
@@ -1058,26 +1113,27 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
                     }
                 }),
                 () => this.logger.log(this.saveVideoFile);
-         }
+        }
     }
     validVideoTitle(videoTitle: string) {
         this.saveVideoFile.title = videoTitle;
         if ((this.videoFileService.videoViewBy !== 'DRAFT' && this.videoFileService.actionValue === 'Update') &&
-         (videoTitle === this.editVideoTitle)) {
+            (videoTitle === this.editVideoTitle)) {
             this.isValidTitle = false;
         } else {
-         this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
+            this.isValidTitle = this.checkVideoTitleAvailability(this.referenceService.videoTitles, videoTitle.toLowerCase());
         }
-      }
-    checkVideoTitleAvailability(arr, val) { this.logger.log(arr.indexOf(val) > -1);
-    	 return arr.indexOf(val) > -1 ;
+    }
+    checkVideoTitleAvailability(arr, val) {
+        this.logger.log(arr.indexOf(val) > -1);
+        return arr.indexOf(val) > -1;
     }
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
-         if (this.videoOverlaySubmit === 'PLAY') {
-            this.videoJSplayer.play();
-         } else { this.videoJSplayer.pause(); }
+            if (this.videoOverlaySubmit === 'PLAY') {
+                this.videoJSplayer.play();
+            } else { this.videoJSplayer.pause(); }
         }
         this.user.emailId = this.model.email_id;
         this.user.firstName = this.firstName;
@@ -1092,15 +1148,15 @@ const str='<video id=videoId poster='+this.defaultImagePath+' class="video-js vj
     }
     ngOnDestroy() {
         this.logger.info('Deinit - Destroyed Edit-Video Component');
-      if ( this.is360Value !== true) {
-          this.videoJSplayer.dispose();
-       } else if (this.videoJSplayer) {
+        if (this.is360Value !== true) {
             this.videoJSplayer.dispose();
-       } else { }
+        } else if (this.videoJSplayer) {
+            this.videoJSplayer.dispose();
+        } else { }
         this.videoFileService.actionValue = ''; // need to change to empty
-      //  localStorage.removeItem('isOverlayValue');
-          $('.h-video').remove();
-          $('.p-video').remove();
-         this.tempVideoFile = null;
-      }
-   }
+        //  localStorage.removeItem('isOverlayValue');
+        $('.h-video').remove();
+        $('.p-video').remove();
+        this.tempVideoFile = null;
+    }
+}

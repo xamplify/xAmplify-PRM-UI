@@ -1,3 +1,14 @@
+		<style type="text/css">
+		.videoCss { 
+			position: absolute; right: 34px; top: 159px; z-index: 600;
+			}
+		.videoCssDefault{ 
+        position: absolute;
+        right: 34px;
+        top: 89px; 
+        z-index: 600;
+    }
+		</style>
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -140,7 +151,7 @@
 						<div class="profile-content">
 							<div class="row">
 								<div class="col-md-12">
-									<div class="portlet light" [class.portLet] = "PlayerSettingsClicked">
+									<div class="portlet light">
 										<div class="portlet-title tabbable-line">
 											<div class="caption caption-md">
 												<i class="icon-globe theme-font hide"></i>
@@ -148,19 +159,19 @@
 											</div>
 											<ul class="nav nav-tabs">
 												<li class="active">
-													<a href="#tab_1_1" data-toggle="tab" (click)="cssSettings(false)">Personal Info</a>
+													<a href="#tab_1_1" data-toggle="tab" >Personal Info</a>
 												</li>
 												<li>
-													<a href="#tab_1_2" data-toggle="tab" (click)="cssSettings(false)">Change Avatar</a>
+													<a href="#tab_1_2" data-toggle="tab" >Change Avatar</a>
 												</li>
 												<li>
-													<a href="#tab_1_3" data-toggle="tab" (click)="cssSettings(false)">Change Password</a>
+													<a href="#tab_1_3" data-toggle="tab" >Change Password</a>
 												</li>
 												<li>
-													<a href="#tab_1_4" data-toggle="tab" (click)="cssSettings(false)">Privacy Settings</a>
+													<a href="#tab_1_4" data-toggle="tab" >Privacy Settings</a>
 												</li>
 												<li>
-													<a href="#tab_1_5" data-toggle="tab" (click)="cssSettings(true)">Default Player Settings</a>
+													<a href="#tab_1_5" data-toggle="tab" >Default Player Settings</a>
 												</li>
 											</ul>
 										</div>
@@ -372,16 +383,16 @@
 												</div>
 												<!-- END PRIVACY SETTINGS TAB -->
 												<!--video default player settings-->
-													<div class="tab-pane" id="tab_1_5">
-													 <div *ngIf="defaultPlayerSuccess" class=""  id="defaultPlayerSettings"
+													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
+													 <div  class=""  id="defaultPlayerSettings"
 														  class="alert alert-success alert-dismissable">
-													 	  <a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+													 	  <a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()">&times;</a>
 													 	  <strong> default player settings updated Successfully!</strong> 
 													</div>
 													<div>
 														<p style="font-size: large; margin-top: -15px;color:white; background-color: #00a6e8;"> Apperance of the player</p>
 													</div>
-														<div style="position: absolute; right: 34px;top: 89px; z-index: 600;">
+														<div [class.videoCssDefault]="defaultPlayerSuccess == false" [class.videoCss]="defaultPlayerSuccess == true">
 														<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160" width="330"
 														  poster="http://vjs.zencdn.net/v/oceans.png"
 														  data-setup='{"example_option":true }' [src]=videoUrl>
@@ -465,7 +476,7 @@
 														<ui-switch color="blue" formControlName="is360video" ></ui-switch>
 														</div>
 													</div>					
-													  <div class="playerButton">
+													  <div>
 														<button type="submit"  class="btn green-haze">Save Changes</button>
 														<!--<input type="reset"  class="btn default" value="Cancel">-->
 													  </div>

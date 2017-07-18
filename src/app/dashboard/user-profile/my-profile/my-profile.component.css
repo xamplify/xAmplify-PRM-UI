@@ -1,11 +1,10 @@
- .portLet{  padding: 5px 5px 50px 10px; }
- .playerButton { position: absolute;right: 646px; top: 487px; }
- .alertMessageCustom {
-      margin-left: 16px;
-      margin-top: -13px;
-      border-color: #93b593;
-  }
   /deep/.video-js .vjs-big-play-button {
-    top: 57px;
-    left: 120px;
-}
+        top: 57px;
+        left: 120px;
+    }
+  .videoCssDefault{ 
+        position: absolute;
+        right: 34px;
+        top: 89px; 
+        z-index: 600;
+    }

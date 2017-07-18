@@ -339,10 +339,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                    startDuration = player360.trimCurrentTime(player.currentTime());
                 });
                  player.on('ended', function() {
-                     const time = player.currentTime();
+                    const time = player.currentTime();
                     console.log(time);
+                    player.videoFileService.replyVideo = true;
                     player360.replyVideo = true;
-                    console.log('video ended attempts' + player360.replyVideo);
+                    player.videoFileService.replyVideo = true;
                     player360.actionLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
                     player360.actionLog.startTime = new Date();
                     player360.actionLog.endTime = new Date();
@@ -389,8 +390,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.embedVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-            this.videoUrl =  this.videoUrl + '_mobinar.m3u8';
+            this.videoUrl =  this.videoUrl + '_mobinar.m3u8';  // need to remove it
             $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+           //  this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
+          //   $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
              $('#videoId').css('height', '318px');
              $('#videoId').css('width', '640px');
              $('.video-js .vjs-tech').css('width', '100%');
@@ -539,20 +542,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
         const rgba = this.videoUtilService.convertHexToRgba(this.embedVideoFile.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
     }
-    videoPlayListSourceM3U8() {
-      this.videoUrl = this.embedVideoFile.videoPath;
-      this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-      this.videoUrl = this.videoUrl + '_mobinar.m3u8';
-      const self = this;
-      this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'application/x-mpegURL' }]}]);
-   }
-   videoPlayListSourceMP4() {
-        this.videoUrl = this.embedVideoFile.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '.mp4';
-        const self = this;
-        this.videoJSplayer.playlist([{ sources: [{  src: self.videoUrl, type: 'video/mp4' }]}]);
-    }
    extractData( res: Response ) {
        const body = res.json();
        console.log(body);
@@ -627,20 +616,28 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             .subscribe( (result: any) => {
                 this.logger.info('Save user Form call to acton is successfull' + result); });
        }
+shareMethod() {
+        this.actionLog.actionId = this.LogAction.shareMobinar;
+        this.actionLog.startTime = new Date();
+        this.actionLog.endTime = new Date();
+        this.actionLog.startDuration = this.trimCurrentTime(new Date().getTime()).toString();
+        this.actionLog.stopDuration = this.trimCurrentTime(new Date().getTime()).toString();
+        this.videoLogAction(this.actionLog);
+}
   ngOnDestroy() {
      this.logger.info('Deinit - Destroyed Share-Video Component');
      if (this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();
           $('.p-video').remove();
-   //  this.sub.unsubscribe();
+    //  this.sub.unsubscribe();
     // og info
     //  this.metaService.removeTag("property='og:title'");
     //  this.metaService.removeTag("property='og:site_name'");
     //  this.metaService.removeTag("property='og:url'");
     //  this.metaService.removeTag("property='og:description'");
     //  this.metaService.removeTag("property='og:image'");
-     // twitter og info
+    // twitter og info
     //  this.metaService.removeTag("property='twitter:card'");
     //  this.metaService.removeTag("property='twitter:site'");
     //  this.metaService.removeTag("property='twitter:title'");
