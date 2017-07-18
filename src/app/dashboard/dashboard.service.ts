@@ -92,6 +92,18 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
+    loadTotalViewsCount(){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadTotalFollowersCount(){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
     private extractData(res: Response) {
         let body = res.json();
         //console.log("response.json(): "+body);

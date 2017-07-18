@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit {
     listOfEmailClicked : number;
     listOfEmailOpened : number;
     listOfEmailWatched : number;
+    listOfTotalViews : number;
+    listOfTotalFollowers : number;
 
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
@@ -47,6 +49,8 @@ export class DashboardComponent implements OnInit {
             this.listOfEmailClicked = 0;
             this.listOfEmailOpened = 0;
             this.listOfEmailWatched = 0;
+            this.listOfTotalViews = 0;
+            this.listOfTotalFollowers = 0;
     }
 
     dashboardStats() {
@@ -312,8 +316,32 @@ export class DashboardComponent implements OnInit {
             );
     }
     
+    totalViewsCount() {
+        this._dashboardService.loadTotalViewsCount()
+            .subscribe(
+            data => {
+                this.listOfTotalViews = data.email_watched_count;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
+    totalFollowersCount() {
+        this._dashboardService.loadTotalFollowersCount()
+            .subscribe(
+            data => {
+                this.listOfTotalFollowers = data.email_watched_count;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
     ngOnInit() {
         try {
+            this.totalViewsCount();
+            this.totalFollowersCount()
             this.uploadedVideosCount();
             this.totalContactsCount();
             this.emailOpenedCount();
