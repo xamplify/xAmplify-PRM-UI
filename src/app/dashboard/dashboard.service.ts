@@ -93,7 +93,7 @@ export class DashboardService {
     }
     
     loadTotalViewsCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.url + "videos/views_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }

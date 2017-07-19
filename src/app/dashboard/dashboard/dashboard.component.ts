@@ -324,7 +324,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadTotalViewsCount()
             .subscribe(
             data => {
-                this.listOfTotalViews = data.email_watched_count;
+                this.listOfTotalViews = data.videos_views_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )

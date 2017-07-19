@@ -29,11 +29,15 @@
 						</li>
 						<li>
 							<a [routerLink]="['../../dashboard']">Dashboard</a>
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+							Views report
 						</li>
 					</ul>
 				</div>
 				<div class="col-md-12">
-				<div class="col-md-4" style="width:28%;margin-left:-15px">
+				<div class="col-md-4" style="width:29%;margin-left:-15px">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
