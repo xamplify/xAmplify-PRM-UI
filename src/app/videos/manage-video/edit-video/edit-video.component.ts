@@ -217,7 +217,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
         };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
-        this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
+        this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
     }  // closed constructor
     shareClick() {
@@ -380,7 +380,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // share window popup
     openWindow() {
-        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
     // normal and 360 video methods
@@ -1004,6 +1004,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'is360video': [this.saveVideoFile.is360video],
             'defaultSetting': [this.saveVideoFile.defaultSetting],
             'category': [this.saveVideoFile.category],
+            'views':[this.saveVideoFile.views]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
 

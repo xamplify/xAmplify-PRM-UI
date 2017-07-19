@@ -154,7 +154,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                          this.maxSubscription = true;
                       }  else {
                           console.log('process video data object is null please try again:');
-                          swal('Contact Admin' , this.processVideoResp.error, 'error');
+                         // swal('Contact Admin' , this.processVideoResp.error, 'error');
                          if (this.RecordSave === true) {
                            this.player.recorder.reset();
                         //   this.player.recorder.stopDevice();

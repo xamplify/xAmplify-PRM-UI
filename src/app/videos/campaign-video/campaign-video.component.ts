@@ -51,6 +51,8 @@ public locationJson: any;
 public deviceInfo: any;
 public sessionId: string = null;
 public videoLength: string;
+public replyVideo: boolean;
+public logVideoViewValue: boolean;
 LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
@@ -58,6 +60,7 @@ LogAction: typeof LogAction = LogAction;
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
+            this.logVideoViewValue = true;
             }
 LoginThroghCampaign() {
    this.router.navigate( ['/login']);
@@ -132,10 +135,10 @@ deviceDectorInfo() {
        const value = val;
         return value.toString().length == 1 ? "0" + value: value;
     }
-  loacationDetails(){
+  loacationDetails() {
     this.videoFileService.getJSONLocation()
     .subscribe(
-     (data:any) => {
+     (data: any) => {
        this.defaultLocationJsonValues(data);
         console.log(data);
         },
@@ -174,6 +177,12 @@ deviceDectorInfo() {
        (result: any) => {
          console.log('successfully logged the actions');
      });
+    }
+    logVideoViewsCount() {
+    this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
+    (result: any) => {
+        console.log('successfully logged view count');
+    });
     }
     play360Video() {
     this.is360Value = true;
@@ -231,25 +240,28 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 clickToToggle: true,
                  callback: function () {
                     const playerVideo = this;
-                    let replyVideo = 0;
+                     selfPanorama.replyVideo = false;
                     const document: any = window.document;
                     let startDuration;
-                    player.on('play', function() {
+                   player.on('play', function() {
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
-                       if (replyVideo === 0) {
-                          selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
-                     } else {
+                       if (selfPanorama.replyVideo === true) {
                           selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.replyVideo;
+                     } else {
+                          selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
                      }
-                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
                      selfPanorama.xtremandLog.startTime = new Date();
                      selfPanorama.xtremandLog.endTime = new Date();
                      selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                    });
-                    player.on('pause', function() {
+                     if (selfPanorama.logVideoViewValue === true) {
+                       selfPanorama.logVideoViewsCount();
+                       selfPanorama.logVideoViewValue = false;
+                     }
+                   });
+                   player.on('pause', function() {
                      if (selfPanorama.xtremandLog.actionId !== selfPanorama.LogAction.videoPlayer_movieReachEnd) {
                      console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
@@ -260,7 +272,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                      }
                   });
-                    player.on('seeking', function() {
+                  player.on('seeking', function() {
                      const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
                      selfPanorama.xtremandLog.startTime = new Date();
@@ -268,16 +280,16 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.startDuration = startDuration;
                      selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                   });
-                    player.on('timeupdate', function() {
+                  });
+                  player.on('timeupdate', function() {
                       startDuration = selfPanorama.trimCurrentTime(player.currentTime());
-                    });
+                  });
                   player.on('ended', function() {
                     const whereYouAt = player.currentTime();
                     console.log(whereYouAt);
-                    replyVideo = replyVideo + 1;
+                    selfPanorama.replyVideo = true;
+                    selfPanorama.logVideoViewValue = true;
                     $('.vjs-big-play-button').css('display', 'block');
-                    console.log('video ended attempts' + replyVideo);
                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_movieReachEnd;
                     selfPanorama.xtremandLog.startTime = new Date();
                     selfPanorama.xtremandLog.endTime = new Date();
@@ -296,10 +308,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                     }
-                });
-               player.on('click', function(){
-               console.log('clicked function ');
-              });
+                 });
+                 player.on('click', function(){
+                   console.log('clicked function ');
+                 });
               }
               });
             $('#videoId').css('width', '640px');

@@ -17,20 +17,22 @@ export class AuthenticationService {
     public logged_in_time: Date;
     public REST_URL: string;
     public MEDIA_URL: string;
+    public APP_URL: string;
     public user: User = new User();
-    public userProfile:User = new User();
+    public userProfile: User = new User();
     public userToken: UserToken = new UserToken();
     public redirectUrl: string;
     map: any;
     constructor( private http: Http, private router: Router ) {
-        this.REST_URL = "https://aravindu.com/xtremand-rest/";
-       // this.REST_URL = "http://localhost:8080/xtremand-rest/";
-        this.MEDIA_URL = "https://aravindu.com/vod/";
+        this.APP_URL = 'https://aravindu.com/xtremandApp/';
+        this.REST_URL = 'https://aravindu.com/xtremand-rest/';
+      //  this.REST_URL = "http://localhost:8080/xtremand-rest/";
+        this.MEDIA_URL = 'https://aravindu.com/vod/';
     }
 
     getOptions(): RequestOptions {
         let options: RequestOptions;
-        //check access_token is expired
+        // check access_token is expired
         if ( !this.logged_in_time )
             this.logged_in_time = new Date();
 

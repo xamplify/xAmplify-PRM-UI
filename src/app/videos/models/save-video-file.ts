@@ -43,4 +43,5 @@ export class SaveVideoFile {
     alias: string;
     is360video: boolean;
     defaultSetting: boolean;
+    views: number;
  }

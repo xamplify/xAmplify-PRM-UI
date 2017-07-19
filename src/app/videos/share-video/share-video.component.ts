@@ -75,12 +75,15 @@ public deviceInfo: any;
 LogAction: typeof LogAction = LogAction;
 public persons;
 public replyVideo: boolean;
+public timeValue: any;
+public logVideoViewValue: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
               private logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
               private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
                 console.log('share component constructor called');
                 console.log('url is on angular 2' + document.location.href);
                 this.embedUrl = document.location.href;
+                this.logVideoViewValue = true;
              }
   shareMetaTags() {
     return this.http.get(this.shareUrl)
@@ -314,6 +317,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
                      console.log(player360.actionLog.actionId);
                      player360.videoLogAction(player360.actionLog);
+                     if (player360.logVideoViewValue === true) {
+                     player360.logVideoViewsCount();
+                     player360.logVideoViewValue = false;
+                     }
                });
                  player.on('pause', function() {
                   if (player360.actionLog.actionId !== player360.LogAction.videoPlayer_movieReachEnd) {
@@ -341,7 +348,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  player.on('ended', function() {
                     const time = player.currentTime();
                     console.log(time);
-                    player.videoFileService.replyVideo = true;
                     player360.replyVideo = true;
                     player.videoFileService.replyVideo = true;
                     player360.actionLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
@@ -390,15 +396,15 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.embedVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-            this.videoUrl =  this.videoUrl + '_mobinar.m3u8';  // need to remove it
-            $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-           //  this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
-          //   $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
+          //  this.videoUrl =  this.videoUrl + '_mobinar.m3u8';  // need to remove it
+          //  $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+             this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
+             $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
              $('#videoId').css('height', '318px');
              $('#videoId').css('width', '640px');
              $('.video-js .vjs-tech').css('width', '100%');
              $('.video-js .vjs-tech').css('height', '100%');
-              const self = this;
+             const self = this;
              this.videoJSplayer = videojs('videoId', {}, function() {
                 const player = this;
                 let startDuration;
@@ -441,6 +447,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      console.log(self.actionLog.actionId);
                      self.videoLogAction(self.actionLog);
+                     if (self.logVideoViewValue === true) {
+                        self.logVideoViewsCount();
+                        self.logVideoViewValue = false;
+                     }
+                      self.getCurrentTimeValues();
                });
                  this.on('pause', function() {
                   if (self.actionLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
@@ -451,6 +462,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.actionLog);
+
                      }
                   });
                 this.on('seeking', function() {
@@ -469,6 +481,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                    const time = player.currentTime();
                     console.log(time);
                     self.replyVideo = true;
+                    self.logVideoViewValue = true;
+                    self.videoFileService.replyVideo = true;
                     console.log('video ended attempts' + self.replyVideo);
                     self.actionLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.actionLog.startTime = new Date();
@@ -479,7 +493,15 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
                      $('#videoId').append( $('#overlay-modal').show());
-                 } else if (isValid !== 'EndOftheVideo') {
+                           const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                           const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                           if (event === "FullscreenOn") {
+                            const width = window.innerWidth;
+                            const height = window.innerHeight;
+                            $("#overlay-modal").css("width", width+"px");
+                            $("#overlay-modal").css("height", height+"px");
+                           }
+                    } else if (isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#overlay-modal').hide(); //  player.pause();
                      } else { $('#overlay-modal').hide(); // player.pause(); 
@@ -530,6 +552,17 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                          handler: function(player: any, options: any, event: any) { }
                      } }  }); });
   //    this.videoPlayListSourceM3U8();
+   }
+   getCurrentTimeValues() {
+        const myPlayer = videojs('videoId');
+        const whereYouAt = myPlayer.currentTime();
+        const minutes = Math.floor(whereYouAt / 60);
+        const seconds = Math.floor(whereYouAt);
+        const x = minutes < 10 ? "0" + minutes : minutes;
+        const y = seconds < 10 ? "0" + seconds : seconds;
+        const timeValue = x + ":" + y;
+        console.log(this.timeValue);
+        this.videoFileService.timeValue = timeValue;
    }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
@@ -601,6 +634,12 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
          console.log(this.actionLog.actionId);
      });
     }
+    logVideoViewsCount() {
+       this.videoFileService.logVideoViews(this.embedVideoFile.alias).subscribe(
+        (result: any) => {
+         console.log('successfully logged view count');
+     });
+    }
    saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
@@ -630,6 +669,7 @@ shareMethod() {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();
           $('.p-video').remove();
+     this.videoFileService.replyVideo = false;
     //  this.sub.unsubscribe();
     // og info
     //  this.metaService.removeTag("property='og:title'");

@@ -25,6 +25,7 @@ export class VideoFileService {
     public logEnded: number;
     public videoViewBy: string;
     public replyVideo = false;
+    public timeValue: any;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -134,14 +135,22 @@ export class VideoFileService {
         }
     }
     logVideoActions(actionLog: ActionLog) {
-    //   if (actionLog.actionId === 8 && this.replyVideo === true) {
-    //       actionLog.actionId = 10; this.replyVideo = false;
-    //    } else {
-         console.log(actionLog);
-         const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
-          return this.http.post(url, actionLog)
-            .map(this.extractData)
-            .catch(this.handleErrorLogAction);
+       if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 2 && this.timeValue === true)) {
+           console.log('service called replyed and ended the video');
+           this.replyVideo = false;
+      } else {
+           console.log(actionLog);
+           const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
+           return this.http.post(url, actionLog)
+              .map(this.extractData)
+              .catch(this.handleErrorLogAction);
+      }
+    }
+    logVideoViews(alias: string) {
+         const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias='+alias;
+           return this.http.post(url, '')
+              .map(this.extractData)
+              .catch(this.handleErrorLogAction);
     }
     getJSONLocation(): Observable<any> {
       const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
