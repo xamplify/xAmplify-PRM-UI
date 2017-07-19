@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit {
     listOfEmailWatched : number;
     listOfTotalViews : number;
     listOfTotalFollowers : number;
+    listOfTotalLeads : number;
+    listOfTotalShared : number;
 
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
@@ -51,6 +53,8 @@ export class DashboardComponent implements OnInit {
             this.listOfEmailWatched = 0;
             this.listOfTotalViews = 0;
             this.listOfTotalFollowers = 0;
+            this.listOfTotalLeads = 0;
+            this.listOfTotalShared = 0;
     }
 
     dashboardStats() {
@@ -332,6 +336,28 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.listOfTotalFollowers = data.email_watched_count;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
+    totalLeadsCount() {
+        this._dashboardService.loadTotalLeadsCount()
+            .subscribe(
+            data => {
+                this.listOfTotalLeads = data.email_watched_count;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
+    totalSharedCount() {
+        this._dashboardService.loadTotalSharedCount()
+            .subscribe(
+            data => {
+                this.listOfTotalShared = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
