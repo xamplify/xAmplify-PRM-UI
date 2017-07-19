@@ -515,6 +515,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     allowSharing(event: any) {
         this.defaultVideoPlayer.allowSharing = event;
     }
+    enableEmbed(event: any) {
+       this.defaultVideoPlayer.allowEmbed = event;
+    }
+    enable360Video(event: any) {
+       this.defaultVideoPlayer.is360video = event;
+    }
     changeFullscreen(event: any) {
         this.defaultVideoPlayer.allowFullscreen = event;
         if (this.defaultVideoPlayer.allowFullscreen === false) {

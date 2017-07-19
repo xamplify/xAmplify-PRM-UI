@@ -469,11 +469,11 @@
 													<div class="form-group">
 														<label class="col-md-3 control-label">Allow Embed:</label>
 														<div class="col-md-3">
-														<ui-switch color="red" formControlName="allowEmbed" ></ui-switch>
+														<ui-switch color="red" formControlName="allowEmbed" (change)="enableEmbed($event)"></ui-switch>
 														</div>
 															<label class="col-md-3 control-label">360 video:</label>
 														<div class="col-md-3">
-														<ui-switch color="blue" formControlName="is360video" ></ui-switch>
+														<ui-switch color="blue" formControlName="is360video" (change)="enable360Video($event)" ></ui-switch>
 														</div>
 													</div>					
 													  <div>

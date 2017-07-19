@@ -203,7 +203,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.colorControl = this.controlPlayers = this.callaction = false;
         this.likesValues = 2;
         this.disLikesValues = 0;
-        this.videoViews = 0;
+        this.videoViews = this.saveVideoFile.views;
         console.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;
         this.uploader = new FileUploader({
