@@ -606,7 +606,9 @@ export class AddContactsComponent implements OnInit {
     }
 
     addRow() {
-        this.removeCsv();
+        //this.removeCsv();
+        this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         this.isContactsThere = false;
         this.saveAddCotactsUsers = true;
         this.saveClipBoardUsers = false;
@@ -634,7 +636,9 @@ export class AddContactsComponent implements OnInit {
     }
 
     copyFromClipboard() {
-        this.removeCsv();
+        //this.removeCsv();
+        this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
         this.isContactsThere = false;
         this.saveAddCotactsUsers = false;
@@ -655,7 +659,9 @@ export class AddContactsComponent implements OnInit {
     }
 
     googleContacts() {
-        this.removeCsv();
+        //this.removeCsv();
+        this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         this.isContactsThere = false;
         this.logger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
@@ -868,7 +874,9 @@ export class AddContactsComponent implements OnInit {
     }
 
     zohoContacts() {
-        this.removeCsv();
+        //this.removeCsv();
+        this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         this.isContactsThere = false;
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         if ( selectedDropDown == "DEFAULT" ) {
@@ -1044,7 +1052,9 @@ export class AddContactsComponent implements OnInit {
     salesforceContacts() {
         this.contactType = "";
         this.isContactsThere = false;
-        this.removeCsv();
+        //this.removeCsv();
+        this.fileTypeError = false;
+        this.inValidCsvContacts = false;
         this.socialContact.socialNetwork = "salesforce";
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.salesforceLogin()
