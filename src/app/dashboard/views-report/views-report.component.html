@@ -28,10 +28,10 @@
 							<a [routerLink]="['../../dashboard']">Home</a>
 							<i class="fa fa-angle-right"></i>
 						</li>
-						<li>
+						<!-- <li>
 							<a [routerLink]="['../../dashboard']">Dashboard</a>
 							<i class="fa fa-angle-right"></i>
-						</li>
+						</li> -->
 						<li>
 							Views report
 						</li>
@@ -140,7 +140,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 1349
+								{{videoFile.views}}
 							</div>
 							<div class="desc">
 								 Total Views
@@ -155,7 +155,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 125
+								{{videoFile.leads}}
 							</div>
 							<div class="desc">
 								 Leads
@@ -173,7 +173,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 89
+								 {{videoFile.favourites}}
 							</div>
 							<div class="desc">
 								 Favorites
@@ -204,7 +204,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 89
+								 {{videoFile.comments}}
 							</div>
 							<div class="desc">
 								 Comments
@@ -220,7 +220,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 549
+								{{videoFile.likes}}
 							</div>
 							<div class="desc">
 								 Liked
@@ -237,7 +237,7 @@
 						</div>
 						<div class="details">
 							<div class="number">
-								 89
+								{{videoFile.dislikes}}
 							</div>
 							<div class="desc">
 								 Disliked

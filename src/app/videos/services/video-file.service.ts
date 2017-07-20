@@ -79,6 +79,18 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    loadVideoForViewsReport(pagination: Pagination): Observable<SaveVideoFile[]> {
+        if (pagination.filterBy == null) { pagination.filterBy = 0; }
+        console.log(pagination);
+        const url = this.URL + 'video_report/' + pagination.filterBy +
+            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        console.log(url);
+        return this.http.post(url, pagination, '')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     loadVideosCount() {
         // this.logger.info( "Service class loadContactCount() completed" );
        const url =  this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='

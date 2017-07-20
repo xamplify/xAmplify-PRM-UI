@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import { Observable }     from 'rxjs/Rx';
-
+import { SaveVideoFile } from '../videos/models/save-video-file';
+import { Pagination } from '../core/models/pagination';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -14,6 +15,8 @@ export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     URL = 'demo/values.json';
     QUERY_PARAMETERS = '?access_token='+this.authenticationService.access_token;
+    public saveVideoFile: SaveVideoFile;
+    public pagination: Pagination;
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
     getDashboardStats():Observable<any>{
@@ -114,6 +117,17 @@ export class DashboardService {
         return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    
+    loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
+        if (pagination.filterBy == null) { pagination.filterBy = 0; }
+        console.log(pagination);
+        const url = this.URL + 'listVideosNew/' + pagination.filterBy +
+            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        console.log(url);
+        return this.http.post(url, pagination, '')
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     
     private extractData(res: Response) {

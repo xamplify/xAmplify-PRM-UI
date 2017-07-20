@@ -8,6 +8,7 @@ import { VideoFileService} from '../../videos/services/video-file.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Category } from '../../videos/models/category';
+import { DashboardService } from '../dashboard.service';
 
 declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
 
@@ -15,7 +16,7 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
     selector: 'app-views-report',
     templateUrl: './views-report.component.html',
     styleUrls: ['./views-report.component.css'],
-providers: [ Pagination, HttpRequestLoader ]
+providers: [ Pagination, HttpRequestLoader, DashboardService]
 })
 export class ViewsReportComponent implements OnInit {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -47,7 +48,7 @@ sortVideos  = [
 public videoSort: any = this.sortVideos[0];
 
 
-    constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,
+    constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,private dashboardService: DashboardService,
             private pagerService: PagerService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
         this.categoryNum = 0;
         this.isCategoryThere = false;
@@ -104,7 +105,7 @@ public videoSort: any = this.sortVideos[0];
         this.pagination.maxResults = 12;
         try {
            this.referenceService.loading(this.httpRequestLoader, true);
-           this.videoFileService.loadVideoFiles(pagination)
+           this.videoFileService.loadVideoForViewsReport(pagination)
              .subscribe((result: any) => {
                  this.videos = result.listOfMobinars;
                  this.totalRecords = result.totalRecords;
