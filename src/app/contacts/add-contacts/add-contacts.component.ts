@@ -523,7 +523,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             this.newUsers.length = 0;
-            this.model.contactListName = null;
+            //this.model.contactListName = null;
             this.dublicateEmailId = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == true && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
@@ -537,7 +537,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#salesforceContact_button" ).prop( 'disabled', false );
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
-            this.model.contactListName = null;
+            //this.model.contactListName = null;
             this.dublicateEmailId = false;
             this.clipboardUsers.length = 0;
             $( "#file_preview" ).hide();
@@ -555,7 +555,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#salesforceContact_button" ).prop( 'disabled', false );
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
-            this.model.contactListName = null;
+           // this.model.contactListName = null;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -569,7 +569,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#salesforceContact_button" ).prop( 'disabled', false );
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
-            this.model.contactListName = null;
+            //this.model.contactListName = null;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -583,7 +583,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#salesforceContact_button" ).prop( 'disabled', false );
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
-            this.model.contactListName = null;
+            //this.model.contactListName = null;
         }
     }
 
