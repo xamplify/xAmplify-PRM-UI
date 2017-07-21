@@ -267,12 +267,12 @@
 						<div *ngIf="deleteErrorMessage" id="campaignError"
 			class="alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Danger!</strong>{{Campaign}}
+			<strong>Danger!</strong><strong style="color:black;font-size:18px">{{Campaign}}</strong>
 		</div>
 		</div>
 		<div *ngIf="dublicateEmailId" id="dublicateEmail"
 			class="alert alert-danger alert-dismissable" style="width:50%; margin-left:120px">
-			<b>Duplicate EmailId Exist Please Remove..{{duplicateEmailIds}}</b>
+			<b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
 		</div>
 					<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -368,7 +368,7 @@
 									id="row_{{contact.id}}">
 									<th><input type="checkbox" name="selectedUserIds"
 										id="selectedUserWithIds" value="{{contact.id}}"
-										[(ngModel)]="contact.isChecked"></th>
+										[(ngModel)]="contact.isChecked" (click)="checkedUsers(contact.id)"></th>
 									<!-- <td>{{contact.userName}}</td> -->
 									<td>{{contact.emailId}}</td>
 									<td>{{contact.firstName}}</td>
