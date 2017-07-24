@@ -37,7 +37,7 @@ enum LogAction {
 @Component({
   selector: 'app-share-video',
   templateUrl: './share-video.component.html',
-  styleUrls: ['../../../assets/css/video-css/video-js.custom.css'],
+  styleUrls: ['./share-video.component.css' , '../../../assets/css/video-css/video-js.custom.css'],
   providers: [VideoUtilService, ActionLog]
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
@@ -77,6 +77,8 @@ public persons;
 public replyVideo: boolean;
 public timeValue: any;
 public logVideoViewValue: boolean;
+public overLaySet = false;
+public fullScreenMode = false;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
               private logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
               private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
@@ -124,7 +126,7 @@ public logVideoViewValue: boolean;
         } else {
           this.playNormalVideo();
         }
-       this.checkingCallToActionValues();
+      // this.checkingCallToActionValues();
        this.defaultVideoSettings();
      //  this.transperancyControllBar(this.embedVideoFile.transparency);
        if (this.embedVideoFile.enableVideoController === false) {
@@ -280,11 +282,13 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  // player.ready();
                  const isValid = player360.overLayValue;
                  let startDuration;
+                 let isCallActionthere = false;
+                 let document: any = window.document;
                  player360.replyVideo = false;
                 player.ready(function() {
                     if (isValid === 'StartOftheVideo' ) {
                       $('#videoId').append( $('#overlay-modal').show());
-                      $('.vjs-big-play-button').css('display', 'block');
+                   //   $('.vjs-big-play-button').css('display', 'block');
                    // newValue.show360ModalDialog();
                     } else if (isValid !== 'StartOftheVideo' ) {
                       $('#overlay-modal').hide(); player.play();
@@ -292,10 +296,12 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         player.play();
                      }
                       $('#skipOverlay').click(function(){
+                        isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.play();
                       });
                       $('#playorsubmit').click(function(){
+                         isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.play();
                      });
@@ -349,7 +355,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     const time = player.currentTime();
                     console.log(time);
                     player360.replyVideo = true;
-                    player.videoFileService.replyVideo = true;
+                    player360.videoFileService.replyVideo = true;
                     player360.actionLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
                     player360.actionLog.startTime = new Date();
                     player360.actionLog.endTime = new Date();
@@ -357,26 +363,63 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
                     player360.videoLogAction(player360.actionLog);
                      if (isValid === 'EndOftheVideo') {
-                     $('#videoId').append( $('#overlay-modal').show());
+                 //    $('#videoId').append( $('#overlay-modal').show());
                 //     newValue.show360ModalDialog();
-                     $('.video-js .vjs-control-bar').hide();
+                 //    $('.video-js .vjs-control-bar').hide();
+                        const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                        const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                        if (event === "FullscreenOn") {
+                            isCallActionthere = true;
+                            player360.overLaySet = true;
+                            player360.fullScreenMode = true;
+                            $("#overlay-modal").css("width", "100%");
+                            $("#overlay-modal").css("height", "100%");
+                            $('#videoId').append($('#overlay-modal').show());
+                        } else {
+                            player360.overLaySet = false;
+                            $('#videoId').append($('#overlay-modal').show());
+                        }
                     } else if (isValid !== 'EndOftheVideo') {
                         $('#overlay-modal').hide(); player.pause();
                     } else { $('#overlay-modal').hide(); player.pause(); }
                       $('#repeatPlay').click(function(){
+                        $('#overlay-modal').hide();
                         player.play();
                       });
                       $('#skipOverlay').click(function(){
+                          isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.pause();
                      //    $('.video-js .vjs-control-bar').hide();
                       });
                       $('#playorsubmit').click(function(){
+                         isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.pause();
                      //    $('.video-js .vjs-control-bar').hide();
                      });
                   });
+                   player.on('fullscreenchange', function () {
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === 'FullscreenOn') {
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    } else if (event === "FullscreenOff") {
+                          $("#videoId").css("width", "640px");
+                          $("#videoId").css("height", "318px");
+                           player360.fullScreenMode = false;
+                           player360.overLaySet = false;
+                          if (isCallActionthere === true) {
+                            player360.overLaySet = false;
+                            player360.fullScreenMode = false;
+                            $("#overlay-modal").css("width", "640px");
+                            $("#overlay-modal").css("height", "318px");
+                            $('#videoId').append($('#overlay-modal').hide());
+                          //  player360.showEditModalDialog();
+                          }
+                    }
+                });
                player.on('click', function(){
                });
               }
@@ -396,10 +439,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             $('#newPlayerVideo').append(str);
             this.videoUrl = this.embedVideoFile.videoPath;
             this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-          //  this.videoUrl =  this.videoUrl + '_mobinar.m3u8';  // need to remove it
-          //  $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-             this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
-             $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
+             this.videoUrl =  this.videoUrl + '_mobinar.m3u8';  // need to remove it
+            $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+           //  this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
+          //   $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
              $('#videoId').css('height', '318px');
              $('#videoId').css('width', '640px');
              $('.video-js .vjs-tech').css('width', '100%');
@@ -408,7 +451,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
              this.videoJSplayer = videojs('videoId', {}, function() {
                 const player = this;
                 let startDuration;
-                 self.replyVideo = false;
+                self.replyVideo = false;
+                let isCallActionthere = false
                 const document: any = window.document;
                 const isValid = self.overLayValue;
                this.ready(function() {
@@ -421,13 +465,15 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#overlay-modal').hide(); player.play();
                       } else { $('#overlay-modal').hide(); }
-                     $('#skipOverlay').click(function(){
-                       $('#overlay-modal').hide();
-                       player.play();
+                     $('#skipOverlay').click(function () {
+                        isCallActionthere = false;
+                        $('#overlay-modal').hide();
+                        player.play();
                     });
-                    $('#playorsubmit').click(function(){
-                       $('#overlay-modal').hide();
-                       player.play();
+                    $('#playorsubmit').click(function () {
+                        isCallActionthere = false;
+                        $('#overlay-modal').hide();
+                        player.play();
                     });
                   });
                this.on('play', function() {
@@ -451,7 +497,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.logVideoViewsCount();
                         self.logVideoViewValue = false;
                      }
-                      self.getCurrentTimeValues();
+                      self.getCurrentTimeValues(player.currentTime());
                });
                  this.on('pause', function() {
                   if (self.actionLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
@@ -462,7 +508,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.actionLog);
-
+                     self.getCurrentTimeValues(player.currentTime());
                      }
                   });
                 this.on('seeking', function() {
@@ -492,30 +538,62 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     self.videoLogAction(self.actionLog);
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
-                     $('#videoId').append( $('#overlay-modal').show());
+                  //   $('#videoId').append( $('#overlay-modal').show());
                            const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                            const event = state ? 'FullscreenOn' : 'FullscreenOff';
                            if (event === "FullscreenOn") {
-                            const width = window.innerWidth;
-                            const height = window.innerHeight;
-                            $("#overlay-modal").css("width", width+"px");
-                            $("#overlay-modal").css("height", height+"px");
-                           }
+                            isCallActionthere = true;
+                            self.overLaySet = true;
+                            self.fullScreenMode = true;
+                            $("#videoId").css("width", "640px");
+                            $("#videoId").css("height", "318px");
+                            $("#overlay-modal").css("width", "100%");
+                            $("#overlay-modal").css("height", "100%");
+                            $('#videoId').append( $('#overlay-modal').show());
+                            } else {
+                            self.overLaySet = false;
+                            $('#videoId').append( $('#overlay-modal').show());
+                        }
                     } else if (isValid !== 'EndOftheVideo') {
                       $('.vjs-big-play-button').css('display', 'none');
                       $('#overlay-modal').hide(); //  player.pause();
-                     } else { $('#overlay-modal').hide(); // player.pause(); 
+                     } else { $('#overlay-modal').hide(); // player.pause();
                       }
                     $('#repeatPlay').click(function(){
-                      self.replyVideo = true;
+                       $('#overlay-modal').hide();
+                       self.replyVideo = true;
                        player.play();
                     });
                      $('#skipOverlay').click(function(){
+                       isCallActionthere = false;
                        $('#overlay-modal').hide();
                     });
                     $('#playorsubmit').click(function(){
+                        isCallActionthere = false;
+                        player.pause();
                        $('#overlay-modal').hide();
                     });
+             });
+             this.on('fullscreenchange', function () {
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === "FullscreenOn") {
+                        $(".vjs-tech").css("width", "100%");
+                        $(".vjs-tech").css("height", "100%");
+                    } else if (event === "FullscreenOff") {
+                        $("#videoId").css("width", "640px");
+                        $("#videoId").css("height", "318px");
+                           self.fullScreenMode = false;
+                           self.overLaySet = false;
+                          if (isCallActionthere === true) {
+                            self.overLaySet = false;
+                            self.fullScreenMode = false;
+                            $("#overlay-modal").css("width", "640px");
+                            $("#overlay-modal").css("height", "318px");
+                            $('#videoId').append($('#overlay-modal').show());
+                           // newThis.showEditModalDialog();
+                          }
+                    }
              });
              this.on('contextmenu', function(e) {
                  e.preventDefault();
@@ -553,9 +631,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      } }  }); });
   //    this.videoPlayListSourceM3U8();
    }
-   getCurrentTimeValues() {
-        const myPlayer = videojs('videoId');
-        const whereYouAt = myPlayer.currentTime();
+   getCurrentTimeValues(time: any) {
+        const whereYouAt = time;
         const minutes = Math.floor(whereYouAt / 60);
         const seconds = Math.floor(whereYouAt);
         const x = minutes < 10 ? "0" + minutes : minutes;
@@ -626,6 +703,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
    createSessionId() {
     this.sessionId = UUID.UUID();
     console.log(this.sessionId);
+    this.deviceDectorInfo();
   }
    videoLogAction(actionLog: ActionLog) {
        this.videoFileService.logVideoActions(actionLog).subscribe(

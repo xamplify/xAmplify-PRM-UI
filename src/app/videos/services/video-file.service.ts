@@ -147,10 +147,13 @@ export class VideoFileService {
         }
     }
     logVideoActions(actionLog: ActionLog) {
-       if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 2 && this.timeValue === true)) {
+       console.log(this.timeValue);
+       let pauseCheck = false;
+       if (this.timeValue === '00:00' || this.timeValue === '00:00:00') { pauseCheck = true; }
+       if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 2 && pauseCheck === true)) {
            console.log('service called replyed and ended the video');
            this.replyVideo = false;
-      } else {
+       } else {
            console.log(actionLog);
            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
            return this.http.post(url, actionLog)

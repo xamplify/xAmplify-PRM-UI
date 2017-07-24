@@ -88,7 +88,7 @@ const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="n
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
              this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
              $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-              $('#videoId').css('height', '250px');
+              $('#videoId').css('height', '258px');
               $('#videoId').css('width', '532px');
               $('.video-js .vjs-tech').css('width', '100%');
               $('.video-js .vjs-tech').css('height', '100%');
@@ -205,7 +205,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath + '  class="video
                   }
                   });
                 $('#videoId').css('width', '532px');
-                $('#videoId').css('height', '250px');
+                $('#videoId').css('height', '258px');
         }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');

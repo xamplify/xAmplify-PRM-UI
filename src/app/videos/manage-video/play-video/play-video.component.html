@@ -1,13 +1,24 @@
 <style type="text/css">
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
+	.upperText{
+		font-size: 22px;color: white; word-break: break-all;
+       line-height: 1.3em;font-weight: 600;text-align: center; position: relative;top: -13px;
+	}
+	.lowerText{
+      color: white; word-break: break-all; font-size: 16px;
+      line-height: 1.0em;position: relative; text-align: center;
+      top: 9px;
+	}
 	.isPlaySubmit{ padding:15px 58px !important;border-radius: 0px;}
-	 #play_video_player_demo1{ width:auto; }
 	 .paddingCss{ padding: 1em;}
      #overlay-modal{width:auto;}
 	 .showVideoDiv{margin-top: -317px}
 	 .clipboard{ padding: 6px 44px;}
 	 a.disabled { pointer-events: none; cursor: not-allowed; }
+	 .is360video{z-index: 900;}
+	 .overlaySet{margin-top:-317px;}
+	 .bottomCss{bottom: -183px; }
 </style>
 <div class="portlet light">
 <div class="portlet-body">
@@ -26,7 +37,7 @@
 			</video>	
 			</div>
 	      <!-- call to action modal popup-->
-			  <div id="overlay-modal" class="video-js" [ngClass]="['showVideoDiv']"
+			  <!--<div id="overlay-modal" class="video-js" [ngClass]="['showVideoDiv']"
 			   style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
                <label style="margin-top: 23px;"></label>
                 <form #f="ngForm" novalidate>
@@ -51,7 +62,6 @@
 				    </div>
 				     <div id="replay-video" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 373px; margin-top: -66px;">  
                       <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
-                    <!--   <button type="button" class="button" [disabled]="isOverlay==true"  (click)="saveCallToActionUserForm()" style=" margin-left: 1px;margin-top: 0px;">{{videoOverlaySubmit}}</button> -->
                     </div>
                  </div> 
                </div>
@@ -63,11 +73,50 @@
                       <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px" (click)="skipOverlay()"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
                  </div>  
                 </form>     
-          </div>
+          </div>-->
+		    	<!-- video overlay modal popup -->
+		
+             <div id="overlay-modal" class="video-js overlay is360video"  [class.overlaySet]="overLaySet==false"
+              style="height: 318px; width: -webkit-fill-available;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+					<!--<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>-->
+					<form #f="ngForm" novalidate>
+					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
+						<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
+						<div class="flex" *ngIf="isFistNameChecked==true" >
+							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
+								class="form-control text-box m21" placeholder="First Name">
+							<input type="text" name="lastName"  [(ngModel)]="lastName" (ngModelChange)="checkingCallToActionValues()"
+							   class="form-control text-box m21" placeholder="Last Name">
+						</div>
+						<div class="flex m02">
+							<div class="w-8">
+								<input type="text" name="email_id"  [(ngModel)]="model.email_id" (ngModelChange)="checkingCallToActionValues()"
+								 class="form-control text-box" placeholder="Email Address"
+								 pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+				                 #email_id="ngModel">
+							</div>
+							<div class="w-4">
+								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="isOverlay==true"
+								 (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button>
+							</div>
+						</div>
+                         <h4 class="upper-text-heading lowerText">{{selectedVideo.lowerText}}</h4>
+					 </div>
+				   </form>
+				     <div>
+					 <div *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+						 <i class="fa fa-repeat" aria-hidden="true"></i>
+					</div>
+                      <div  *ngIf="isSkipChecked==true"  id="skipOverlay" style="cursor: pointer">
+                      	<i class="fa fa-forward" aria-hidden="true"></i>
+                      	<b style="font-size: 13px; color:white;" >skip</b>
+					  </div>
+					 </div>
+				</div>
 			<!-- modal popup end-->
 
 			<div>
-				<span align="left">0 Views</span>
+				<span align="left">{{selectedVideo.views}} Views</span>
 				<div *ngIf="likes==true">
 					<span style="float: right">
 						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;

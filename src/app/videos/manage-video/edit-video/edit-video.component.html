@@ -1,14 +1,7 @@
 <style type="text/css">
 	 a.disabled { pointer-events: none; cursor: not-allowed; }
-	.isPlayButtonCss{ margin-top: -66px !important;}
 	.ownThumnailCss{margin-top: -22px;}
-	.paddingCss{ padding: 1em;}
-	 .clipboard{ padding: 6px 44px;}
-	.changeRepeat{ margin-left: -11px;margin-top: 9px; top: 0px !important; left:0px !important; }
-	.upperTextCssDiv{ font-size: 22px;color: white; word-break: break-all;
-       line-height: 1.5em; margin: -18px 4px; position: absolute;bottom: 253px;
-       text-align: center; width: 100%; top: 23px;
-	}
+	.clipboard{ padding: 6px 44px;}
 	.disablePlayerValues{ pointer-events: none; opacity: 0.6;}
 	.upperText{
 		font-size: 22px;color: white; word-break: break-all;
@@ -19,10 +12,6 @@
       line-height: 1.0em;position: relative; text-align: center;
       top: 9px;
 	}
-	.lowerTextCssDiv{    position: absolute;top: 249px; line-height: 17px; font-size: 22px;
-    text-align: center !important;  color: white; word-break: break-all;
-    line-height: 1.0em; margin: -19px 20px; left: 0; right: 0;}
-	.isOffirstname {  margin-top: -43px !important ;}
 	.isPlaySubmit{ padding:15px 58px !important;border-radius: 0px;}
 	.colorImg {  box-shadow: 2px 6px 6px #000; opacity: 1.0; filter: alpha(opacity=100); /* For IE8 and earlier */ }
 	.colorShade { opacity: 0.3; filter: alpha(opacity=50); /* For IE8 and earlier */ }
@@ -31,7 +20,9 @@
      #edit_video_player {width:auto;}
 	 #newPlayerVideo{width:auto;}
      #overlay-modal{width:auto;}
+	 .is360video{z-index: 900;}
 	 .overlaySet{margin-top:-299px;}
+	 .bottomCss{bottom: -183px; }
 </style>
 
 <div class="portlet light">
@@ -40,7 +31,7 @@
 			<!-- video started -->
 			<div class="col-md-6" style="padding-top: 28px">
 				<div *ngIf="is360Value==false">
-				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{defaultImagePath}}"
+				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster=""
                  data-setup='{"example_option":true }'>
 				  <source [src] = videoUrl  type: 'application/x-mpegURL' />
 				</video> 
@@ -50,52 +41,13 @@
                 </div>
 				<div id="overLayDialog"></div>
             	<!-- video overlay modal popup -->
-			 <!--<div id="overlay-modal" class="video-js" [ngClass]="['overlaySet']"
-              style="height: 299px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
-               <label style="margin-top: 23px;"> </label>
-                <form #f="ngForm" novalidate>
-                  <div>
-                  <p class="upperTextCssDiv">{{saveVideoFile.upperText}}</p>
-                  </div>
-                 <div style="width: 500px;top: 38% !important;position: absolute;">
-                 <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 27px; float: left; width: 236px;">
-                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group paddingCss"   (ngModelChange)="checkingCallToActionValues()"
-                     placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
-                 </div>  
-                 <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
-                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group paddingCss"  (ngModelChange)="checkingCallToActionValues()"
-                     placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
-                </div> 
-                  <div id="maimessage"  style="width: 500px;"> 
-                    <div style=" width: 106px;">
-                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group paddingCss" (ngModelChange)="checkingCallToActionValues()"
-                   placeholder="Email" style=" width: 313px; height: 51px; margin-left: 27px; font-size: 22px; color: black;" 
-                   pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-				    #email_id="ngModel">
-				    </div>
-				     <div  [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 339px; margin-top: -66px;">  
-                      <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
-                    </div>
-                 </div> 
-               </div>
-                <div class="lowerTextCssDiv" [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;">{{saveVideoFile.lowerText}}</p>
-                </div> 
-                   <div style="position: absolute; top: 258px; right: 11px;">
-                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="color:white;cursor:pointer; position: absolute;left: -494px; top: -5px;" (click)="repeatPlayVideo()">
-						 <i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; top: 9px;position: absolute;right: -67px;" [class.changeRepeat]="isSkipChecked==false"></i></label>
-                      <label *ngIf="isSkipChecked==true" id="skipOverlay" (click)="skipClose()"
-                      style="float:right;color:white;cursor:pointer;">
-                      <i class="fa fa-share" aria-hidden="true" style="font-size: 26px;"></i>
-                      <b style="font-size: 13px; color:white;" >skip</b></label>
-                 </div>  
-                </form>     
-             </div>-->
-             <div id="overlay-modal" class="video-js overlay"  [ngClass]="['overlaySet']"
+		
+             <div id="overlay-modal" class="video-js overlay is360video"  [class.overlaySet]="overLaySet==false"
               style="height: 299px; width: -webkit-fill-available;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
-					<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>
+					<!--<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>-->
 					<form #f="ngForm" novalidate>
-					<div class="col-xs-14 overlay-main">
+					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
+						<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
 						<div class="flex" *ngIf="isFistNameChecked==true" >
 							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
 								class="form-control text-box m21" placeholder="First Name">
@@ -110,7 +62,7 @@
 				                 #email_id="ngModel">
 							</div>
 							<div class="w-4">
-								<button type="button" class="btn play-button text-box" [disabled]="isOverlay==true"
+								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="isOverlay==true"
 								 (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button>
 							</div>
 						</div>
@@ -118,10 +70,10 @@
 					 </div>
 				   </form>
 				     <div>
-					 <div id="repeatPlay" (click)="repeatPlayVideo()">
+					 <div *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
 						 <i class="fa fa-repeat" aria-hidden="true"></i>
 					</div>
-                      <div  id="skipOverlay" (click)="skipClose()">
+                      <div  *ngIf="isSkipChecked==true"  id="skipOverlay" style="cursor: pointer">
                       	<i class="fa fa-forward" aria-hidden="true"></i>
                       	<b style="font-size: 13px; color:white;" >skip</b>
 					  </div>
@@ -220,7 +172,8 @@
 									<div class="form-group">
 										<label class="col-md-3 control-label">Title:</label>
 										<div class="col-md-9">
-											<input type="text" (input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
+											<input type="text"  minlength="4" maxlength="24"
+											(input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
 												<span *ngIf="!isValidTitle" class="help-block">A block of help text.</span>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
 											<div *ngIf="isValidTitle" style="color: red;">Title Already Exists</div>
@@ -383,8 +336,8 @@
 												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor"
 													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
-													 [cpPositionRelativeToArrow]="false" [cpWidth]="'190px'"
-													 [cpHeight]="'200px'"/>
+													 [cpPositionRelativeToArrow]="false" [cpWidth]="'190px'" [cpHeight]="'200px'"
+													 />
 											</div>
 										</div>
 										<div class="form-group">
@@ -455,11 +408,9 @@
 											</div>
                                            	<label class="col-md-3 control-label">Enable Casting:</label>
 											<div class="col-md-3">
-												<ui-switch color="orange" [disabled] ="disablePlayerSetting"
-												 (change)="enableCastings($event)"
-												 [(ngModel)]="disablePlayerSettingnew" [ngModelOptions]="{standalone: true}"
-												 ></ui-switch>
-											</div>
+												<ui-switch color="orange"  [(ngModel)]="newEnableCasting" [ngModelOptions]="{standalone: true}"
+												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)"></ui-switch>
+										</div>
 
 										</div>
 										<div class="form-group">

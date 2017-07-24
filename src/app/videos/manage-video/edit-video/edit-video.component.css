@@ -2,6 +2,10 @@
         color:#fff !important ;
         background: blue !important;  
         }
+ /deep/ .video-js .vjs-progress-holder .vjs-load-progress {
+    position: absolute;
+    display: block;
+    height: 2.3em; }         
 .customCss{
    margin-right: 13px;margin-left: -11px;
         } 
