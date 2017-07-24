@@ -8,6 +8,7 @@ import { ViewsReportComponent } from './views-report/views-report.component';
 import { TableAdvanceComponent } from './table-advance/table-advance.component';
 import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
 import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
+import { FollowersComponent } from './followers/followers.component';
 
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
                         { path: 'extrafaq', component: ExtraFaqComponent },
                         { path: 'welcome', component: WelcomeComponent },
                         { path: 'profilehelp', component: ProfileHelpComponent },
+                        { path: 'followers', component: FollowersComponent }
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

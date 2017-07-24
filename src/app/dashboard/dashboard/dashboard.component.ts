@@ -38,7 +38,6 @@ export class DashboardComponent implements OnInit {
     listOfTotalFollowers : number;
     listOfTotalLeads : number;
     listOfTotalShared : number;
-
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
@@ -55,6 +54,7 @@ export class DashboardComponent implements OnInit {
             this.listOfTotalFollowers = 0;
             this.listOfTotalLeads = 0;
             this.listOfTotalShared = 0;
+          //  this.allFollowers = new Array<ContactList>();
     }
 
     dashboardStats() {

@@ -1,484 +1,485 @@
-<div class="page-content" >
-				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Modal title</h4>
-							</div>
-							<div class="modal-body">
-								 Widget settings form goes here
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn blue">Save changes</button>
-								<button type="button" class="btn default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal-dialog -->
+<div class="page-content">
+	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+	<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true"></button>
+					<h4 class="modal-title">Modal title</h4>
 				</div>
-				<!-- /.modal -->
-				
-				<!-- BEGIN DASHBOARD STATS -->
-				<div class="row">
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../videos/manage_videos']">
-						<div class="visual">
-							<i class="fa fa-eye"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-							{{listOfTotalViews}}
-							</div>
-							<div class="desc">
-								 Total Views
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']">
-						<div class="visual">
-							<i class="fa fa-cloud-upload"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-									{{totalUploadedvideos}}
-							</div>
-							<div class="desc">
-								 Uploaded Videos
-							</div>
-						</div>
-						</a>
-					</div>
-					
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../contacts/manageContacts']">
-						<div class="visual">
-							<i class="fa fa-users"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{totalContacts}}
-							</div>
-							<div class="desc">
-								 Total Contacts
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['./']">
-						<div class="visual">
-							<i class="fa fa-smile-o"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{listOfTotalFollowers}}
-							</div>
-							<div class="desc">
-								 Followers
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" [routerLink]="['./']">
-						<div class="visual">
-							<i class="fa fa-user-secret"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 {{listOfTotalLeads}}
-							</div>
-							<div class="desc">
-								 Leads
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['./']">
-						<div class="visual">
-							<i class="fa fa-share"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{listOfTotalShared}}
-							</div>
-							<div class="desc">
-								 Shared
-							</div>
-						</div>
-						</a>
-					</div>
+				<div class="modal-body">Widget settings form goes here</div>
+				<div class="modal-footer">
+					<button type="button" class="btn blue">Save changes</button>
+					<button type="button" class="btn default" data-dismiss="modal">Close</button>
 				</div>
-				<!-- END DASHBOARD STATS -->
-				<div class="clearfix"></div>
-				<div class="row"> 
-				 		<section *ngFor="let socialConnection of socialConnections">
-	                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" *ngIf="socialConnection.source === 'TWITTER'">
-                               <a [routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
-	                            <div class="dashboard-stat2">
-	                                <div class="display">
-	                                    <div class="number">
-											<span style="display: flex;">
-												<h3 class="font-blue">{{twitterTotalTweetsCount}}</h3>
-												<h5 style="margin-left: 1em;">Total Tweets</h5>
-											</span>
-											<small>{{socialConnection.profileName}}</small>
-										</div>
-	                                    <div class="icon">
-											<img class="img-circle" alt="{{socialConnection.profileName}}" src="{{socialConnection.profileImage}}" width="52px" height="52px" 
-												style="border: 1px solid rgba(17, 17, 17, 0.2);padding: 4px;">
-											<img class="img-circle" alt="" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png" 
-												style="position: absolute;top: 52px;right: 30px;">
-										</div>
-										
-										
-										<div class="col-xs-12">
-											<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
-										</div>
-	
-										<div class="col-xs-8 text-left" style="padding-left:0px;padding-right:0px;">
-											<h5><span class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyTweetsCount}}</span> New Tweet's<br>(Past 7 days)</h5>	
-										</div>
-	                                  <!--  <div class=" col-xs-4 text-right bar-sparkline" style="padding: 5px;" sparktype="bar" sparkbarcolor="#00ACED" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- BEGIN DASHBOARD STATS -->
+	<div class="row">
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft"
+				[routerLink]="['../../videos/manage_videos']">
+				<div class="visual">
+					<i class="fa fa-eye"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{listOfTotalViews}}</div>
+					<div class="desc">Total Views</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter red-soft"
+				[routerLink]="['./views_report']">
+				<div class="visual">
+					<i class="fa fa-cloud-upload"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{totalUploadedvideos}}</div>
+					<div class="desc">Uploaded Videos</div>
+				</div>
+			</a>
+		</div>
+
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold"
+				[routerLink]="['../../contacts/manageContacts']">
+				<div class="visual">
+					<i class="fa fa-users"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{totalContacts}}</div>
+					<div class="desc">Total Contacts</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft"
+				[routerLink]="['./followers']">
+				<div class="visual">
+					<i class="fa fa-smile-o"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{listOfTotalFollowers}}</div>
+					<div class="desc">Followers</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter blue-sharp"
+				[routerLink]="['./']">
+				<div class="visual">
+					<i class="fa fa-user-secret"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{listOfTotalLeads}}</div>
+					<div class="desc">Leads</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
+				[routerLink]="['./']">
+				<div class="visual">
+					<i class="fa fa-share"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{listOfTotalShared}}</div>
+					<div class="desc">Shared</div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<!-- END DASHBOARD STATS -->
+	<div class="clearfix"></div>
+	<div class="row">
+		<section *ngFor="let socialConnection of socialConnections">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6"
+				*ngIf="socialConnection.source === 'TWITTER'">
+				<a
+					[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
+					<div class="dashboard-stat2">
+						<div class="display">
+							<div class="number">
+								<span style="display: flex;">
+									<h3 class="font-blue">{{twitterTotalTweetsCount}}</h3>
+									<h5 style="margin-left: 1em;">Total Tweets</h5>
+								</span> <small>{{socialConnection.profileName}}</small>
+							</div>
+							<div class="icon">
+								<img class="img-circle" alt="{{socialConnection.profileName}}"
+									src="{{socialConnection.profileImage}}" width="52px"
+									height="52px"
+									style="border: 1px solid rgba(17, 17, 17, 0.2); padding: 4px;">
+								<img class="img-circle" alt=""
+									src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png"
+									style="position: absolute; top: 52px; right: 30px;">
+							</div>
+
+
+							<div class="col-xs-12">
+								<hr
+									style="background-color: #00ACED; height: 1px; border: 0; margin-top: 5px;">
+							</div>
+
+							<div class="col-xs-8 text-left"
+								style="padding-left: 0px; padding-right: 0px;">
+								<h5>
+									<span class="nummber"
+										style="color: #00aced; font-weight: 600; display: inline;">{{weeklyTweetsCount}}</span>
+									New Tweet's<br>(Past 7 days)
+								</h5>
+							</div>
+							<!--  <div class=" col-xs-4 text-right bar-sparkline" style="padding: 5px;" sparktype="bar" sparkbarcolor="#00ACED" sparkheight="30" sparkbarwidth="4" sparkbarspacing="3" >
 											28,15,40,12,13,20,17
 										</div> -->
-										<div class=" col-xs-4 text-right sparkline-chart icon">
-												<div class="number" id="sparkline_bar_twitter"><canvas width="46" height="20" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
-									    </div>
-	                                </div>
-	                            </div>
-	                            </a>
-	                        </div>
-						</section>
-
-                        <section *ngFor="let socialConnection of socialConnections">
-                        	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" *ngIf="socialConnection.source == 'FACEBOOK'">
-                        	<div class="dashboard-stat2 ">
-							<div class="display">
-								<a
-									[routerLink]="['../../social/facebook-posts', socialConnection.profileId]">
-									<div class="number">
-										<h3 class="font-blue-steel">
-											<span data-counter="counterup" data-value="567"><!-- 12 --></span>
-										</h3>
-										<small>{{socialConnection.profileName}}</small>
-									</div>
-									<div class="icon">
-										<img class="img-circle" alt="{{socialConnection.profileName}}" src="{{socialConnection.profileImage}}" width="52px" height="52px" 
-											style="border: 1px solid rgba(17, 17, 17, 0.2);padding: 4px;">
-										<img class="img-circle" alt="" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png" 
-										style="position: absolute;top: 52px;right: 30px;">
-									</div>
-								</a>
-								<div class="col-xs-12">
-									<hr
-										style="background-color: #3b5998; height: 1px; border: 0; margin-top: 5px;">
-								</div>
-			
-								<div class="col-xs-8 text-left"
-									style="padding-left: 0px; padding-right: 0px;">
-									<h5>
-										<span class="nummber"
-											style="color: #3b5998; font-weight: 600; display: inline;">123</span>
-										New Mention's<br>(Past 7 days)
-									</h5>
-								</div>
-			
-								<div class=" col-xs-4 text-right sparkline-chart icon">
-									<div class="number sparkline_bar_facebook">
-										<canvas width="46" height="20"
-											style="padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas>
-									</div>
+							<div class=" col-xs-4 text-right sparkline-chart icon">
+								<div class="number" id="sparkline_bar_twitter">
+									<canvas width="46" height="20"
+										style="padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas>
 								</div>
 							</div>
-			
 						</div>
-                        </div>
-                        </section>
-                        
-						
-                    </div>
-		<div class="row" >
+					</div>
+				</a>
+			</div>
+		</section>
+
+		<section *ngFor="let socialConnection of socialConnections">
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6"
+				*ngIf="socialConnection.source == 'FACEBOOK'">
+				<div class="dashboard-stat2 ">
+					<div class="display">
+						<a
+							[routerLink]="['../../social/facebook-posts', socialConnection.profileId]">
+							<div class="number">
+								<h3 class="font-blue-steel">
+									<span data-counter="counterup" data-value="567">
+										<!-- 12 -->
+									</span>
+								</h3>
+								<small>{{socialConnection.profileName}}</small>
+							</div>
+							<div class="icon">
+								<img class="img-circle" alt="{{socialConnection.profileName}}"
+									src="{{socialConnection.profileImage}}" width="52px"
+									height="52px"
+									style="border: 1px solid rgba(17, 17, 17, 0.2); padding: 4px;">
+								<img class="img-circle" alt=""
+									src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png"
+									style="position: absolute; top: 52px; right: 30px;">
+							</div>
+						</a>
+						<div class="col-xs-12">
+							<hr
+								style="background-color: #3b5998; height: 1px; border: 0; margin-top: 5px;">
+						</div>
+
+						<div class="col-xs-8 text-left"
+							style="padding-left: 0px; padding-right: 0px;">
+							<h5>
+								<span class="nummber"
+									style="color: #3b5998; font-weight: 600; display: inline;">123</span>
+								New Mention's<br>(Past 7 days)
+							</h5>
+						</div>
+
+						<div class=" col-xs-4 text-right sparkline-chart icon">
+							<div class="number sparkline_bar_facebook">
+								<canvas width="46" height="20"
+									style="padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+
+	</div>
+	<div class="row">
 
 		<div class="col-md-4 col-sm-4">
-						<div class="portlet light ">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="icon-equalizer font-purple-plum hide"></i>
-									<span class="caption-subject font-red-sunglo bold uppercase">Gender Demographics</span>
-									
-								</div>
-								<div class="tools">
-									
-									<a href="" class="reload" data-original-title="" title="">
-									</a>
-									
-								</div>
-							</div>
-							<div class="portlet-body">
-								<div class="row">
-									<div class="col-md-6">
-										
-										<div class="sparkline-chart">
-											<div class="visual" style="color: #007bb6;font-size: 72px;">
-												<i class="fa fa-male" style="color: #007bb6; font-size: 72px; padding: 10px"></i>
-											</div>
-											
-											<div class="details">
-							<div class="number" style="color: #007bb6;font-size: 18px;font-weight: bold">
-								 {{genderDemographicsMale}}% <small>Male</small>
-							</div>
-							
-						</div>
-										</div>
-									</div>
-									<div class="margin-bottom-10 visible-sm">
-									</div>
-									<div class="col-md-6">
-										<div class="sparkline-chart">
-											<div class="visual" style="color: #dd4b39;font-size: 72px;">
-												<i class="fa fa-female" style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
-											</div>
-											<div class="details">
-												<div class="number" style="color: #ff2c82;font-size: 18px; font-weight: bold">
-														{{genderDemographicsFemale}}% <small>Female</small>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-						</div>
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-equalizer font-purple-plum hide"></i> <span
+							class="caption-subject font-red-sunglo bold uppercase">Gender
+							Demographics</span>
+
 					</div>
-					<div class="col-md-8 col-sm-8">
-						<div class="portlet light ">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="icon-cursor font-purple-intense hide"></i>
-									<span class="caption-subject font-purple-intense bold uppercase">Social Followers</span>
+					<div class="tools">
+
+						<a href="" class="reload" data-original-title="" title=""> </a>
+
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<div class="col-md-6">
+
+							<div class="sparkline-chart">
+								<div class="visual" style="color: #007bb6; font-size: 72px;">
+									<i class="fa fa-male"
+										style="color: #007bb6; font-size: 72px; padding: 10px"></i>
 								</div>
-								<div class="tools">
-									
-									<a href="" class="reload" data-original-title="" title="">
-									</a>
-									
-								</div>
-								
-							</div>
-							<div class="portlet-body">
-								<div class="row">
-									<section *ngFor="let socialConnection of socialConnections">
-									<div class="col-md-3" *ngIf="socialConnection.source == 'TWITTER'">
-										  <a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]" style="text-decoration: none;">
-											<div class="sparkline-chart">
-												<div class="visual" style="color: #007bb6; font-size: 60px;">
-													<i class="fa fa-twitter"
-														style="color: #33CCFF; font-size: 70px;"></i>
-												</div>
-			
-												<div class="details">
-													<div class="number"
-														style="color: #33CCFF; ">
-														<span>{{twitterTotalFollowersCount}}</span> <br> <small>Followers</small>
-													</div>
-												</div>
-											</div>
-										</a>
+
+								<div class="details">
+									<div class="number"
+										style="color: #007bb6; font-size: 18px; font-weight: bold">
+										{{genderDemographicsMale}}% <small>Male</small>
 									</div>
-									</section>
-									<div class="col-md-3">
-										  <div class="sparkline-chart">
-											<div class="visual" style="color: #007bb6;font-size: 60px;">
-												<i class="fa fa-google-plus" style="color: #C63D2D; font-size: 70px;"></i>
-											</div>
-											
-											<div class="details">
-												<div class="number" style="color: #C63D2D;">100 K <br> <small>Followers</small>
-												</div>
-											</div>
-									</div>
-									</div>
-									
-									<div class="col-md-3">
-										  <div class="sparkline-chart">
-											<div class="visual" style="color: #007bb6;font-size: 60px;">
-												<i class="fa fa-facebook" style="color: #3B5998; font-size: 70px;"></i>
-											</div>
-											
-											<div class="details">
-												<div class="number" style="color: #3B5998;">2.3 M <br> <small>Fans</small>
-												</div>
-											</div>
-									</div>
-									</div>
-									<div class="col-md-3">
-										  <div class="sparkline-chart">
-											<div class="visual" style="color: #4875B4;font-size: 60px;">
-												<i class="fa fa-linkedin" style="color: #4875B4; font-size: 70px;"></i>
-											</div>
-											
-											<div class="details">
-												<div class="number" style="color: #4875B4;">6,000 <br> <small>Followers</small>
-												</div>
-											</div>
-									</div>
-									</div>
-									
+
 								</div>
 							</div>
 						</div>
+						<div class="margin-bottom-10 visible-sm"></div>
+						<div class="col-md-6">
+							<div class="sparkline-chart">
+								<div class="visual" style="color: #dd4b39; font-size: 72px;">
+									<i class="fa fa-female"
+										style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
+								</div>
+								<div class="details">
+									<div class="number"
+										style="color: #ff2c82; font-size: 18px; font-weight: bold">
+										{{genderDemographicsFemale}}% <small>Female</small>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-sm-8">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-cursor font-purple-intense hide"></i> <span
+							class="caption-subject font-purple-intense bold uppercase">Social
+							Followers</span>
+					</div>
+					<div class="tools">
+
+						<a href="" class="reload" data-original-title="" title=""> </a>
+
 					</div>
 
-				<div class="clearfix"></div>
-				<div>	
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<section *ngFor="let socialConnection of socialConnections">
+							<div class="col-md-3"
+								*ngIf="socialConnection.source == 'TWITTER'">
+								<a
+									[routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
+									style="text-decoration: none;">
+									<div class="sparkline-chart">
+										<div class="visual" style="color: #007bb6; font-size: 60px;">
+											<i class="fa fa-twitter"
+												style="color: #33CCFF; font-size: 70px;"></i>
+										</div>
+
+										<div class="details">
+											<div class="number" style="color: #33CCFF;">
+												<span>{{twitterTotalFollowersCount}}</span> <br> <small>Followers</small>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						</section>
+						<div class="col-md-3">
+							<div class="sparkline-chart">
+								<div class="visual" style="color: #007bb6; font-size: 60px;">
+									<i class="fa fa-google-plus"
+										style="color: #C63D2D; font-size: 70px;"></i>
+								</div>
+
+								<div class="details">
+									<div class="number" style="color: #C63D2D;">
+										100 K <br> <small>Followers</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="sparkline-chart">
+								<div class="visual" style="color: #007bb6; font-size: 60px;">
+									<i class="fa fa-facebook"
+										style="color: #3B5998; font-size: 70px;"></i>
+								</div>
+
+								<div class="details">
+									<div class="number" style="color: #3B5998;">
+										2.3 M <br> <small>Fans</small>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="sparkline-chart">
+								<div class="visual" style="color: #4875B4; font-size: 60px;">
+									<i class="fa fa-linkedin"
+										style="color: #4875B4; font-size: 70px;"></i>
+								</div>
+
+								<div class="details">
+									<div class="number" style="color: #4875B4;">
+										6,000 <br> <small>Followers</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+		<div>
+			<div class="col-md-6 col-sm-6">
+				<!-- BEGIN REGIONAL STATS PORTLET-->
+				<div class="portlet light ">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="icon-share font-red-sunglo"></i> <span
+								class="caption-subject font-red-sunglo bold uppercase">Regional
+								Stats</span>
+						</div>
+						<div class="btn-toolbar margin-bottom-10">
+							<div class="actions">
+
+								<a class="btn btn-circle btn-icon-only btn-default fullscreen"
+									href="javascript:;"> </a>
+
+							</div>
+
+							<div class="btn-group pull-right" style="padding-top: 10px;">
+								<a href=""
+									class="btn btn-circle grey-salsa btn-sm dropdown-toggle"
+									data-toggle="dropdown" data-hover="dropdown"
+									data-close-others="true"> Select Region <span
+									class="fa fa-angle-down"> </span>
+								</a>
+								<ul class="dropdown-menu pull-right">
+									<li><a href="javascript:;" id="regional_stat_world">
+											World </a></li>
+									<li><a href="javascript:;" id="regional_stat_usa"> USA
+									</a></li>
+									<li><a href="javascript:;" id="regional_stat_europe">
+											Europe </a></li>
+									<li><a href="javascript:;" id="regional_stat_russia">
+											Russia </a></li>
+									<li><a href="javascript:;" id="regional_stat_germany">
+											Germany </a></li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="portlet-body">
+						<div id="region_statistics_loading">
+							<img src="assets/admin/layout2/img/loading.gif" alt="loading" />
+						</div>
+						<div id="region_statistics_content" class="display-none">
+
+							<div id="vmap_world" class="vmaps display-none"></div>
+							<div id="vmap_usa" class="vmaps display-none"></div>
+							<div id="vmap_europe" class="vmaps display-none"></div>
+							<div id="vmap_russia" class="vmaps display-none"></div>
+							<div id="vmap_germany" class="vmaps display-none"></div>
+						</div>
+					</div>
+				</div>
+				<!-- END REGIONAL STATS PORTLET-->
+
+			</div>
+
+			<div>
 				<div class="col-md-6 col-sm-6">
-						<!-- BEGIN REGIONAL STATS PORTLET-->
-						<div class="portlet light ">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="icon-share font-red-sunglo"></i>
-									<span class="caption-subject font-red-sunglo bold uppercase">Regional Stats</span>
-								</div>
-								<div class="btn-toolbar margin-bottom-10">
-								<div class="actions">
-									
-									<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;">
-									</a>
-									
-								</div>
-										
-										<div class="btn-group pull-right" style="padding-top: 10px;">
-											<a href="" class="btn btn-circle grey-salsa btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-											Select Region <span class="fa fa-angle-down">
-											</span>
-											</a>
-											<ul class="dropdown-menu pull-right">
-												<li>
-													<a href="javascript:;" id="regional_stat_world">
-													World </a>
-												</li>
-												<li>
-													<a href="javascript:;" id="regional_stat_usa">
-													USA </a>
-												</li>
-												<li>
-													<a href="javascript:;" id="regional_stat_europe">
-													Europe </a>
-												</li>
-												<li>
-													<a href="javascript:;" id="regional_stat_russia">
-													Russia </a>
-												</li>
-												<li>
-													<a href="javascript:;" id="regional_stat_germany">
-													Germany </a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								
-							</div>
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="icon-equalizer font-purple-plum hide"></i> <span
+									class="caption-subject font-red-sunglo bold uppercase">Video
+									Stats</span>
 
-							<div class="portlet-body">
-								<div id="region_statistics_loading">
-									<img src="assets/admin/layout2/img/loading.gif" alt="loading"/>
+							</div>
+							<div class="tools">
+
+								<a href="" class="reload" data-original-title="" title=""> </a>
+
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="sparkline-chart">
+										<div class="number" id="sparkline_bar">
+											<canvas width="113" height="55"
+												style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+										</div>
+										<a class="title" href="javascript:;"> Views </a>
+									</div>
 								</div>
-								<div id="region_statistics_content" class="display-none">
-									
-									<div id="vmap_world" class="vmaps display-none">
+								<div class="margin-bottom-10 visible-sm"></div>
+								<div class="col-md-4">
+									<div class="sparkline-chart">
+										<div class="number" id="sparkline_bar2">
+											<canvas width="107" height="55"
+												style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas>
+										</div>
+										<a class="title" href="javascript:;"> Minutes Watched </a>
 									</div>
-									<div id="vmap_usa" class="vmaps display-none">
-									</div>
-									<div id="vmap_europe" class="vmaps display-none">
-									</div>
-									<div id="vmap_russia" class="vmaps display-none">
-									</div>
-									<div id="vmap_germany" class="vmaps display-none">
+								</div>
+								<div class="margin-bottom-10 visible-sm"></div>
+								<div class="col-md-4">
+									<div class="sparkline-chart">
+										<div class="number" id="sparkline_line">
+											<canvas width="100" height="55"
+												style="display: inline-block; width: 100px; height: 55px; vertical-align: top;"></canvas>
+										</div>
+										<a class="title" href="javascript:;"> Average Duration </a>
 									</div>
 								</div>
 							</div>
 						</div>
-						<!-- END REGIONAL STATS PORTLET-->
-					
+					</div>
 				</div>
 
-				<div>
 				<div class="col-md-6 col-sm-6">
-						<div class="portlet light ">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="icon-equalizer font-purple-plum hide"></i>
-									<span class="caption-subject font-red-sunglo bold uppercase">Video Stats</span>
-									
-								</div>
-								<div class="tools">
-									
-									<a href="" class="reload" data-original-title="" title="">
-									</a>
-									
-								</div>
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="icon-cursor font-purple-intense hide"></i> <span
+									class="caption-subject font-purple-intense bold uppercase">Email
+									Stats</span>
 							</div>
-							<div class="portlet-body">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="sparkline-chart">
-											<div class="number" id="sparkline_bar"><canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas></div>
-											<a class="title" href="javascript:;">
-											Views
-											</a>
-										</div>
-									</div>
-									<div class="margin-bottom-10 visible-sm">
-									</div>
-									<div class="col-md-4">
-										<div class="sparkline-chart">
-											<div class="number" id="sparkline_bar2"><canvas width="107" height="55" style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas></div>
-											<a class="title" href="javascript:;">
-											Minutes Watched
-											</a>
-										</div>
-									</div>
-									<div class="margin-bottom-10 visible-sm">
-									</div>
-									<div class="col-md-4">
-										<div class="sparkline-chart">
-											<div class="number" id="sparkline_line"><canvas width="100" height="55" style="display: inline-block; width: 100px; height: 55px; vertical-align: top;"></canvas></div>
-											<a class="title" href="javascript:;">
-											Average Duration
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+							<div class="tools">
 
-					<div class="col-md-6 col-sm-6">
-						<div class="portlet light ">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="icon-cursor font-purple-intense hide"></i>
-									<span class="caption-subject font-purple-intense bold uppercase">Email Stats</span>
-								</div>
-								<div class="tools">
-									
-									<a href="" class="reload" data-original-title="" title="">
-									</a>
-									
-								</div>
-								
+								<a href="" class="reload" data-original-title="" title=""> </a>
+
 							</div>
-							<div class="portlet-body">
-					
-<div class="row">
+
+						</div>
+						<div class="portlet-body">
+
+							<div class="row">
 								<div class="col-md-4 sparkline-chart">
 									<div class="visual">
 										<img alt="opened"
@@ -486,8 +487,7 @@
 									</div>
 
 									<div class="details">
-										<div class="number"
-											style="color: #f36360; margin-top: 5px;">
+										<div class="number" style="color: #f36360; margin-top: 5px;">
 											<span>{{listOfEmailOpened}}</span> <br> <small>opened</small>
 										</div>
 									</div>
@@ -499,8 +499,7 @@
 									</div>
 
 									<div class="details">
-										<div class="number"
-											style="color: #7ccacb; margin-top: 5px;">
+										<div class="number" style="color: #7ccacb; margin-top: 5px;">
 											<span>{{listOfEmailClicked}}</span> <br> <small>Clicked</small>
 										</div>
 									</div>
@@ -512,22 +511,21 @@
 									</div>
 
 									<div class="details">
-										<div class="number"
-											style="color: #b0dcc1; margin-top: 5px;">
+										<div class="number" style="color: #b0dcc1; margin-top: 5px;">
 											<span>{{listOfEmailWatched}}</span> <br> <small>Watched</small>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						</div>
-					</div>
-
-				</div>
-	<div class="portlet-body form" style="margin-top: 5px;">
-									<div style="padding-bottom: 0px;padding-top: 10px;"></div> 
-								</div>
-
-						</div>
 					</div>
 				</div>
+
+			</div>
+			<div class="portlet-body form" style="margin-top: 5px;">
+				<div style="padding-bottom: 0px; padding-top: 10px;"></div>
+			</div>
+
+		</div>
+	</div>
+</div>

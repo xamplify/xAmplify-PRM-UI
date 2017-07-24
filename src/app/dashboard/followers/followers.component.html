@@ -1,0 +1,31 @@
+<div class="page-content">
+				<div class="page-bar">
+					<ul class="page-breadcrumb">
+						<li>
+							<i class="fa fa-home"></i>
+							<a [routerLink]="['../../dashboard']">Home</a>
+							<i class="fa fa-angle-right"></i>
+						</li>
+						<li>
+						<a>Followers</a>
+						</li>
+					</ul>
+				</div>
+	<table class="table table-striped table-hover table-bordered"
+		id="sample_editable_1" style="background-color: white">
+		<thead>
+			<tr>
+				<th>EMAILID</th>
+				<th>FIRSTNAME</th>
+				<th>LASTNAME</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
+				<td>{{allcontacts.emailId}}</td>
+				<td>{{allcontacts.firstName}}</td>
+				<td class="center">{{allcontacts.lastName}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
