@@ -45,6 +45,8 @@ export class EditContactsComponent implements OnInit {
     public saveCsvFileUsers: boolean;
     public clipboardTextareaText: string;
     pagedItems: any[];
+    checkedUserList = [];
+    //removeUserIds = new Array()
     fileTypeError: boolean;
     Campaign: string;
     selectedDropDown: string;
@@ -377,6 +379,8 @@ export class EditContactsComponent implements OnInit {
                         $( "button#copyFrom_clipboard" ).prop( 'disabled', false );
                         $( "#uploadCsvUsingFile" ).hide();
                         $( "#sample_editable_1" ).show();
+                        $( "button#upload_csv" ).prop( 'disabled', false );
+                        $( "input[type='file']" ).attr( "disabled", false );
                         this.filePrevew = false;
                         this.checkingLoadContactsCount = true;
                         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -417,15 +421,29 @@ export class EditContactsComponent implements OnInit {
             )
         this.successMessage = false;*/
     }
+    
+    checkedUsers(contactListId: number){
+        let self = this;
+        var removeUserIds = [];
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var id = $( this ).val();
+            removeUserIds.push( id );
+            self.checkedUserList.push(id);
+        });
+        //this.checkedUserList.push(removeUserIds);
+        this.logger.log("CheckedUsersListNew" + this.checkedUserList);
+    }
 
     removeContactListUsers( contactListId: number ) {
+        let self = this;
         var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
+            self.checkedUserList.push(id);
         });
         this.logger.info( removeUserIds );
-        this.contactService.removeContactList( this.contactListId, removeUserIds )
+        this.contactService.removeContactList( this.contactListId, self.checkedUserList )
             .subscribe(
             ( data: any ) => {
                 data = data;
