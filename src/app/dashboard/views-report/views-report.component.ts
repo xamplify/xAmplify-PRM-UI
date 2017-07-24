@@ -27,6 +27,8 @@ public errorPrepender: 'Error In:';
 private videoJSplayer: any;
 categories: Category[];
 isvideoThere: boolean;
+showDatailedData : boolean;
+showVideoData : boolean;
 pagedItems: any[];
 public searchKey: string ;
 sortingName: string = null;
@@ -317,10 +319,21 @@ public videoSort: any = this.sortVideos[0];
               });
           
       }
+     
+     backToReport(){
+         this.showDatailedData = false;
+         this.showVideoData = true;
+     }
+     
+     showViewsData(){
+         this.showDatailedData = true;
+         this.showVideoData = false;
+     }
     
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);
+            this.showVideoData = true;
             Metronic.init();
             Layout.init();
             Demo.init();
