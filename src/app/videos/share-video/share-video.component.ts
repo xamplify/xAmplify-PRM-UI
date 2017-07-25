@@ -706,7 +706,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
     this.deviceDectorInfo();
   }
    videoLogAction(actionLog: ActionLog) {
-       this.videoFileService.logVideoActions(actionLog).subscribe(
+       this.videoFileService.logEmbedVideoActions(actionLog).subscribe(
        (result: any) => {
          console.log('successfully logged the actions');
          console.log(this.actionLog.actionId);

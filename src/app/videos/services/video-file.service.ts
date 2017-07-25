@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { SaveVideoFile } from '../models/save-video-file';
 import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';
+import { XtremandLog } from '../models/xtremand-log';
 import { ActionLog } from '../models/action';
 import { User } from '../../core/models/user';
 declare var swal: any;
@@ -21,11 +22,13 @@ export class VideoFileService {
     public showUpadte: boolean;
     public pagination: Pagination;
     public actionLog: ActionLog;
+    public Xtremandlog: XtremandLog;
     public viewBytemp: string;
     public logEnded: number;
     public videoViewBy: string;
     public replyVideo = false;
     public timeValue: any;
+    public campaignTimeValue: any;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -79,7 +82,6 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
     loadVideoForViewsReport(pagination: Pagination): Observable<SaveVideoFile[]> {
         if (pagination.filterBy == null) { pagination.filterBy = 0; }
         console.log(pagination);
@@ -90,7 +92,6 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
     loadVideosCount() {
         // this.logger.info( "Service class loadContactCount() completed" );
        const url =  this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='
@@ -146,7 +147,7 @@ export class VideoFileService {
 	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
-    logVideoActions(actionLog: ActionLog) {
+    logEmbedVideoActions(actionLog: ActionLog) {
        console.log(this.timeValue);
        let pauseCheck = false;
        if (this.timeValue === '00:00' || this.timeValue === '00:00:00') { pauseCheck = true; }
@@ -157,6 +158,21 @@ export class VideoFileService {
            console.log(actionLog);
            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
            return this.http.post(url, actionLog)
+              .map(this.extractData)
+              .catch(this.handleErrorLogAction);
+      }
+    }
+     logCampaignVideoActions(xtremandLog: XtremandLog) {
+       console.log(this.campaignTimeValue);
+       let pauseCheck = false;
+       if (this.campaignTimeValue === '00:00' || this.campaignTimeValue === '00:00:00') { pauseCheck = true; }
+       if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 2 && pauseCheck === true)) {
+           console.log('service called replyed and ended the video');
+           this.replyVideo = false;
+       } else {
+           console.log(xtremandLog);
+           const url = this.authenticationService.REST_URL + 'user/logVideoAction';
+           return this.http.post(url, xtremandLog)
               .map(this.extractData)
               .catch(this.handleErrorLogAction);
       }

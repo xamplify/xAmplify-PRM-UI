@@ -53,6 +53,7 @@ public sessionId: string = null;
 public videoLength: string;
 public replyVideo: boolean;
 public logVideoViewValue: boolean;
+public timeValue: any;
 LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
@@ -122,6 +123,15 @@ deviceDectorInfo() {
     }
     return length;
    }
+    getCurrentTimeValues(time: any) {
+        const whereYouAt = time;
+        const minutes = Math.floor(whereYouAt / 60);
+        const seconds = Math.floor(whereYouAt);
+        const x = minutes < 10 ? "0" + minutes : minutes;
+        const y = seconds < 10 ? "0" + seconds : seconds;
+        const timeValue = x + ":" + y;
+        this.videoFileService.campaignTimeValue = timeValue;
+   }
      timeConversion(totalSeconds: number) {
         const MINUTES_IN_AN_HOUR = 60;
         const SECONDS_IN_A_MINUTE = 60;
@@ -173,7 +183,7 @@ deviceDectorInfo() {
         return Math.round(currentTime * 100) / 100;
     }
     videoLogAction(xtremandLog: XtremandLog) {
-       this.videoFileService.logVideoActions(xtremandLog).subscribe(
+       this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
        (result: any) => {
          console.log('successfully logged the actions');
      });
@@ -248,6 +258,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     console.log('play button clicked and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                        if (selfPanorama.replyVideo === true) {
                           selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.replyVideo;
+                          selfPanorama.replyVideo = false;
                      } else {
                           selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.playVideo;
                      }
@@ -260,9 +271,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                        selfPanorama.logVideoViewsCount();
                        selfPanorama.logVideoViewValue = false;
                      }
+                      selfPanorama.getCurrentTimeValues(player.currentTime());
                    });
                    player.on('pause', function() {
-                     if (selfPanorama.xtremandLog.actionId !== selfPanorama.LogAction.videoPlayer_movieReachEnd) {
                      console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
                      selfPanorama.xtremandLog.startTime = new Date();
@@ -270,7 +281,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                     }
+                     selfPanorama.getCurrentTimeValues(player.currentTime());
                   });
                   player.on('seeking', function() {
                      const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
@@ -348,6 +359,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                      if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
                      } else {
                           self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
@@ -362,16 +374,12 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      const time =  self.timeConversion(player.currentTime());
                      console.log(time);
                      console.log(self.truncateHourZeros(time).toString());
-                    //  if (time){
-                    //        console.log('ended event ');
-                    //  } else {
                         self.xtremandLog.actionId = self.LogAction.pauseVideo;
                         self.xtremandLog.startTime = new Date();
                         self.xtremandLog.endTime = new Date();
                         self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.videoLogAction(self.xtremandLog);
-                    //  }
                     });
                     this.on('timeupdate', function() {
                       startDuration = self.trimCurrentTime(player.currentTime());
