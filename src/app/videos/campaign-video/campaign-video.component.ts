@@ -359,7 +359,6 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                      if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
-                          self.replyVideo = false;
                      } else {
                           self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
@@ -368,6 +367,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                      self.videoLogAction(self.xtremandLog);
+                     self.getCurrentTimeValues(player.currentTime());
                     });
                     this.on('pause', function() {
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
@@ -380,11 +380,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
                         self.videoLogAction(self.xtremandLog);
+                        self.getCurrentTimeValues(player.currentTime());
                     });
                     this.on('timeupdate', function() {
                       startDuration = self.trimCurrentTime(player.currentTime());
                     });
                     this.on('seeking', function() {
+                     self.replyVideo = false;
+                     self.videoFileService.replyVideo = false;
                      const seekigTime  = self.trimCurrentTime(player.currentTime());
                      self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
                      self.xtremandLog.startDuration = startDuration;

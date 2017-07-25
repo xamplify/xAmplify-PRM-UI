@@ -164,9 +164,10 @@ export class VideoFileService {
     }
      logCampaignVideoActions(xtremandLog: XtremandLog) {
        console.log(this.campaignTimeValue);
-       let pauseCheck = false;
-       if (this.campaignTimeValue === '00:00' || this.campaignTimeValue === '00:00:00') { pauseCheck = true; }
-       if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 2 && pauseCheck === true)) {
+       const pauseCheck = false;
+     //  if (this.campaignTimeValue === '00:00' || this.campaignTimeValue === '00:00:00') { pauseCheck = true; }
+    //  || (xtremandLog.actionId === 2 && pauseCheck === true)
+       if ((xtremandLog.actionId === 8 && this.replyVideo === true)) {
            console.log('service called replyed and ended the video');
            this.replyVideo = false;
        } else {
