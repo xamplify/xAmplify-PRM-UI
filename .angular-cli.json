@@ -47,7 +47,8 @@
 				"./assets/global/plugins/select2/select2.css",
 				"./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css",
 				"./assets/css/google-fonts.css",
-				"./assets/css/material_green.css"
+				"./assets/css/material_green.css",
+				"./assets/css/circle.css"
 			],
 			"scripts": [
 				"./assets/global/plugins/jquery.min.js",

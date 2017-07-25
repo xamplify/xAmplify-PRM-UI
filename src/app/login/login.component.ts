@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
                 this.initializeTwitterNotification();
                 //if user is coming from login
              //   this.getLoggedInUserDetails();
-                this.router.navigate( [''] );
+                this.router.navigate( ['/home/dashboard/default'] );
                 //if user is coming from any link
 
             } else {

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {ManagePublishComponent} from './manage-publish/manage-publish.component';
 import {SelectCampaignTypeComponent} from './select-campaign-type/select-campaign-type.component';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 export const campaignRoutes: Routes = [
 
@@ -11,7 +12,7 @@ export const campaignRoutes: Routes = [
     { path:'select-campaign',component:SelectCampaignTypeComponent},
     { path:'create-campaign',component:CreateCampaignComponent},
     { path: 'managepublish', component: ManagePublishComponent },
-
+    { path: ':campaignId/details', component: AnalyticsComponent },
 ];
 
 @NgModule({

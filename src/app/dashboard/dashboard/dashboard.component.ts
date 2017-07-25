@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Logger } from 'angular2-logger/core';
 
 import {SocialConnection} from '../../social/models/social-connection';
+import { Campaign} from '../../campaigns/models/campaign';
 
 import { DashboardService } from '../dashboard.service';
 import { TwitterService } from '../../social/services/twitter.service';
@@ -12,6 +13,9 @@ import { UtilService } from '../../core/services/util.service';
 
 import { SocialStatusProvider } from '../../social/models/social-status-provider';
 import { ContactService } from '../../contacts/services/contact.service';
+import { UserService } from '../../core/services/user.service';
+import { CampaignService } from '../../campaigns/services/campaign.service';
+import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
 
@@ -42,9 +46,15 @@ export class DashboardComponent implements OnInit {
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
+
+    isDahboardDefaultPage: boolean;
+    
+    campaigns:Campaign[];
+    totalCampaignsCount :number;
+
     constructor(private router: Router, private _dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,private videoFileService: VideoFileService,private twitterService: TwitterService,
         private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
-        private utilService: UtilService) {
+        private utilService: UtilService, private userService: UserService, private campaignService: CampaignService, private referenceService:ReferenceService) {
             this.totalUploadedvideos = 0;
             this.totalContacts = 0;
             this.listOfEmailClicked = 0;
@@ -364,15 +374,62 @@ export class DashboardComponent implements OnInit {
             );
     }
     
+    getDefaultPage( userId: number ) {
+        this.userService.getUserDefaultPage( userId )
+        .subscribe(
+                data => {
+                    this.isDahboardDefaultPage = data['_body'].includes('dashboard');
+                },
+                error => console.log( error ),
+                () => {}
+        );
+    }
+    
+    setDashboardAsDefaultPage(event: any) {
+        let defaultPage;
+        if(event)
+            defaultPage = 'dashboard';
+        else
+            defaultPage = 'welcome';
+        this.userService.setUserDefaultPage(this.authenticationService.getUserId(), defaultPage)
+        .subscribe(
+                data => {
+                    this.isDahboardDefaultPage = event;
+                },
+                error => console.log( error ),
+                () => {}
+        );
+    }
+    
+    listCampaign(pagination:Pagination){
+        this.campaignService.listCampaign(pagination,this.authenticationService.user.id)
+        .subscribe(
+            data => {
+                this.campaigns = data.campaigns;
+                this.totalCampaignsCount = data.totalRecords;
+            },
+            error => {},
+            () => this.logger.info("Finished listCampaign()")
+        );
+    }
+    
+    createCampaign(campaignType: string){
+        this.referenceService.selectedCampaignType = campaignType;
+        this.router.navigate(["/home/campaigns/create-campaign"]);
+    }
+    
     ngOnInit() {
         try {
+            const userId = this.authenticationService.getUserId();
+            this.getDefaultPage(userId);
+            this.listCampaign(this.pagination);
+            
             this.totalViewsCount();
             this.totalFollowersCount()
             this.uploadedVideosCount();
             this.totalContactsCount();
             this.emailOpenedCount();
             this.emailClickedCount();
-            const userId = this.authenticationService.user.id;
             Metronic.init();
             Layout.init();
             Demo.init();

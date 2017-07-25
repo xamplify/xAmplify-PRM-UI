@@ -20,6 +20,69 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
+<div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+	<div class="col-xs-12 col-sm-6">
+		<h4 style="margin: 0.3em;color: #00a6e8;font-weight: 400;">Welcome to Xtremand</h4>
+	</div>
+	<div class="col-xs-12 col-sm-6">
+		<div style="display: flex;float: right;">
+			<h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+			<div style="margin: 3px 0 3px 20px;">
+				<ui-switch [(ngModel)]="isDahboardDefaultPage" color="lightgreen" 
+					size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-bar portlet light border-radius-0">
+<div class="portlet-title">
+	<div class="caption flex">
+		<div class="col-xs-6">
+          <h4 *ngIf="totalCampaignsCount >= 4">Top 4 Campaigns</h4>
+          <h4 *ngIf="totalCampaignsCount < 4 && totalCampaignsCount > 0">Top {{totalCampaignsCount}} Campaigns</h4>
+        </div>
+        <div class="col-xs-6" style="padding: 5px 10px;">
+		  <i style="font-size: 1.5em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true"></i>
+          <a [routerLink]="['/home/campaigns/select-campaign']" class="btn btn-sm btn-primary color1 pull-right">Create Campaign</a>
+        </div>
+	</div>
+</div>
+<div class="portlet-body">
+	<section *ngFor="let campaign of campaigns; let i=index">
+		<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" *ngIf="i<4">
+			<div class="portlet light border-radius-0 campaign-div" [routerLink]="['/home/campaigns/', campaign.campaignId, 'details']">
+				<div class="portlet-title">
+					<div class="caption">
+						<h3 class="caption-subject" style="margin: 0;font-weight: bold;color: #909090 !important;">
+							{{campaign.campaignName}}
+						</h3>
+					</div>
+				</div>
+				<div class="portlet-body">
+			        <div class="c100 p37 center">
+			            <span><b>37%</b><h5>interaction</h5></span>
+			            <div class="slice"><div class="bar"></div><div class="fill"></div></div>
+			        </div>
+			    	<h5 style="text-align: center;color: #00a6e8;">Released on {{campaign.launchedOn}}</h5>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" *ngIf="totalCampaignsCount < 4">
+			<div class="portlet light border-radius-0 campaign-div" >
+				<div class="portlet-body">
+			        <div class="text-center" style="margin: 3.1em 2em;">
+			        	<h5 style="font-weight: 700;color: rgb(119, 119, 119);">create the campaign of your choice</h5>
+			        	<button class="btn btn-xs color1 btn-campaign" (click)="createCampaign('video')">Video e-mail Campaign</button>
+			        	<button class="btn btn-xs color2 btn-campaign" (click)="createCampaign('regular')">Regular e-mail Campaign</button>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+</div>
 
 	<!-- BEGIN DASHBOARD STATS -->
 	<div class="row">

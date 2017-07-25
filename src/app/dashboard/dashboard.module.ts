@@ -14,6 +14,7 @@ import {DashboardService} from './dashboard.service';
 import { ProfileLockComponent } from './user-profile/profile-lock/profile-lock.component';
 import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
 import { MyProfileComponent } from './user-profile/my-profile/my-profile.component';
+import { DefaultPageComponent } from './default-page/default-page.component';
 import { FollowersComponent } from './followers/followers.component';
 
 
@@ -24,6 +25,7 @@ import { FollowersComponent } from './followers/followers.component';
                    MyProfileComponent,
                    ProfileLockComponent,
                    ProfileHelpComponent,
+                   DefaultPageComponent,
                    FollowersComponent
     ],
    exports :[],

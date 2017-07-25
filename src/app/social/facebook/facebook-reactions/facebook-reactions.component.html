@@ -13,12 +13,12 @@
         <h4 class="modal-title" id="myModalLabel">People who have liked</h4>
       </div>
       <div class="modal-body">
-        <span *ngFor="let reaction of reactions;">
+        <h6 *ngFor="let reaction of reactions;">
         	<p *ngIf="reaction.type == 'LIKE'"><i class="fa fa-thumbs-o-up" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
         	<p *ngIf="reaction.type == 'LOVE'"><i class="fa fa-heart-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
         	<p *ngIf="reaction.type == 'HAHA'"><i class="fa fa-smile-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
         	<p *ngIf="reaction.type == 'SAD'"><i class="fa fa-frown-o" aria-hidden="true">&nbsp;</i>{{reaction.name}}</p>
-		</span>
+		</h6>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

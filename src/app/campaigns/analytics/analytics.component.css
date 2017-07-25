@@ -1,29 +1,56 @@
-.btn-campaign{
-padding: 5px;
-    min-width: 90%;
-    border-radius: 0;
-    letter-spacing: 1px;
-    margin: 5px;
-    text-transform: uppercase;
-    font-size: 11px;
+.heatmap{
+	min-width: 100%;
+    background: #c5f975;
+    min-height: 35px;
+    margin-top: 2em;
+    display: flex;
 }
 
+.heatmap>.play{
+    background: #ffe100;
+    display: table-cell;
+}
+
+.heatmap>.pause{
+    background: #ff0000;
+    display: table-cell;
+}
+
+.heatmap>.skip{
+    background: #FFF;
+    display: table-cell;
+}
+
+.heatmap-timeline > div{
+	padding-top:10px;
+	width: 20%;
+	text-align: center;	
+}
+
+.play-box{
+	background: #ffe100;
+}
+.pause-box{
+	background: #ff0000;
+}
+.skip-box{
+	background: #FFF;
+}
+.small-box{
+    width: 15px;
+    height: 15px;
+    display: table-cell;
+    margin: 10px;
+}
+
+tr:hover{cursor: pointer;}
+.text-center{text-align: center;}
+.block-1{width: 25%;}
+.p-5x{padding: 2px 5px;}
 .c100>span {
 	top: 50px;
 	line-height: 10px;
 	color: #307bbb;
-}
-
-.c100:hover {
-	cursor: pointer;
-}
-
-.campaign-div {
-	cursor: pointer;
-}
-
-.campaign-div:hover {
-	box-shadow: 0px 0px 10px rgb(136, 136, 136) !important;
 }
 
 .portlet.light>.portlet-title {
@@ -31,11 +58,6 @@ padding: 5px;
 	margin: 0;
 	min-height: auto;
 }
-
-.portlet.light>.portlet-title>.caption {
-	padding: 5px 0;
-}
-
 .image-icon {
 	margin-right: 10px;
 }
@@ -231,3 +253,5 @@ h1.bold {
 	height: 180px;
 	min-width: 100%;
 }
+
+
