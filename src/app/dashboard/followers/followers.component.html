@@ -14,6 +14,36 @@
 						</li>
 					</ul>
 				</div>
+				<div class="page-bar">
+								<ul class="page-breadcrumb">
+									<li><i style="font-size: 16px;">List of Followers</i></li>
+
+								</ul>
+								<div class="page-toolbar">
+									<div class="btn-group pull-right">
+								<div class="inputs" align="right" style="float: right">
+									<div style="float: left; margin-right: 10px; margin-top: 4.5px">
+										<select class="form-control" [(ngModel)]="contactsUsersSort"
+											(ngModelChange)="userSelectedSortByValue($event)">
+											<option *ngFor="let sort of sortContactUsers"
+												[ngValue]="sort">{{sort.name}}</option>
+										</select>
+									</div>
+									<div class="portlet-input input-inline input-small">
+										<div class="input-icon right" style="margin-top: 4.5px">
+											<i class="icon-magnifier"
+												style="cursor: pointer; font-size: 18px;"
+												(click)="searchContactTitelName()"></i> <input type="text"
+												[(ngModel)]="searchKey"
+												[ngModelOptions]="{standalone: true}"
+												class="form-control input-circle" placeholder="search...">
+
+										</div>
+									</div>
+								</div>
+							</div>
+								</div>
+							</div>
 	<table class="table table-striped table-hover table-bordered"
 		id="sample_editable_1" style="background-color: white">
 		<thead>

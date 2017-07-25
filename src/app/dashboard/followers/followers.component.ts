@@ -16,6 +16,22 @@ export class FollowersComponent implements OnInit {
     public totalRecords: number;
     emptyContactsUsers: boolean;
     public allFollowers: Array<ContactList>;
+    public searchKey: string;
+    sortingName: string = null;
+    sortcolumn: string = null;
+    sortingOrder: string = null;
+
+sortContactUsers = [
+                    { 'name': 'Sort By', 'value': '' },
+                    { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
+                    { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
+                    { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+                    { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+                    { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+                    { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+                ];
+                public contactsUsersSort: any = this.sortContactUsers[0];
+
   constructor(private dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,
           private pagerService: PagerService,private logger: Logger) { 
       this.allFollowers = new Array<ContactList>();
@@ -24,6 +40,30 @@ export class FollowersComponent implements OnInit {
   setPage( page: number, ) {
       this.pagination.pageIndex = page;
       this.followersData( this.pagination )
+  }
+  
+  userSelectedSortByValue( event: any ) {
+      this.contactsUsersSort = event;
+      const sortedValue = this.contactsUsersSort.value;
+      if ( sortedValue !== '' ) {
+          const options: string[] = sortedValue.split( '-' );
+          this.sortcolumn = options[0];
+          this.sortingOrder = options[1];
+      } else {
+          this.sortcolumn = null;
+          this.sortingOrder = null;
+      }
+      this.pagination.pageIndex = 1;
+      this.pagination.sortcolumn = this.sortcolumn;
+      this.pagination.sortingOrder = this.sortingOrder;
+          this.followersData( this.pagination );
+  }
+  
+  searchContactTitelName() {
+      console.log( this.searchKey );
+      this.pagination.searchKey = this.searchKey;
+      this.pagination.pageIndex = 1;
+          this.followersData( this.pagination );
   }
   
   followersData( pagination: Pagination ) {
