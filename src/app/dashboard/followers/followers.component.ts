@@ -21,6 +21,11 @@ export class FollowersComponent implements OnInit {
       this.allFollowers = new Array<ContactList>();
   }
 
+  setPage( page: number, ) {
+      this.pagination.pageIndex = page;
+      this.followersData( this.pagination )
+  }
+  
   followersData( pagination: Pagination ) {
       //this.pagination.maxResults = 12;
       this.logger.log( pagination );
