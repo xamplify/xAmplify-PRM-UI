@@ -340,16 +340,16 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
               const self = this;
              this.videoJSplayer = videojs('videoId',  { "controls": true, "autoplay": false, "preload": "auto" }, function() {
                     const player = this;
-                    let replyVideo = 0;
+                     self.replyVideo = false;
                     const document: any = window.document;
                     let startDuration;
                     this.on('play', function() {
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                     if (replyVideo === 0) {
-                          self.xtremandLog.actionId = self.LogAction.playVideo;
-                     } else {
+                     if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                     } else {
+                          self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
@@ -388,9 +388,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                   this.on('ended', function() {
                      const whereYouAt = player.currentTime();
                      console.log(whereYouAt);
-                     replyVideo = replyVideo + 1;
+                     self.replyVideo = true;
+                     self.videoFileService.replyVideo = true;
                      $('.vjs-big-play-button').css('display', 'block');
-                     console.log('video ended attempts' + replyVideo);
                      self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
