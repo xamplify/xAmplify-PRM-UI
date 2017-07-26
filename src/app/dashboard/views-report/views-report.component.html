@@ -52,11 +52,19 @@
 				<div class="col-md-8;page-toolbar">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px">
+											<div style="float: left; margin-right: 10px" *ngIf = "showVideoData">
 												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 											</div>
+										<div style="float: left; margin-right: 10px" *ngIf = "showDatailedData">
+										<select class="form-control" [(ngModel)]="contactsUsersSort"
+											(ngModelChange)="userSelectedSortByValue($event)">
+											<option *ngFor="let sort of sortContactUsers"
+												[ngValue]="sort">{{sort.name}}</option>
+										</select>
+									</div>
+											
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
@@ -347,7 +355,7 @@
 								id="row_{{allcontacts.id}}" value="{{allcontacts.id}}"
 								[(ngModel)]="allcontacts.isChecked"></th>
 							<td>{{allcontacts.emailId}}</td>
-							<td>{{allcontacts.firstName}}</td>
+							<td>{{allcontacts.firstName}} {{allcontacts.lastName}}</td>
 							<td class="center">20-07-1017 10.26 AM</td>
 							<td>Hyderabad</td>
 							<td>google crome</td>

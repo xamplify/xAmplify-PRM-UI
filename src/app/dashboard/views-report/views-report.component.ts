@@ -55,6 +55,17 @@ sortVideos  = [
          ];
 public videoSort: any = this.sortVideos[0];
 
+sortContactUsers = [
+                    { 'name': 'Sort By', 'value': '' },
+                    { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
+                    { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
+                    { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+                    { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+                    { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+                    { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+                ];
+                public contactsUsersSort: any = this.sortContactUsers[0];
+
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,private dashboardService: DashboardService,
             private pagerService: PagerService,private contactService: ContactService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
@@ -227,6 +238,37 @@ public videoSort: any = this.sortVideos[0];
          }
      }
    
+     userSelectedSortByValue( event: any ) {
+         this.contactsUsersSort = event;
+         const sortedValue = this.contactsUsersSort.value;
+         if ( sortedValue !== '' ) {
+             const options: string[] = sortedValue.split( '-' );
+             this.sortcolumn = options[0];
+             this.sortingOrder = options[1];
+         } else {
+             this.sortcolumn = null;
+             this.sortingOrder = null;
+         }
+         this.pagination.pageIndex = 1;
+         this.pagination.sortcolumn = this.sortcolumn;
+         this.pagination.sortingOrder = this.sortingOrder;
+         this.totalViewsForVideo( this.pagination);
+         
+         /*if ( this.currentContactType == null ) {
+             this.loadContactLists( this.pagination );
+         }
+         else if ( this.currentContactType == "all_contacts" ) {
+             this.all_Contacts( this.pagination );
+         } else if ( this.currentContactType == "active_contacts" ) {
+             this.active_Contacts( this.pagination );
+         } else if ( this.currentContactType == "invalid_contacts" ) {
+             this.invalid_Contacts( this.pagination );
+         } else if ( this.currentContactType == "unSubscribed_contacts" ) {
+             this.unSubscribed_Contacts( this.pagination );
+         } else if ( this.currentContactType == "nonActive_contacts" ) {
+             this.nonActive_Contacts( this.pagination );
+         }*/
+     }
      
      showPreview(videoFile:SaveVideoFile){
          this.appendVideoData(videoFile, "main_video", "modal-title");
@@ -345,15 +387,22 @@ public videoSort: any = this.sortVideos[0];
      backToReport(){
          this.showDatailedData = false;
          this.showVideoData = true;
+         this.pagination.sortcolumn = null;
+         this.pagination.sortingOrder = null;
          this.loadVideos(this.pagination);
          this.currentPageType = null;
+        
+         //this.selectedSortByValue( event );
      }
      
      showViewsData(){
-         this.currentPageType = "views_page";
          this.showDatailedData = true;
          this.showVideoData = false;
+         this.pagination.sortcolumn = null;
+         this.pagination.sortingOrder = null;
          this.totalViewsForVideo( this.pagination);
+         this.currentPageType = "views_page";
+        
      }
     
      totalViewsForVideo( pagination: Pagination ) {
