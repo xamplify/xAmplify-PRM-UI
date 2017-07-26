@@ -9,6 +9,8 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Category } from '../../videos/models/category';
 import { DashboardService } from '../dashboard.service';
+import { ContactList } from '../../contacts/models/contact-list';
+import { ContactService } from '../../contacts/services/contact.service';
 
 declare var Metronic, Layout, Demo, Index, QuickSidebar,videojs, $, Tasks: any;
 
@@ -35,8 +37,12 @@ sortingName: string = null;
 sortcolumn: string = null;
 sortingOrder: string = null;
 categoryNum: number ;
+public currentPageType: string = null;
 public isCategoryThere: boolean;
 public isCategoryUpdated: boolean;
+emptyViewsRecord : boolean;
+public totalViewsForThisVideo: Array<ContactList>;
+
 launchVideoPreview:SaveVideoFile = new SaveVideoFile();
 sortVideos  = [
                {'name': 'Sort By', 'value': ''},
@@ -51,7 +57,7 @@ public videoSort: any = this.sortVideos[0];
 
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,private dashboardService: DashboardService,
-            private pagerService: PagerService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
+            private pagerService: PagerService,private contactService: ContactService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
         this.categoryNum = 0;
         this.isCategoryThere = false;
         //this.categories = this.referenceService.refcategories;
@@ -155,7 +161,13 @@ public videoSort: any = this.sortVideos[0];
      setPage(page: number) {
      // if (page !== this.pagination.pageIndex) {
          this.pagination.pageIndex = page;
-         this.loadVideos(this.pagination);
+         if ( this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
+             this.loadVideos(this.pagination);
+         }
+         else if ( this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "" )) {
+             this.totalViewsForVideo(this.pagination);
+         }
+         //this.loadVideos(this.pagination);
          //this.showUpdatevalue = false;
          //this.showMessage = false;
       //}
@@ -183,7 +195,12 @@ public videoSort: any = this.sortVideos[0];
          console.log(this.searchKey);
          this.pagination.searchKey = this.searchKey;
          this.pagination.pageIndex = 1;
-         this.loadVideos(this.pagination);
+         if ( this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
+             this.loadVideos(this.pagination);
+         }
+         else if ( this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "" )) {
+             this.totalViewsForVideo( this.pagination );
+         }
       // }
      }
      selectedSortByValue( event: any ) {
@@ -202,7 +219,12 @@ public videoSort: any = this.sortVideos[0];
          this.pagination.pageIndex = 1;
          this.pagination.sortcolumn = this.sortcolumn ;
          this.pagination.sortingOrder = this.sortingOrder ;
-         this.loadVideos(this.pagination);
+         if ( this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
+             this.loadVideos(this.pagination);
+         }
+         else if ( this.currentPageType == "all_contacts" || (this.currentPageType == "all_contacts" && this.searchKey == "" )) {
+             //this.all_Contacts( this.pagination );
+         }
      }
    
      
@@ -323,13 +345,48 @@ public videoSort: any = this.sortVideos[0];
      backToReport(){
          this.showDatailedData = false;
          this.showVideoData = true;
+         this.loadVideos(this.pagination);
+         this.currentPageType = null;
      }
      
      showViewsData(){
+         this.currentPageType = "views_page";
          this.showDatailedData = true;
          this.showVideoData = false;
+         this.totalViewsForVideo( this.pagination);
      }
     
+     totalViewsForVideo( pagination: Pagination ) {
+         //this.pagination.maxResults = 12;
+         this.logger.log( pagination );
+         this.contactService.loadAllContacts( pagination )
+             .subscribe(
+             ( data: any ) => {
+                 this.totalViewsForThisVideo = data.listOfUsers;
+                 this.totalRecords = data.totalRecords;
+                 if ( data.totalRecords.length == 0 ) {
+                     this.emptyViewsRecord = true;
+                 } else {
+                     pagination.totalRecords = this.totalRecords;
+                     this.logger.info( this.totalViewsForThisVideo );
+                     pagination = this.pagerService.getPagedItems( pagination, this.totalViewsForThisVideo );
+                     this.logger.log( data );
+                 }
+                 /*if (this.allFollowers.length == 0) {
+                     this.emptyContactsUsers = true;
+                     this.hidingContactUsers = false;
+                  }
+                  else {
+                      this.emptyContactsUsers = false;
+                      this.hidingContactUsers = true;
+                      this.pagedItems = null ;
+                  }*/
+             },
+             error => console.log( error ),
+             () => console.log( "finished" )
+             );
+     }
+     
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);
