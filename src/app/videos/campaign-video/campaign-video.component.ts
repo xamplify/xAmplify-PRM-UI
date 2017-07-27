@@ -380,7 +380,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $('.vjs-big-play-button').css('display', 'block');
                     });
                     this.on('play', function() {
-                  //  self.videoFileService.pauseAction = false;
+                    self.videoFileService.pauseAction = false;
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                      if (self.replyVideo === true) {
@@ -402,7 +402,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      }
                      });
                     this.on('pause', function() {
-                  //   self.videoFileService.pauseAction = false;
+                     self.videoFileService.pauseAction = false;
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                      const time =  self.timeConversion(player.currentTime());
                      console.log(time);
@@ -449,7 +449,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.videoLogAction(self.xtremandLog);
                         self.getCurrentTimeValues(player.currentTime());
                         self.seekStart = null;
-                    //    self.videoFileService.pauseAction = false;
+                      //  self.videoFileService.pauseAction = false;
                      });
                    this.on('ended', function() {
                      const whereYouAt = player.currentTime();
