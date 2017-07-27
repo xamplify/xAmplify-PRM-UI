@@ -65,6 +65,7 @@ LogAction: typeof LogAction = LogAction;
             this.publicRouterUrl = document.location.href;
             this.logVideoViewValue = true;
             }
+  
 LoginThroghCampaign() {
    this.router.navigate( ['/login']);
 }
