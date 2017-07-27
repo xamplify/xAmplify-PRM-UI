@@ -232,6 +232,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownThumb = false;
         this.ownThumbnail = true;
     }
+    //  setConfirmUnload(on) {
+    //     window.onbeforeunload = (on) ? this.unloadMessage : null;
+    // }
+
+    // unloadMessage() {
+    //     return "You have unsaved changes";
+    // }
     ownThumbnailfileChange(event: any) {
         const fileList: FileList = event.target.files;
         if (fileList.length > 0) {
@@ -866,6 +873,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tagsUndefined = false;
     }
     ngOnInit() {
+     //  this.setConfirmUnload(true);
         this.removeVideoTitlesWhiteSpaces();
         this.loadRangeDisable = true;
         $('#overlay-modal').hide();
@@ -1239,6 +1247,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notifyParent.emit(null);
     }
     ngOnDestroy() {
+     //   this.setConfirmUnload(false);
         this.logger.info('Deinit - Destroyed Edit-Video Component');
         if (this.is360Value !== true) {
             this.videoJSplayer.dispose();

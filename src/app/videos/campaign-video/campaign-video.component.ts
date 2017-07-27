@@ -55,8 +55,7 @@ public replyVideo: boolean;
 public logVideoViewValue: boolean;
 public timeValue: any;
 public seekStart = null;
-public previousTime = 0;
-public timeForSeek: any;
+public seekStart360 = null;
 LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
@@ -272,7 +271,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.replyVideo = false;
                     const document: any = window.document;
                     let startDuration;
+                    selfPanorama.videoFileService.replyVideo = false;
+                    player.ready(function(){
+                         selfPanorama.videoFileService.pauseAction = false;
+                         selfPanorama.xtremandLog.startDuration = 0;
+                         selfPanorama.xtremandLog.stopDuration = 0;
+                    });
                    player.on('play', function() {
+                    selfPanorama.videoFileService.pauseAction = false;
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                        if (selfPanorama.replyVideo === true) {
@@ -290,9 +296,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                        selfPanorama.logVideoViewsCount();
                        selfPanorama.logVideoViewValue = false;
                      }
-                      selfPanorama.getCurrentTimeValues(player.currentTime());
+                    //  selfPanorama.getCurrentTimeValues(player.currentTime());
                    });
                    player.on('pause', function() {
+                     selfPanorama.videoFileService.pauseAction = false;
                      console.log('pused and current time' + selfPanorama.trimCurrentTime(player.currentTime()));
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
                      selfPanorama.xtremandLog.startTime = new Date();
@@ -300,17 +307,34 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                     selfPanorama.getCurrentTimeValues(player.currentTime());
-                  });
-                  player.on('seeking', function() {
-                     const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
-                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
-                     selfPanorama.xtremandLog.startTime = new Date();
-                     selfPanorama.xtremandLog.endTime = new Date();
-                     selfPanorama.xtremandLog.startDuration = startDuration;
-                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
-                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                  });
+                //     selfPanorama.getCurrentTimeValues(player.currentTime());
+                    });
+                   player.on('seeking', function() {
+                        const seekigTime  = selfPanorama.trimCurrentTime(player.currentTime());
+                        selfPanorama.videoFileService.pauseAction = true;
+                        if (selfPanorama.seekStart360 === null) {
+                            selfPanorama.seekStart360 = selfPanorama.trimCurrentTime(player.currentTime());
+                        };
+                        });
+                    player.on('seeked', function() {
+                         selfPanorama.videoFileService.pauseAction = true;
+                         console.log('seeked from', selfPanorama.seekStart360);
+                         console.log('previous value', selfPanorama.seekStart360, 'current time:',
+                         selfPanorama.trimCurrentTime(player.currentTime()));
+                         selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
+                         selfPanorama.xtremandLog.startDuration = selfPanorama.seekStart360;
+                         selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                        if (selfPanorama.xtremandLog.startDuration === selfPanorama.xtremandLog.stopDuration) {
+                            selfPanorama.xtremandLog.startDuration = selfPanorama.videoFileService.campaignTimeValue;
+                            console.log('previuse time is ' + selfPanorama.videoFileService.campaignTimeValue);
+                        }
+                        selfPanorama.xtremandLog.startTime = new Date();
+                        selfPanorama.xtremandLog.endTime = new Date();
+                        selfPanorama.videoLogAction(selfPanorama.xtremandLog);
+                       // selfPanorama.getCurrentTimeValues(player.currentTime());
+                        selfPanorama.seekStart360 = null;
+                      //  self.videoFileService.pauseAction = false;
+                     });
                   player.on('timeupdate', function() {
                       startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                   });
@@ -319,6 +343,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     console.log(whereYouAt);
                     selfPanorama.replyVideo = true;
                     selfPanorama.logVideoViewValue = true;
+                    selfPanorama.videoFileService.replyVideo = true;
                     $('.vjs-big-play-button').css('display', 'block');
                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_movieReachEnd;
                     selfPanorama.xtremandLog.startTime = new Date();

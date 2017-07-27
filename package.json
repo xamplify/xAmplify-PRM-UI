@@ -67,6 +67,7 @@
     "ng2-highcharts": "^1.0.0",
     "ng2-slim-loading-bar": "^4.0.0",
     "ng2-tag-input": "^1.2.8",
+    "ngx-bootstrap": "^1.8.0",
     "ngx-color-picker": "^4.0.3",
     "ngx-sharebuttons": "^3.0.0",
     "ngx-ui-switch": "^1.2.0",

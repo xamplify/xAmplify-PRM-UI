@@ -79,6 +79,8 @@ public timeValue: any;
 public logVideoViewValue: boolean;
 public overLaySet = false;
 public fullScreenMode = false;
+public seekStart = null;
+public seekStart360 = null;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
               private logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
               private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
@@ -87,6 +89,13 @@ public fullScreenMode = false;
                 this.embedUrl = document.location.href;
                 this.logVideoViewValue = true;
              }
+ setConfirmUnload(on) {
+    window.onbeforeunload = (on) ? this.setMessage : null;
+ }
+ setMessage(){
+     this.clickButton();
+     return 'you have message';
+ }
   shareMetaTags() {
     return this.http.get(this.shareUrl)
       .map( this.extractData )
@@ -99,7 +108,7 @@ public fullScreenMode = false;
          (result: SaveVideoFile) => {
           this.embedVideoFile = result;
           console.log(result);
-          this.xtremandLogDefaultActions();
+          this.actionLogDefaultActions();
           this.posterImagePath = this.embedVideoFile.imagePath;
           this.is360Value  =  this.embedVideoFile.is360video;
           this.imgURL =  this.embedVideoFile.gifImagePath;
@@ -164,6 +173,7 @@ public fullScreenMode = false;
     });
   }
   ngOnInit() {
+     this.setConfirmUnload(true);
      $('#overlay-modal').hide();
      console.log('Share video component ngOnInit called');
      this.createSessionId();
@@ -283,9 +293,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  const isValid = player360.overLayValue;
                  let startDuration;
                  let isCallActionthere = false;
-                 let document: any = window.document;
+                 const document: any = window.document;
                  player360.replyVideo = false;
                 player.ready(function() {
+                    player360.actionLog.startDuration = 0;
+                    player360.actionLog.startDuration = 0;
                     if (isValid === 'StartOftheVideo' ) {
                       $('#videoId').append( $('#overlay-modal').show());
                    //   $('.vjs-big-play-button').css('display', 'block');
@@ -307,6 +319,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      });
                  });
                 player.on('play', function() {
+                player360.videoFileService.pauseAction = false;
                  const seekigTime  = player360.trimCurrentTime(player.currentTime());
                  console.log('ply button pressed ');
                        $('.vjs-big-play-button').css('display', 'none');
@@ -329,7 +342,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      }
                });
                  player.on('pause', function() {
-                  if (player360.actionLog.actionId !== player360.LogAction.videoPlayer_movieReachEnd) {
+                     player360.videoFileService.pauseAction = false;
                      console.log('pused and current time' + player360.trimCurrentTime(player.currentTime()));
                      player360.actionLog.actionId = player360.LogAction.pauseVideo;
                      player360.actionLog.startTime = new Date();
@@ -337,17 +350,33 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime());
                      player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
                      player360.videoLogAction(player360.actionLog);
-                     }
                   });
                 player.on('seeking', function() {
-                      const seekigTime  = player360.trimCurrentTime(player.currentTime());
-                     player360.actionLog.actionId = player360.LogAction.videoPlayer_slideSlider;
-                     player360.actionLog.startTime = new Date();
-                     player360.actionLog.endTime = new Date();
-                     player360.actionLog.startDuration = startDuration;
-                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
-                     player360.videoLogAction(player360.actionLog);
+                       const seekigTime  = player360.trimCurrentTime(player.currentTime());
+                        player360.videoFileService.pauseAction = true;
+                        if (player360.seekStart360 === null) {
+                            player360.seekStart360 = player360.trimCurrentTime(player.currentTime());
+                        };
                 });
+                  player.on('seeked', function() {
+                         player360.videoFileService.pauseAction = true;
+                         console.log('seeked from', player360.seekStart360);
+                         console.log('previous value', player360.seekStart360, 'current time:',
+                         player360.trimCurrentTime(player.currentTime()));
+                         player360.actionLog.actionId = player360.LogAction.videoPlayer_slideSlider;
+                         player360.actionLog.startDuration = player360.seekStart360;
+                         player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
+                        if (player360.actionLog.startDuration === player360.actionLog.stopDuration) {
+                            player360.actionLog.startDuration = player360.videoFileService.campaignTimeValue;
+                            console.log('previuse time is ' + player360.videoFileService.campaignTimeValue);
+                        }
+                        player360.actionLog.startTime = new Date();
+                        player360.actionLog.endTime = new Date();
+                        player360.videoLogAction(player360.actionLog);
+                       // player360.getCurrentTimeValues(player.currentTime());
+                        player360.seekStart360 = null;
+                      //  self.videoFileService.pauseAction = false;
+                     });
                 player.on('timeupdate', function() {
                    startDuration = player360.trimCurrentTime(player.currentTime());
                 });
@@ -390,13 +419,11 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                           isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.pause();
-                     //    $('.video-js .vjs-control-bar').hide();
                       });
                       $('#playorsubmit').click(function(){
                          isCallActionthere = false;
                          $('#overlay-modal').hide();
                          player.pause();
-                     //    $('.video-js .vjs-control-bar').hide();
                      });
                   });
                    player.on('fullscreenchange', function () {
@@ -452,10 +479,13 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 const player = this;
                 let startDuration;
                 self.replyVideo = false;
-                let isCallActionthere = false
+                let isCallActionthere = false;
                 const document: any = window.document;
                 const isValid = self.overLayValue;
                this.ready(function() {
+                     self.videoFileService.pauseAction = false;
+                    self.actionLog.startDuration = 0;
+                    self.actionLog.stopDuration = 0;
                       $('.video-js .vjs-tech').css('width', '100%');
                       $('.video-js .vjs-tech').css('height', '100%');
                   if (isValid === 'StartOftheVideo' ) {
@@ -477,6 +507,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     });
                   });
                this.on('play', function() {
+                  self.videoFileService.pauseAction = false;
                  const seekigTime  = self.trimCurrentTime(player.currentTime());
                  console.log('ply button pressed ');
                        $('.vjs-big-play-button').css('display', 'none');
@@ -497,10 +528,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.logVideoViewsCount();
                         self.logVideoViewValue = false;
                      }
-                      self.getCurrentTimeValues(player.currentTime());
+                    //  self.getCurrentTimeValues(player.currentTime());
                });
                  this.on('pause', function() {
-                  if (self.actionLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
+                     self.videoFileService.pauseAction = false;
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                      self.actionLog.actionId = self.LogAction.pauseVideo;
                      self.actionLog.startTime = new Date();
@@ -508,18 +539,34 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.startDuration = self.trimCurrentTime(player.currentTime());
                      self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      self.videoLogAction(self.actionLog);
-                     self.getCurrentTimeValues(player.currentTime());
-                     }
+                  //   self.getCurrentTimeValues(player.currentTime());
                   });
                 this.on('seeking', function() {
+                      self.videoFileService.pauseAction = true;
                       const seekigTime  = self.trimCurrentTime(player.currentTime());
-                     self.actionLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                     self.actionLog.startTime = new Date();
-                     self.actionLog.endTime = new Date();
-                     self.actionLog.startDuration = startDuration;
-                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                     self.videoLogAction(self.actionLog);
-                });
+                     if (self.seekStart === null) {
+                        self.seekStart = self.trimCurrentTime(player.currentTime());
+                      }
+                      console.log('enter into seeking');
+                  });
+                 this.on('seeked', function() {
+                       self.videoFileService.pauseAction = true;
+                       console.log('seeked from', self.seekStart);
+                       console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
+                         self.actionLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                         self.actionLog.startDuration = self.seekStart;
+                         self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        if (self.actionLog.startDuration === self.actionLog.stopDuration) {
+                            self.actionLog.startDuration = self.videoFileService.campaignTimeValue;
+                            console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
+                        }
+                        self.actionLog.startTime = new Date();
+                        self.actionLog.endTime = new Date();
+                        self.videoLogAction(self.actionLog);
+                      //  self.getCurrentTimeValues(player.currentTime());
+                        self.seekStart = null;
+                      //  self.videoFileService.pauseAction = false;
+                     });
                 this.on('timeupdate', function() {
                    startDuration = self.trimCurrentTime(player.currentTime());
                 });
@@ -670,11 +717,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
       console.log(this.deviceInfo);
       this.loacationDetails();
  }
- xtremandLogDefaultActions() {
+ actionLogDefaultActions() {
         // router info
         this.actionLog.videoAlias = this.embedVideoFile.alias;
         // device detector
         this.actionLog.deviceType = this.deviceInfo.device;
+        if (this.actionLog.deviceType === 'unknown') {
+          this.actionLog.deviceType = 'computer';
+        }
         this.actionLog.os = this.deviceInfo.os;
         // location detector
          console.log(this.actionLog);
@@ -741,8 +791,17 @@ shareMethod() {
         this.actionLog.stopDuration = this.trimCurrentTime(new Date().getTime());
         this.videoLogAction(this.actionLog);
 }
+clickButton() {
+    this.actionLog.actionId = this.LogAction.videoStopped;
+    this.actionLog.startTime = new Date();
+    this.actionLog.endTime = new Date();
+    console.log(this.actionLog);
+    this.videoLogAction(this.actionLog);
+   }
   ngOnDestroy() {
+     this.setConfirmUnload(false);
      this.logger.info('Deinit - Destroyed Share-Video Component');
+     this.clickButton();
      if (this.videoJSplayer) {
         this.videoJSplayer.dispose(); }
           $('.h-video').remove();

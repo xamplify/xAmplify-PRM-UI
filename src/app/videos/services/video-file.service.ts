@@ -30,6 +30,7 @@ export class VideoFileService {
     public timeValue: any;
     public campaignTimeValue: any;
     public pauseAction: boolean;
+    public pause360Action: boolean;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -150,17 +151,22 @@ export class VideoFileService {
     }
     logEmbedVideoActions(actionLog: ActionLog) {
        console.log(this.timeValue);
-       let pauseCheck = false;
-       if (this.timeValue === '00:00' || this.timeValue === '00:00:00') { pauseCheck = true; }
-       if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 2 && pauseCheck === true)) {
+       try {
+        if (actionLog.actionId === 2 || actionLog.actionId === 1) { this.campaignTimeValue = actionLog.startDuration; }
+        console.log(this.campaignTimeValue);
+        if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 1 && this.pause360Action === true)
+         || (actionLog.actionId === 2 && this.pause360Action === true)) {
            console.log('service called replyed and ended the video');
            this.replyVideo = false;
-       } else {
+         } else {
            console.log(actionLog);
            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
            return this.http.post(url, actionLog)
               .map(this.extractData)
               .catch(this.handleErrorLogAction);
+        }
+      } catch(err) {
+          console.log(err);
       }
     }
      logCampaignVideoActions(xtremandLog: XtremandLog) {

@@ -64,6 +64,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public sweetAlertMesg: string;
     public MultipleVideo = false;
     public maxVideoSize: number;
+    public oneDriveValue: false;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
