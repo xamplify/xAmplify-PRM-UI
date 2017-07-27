@@ -10,6 +10,7 @@ import { TableAdvanceComponent } from './table-advance/table-advance.component';
 import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
 import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
 import { FollowersComponent } from './followers/followers.component';
+import { SharedComponent } from './shared/shared.component';
 
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
                         { path: 'welcome', component: WelcomeComponent },
                         { path: 'default', component: DefaultPageComponent },
                         { path: 'profilehelp', component: ProfileHelpComponent },
-                        { path: 'followers', component: FollowersComponent }
+                        { path: 'followers', component: FollowersComponent },
+                        { path: 'shared', component: SharedComponent }
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

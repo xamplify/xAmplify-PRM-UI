@@ -37,7 +37,7 @@ sortContactUsers = [
       this.allFollowers = new Array<ContactList>();
   }
 
-  setPage( page: number, ) {
+  setPage( page: number ) {
       this.pagination.pageIndex = page;
       this.followersData( this.pagination )
   }
