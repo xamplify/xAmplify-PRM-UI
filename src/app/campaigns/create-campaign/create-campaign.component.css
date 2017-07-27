@@ -1,3 +1,8 @@
+.btn-reply{
+    margin: 7px 0;
+    background-color: #1c7d74;
+    color: white;
+}
 a.disabled {
 	pointer-events: none;
 	cursor: not-allowed;
@@ -704,3 +709,14 @@ label img {
 	padding: 1px 30px;
 	min-width: 150px;
 }
+#email-rule-body{
+	background-color: #fff
+}
+
+.form-group label {
+	font-weight: 700;
+	color: rgb(111, 111, 111);
+	float: left;
+	margin-bottom: 0.4em;
+}
+.form-horizontal .form-group{margin-right: 0.5em;}

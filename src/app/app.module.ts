@@ -44,13 +44,14 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
-
+//import { CKEditorModule } from 'ng2-ckeditor';
+//import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 @NgModule( {
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
                    ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot() ],
+        MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot()],
     providers: [{
         provide: Http,
         useFactory: httpService,

@@ -62,7 +62,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.parentModel.profilePicutrePath = this.userData.profileImagePath;
         }
         this.uploader = new FileUploader({
-
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 100 * 1024 * 1024, // 100 MB
             url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
@@ -70,6 +69,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.uploader.onAfterAddingFile = (file) => {
+            console.log(file);
             file.withCredentials = false;
         };
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {

@@ -544,7 +544,7 @@
 															<div class="caption">
 																<div class="col-xs-12">
 																	<div class="flex">
-																		<img *ngIf="emailTemplateId==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																		<img *ngIf="emailTemplateId==selectedEmailTemplateRow" style="width: 24px;height: 24px;" alt="selected" src="https://cdn0.iconfinder.com/data/icons/elysium-icons/24/Tick.png">
 																		<h4 title="{{campaign.emailTemplate.name}}" class="caption-subject text-center ellipsis">{{campaign.emailTemplate.name}}</h4>
 																	</div>
 																</div>
@@ -552,7 +552,7 @@
 														</div>
 														<div class="portlet-body">
 															<div class="row email-template-container">
-																<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="No Image Selected">
+																<img class="img-responsive center-block" style="height: 98px; max-width: 100%;" src="{{campaign.emailTemplate.subject}}" alt="No Image Selected">
 																<div class="email-template-i-container">
 										       						 <i class="fa fa-eye fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
 										   						 </div>
@@ -570,7 +570,7 @@
 														<div class="caption">
 															<div class="col-xs-12">
 																<div class="flex">
-																	<img *ngIf="emailTemplate.id==selectedEmailTemplateRow" alt="selected" src="https://cdn3.iconfinder.com/data/icons/signs-symbols-and-social-media/100/check_mark_tick_correct_approve_button_ok-2-32.png">
+																	<img *ngIf="emailTemplate.id==selectedEmailTemplateRow" alt="selected" style="width: 24px;height: 24px;" src="https://cdn0.iconfinder.com/data/icons/elysium-icons/24/Tick.png">
 																	<h4 title="{{emailTemplate.name}}" class="caption-subject text-center ellipsis">{{emailTemplate.name}}</h4>
 																</div>
 															</div>
@@ -578,7 +578,7 @@
 													</div>
 													<div class="portlet-body">
 														<div class="row email-template-container">
-															<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="No Image Selected">
+															<img class="img-responsive center-block" style="height: 98px; max-width: 100%;" src="{{emailTemplate.subject}}" alt="No Image Selected">
 															<div class="email-template-i-container">
 										       						 <i class="fa fa-eye fa-4x" aria-hidden="true" (click)="getEmailTemplatePreview(emailTemplate)"></i>
 										   						 </div>
@@ -592,6 +592,7 @@
 											</div>
 										</div>
 									</div>
+									<div id="emailTemplateContent" style="display: none;"></div>
 									</ng-container>
 									<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>
 									<div *ngIf="emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -770,18 +771,99 @@
 		</div>
 		</div>
         </div>
+<!--         	<div class="col-xs-12">
+        	Content Should Come here ------------
+        		<div *ngFor="let reply of replies;let i=index">
+        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{reply.divId}}">
+        		<h4><b>Reply:</b></h4>
+        		<hr>
+					<div class="panel-body">
+						<form class="role">
+							<div class="form-group col-md-3">
+								<label for="days">Reply In X Days</label> 
+								<input	type="number" class="form-control" name="days"
+									 placeholder="Days" [(ngModel)]="reply.replyInDays">
+							</div>
+							<div class="form-group col-md-3">
+								<label for="time">Send Time</label> 
+									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="reason">Reason</label> 
+								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
+						            <option  [value]="13" [selected]="reply.action ==13">Email Opened</option>
+						            <option  [value]="0" [selected]="reply.action ==0">Email Not Opened</option>
+					          </select>
+							</div>
+							<div class="form-group col-md-3" style="padding-top: 1.9em;">
+								<button type="button" class="btn btn-danger"
+									(click)="remove(reply.divId,'replies')">Delete</button>
+							</div>
+							<div class="col-sm-12" style="padding: 0">
+								<div>
+									<textarea>{{reply.subject}}</textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+        		</div>
+				------------Link------------------------
+				<div *ngFor="let url of urls;let i=index">
+        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{url.divId}}">
+        		<h4><b>Url:</b></h4>
+        		<hr>
+					<div class="panel-body">
+						<form class="role">
+						<div class="form-group col-md-3">
+								<label for="days">Wait X Days After Click</label>
+								 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days">
+							</div>
+						<div class="form-group col-md-3">
+								<label for="reason">Available Urls</label> 
+								<select	class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
+									<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
+									    {{hrefLink}}
+									  </option>
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="time">Send Time</label> 
+								<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
+							</div>
+							<div class="form-group col-md-3" style="padding-top: 1.9em;">
+								<button type="button" class="btn btn-danger"
+									(click)="remove(url.divId,'url')">Delete</button>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="time">Subject</label> 
+								 <input	type="text" class="form-control" name="subject"	[(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
+							</div>
+							<div class="col-sm-12" style="padding: 0">
+								<div>
+									<textarea>{{url.body}}</textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+        		</div>
+				<h4 class="panel-title">
+					<button class="btn btn-reply" (click)="addClickRows()" type="button" style="float: left;">Add Url</button>
+					<button class="btn btn-reply" (click)="addReplyRows()" type="button" style="float: right">Auto Reply</button>
+				</h4>
+		</div> -->
    		<div class="col-xs-12">
 			<div class="portlet light dashboard-stat2" style="padding-top: 2em;">
 				<div class="portlet-title border-none">
 				<div class="col-xs-12 center-block">
 						<button type="button"	class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;min-width: 10em;">← Previous</button>
-						<button type="submit" class="btn green" (click)="addEmailId()">Send Test Email</button>
+						<button type="button" class="btn green" (click)="addEmailId()">Send Test Email</button>
 						<button type="submit" class="btn green"	[disabled]="!campaignLaunchForm.valid">{{buttonName}}</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		
 		</form>
     </div>
 	</div><!-- End Of Line 18 -->

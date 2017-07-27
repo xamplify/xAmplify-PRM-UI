@@ -1,5 +1,7 @@
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { EmailTemplate } from '../../email-template/models/email-template';
+import { Reply } from './campaign-reply';
+import { Url } from './campaign-url';
 export class Campaign {
 
     campaignName: string;
@@ -28,4 +30,6 @@ export class Campaign {
     regularEmail:boolean;   
     launched:boolean;
     launchedOn:string = "";
+    campaignReplies:Array<Reply>;
+    campaignUrls:Array<Url>;
 }

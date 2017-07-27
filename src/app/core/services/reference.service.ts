@@ -74,4 +74,11 @@ export class ReferenceService {
     goToTop() {
         $(window).scrollTop(0);
     }
+    removeDuplicates(list:any){
+        let result = [];
+        $.each(list, function(i, e) {
+          if ($.inArray(e, result) == -1) result.push(e);
+        });
+        return result;
+    }
 }
