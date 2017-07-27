@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit, Renderer} from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, HostListener, AfterViewInit, Renderer} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -54,6 +54,9 @@ public videoLength: string;
 public replyVideo: boolean;
 public logVideoViewValue: boolean;
 public timeValue: any;
+public seekStart = null;
+public previousTime = 0;
+public timeForSeek: any;
 LogAction: typeof LogAction = LogAction;
   constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
             private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
@@ -78,7 +81,8 @@ deviceDectorInfo() {
         this.xtremandLog.videoAlias = this.videoAlias;
         this.xtremandLog.campaignAlias = this.campaignAlias;
         // device detector
-        this.xtremandLog.deviceType = this.deviceInfo.device;
+        if (this.deviceInfo.device === 'unknown') { this.xtremandLog.deviceType = 'computer';
+        } else { this.xtremandLog.deviceType = this.deviceInfo.device; }
         this.xtremandLog.os = this.deviceInfo.os;
         // location detector
          console.log(this.xtremandLog);
@@ -130,7 +134,9 @@ deviceDectorInfo() {
         const x = minutes < 10 ? "0" + minutes : minutes;
         const y = seconds < 10 ? "0" + seconds : seconds;
         const timeValue = x + ":" + y;
+        this.timeValue = timeValue;
         this.videoFileService.campaignTimeValue = timeValue;
+        console.log('enter int o get current time'+ timeValue);
    }
      timeConversion(totalSeconds: number) {
         const MINUTES_IN_AN_HOUR = 60;
@@ -185,9 +191,22 @@ deviceDectorInfo() {
     videoLogAction(xtremandLog: XtremandLog) {
        this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
        (result: any) => {
-         console.log('successfully logged the actions');
-     });
+         console.log('successfully logged the actions' + xtremandLog.actionId);
+      },
+      (error: any) => {
+        console.log('successfully skipped unused logged the actions'  + xtremandLog.actionId);
+       });
     }
+   /* videoSeekBarActions(xtremandLog: XtremandLog){
+        this.videoFileService.logSeekBarVideoActions(xtremandLog).subscribe(
+       (result: any) => {
+         console.log('successfully sider logged the actions' + xtremandLog.actionId);
+        },
+        (error: any) => {
+        console.log('successfully skipped sider logged the actions'  + xtremandLog.actionId);
+       }
+      );
+    } */
     logVideoViewsCount() {
     this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
     (result: any) => {
@@ -264,8 +283,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      }
                      selfPanorama.xtremandLog.startTime = new Date();
                      selfPanorama.xtremandLog.endTime = new Date();
-                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
-                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      if (selfPanorama.logVideoViewValue === true) {
                        selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                        selfPanorama.logVideoViewsCount();
@@ -278,8 +297,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.pauseVideo;
                      selfPanorama.xtremandLog.startTime = new Date();
                      selfPanorama.xtremandLog.endTime = new Date();
-                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
-                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                     selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                      selfPanorama.getCurrentTimeValues(player.currentTime());
                   });
@@ -289,7 +308,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.startTime = new Date();
                      selfPanorama.xtremandLog.endTime = new Date();
                      selfPanorama.xtremandLog.startDuration = startDuration;
-                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                   });
                   player.on('timeupdate', function() {
@@ -304,8 +323,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_movieReachEnd;
                     selfPanorama.xtremandLog.startTime = new Date();
                     selfPanorama.xtremandLog.endTime = new Date();
-                    selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
-                    selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime()).toString();
+                    selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                    selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                   });
                   player.on('fullscreenchange', function () {
@@ -354,27 +373,36 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     self.replyVideo = false;
                     const document: any = window.document;
                     let startDuration;
+                    let seekCurrentTime = false;
                     self.logVideoViewValue = true;
+                    self.videoFileService.pauseAction = false;
+                    this.ready(function () {
+                        $('.vjs-big-play-button').css('display', 'block');
+                    });
                     this.on('play', function() {
+                  //  self.videoFileService.pauseAction = false;
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                      if (self.replyVideo === true) {
                           self.xtremandLog.actionId = self.LogAction.replyVideo;
+                          self.replyVideo = false;
+                          self.videoFileService.pauseAction = false;
                      } else {
                           self.xtremandLog.actionId = self.LogAction.playVideo;
                      }
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      self.getCurrentTimeValues(player.currentTime());
+                     self.videoLogAction(self.xtremandLog);
                       if (self.logVideoViewValue === true) {
-                       self.videoLogAction(self.xtremandLog);
                        self.logVideoViewsCount();
                        self.logVideoViewValue = false;
                      }
-                    });
+                     });
                     this.on('pause', function() {
+                  //   self.videoFileService.pauseAction = false;
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                      const time =  self.timeConversion(player.currentTime());
                      console.log(time);
@@ -382,26 +410,48 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.xtremandLog.actionId = self.LogAction.pauseVideo;
                         self.xtremandLog.startTime = new Date();
                         self.xtremandLog.endTime = new Date();
-                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                         self.videoLogAction(self.xtremandLog);
                         self.getCurrentTimeValues(player.currentTime());
                     });
                     this.on('timeupdate', function() {
-                      startDuration = self.trimCurrentTime(player.currentTime());
+                      if (seekCurrentTime === true) {
+                          startDuration = self.trimCurrentTime(player.currentTime());
+                          self.videoFileService.campaignTimeValue = startDuration;
+                          console.log('time update in seek bare' + startDuration);
+                          seekCurrentTime = false;
+                        //  self.getCurrentTimeValues(player.currentTime());
+                       }
                     });
                     this.on('seeking', function() {
-                   //  self.replyVideo = false;
-                   //  self.videoFileService.replyVideo = false;
-                     const seekigTime  = self.trimCurrentTime(player.currentTime());
-                     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                     self.xtremandLog.startDuration = startDuration;
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.startTime = new Date();
-                     self.xtremandLog.endTime = new Date();
-                     self.videoLogAction(self.xtremandLog);
-                  });
-                  this.on('ended', function() {
+                     self.videoFileService.pauseAction = true;
+                     seekCurrentTime = true;
+                     if (self.seekStart === null) {
+                        self.seekStart = self.trimCurrentTime(player.currentTime());
+                      }
+                     // self.getCurrentTimeValues(player.currentTime());
+                      console.log('enter into seeking');
+                   });
+                    this.on('seeked', function() {
+                       self.videoFileService.pauseAction = true;
+                       console.log('seeked from', self.seekStart);
+                       console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
+                         self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                         self.xtremandLog.startDuration = self.seekStart;
+                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        if (self.xtremandLog.startDuration === self.xtremandLog.stopDuration) {
+                            self.xtremandLog.startDuration = self.videoFileService.campaignTimeValue;
+                            console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
+                        }
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.videoLogAction(self.xtremandLog);
+                        self.getCurrentTimeValues(player.currentTime());
+                        self.seekStart = null;
+                    //    self.videoFileService.pauseAction = false;
+                     });
+                   this.on('ended', function() {
                      const whereYouAt = player.currentTime();
                      console.log(whereYouAt);
                      self.logVideoViewValue = true;
@@ -411,8 +461,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                      self.xtremandLog.startTime = new Date();
                      self.xtremandLog.endTime = new Date();
-                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      self.videoLogAction(self.xtremandLog);
                   });
                   this.on('fullscreenchange', function () {

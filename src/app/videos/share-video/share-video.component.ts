@@ -319,8 +319,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      }
                      player360.actionLog.startTime = new Date();
                      player360.actionLog.endTime = new Date();
-                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
-                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime());
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
                      console.log(player360.actionLog.actionId);
                      player360.videoLogAction(player360.actionLog);
                      if (player360.logVideoViewValue === true) {
@@ -334,8 +334,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      player360.actionLog.actionId = player360.LogAction.pauseVideo;
                      player360.actionLog.startTime = new Date();
                      player360.actionLog.endTime = new Date();
-                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
-                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime());
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
                      player360.videoLogAction(player360.actionLog);
                      }
                   });
@@ -345,7 +345,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      player360.actionLog.startTime = new Date();
                      player360.actionLog.endTime = new Date();
                      player360.actionLog.startDuration = startDuration;
-                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                     player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
                      player360.videoLogAction(player360.actionLog);
                 });
                 player.on('timeupdate', function() {
@@ -359,8 +359,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     player360.actionLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
                     player360.actionLog.startTime = new Date();
                     player360.actionLog.endTime = new Date();
-                    player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime()).toString();
-                    player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime()).toString();
+                    player360.actionLog.startDuration = player360.trimCurrentTime(player.currentTime());
+                    player360.actionLog.stopDuration = player360.trimCurrentTime(player.currentTime());
                     player360.videoLogAction(player360.actionLog);
                      if (isValid === 'EndOftheVideo') {
                  //    $('#videoId').append( $('#overlay-modal').show());
@@ -489,8 +489,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      }
                      self.actionLog.startTime = new Date();
                      self.actionLog.endTime = new Date();
-                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime());
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      console.log(self.actionLog.actionId);
                      self.videoLogAction(self.actionLog);
                      if (self.logVideoViewValue === true) {
@@ -505,8 +505,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.actionId = self.LogAction.pauseVideo;
                      self.actionLog.startTime = new Date();
                      self.actionLog.endTime = new Date();
-                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.actionLog.startDuration = self.trimCurrentTime(player.currentTime());
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      self.videoLogAction(self.actionLog);
                      self.getCurrentTimeValues(player.currentTime());
                      }
@@ -517,7 +517,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.actionLog.startTime = new Date();
                      self.actionLog.endTime = new Date();
                      self.actionLog.startDuration = startDuration;
-                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                     self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
                      self.videoLogAction(self.actionLog);
                 });
                 this.on('timeupdate', function() {
@@ -533,8 +533,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     self.actionLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.actionLog.startTime = new Date();
                     self.actionLog.endTime = new Date();
-                    self.actionLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.actionLog.startDuration = self.trimCurrentTime(player.currentTime());
+                    self.actionLog.stopDuration = self.trimCurrentTime(player.currentTime());
                     self.videoLogAction(self.actionLog);
                  if (isValid === 'EndOftheVideo') {
                      $('.vjs-big-play-button').css('display', 'none');
@@ -737,8 +737,8 @@ shareMethod() {
         this.actionLog.actionId = this.LogAction.shareMobinar;
         this.actionLog.startTime = new Date();
         this.actionLog.endTime = new Date();
-        this.actionLog.startDuration = this.trimCurrentTime(new Date().getTime()).toString();
-        this.actionLog.stopDuration = this.trimCurrentTime(new Date().getTime()).toString();
+        this.actionLog.startDuration = this.trimCurrentTime(new Date().getTime());
+        this.actionLog.stopDuration = this.trimCurrentTime(new Date().getTime());
         this.videoLogAction(this.actionLog);
 }
   ngOnDestroy() {

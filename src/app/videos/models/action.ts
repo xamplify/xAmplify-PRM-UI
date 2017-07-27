@@ -4,8 +4,8 @@ export class ActionLog {
         videoId: number = null ;
         startTime: Date;
         endTime: Date;
-        startDuration: string;
-        stopDuration: string;
+        startDuration: number;
+        stopDuration: number;
         deviceType: string;
         os: string;
         actionId: number;

@@ -29,6 +29,7 @@ export class VideoFileService {
     public replyVideo = false;
     public timeValue: any;
     public campaignTimeValue: any;
+    public pauseAction: boolean;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -163,20 +164,23 @@ export class VideoFileService {
       }
     }
      logCampaignVideoActions(xtremandLog: XtremandLog) {
-       console.log(this.campaignTimeValue);
-       const pauseCheck = false;
-     //  if (this.campaignTimeValue === '00:00' || this.campaignTimeValue === '00:00:00') { pauseCheck = true; }
-    //  || (xtremandLog.actionId === 2 && pauseCheck === true)
-       if ((xtremandLog.actionId === 8 && this.replyVideo === true)) {
+       try {
+        if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
+        console.log(this.campaignTimeValue);
+        if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
+         || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
            console.log('service called replyed and ended the video');
            this.replyVideo = false;
-       } else {
+         } else {
            console.log(xtremandLog);
            const url = this.authenticationService.REST_URL + 'user/logVideoAction';
            return this.http.post(url, xtremandLog)
               .map(this.extractData)
               .catch(this.handleErrorLogAction);
-      }
+        }
+       } catch (error) {
+               console.log('error comes here');
+        }
     }
     logVideoViews(alias: string) {
          const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias='+alias;
@@ -225,4 +229,16 @@ export class VideoFileService {
             return Observable.throw(error);
         }
     }
+     /*  logSeekBarVideoActions(xtremandLog: XtremandLog) {
+        console.log(xtremandLog);
+           if ((xtremandLog.actionId === 8 && this.replyVideo === true)) {
+              console.log('service called replyed and ended the video');
+              this.replyVideo = false;
+        } else {
+           const url = this.authenticationService.REST_URL + 'user/logVideoAction';
+           return this.http.post(url, xtremandLog)
+              .map(this.extractData)
+              .catch(this.handleErrorLogAction);
+           }
+    } */
 }

@@ -210,7 +210,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             self.xtremandLog.startTime = new Date();
                             self.xtremandLog.endTime = new Date();
                             self.xtremandLog.startDuration = startDuration;
-                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                             console.log(self.xtremandLog);
                             // self.videoLogAction(self.xtremandLog);
                         });
@@ -229,8 +229,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             }
                             self.xtremandLog.startTime = new Date();
                             self.xtremandLog.endTime = new Date();
-                            self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                            self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                             self.videoLogAction(self.xtremandLog);
                         });
                         this.on('pause', function () {
@@ -239,8 +239,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                                 self.xtremandLog.actionId = self.LogAction.pauseVideo;
                                 self.xtremandLog.startTime = new Date();
                                 self.xtremandLog.endTime = new Date();
-                                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                                 self.videoLogAction(self.xtremandLog);
                             }
                         });
@@ -253,8 +253,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                             self.xtremandLog.startTime = new Date();
                             self.xtremandLog.endTime = new Date();
-                            self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                            self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                            self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                             self.videoLogAction(self.xtremandLog);
                             if (isValid === 'EndOftheVideo') {
                                 // $('#play_video_player_demo1').append( $('#overlay-modal').show());
@@ -624,8 +624,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         self.xtremandLog.actionId = self.LogAction.pauseVideo;
                         self.xtremandLog.startTime = new Date();
                         self.xtremandLog.endTime = new Date();
-                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                         self.videoLogAction(self.xtremandLog);
                     }
                 });
@@ -642,8 +642,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
-                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                     self.videoLogAction(self.xtremandLog);
                 });
                 player.on('seeking', function () {
@@ -652,7 +652,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
                     self.xtremandLog.startDuration = startDuration;
-                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                     self.videoLogAction(self.xtremandLog);
                 });
                 player.on('timeupdate', function () {
@@ -667,8 +667,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
-                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                     self.videoLogAction(self.xtremandLog);
                     $('.vjs-big-play-button').css('display', 'none');
                     if (isValid === 'EndOftheVideo') {
@@ -769,7 +769,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('.vjs-big-play-button').css('display', 'none');
                     //  $("#overlay-modal").css("display","block !important");
                     self.showOverlayModal();
-                    player.pause();
+                 //   player.pause();
                      $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
@@ -790,7 +790,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 self.xtremandLog.startTime = new Date();
                 self.xtremandLog.endTime = new Date();
                 self.xtremandLog.startDuration = startDuration;
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                 self.videoLogAction(self.xtremandLog);
             });
             this.on('timeupdate', function () {
@@ -811,8 +811,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 self.xtremandLog.startTime = new Date();
                 self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                 console.log(self.xtremandLog.actionId);
                 self.videoLogAction(self.xtremandLog);
             });
@@ -823,8 +823,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     self.xtremandLog.actionId = self.LogAction.pauseVideo;
                     self.xtremandLog.startTime = new Date();
                     self.xtremandLog.endTime = new Date();
-                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                    self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                    self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                     self.videoLogAction(self.xtremandLog);
                 }
             });
@@ -837,8 +837,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                 self.xtremandLog.startTime = new Date();
                 self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime()).toString();
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime()).toString();
+                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                 self.videoLogAction(self.xtremandLog);
                 if (isValid === 'EndOftheVideo') {
                   //  self.showOverlayModal();
