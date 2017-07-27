@@ -16,6 +16,7 @@ import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.c
 import { MyProfileComponent } from './user-profile/my-profile/my-profile.component';
 import { DefaultPageComponent } from './default-page/default-page.component';
 import { FollowersComponent } from './followers/followers.component';
+import { SharedComponent } from './shared/shared.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { FollowersComponent } from './followers/followers.component';
                    ProfileLockComponent,
                    ProfileHelpComponent,
                    DefaultPageComponent,
-                   FollowersComponent
+                   FollowersComponent,
+                   SharedComponent
     ],
    exports :[],
     providers: [DashboardService]
