@@ -206,7 +206,7 @@
 										<label class="col-md-3 control-label">Tags:</label>
 										<div class="col-md-9"><tag-input  (input)="tagsInput()" formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
-											<div *ngIf="tagsUndefined" class="alert alert-danger">tags should not be empty</div>
+											<div *ngIf="tagsUndefined" class="alert alert-danger">tag name should not be empty</div>
 										</div>
 									</div>
 									<div class="form-group">

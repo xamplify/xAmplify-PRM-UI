@@ -12,16 +12,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.canActivate( route, state );
     }
     checkLogin( url: string ): boolean {
-        let currentUser = localStorage.getItem( 'currentUser' );
+        const currentUser = localStorage.getItem( 'currentUser' );
         if ( currentUser ) {
             this.authenticationService.access_token = JSON.parse( currentUser )['accessToken'];
             this.authenticationService.refresh_token = JSON.parse( currentUser )['refreshToken'];
             const userName = JSON.parse( currentUser )['userName'];
-
-            if ( !this.authenticationService.user.id ) {
-                this.getUserByUserName( userName );
-            }
-
+            this.authenticationService.user.id = JSON.parse(currentUser)['userId'];
+            this.authenticationService.user.username = userName;
+            this.authenticationService.user.emailId = userName;
+            this.getUserByUserName(userName);
+            // if ( !this.authenticationService.user.id ) {
+            //     this.getUserByUserName( userName );
+            // }
             return true;
         }
         // Store the attempted URL for redirecting
@@ -36,6 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             .subscribe(
             data => {
                 this.authenticationService.user = data;
+                this.authenticationService.userProfile = data;
             },
             error => {console.log( error ); this.router.navigate( ['/login'] );},
             () => { }

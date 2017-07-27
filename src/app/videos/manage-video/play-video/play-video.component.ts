@@ -1014,11 +1014,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.sessionId);
     }
     videoLogAction(xtremandLog: XtremandLog) {
-        this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
-            (result: any) => {
-                console.log('successfully logged the actions');
-                console.log(this.xtremandLog.actionId);
-            });
+        // this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
+        //     (result: any) => {
+        //         console.log('successfully logged the actions');
+        //         console.log(this.xtremandLog.actionId);
+        //     });
     }
 
 }

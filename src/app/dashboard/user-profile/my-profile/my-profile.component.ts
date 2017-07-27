@@ -156,6 +156,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     ngAfterViewInit() {
         const self = this;
+        $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript"  class="profile-video"/>');
         this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
         this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
             { "controls": true, "autoplay": false, "preload": "auto" },
@@ -590,5 +591,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     ngOnDestroy() {
         this.videoJSplayer.dispose();
+        $('.profile-video').remove();
     }
 }

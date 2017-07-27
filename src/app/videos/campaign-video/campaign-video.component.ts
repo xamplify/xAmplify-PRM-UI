@@ -135,7 +135,7 @@ deviceDectorInfo() {
         const y = seconds < 10 ? "0" + seconds : seconds;
         const timeValue = x + ":" + y;
         this.timeValue = timeValue;
-        this.videoFileService.campaignTimeValue = timeValue;
+      //  this.videoFileService.campaignTimeValue = timeValue;
         console.log('enter int o get current time'+ timeValue);
    }
      timeConversion(totalSeconds: number) {
@@ -376,10 +376,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     let seekCurrentTime = false;
                     self.logVideoViewValue = true;
                     self.videoFileService.pauseAction = false;
+                    let seekCheck = false;
                     this.ready(function () {
                         $('.vjs-big-play-button').css('display', 'block');
+                        self.xtremandLog.startDuration = 0;
+                        self.xtremandLog.stopDuration = 0;
                     });
                     this.on('play', function() {
+                    seekCheck = false;
                     self.videoFileService.pauseAction = false;
                     $('.vjs-big-play-button').css('display', 'none');
                     console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
@@ -394,14 +398,18 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      self.xtremandLog.endTime = new Date();
                      self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
                      self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                     self.getCurrentTimeValues(player.currentTime());
+                 //    self.getCurrentTimeValues(player.currentTime());
                      self.videoLogAction(self.xtremandLog);
                       if (self.logVideoViewValue === true) {
                        self.logVideoViewsCount();
                        self.logVideoViewValue = false;
                      }
-                     });
+                      if (seekCheck === false) {
+                         self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
+                     }
+                    });
                     this.on('pause', function() {
+                     seekCheck = false;
                      self.videoFileService.pauseAction = false;
                      console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                      const time =  self.timeConversion(player.currentTime());
@@ -413,14 +421,16 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
                         self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                         self.videoLogAction(self.xtremandLog);
-                        self.getCurrentTimeValues(player.currentTime());
+                     //   self.getCurrentTimeValues(player.currentTime());
+                     if (seekCheck === false) {
+                         self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
+                     }
                     });
                     this.on('timeupdate', function() {
                       if (seekCurrentTime === true) {
                           startDuration = self.trimCurrentTime(player.currentTime());
                           self.videoFileService.campaignTimeValue = startDuration;
                           console.log('time update in seek bare' + startDuration);
-                          seekCurrentTime = false;
                         //  self.getCurrentTimeValues(player.currentTime());
                        }
                     });
@@ -523,11 +533,24 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( errMsg );
      }
+
+   clickButton(){
+    this.xtremandLog.actionId = this.LogAction.videoStopped;
+    this.xtremandLog.startTime = new Date();
+    this.xtremandLog.endTime = new Date();
+    console.log(this.xtremandLog);
+    this.videoLogAction(this.xtremandLog);
+   }
+   @HostListener('window:beforeunload', ['$event'])
+    beforeunloadHandler(event) {
+    this.clickButton();
+   }
   ngOnDestroy() {
-     console.log('Deinit - Destroyed Component');
-     if (this.videoJSplayer) {
-        this.videoJSplayer.dispose(); }
-          $('.h-video').remove();
-          $('.p-video').remove();
+    this.clickButton();
+    this.videoLogAction(this.xtremandLog);
+    console.log('Deinit - Destroyed Component');
+    if (this.videoJSplayer) { this.videoJSplayer.dispose(); }
+    $('.h-video').remove();
+    $('.p-video').remove();
   }
 }

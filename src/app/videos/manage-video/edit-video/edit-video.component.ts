@@ -1164,7 +1164,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '')) {
                 this.tagsUndefined = true;
-                this.saveVideoFile.tags.length = 0;
+               // this.saveVideoFile.tags.length = 0;
             }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
@@ -1184,6 +1184,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.callACtion = this.enableCalltoAction;
             this.logger.info(this.saveVideoFile.transparency);
             this.logger.info(this.saveVideoFile);
+            if (this.tagsUndefined === false) {
             return this.videoFileService.saveVideo(this.saveVideoFile)
                 .subscribe((result: any) => {
                     if (this.saveVideoFile != null) {
@@ -1196,6 +1197,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }),
                 () => this.logger.log(this.saveVideoFile);
+           }
         }
     }
     validVideoTitle(videoTitle: string) {
