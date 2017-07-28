@@ -124,10 +124,12 @@ export class AddContactsComponent implements OnInit {
         console.log( list );
         if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
         } else {
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
             this.isValidContactName = false;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
         }
     }
 
