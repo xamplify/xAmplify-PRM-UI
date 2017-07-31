@@ -887,10 +887,10 @@ export class ManageContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != "" && !this.isValidContactName) {
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        if ( this.model.contactListName != "" && !this.isValidContactName && this.model.contactListName != " ") {
             if ( selectedUsers.length != 0 ) {
                 if(this.model.contactListName.length != ""){
-                    this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
                     this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                     .subscribe(
                     data => {

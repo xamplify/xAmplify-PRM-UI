@@ -348,7 +348,8 @@ public invalidPattenMail = false;
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate"+isDuplicate );
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             this.logger.info( this.newUsers[0].emailId );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
@@ -368,7 +369,6 @@ public invalidPattenMail = false;
     }
 
     saveValidEmails() {
-        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
         this.contactService.saveContactList( this.model.contactListName, this.newUsers )
             .subscribe(
@@ -454,6 +454,7 @@ public invalidPattenMail = false;
         }*/
         //if(!isValidData){
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        if(this.model.contactListName != ' '){
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
             .subscribe(
@@ -469,11 +470,12 @@ public invalidPattenMail = false;
             )
         this.dublicateEmailId = false;
     }
-    //}
+    }
     
     saveCsvContactList( isValid: boolean ) {
         this.invalidPatternEmails.length = 0;
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             if ( this.contacts.length > 0 ) {
                 this.logger.info( isValid );
                 for(let i = 0; i< this.contacts.length;i++){
@@ -488,7 +490,6 @@ public invalidPattenMail = false;
                     }
                 }
                 if(this.validCsvContacts == true) {
-                this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
                 this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                 this.contactService.saveContactList( this.model.contactListName, this.contacts )
                     .subscribe(
@@ -785,7 +786,7 @@ public invalidPattenMail = false;
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         this.socialContact.contactType = "CONTACT";
         this.socialContact.contacts = this.gContacts;
-        if ( this.model.contactListName != '' && !this.isValidContactName ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             if ( this.gContacts.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
@@ -820,10 +821,10 @@ public invalidPattenMail = false;
             selectedUsers.push( user );
         });
         console.log( selectedUsers );
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
                 data => {
@@ -988,7 +989,7 @@ public invalidPattenMail = false;
         this.socialContact.contactType = this.contactType;
         this.socialContact.contacts = this.zContacts;
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             if ( this.zContacts.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
@@ -1026,7 +1027,7 @@ public invalidPattenMail = false;
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1264,8 +1265,9 @@ public invalidPattenMail = false;
             selectedUsers.push( user );
         });
         console.log( selectedUsers );
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1292,7 +1294,8 @@ public invalidPattenMail = false;
         this.socialContact.contactType = this.contactType;
         this.socialContact.alias = this.salesforceListViewId;
         this.socialContact.contacts = this.salesforceContactUsers;
-        if ( this.model.contactListName != '' && !this.isValidContactName) {
+        this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
             if ( this.salesforceContactUsers.length > 0 ) {
                 this.logger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
