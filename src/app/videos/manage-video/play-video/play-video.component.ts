@@ -88,7 +88,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public overLaySet = false;
     public fullScreenMode = false;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
-        private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, private pagination: Pagination,
+        private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, public pagination: Pagination,
         private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
         this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
@@ -137,7 +137,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#modalDialog').append($('#overlay-modal').show());
     }
     shareClick() {
-        window.open('http://localhost:4200/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
+         window.open(this.authenticationService.APP_URL + 'embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
     showVideo(videoFile: SaveVideoFile, position: number) {

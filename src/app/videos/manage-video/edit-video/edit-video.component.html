@@ -147,7 +147,7 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || tagsUndefined == true">Save</button>
+									|| lowerTextValid==false || isValidTitle == true || tagsUndefined == true || emptyTitle == true || emptyDescription">Save</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
 								</div>
 							</div>
@@ -174,9 +174,10 @@
 										<div class="col-md-9">
 											<input type="text"  minlength="4" maxlength="24"
 											(input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
-												<span *ngIf="!isValidTitle" class="help-block">A block of help text.</span>
+												<span *ngIf="!isValidTitle || emptyTitle" class="help-block">A block of help text.</span>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
 											<div *ngIf="isValidTitle" style="color: red;">Title Already Exists</div>
+											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
 										</div>
 									</div>
 									<input type="hidden" class="form-control" formControlName="id">
@@ -184,7 +185,7 @@
 										<label class="col-md-3 control-label">Publish to:</label>
 										<div class="col-md-9">
 											<select class="form-control" formControlName="viewBy" required title="If Private is selected,">
-												<option *ngFor="let publish1 of publish" [value]="publish1.name">{{publish1.name}}</option>
+												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}</option>
 											</select>
 											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
 											</div>
@@ -206,7 +207,7 @@
 										<label class="col-md-3 control-label">Tags:</label>
 										<div class="col-md-9"><tag-input  (input)="tagsInput()" formControlName="tags"  [theme]="'foundation-theme'" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
-											<div *ngIf="tagsUndefined" class="alert alert-danger">tag name should not be empty</div>
+											<div *ngIf="tagsUndefined && formErrors.tags==false" class="alert alert-danger">tag name should not be empty</div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -276,8 +277,9 @@
 									<div class="form-group">
 										<label class="col-md-3 control-label">Description:</label>
 										<div class="col-md-9">
-											<textarea class="form-control" rows="3" formControlName="description" required></textarea>
+											<textarea (input)="descriptionInput()" class="form-control" rows="3" formControlName="description" required></textarea>
 											<div *ngIf="formErrors.description" class="alert alert-danger">{{formErrors.description}}</div>
+											<div *ngIf="emptyDescription && formErrors.description==false" class="alert alert-danger">description shouldn't be empty</div>
 										</div>
 									</div>
 								</div>

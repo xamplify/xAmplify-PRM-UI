@@ -10,7 +10,7 @@ import { UserService } from '../services/user.service';
 
 export class HomeComponent implements OnInit {
         public refcategories: any;
-	    constructor(private referenceService: ReferenceService, private userService: UserService) {  }
+	    constructor(public referenceService: ReferenceService, public userService: UserService) {  }
 	    getCategorisService() {
 	        this.referenceService.getCategories()
 	            .subscribe((result: any) => {

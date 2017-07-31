@@ -141,9 +141,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     enableVideoControl: boolean;
     tagsUndefined = false;
     loadNgOninit = true;
-    public videoTitlesValues = [];
-    public overLaySet = false;
-    public fullScreenMode = false;
+    videoTitlesValues = [];
+    overLaySet = false;
+    fullScreenMode = false;
+    emptyTitle = false;
+    emptyDescription = false;
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -1210,6 +1212,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     validVideoTitle(videoTitle: string) {
         this.saveVideoFile.title = videoTitle;
+        console.log(videoTitle.length);
+        if (videoTitle.replace(/\s/g, '').length) { this.emptyTitle = false;
+        } else {  this.emptyTitle = true; }
         if ((this.videoFileService.videoViewBy !== 'DRAFT' && this.videoFileService.actionValue === 'Update') &&
             (videoTitle.replace(/\s/g, '') === this.editVideoTitle.replace(/\s/g, ''))) {
             this.isValidTitle = false;
@@ -1227,6 +1232,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoTitlesValues.push(this.referenceService.videoTitles[i].replace(/\s/g, ''));
       }
       this.logger.debug(this.videoTitlesValues);
+    }
+    descriptionInput() {
+        const description = this.saveVideoFile.description;
+        console.log(description.length);
+        if (description.replace(/\s/g, '').length) { this.emptyDescription = false;
+        } else {  this.emptyDescription = true; }
     }
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();

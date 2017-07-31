@@ -58,7 +58,7 @@
 					<div style="margin-bottom: 5px;" id="scrollSpeedDiv">
 						<p style="display:inline;padding-right: 5px;">Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
 						<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
-						 style="border: 0px solid #cecece; width: 42%;display:inline;padding-right: 0px;">
+						 style="border: 0px solid #cecece; display:inline;padding-right: 0px;">
 					    <span style="display:inline;color: red;font-weight: bold;">{{changeVolume}}</span>
 					    <input class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true">
 					<input class="btn btn-primary" type="button" value="Stop" (click)="stop()" *ngIf="stopButtonShow" [disabled]="stopButtonDisabled ==true">
@@ -91,12 +91,12 @@
 						</div> </div>
 					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
-							[disabled]="!uploader.getNotUploadedItems().length || loading==true || fileChecked==true">
+							[disabled]="!uploader.getNotUploadedItems().length || loading==true">
 							<span class="glyphicon glyphicon-upload"></span> Upload all
 						</button> </div>
 					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue();removefileUploadVideo()"
-							[disabled]="!uploader.queue.length || loading==true || fileChecked==true">
+							[disabled]="!uploader.queue.length || loading==true">
 							<span class="glyphicon glyphicon-trash"></span> Remove all
 						</button> </div>
 					</div>
@@ -114,7 +114,7 @@
                     </div>
                     
 						<table class="table" >
-							<tbody *ngIf="fileChecked==false || isDisable==false">
+							<tbody *ngIf="isDisable==false">
 								<tr *ngFor="let item of uploader.queue">
 							  	<td >
 									     <video id="my-video"  controls preload="auto" width="280" height="180" >
@@ -169,7 +169,7 @@
 							plugins works only on Latest Chrome, Firefox, Safari, Opera &
 							Internet Explorer 10.
 						</p>
-						<div [class.customDisableCss]='isDisable==true || fileChecked==true ||isFileProgress ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+						<div [class.customDisableCss]='isDisable==true || isFileProgress ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 							(fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone" >
 							<h3>Drop Video File </h3>
 						</div>

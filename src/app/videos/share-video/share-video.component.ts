@@ -89,9 +89,9 @@ public seekStart360 = null;
                 this.embedUrl = document.location.href;
                 this.logVideoViewValue = true;
              }
- setConfirmUnload(on) {
-    window.onbeforeunload = (on) ? this.setMessage : null;
- }
+ //setConfirmUnload(on) {
+   // window.onbeforeunload = (on) ? this.setMessage : null;
+ // }
  setMessage(){
      this.clickButton();
      return 'you have message';
@@ -173,7 +173,7 @@ public seekStart360 = null;
     });
   }
   ngOnInit() {
-     this.setConfirmUnload(true);
+   //  this.setConfirmUnload(true);
      $('#overlay-modal').hide();
      console.log('Share video component ngOnInit called');
      this.createSessionId();
@@ -799,7 +799,7 @@ clickButton() {
     this.videoLogAction(this.actionLog);
    }
   ngOnDestroy() {
-     this.setConfirmUnload(false);
+    // this.setConfirmUnload(false);
      this.logger.info('Deinit - Destroyed Share-Video Component');
      this.clickButton();
      if (this.videoJSplayer) {
