@@ -20,6 +20,7 @@ declare var Portfolio: any;
 declare var $: any;
 declare var swal: any;
 
+
 @Component( {
     selector: 'app-edit-contacts',
     templateUrl: './edit-contacts.component.html',
@@ -37,6 +38,7 @@ export class EditContactsComponent implements OnInit {
     @Output() notifyParent: EventEmitter<User>;
 
     dublicateEmailId: boolean = false;
+    noOfContactsDropdown : boolean = true;
     validCsvContacts : boolean;
     inValidCsvContacts : boolean;
     public clipBoard: boolean = false;
@@ -97,7 +99,8 @@ export class EditContactsComponent implements OnInit {
     sortingOrder: string = null;
     public isCategoryThere: boolean;
     public searchDisable = true;
-
+    public invalidPattenMail = false;
+    showInvalidMaills = false;
     sortContacts = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -285,14 +288,29 @@ export class EditContactsComponent implements OnInit {
         return compressed;
     };
 
+    closeShowValidMessage(){
+        this.showInvalidMaills = false;
+    }
     updateContactList( contactListId: number, isValid: boolean, isclick: boolean ) {
+        this.showInvalidMaills = false;
+        this.invalidPattenMail = false;
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
+        console.log(this.users);
         var testArray = [];
         for ( var i = 0; i <= this.users[0].emailId.length - 1; i++ ) {
             testArray.push( this.users[0].emailId );
         }
-
+        for(var j = 0; j <= this.users.length-1; j++ ){
+           // testArray[j].includes('@') && testArray[j].includes('.com')&& 
+            if(this.validateEmailAddress(this.users[j].emailId) ){
+              this.invalidPattenMail = false;
+            } else{
+                this.invalidPattenMail = true;
+                testArray.length = 0;
+                break;
+            }  
+        }
         var newArray = this.compressArray( testArray );
         for ( var w = 0; w < newArray.length; w++ ) {
             if ( newArray[w].count >= 2 ) {
@@ -308,7 +326,10 @@ export class EditContactsComponent implements OnInit {
         });
         console.log( isDuplicate );
         this.logger.info( this.users[0].emailId );
-        if ( !isDuplicate ) {
+        if(this.invalidPattenMail === true){
+            this.showInvalidMaills = true;
+            testArray.length  = 0;
+        } else if ( !isDuplicate ) {
             this.saveValidEmails();
         } else {
             this.dublicateEmailId = true;
@@ -735,9 +756,11 @@ export class EditContactsComponent implements OnInit {
                 }
                 if ( this.contacts.length !== 0 ) {
                     this.noContactsFound = false;
+                    this.noOfContactsDropdown = true;
                 }
                 else {
                     this.noContactsFound = true;
+                    this.noOfContactsDropdown = false;
                     this.pagedItems = null;
                 }
                 pagination.totalRecords = this.totalRecords;

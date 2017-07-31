@@ -68,7 +68,7 @@ sortContactUsers = [
 
 
     constructor(private videoFileService: VideoFileService,private referenceService: ReferenceService,private dashboardService: DashboardService,
-            private pagerService: PagerService,private contactService: ContactService, private logger: Logger, private pagination: Pagination,private authenticationService: AuthenticationService) {
+            private pagerService: PagerService,private contactService: ContactService, private logger: Logger, public pagination: Pagination,private authenticationService: AuthenticationService) {
         this.categoryNum = 0;
         this.isCategoryThere = false;
         //this.categories = this.referenceService.refcategories;

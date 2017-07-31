@@ -32,7 +32,7 @@ sortContactUsers = [
             ];
             public contactsUsersSort: any = this.sortContactUsers[0];
 
-constructor(private dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,
+constructor(private dashboardService: DashboardService,public pagination: Pagination,private contactService: ContactService,
       private pagerService: PagerService,private logger: Logger) { 
   this.allFollowers = new Array<ContactList>();
 }

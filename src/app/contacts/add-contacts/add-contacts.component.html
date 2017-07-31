@@ -372,8 +372,8 @@
 								id="sample_editable_1">
 								<thead>
 									<tr>
-										<th><input type="checkbox" [checked]="isAvailable"
-											(change)="checked($event.target.checked)"></th>
+										<th><input type="checkbox" 
+											(change)="checked($event.target.checked)"></th><!-- [checked]="isAvailable" -->
 										<th>EMAIL</th>
 										<th>FIRST NAME</th>
 										<th>LAST NAME</th>
@@ -397,13 +397,13 @@
 												Email is required and format should be <i>john@doe.com</i>.
 											</div></td>
 										<td><input type=Text [(ngModel)]="newContact.firstName"
-											class="form-control" [ngModelOptions]="{standalone: true}">
+											class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
 											<!-- <div
 												[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
 												class="alert alert-danger">firstName is required.</div> -->
 												</td>
 										<td><input type=Text [(ngModel)]="newContact.lastName"
-											class="form-control" [ngModelOptions]="{standalone: true}">
+											class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
 												</td>
 										<td><a class="delete" (click)="cancelRow(i)"> Cancel
 										</a></td>

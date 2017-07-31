@@ -57,6 +57,7 @@ export class AddContactsComponent implements OnInit {
     public googleImage: string;
     public salesforceImage: string;
     public contactListNameError: boolean;
+public invalidPattenMail = false;
     public listViewName: string;
     public uploadvalue = true;
     public contactListName: string;
@@ -168,6 +169,7 @@ export class AddContactsComponent implements OnInit {
             var outputstring = files[0].name.substring(0,files[0].name.lastIndexOf("."));
             this.fileTypeError = false;
             this.model.contactListName = outputstring;
+            this.validateContactName(this.model.contactListName);
             this.removeCsvName = true;
             $( "#file_preview" ).show();
             $( "button#uploadCSV" ).prop( 'disabled', true );
@@ -345,7 +347,7 @@ export class AddContactsComponent implements OnInit {
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
         });
-        console.log( isDuplicate );
+        console.log( "emailDuplicate"+isDuplicate );
         if ( this.model.contactListName != '' && !this.isValidContactName) {
             this.logger.info( this.newUsers[0].emailId );
             if ( this.newUsers[0].emailId != undefined ) {
@@ -391,7 +393,16 @@ export class AddContactsComponent implements OnInit {
         for ( var i = 0; i <= this.clipboardUsers.length - 1; i++ ) {
             testArray.push( this.clipboardUsers[i].emailId );
         }
-
+        for(var j = 0; j <= this.clipboardUsers.length-1; j++ ){
+             if(this.validateEmailAddress(this.clipboardUsers[j].emailId) ){
+               this.invalidPattenMail = false;
+             } else{
+                 this.invalidPattenMail = true;
+                 testArray.length = 0;
+                 break;
+             }  
+         }
+        
         var newArray = this.compressArray( testArray );
         for ( var w = 0; w < newArray.length; w++ ) {
             if ( newArray[w].count >= 2 ) {
@@ -410,17 +421,37 @@ export class AddContactsComponent implements OnInit {
             var isDuplicate = valueArr.some( function( item, idx ) {
                 return valueArr.indexOf( item ) != idx
             });
-            console.log( isDuplicate );
-            if ( !isDuplicate ) {
+            console.log( "ERROREMails"+isDuplicate );
+            
+            if(this.invalidPattenMail === true){
+                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid" + "</h4>" );
+                testArray.length = 0;
+            } else if ( !isDuplicate ) {
                 this.saveClipboardValidEmails();
             } else {
                 this.dublicateEmailId = true;
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             }
+            /*if ( !isDuplicate ) {
+                this.saveClipboardValidEmails();
+            } else {
+                this.dublicateEmailId = true;
+                $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            }*/
         }
     }
 
     saveClipboardValidEmails() {
+        /*var isValidData: boolean = true;
+        for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
+            //var data = allTextLines[i].split( splitValue );
+            if ( !this.validateEmailAddress( this.clipboardUsers[i].emailId ) ) {
+                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + this.clipboardUsers[i].emailId + "</h4>" );
+                isValidData = false;
+            }
+            
+        }*/
+        //if(!isValidData){
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
             .subscribe(
@@ -436,7 +467,8 @@ export class AddContactsComponent implements OnInit {
             )
         this.dublicateEmailId = false;
     }
-
+    //}
+    
     saveCsvContactList( isValid: boolean ) {
         this.invalidPatternEmails.length = 0;
         if ( this.model.contactListName != '' && !this.isValidContactName) {

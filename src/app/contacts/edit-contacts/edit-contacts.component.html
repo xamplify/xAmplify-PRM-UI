@@ -203,13 +203,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="btn-group pull-left">
+					<div class="btn-group pull-left" *ngIf="noOfContactsDropdown">
     								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeAllContactsUsers($event)">
 	    					    		<option selected value="page">10</option>
 	    					   	 		<option value="all"> All </option>
   					       			</select>
   					       			<br>
-							</div>
+					</div>
 					<div class="col-md-9" style="margin-bottom: 0px; padding-left: 1cm">
 						<table class="table" id="uploadCsvUsingFile">
 							<thead>
@@ -278,7 +278,10 @@
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Contacts found.. !!!</strong>
 			                </div>
-
+	                <div *ngIf="showInvalidMaills==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+						      <a class="close" (click)="closeShowValidMessage()" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>Invalid email pattern Contacts found.. !!!</strong>
+			                </div>
 					<div class="row" *ngIf="clickBoard">
 						<div class="col-sm-12">
 							<h3>Copy from text -- paste below</h3>
@@ -381,19 +384,14 @@
 								<tr *ngFor="let newContact of users; let i = index"
 									class="new_row">
 									<td><input type="checkbox" checked="newContact.checked"></td>
-									<!-- <td><input type=Text [(ngModel)]="newContact.emailId"
-										class="form-control" [ngModelOptions]="{standalone: true}"
-										required
-										pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-										#emailId="ngModel">
-										<div
-											[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
-											class="alert alert-danger">
-											Email is required and format should be <i>john@doe.com</i>.
-										</div></td> -->
-										<td><input type=Text [(ngModel)]="newContact.emailId"
+										<td><!-- <input type=text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required
+											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+											#emailId="ngModel"> -->
+											<input type=Text [(ngModel)]="newContact.emailId"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											maxlength="32" required 
 											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 											#emailId="ngModel">
 											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
@@ -401,12 +399,12 @@
 												Email is required and format should be <i>john@doe.com</i>.
 											</div></td>
 									<td><input type=Text [(ngModel)]="newContact.firstName"
-										class="form-control" [ngModelOptions]="{standalone: true}">
+										class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
 										<!-- <div
 										[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
 										class="alert alert-danger">firstName is required.</div> --></td>
 									<td><input type=Text [(ngModel)]="newContact.lastName"
-										class="form-control" [ngModelOptions]="{standalone: true}">
+										class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
 										<!-- <div
 										[hidden]="lastName.valid || (lastName.pristine && !f.submitted)"
 										class="alert alert-danger">lastName is required.</div> --></td>
