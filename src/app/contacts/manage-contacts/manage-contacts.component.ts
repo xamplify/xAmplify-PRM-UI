@@ -890,7 +890,8 @@ export class ManageContactsComponent implements OnInit {
         if ( this.model.contactListName != "" && !this.isValidContactName) {
             if ( selectedUsers.length != 0 ) {
                 if(this.model.contactListName.length != ""){
-                this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+                    this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+                    this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                     .subscribe(
                     data => {
                         data = data;
