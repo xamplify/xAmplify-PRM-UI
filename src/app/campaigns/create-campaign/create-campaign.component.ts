@@ -139,8 +139,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     url:Url = new Url();
     allItems= [];
     emailTemplateHrefLinks:any[] = [];
+    dataError:boolean = false;
     /***********End Of Declation*************************/
-    constructor(private fb: FormBuilder,private route: ActivatedRoute, private refService:ReferenceService,
+    constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:Logger,private videoFileService:VideoFileService,
                 private authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
@@ -158,8 +159,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
-           /* this.getCampaignReplies(this.campaign);
-            this.getCampaignUrls(this.campaign);*/
+            this.getCampaignReplies(this.campaign);
+            this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
             if(this.campaign.email!=undefined){
@@ -245,28 +246,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     getCampaignReplies(campaign:Campaign){
-        this.replies = campaign.campaignReplies;
-        for(var i=0;i<this.replies.length;i++){
-            let reply = this.replies[i];
-            reply.replyTime = new Date(reply.replyTime);
-            let length = this.allItems.length;
-            length = length+1;
-            var id = 'reply-'+length;
-            reply.divId = id;
-            this.allItems.push(id);
-        }
+       if(campaign.campaignReplies!=undefined){
+           this.replies = campaign.campaignReplies;
+           for(var i=0;i<this.replies.length;i++){
+               let reply = this.replies[i];
+               reply.replyTime = new Date(reply.replyTime);
+               let length = this.allItems.length;
+               length = length+1;
+               var id = 'reply-'+length;
+               reply.divId = id;
+               this.allItems.push(id);
+           } 
+       }
+       
     }
     getCampaignUrls(campaign:Campaign){
-        this.urls = campaign.campaignUrls;
-        for(var i=0;i<this.urls.length;i++){
-            let url = this.urls[i];
-            url.replyTime = new Date(url.replyTime);
-            let length = this.allItems.length;
-            length = length+1;
-            var id = 'click-'+length;
-            url.divId = id;
-            this.allItems.push(id);
+        if(campaign.campaignUrls!=undefined){
+            this.urls = campaign.campaignUrls;
+            for(var i=0;i<this.urls.length;i++){
+                let url = this.urls[i];
+                url.replyTime = new Date(url.replyTime);
+                let length = this.allItems.length;
+                length = length+1;
+                var id = 'click-'+length;
+                url.divId = id;
+                this.allItems.push(id);
+            }
         }
+       
     }
    
 
@@ -868,9 +875,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#show_email_template_preivew").modal({backdrop: 'static', keyboard: false});
     }
-    filterTemplates(type:EmailTemplateType,index:number){
-        this.emailTemplatesPagination.emailTemplateType =type;
-        this.selectedEmailTemplateType = type;
+    filterTemplates(type:string,index:number){
+       if(type=="BASIC"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+           this.selectedEmailTemplateType = EmailTemplateType.BASIC;
+       }else if(type=="RICH"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+           this.selectedEmailTemplateType = EmailTemplateType.RICH;
+       }else if(type=="UPLOADED"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
+           this.selectedEmailTemplateType = EmailTemplateType.UPLOADED;
+       }else if(type=="NONE"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+           this.selectedEmailTemplateType = EmailTemplateType.NONE;
+       }
+        
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -973,7 +992,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign.regularEmail = false;
         }
         this.filteredSocialStatusProviders();
-   /*     if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+        if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
             let dateTime = this.campaignLaunchForm.value.launchTime;
             let date = dateTime.split(' ')[0];
             this.date = date.replace("-","/");
@@ -981,20 +1000,38 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
+            $('#'+reply.divId).css('background-color','');
             reply.subject = this.getCkEditorContent(reply.divId);
-            if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                reply.replyTime = this.getCalculatedTime(reply.replyTime, this.date, reply.replyInDays);
+            let replyTime = reply.replyTime;
+            if(replyTime!=undefined && reply.subject.length>0){
+                console.log(reply);
+                 if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+                     replyTime = this.getCalculatedTime(replyTime, this.date, reply.replyInDays);
+                 }
+            }else{
+                this.dataError = true;
+                $('#'+reply.divId).css('background-color','#a94442');
             }
+           
             
         }
         for(var i=0;i<this.urls.length;i++){
             let url = this.urls[i];
+            console.log(url);
+            $('#'+url.divId).css('background-color','');
             url.body = this.getCkEditorContent(url.divId);
-            if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays)
+            let replyTime = url.replyTime;
+            if(replyTime!=undefined && url.subject!=null && url.body.length>0){
+                console.log(url);
+                if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+                    url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays)
+                }
+            }else{
+                this.dataError = true;
+                $('#'+url.divId).css('background-color','#a94442');
             }
            
-        }*/
+        }
   
         var data = {
             'campaignName': this.campaign.campaignName,
@@ -1101,6 +1138,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
     launchCampaign(){
         var data = this.getCampaignData("");
+        if(this.dataError){}
+
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
         this.campaignService.saveCampaign( data )
         .subscribe(
@@ -1116,9 +1155,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.logger.error("error in launchCampaign()", error);
         },
         () => this.logger.info("Finished launchCampaign()")
-    );
+    ); 
+    
+    
     return false;
     }
+    
+  
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;

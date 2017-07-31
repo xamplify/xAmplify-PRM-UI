@@ -44,7 +44,7 @@ export class UploadEmailTemplateComponent implements OnInit {
     isUploadFileError:boolean = false;
     uploadFileErrorMessage:string = "";
     videoTag:string = "";
-    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
+    constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
             private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
         this.videoTag = "<a href='<xtremandURL>'>\n   <img src='<xtremandImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";

@@ -66,7 +66,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
-        private pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
+        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
         if(refService.isCreated){
            this.message = "Template Created Successfully";
            this.showMessageOnTop();
@@ -260,8 +260,17 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             );
     }
 
-    filterTemplates(type:EmailTemplateType,isVideoTemplate:boolean,index:number){
-        this.pagination.emailTemplateType =type;
+    filterTemplates(type:string,isVideoTemplate:boolean,index:number){
+        if(type=="BASIC"){
+            this.pagination.emailTemplateType =EmailTemplateType.BASIC;
+        }else if(type=="NONE"){
+            this.pagination.emailTemplateType =EmailTemplateType.NONE;
+        }else if(type=="RICH"){
+            this.pagination.emailTemplateType =EmailTemplateType.RICH;
+        }else if(type=="UPLOADED"){
+            this.pagination.emailTemplateType =EmailTemplateType.UPLOADED;
+        }
+       
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
         if(isVideoTemplate){

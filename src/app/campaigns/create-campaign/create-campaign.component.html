@@ -771,14 +771,15 @@
 		</div>
 		</div>
         </div>
-<!--         	<div class="col-xs-12">
-        	Content Should Come here ------------
+        	<div class="col-xs-12">
+        	 <div  class="alert alert-danger" *ngIf="dataError"><strong>Please Fill Required Data</strong></div>
+        	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
-        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{reply.divId}}">
+        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{reply.divId}}" >
         		<h4><b>Reply:</b></h4>
         		<hr>
 					<div class="panel-body">
-						<form class="role">
+						<form class="role" id="form-{{reply.divId}}">
 							<div class="form-group col-md-3">
 								<label for="days">Reply In X Days</label> 
 								<input	type="number" class="form-control" name="days"
@@ -808,13 +809,13 @@
 					</div>
 				</div>	
         		</div>
-				------------Link------------------------
+				<!-- ------------Link------------------------ -->
 				<div *ngFor="let url of urls;let i=index">
         		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{url.divId}}">
         		<h4><b>Url:</b></h4>
         		<hr>
 					<div class="panel-body">
-						<form class="role">
+						<form class="role" id="form-{{url.divId}}">
 						<div class="form-group col-md-3">
 								<label for="days">Wait X Days After Click</label>
 								 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days">
@@ -852,7 +853,7 @@
 					<button class="btn btn-reply" (click)="addClickRows()" type="button" style="float: left;">Add Url</button>
 					<button class="btn btn-reply" (click)="addReplyRows()" type="button" style="float: right">Auto Reply</button>
 				</h4>
-		</div> -->
+		</div>
    		<div class="col-xs-12">
 			<div class="portlet light dashboard-stat2" style="padding-top: 2em;">
 				<div class="portlet-title border-none">
