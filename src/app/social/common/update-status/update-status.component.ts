@@ -25,7 +25,7 @@ declare var swal, $, flatpickr, videojs: any;
 export class UpdateStatusComponent implements OnInit {
     errorMessage: string;
     successMessage: string;
-    errorDetails: Array<String> = [];
+    errorDetails: Array<string> = [];
     videos: Array<SaveVideoFile> = [];
     totalRecords: number;
     pager: any = {};
@@ -33,9 +33,6 @@ export class UpdateStatusComponent implements OnInit {
     videoUrl: string;
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
-
-    maxlength = 140;
-    characterleft = this.maxlength;
 
     socialStatusList: Array<SocialStatus> = new Array<SocialStatus>();
     socialStatus: SocialStatus = new SocialStatus();
@@ -49,23 +46,15 @@ export class UpdateStatusComponent implements OnInit {
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
         private pagerService: PagerService, private pagination: Pagination, private router: Router ) {
     }
-    count( statusMessage: string ) {
-        if ( this.maxlength > statusMessage.length ) {
-            this.characterleft = ( this.maxlength ) - ( statusMessage.length );
-        }
-        else {
-            this.socialStatus.statusMessage = statusMessage.substr( 0, statusMessage.length - 1 );
-        }
-    }
 
     previewVideo( videoFile: SaveVideoFile ) {
         this.selectedVideo = videoFile;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring( 0, this.videoUrl.lastIndexOf( "." ) );
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
 
-        this.videoPlayListSource( this.videoUrl );
-        this.videoPlayListSource( this.videoUrl );
+        /*this.videoPlayListSource( this.videoUrl );
+        this.videoPlayListSource( this.videoUrl );*/
         this.videoJSplayer.play();
     }
 
@@ -272,25 +261,27 @@ export class UpdateStatusComponent implements OnInit {
     listVideos( pagination: Pagination ) {
         this.videoFileService.loadVideoFiles( pagination )
             .subscribe(( result: any ) => {
-                swal.close();
-                $( "#preview-section" ).show();
-                this.videos = result.listOfMobinars;
-                this.totalRecords = result.totalRecords;
-                pagination.totalRecords = this.totalRecords;
-                console.log( this.videos );
-                pagination = this.pagerService.getPagedItems( pagination, this.videos );
-
-                this.videoJSplayer = videojs( "videojs-video" );
-                this.previewVideo( this.videos[0] );
+                if ( result.totalRecords > 0 ) {
+                    $( "#preview-section" ).show();
+                    this.videos = result.listOfMobinars;
+                    this.totalRecords = result.totalRecords;
+                    pagination.totalRecords = this.totalRecords;
+                    pagination = this.pagerService.getPagedItems( pagination, this.videos );
+                    
+                    
+                    $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript"  class="profile-video"/>');
+                    this.videoJSplayer = videojs( "videojs-video" );
+                    this.previewVideo( this.videos[0] );
+                }
             }),
             () => console.log( "load videos completed:" + this.videos );
     }
 
     setPage( page: number ) {
-        if ( page < 1 || page > this.pager.totalPages ) {
-            return;
+        if (page !== this.pagination.pageIndex) {
+            this.pagination.pageIndex = page;
+            this.listVideos(this.pagination);
         }
-        this.listVideos( this.pagination );
     }
 
     hmsToSecondsOnly( hms: any ) {
@@ -375,7 +366,7 @@ export class UpdateStatusComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userId = this.authenticationService.user.id;
+        this.userId = this.authenticationService.getUserId();
         this.listEvents();
         this.constructCalendar();
         this.initializeSocialStatus();
@@ -385,5 +376,6 @@ export class UpdateStatusComponent implements OnInit {
     ngOnDestroy() {
         if ( this.videoJSplayer != undefined )
             this.videoJSplayer.dispose();
+        $('.profile-video').remove();
     }
 }

@@ -2,19 +2,19 @@ import {SocialStatusContent} from './social-status-content';
 import {SocialStatusProvider} from './social-status-provider';
 
 export class SocialStatus{
-    id: Number;
-    userId: Number;
-    statusMessage: String;
+    id: number;
+    userId: number;
+    statusMessage: string;
     scheduledTimeServer: Date;
     scheduledTimeUser: Date;
-    timeZone: String;
+    timeZone: string;
     socialStatusContents: Array<SocialStatusContent>;
     socialStatusProviders: Array<SocialStatusProvider>;
-    publishStatus: String;
+    publishStatus: string;
 
     createdTime: Date;
     updatedTime: Date;
-    updatedBy: Number;
+    updatedBy: number;
 
     shareNow: boolean;
     isEnable: boolean;

@@ -1,18 +1,18 @@
 import { SocialStatus } from './social-status';
 
 export class SocialStatusProvider {
-    id: Number;
+    id: number;
     socialStatus: SocialStatus;
     providerId: string;
-    providerName: String;
+    providerName: string;
 
-    profileImagePath: String;
-    profileName: String;
+    profileImagePath: string;
+    profileName: string;
     selected: boolean = false;
 
     createdTime: Date;
     updatedTime: Date;
-    updatedBy: Number;
+    updatedBy: number;
 
     accessToken: string;
     oAuthTokenValue: string;

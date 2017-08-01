@@ -1,4 +1,11 @@
-.inline-block{display: inline-block;}
+textarea{
+	font-size: 16px;
+    color: #4e4e4e;
+}
+.inline-block {
+	display: inline-block;
+}
+
 .fa-facebook-color {
 	color: #3b5998;
 }
@@ -444,4 +451,14 @@ body {
 h5 {
 	display: inline;
 	font-weight: 600;
+}
+
+.btn-update-status {
+	border-radius: 0;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 600;
+	font-size: 11px;
+	margin: 1px auto;
+	width: 100%;
 }
