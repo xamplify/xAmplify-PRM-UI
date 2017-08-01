@@ -54,7 +54,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     public searchDisable = true;
     public deletedVideo = false;
     public deleteVideoName: string;
-    public campaignVideo: boolean;
+    public campaignVideo = false;
     public campaignVideoMesg: string;
     public locationJson: any;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -329,11 +329,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     //  swal( 'Campaign Video!', error, 'error' );
-                    this.campaignVideoMesg = error;
+                    const message = error.replace('mobinar', 'video');
+                    this.campaignVideoMesg = message;
                     this.campaignVideo = true;
                     setTimeout(function () {
                         $('#campaignVideo').slideUp(500);
-                        this.campaignVideo = false;
                     }, 5000);
                 } else {
                     this.logger.error(this.errorPrepender + ' delete videos ():' + error);
@@ -344,6 +344,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             () => console.log('deleted functionality done')
             );
         this.deletedVideo = false;
+        this.campaignVideo = false;
     }
 
     deleteAlert(alias: string, position: number, videoName: string) {

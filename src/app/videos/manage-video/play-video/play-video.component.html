@@ -337,7 +337,7 @@
 														title="play video"
 														data-rel="fancybox-button"> <i class="fa fa-play"></i>
 													</a> <span align="right"
-														style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoFile.videoLength}}</span>
+														style="bottom: 10px; float: right; position: absolute; right: 10px;">{{truncateHourZeros(videoFile.videoLength)}}</span>
 													<span align="left"
 														style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
 													<span align="left"
@@ -352,6 +352,7 @@
 							</div>
 						</div>
 						<!--pager here  -->
+									<div *ngIf="showRelatedMessage == false">
 									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
@@ -369,6 +370,8 @@
                                                   <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
                                               </li>
                                           </ul>
+									</div>
+										<h4 *ngIf="showRelatedMessage" class="notFoundCss" >No Related videos Found</h4>
 						<!-- pager end here -->
 					</div>
 				</div>

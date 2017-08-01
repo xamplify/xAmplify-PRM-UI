@@ -87,6 +87,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public replyVideo: boolean;
     public overLaySet = false;
     public fullScreenMode = false;
+    showRelatedMessage: boolean;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
         private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, public pagination: Pagination,
         private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
@@ -444,6 +445,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoJSplayer.play();
         }
     }
+     truncateHourZeros(length) {
+        const val = length.split(":");
+        if (val.length === 3 && val[0] === "00") {
+            length = val[1] + ":" + val[2];
+        }
+        return length;
+    }
     ngOnInit() {
         this.createSessionId();
         this.deviceDectorInfo();
@@ -480,6 +488,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             break;
                         }
                     }
+                    if (this.allVideos.length === 0) { this.showRelatedMessage = true;
+                    } else { this.showRelatedMessage = false; }
                     pagination = this.pagerService.getPagedItems(pagination, this.allVideos);
                 },
                 (error: string) => {

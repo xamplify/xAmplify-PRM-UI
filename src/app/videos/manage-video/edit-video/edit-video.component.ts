@@ -48,6 +48,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     videoForm: FormGroup;
     public fileItem: FileItem;
     public imageUrlPath: SafeUrl;
+    public videoUrlWMC : any;
+    public file_srcs = [];
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
@@ -214,6 +216,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             maxFileSize: 10 * 1024 * 1024, // 10 MB
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
+            this.fileChange(fileItem);
             fileItem.withCredentials = false;
             this.ownThumb = true;
             this.ownThumbnail = false;
@@ -234,13 +237,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownThumb = false;
         this.ownThumbnail = true;
     }
-    //  setConfirmUnload(on) {
-    //     window.onbeforeunload = (on) ? this.unloadMessage : null;
-    // }
-
-    // unloadMessage() {
-    //     return "You have unsaved changes";
-    // }
     ownThumbnailfileChange(event: any) {
         const fileList: FileList = event.target.files;
         if (fileList.length > 0) {
@@ -253,6 +249,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.defaultSaveImagePath = this.saveVideoFile.imagePath;
                 });
         }
+    }
+    fileChange(inputFile: any) {
+       this.readFiles(inputFile.files);
+       this.videoUrlWMC = this.file_srcs[0];
+    }
+    readFile(file: any, reader: any, callback: any) {
+       reader.onload = () => {
+           callback(reader.result);
+       };
+       reader.readAsDataURL(file);
+    }
+    readFiles(files: any, index = 0) {
+       const reader = new FileReader();
+       if (index in files) {
+           this.readFile(files[index], reader, (result: any) => {
+               this.file_srcs.push(result);
+               this.readFiles(files, index + 1); // Read the next file;
+           });
+       } else { this.changeDetectorRef.detectChanges(); }
     }
     changeImgRadio1() {
         this.openOwnThumbnail = false;
@@ -1121,7 +1136,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         'title': {
             'required': 'Title is required.',
             'minlength': 'Title must be at least 4 characters long.',
-            'maxlength': 'Title cannot be more than 24 characters long.',
+            'maxlength': 'Title cannot be more than 34 characters long.',
         },
         'viewBy': { 'required': 'Publish is required' },
         'category': { 'required': 'Category is required' },
@@ -1137,6 +1152,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     saveVideo() {
         this.validVideoTitle(this.saveVideoFile.title);
+        const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         if (this.isValidTitle === false) {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
@@ -1178,6 +1194,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
+            this.saveVideoFile.title = titleUpdatedValue;
             this.saveVideoFile.imagePath = this.defaultSaveImagePath;
             this.logger.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
@@ -1211,7 +1228,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     validVideoTitle(videoTitle: string) {
-        this.saveVideoFile.title = videoTitle;
         console.log(videoTitle.length);
         if (videoTitle.replace(/\s/g, '').length) { this.emptyTitle = false;
         } else {  this.emptyTitle = true; }
@@ -1233,10 +1249,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.logger.debug(this.videoTitlesValues);
     }
-    descriptionInput() {
-        const description = this.saveVideoFile.description;
-        console.log(description.length);
-        if (description.replace(/\s/g, '').length) { this.emptyDescription = false;
+    descriptionInput(descriptionValue: string) {
+        this.saveVideoFile.description = descriptionValue;
+        console.log(descriptionValue.length);
+        if (descriptionValue.replace(/\s/g, '').length) { this.emptyDescription = false;
         } else {  this.emptyDescription = true; }
     }
     saveCallToActionUserForm() {
