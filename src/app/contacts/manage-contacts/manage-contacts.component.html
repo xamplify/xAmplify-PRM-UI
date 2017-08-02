@@ -177,7 +177,7 @@
 			successfully.
 		</div>
 		
-		<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
+		<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Contact lists found.. !!!</strong>
 			                </div>
@@ -478,7 +478,8 @@
 												class="alert alert-danger">
 												Minimum 4 letters required.
 											</div> -->
-											<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label> <input class="col-sm-8" type="text"
+											<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label>
+									 <input class="col-sm-8" type="text"
 									class="form-control" style="width:65%" id="contactListName"
 									 required
 									[(ngModel)]="model.contactListName" name="contactListName"
@@ -513,7 +514,7 @@
 							</form>
 							<div class="col-xs-0 col-md-6 form-group" align="right">
 								<button (click)="cancelAllContactsCancel()">Cancel</button>
-								<button style="background-color: #3598dc; color: white"
+								<button style="background-color: #3598dc; color: white" [disabled] = "isValidContactName||noSaveButtonDisable"
 									(click)="saveSelectedUsers()">Save</button>
 							</div>
 						</form>

@@ -91,6 +91,7 @@ export class ManageContactsComponent implements OnInit {
     Campaign : string;
     names:string[]=[];
     isValidContactName:boolean;
+    noSaveButtonDisable : boolean;
     public totalRecords: number;
     public zohoImage: string = 'assets/admin/pages/media/works/zoho.png';
     public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
@@ -146,6 +147,7 @@ export class ManageContactsComponent implements OnInit {
             setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );
             this.logger.info( "Success Message in manage contact pape" + this.show );
         }
+        this.noSaveButtonDisable = true;
     }
 
     /*searchDisableValue() {
@@ -673,6 +675,12 @@ export class ManageContactsComponent implements OnInit {
     }
     
     validateContactName(contactName:string){
+        if(contactName.replace(/\s\s+/g, '').length == 0){ 
+            this.noSaveButtonDisable = true;
+        }else{
+            this.noSaveButtonDisable = false;
+        }
+        
         let lowerCaseContactName = contactName.toLowerCase().trim();
         var list = this.names[0];
         console.log(list);
@@ -688,6 +696,7 @@ export class ManageContactsComponent implements OnInit {
     allContactsDataShowing() {
         this.showAllContactData = true;
         this.showManageContactData = false;
+        this.noSaveButtonDisable = true;
         this.allContactData = true;
         this.pagination = new Pagination();
         this.currentContactType = "all_contacts";

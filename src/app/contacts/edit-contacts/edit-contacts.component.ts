@@ -676,6 +676,7 @@ export class EditContactsComponent implements OnInit {
 
     saveClipboardValidEmails() {
         this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.clipboardUsers ) );
+        if(this.clipboardUsers.length !=0 ){
         this.contactService.updateContactList( this.contactListId, this.clipboardUsers )
             .subscribe(
             data => {
@@ -701,6 +702,7 @@ export class EditContactsComponent implements OnInit {
             )
         this.successMessage = false;
         this.dublicateEmailId = false;
+        }
     }
 
     saveContacts( contactListId: number ) {

@@ -57,7 +57,9 @@ export class AddContactsComponent implements OnInit {
     public googleImage: string;
     public salesforceImage: string;
     public contactListNameError: boolean;
-public invalidPattenMail = false;
+public invalidPattenMail : boolean;
+public valilClipboardUsers : boolean = false;
+public validEmailPatternSuccess : boolean = false;
     public listViewName: string;
     public uploadvalue = true;
     public contactListName: string;
@@ -285,6 +287,7 @@ public invalidPattenMail = false;
                 self.contacts.push( user );
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 $( "#file_preview" ).show();
+                this.valilClipboardUsers = true;
             }
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
@@ -306,6 +309,28 @@ public invalidPattenMail = false;
         return ( name.trim().length > 0 );
     }
 
+    checkingEmailPattern(emailId : string){
+        this.validEmailPatternSuccess = false;
+        if(this.validateEmailAddress(emailId)){
+            this.validEmailPatternSuccess = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        }else{
+            this.validEmailPatternSuccess = false;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+        }
+    }
+
+    checkingRowEails(a:boolean,b:boolean,c:boolean){
+        this.validEmailPatternSuccess = false;
+        if(a == true){
+            this.validEmailPatternSuccess = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+        }else{
+            this.validEmailPatternSuccess = false;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+        }
+    }
+    
     compressArray( original ) {
         var compressed = [];
         var copy = original.slice( 0 );
@@ -349,7 +374,7 @@ public invalidPattenMail = false;
         });
         console.log( "emailDuplicate"+isDuplicate );
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ') {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.validEmailPatternSuccess == true) {
             this.logger.info( this.newUsers[0].emailId );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
@@ -424,14 +449,17 @@ public invalidPattenMail = false;
             });
             console.log( "ERROREMails"+isDuplicate );
             
-            if(this.invalidPattenMail === true){
+            if(this.invalidPattenMail === true ){
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid" + "</h4>" );
                 testArray.length = 0;
-            } else if ( !isDuplicate ) {
+            } 
+            if( this.valilClipboardUsers == true){
+               if ( !isDuplicate ) {
                 this.saveClipboardValidEmails();
-            } else {
+                } else {
                 this.dublicateEmailId = true;
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            }
             }
             /*if ( !isDuplicate ) {
                 this.saveClipboardValidEmails();
@@ -563,6 +591,7 @@ public invalidPattenMail = false;
             this.newUsers.length = 0;
             //this.model.contactListName = null;
             this.dublicateEmailId = false;
+            this.contactListNameError = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == true && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             this.clipBoard = false;
@@ -580,6 +609,7 @@ public invalidPattenMail = false;
             this.clipboardUsers.length = 0;
             $( "#file_preview" ).hide();
             $( '#copyFromclipTextArea' ).val( '' );
+            this.contactListNameError = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == true && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -594,6 +624,7 @@ public invalidPattenMail = false;
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
            // this.model.contactListName = null;
+            this.contactListNameError = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -608,6 +639,7 @@ public invalidPattenMail = false;
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             //this.model.contactListName = null;
+            this.contactListNameError = false;
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -622,6 +654,7 @@ public invalidPattenMail = false;
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             //this.model.contactListName = null;
+            this.contactListNameError = false;
         }
     }
 

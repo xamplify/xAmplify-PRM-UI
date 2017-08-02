@@ -382,15 +382,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let newContact of newUsers; let i = index"
+									 <tr *ngFor="let newContact of newUsers; let i = index"
 										id="row_{{newContact.id}}">
 										<td><input type="checkbox" checked="newContact.checked"></td>
 										<!-- <td></td> -->
 										<td><input type=Text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											required
-											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-											#emailId="ngModel">
+											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
+											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
 											<div
 												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
 												class="alert alert-danger">
