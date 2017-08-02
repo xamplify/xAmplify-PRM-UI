@@ -24,15 +24,17 @@
 			<form class="lock-form pull-left" action="index.html" method="post">
 				<h4>{{displayName}}</h4>
 				<div class="form-group">
-				 <div *ngIf="error" class="alert alert-danger">
-			    	<span>{{error}}</span>
+				 <div *ngIf="error" class="alert alert-danger" style="height: 43px">
+			    	<span style="position: relative; top: -3px;">{{error}}</span>
 		    	</div>
-					<input class="form-control placeholder-no-fix" type="password" [(ngModel)]="password" autocomplete="off" 
+					<input class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)"
+					 [(ngModel)]="password" autocomplete="off" 
 					placeholder="Password" name="password"/>
 				</div>
 				<div class="form-actions">
 				  <!--<button type="submit" class="btn btn-success uppercase" [routerLink]="['../home/dashboard']">Login</button>-->
-				 <button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()">Login</button>
+				 <button type="submit" class="btn btn-success uppercase" [disabled] ="loginDisabled"
+				  (click)="lockScreenLogin()">Login</button>
 				</div>
 			</form>
 		</div>

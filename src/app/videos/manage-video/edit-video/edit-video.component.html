@@ -174,9 +174,9 @@
 										<div class="col-md-9">
 											<input type="text"  minlength="4" maxlength="256"
 											(input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
-												<span *ngIf="!isValidTitle || emptyTitle" class="help-block">A block of help text.</span>
+												<span *ngIf="!isValidTitle || formErrors.title== true" class="help-block">A block of help text.</span>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red;">Title Already Exists</div>
+											<div *ngIf="isValidTitle" style="color: red; position: relative;top: 2px;left: 3px;">Title Already Exists</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
 										</div>
 									</div>

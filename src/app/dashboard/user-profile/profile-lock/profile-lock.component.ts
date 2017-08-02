@@ -17,11 +17,19 @@ export class ProfileLockComponent implements OnInit {
  displayName: string;
  password: string;
  error: string;
+ loginDisabled = true;
  constructor(private userService: UserService, private authenticationService:  AuthenticationService,
-  private router: Router){
+  private router: Router) {
      this.password = '';
  }
-ngOnInit() {
+ checkPassword(password: string) {
+      if (password.replace(/\s/g, '').length === 0) {
+          this.loginDisabled = true;
+      } else { this.loginDisabled = false;
+          this.error = null;
+      }
+ }
+ ngOnInit() {
       try {
             this.userData = this.authenticationService.user;
             if (!(this.userData.profileImagePath.indexOf(null)>-1)) {

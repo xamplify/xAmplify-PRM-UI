@@ -43,22 +43,22 @@
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row" *ngIf="manageVideos" >
-				   <div *ngIf="showMessage" class="col-md-6"  id="message"
+				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					   <strong>{{showVideoName}} video Saved Successfully!</strong> 
 			      </div> 
-			    <div *ngIf="showUpdatevalue" class="col-md-6 " id="showUpdatevalue"
+			    <div *ngIf="showUpdatevalue"  style="width: 97.5%;"  class="col-md-6 " id="showUpdatevalue"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>{{showVideoName}} video file Updated Successfully!</strong>
 			    </div>
-			      <div *ngIf="deletedVideo" class="col-md-6"  id="deleteMesg"
+			      <div *ngIf="deletedVideo"  style="width: 97.5%;"  class="col-md-6"  id="deleteMesg"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					   <strong> {{deleteVideoName}} video deleted Successfully!</strong> 
 			      </div> 
-				  <div id="campaignVideo" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
+				  <div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
 						 <a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
 						<strong>{{deleteVideoName}} {{campaignVideoMesg}}</strong>
 			     </div>
@@ -67,9 +67,14 @@
 							<div class="tab-content">
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->	
+								   <div *ngIf="disableDropDowns" style="color: #515658; background :gainsboro"
+								    class="col-md-12 alert alert alert-danger alert-dismissable alertMessageCustom alignMentNovideos">
+										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<strong class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></strong>
+								   </div>
 									<div class="page-toolbar">
 									<div class="btn-group pull-right">
-										<div class="inputs" align="right" style="float: right">
+										<div *ngIf="disableDropDowns == false" class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px">
 												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
@@ -87,13 +92,18 @@
 								</div>
 														
 								<div class="margin-top-10" >
-									 <div style="width:28%">
+									 <div *ngIf="disableDropDowns == false" style="width:28%">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
 									</div>
 									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
+									  class="col-md-9 alert alert alert-danger alert-dismissable">
+									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<strong>Sorry, no videos found..!!</strong>
+									</div>
 									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
 									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
@@ -137,7 +147,7 @@
 									</div>
 									<!-- END FILTER -->
 								</div>
-							<div *ngIf="!isvideoThere">   
+							<div *ngIf="!isvideoThere && disableDropDowns == false">   
 								<!--pager here  -->
 									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
@@ -159,10 +169,6 @@
 										<!-- pager end here -->
 										</div>
 							</div>
-							<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>No Videos found.. !!!</strong>
-			                </div>	
 						</div>
 					</div>
 				<!-- END PAGE CONTENT-->

@@ -1078,7 +1078,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'title': [this.saveVideoFile.title, [
                 Validators.required,
                 Validators.minLength(4),
-                Validators.maxLength(50)
+                Validators.maxLength(256)
             ]
             ],
             'id': [this.saveVideoFile.id],
@@ -1136,7 +1136,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         'title': {
             'required': 'Title is required.',
             'minlength': 'Title must be at least 4 characters long.',
-            'maxlength': 'Title cannot be more than 34 characters long.',
+            'maxlength': 'Title cannot be more than 256 characters long.',
         },
         'viewBy': { 'required': 'Publish is required' },
         'category': { 'required': 'Category is required' },
@@ -1238,6 +1238,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             videoTitle = videoTitle.replace(/\s/g, '');
             this.isValidTitle = this.checkVideoTitleAvailability(this.videoTitlesValues, videoTitle.toLowerCase());
         }
+        this.saveVideoFile.title = videoTitle;
     }
     checkVideoTitleAvailability(arr, val) {
         this.logger.log(arr.indexOf(val) > -1);

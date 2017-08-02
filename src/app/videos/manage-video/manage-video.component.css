@@ -53,4 +53,16 @@ h3 {
       border-color: #93b593;
   
   }
+  .noVideos{
+    font-size: 15px;
+    top: 4px;
+    position: relative;
+  }
+  .alignMentNovideos{
+    height: 64px;
+    position: relative;
+    left: -16px;
+    top: 8px;
+    border: aliceblue;
+  }
   

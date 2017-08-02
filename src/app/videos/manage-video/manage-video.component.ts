@@ -57,6 +57,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     public campaignVideo = false;
     public campaignVideoMesg: string;
     public locationJson: any;
+    public allVideosCount: any;
+    public disableDropDowns: boolean;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     public errorPrepender: 'Error In:';
     sortVideos = [
@@ -115,10 +117,28 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.showUpdatevalue = false;
             }
             this.checkTotalRecords = true;
+            this.loadVideosCount();
             this.loadVideos(this.pagination);
             console.log('manage videos ngOnInit completed');
         } catch (error) {
             this.logger.error('erro in ng oninit :' + error);
+        }
+    }
+    loadVideosCount() {
+     try {
+        this.videoFileService.loadVideosCount()
+            .subscribe((result: any) => {
+                this.allVideosCount = result.videos_count;
+                if (this.allVideosCount === 0) { this.disableDropDowns = true;
+                } else { this.disableDropDowns = false; }
+            },
+            (error: string) => {
+            this.logger.error( ' Loading Videos():' + error);
+            },
+            () => console.log('load videos completed:' ),
+            );
+         } catch (error) {
+             this.logger.error('erro in load videos :' + error);
         }
     }
     loadVideos(pagination: Pagination) {
@@ -316,6 +336,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.deletedVideo = true;
                 this.deleteVideoName = videoName;
+                this.loadVideosCount();
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
                     this.isvideoThere = true;

@@ -5,7 +5,8 @@
     .notFoundCss{
         text-align: center;
         color: #00a6e8;
-        font-size: 20px;
+        font-size: 16px;
         position: relative;
-        top: 21px;
+        top: 15px;
+        left: 4px;
     }
