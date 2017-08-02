@@ -235,16 +235,4 @@ export class VideoFileService {
             return Observable.throw(error);
         }
     }
-     /*  logSeekBarVideoActions(xtremandLog: XtremandLog) {
-        console.log(xtremandLog);
-           if ((xtremandLog.actionId === 8 && this.replyVideo === true)) {
-              console.log('service called replyed and ended the video');
-              this.replyVideo = false;
-        } else {
-           const url = this.authenticationService.REST_URL + 'user/logVideoAction';
-           return this.http.post(url, xtremandLog)
-              .map(this.extractData)
-              .catch(this.handleErrorLogAction);
-           }
-    } */
 }

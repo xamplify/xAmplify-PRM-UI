@@ -93,6 +93,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
+                console.log(fileItem._file);
                 this.videoPreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
                 console.log(fileItem._file.size);
@@ -259,6 +260,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
+    }
+ trimVideoTitle(title: string) {
+      if (title.length > 40) {
+      const fileTitleStart = title.substr(0, 40);
+      const fileTitleend =  title.slice(-5);
+      return fileTitleStart + '...' + fileTitleend;
+      } else {
+      return title;
+      }
     }
  textAreaEmpty() {
      if (this.textAreaValue !== '') {

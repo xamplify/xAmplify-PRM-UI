@@ -56,23 +56,23 @@
 					</div>
 					
 					<div style="margin-bottom: 5px;" id="scrollSpeedDiv">
-						<p style="display:inline;padding-right: 5px;">Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
+						<p style="padding-right: 5px;float: left;">Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
 						<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
-						 style="border: 0px solid #cecece; display:inline;padding-right: 0px;">
-					    <span style="display:inline;color: red;font-weight: bold;">{{changeVolume}}</span>
+						 style="border: 0px solid #cecece;padding-right: 0px; width:68%">
+					    <span style="display:inline;color: red;font-weight: bold;position: absolute; top: 63px; right: 7px;">{{changeVolume}}</span>
 					    <input class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true">
 					<input class="btn btn-primary" type="button" value="Stop" (click)="stop()" *ngIf="stopButtonShow" [disabled]="stopButtonDisabled ==true">
 					</div>
               </div>
                      <video id="myVideo" class="video-js vjs-default-skin"></video>
                   </div>
-                        <div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
-                         <p *ngIf="RecordSave" style="background-color:orange;margin-right: 253px;"><img style="display:visible;color:#FFFFFF; background-color: orange;" src="assets/images/loading.gif"><strong>Uploading your video please wait and do not refresh the page...!!!</strong></p>
-                          <div *ngIf="hideSaveDiscard">
-                           <button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
-					       <button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
-					      </div>
-					    </div>
+					<div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
+						<p *ngIf="RecordSave" style="background-color:orange;margin-right: 253px;"><img style="display:visible;color:#FFFFFF; background-color: orange;" src="assets/images/loading.gif"><strong>Uploading your video please wait and do not refresh the page...!!!</strong></p>
+						<div *ngIf="hideSaveDiscard">
+						<button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
+						<button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
+						</div>
+					</div>
                </form>
               </div>
             </div>
@@ -103,7 +103,7 @@
 					<br />
 					<div class="col-md-12" style="margin-top: 25px;">
 	                <div *ngIf="processing">
-						<div class="col-md-12 alert alert-success alertMessageCustom loaderSymbol" >
+						<div class="col-md-12 alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
 						 <img src="assets/images/loadbar.gif" style="width: 67px;top: -11px;left: -9px; position: absolute;"> 
 							<p style="top: 14px;position: absolute;left: 54px;">Please wait ..!!! your video got uploaded & we are processing..!!!!</p>
 						</div>
@@ -132,7 +132,7 @@
 										</video>
 									</td> 
 
-									<td>{{ item?.file?.name }}</td>
+									<td>{{ trimVideoTitle(item?.file?.name) }}</td>
 									<td>
 									  <div style="margin-left: 13px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
 										<div class="progress" style="margin-left: 13px;">

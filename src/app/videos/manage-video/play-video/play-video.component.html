@@ -16,6 +16,7 @@
 	 .showVideoDiv{margin-top: -317px}
 	 .clipboard{ padding: 6px 44px;}
 	 a.disabled { pointer-events: none; cursor: not-allowed; }
+	 a.disabledShare { pointer-events: none; cursor: not-allowed; opacity: 0.5 }
 	 .is360video{z-index: 900;}
 	 .overlaySet{margin-top:-317px;}
 	 .bottomCss{bottom: -183px; }
@@ -124,12 +125,13 @@
 					</span>
 				</div>
 			</div>
-		   	<div>
-				<a *ngIf="shareVideo==true" class="btn btn-primary" style="color:white; background-color: #00a6e8"
-				(click)="shareClick()">
+		        <div>    <!--[class.disabledShare]="shareEmbedDisabled"-->
+				    <a  *ngIf="shareVideo==true" class="btn btn-primary" style="color:white; background-color: #00a6e8"
+				      (click)="shareClick()">
 					<!--[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-					</a> <a *ngIf="embedVideo==true" class="btn btn-primary" style="background-color: #00a6e8"
+					</a> 
+					<a  *ngIf="embedVideo==true" class="btn btn-primary" style="background-color: #00a6e8"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
@@ -171,7 +173,7 @@
 				</div>
 				<!-- Modal End-->
 			<div id="testModal">
-				<h3>{{selectedVideo.title}}</h3>
+				<h3 style="word-break: break-all;">{{selectedVideo.title}}</h3>
 				<h4>Description:</h4>
 				<p align="justify"> {{selectedVideo.description}}</p>
 			</div>
@@ -331,7 +333,7 @@
 												<img class="img-responsive"
 											     src="{{videoFile.imagePath}}" alt="">
 												<div class="mix-details">
-													<h4>{{videoFile.title}}</h4>
+													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<a class="mix-preview fancybox-button"
 														(click)="showVideo(videoFile, i)"
 														title="play video"
@@ -371,7 +373,7 @@
                                               </li>
                                           </ul>
 									</div>
-										<strong *ngIf="showRelatedMessage" class="notFoundCss" >No Related videos Found</strong>
+										<p *ngIf="showRelatedMessage" class="notFoundCss" >No Related videos Found</p>
 						<!-- pager end here -->
 					</div>
 				</div>

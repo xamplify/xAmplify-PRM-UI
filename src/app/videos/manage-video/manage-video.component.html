@@ -46,21 +46,21 @@
 				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <strong>{{showVideoName}} video Saved Successfully!</strong> 
+					   <p>{{showVideoName}} video Saved Successfully!</p> 
 			      </div> 
 			    <div *ngIf="showUpdatevalue"  style="width: 97.5%;"  class="col-md-6 " id="showUpdatevalue"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>{{showVideoName}} video file Updated Successfully!</strong>
+						<p>{{showVideoName}} video file Updated Successfully!</p>
 			    </div>
 			      <div *ngIf="deletedVideo"  style="width: 97.5%;"  class="col-md-6"  id="deleteMesg"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <strong> {{deleteVideoName}} video deleted Successfully!</strong> 
+					   <p> {{deleteVideoName}} video deleted Successfully!</p> 
 			      </div> 
 				  <div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
 						 <a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
-						<strong>{{deleteVideoName}} {{campaignVideoMesg}}</strong>
+						<p>{{deleteVideoName}} {{campaignVideoMesg}}</p>
 			     </div>
 					<div class="col-md-12">
 						<div class="tabbable tabbable-custom tabbable-noborder">
@@ -70,7 +70,7 @@
 								   <div *ngIf="disableDropDowns" style="color: #515658; background :gainsboro"
 								    class="col-md-12 alert alert alert-danger alert-dismissable alertMessageCustom alignMentNovideos">
 										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<strong class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></strong>
+										<p class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></p>
 								   </div>
 									<div class="page-toolbar">
 									<div class="btn-group pull-right">
@@ -101,7 +101,7 @@
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">
 									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<strong>Sorry, no videos found..!!</strong>
+										<p>Sorry, no videos found..!!</p>
 									</div>
 									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
 									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
@@ -110,7 +110,7 @@
 											<div class="mix-inner">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="">
 												<div class="mix-details" style="z-index: 700;padding: 7px;">
-													<h4>{{videoFile.title}}</h4>
+													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													<a class="mix-preview2 fancybox-button" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="fancybox-button">
 														<i class="fa fa-play"></i>

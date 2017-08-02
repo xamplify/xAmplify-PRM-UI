@@ -88,6 +88,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public overLaySet = false;
     public fullScreenMode = false;
     showRelatedMessage: boolean;
+  //  shareEmbedDisabled = false;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
         private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, public pagination: Pagination,
         private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
@@ -97,6 +98,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.likesValues = 2;
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
+        // if (this.videoFileService.videoViewBy === 'DRAFT') {
+        //     this.shareEmbedDisabled = true;
+        // }
     }
     embedSourcePath(alias: string, viewBy: string) {
         this.embedSrcPath = document.location.href;
@@ -529,6 +533,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
+    }
+    titleCheckLength(title: string) {
+     if (title.length > 25) { title = title.substring(0, 24) + '...';}
+     return title;
     }
     play360Video() {
         this.is360Value = true;

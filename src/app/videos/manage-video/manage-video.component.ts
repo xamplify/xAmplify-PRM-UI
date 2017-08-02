@@ -125,20 +125,21 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
     }
     loadVideosCount() {
-     try {
-        this.videoFileService.loadVideosCount()
-            .subscribe((result: any) => {
-                this.allVideosCount = result.videos_count;
-                if (this.allVideosCount === 0) { this.disableDropDowns = true;
-                } else { this.disableDropDowns = false; }
-            },
-            (error: string) => {
-            this.logger.error( ' Loading Videos():' + error);
-            },
-            () => console.log('load videos completed:' ),
+        try {
+            this.videoFileService.loadVideosCount()
+                .subscribe((result: any) => {
+                    this.allVideosCount = result.videos_count;
+                    if (this.allVideosCount === 0) {
+                    this.disableDropDowns = true;
+                    } else { this.disableDropDowns = false; }
+                },
+                (error: string) => {
+                    this.logger.error(' Loading Videos():' + error);
+                },
+                () => console.log('load videos completed:'),
             );
-         } catch (error) {
-             this.logger.error('erro in load videos :' + error);
+        } catch (error) {
+            this.logger.error('erro in load videos :' + error);
         }
     }
     loadVideos(pagination: Pagination) {
@@ -190,6 +191,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.logger.error('erro in load videos :' + error);
         }
     };
+    titleCheckLength(title: string) {
+     if (title.length > 25) { title = title.substring(0, 24) + '...';}
+     return title;
+    }
     setPage(page: number) {
         if (page !== this.pagination.pageIndex) {
             this.pagination.pageIndex = page;
@@ -273,8 +278,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             }
             );
     }
-
     showPlayVideo(video: SaveVideoFile) {
+         this.videoFileService.videoViewBy = video.viewBy;
         console.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
@@ -325,7 +330,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.referenceService.showServerError(this.httpRequestLoader);
             });
     }
-
+   videoTitleLength(title: string) {
+     if (title.length > 50) { title = title.substring(0, 50) + '.....'; }
+     return title;
+   }
     deleteVideoFile(alias: string, position: number, videoName: string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
         this.videoFileService.deleteVideoFile(alias)
@@ -335,7 +343,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log('MangeVideoComponent deleteVideoFile success : ' + data);
                 this.pagination.pagedItems.splice(position, 1);
                 this.deletedVideo = true;
-                this.deleteVideoName = videoName;
+                this.deleteVideoName = this.videoTitleLength(videoName);
                 this.loadVideosCount();
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
@@ -412,9 +420,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             } else { $('#message').slideUp(500); };
         }, 5000);
 
-        if (videoFile == null) {
-            this.showVideoName = '';
-        } else { this.showVideoName = videoFile.title; }
+      if (videoFile == null) {  this.showVideoName = '';
+      } else {
+        this.showVideoName = this.videoTitleLength(videoFile.title); }
         console.log('update method called ' + this.showVideoName);
     }
     goToManageVideos() {
@@ -433,6 +441,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoFileService.actionValue = '';
         this.isvideoThere = false;
         this.deletedVideo = false;
+        this.videoFileService.videoViewBy = '';
     }
 
 }
