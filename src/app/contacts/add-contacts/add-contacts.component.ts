@@ -663,6 +663,7 @@ public validEmailPatternSuccess : boolean = false;
         this.inValidCsvContacts = false;
         this.contacts.length = 0;
         this.model.contactListName = "";
+        this.isValidContactName = false;
         // this.removeCsvName = false;
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
