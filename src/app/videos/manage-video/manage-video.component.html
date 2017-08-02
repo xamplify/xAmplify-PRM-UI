@@ -90,14 +90,13 @@
 										</div>
 									</div>
 								</div>
-														
 								<div class="margin-top-10" >
-									 <div *ngIf="disableDropDowns == false" style="width:28%">
+									  <div *ngIf="disableDropDowns == false" style="width:28%">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
-									</div>
+									  </div>
 									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">
