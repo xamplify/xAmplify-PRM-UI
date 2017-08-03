@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { noWhiteSpaceValidator} from '../../form-validator';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
@@ -24,16 +25,15 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     public isDisable: boolean = false;
     loading: boolean = false;
-
+    model: any = {};
     public duplicateTemplateName: boolean = false;
     public isPreview: boolean = false;
     public isUploaded: boolean = false;
     public showText: boolean = true;
-    public isTemplateName: boolean = false;
+    public isValidTemplateName: boolean = true;
     public disable: boolean;
     public htmlText: string;
     public uploader: FileUploader;
-    model: any = {};
     public availableTemplateNames: Array<string>;
     isFileDrop: boolean;
     isFileProgress: boolean;
@@ -79,7 +79,6 @@ export class UploadEmailTemplateComponent implements OnInit {
     ngOnDestroy() {
         //this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
-
 
 
     /****************Reading Uploaded File********************/
@@ -152,26 +151,40 @@ export class UploadEmailTemplateComponent implements OnInit {
     }
 
     checkAvailableNames(value: any) {
-        if (this.availableTemplateNames.indexOf(value.toLocaleLowerCase()) > -1) {
-            this.duplicateTemplateName = true;
+        if (value.trim().length > 0 ) {
+            this.isValidTemplateName = true;
+            $("#templateName").attr('style','border-left: 5px solid #42A948');
+            if(this.availableTemplateNames.length>0){
+                if (this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1) {
+                    this.duplicateTemplateName = true;
+                    $("#templateName").attr('style','border-left: 5px solid #a94442');
+                } else {
+                    $("#templateName").attr('style','border-left: 5px solid #42A948');
+                    this.duplicateTemplateName = false;
+                }
+            }
         } else {
-            this.duplicateTemplateName = false;
+            $("#templateName").attr('style','border-left: 5px solid #a94442');
+            this.isValidTemplateName = false;
         }
-        if (value.length >= 1) {
-            this.isTemplateName = true;
-        } else {
-            this.isTemplateName = false;
+    }
+    
+    checkName(value:string,isAdd:boolean){
+        if(isAdd){
+            return this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1;
+        }else{
+            return this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase().trim();
         }
     }
 
     checkUpdatedAvailableNames(value: any) {
-        if (this.availableTemplateNames.indexOf(value.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
+        if (this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase().trim()) {
             this.duplicateTemplateName = true;
         } else {
             this.duplicateTemplateName = false;
         }
     }
-
+    
 
     /************Save Html Template****************/
     saveHtmlTemplate() {

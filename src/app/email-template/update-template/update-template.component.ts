@@ -87,15 +87,19 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     }
 
     checkUpdatedAvailableNames(value: any) {
-        if (this.availableTemplateNames.indexOf(value.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-            this.duplicateTemplateName = true;
-        } else {
-            this.duplicateTemplateName = false;
-        }
-        if (value.length == 0) {
-            this.invalidTemplateName = true;
-        } else {
+        if (value.trim().length > 0 ) {
             this.invalidTemplateName = false;
+             $("#templateName").attr('style','border-left: 5px solid #42A948');
+                if(this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase().trim()){
+                    this.duplicateTemplateName = true;
+                    $("#templateName").attr('style','border-left: 5px solid #a94442');
+                }else{
+                    $("#templateName").attr('style','border-left: 5px solid #42A948');
+                    this.duplicateTemplateName = false;
+                }
+        } else {
+            $("#templateName").attr('style','border-left: 5px solid #a94442');
+            this.invalidTemplateName = true;
         }
     }
     updateHtmlTemplate() {

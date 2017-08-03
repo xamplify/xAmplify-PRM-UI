@@ -104,7 +104,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;                           
-    selectedRowClass:string = "";      
+    selectedRowClass:string = ""; 
+     selectedContactListIds = [];                           
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;  
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
@@ -188,7 +189,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isContactList = true;
                 this.contactListTabClass = this.successTabClass;
                 this.contactsPagination.editCampaign = true;
-                this.contactsPagination.campaignUserListIds = this.campaign.userListIds.sort();
+                this.selectedContactListIds = this.campaign.userListIds.sort();
                 this.isCampaignDraftContactList = true;
             }
             /***********Select Email Template Tab*************************/
@@ -706,13 +707,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     highlightRow(contactId:number,event:any){
         let isChecked = $('#'+contactId).is(':checked');
-        let contactIds = this.campaign.userListIds;
         if(isChecked){
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-            contactIds.push(contactId);
+            this.selectedContactListIds.push(contactId);
         }else{
             $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-            contactIds.splice( $.inArray(contactId,this.campaign.userListIds) ,1 );
+            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
         }
         this.contactsUtility();
         event.stopPropagation();
@@ -724,17 +724,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               $('#'+contactId).prop( "checked", false );
               $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
               console.log("Revmoing"+contactId);
-              this.campaign.userListIds.splice( $.inArray(contactId,this.campaign.userListIds) ,1 );
+              this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
         }else{
             //Highlighting Row
             $('#'+contactId).prop( "checked", true );
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
             console.log("Adding"+contactId);
-            this.campaign.userListIds.push(contactId);
+            this.selectedContactListIds.push(contactId);
         }
           this.contactsUtility();
           event.stopPropagation();
-          console.log(this.campaign.userListIds);
+          console.log(this.selectedContactListIds);
     }
     contactsUtility(){
         var trLength = $('#user_list_tb tbody tr').length;
@@ -756,17 +756,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
             let self = this;
-            let contactIds = this.campaign.userListIds = [];
             $('[name="campaignContact[]"]:checked').each(function(){
                 var id = $(this).val();
-                contactIds.push(parseInt(id));
+                self.selectedContactListIds.push(parseInt(id));
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
+            this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
-            this.campaign.userListIds = [];
+            this.selectedContactListIds = [];
         }
         ev.stopPropagation();
     }
@@ -774,6 +774,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isAllChecked() {
         return this.contactsPagination.pagedItems.every(_ => _.state);
       }
+
     
     /*******************************Preview*************************************/
     contactListItems:any[];
@@ -996,21 +997,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let dateTime = this.campaignLaunchForm.value.launchTime;
             let date = dateTime.split(' ')[0];
             this.date = date.replace("-","/");
+            console.log(this.date);
         }
        
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
-            $('#'+reply.divId).css('background-color','');
+            $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             reply.subject = this.getCkEditorContent(reply.divId);
-            let replyTime = reply.replyTime;
-            if(replyTime!=undefined && reply.subject.length>0){
+            if(reply.replyTime!=undefined && reply.subject.length>0){
                 console.log(reply);
                  if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                     replyTime = this.getCalculatedTime(replyTime, this.date, reply.replyInDays);
+                     reply.replyTime = this.getCalculatedTime(reply.replyTime, this.date, reply.replyInDays);
                  }
             }else{
-                this.dataError = true;
-                $('#'+reply.divId).css('background-color','#a94442');
+                $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             }
            
             
@@ -1018,21 +1019,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         for(var i=0;i<this.urls.length;i++){
             let url = this.urls[i];
             console.log(url);
-            $('#'+url.divId).css('background-color','');
+            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
+            $('#'+url.divId).addClass('portlet light dashboard-stat2');
             url.body = this.getCkEditorContent(url.divId);
             let replyTime = url.replyTime;
             if(replyTime!=undefined && url.subject!=null && url.body.length>0){
                 console.log(url);
                 if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                    url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays)
+                    url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays);
                 }
             }else{
-                this.dataError = true;
-                $('#'+url.divId).css('background-color','#a94442');
+                $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             }
            
         }
-  
+        this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         var data = {
             'campaignName': this.campaign.campaignName,
             'fromName': this.campaign.fromName,
@@ -1046,7 +1047,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'socialSharingIcons': this.campaign.socialSharingIcons,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
-            'userListIds': this.campaign.userListIds,
+            'userListIds': this.selectedContactListIds,
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
             'scheduleTime': this.campaignLaunchForm.value.launchTime,
@@ -1119,7 +1120,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        console.log(data);
         this.campaignService.saveCampaign( data )
         .subscribe(
         data => {
@@ -1138,25 +1138,30 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
     launchCampaign(){
         var data = this.getCampaignData("");
-        if(this.dataError){}
-
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
-        this.campaignService.saveCampaign( data )
-        .subscribe(
-        response => {
-            console.log(response);
-            if(response.message=="success"){
-                this.isLaunched = true;
-                this.router.navigate(["/home/campaigns/managepublish"]);
-            }else{
-            }
-        },
-        error => {
-            this.logger.error("error in launchCampaign()", error);
-        },
-        () => this.logger.info("Finished launchCampaign()")
-    ); 
-    
+        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if(errorLength==0){
+            this.dataError = false;
+            this.campaignService.saveCampaign( data )
+            .subscribe(
+            response => {
+                console.log(response);
+                if(response.message=="success"){
+                    this.isLaunched = true;
+                    this.router.navigate(["/home/campaigns/managepublish"]);
+                }else{
+                }
+            },
+            error => {
+                this.logger.error("error in launchCampaign()", error);
+            },
+            () => this.logger.info("Finished launchCampaign()")
+        ); 
+        
+        }else{
+            this.dataError = true;
+        }
+     
     
     return false;
     }
@@ -1188,6 +1193,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         this.refService.campaignVideoFile = undefined;
         this.refService.selectedCampaignType = "";
+        this.selectedContactListIds = [];
          }
     
     /*************************************************************Form Errors**************************************************************************************/
@@ -1424,7 +1430,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         addReplyRows() {
             this.reply = new Reply();
             let length = this.allItems.length;
-            length = length+1
+            length = length+1;
             var id = 'reply-'+length;
             this.reply.divId = id;
             this.reply.actionId = 0;
@@ -1441,7 +1447,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.urls.push(this.url);
             this.allItems.push(id);
         }
-        
      remove(divId:string,type:string){
        console.log(divId);
          if(type=="replies"){

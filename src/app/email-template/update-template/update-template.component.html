@@ -22,15 +22,12 @@
 								<label for="name">Template Name</label> 
 								<input type="text"
 									class="form-control" id="templateName"
-									 required
 									[(ngModel)]="model.templateName" name="templateName"
 									minlength="1" maxlength="50"
 									placeholder="Please Enter Template Name"
-									#templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)">
-								<div
-									[hidden]="templateName.valid || templateName.pristine"
-									class="alert alert-danger">Name is required</div>
-								<div [hidden]="!duplicateTemplateName" class="alert alert-danger">Duplicate Name</div>
+									#templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)" style="border-left: 5px solid #42A948">
+								<div *ngIf="invalidTemplateName"	class="alert alert-danger">Name is required</div>
+								<div *ngIf="duplicateTemplateName && !invalidTemplateName" class="alert alert-danger">Duplicate	Name</div>
 							</div>
 							<div class="col-xs-0 col-md-6" style="margin-top:23px;">
 								<button type="button" class="btn btn-info" (click)="updateHtmlTemplate()" [disabled]="duplicateTemplateName ||invalidTemplateName ">Update</button>

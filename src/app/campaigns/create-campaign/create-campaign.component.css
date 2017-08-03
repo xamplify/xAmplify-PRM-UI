@@ -721,8 +721,13 @@ label img {
 .dashboard-stat2,
 .portlet {
     border-radius: 0 !important;
+    padding-top: 2em;
 }
-
+.border-error{
+	 border-radius: 0 !important;
+    padding-top: 2em;
+	border: 2px solid rgb(243, 86, 93);
+}
 .border-right {
     border-right: 1px solid #dadada;
 }

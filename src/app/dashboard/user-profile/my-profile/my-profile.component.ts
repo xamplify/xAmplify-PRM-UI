@@ -5,7 +5,7 @@ import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { matchingPasswords } from '../../../form-validator';
+import { matchingPasswords,noWhiteSpaceValidator } from '../../../form-validator';
 import { Observable } from 'rxjs/Rx';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Logger } from 'angular2-logger/core';
@@ -314,22 +314,45 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'required': 'Confirm Password is required.'
         },
         'firstName': {
-            'required': 'First Name required.'
+            'required': 'First Name required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'First Name must be at least 3 characters long.',
+            'maxlength': 'First Name cannot be more than 50 characters long.',
+            'pattern':'Only Characters Allowed'
         },
         'lastName': {
-            'required': 'Last Name required.'
+            'required': 'Last Name required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'Last Name must be at least 3 characters long.',
+            'maxlength': 'Last Name cannot be more than 50 characters long.',
+            'pattern':'Only Characters Allowed'
         },
         'mobileNumber': {
-            'required': 'Mobile Number required.'
+            'required': 'Mobile Number required.',
+            'minlength': 'Mobile should be 10 digit.',
+            'maxlength': 'Mobile should be 10 digit.',
+            'pattern':'Mobile Number Only Should Be Numbers'
+            
         },
         'interests': {
-            'required': 'Interests required.'
+            'required': 'Interests required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'interest be at least 3 characters long.',
+            'maxlength': 'interest cannot be more than 50 characters long.',
+            'pattern':'Only Characters Allowed'
         },
         'occupation': {
-            'required': 'Occupation required.'
+            'required': 'Occupation required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'occupation be at least 3 characters long.',
+            'maxlength': 'occupation cannot be more than 50 characters long.',
+            'pattern':'Only Characters Allowed'
         },
         'description': {
-            'required': 'About required.'
+            'required': 'About required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'description be at least 3 characters long.',
+            'maxlength': 'description cannot be more than 50 characters long.'
         },
         'websiteUrl': {
             'required': 'WebsiteUrl required.',
@@ -342,15 +365,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     /*******************Update User Profile*************************************/
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
-        var urlPatternRegEx = "https?://.+";
+        var urlPatternRegEx =/(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+        var mobileNumberPatternRegEx = /^[0-9]{10,10}$/;
+        var charRegEx = /^[a-zA-z] ?([a-zA-z]|[a-zA-z] )*[a-zA-z]$/;
+        var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
         console.log(this.userData);
         this.updateUserProfileForm = this.fb.group({
-            'firstName': [this.userData.firstName, Validators.required],
-            'lastName': [this.userData.lastName, Validators.required],
-            'mobileNumber': [this.userData.mobileNumber, Validators.required],
-            'interests': [this.userData.interests, Validators.required],
-            'occupation': [this.userData.occupation, Validators.required],
-            'description': [this.userData.description, Validators.required],
+            'firstName': [this.userData.firstName,Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(charRegEx)])],
+            'lastName': [this.userData.lastName, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(charRegEx)])],
+            'mobileNumber': [this.userData.mobileNumber,Validators.compose([Validators.required,Validators.minLength( 10 ),Validators.maxLength( 10 ),Validators.pattern(mobileNumberPatternRegEx)])],
+            'interests': [this.userData.interests, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
+            'occupation': [this.userData.occupation, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
+            'description': [this.userData.description, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.required, Validators.pattern(urlPatternRegEx)]],
 
         });

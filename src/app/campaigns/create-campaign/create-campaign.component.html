@@ -1,3 +1,7 @@
+ <style type="text/css">
+  .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
+  a.disabled { pointer-events: none; cursor: not-allowed; }
+</style> 
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -412,7 +416,7 @@
 				          <div class="col-lg-12">
 				            <div class="portlet box blue-hoki">
 				            <div class="portlet-title">
-       		 					<div class="caption">Contact Lists</div>
+       		 					<div class="caption">Contact Lists </div>
 								</div> 
 								<div class="portlet-body" style="background-color: white;">
 				                <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
@@ -421,8 +425,7 @@
 								<table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info">
 				                 <thead>
 				                  <tr>
-				                    <td align="center">
-				                    <!-- <input type="checkbox" class="" id="checkAllExistingContacts"   (change)="checked($event.target.checked)"> -->
+				                    <td align="center"><!-- selectedContactListIds?.length==contactsPagination.pagedItems.length -->
 				                    <input type="checkbox" name="all" [checked]="isAllChecked()" (change)="checkAll($event)" class="" id="checkAllExistingContacts"  />
 				                    </td>
 				                    <th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending" aria-label="Date Uploaded: activate to sort column ascending">
@@ -438,16 +441,17 @@
 				                 </thead>
 				                	<tbody>
 									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts.id,$event)"
-									  [class.contact-list-selected]="contacts.id===contactsPagination.campaignUserListIds[i]">
+									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1">
 					                     <td *ngIf="isAdd || !isCampaignDraftContactList ">
 					                      <div class="form-group">
-						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}" [(ngModel)]="contacts.state"
-						                      (click)="highlightRow(contacts.id,$event)"/>
+						                     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}"
+						                      (click)="highlightRow(contacts.id,$event)"/>  <!-- [(ngModel)]="contacts.state" -->
 					                      </div>
 					                     </td>
 					                     <td *ngIf="!isAdd && isCampaignDraftContactList"><!-- [(ngModel)]="contacts.state" -->
 					                     	<div class="form-group">
-						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}" [checked]="contacts.id===contactsPagination.campaignUserListIds[i]"   
+						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}"
+						                      [checked]="selectedContactListIds.indexOf(contacts.id)>-1"   
 						                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id,$event)">
 					                      </div>
 					                     </td>
@@ -461,7 +465,7 @@
 					                  </tr>
 					                </tbody>
                             	 </table>
-                            		 <div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">   
+                            		 <div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
 									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
@@ -469,7 +473,7 @@
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
                                                  <a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
                                               </li>
-                                              <li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{active:contactsPagination.pager.currentPage === page}">
+                                              <li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{disabled:contactsPagination.pager.currentPage === page}">
                                                  <a (click)="setPage(page,'contacts',contactUsers)">{{page}}</a>
                                               </li>
                                               <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
@@ -480,7 +484,7 @@
                                               </li>
                                           </ul>
                                           
-                                          <select class="btn btn-primary" style="margin-left:150px;margin-bottom:47px;"
+                                          <select class="btn btn-primary" style="margin-left:150px;margin-bottom:47px;float: right;"
 													    [(ngModel)]="contactItemsSize" 
 													    (ngModelChange)="getNumberOfContactItemsPerPage($event)">
 													  <option *ngFor="let itemPerPage of numberOfContactsPerPage" [ngValue]="itemPerPage">
@@ -771,11 +775,11 @@
 		</div>
 		</div>
         </div>
-        	<div class="col-xs-12">
-        	 <div  class="alert alert-danger" *ngIf="dataError"><strong>Please Fill Required Data</strong></div>
+        	<div class="col-xs-12" id="reply-onclick-div">
+        	 <div  class="alert alert-danger" *ngIf="dataError"><strong>Please Fill Data</strong></div>
         	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
-        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{reply.divId}}" >
+        		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" >
         		<h4><b>Reply:</b></h4>
         		<hr>
 					<div class="panel-body">
@@ -811,7 +815,7 @@
         		</div>
 				<!-- ------------Link------------------------ -->
 				<div *ngFor="let url of urls;let i=index">
-        		<div class="portlet light dashboard-stat2" style="padding-top: 2em;" id="{{url.divId}}">
+        		<div class="portlet light dashboard-stat2" id="{{url.divId}}">
         		<h4><b>Url:</b></h4>
         		<hr>
 					<div class="panel-body">

@@ -1,4 +1,4 @@
-import {FormGroup, AbstractControl, NG_VALIDATORS, Validator, ValidatorFn, Validators,FormBuilder } from '@angular/forms';
+import {FormGroup, AbstractControl, NG_VALIDATORS, Validator, ValidatorFn, Validators,FormBuilder,FormControl } from '@angular/forms';
 import {FileItem} from 'ng2-file-upload';
 
 export function matchingPasswords(passwordKey: string, confirmPasswordKey: string): ValidatorFn {
@@ -13,17 +13,6 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
     }
   }
 
-export function validateCountryName(countryKey: string): ValidatorFn {
-    return (group: FormGroup): {[key: string]: any} => {
-      let country = group.controls[countryKey];
-      alert(country.value);
-      if (country.value !== "Please Select Country") {
-        return {
-          invalidCountry: true
-        };
-      }
-    }
-  }
 
 export function validateCampaignSchedule(scheduleType: string, date: string): ValidatorFn {
     return (group: FormGroup): {[key: string]: any} => {
@@ -56,7 +45,6 @@ export function validateCampaignName(name: string, names:string[],isAdd:boolean,
   }
 
 export function validateOwnThumbnail(imageFile:any,fileItem:FileItem,ownThumb:any):ValidatorFn {
-	
    console.log(fileItem);
 	  return (group: FormGroup): {[key: string]: any} => {
 	      
@@ -72,4 +60,37 @@ export function validateOwnThumbnail(imageFile:any,fileItem:FileItem,ownThumb:an
 	
 }
 
+export function noWhiteSpaceValidator(control: FormControl): {[key: string]: any} {
+    if(control.value!=null){
+        if(control.value.length>0 && control.value.length<50){
+            if ((control.value).trim()=="") {
+                return {
+                    whitespace: true
+                };
+              }
+        }
+    }
+    
+  }
+export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: string]: any} {
+    if(control.value!=null){
+        if(control.value.length>2 && control.value.length<50){
+            if ((control.value).trim()=="") {
+                return {
+                    whitespace: true
+                };
+              }
+        }
+    }
+    
+  }
+
+export function validateCountryName(control: FormControl): {[key: string]: any} {
+        if (control.value.trim()=="---Please Select Country---") {
+            return {
+                invalidCountry: true
+            };
+          }
+    
+  }
 

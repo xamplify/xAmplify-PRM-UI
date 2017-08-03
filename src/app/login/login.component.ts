@@ -7,7 +7,7 @@ import { User } from '../core/models/user';
 import { AuthenticationService } from '../core/services/authentication.service';
 import { UtilService } from '../core/services/util.service';
 import { UserService } from '../core/services/user.service';
-import {matchingPasswords,validateCountryName} from '../form-validator';
+import {matchingPasswords,noWhiteSpaceValidator,validateCountryName} from '../form-validator';
 import { ReferenceService } from '../core/services/reference.service';
 import { Logger } from "angular2-logger/core";
 declare var Metronic, swal, $, Layout, Login, Demo: any;
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     active = true;
     userActive = false;
     passwordSuccess = false;
-    countries = ["Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
+    countries = ["---Please Select Country---","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
                  
                  "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegowina","Botswana","Bouvet Island","Brazil",
                  
@@ -67,20 +67,6 @@ export class LoginComponent implements OnInit {
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, 
         private userService: UserService, private refService :ReferenceService, private utilService: UtilService,private logger:Logger ) {
-      
-    	this.signUpForm = new FormGroup({
-            fullName: new FormControl(),
-            emailId: new FormControl(),
-            address: new FormControl(),
-            city: new FormControl(),
-            country: new FormControl(),
-            password: new FormControl(),
-            confirmPassword: new FormControl(),
-            agree: new FormControl()
-        });
-        this.forgotPasswordForm = new FormGroup({
-            forgotPasswordEmailId: new FormControl()
-        });
         this.buildForm();
         this.validateForgotPasswordForm();
         
@@ -209,18 +195,15 @@ export class LoginComponent implements OnInit {
 
     buildForm() {
     	var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
-        var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';
+        var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';// 
+        var addressRegex =  /^[a-zA-Z0-9-\/] ?([a-zA-Z0-9-\/]|[a-zA-Z0-9-\/] )*[a-zA-Z0-9-\/]$/;
+        var cityRegEx = /^[a-zA-z] ?([a-zA-z]|[a-zA-z] )*[a-zA-z]$/;
         this.signUpForm = this.fb.group( {
-            'fullName': [this.signUpUser.fullName, [
-                Validators.required,
-                Validators.minLength( 4 ),
-                Validators.maxLength( 24 )
-            ]
-            ],
+            'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(cityRegEx)])],
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( emailRegex )]],
-            'address': [this.signUpUser.address, Validators.required],
-            'city': [this.signUpUser.city, Validators.required],
-            'country': [this.countries[0], Validators.required],
+            'address': [this.signUpUser.address,  Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(addressRegex)])],
+            'city': [this.signUpUser.city, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(cityRegEx)])],
+            'country': [this.countries[0],  Validators.compose([Validators.required,validateCountryName])],
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.pattern( passwordRegex )]],
             'confirmPassword': [null, [Validators.required, Validators.pattern( passwordRegex )]],
             'agree': [false, Validators.required],
@@ -254,15 +237,15 @@ export class LoginComponent implements OnInit {
     onValueChanged( data?: any ) {
         if ( !this.signUpForm ) { return; }
         const form = this.signUpForm;
-
+        console.log(form.controls);
         for ( const field in this.formErrors ) {
             // clear previous error message (if any)
             this.formErrors[field] = '';
             const control = form.get( field );
-
             if ( control && control.dirty && !control.valid ) {
                 const messages = this.validationMessages[field];
                 for ( const key in control.errors ) {
+                    console.log( this.formErrors[field]);
                     this.formErrors[field] += messages[key] + ' ';
                 }
             }
@@ -302,21 +285,32 @@ export class LoginComponent implements OnInit {
     validationMessages = {
         'fullName': {
             'required': 'Name is required.',
+            'whitespace':'Invalid Data',
             'minlength': 'Name must be at least 4 characters long.',
-            'maxlength': 'Name cannot be more than 24 characters long.'
+            'maxlength': 'Name cannot be more than 50 characters long.',
+            'pattern':'Only Characters Allowed'
         },
         'emailId': {
             'required': 'Email is required.',
             'pattern': 'Invalid Pattern.'
         },
         'address': {
-            'required': 'Address is required.'
+            'required': 'Address is required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'Address must be at least 4 characters long.',
+            'maxlength': 'Address cannot be more than 50 characters long.',
+            'pattern':'Invalid Address'
         },
         'city': {
-            'required': 'City is required.'
+            'required': 'City is required.',
+            'whitespace':'Invalid Data',
+            'minlength': 'City must be at least 4 characters long.',
+            'maxlength': 'City cannot be more than 50 characters long.',
+            'pattern':'Invalid City'
         },
         'country': {
-            'required': 'Country is required.'
+            'required': 'Country is required.',
+            'invalidCountry':'Country is required.'
         },
         'password': {
             'required': 'Password is required.',
