@@ -86,8 +86,9 @@
 					<div class="col-md-6">
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add file...</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
-						     *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true" #input />
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.3gp,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
+						     *ngIf="uploader.queue.length==0" 
+							 [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
 					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
@@ -115,9 +116,9 @@
                     
 						<table class="table" >
 							<tbody *ngIf="isDisable==false">
-								<tr *ngFor="let item of uploader.queue">
+							  <tr *ngFor="let item of uploader.queue">
 							  	<td >
-									     <video id="my-video"  controls preload="auto" width="280" height="180" >
+									<video id="my-video"  controls preload="auto" width="280" height="180" >
 											<source [src]='videoPreviewPath' type = 'video/mp4'>
 											<source [src]='videoPreviewPath' type = 'video/3gpp'>
 											<source [src]='videoPreviewPath' type = 'video/quicktime'>
@@ -129,17 +130,17 @@
 											<source [src]="videoPreviewPath" type = 'video/x-flv'> 
 											<source [src]="videoPreviewPath" type = 'video/x-f4v'> 
 											<source [src]="videoPreviewPath" type = 'video/divx'>
-										</video>
-									</td> 
-
-									<td>{{ trimVideoTitle(item?.file?.name) }}</td>
-									<td>
-									  <div style="margin-left: 13px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
-										<div class="progress" style="margin-left: 13px;">
-										  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-										</div>
-									</td>
-									<td class="text-center">
+								   </video>
+								   <img src={{}} >
+								</td> 
+								<td>{{ trimVideoTitle(item?.file?.name) }}</td>
+								<td>
+									<div style="margin-left: 13px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
+									<div class="progress" style="margin-left: 13px;">
+										<div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+									</div>
+								</td>
+								<td class="text-center">
 									<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
 									 <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
 									 <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span></td>
@@ -152,9 +153,8 @@
 											(click)="item.remove();removefileUploadVideo()">
 											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
-									</td>
+								 </td>
 								</tr>
-
 							</tbody>
 						</table>
 						<div>

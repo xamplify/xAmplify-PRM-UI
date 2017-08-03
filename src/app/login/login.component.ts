@@ -80,22 +80,21 @@ export class LoginComponent implements OnInit {
         () => console.log("finished")
         );
 */}
-
-
     public login() {
+       if(this.model.username.length === 0 || this.model.password.length === 0) {
+         this.logErrorEmpty()
+        } else {
         this.loading = true;
         this.refService.userName = this.model.username;
-        
-        var authorization = 'Basic ' + btoa( 'my-trusted-client:');
-        var body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
-        
+        const authorization = 'Basic ' + btoa( 'my-trusted-client:');
+        const body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.model.username).subscribe( result => {
             if ( localStorage.getItem( 'currentUser' ) ) {
                 this.initializeTwitterNotification();
-                //if user is coming from login
+                // if user is coming from login
              //   this.getLoggedInUserDetails();
                 this.router.navigate( ['/home/dashboard/default'] );
-                //if user is coming from any link
+                // if user is coming from any link
 
             } else {
                 this.logError();
@@ -104,11 +103,22 @@ export class LoginComponent implements OnInit {
             err => this.logError(),
             () => console.log( 'login() Complete' ) );
         return false;
+      }
     }
     logError() {
         this.error = 'Username or password is incorrect';
-        console.log( "error : " + this.error );
-        this.router.navigate( ['/login'] );
+        console.log("error : " + this.error);
+        this.router.navigate(['/login']);
+        setTimeout(()=> {
+            this.error = '';
+        },5000)
+    }
+    logErrorEmpty() {
+        this.error = 'Username or password can\'t be empty';
+        console.log("error : " + this.error);
+        setTimeout(()=> {
+            this.error = '';
+        },5000)
     }
     ngOnInit() {
         try {
@@ -121,9 +131,7 @@ export class LoginComponent implements OnInit {
             Login.init();
             Demo.init();
             console.log( "ngOnInit() :LoginComponent completed" );
-          
-        }
-        catch ( error ) {
+        } catch ( error ) {
             console.log( error );
         }
     }
@@ -182,8 +190,7 @@ export class LoginComponent implements OnInit {
                     this.formErrors['userName'] = error;
                 } else if ( error == "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
                     this.formErrors['emailId'] = 'Email Id already exists';
-                }
-                else{
+                } else{
                     this.logger.error(this.refService.errorPrepender+" signUp():"+error);
                 }
             },
@@ -218,9 +225,6 @@ export class LoginComponent implements OnInit {
         this.onValueChanged(); // (re)set validation messages now
     }
 
-
-
-
     validateForgotPasswordForm() {
         var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
         this.forgotPasswordForm = this.fb.group( {
@@ -232,7 +236,6 @@ export class LoginComponent implements OnInit {
 
         this.onEmailValueChanged(); // (re)set validation messages now
     }
-
 
     onValueChanged( data?: any ) {
         if ( !this.signUpForm ) { return; }

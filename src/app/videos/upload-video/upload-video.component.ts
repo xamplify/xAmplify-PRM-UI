@@ -9,6 +9,7 @@ import { Router} from '@angular/router';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { ReferenceService } from '../../core/services/reference.service';
+import { Ng2DeviceService } from 'ng2-device-detector';
 declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
 
 @Component({
@@ -65,11 +66,17 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public MultipleVideo = false;
     public maxVideoSize: number;
     public oneDriveValue: false;
+    public videoUrlWMC: any;
+    deviceInfo = null;
+    browserInfo: string;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
-        private sanitizer: DomSanitizer, private refService: ReferenceService) {
+        private sanitizer: DomSanitizer, private refService: ReferenceService, private deviceService: Ng2DeviceService) {
         try {
+            this.deviceInfo = this.deviceService.getDeviceInfo();
+            this.browserInfo = this.deviceInfo.browser;
+            console.log(this.browserInfo);
             this.isChecked = false;
             this.isDisable = false;
             this.isFileDrop = false;
@@ -279,15 +286,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.stopButtonShow  = false; // hide the stop button
         this.testSpeedshow = true; // show the test speed button
         this.rageDisabled = false;
-        $("#script-text").stop(true);
+        $('#script-text').stop(true);
     }
   testSpeed() {
       const self = this;
-      $("#script-text").stop(true);
-         $( "#script-text" ).scrollTop( 0 );
-        if($("#script-text").val() === ""){
+      $('#script-text').stop(true);
+         $( '#script-text' ).scrollTop( 0 );
+        if ($('#script-text').val() === '') {
             // swal("Please Add your script and Test it back");
-        }else{
+        }else {
           this.stopButtonShow  = true; // stop button show
           this.stopButtonDisabled = false;
           this.testSpeedshow = false; // hide the test speed button

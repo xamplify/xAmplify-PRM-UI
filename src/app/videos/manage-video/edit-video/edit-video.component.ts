@@ -48,8 +48,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     videoForm: FormGroup;
     public fileItem: FileItem;
     public imageUrlPath: SafeUrl;
-    public videoUrlWMC : any;
-    public file_srcs = [];
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
@@ -216,7 +214,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             maxFileSize: 10 * 1024 * 1024, // 10 MB
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
-            this.fileChange(fileItem);
             fileItem.withCredentials = false;
             this.ownThumb = true;
             this.ownThumbnail = false;
@@ -249,25 +246,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.defaultSaveImagePath = this.saveVideoFile.imagePath;
                 });
         }
-    }
-    fileChange(inputFile: any) {
-       this.readFiles(inputFile.files);
-       this.videoUrlWMC = this.file_srcs[0];
-    }
-    readFile(file: any, reader: any, callback: any) {
-       reader.onload = () => {
-           callback(reader.result);
-       };
-       reader.readAsDataURL(file);
-    }
-    readFiles(files: any, index = 0) {
-       const reader = new FileReader();
-       if (index in files) {
-           this.readFile(files[index], reader, (result: any) => {
-               this.file_srcs.push(result);
-               this.readFiles(files, index + 1); // Read the next file;
-           });
-       } else { this.changeDetectorRef.detectChanges(); }
     }
     changeImgRadio1() {
         this.openOwnThumbnail = false;
