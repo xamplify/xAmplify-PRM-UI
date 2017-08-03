@@ -31,6 +31,7 @@ import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
 import { SocialService } from './social/services/social.service';
 import { UserService } from './core/services/user.service';
+import { LogService } from './core/services/log.service';
 import { HttpService } from './core/services/http.service';
 import { UtilService } from './core/services/util.service';
 import { VideoFileService } from './videos/services/video-file.service';
@@ -44,11 +45,12 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
+import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 //import { CKEditorModule } from 'ng2-ckeditor';
 //import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 @NgModule( {
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
-                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent],
+                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent, LogEmailClickComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot()],
@@ -57,7 +59,7 @@ import { ActivateAccountComponent } from './signup/activate-account/activate-acc
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
-    AuthenticationService, UtilService, UserService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
+    AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 

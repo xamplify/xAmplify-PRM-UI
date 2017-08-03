@@ -19,6 +19,7 @@ import { SocialCallbackComponent } from './social/common/social-callback/social-
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 import { DummyComponent } from './loader/dummy/dummy.component';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
+import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -44,6 +45,7 @@ export const routes: Routes = [
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent},
     { path: 'dummyPage', component: DummyComponent},
     { path: 'register/verifyemail/user', component: ActivateAccountComponent},
+    { path: 'user/logEmailURLClick', component: LogEmailClickComponent},
 
 ];
 
