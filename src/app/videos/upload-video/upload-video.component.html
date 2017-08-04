@@ -84,6 +84,7 @@
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-6">
+						<!--<div> {{browserInfo}}</div>-->
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add file...</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.3gp,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
@@ -118,7 +119,7 @@
 							<tbody *ngIf="isDisable==false">
 							  <tr *ngFor="let item of uploader.queue">
 							  	<td >
-									<video id="my-video"  controls preload="auto" width="280" height="180" >
+									<video *ngIf="!videoDisabled" id="my-video"  controls preload="auto" width="280" height="180" >
 											<source [src]='videoPreviewPath' type = 'video/mp4'>
 											<source [src]='videoPreviewPath' type = 'video/3gpp'>
 											<source [src]='videoPreviewPath' type = 'video/quicktime'>
@@ -131,7 +132,7 @@
 											<source [src]="videoPreviewPath" type = 'video/x-f4v'> 
 											<source [src]="videoPreviewPath" type = 'video/divx'>
 								   </video>
-								   <img src={{}} >
+								   <img *ngIf="!previewDisabled" src= "assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="228px" height="150px">
 								</td> 
 								<td>{{ trimVideoTitle(item?.file?.name) }}</td>
 								<td>

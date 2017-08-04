@@ -69,6 +69,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public videoUrlWMC: any;
     deviceInfo = null;
     browserInfo: string;
+    videoDisabled = false;
+    previewDisabled = false;
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
@@ -101,6 +103,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
                 console.log(fileItem._file);
+                const isSupportfile = fileItem._file.type.toString();
+                this.checkMimeTypes(isSupportfile);
                 this.videoPreviewPath  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
                 console.log(fileItem._file.size);
@@ -126,6 +130,21 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
+    }
+    checkMimeTypes(isSupportfile: string) {
+        if (isSupportfile === 'video/mp4') {
+             this.videoDisabled = false;
+             this.previewDisabled = true;
+        } else if (this.browserInfo.includes('chrome') && (isSupportfile === 'video/mpeg')) {
+             this.videoDisabled = false;
+             this.previewDisabled = true;
+        } else if (this.browserInfo.includes('firefox') && ( isSupportfile === 'video/mov')) {
+             this.videoDisabled = false;
+             this.previewDisabled = true;
+        } else if (this.browserInfo.includes('ms-edge') && ( isSupportfile === 'video/3gpp')) {
+             this.videoDisabled = false;
+             this.previewDisabled = true;
+        } else { this.videoDisabled = true; this.previewDisabled = false; }
     }
     processVideo(responsePath: any) {
       const val = this;
