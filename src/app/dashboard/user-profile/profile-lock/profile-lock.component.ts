@@ -32,6 +32,7 @@ export class ProfileLockComponent implements OnInit {
  ngOnInit() {
       try {
             this.userData = this.authenticationService.user;
+            if (this.userData.emailId === undefined) { this.router.navigate(['./login']); }
             if (!(this.userData.profileImagePath.indexOf(null)>-1)) {
                 this.userProfileImage = this.userData.profileImagePath;
             }

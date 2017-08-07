@@ -1,14 +1,12 @@
-		<style type="text/css">
-		.videoCss { 
-			position: absolute; right: 34px; top: 159px; z-index: 600;
-			}
+<style type="text/css">
+		.videoCss { position: absolute; right: 34px; top: 159px; z-index: 600;	}
 		.videoCssDefault{ 
-        position: absolute;
-        right: 34px;
-        top: 89px; 
-        z-index: 600;
-    }
-		</style>
+			position: absolute;
+			right: 34px;
+			top: 89px; 
+			z-index: 600;
+        }
+</style>
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -385,7 +383,7 @@
 												<!-- END PRIVACY SETTINGS TAB -->
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
-													 <div  class=""  id="defaultPlayerSettings"
+													 <div *ngIf="defaultPlayerSuccess" class=""  id="defaultPlayerSettings"
 														  class="alert alert-success alert-dismissable">
 													 	  <a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()">&times;</a>
 													 	  <strong> default player settings updated Successfully!</strong> 
@@ -394,7 +392,7 @@
 														<p style="font-size: large; margin-top: -15px;color:white; background-color: #00a6e8;"> Apperance of the player</p>
 													</div>
 														<div [class.videoCssDefault]="defaultPlayerSuccess == false" [class.videoCss]="defaultPlayerSuccess == true">
-														<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160" width="330"
+														<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160" width="auto"
 														  poster="http://vjs.zencdn.net/v/oceans.png"
 														  data-setup='{"example_option":true }' [src]=videoUrl>
 														    <source [src]=videoUrl type="video/mp4" />

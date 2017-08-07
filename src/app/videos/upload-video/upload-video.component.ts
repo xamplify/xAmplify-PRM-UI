@@ -176,8 +176,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     }  else {
                          this.videoFileService.actionValue = '';
                      }
-                } else {
-                    if (this.processVideoResp.error === 'Maximum Disk Space Reached for you subscription') {
+                } else {   // Maximum Disk Space Reached for you subscription
+                    if (this.processVideoResp.error.includes('maximum upload')) {
                          this.processing =  false;
                          this.defaultSettings();
                          this.maxSubscription = true;

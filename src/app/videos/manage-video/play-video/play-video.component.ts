@@ -535,7 +535,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-control-bar').css('background-color', rgba);
     }
     titleCheckLength(title: string) {
-     if (title.length > 25) { title = title.substring(0, 24) + '...';}
+     if (title.length > 20) { title = title.substring(0, 19) + '...'; }
      return title;
     }
     play360Video() {
