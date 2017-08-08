@@ -46,11 +46,13 @@ import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
-//import { CKEditorModule } from 'ng2-ckeditor';
-//import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
+import { NotFoundPageComponent  } from './page-notfound.component';
+// import { CKEditorModule } from 'ng2-ckeditor';
+// import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 @NgModule( {
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
-                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent, LogEmailClickComponent],
+                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent, 
+                   LogEmailClickComponent, NotFoundPageComponent],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot()],
@@ -59,7 +61,8 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
-    AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, TwitterService, FacebookService, Logger,
+    AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
+    TwitterService, FacebookService, Logger,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 
