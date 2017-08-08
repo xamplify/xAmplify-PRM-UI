@@ -20,6 +20,7 @@
 	 .is360video{z-index: 900;}
 	 .overlaySet{margin-top:-317px;}
 	 .bottomCss{bottom: -183px; }
+	 .imagePath{ height: 111px; width: 100%;}
 </style>
 <div class="portlet light">
 <div class="portlet-body">
@@ -330,8 +331,7 @@
 										<div class="col-md-6 col-sm-8 mix category_1 mix_all"
 											style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
 											<div class="mix-inner">
-												<img class="img-responsive"
-											     src="{{videoFile.imagePath}}" alt="">
+												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
 												<div class="mix-details">
 													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<a class="mix-preview fancybox-button"

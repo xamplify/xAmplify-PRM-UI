@@ -1,6 +1,7 @@
  <style type="text/css">
   .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
   a.disabled { pointer-events: none; cursor: not-allowed; }
+  .customeImagePath { height: 141px; width:100%;}
 </style> 
 <div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -108,7 +109,7 @@
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
 										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
 											<div class="mix-inner">
-												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="">
+												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath">
 												<div class="mix-details" style="z-index: 700;padding: 7px;">
 													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
