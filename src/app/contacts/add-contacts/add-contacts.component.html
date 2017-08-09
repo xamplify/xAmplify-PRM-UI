@@ -1,3 +1,30 @@
+<style>
+ .imageblur {
+   -webkit-filter: grayscale(100%);
+   filter: grayscale(100%);
+   -webkit-filter: blur(1.2px);
+  -moz-filter: blur(1.2px);
+  -o-filter: blur(1.2px);
+  -ms-filter: blur(1.2px);
+  filter: blur(1.2px);
+  opacity: 0.7;
+}
+img:hover {
+   -webkit-filter: grayscale(0%);
+   filter: grayscale(0%);
+   opacity: 2;
+}a.mix-preview2:hover{
+color:#00a6e8}
+}.imageblurNormal{
+-webkit-filter: grayscale(0%);
+   filter: grayscale(0%);
+   -webkit-filter: blur(0px);
+  -moz-filter: blur(0px);
+  -o-filter: blur(0px);
+  -ms-filter: blur(0px);
+  filter: blur(0px);
+}
+</style>
 <div class="page-content">
 	<div></div>
 
@@ -68,7 +95,7 @@
 									(ngModelChange)="changEvent($event)" required
 									[(ngModel)]="model.contactListName" name="contactListName"
 									(input)="validateContactName(model.contactListName)"
-									minlength="4" maxlength="30"
+									minlength="4"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
 									<div *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</div>
@@ -138,35 +165,102 @@
 
 							</div>
 							
-							<div class="col-md-6">
-								<p>Import from available cloud service</p>
+							<div class="col-lg-6">
+	<!-- 						
+        <div class="ih-item square effect6 from_top_and_bottom"><a href="#">
+        <div class="img"><img src="assets/images/crm/dynamics_check.png" alt="img"></div>
+        <div class="info">
+          <div class="info-back">
+            <h3>Heading here</h3>
+            <p>Description goes here</p>
+          </div>
+        </div></a></div>
+							 -->	<p>Import from available cloud service</p>
+								<div class="col-lg-12" style="left:-26px">
+								<div class="col-lg-3">
 								<button id="salesforceContact_button" style="margin: -8px; background-color: white" (click) = "salesforceContacts()">
-									<img src="{{salesforceImage}}"
+									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass"
 										title="Click here To access user list from your Salesforce account"
 										height="100" width="100"
 										style="cursor: pointer; border: 1px; margin: 10px;">
 								</button>
+								<!-- <div style="position: relative" *ngIf="sfImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
+								</a>
+							</div> -->
+							<div style="position: relative" class="salesforceImage" *ngIf="sfImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
+								</a>
+							</div>
+								</div>
+								<div class="col-lg-3">
 								<button id="googleContact_button" style="margin: -8px; background-color: white" (click) = "googleContacts()">
-									<img src="{{googleImage}}"
+									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass"
 										title="Click here To access user list from your Google contacts"
 										height="100" width="100"
 										style="cursor: pointer; border: 1px; margin: 10px;">
 								</button>
+								<!-- <div style="position: relative" *ngIf="googleImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> <i
+									class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
+								</a>
+							</div> -->
+							<div style="position: relative" *ngIf="googleImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
+								</a>
+							</div>
+								</div>
+								<div class="col-lg-3">
 								<button id="zohoContact_button" style="margin: -8px; background-color: white" data-toggle="modal" data-target="#myModal">
-									<img src="{{zohoImage}}"
+									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass"
 										title="Click here To access user list from your Zoho account"
 										height="100" width="100"
 										style="cursor: pointer; border: 1px; margin: 10px;">
 								</button>
+								<!-- <div style="position: relative" *ngIf="zohoImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> <i
+									class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
+								</a>
+							</div> -->
+							<div style="position: relative" *ngIf="zohoImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
+								</a>
+							</div>
+								</div>
+								<div class="col-lg-3">
 								<button id="microsoftContact_button" style="margin: -8px; background-color: white">
 									<figure>
-									 <img src="assets/images/crm/dynamics_gear.png"
+									 <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/dynamics.png" class="imageClass"
 										title="Click here To access user list from your Microsoft CRM account"
 										height="100" width="100"
 										style="cursor: pointer; border: 1px; margin: 10px;">
 										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
 									</figure>
 								</button>
+								</div>
+								</div>
 							</div>
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">

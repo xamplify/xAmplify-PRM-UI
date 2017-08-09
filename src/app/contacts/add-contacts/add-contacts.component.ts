@@ -42,6 +42,12 @@ export class AddContactsComponent implements OnInit {
     invalidPatternEmails: string[] = [];
     isValidContactName: boolean;
     validCsvContacts : boolean;
+googleImageBlur : boolean = false;
+googleImageNormal : boolean = false;
+sfImageBlur : boolean = false;
+sfImageNormal : boolean = false;
+zohoImageBlur : boolean = false;
+zohoImageNormal : boolean = false;
     inValidCsvContacts : boolean; 
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
@@ -690,6 +696,7 @@ public validEmailPatternSuccess : boolean = false;
         this.saveSalesforceContactUsers = false
         $( "#sample_editable_1" ).show();
         this.newUsers.push( new User() );
+        $('.salesforceImage').attr('style', 'cursor:not-allowed; opacity:0.3');
         $( "button#copyFromClipBoard" ).prop( 'disabled', true );
         $( "button#uploadCSV" ).prop( 'disabled', true );
         $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1358,19 +1365,31 @@ public validEmailPatternSuccess : boolean = false;
             data => {
                 this.storeLogin = data;
                 if ( this.storeLogin.GOOGLE == true ) {
-                    this.googleImage = 'assets/images/crm/google_check.png';
+                   // this.googleImage = 'assets/images/crm/google_check.png';
+                    this.googleImageNormal = true;
                 } else {
-                    this.googleImage = 'assets/images/crm/google_gear.png';
+                    //this.googleImage = 'assets/images/crm/google_gear.png';
+                    //this.googleImage = 'assets/images/crm/google.png';
+                    this.googleImageBlur = true;
+                    //$('.googleImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
                 }
                 if ( this.storeLogin.SALESFORCE == true ) {
-                    this.salesforceImage = 'assets/images/crm/sf_check.png';
+                    //this.salesforceImage = 'assets/images/crm/sf_check.png';
+                    this.sfImageNormal = true;
                 } else {
-                    this.salesforceImage = 'assets/images/crm/sf_gear.png';
+                    //this.salesforceImage = 'assets/images/crm/sf_gear.png';
+                    //this.salesforceImage = 'assets/images/crm/sf.png';
+                    this.sfImageBlur = true;
+                    //$('.salesForceImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
                 }
                 if ( this.storeLogin.ZOHO == true ) {
-                    this.zohoImage = 'assets/images/crm/Zoho_check.png';
+                   // this.zohoImage = 'assets/images/crm/Zoho_check.png';
+                    this.zohoImageNormal = true;
                 } else {
-                    this.zohoImage = 'assets/images/crm/Zoho_gear.png';
+                    //this.zohoImage = 'assets/images/crm/Zoho_gear.png';
+                   // $('.zohoImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
+                    //this.zohoImage = 'assets/images/crm/Zoho.png';
+                    this.zohoImageBlur = true;
                 }
             },
             error => this.logger.error( error ),
