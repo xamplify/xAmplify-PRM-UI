@@ -166,16 +166,6 @@ color:#00a6e8}
 							</div>
 							
 							<div class="col-lg-6">
-	<!-- 						
-        <div class="ih-item square effect6 from_top_and_bottom"><a href="#">
-        <div class="img"><img src="assets/images/crm/dynamics_check.png" alt="img"></div>
-        <div class="info">
-          <div class="info-back">
-            <h3>Heading here</h3>
-            <p>Description goes here</p>
-          </div>
-        </div></a></div>
-							 -->	<p>Import from available cloud service</p>
 								<div class="col-lg-12" style="left:-26px">
 								<div class="col-lg-3">
 								<button id="salesforceContact_button" style="margin: -8px; background-color: white" (click) = "salesforceContacts()">
@@ -192,7 +182,15 @@ color:#00a6e8}
 									<i class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
 								</a>
 							</div> -->
-							<div style="position: relative" class="salesforceImage" *ngIf="sfImageNormal" >
+							<!-- <div style="position: relative" class="salesforceImage" *ngIf="sfImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
+								</a>
+							</div> -->
+							<div style="position: relative" *ngIf="sfImageNormal" >
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeGoogleContactList"
 									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
@@ -216,7 +214,15 @@ color:#00a6e8}
 									class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
 								</a>
 							</div> -->
-							<div style="position: relative" *ngIf="googleImageNormal" >
+							<!-- <div style="position: relative" *ngIf="googleImageNormal" >
+								<a class="mix-preview2 fancybox-button"
+									title="sychronizeGoogleContactList"
+									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
+									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
+								</a>
+							</div> -->
+								<div style="position: relative" *ngIf="googleImageNormal" >
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeGoogleContactList"
 									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
