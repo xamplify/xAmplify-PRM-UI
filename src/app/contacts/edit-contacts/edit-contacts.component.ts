@@ -219,6 +219,7 @@ export class EditContactsComponent implements OnInit {
 
     fileChange( input: any ) {
         this.fileTypeError = false;
+        this.noContactsFound = false;
         this.readFiles( input.files );
     }
 
@@ -526,6 +527,7 @@ export class EditContactsComponent implements OnInit {
     addRow() {
         this.fileTypeError = false;
         this.users.push( new User() );
+        this.noContactsFound = false;
         this.saveAddcontactUsers = true;
         this.saveCopyfromClipboardUsers = false;
         this.saveCsvFileUsers = false;
@@ -556,6 +558,7 @@ export class EditContactsComponent implements OnInit {
 
     copyFromClipboard() {
         this.fileTypeError = false;
+        this.noContactsFound = false;
         this.clipboardTextareaText = "";
         this.clickBoard = true;
         this.saveAddcontactUsers = false;

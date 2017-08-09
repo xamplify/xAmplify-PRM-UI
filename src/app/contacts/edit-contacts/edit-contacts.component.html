@@ -253,27 +253,47 @@
 			class="alert alert-danger alert-dismissable" style="width:80%">
 			<b>We found invalid emailIds please remove..<strong style="color:black;font-size:18px">{{invalidPatternEmails}}</strong> and Re Upload..</b>
 		</div>	
-						<div *ngIf="successMessage" id="saveContactsMessage"
+		</div>
+						<!-- <div *ngIf="successMessage" id="saveContactsMessage" style="width:100%"
 							class="alert alert-success alert-dismissable">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Success!</strong> Contact list updated successfully.
-						</div>
-						<div *ngIf="deleteSucessMessage" id="showDeleteMessage"
+						</div> -->
+						<div *ngIf="successMessage" id="saveContactsMessage" class="col-md-6" class="col-md-9 alert alert-success alert-dismissable" style="width:100%">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>Success!</strong> Contact list updated successfully.
+			                </div>
+						
+						<!-- <div *ngIf="deleteSucessMessage" id="showDeleteMessage" style="width:100%"
 							class="alert alert-success alert-dismissable">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Success!</strong>Contact list Users has been Deleted
 							successfully.
-						</div>
-						<div *ngIf="deleteErrorMessage" id="campaignError"
+						</div> -->
+							<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="col-md-6" class="col-md-9 alert alert-success alert-dismissable" style="width:100%">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>Success!</strong>Contact list Users has been Deleted
+							successfully.
+			                </div>
+						
+						
+				<!-- 		<div *ngIf="deleteErrorMessage" id="campaignError"
 			class="alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Danger!</strong><strong style="color:black;font-size:18px">{{Campaign}}</strong>
-		</div>
-		</div>
-		<div *ngIf="dublicateEmailId" id="dublicateEmail"
+		</div> -->
+		<div *ngIf="deleteErrorMessage" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <strong>Danger!</strong><strong style="color:black;font-size:18px">{{Campaign}}</strong>
+			                </div>
+		<!-- <div *ngIf="dublicateEmailId" id="dublicateEmail"
 			class="alert alert-danger alert-dismissable" style="width:50%; margin-left:120px">
 			<b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
-		</div>
+		</div> -->
+		<div *ngIf="dublicateEmailId" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
+						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						           <b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
+			                </div>
 					<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Contacts found.. !!!</strong>

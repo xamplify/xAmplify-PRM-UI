@@ -194,6 +194,11 @@ export class ManageContactsComponent implements OnInit {
             this.nonActive_Contacts( this.pagination );
         }*/
     }
+    
+    contactListNameLength(title: string) {
+        if (title.length > 28) { title = title.substring(0, 28) + '...'; }
+        return title;
+        }
 
     selectedSortByValue( event: any ) {
         this.contactsSort = event;

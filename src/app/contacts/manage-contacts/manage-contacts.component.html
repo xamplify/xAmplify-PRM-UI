@@ -214,7 +214,7 @@
 							<!-- <div class="ribbon" *ngIf="contactList.socialNetwork=='ZOHO'"><span>ZOHO</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='GOOGLE'"><span>GOOGLE</span></div>
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='SALESFORCE'"><span>SALESFORCE</span></div> -->
-							<h4 style="top: 10%; position: relative;">{{contactList.name}}</h4>
+							<h4 style="top: 10%; position: relative;">{{contactListNameLength(contactList.name)}}</h4>
 							<div style="top: 12%; position: relative;">
 								<a class="mix-preview5 fancybox-button" (click)="downloadContactList(contactList.id)"
 									title="Dowload List" data-rel="fancybox-button"> <i
@@ -483,7 +483,7 @@
 									class="form-control" style="width:65%" id="contactListName"
 									 required
 									[(ngModel)]="model.contactListName" name="contactListName"
-									minlength="4" maxlength="30"
+									minlength="4"
 									(input)="validateContactName(model.contactListName)"
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
