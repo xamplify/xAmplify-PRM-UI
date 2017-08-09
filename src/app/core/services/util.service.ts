@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { UserToken } from '../models/user-token';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class UtilService {
-    constructor() {}
+    constructor(private http: Http) {}
 
     intlNumberFormat( num ) {
         return new Intl.NumberFormat().format( Math.round( num * 10 ) / 10 );
@@ -28,4 +31,10 @@ export class UtilService {
         }
         return twitterProfiles;
     }
+    
+    getJSONLocation(): Observable<any> {
+        const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
+          return this.http.get(locationurl, '')
+          .map(response => response.json());
+      }
 }

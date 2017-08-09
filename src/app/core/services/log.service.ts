@@ -6,7 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class LogService {
@@ -18,11 +18,10 @@ export class LogService {
             private authenticationService: AuthenticationService ) {
         }
 	
-	logEmailUrlClicks(campaignAlias: string, userAlias: string, url: string){
-		  return this.http.post( this.URL + "user/logEmailURLClick?campaignAlias=" + campaignAlias+"&userAlias=" +userAlias +"&url="+url, "")
-          .map( this.extractData )
-          .catch( this.handleError );
-		
+    logEmailUrlClicks(emailLog:any) {
+    	   return  this.http.post(this.URL + "user/logEmailURLClick", emailLog)
+           .map(this.extractData)
+           .catch(this.handleError);
 	}
 	
     private extractData( res: Response ) {
@@ -33,22 +32,9 @@ export class LogService {
     }
 
     private handleError( error: any ) {
-        var body = error['_body'];
-        console.log( body );
-        if ( body != "" ) {
-            var response = JSON.parse( body );
-            if ( response.message != undefined ) {
-                return Observable.throw( response.message );
-            } else {
-                return Observable.throw( response.error );
-            }
-
-        } else {
-            let errMsg = ( error.message ) ? error.message :
-                error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-            return Observable.throw( error );
-        }
-
+    	const errMsg = ( error.message ) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+        return Observable.throw( errMsg );
     }
 	
 }
