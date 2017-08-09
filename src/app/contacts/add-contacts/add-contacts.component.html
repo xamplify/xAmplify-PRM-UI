@@ -170,6 +170,7 @@ color:#00a6e8}
 							</div>
 							
 							<div class="col-lg-6">
+							<p style="margin-left:16px">Import from available cloud service</p>
 								<div class="col-lg-12" style="left:-26px">
 								<div class="col-lg-3">
 								<button id="salesforceContact_button" style="margin: -8px; background-color: white" (click) = "salesforceContacts()">
@@ -547,20 +548,15 @@ color:#00a6e8}
 								id="sample_editable_1">
 								<thead>
 									<tr>
-										<th><input type="checkbox" 
-											(change)="checked($event.target.checked)"></th><!-- [checked]="isAvailable" -->
 										<th>EMAIL</th>
 										<th>FIRST NAME</th>
 										<th>LAST NAME</th>
-										<!-- <th>Edit</th>-->
 										<th>CANCEL</th>
 									</tr>
 								</thead>
 								<tbody>
 									 <tr *ngFor="let newContact of newUsers; let i = index"
 										id="row_{{newContact.id}}">
-										<td><input type="checkbox" checked="newContact.checked"></td>
-										<!-- <td></td> -->
 										<td><input type=Text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
