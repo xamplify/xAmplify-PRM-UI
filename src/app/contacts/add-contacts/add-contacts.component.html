@@ -99,10 +99,14 @@ color:#00a6e8}
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
 									<div *ngIf="isValidContactName" style="color: red;margin-left: 170px;">Contact List Name Already Exists</div>
-									<div style="margin-left: 167px" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
+								<!-- 	<div style="margin-left: 167px" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
 												class="alert alert-danger">
 												Minimum 4 letters required.
-											</div>
+											</div> -->
+											<div *ngIf="contactListName.invalid && (contactListName.dirty ||contactListName.touched)"
+             class="col-sm-8 alert alert-danger" style="margin-left: 167px">Minimum 4 letters required.
+             </div>
+
 							<div style="margin-left: 167px" class="alert alert-danger alert-dismissable fade in" *ngIf="contactListNameError">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
      Please enter the contact list name.
@@ -190,10 +194,9 @@ color:#00a6e8}
 									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
 								</a>
 							</div> -->
-							<div style="position: relative" *ngIf="sfImageNormal" >
+							<div style="position: relative" *ngIf="sfImageNormal" data-toggle="modal" data-target="#settingsSalesforce">
 								<a class="mix-preview2 fancybox-button"
-									title="sychronizeGoogleContactList"
-									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									title="UnLink Salesforce Account"
 									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
 									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
 								</a>
@@ -222,9 +225,9 @@ color:#00a6e8}
 									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
 								</a>
 							</div> -->
-								<div style="position: relative" *ngIf="googleImageNormal" >
+								<div style="position: relative" *ngIf="googleImageNormal" data-toggle="modal" data-target="#settingsGoolge">
 								<a class="mix-preview2 fancybox-button"
-									title="sychronizeGoogleContactList"
+									title="Unlink Google Account"
 									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
 									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
 									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
@@ -246,10 +249,9 @@ color:#00a6e8}
 									class="fa fa-check-square" aria-hidden="true" style="transform: scale(1.8,2);color:#8edc7a"></i>
 								</a>
 							</div> -->
-							<div style="position: relative" *ngIf="zohoImageNormal" >
+							<div style="position: relative" *ngIf="zohoImageNormal" data-toggle="modal" data-target="#settingsZoho">
 								<a class="mix-preview2 fancybox-button"
-									title="sychronizeGoogleContactList"
-									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+									title="Unlink Zoho Account"
 									data-rel="fancybox-button" style="left: 82%;top:-121px;background:none"> 
 									<i class="fa fa-cog" aria-hidden="true" style="transform: scale(1.8,2);color:#2578ac"></i>
 								</a>
@@ -381,6 +383,79 @@ color:#00a6e8}
     				</div>
   				</div>
 			</div>
+			
+			
+			
+			<div class="modal fade" id="settingsSalesforce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div><img src = "assets/images/Salesforce-01.png"
+        								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
+        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-8%"><b>SalesForce Account Settings</b></h4></div>
+     						 </div>
+     					 <div class="modal-body">
+      						<form class="form-horizontal">
+  								  <div class="form-group">
+    									<button type="button" class="btn btn-default" style="margin-left:38%">UnLink Account</button>
+ 								  </div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			
+				<div class="modal fade" id="settingsZoho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div><img src = "assets/images/zoho.png"
+        								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
+        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-8%"><b>Zoho Account Settings</b></h4></div>
+     						 </div>
+     					 <div class="modal-body">
+      						<form class="form-horizontal">
+  								  <div class="form-group">
+    									<button type="button" class="btn btn-default" style="margin-left:38%">UnLink Account</button>
+ 								  </div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			
+			
+			<div class="modal fade" id="settingsGoolge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div><img src = "assets/images/google.jpg"
+        								 alt = "Picture of a happy monkey" style="height:55px" width="90px" />
+        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-7%"><b>Google Account Settings</b></h4></div>
+     						 </div>
+     					 <div class="modal-body">
+      						<form class="form-horizontal">
+  								  <div class="form-group">
+    									<button type="button" class="btn btn-default" style="margin-left:38%">UnLink Account</button>
+ 								  </div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			
 								<div *ngIf="removeCsvName" id="removeCsv"
 									style="margin-bottom: -15px; padding-left: 1cm">
 									<table class="table">
@@ -491,7 +566,7 @@ color:#00a6e8}
 											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
 											<div
-												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+												*ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
 												class="alert alert-danger">
 												Email is required and format should be <i>john@doe.com</i>.
 											</div></td>

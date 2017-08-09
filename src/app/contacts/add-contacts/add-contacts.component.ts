@@ -1370,7 +1370,8 @@ public validEmailPatternSuccess : boolean = false;
                 } else {
                     //this.googleImage = 'assets/images/crm/google_gear.png';
                     //this.googleImage = 'assets/images/crm/google.png';
-                    this.googleImageBlur = true;
+                    //this.googleImageBlur = true;
+                    this.googleImageNormal = true;
                     //$('.googleImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
                 }
                 if ( this.storeLogin.SALESFORCE == true ) {
