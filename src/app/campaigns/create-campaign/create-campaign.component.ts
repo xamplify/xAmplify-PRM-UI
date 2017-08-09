@@ -1162,7 +1162,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     launchCampaign(){
         var data = this.getCampaignData("");
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
- /*       var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
             this.campaignService.saveCampaign( data )
@@ -1184,8 +1184,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.dataError = true;
         }
-     */
-    
     return false;
     }
     
