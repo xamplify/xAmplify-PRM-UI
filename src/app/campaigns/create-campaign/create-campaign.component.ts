@@ -4,7 +4,7 @@ import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@an
 import { Pagination } from '../../core/models/pagination';
 import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../core/services/reference.service';
-import { validateCampaignSchedule } from '../../form-validator'; // not using multipleCheckboxRequireOne
+import { validateCampaignSchedule } from '../../form-validator';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
@@ -120,6 +120,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedEmailTemplateRow:number;
     selectedEmailTemplateTypeIndex:number = 0;
     selectedEmailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
+    selectedTemplateBody;string = "";
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -200,6 +201,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedEmailTemplateRow = selectedTemplateId;
                 this.isEmailTemplate = true;
                 this.isCampaignDraftEmailTemplate = true;
+                this.selectedTemplateBody = this.campaign.emailTemplate.body;
             }
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
@@ -903,13 +905,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailTemplate(emailTemplate:EmailTemplate){
         $('#emailTemplateContent').html('');
         this.emailTemplateHrefLinks = [];
+        this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+        if( this.emailTemplateHrefLinks.length>0){
+           this.setEmailTemplateData(emailTemplate);
+        }else{
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "This Template has no urls.",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Select it!'
+
+            }).then( function() {
+               self.setEmailTemplateData(emailTemplate);
+            })
+        }
+    }
+    setEmailTemplateData(emailTemplate:EmailTemplate){
         this.selectedEmailTemplateRow = emailTemplate.id;
         this.isEmailTemplate = true;
-        this.campaign.emailTemplate = emailTemplate;
-        this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+        this.selectedTemplateBody = emailTemplate.body;
+       // this.campaign.emailTemplate = emailTemplate;
     }
     
     getAnchorLinksFromEmailTemplate(body:string){
+        $('#emailTemplateContent').html('');
         $('#emailTemplateContent').append(body);
         console.log($('#emailTemplateContent').find('a'));
         let self = this;
@@ -993,13 +1016,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign.regularEmail = false;
         }
         this.filteredSocialStatusProviders();
-        if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+       /* if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
             let dateTime = this.campaignLaunchForm.value.launchTime;
             let date = dateTime.split(' ')[0];
             this.date = date.replace("-","/");
             console.log(this.date);
         }
-       
+       */
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
@@ -1007,9 +1030,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             reply.subject = this.getCkEditorContent(reply.divId);
             if(reply.replyTime!=undefined && reply.subject.length>0){
                 console.log(reply);
-                 if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+               /*  if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
                      reply.replyTime = this.getCalculatedTime(reply.replyTime, this.date, reply.replyInDays);
-                 }
+                 }*/
             }else{
                 $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             }
@@ -1025,9 +1048,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let replyTime = url.replyTime;
             if(replyTime!=undefined && url.subject!=null && url.body.length>0){
                 console.log(url);
-                if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
+               /* if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
                     url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays);
-                }
+                }*/
             }else{
                 $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             }
@@ -1139,7 +1162,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     launchCampaign(){
         var data = this.getCampaignData("");
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
-        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+ /*       var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
             this.campaignService.saveCampaign( data )
@@ -1161,7 +1184,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.dataError = true;
         }
-     
+     */
     
     return false;
     }
@@ -1342,8 +1365,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
                 this.initializeSocialStatus();
-                if(!this.isAdd && this.campaign.emailTemplate!=undefined){
-                    this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+                if(!this.isAdd && this.selectedTemplateBody!=undefined){
+                    this.getAnchorLinksFromEmailTemplate(this.selectedTemplateBody);
                 }
                 
             }
