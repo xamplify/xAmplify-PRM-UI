@@ -67,6 +67,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public maxVideoSize: number;
     public videoUrlWMC: any;
     public codecSupport = false;
+    public isSelectedVideo = false;
     deviceInfo = null;
     browserInfo: string;
     videoDisabled = false;
@@ -102,6 +103,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
+                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
                 console.log(fileItem._file);
                 const isSupportfile = fileItem._file.type.toString();
                 this.checkMimeTypes(isSupportfile);
@@ -495,6 +497,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     defaultDesabled() {
         this.sweetAlertDisabled = true;
         this.isChecked = true;
+        this.isSelectedVideo = true;
            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
            $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
@@ -510,6 +513,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
        this.isChecked = false;
        this.isFileDrop = false;
        this.isDisable = false;
+       this.isSelectedVideo = false;
        this.hideSaveDiscard = true;
        this.isFileProgress = false;
        this.sweetAlertDisabled = false;

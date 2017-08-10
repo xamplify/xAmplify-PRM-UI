@@ -89,7 +89,7 @@
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add file...</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
 						     *ngIf="uploader.queue.length==0" 
-							 [disabled]="loading==true||isDisable == true" #input />
+							 [disabled]="loading==true||isDisable == true || isSelectedVideo == true" #input />
 						</div> </div>
 					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 					 	<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
@@ -173,7 +173,7 @@
 							plugins works only on Latest Chrome, Firefox, Safari, Opera &
 							Internet Explorer 10.
 						</p>
-						<div [class.customDisableCss]='isDisable==true || isFileProgress ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+						<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 							(fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone" >
 							<h3>Drop Video File </h3>
 						</div>
