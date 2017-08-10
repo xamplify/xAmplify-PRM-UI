@@ -86,6 +86,48 @@ export class CampaignService {
         console.log(body);
         return body || {};
     }
+    
+    getHeatMap( userId: number, campaignId: number ) {
+        return this.http.get( this.URL + 'user-video-heat-map?access_token=' + this.authenticationService.access_token + '&userId='+userId+'&campaignId='+campaignId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getCampaignView(campaignId: number ) {
+        return this.http.get( this.URL + 'campaignviews/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getEmailOpenCount( campaignId: number ) {
+        return this.http.get( this.URL + 'email_open_count/' + campaignId + '?access_token=' + this.authenticationService.access_token + '&actionId=13' )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getEmailClickedCount( campaignId: number ) {
+        return this.http.get( this.URL + 'email_gif_clicked_count/' + campaignId + '?access_token=' + this.authenticationService.access_token + '&actionId=14' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    getEmailSentCount( campaignId: number ) {
+        return this.http.get( this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    getCountryWiseCampaignViews( campaignId: number ) {
+        return this.http.get( this.URL + 'world-campaign-views?access_token=' + this.authenticationService.access_token + '&campaignId=' + campaignId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    listCampaignInteractionsData(customerId: number){
+        return this.http.get( this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId )
+        .map( this.extractData )
+        .catch( this.handleError );
+}
 
     private handleError(error: any) {
         if (error.status === 500) {

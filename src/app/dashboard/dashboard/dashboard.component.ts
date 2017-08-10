@@ -376,13 +376,13 @@ export class DashboardComponent implements OnInit {
     
     getDefaultPage( userId: number ) {
         this.userService.getUserDefaultPage( userId )
-        .subscribe(
-                data => {
-                    this.isDahboardDefaultPage = data['_body'].includes('dashboard');
-                },
-                error => console.log( error ),
-                () => {}
-        );
+            .subscribe(
+            data => {
+                this.isDahboardDefaultPage = data['_body'].includes( 'dashboard' );
+            },
+            error => console.log( error ),
+            () => { }
+            );
     }
     
     setDashboardAsDefaultPage(event: any) {
@@ -401,12 +401,12 @@ export class DashboardComponent implements OnInit {
         );
     }
     
-    listCampaign(pagination:Pagination){
-        this.campaignService.listCampaign(pagination,this.authenticationService.user.id)
+    listCampaignInteractionsData(userId: number){
+        this.campaignService.listCampaignInteractionsData(userId)
         .subscribe(
             data => {
-                this.campaigns = data.campaigns;
-                this.totalCampaignsCount = data.totalRecords;
+                this.campaigns = data;
+                this.totalCampaignsCount = this.campaigns.length;
             },
             error => {},
             () => this.logger.info("Finished listCampaign()")
@@ -422,14 +422,14 @@ export class DashboardComponent implements OnInit {
         try {
             const userId = this.authenticationService.getUserId();
             this.getDefaultPage(userId);
-            this.listCampaign(this.pagination);
+            this.listCampaignInteractionsData(userId);
             
-            this.totalViewsCount();
+            /*this.totalViewsCount();
             this.totalFollowersCount()
             this.uploadedVideosCount();
             this.totalContactsCount();
             this.emailOpenedCount();
-            this.emailClickedCount();
+            this.emailClickedCount();*/
             Metronic.init();
             Layout.init();
             Demo.init();

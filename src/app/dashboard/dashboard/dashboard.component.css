@@ -1,11 +1,9 @@
-.btn-campaign{
-padding: 5px;
-    min-width: 90%;
-    border-radius: 0;
-    letter-spacing: 1px;
-    margin: 5px;
-    text-transform: uppercase;
-    font-size: 11px;
+.btn-campaign {
+	padding: 5px;
+	border-radius: 0;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	font-size: 10px;
 }
 
 .c100>span {

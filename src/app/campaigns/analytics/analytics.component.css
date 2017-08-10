@@ -1,52 +1,83 @@
-.heatmap{
+.heatmap {
 	min-width: 100%;
-    background: #c5f975;
-    min-height: 35px;
-    margin-top: 2em;
-    display: flex;
+	background: rgba(0, 166, 232, 0.5);
+	min-height: 35px;
+	margin-top: 2em;
+	display: flex;
 }
 
-.heatmap>.play{
-    background: #ffe100;
-    display: table-cell;
+.play-rect {
+	fill: #00a6e8
 }
 
-.heatmap>.pause{
-    background: #ff0000;
-    display: table-cell;
+.skip-rect {
+	fill: #FFF
 }
 
-.heatmap>.skip{
-    background: #FFF;
-    display: table-cell;
+rect:hover {
+	cursor: pointer;
 }
 
-.heatmap-timeline > div{
-	padding-top:10px;
+.heatmap>a {
+	position: absolute;
+}
+
+.heatmap>.play {
+	background: #00a6e8;
+	display: table-cell;
+}
+
+.heatmap>.pause {
+	background: #ff0000;
+	display: table-cell;
+}
+
+.heatmap>.skip {
+	background: #FFF;
+	display: table-cell;
+}
+
+.heatmap-timeline>div {
+	padding-top: 10px;
 	width: 20%;
-	text-align: center;	
+	text-align: center;
 }
 
-.play-box{
-	background: #ffe100;
+.play-box {
+	background: #00a6e8;
 }
-.pause-box{
+
+.pause-box {
 	background: #ff0000;
 }
-.skip-box{
+
+.skip-box {
 	background: #FFF;
 }
-.small-box{
-    width: 15px;
-    height: 15px;
-    display: table-cell;
-    margin: 10px;
+
+.small-box {
+	width: 15px;
+	height: 15px;
+	display: table-cell;
+	margin: 10px;
 }
 
-tr:hover{cursor: pointer;}
-.text-center{text-align: center;}
-.block-1{width: 25%;}
-.p-5x{padding: 2px 5px;}
+tr:hover {
+	cursor: pointer;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.block-1 {
+	width: 25%;
+}
+
+.p-5x {
+	padding: 2px 5px;
+}
+
 .c100>span {
 	top: 50px;
 	line-height: 10px;
@@ -58,6 +89,7 @@ tr:hover{cursor: pointer;}
 	margin: 0;
 	min-height: auto;
 }
+
 .image-icon {
 	margin-right: 10px;
 }
@@ -253,5 +285,3 @@ h1.bold {
 	height: 180px;
 	min-width: 100%;
 }
-
-
