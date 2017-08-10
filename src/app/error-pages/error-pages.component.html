@@ -4,15 +4,35 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">
-				<img alt="Image Not Found"
+				<img *ngIf= "Error500" alt="Image Not Found"
 					src="https://cdn.dribbble.com/users/1373974/screenshots/3029413/500.gif"
+					style="max-width: 100%; padding: 0 3em;">
+				<img *ngIf= "Error400" alt="Image Not Found"
+					src="https://confluence.atlassian.com/confkb/files/722144482/722144470/1/1426818006161/Screen+Shot+2015-03-20+at+12.33.04+pm.png"
+					style="max-width: 100%; padding: 0 3em;">
+				<img *ngIf= "Error406" alt="Image Not Found"
+					src="https://ih1.redbubble.net/image.4727402.7942/fc,550x550,white.jpg"
+					style="max-width: 100%; padding: 0 3em;">
+				<img *ngIf= "Error409" alt="Image Not Found"
+					src="https://ih1.redbubble.net/image.4727425.7963/stf,small,600x600-c,0,0,1000,1000.jpg"
+					style="max-width: 100%; padding: 0 3em;">
+				<img *ngIf= "Error503" alt="Image Not Found"
+					src="https://i.ytimg.com/vi/hU9g-2VfQL4/maxresdefault.jpg"
 					style="max-width: 100%; padding: 0 3em;">
 			</div>
 
 			<div class="col-sm-6">
 				<div class="message-box" style="padding: 5em">
-					<h1 class="m-b-0">500</h1>
-					<p>Internal Server Error.</p>
+					<h1 *ngIf="Error500" class="m-b-0">500</h1>
+					<h1 *ngIf="Error400">400</h1>
+					<h1 *ngIf="Error406">406</h1>
+					<h1 *ngIf="Error409">409</h1>
+					<h1 *ngIf="Error503">503</h1>
+					<p *ngIf="Error500" >Internal Server Error.</p>
+					<p *ngIf="Error400" > Bad url Server Request.</p>
+					<p *ngIf="Error406" >Not Acceptable Request.</p>
+					<p *ngIf="Error503" >Service Unavailable.</p>
+					
 					<div class="buttons-con">
 						<div class="action-link-wrap">
 							<!-- <a href="#"

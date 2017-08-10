@@ -65,8 +65,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public sweetAlertMesg: string;
     public MultipleVideo = false;
     public maxVideoSize: number;
-    public oneDriveValue: false;
     public videoUrlWMC: any;
+    public codecSupport = false;
     deviceInfo = null;
     browserInfo: string;
     videoDisabled = false;
@@ -95,7 +95,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.maxTimeDuration = 3400; // record video time
             this.maxVideoSize = 800; // upload video size in MB's
             this.uploader = new FileUploader({
-                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime', 'video/3gpp',
+                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
                 maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
@@ -181,7 +181,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                          this.processing =  false;
                          this.defaultSettings();
                          this.maxSubscription = true;
-                      }  else {
+                     } else if (this.processVideoResp.error.includes('Codec is not supported')) {
+                         this.codecSupport = true;
+                     } else {
                           console.log('process video data object is null please try again:');
                          // swal('Contact Admin' , this.processVideoResp.error, 'error');
                          if (this.RecordSave === true) {
@@ -230,10 +232,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     removefileUploadVideo() {
         this.file_srcs.length = 0;
+        this.uploader.queue.length = 0;
         console.log('length is zero' + this.file_srcs);
         this.defaultSettings();
         this.isChecked = false;
         this.isDisable = false;
+        this.codecSupport = false;
     }
   recordVideo() {
          $('#script-text').val('');

@@ -29,7 +29,7 @@
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
 			<!-- video started -->
-			<div class="col-md-6" style="padding-top: 28px">
+			<div class="col-md-6" style="padding-top: 28px" *ngIf="!httpRequestLoader.isServerError">
 				<div *ngIf="is360Value==false">
 				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster=""
                  data-setup='{"example_option":true }'>
@@ -140,7 +140,10 @@
 				<!-- Modal End-->
 			</div>
 			<!-- video ended  -->
-			<div class="col-md-6" style=" top: -15px;">
+			<!-- app server http error  -->
+			<app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+			<!-- end the http error  -->
+			<div class="col-md-6" style=" top: -15px;" *ngIf="!httpRequestLoader.isServerError">
 				<form class="form-horizontal" role="form" [formGroup]="videoForm" *ngIf="active" (ngSubmit)="saveVideo()">
 					<div class="form-actions">
 						<div class="row">
@@ -551,7 +554,7 @@
 
 		</div>
 	</div>
-	<div class="todo-content">
+	<div class="todo-content" *ngIf="!httpRequestLoader.isServerError">
 		<div class="portlet light">
 			<!-- PROJECT HEAD -->
 			<div class="portlet-title">

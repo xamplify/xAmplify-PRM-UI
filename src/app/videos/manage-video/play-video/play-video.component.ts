@@ -432,10 +432,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.user.lastName = this.lastName;
         }
         console.log(this.user);
-        this.videoFileService.saveCalltoActionUser(this.user)
-            .subscribe((result: any) => {
-                console.log('Save user Form call to acton is successfull' + result);
-            });
+        // this.videoFileService.saveCalltoActionUser(this.user)
+        //     .subscribe((result: any) => {
+        //         console.log('Save user Form call to acton is successfull' + result);
+        //     });
     }
     repeatPlayVideo() {
         $('#overlay-modal').hide();

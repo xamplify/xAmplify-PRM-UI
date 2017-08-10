@@ -87,7 +87,7 @@
 						<!--<div> {{browserInfo}}</div>-->
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add file...</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.3gp,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
 						     *ngIf="uploader.queue.length==0" 
 							 [disabled]="loading==true||isDisable == true" #input />
 						</div> </div>
@@ -114,7 +114,10 @@
                        <strong>Contact Admin!</strong> Maximum Disk Space Reached for you subscription.!!
                        <a  class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                     </div>
-                    
+                      <div *ngIf="codecSupport ==true"  class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
+                            Codec is not supported for this video..We are unable to process your video file. Please upload another video file!!
+                       <a  class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    </div>
 						<table class="table" >
 							<tbody *ngIf="isDisable==false">
 							  <tr *ngFor="let item of uploader.queue">

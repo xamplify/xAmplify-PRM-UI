@@ -15,6 +15,7 @@ import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { VideoUtilService } from '../../services/video-util.service';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 declare var $, videojs, swal: any;
 
 @Component({
@@ -35,7 +36,8 @@ declare var $, videojs, swal: any;
                 animate(500, style({ opacity: 0 }))
             ])
         ])
-    ]
+    ],
+    providers: [HttpRequestLoader]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -146,6 +148,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -1200,7 +1203,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         console.log('save video data object is null please try again:' + this.saveVideoFile);
                         swal('ERROR', this.saveVideoFile.error, 'error');
                     }
-                }),
+                  },
+                  ( error: string ) => {
+                    this.logger.error(this.referenceService.errorPrepender + ' saveVideo File ():' + error);
+                    this.referenceService.showServerError(this.httpRequestLoader);
+                    this.httpRequestLoader.statusCode = 500;
+                  }
+            ),
                 () => this.logger.log(this.saveVideoFile);
            }
         }

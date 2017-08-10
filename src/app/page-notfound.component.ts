@@ -2,14 +2,22 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector:  'not-found',
+  selector:  'app-not-found',
   template: `
-    <h3 style="background: white">{{title}} Please go back or click on <a (click)="homePage()">DashBoard</a></h3>
+  <div class="portlet light" style="padding:5px 5px 96px 17px">
+	<div class="portlet-body">  
+    <div style="position: relative; top:-15px">
+    <h3 style="background: white">{{title}}</h3>
+    <h4> Sorry, but the page your were looking for could not been found for this url.
+      please go back or click on the <a (click)="homePage()">DashBoard</a></h4>
+    </div>
     <img src="assets/images/404Page.jpg" style="width: 100%; height: 566px;">
+  </div>
+  </div>
     `
 })
 export class NotFoundPageComponent {
-  title = 'The page was Not Found for this URL !';
+  title = 'The page was Not Found !';
   constructor(public router: Router ) { }
   homePage() { this.router.navigate(['./home/dashboard']); }
 }
