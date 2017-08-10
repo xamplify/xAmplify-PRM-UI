@@ -1393,7 +1393,7 @@ public validEmailPatternSuccess : boolean = false;
                 }
             },
             error => this.logger.error( error ),
-            () => this.logger.log( "AddContactsComponent googleContacts() finished." )
+            () => this.logger.log( "AddContactsComponent socialContactImage() finished." )
             );
     }
 
@@ -1408,10 +1408,56 @@ public validEmailPatternSuccess : boolean = false;
             error => {
                 this.logger.error( error )
             },
-            () => this.logger.info( "MangeContactsComponent loadContactListsName() finished" )
+            () => this.logger.info( "Add contact component loadContactListsName() finished" )
             )
     }
 
+    unlinkSalesforceAccount(){
+        this.contactService.unlinkSalesforceAccount()
+        .subscribe(
+        ( data: any ) => {
+            this.logger.info( data );
+            this.contactLists = data.listOfUserLists;
+            this.names.push( data.names );
+            console.log(this.names);
+        },
+        error => {
+            this.logger.error( error )
+        },
+        () => this.logger.info( "Add contact component unlink salesforce Account() finished" )
+        ) 
+    }
+    
+    unlinkGoogleAccount(){
+        this.contactService.unlinkGoogleAccount()
+        .subscribe(
+        ( data: any ) => {
+            this.logger.info( data );
+            this.contactLists = data.listOfUserLists;
+            this.names.push( data.names );
+        },
+        error => {
+            this.logger.error( error )
+        },
+        () => this.logger.info( "Add contact component unlink Google Account() finished" )
+        ) 
+    }
+    
+    unlinkZohoAccount(){
+        this.contactService.unlinkZohoAccount()
+        .subscribe(
+        ( data: any ) => {
+            this.logger.info( data );
+            this.contactLists = data.listOfUserLists;
+            this.names.push( data.names );
+        },
+        error => {
+            this.logger.error( error )
+        },
+        () => this.logger.info( "Add contact component unlink Zoho Account() finished" )
+        ) 
+    }
+    
     ngOnInit() {
         this.socialContactImage();
         this.hideModal();

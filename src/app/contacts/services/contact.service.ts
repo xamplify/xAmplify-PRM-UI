@@ -51,6 +51,27 @@ export class ContactService {
             .catch( this.handleError );
     }
     
+    unlinkSalesforceAccount(): Observable<ContactList[]> {
+        this.logger.info( "Service class unlink salesforce() completed" );
+        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    unlinkGoogleAccount(): Observable<ContactList[]> {
+        this.logger.info( "Service class unlink google() completed" );
+        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    unlinkZohoAccount(): Observable<ContactList[]> {
+        this.logger.info( "Service class unlink zoho() completed" );
+        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     loadContactListsNames(): Observable<ContactList[]> {
         this.logger.info( "Service class loadContactsNames() completed" );
         return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
