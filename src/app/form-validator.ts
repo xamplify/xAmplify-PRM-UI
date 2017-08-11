@@ -86,11 +86,14 @@ export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: stri
   }
 
 export function validateCountryName(control: FormControl): {[key: string]: any} {
+    if(control.value!=null){
         if (control.value.trim()=="---Please Select Country---") {
             return {
                 invalidCountry: true
             };
           }
+    }    
+ 
     
   }
 
