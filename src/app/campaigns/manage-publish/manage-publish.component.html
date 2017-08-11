@@ -87,11 +87,11 @@
 													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">
 														<b  *ngIf="campaign.launched">Launched On</b>
 														<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved For</b>
+														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</b>
 													</span>
 												    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;" >
 												    	<b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b>
-												    	<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" >{{campaign.endTime}}</b>
+												    	<!-- <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" >{{campaign.endTime}}</b> -->
 												    </span>
 												</div>
 											</div>

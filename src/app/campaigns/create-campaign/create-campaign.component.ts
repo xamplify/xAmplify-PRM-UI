@@ -1016,13 +1016,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign.regularEmail = false;
         }
         this.filteredSocialStatusProviders();
-       /* if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-            let dateTime = this.campaignLaunchForm.value.launchTime;
-            let date = dateTime.split(' ')[0];
-            this.date = date.replace("-","/");
-            console.log(this.date);
-        }
-       */
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
@@ -1030,9 +1023,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             reply.subject = this.getCkEditorContent(reply.divId);
             if(reply.replyTime!=undefined && reply.subject.length>0){
                 console.log(reply);
-               /*  if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                     reply.replyTime = this.getCalculatedTime(reply.replyTime, this.date, reply.replyInDays);
-                 }*/
             }else{
                 $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             }
@@ -1048,9 +1038,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let replyTime = url.replyTime;
             if(replyTime!=undefined && url.subject!=null && url.body.length>0){
                 console.log(url);
-               /* if(this.campaignLaunchForm.value.scheduleCampaign==this.sheduleCampaignValues[1]){
-                    url.replyTime = this.getCalculatedTime(url.replyTime, this.date, url.replyInDays);
-                }*/
             }else{
                 $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             }
@@ -1086,22 +1073,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         return data;
     }
    
-    convertDate(dateString:string){
-        return dateString.replace(/(\d{2})(\/)(\d{2})/, "$3$2$1");   
-    }
-    addDays(date:Date,days:number){
-        return new Date(date.getTime() + days*24*60*60*1000);
-    }
-    getCalculatedTime(timeAMPM:Date,date:Date,days:number){
-       console.log(timeAMPM);
-        let hours =  timeAMPM.getHours(); //returns 0-23
-        let minutes = timeAMPM.getMinutes();
-        let convertedDateTime = date+" "+hours+":"+minutes;
-        let time = new Date(this.convertDate(convertedDateTime));
-        return this.addDays(time,days);
-    }
     getCkEditorContent(divId:string){
+       console.log(CKEDITOR.instances);
         let name = 'editor'+divId.split('-')[1];
+        console.log(name);
         return CKEDITOR.instances[name.trim()].getData();
     }
     sendTestEmail(emailId:string){
@@ -1470,6 +1445,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
      remove(divId:string,type:string){
        console.log(divId);
+       console.log( CKEDITOR.instances);
          if(type=="replies"){
              this.replies = this.spliceArray(this.replies,divId);
              console.log(this.replies);
