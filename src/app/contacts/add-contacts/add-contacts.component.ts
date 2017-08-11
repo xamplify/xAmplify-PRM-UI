@@ -604,9 +604,9 @@ public validEmailPatternSuccess : boolean = false;
             $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#ZgearIcon').attr('style', 'position: relative;font-size: 19px;top: 9px;left: -9px;');
             this.newUsers.length = 0;
             //this.model.contactListName = null;
             this.dublicateEmailId = false;
@@ -632,9 +632,9 @@ public validEmailPatternSuccess : boolean = false;
             $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == true && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -653,8 +653,8 @@ public validEmailPatternSuccess : boolean = false;
             
             $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -673,8 +673,8 @@ public validEmailPatternSuccess : boolean = false;
             
             $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -9px;left: -9px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -692,8 +692,8 @@ public validEmailPatternSuccess : boolean = false;
             this.contactListNameError = false;
             $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
             $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
         }
     }
 
