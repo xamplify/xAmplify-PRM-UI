@@ -196,7 +196,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     contactListNameLength(title: string) {
-        if (title.length > 28) { title = title.substring(0, 28) + '...'; }
+        if (title.length > 25) { title = title.substring(0, 25) + '....'; }
         return title;
         }
 
