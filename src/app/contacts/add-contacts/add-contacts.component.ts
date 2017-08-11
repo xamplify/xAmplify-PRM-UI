@@ -198,6 +198,13 @@ public validEmailPatternSuccess : boolean = false;
             $( "button#salesforceContact_button" ).prop( 'disabled', true );
             $( "button#zohoContact_button" ).prop( 'disabled', true );
             $( "button#microsoftContact_button" ).prop( 'disabled', true );
+            
+            $('.salesForceImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+            $('.googleImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+            $('.zohoImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+            $('#SgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+            $('#GgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+            $('#ZgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
             let reader = new FileReader();
             reader.readAsText( files[0] );
             this.logger.info( files[0] );
@@ -594,6 +601,12 @@ public validEmailPatternSuccess : boolean = false;
             $( "button#salesforceContact_button" ).prop( 'disabled', false );
             $( "button#zohoContact_button" ).prop( 'disabled', false );
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
+            $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
             this.newUsers.length = 0;
             //this.model.contactListName = null;
             this.dublicateEmailId = false;
@@ -616,6 +629,12 @@ public validEmailPatternSuccess : boolean = false;
             $( "#file_preview" ).hide();
             $( '#copyFromclipTextArea' ).val( '' );
             this.contactListNameError = false;
+            $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == true && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -631,6 +650,11 @@ public validEmailPatternSuccess : boolean = false;
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
            // this.model.contactListName = null;
             this.contactListNameError = false;
+            
+            $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == true && this.saveSalesforceContactUsers == false ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -646,6 +670,11 @@ public validEmailPatternSuccess : boolean = false;
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             //this.model.contactListName = null;
             this.contactListNameError = false;
+            
+            $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -661,6 +690,10 @@ public validEmailPatternSuccess : boolean = false;
             $( "button#microsoftContact_button" ).prop( 'disabled', false );
             //this.model.contactListName = null;
             this.contactListNameError = false;
+            $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+            $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
         }
     }
 
@@ -681,6 +714,13 @@ public validEmailPatternSuccess : boolean = false;
         $( "button#microsoftContact_button" ).prop( 'disabled', false );
         $( "button#uploadCSV" ).prop( 'disabled', false );
         $( "input[type='file']" ).attr( "disabled", false );
+        
+        $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+        $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+        $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
+        $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+        $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+        $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
     }
 
     addRow() {
@@ -696,7 +736,6 @@ public validEmailPatternSuccess : boolean = false;
         this.saveSalesforceContactUsers = false
         $( "#sample_editable_1" ).show();
         this.newUsers.push( new User() );
-        $('.salesforceImage').attr('style', 'cursor:not-allowed; opacity:0.3');
         $( "button#copyFromClipBoard" ).prop( 'disabled', true );
         $( "button#uploadCSV" ).prop( 'disabled', true );
         $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -706,6 +745,13 @@ public validEmailPatternSuccess : boolean = false;
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
+        $('.salesForceImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('.googleImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('.zohoImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('#SgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+        $('#GgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+        $('#ZgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+          
     }
 
     cancelRow( rowId: number ) {
@@ -735,6 +781,12 @@ public validEmailPatternSuccess : boolean = false;
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
         this.clipBoard = true;
+        $('.salesForceImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('.googleImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('.zohoImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+        $('#SgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+        $('#GgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+        $('#ZgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
     }
 
     googleContacts() {
@@ -812,6 +864,11 @@ public validEmailPatternSuccess : boolean = false;
                     $( "button#salesforceContact_button" ).prop( 'disabled', true );
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
+                    
+                    $('.salesForceImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('.zohoImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('#SgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+                    $('#ZgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
                 }
                 this.socialContact.contacts = this.gContacts;
             },
@@ -1016,6 +1073,11 @@ public validEmailPatternSuccess : boolean = false;
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     $( "#myModal .close" ).click()
+                    
+                    $('.salesForceImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('.googleImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('#SgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+                    $('#GgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
                 }
             },
             error => this.logger.error( error ),
@@ -1224,6 +1286,10 @@ public validEmailPatternSuccess : boolean = false;
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     this.hideModal();
+                    $('.googleImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('.zohoImageClass').attr('style', 'opacity: 0.2;margin-top: 14px;');
+                    $('#GgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
+                    $('#ZgearIcon').attr('style', 'opacity: 0.2;margin-top: 12px;margin-left: -10px;');
                 }
             },
             error => this.logger.error( error ),
