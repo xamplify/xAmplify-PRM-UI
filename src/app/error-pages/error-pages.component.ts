@@ -37,8 +37,7 @@ export class ErrorPagesComponent implements OnInit {
       this.errorStatus = 500;
       this.Error500 = true;
     } else if (this.errorStatus === 503) {
-        this.errorStatus = 503;
-        this.Error503 = true;
+         this.router.navigate(['/serviceunavailable']);
       } else if(this.errorStatus === 403){
       this.errorStatus = 403;
       this.Error403 = true;

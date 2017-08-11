@@ -51,7 +51,7 @@ export class ReferenceService {
     showServerError(httpRequestLoader: HttpRequestLoader) {
         httpRequestLoader.isLoading = false;
         httpRequestLoader.isServerError = true;
-        httpRequestLoader.statusCode = 500;
+       // httpRequestLoader.statusCode = 500;
         return httpRequestLoader;
     }
     loading(httpRequestLoader: HttpRequestLoader, isLoading: boolean) {

@@ -211,18 +211,22 @@ export class VideoFileService {
         return Observable.throw( errMsg );
      }
     handleError(error: any) {
-    /*    const errMsg = (error.message) ? error.message :
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw(errMsg); */
+      //  return Observable.throw(errMsg);
         if (error.status === 500) {
-            const response =  JSON.parse(error['_body']);
-            return Observable.throw(new Error(response.message));
+         //   const response =  JSON.parse(error['_body']);
+            return Observable.throw(error);
         } else if (error.status === 400) {
-            return Observable.throw(new Error(error.status));
+            return Observable.throw(error);
         } else if (error.status === 409) {
-            return Observable.throw(new Error(error.status));
+            return Observable.throw(error);
         } else if (error.status === 406) {
-            return Observable.throw(new Error(error.status));
+            return Observable.throw(error);
+        } else if (error.status === 503) {
+            return Observable.throw(error);
+        }  else {
+              return Observable.throw( errMsg );
         }
     }
     handleErrorDelete(error: any) {

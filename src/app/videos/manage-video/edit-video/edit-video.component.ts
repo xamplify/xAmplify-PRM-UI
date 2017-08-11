@@ -1201,13 +1201,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.videoFileService.videoViewBy = 'Save';
                     } else {
                         console.log('save video data object is null please try again:' + this.saveVideoFile);
-                        swal('ERROR', this.saveVideoFile.error, 'error');
+                       // swal('ERROR', this.saveVideoFile.error, 'error');
                     }
                   },
-                  ( error: string ) => {
+                  ( error: any ) => {
                     this.logger.error(this.referenceService.errorPrepender + ' saveVideo File ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
-                    this.httpRequestLoader.statusCode = 500;
+                    this.httpRequestLoader.statusCode = error.status;
                   }
             ),
                 () => this.logger.log(this.saveVideoFile);

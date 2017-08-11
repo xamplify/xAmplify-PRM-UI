@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, OnDestroy, Input, AfterViewInit } from '
 import { Router } from '@angular/router';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
@@ -10,6 +11,7 @@ import { VideoUtilService } from '../../services/video-util.service';
 import { XtremandLog } from '../../models/xtremand-log';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { UUID } from 'angular2-uuid';
 // logging info details
 enum LogAction {
@@ -36,7 +38,7 @@ enum LogAction {
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../edit-video/call-action.css'],
-    providers: [Pagination, XtremandLog]
+    providers: [Pagination, XtremandLog, HttpRequestLoader]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
@@ -88,10 +90,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public overLaySet = false;
     public fullScreenMode = false;
     showRelatedMessage: boolean;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   //  shareEmbedDisabled = false;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
         private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, public pagination: Pagination,
-        private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService, private pagerService: PagerService) {
+        private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService,
+         private pagerService: PagerService, public referenceService: ReferenceService) {
         this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
@@ -136,7 +140,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.selectedVideo);
         this.is360Value = this.selectedVideo.is360video;
         this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
-        this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
+      //  this.embedUrl = 'https://aravindu.com/xtremandApp/embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
     }
     showOverlayModal() {
         $('#modalDialog').append($('#overlay-modal').show());
@@ -372,7 +376,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultVideoOptions();
                 this.transperancyControllBar(this.selectedVideo.transparency);
                 if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
-            });
+            },
+            (error: any) => {
+             console.log('show play videos ():' + error);
+                this.referenceService.showServerError(this.httpRequestLoader);
+                this.httpRequestLoader.statusCode = error.status;
+            }
+        );
     }
     likesValuesDemo() {
         this.likesValues += 1;

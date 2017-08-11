@@ -133,8 +133,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.disableDropDowns = true;
                     } else { this.disableDropDowns = false; }
                 },
-                (error: string) => {
+                (error: any) => {
                     this.logger.error(' Loading Videos():' + error);
+                     this.referenceService.showServerError(this.httpRequestLoader);
+                     this.httpRequestLoader.statusCode = error.status;
                 },
                 () => console.log('load videos completed:'),
             );
@@ -181,9 +183,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.isCategoryUpdated = false;
                     pagination = this.pagerService.getPagedItems(pagination, this.videos);
                 },
-                (error: string) => {
+                (error: any) => {
                     this.logger.error(this.errorPrepender + ' Loading Videos():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
+                     this.httpRequestLoader.statusCode = error.status;
                 },
                 () => console.log('load videos completed:' + this.videos),
             );
@@ -272,9 +275,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.playVideo = false;
                 this.campaignReport = false;
             },
-            (error: string) => {
+            (error: any) => {
                 this.logger.error(this.errorPrepender + 'show edit videos ():' + error);
                 this.referenceService.showServerError(this.httpRequestLoader);
+                this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -292,9 +296,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pageBar = true;
                 this.deletedVideo = false;
             },
-            (error: string) => {
+            (error: any) => {
                 this.logger.error(this.errorPrepender + ' show play videos ():' + error);
                 this.referenceService.showServerError(this.httpRequestLoader);
+                this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -311,9 +316,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pageBar = true;
                 this.deletedVideo = false;
             },
-            (error: string) => {
+            (error: any) => {
                 this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
                 this.referenceService.showServerError(this.httpRequestLoader);
+                this.httpRequestLoader.statusCode = error.status;
             });
     }
     campaignRouter(video: SaveVideoFile) {
@@ -356,7 +362,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 }, 5000);
             },
             (error: any) => {
-                if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+                if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
+                    this.logger.error(this.errorPrepender + ' delete videos ():' + error);
+                    this.referenceService.showServerError(this.httpRequestLoader);
+                    this.httpRequestLoader.statusCode = error.status;
+                }  else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     //  swal( 'Campaign Video!', error, 'error' );
                     const message = error.replace('mobinar', 'video');
                     this.campaignVideoMesg = message;
@@ -367,6 +377,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 } else {
                     this.logger.error(this.errorPrepender + ' delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
+                    this.httpRequestLoader.statusCode = error.status;
                 }
                 console.log(error);
             },

@@ -25,7 +25,7 @@
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
-		<div class="col-md-7">
+		<div class="col-md-7" *ngIf="!httpRequestLoader.isServerError">
 		    <div>
 			<div id="newPlayerVideo"></div>
 			</div>
@@ -137,7 +137,8 @@
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
 				</div>
-
+	<app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+				
 				<!-- emebd src Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
 					<div class="modal-dialog" role="document">
@@ -316,7 +317,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-5" style="margin-top: -10px;">
+		<div class="col-md-5" style="margin-top: -10px;" *ngIf="!httpRequestLoader.isServerError">
 			<div class="tabbable tabbable-custom tabbable-noborder">
 
 				<div class="tab-content">
