@@ -718,9 +718,9 @@ public validEmailPatternSuccess : boolean = false;
         $('.salesForceImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
         $('.googleImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
         $('.zohoImageClass').attr('style', 'opacity: 1;margin-top: 10px;');
-        $('#SgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-        $('#GgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
-        $('#ZgearIcon').attr('style', 'opacity: 1;transform: scale(1.8,2);margin-top: 12px;margin-left: -10px;');
+        $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+        $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
+        $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: 9px;left: -9px;');
     }
 
     addRow() {
