@@ -328,14 +328,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'whitespace':'Invalid Data',
             'minlength': 'First Name must be at least 3 characters long.',
             'maxlength': 'First Name cannot be more than 50 characters long.',
-            'pattern':'Only Characters Allowed'
+            'pattern':'Invalid Name'
         },
         'lastName': {
             'required': 'Last Name required.',
             'whitespace':'Invalid Data',
             'minlength': 'Last Name must be at least 3 characters long.',
             'maxlength': 'Last Name cannot be more than 50 characters long.',
-            'pattern':'Only Characters Allowed'
+            'pattern':'Invalid Name'
         },
         'mobileNumber': {
             'required': 'Mobile Number required.',

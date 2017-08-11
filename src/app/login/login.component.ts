@@ -293,7 +293,7 @@ export class LoginComponent implements OnInit {
             'whitespace':'Invalid Data',
             'minlength': 'Name must be at least 4 characters long.',
             'maxlength': 'Name cannot be more than 50 characters long.',
-            'pattern':'Only Characters Allowed'
+            'pattern':'Invalid Name'
         },
         'emailId': {
             'required': 'Email is required.',
