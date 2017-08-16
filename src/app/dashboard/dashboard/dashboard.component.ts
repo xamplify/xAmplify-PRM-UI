@@ -31,8 +31,8 @@ export class DashboardComponent implements OnInit {
 
     dashboardStates: any;
     socialeMedia: any;
-    genderDemographicsMale: number;
-    genderDemographicsFemale: number;
+    genderDemographicsMale: number = 50;
+    genderDemographicsFemale: number = 50;
     totalContacts : number;
     totalUploadedvideos : number;
     listOfEmailClicked : number;

@@ -275,91 +275,62 @@
 
 	</div>
 	<div class="row">
-
-		<div class="col-md-4 col-sm-4">
+		<div class="col-sm-4 col-xs-12">
 			<div class="portlet light ">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="icon-equalizer font-purple-plum hide"></i> <span
-							class="caption-subject font-red-sunglo bold uppercase">Gender
-							Demographics</span>
-
-					</div>
-					<div class="tools">
-
-						<a href="" class="reload" data-original-title="" title=""> </a>
-
+						<i class="icon-equalizer font-purple-plum hide"></i> 
+						<span class="caption-subject font-red-sunglo bold uppercase">Gender Demographics</span>
 					</div>
 				</div>
 				<div class="portlet-body">
 					<div class="row">
-						<div class="col-md-6">
-
+						<div class="col-xs-6">
 							<div class="sparkline-chart">
 								<div class="visual" style="color: #007bb6; font-size: 72px;">
-									<i class="fa fa-male"
-										style="color: #007bb6; font-size: 72px; padding: 10px"></i>
+									<i class="fa fa-male" style="color: #007bb6; font-size: 72px; padding: 10px"></i>
 								</div>
-
 								<div class="details">
-									<div class="number"
-										style="color: #007bb6; font-size: 18px; font-weight: bold">
+									<div class="number" style="color: #007bb6;">
 										{{genderDemographicsMale}}% <small>Male</small>
 									</div>
-
 								</div>
 							</div>
 						</div>
-						<div class="margin-bottom-10 visible-sm"></div>
-						<div class="col-md-6">
+						<div class="col-xs-6">
 							<div class="sparkline-chart">
 								<div class="visual" style="color: #dd4b39; font-size: 72px;">
-									<i class="fa fa-female"
-										style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
+									<i class="fa fa-female" style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
 								</div>
 								<div class="details">
-									<div class="number"
-										style="color: #ff2c82; font-size: 18px; font-weight: bold">
+									<div class="number" style="color: #ff2c82;">
 										{{genderDemographicsFemale}}% <small>Female</small>
 									</div>
-
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-8 col-sm-8">
+		<div class="col-sm-8 col-xs-12">
 			<div class="portlet light ">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="icon-cursor font-purple-intense hide"></i> <span
-							class="caption-subject font-purple-intense bold uppercase">Social
-							Followers</span>
+						<i class="icon-cursor font-purple-intense hide"></i> 
+						<span class="caption-subject font-purple-intense bold uppercase">Social Followers</span>
 					</div>
-					<div class="tools">
-
-						<a href="" class="reload" data-original-title="" title=""> </a>
-
-					</div>
-
 				</div>
 				<div class="portlet-body">
 					<div class="row">
 						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-md-3"
-								*ngIf="socialConnection.source == 'TWITTER'">
-								<a
-									[routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
+							<div class="col-xs-6 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
+								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
 									style="text-decoration: none;">
 									<div class="sparkline-chart">
 										<div class="visual" style="color: #007bb6; font-size: 60px;">
-											<i class="fa fa-twitter"
-												style="color: #33CCFF; font-size: 70px;"></i>
+											<i class="fa fa-twitter" style="color: #33CCFF; font-size: 70px;"></i>
 										</div>
-
 										<div class="details">
 											<div class="number" style="color: #33CCFF;">
 												<span>{{twitterTotalFollowersCount}}</span> <br> <small>Followers</small>
@@ -369,7 +340,7 @@
 								</a>
 							</div>
 						</section>
-						<div class="col-md-3">
+						<div class="col-xs-6 col-sm-3">
 							<div class="sparkline-chart">
 								<div class="visual" style="color: #007bb6; font-size: 60px;">
 									<i class="fa fa-google-plus"
@@ -384,7 +355,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-xs-6 col-sm-3">
 							<div class="sparkline-chart">
 								<div class="visual" style="color: #007bb6; font-size: 60px;">
 									<i class="fa fa-facebook"
@@ -398,7 +369,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-xs-6 col-sm-3">
 							<div class="sparkline-chart">
 								<div class="visual" style="color: #4875B4; font-size: 60px;">
 									<i class="fa fa-linkedin"
@@ -484,47 +455,32 @@
 					<div class="portlet light ">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="icon-equalizer font-purple-plum hide"></i> <span
-									class="caption-subject font-red-sunglo bold uppercase">Video
-									Stats</span>
-
-							</div>
-							<div class="tools">
-
-								<a href="" class="reload" data-original-title="" title=""> </a>
-
+								<i class="icon-equalizer font-purple-plum hide"></i> 
+								<span class="caption-subject font-red-sunglo bold uppercase">Video Stats</span>
 							</div>
 						</div>
 						<div class="portlet-body">
 							<div class="row">
-								<div class="col-md-4">
-									<div class="sparkline-chart">
-										<div class="number" id="sparkline_bar">
-											<canvas width="113" height="55"
-												style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
-										</div>
-										<a class="title" href="javascript:;"> Views </a>
+								<div class="col-xs-4 sparkline-chart">
+									<div class="number" id="sparkline_bar">
+										<canvas width="113" height="55"
+											style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
 									</div>
+									<a class="title" href="javascript:;"> Views </a>
 								</div>
-								<div class="margin-bottom-10 visible-sm"></div>
-								<div class="col-md-4">
-									<div class="sparkline-chart">
-										<div class="number" id="sparkline_bar2">
-											<canvas width="107" height="55"
-												style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas>
-										</div>
-										<a class="title" href="javascript:;"> Minutes Watched </a>
+								<div class="col-xs-4 sparkline-chart">
+									<div class="number" id="sparkline_bar2">
+										<canvas width="113" height="55"
+											style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
 									</div>
+									<a class="title" href="javascript:;"> Minutes Watched </a>
 								</div>
-								<div class="margin-bottom-10 visible-sm"></div>
-								<div class="col-md-4">
-									<div class="sparkline-chart">
-										<div class="number" id="sparkline_line">
-											<canvas width="100" height="55"
-												style="display: inline-block; width: 100px; height: 55px; vertical-align: top;"></canvas>
-										</div>
-										<a class="title" href="javascript:;"> Average Duration </a>
+								<div class="col-xs-4 sparkline-chart">
+									<div class="number" id="sparkline_line">
+										<canvas width="113" height="55"
+											style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
 									</div>
+									<a class="title" href="javascript:;"> Average Duration </a>
 								</div>
 							</div>
 						</div>
@@ -535,50 +491,36 @@
 					<div class="portlet light ">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="icon-cursor font-purple-intense hide"></i> <span
-									class="caption-subject font-purple-intense bold uppercase">Email
-									Stats</span>
+								<i class="icon-cursor font-purple-intense hide"></i> 
+								<span class="caption-subject font-purple-intense bold uppercase">Email Stats</span>
 							</div>
-							<div class="tools">
-
-								<a href="" class="reload" data-original-title="" title=""> </a>
-
-							</div>
-
 						</div>
 						<div class="portlet-body">
-
 							<div class="row">
-								<div class="col-md-4 sparkline-chart">
+								<div class="col-xs-4 sparkline-chart">
 									<div class="visual">
-										<img alt="opened"
-											src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png">
+										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png">
 									</div>
-
 									<div class="details">
 										<div class="number" style="color: #f36360; margin-top: 5px;">
 											<span>{{listOfEmailOpened}}</span> <br> <small>opened</small>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4 sparkline-chart">
+								<div class="col-xs-4 sparkline-chart">
 									<div class="visual">
-										<img alt="Clicked"
-											src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
+										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
 									</div>
-
 									<div class="details">
 										<div class="number" style="color: #7ccacb; margin-top: 5px;">
 											<span>{{listOfEmailClicked}}</span> <br> <small>Clicked</small>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4 sparkline-chart">
+								<div class="col-xs-4 sparkline-chart">
 									<div class="visual">
-										<img alt="Watched"
-											src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
+										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
 									</div>
-
 									<div class="details">
 										<div class="number" style="color: #b0dcc1; margin-top: 5px;">
 											<span>{{listOfEmailWatched}}</span> <br> <small>Watched</small>
