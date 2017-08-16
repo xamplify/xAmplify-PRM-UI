@@ -15,8 +15,9 @@ img:hover {
    background-color:#4dff4d;
    filter: grayscale(0%);
    opacity: 2;
-}a.mix-preview2:hover{
-color:#00a6e8}
+}.fa fa-cog:hover{
+color:blue;
+}
 }.imageblurNormal{
 -webkit-filter: grayscale(0%);
    filter: grayscale(0%);
@@ -166,10 +167,8 @@ color:#00a6e8}
 								</a>
 							</div> -->
 							<div style="position: relative" id="salesforceGear" *ngIf="sfImageNormal" data-toggle="modal" data-target="#settingsSalesforce">
-								<a class="mix-preview2 fancybox-button"
-									title="UnLink Salesforce Account"
-									data-rel="fancybox-button" style="left: 64%;top:-100px;background:none"> 
-									<i id="SgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: 0px;left: 0px;"></i>
+								<a> 
+									<i id="SgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -80px;left: 77px;"></i>
 								</a>
 							</div>
 								</div>
@@ -204,11 +203,8 @@ color:#00a6e8}
 								</a>
 							</div> -->
 								<div style="position: relative" *ngIf="googleImageNormal" data-toggle="modal" data-target="#settingsGoolge">
-								<a class="mix-preview2 fancybox-button"
-									title="Unlink Google Account"
-									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
-									data-rel="fancybox-button" style="left: 64%;top:-100px;background:none"> 
-									<i id="GgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: 0px;left: 0px;"></i>
+								<a> 
+									<i id="GgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -80px;left: 77px;"></i>
 								</a>
 							</div>
 								</div>
@@ -235,17 +231,15 @@ color:#00a6e8}
 								</a>
 							</div> -->
 							<div style="position: relative" *ngIf="zohoImageNormal" data-toggle="modal" data-target="#settingsZoho">
-								<a class="mix-preview2 fancybox-button"
-									title="Unlink Zoho Account"
-									data-rel="fancybox-button" style="left: 64%;top:-100px;background:none"> 
-									<i id="ZgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: 0px;left: 0px;"></i>
+								<a> 
+									<i id="ZgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -80px;left: 77px;"></i>
 								</a>
 							</div>
 								</div>
 								<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
 								<button id="microsoftContact_button" style="margin: -13px; background-color: white">
 									<figure>
-									 <img src="assets/images/crm/dynamics.png" class="imageClass imageblur"
+									 <img src="assets/images/crm/dynamics.png" class="imageClass imageblur mdImageClass"
 										title="Click here To access user list from your Microsoft CRM account"
 										height="86" width="90"
 										style="cursor: pointer; border: 1px; margin: 10px;"
