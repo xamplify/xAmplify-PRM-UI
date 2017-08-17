@@ -9,7 +9,7 @@ import { UtilService } from '../core/services/util.service';
 import { UserService } from '../core/services/user.service';
 import {matchingPasswords,noWhiteSpaceValidator,validateCountryName} from '../form-validator';
 import { ReferenceService } from '../core/services/reference.service';
-import { Logger } from "angular2-logger/core";
+import { Logger } from 'angular2-logger/core';
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component({
@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
         private userService: UserService, private refService :ReferenceService, private utilService: UtilService,private logger:Logger ) {
         this.buildForm();
         this.validateForgotPasswordForm();
-        
     }
 
     public initializeTwitterNotification() {/*
@@ -108,7 +107,7 @@ export class LoginComponent implements OnInit {
     logError() {
         this.error = 'Username or password is incorrect';
         console.log("error : " + this.error);
-        this.router.navigate(['/login']);
+        // this.router.navigate(['/login']);
         setTimeout(()=> {
             this.error = '';
         },5000)
