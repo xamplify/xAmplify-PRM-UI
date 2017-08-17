@@ -33,7 +33,8 @@
 				<div *ngIf="is360Value==false">
 				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster=""
                  data-setup='{"example_option":true }'>
-				  <source [src] = videoUrl  type: 'application/x-mpegURL' />
+				  <!-- <source [src] = videoUrl  type: 'application/x-mpegURL' /> -->
+				<source src="https://xtremand.com/flight.mp4" type:'video/mp4'>	
 				</video> 
 				</div>
                 <div  *ngIf="is360Value==true">
@@ -491,9 +492,9 @@
 										</div>
 									</div>
 								</div> -->
-									<div class="form-group">
+									<div class="form-group" style="padding: 1em">
 									<label class="col-md-3 control-label">Call To Action At:</label>
-									<div class="col-md-5">
+									<div class="col-md-4">
 										<div class="checkbox-list">
 											<label > start Of the video</label>
 											<ui-switch  color="lightgreen"
@@ -502,8 +503,8 @@
 											</ui-switch>
 									    </div>
 									</div>
-									<div class="col-md-1">or/btw</div>
-									<div class="col-md-3">
+									<div class="col-md-1" style="padding: 1em; left: -21px;">(Or)</div>
+									<div class="col-md-4">
 										<div class="checkbox-list">
 											<label > end Of the video</label>
 												<ui-switch  color="lightgreen"
