@@ -4,11 +4,11 @@
 	.clipboard{ padding: 6px 44px;}
 	.disablePlayerValues{ pointer-events: none; opacity: 0.6;}
 	.upperText{
-		font-size: 22px;color: white; word-break: break-all;
+		font-size: 17px;color: white; word-break: break-all;
        line-height: 1.3em;font-weight: 600;text-align: center; position: relative;top: -13px;
 	}
 	.lowerText{
-      color: white; word-break: break-all; font-size: 16px;
+      color: white; word-break: break-all; font-size: 15px;
       line-height: 1.0em;position: relative; text-align: center;
       top: 9px;
 	}
@@ -29,7 +29,7 @@
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
 			<!-- video started -->
-			<div class="col-md-6" style="padding-top: 28px" *ngIf="!httpRequestLoader.isServerError">
+			<div class="col-md-6" style="padding-top: 28px" >
 				<div *ngIf="is360Value==false">
 				 <video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster=""
                  data-setup='{"example_option":true }'>
@@ -141,9 +141,9 @@
 			</div>
 			<!-- video ended  -->
 			<!-- app server http error  -->
-			<app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+			<!-- <app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages> -->
 			<!-- end the http error  -->
-			<div class="col-md-6" style=" top: -15px;" *ngIf="!httpRequestLoader.isServerError">
+			<div class="col-md-6" style=" top: -15px;">
 				<form class="form-horizontal" role="form" [formGroup]="videoForm" *ngIf="active" (ngSubmit)="saveVideo()">
 					<div class="form-actions">
 						<div class="row">
@@ -179,7 +179,7 @@
 											(input)="validVideoTitle(videotitle.value)" class="form-control"placeholder="Enter Title here" formControlName="title" required #videotitle> 
 												<span *ngIf="!isValidTitle || formErrors.title== true" class="help-block">A block of help text.</span>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red; position: relative;top: 2px;left: 3px;">Title Already Exists</div>
+											<div *ngIf="isValidTitle" style="color: red; padding: 3px">Title Already Exists</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
 										</div>
 									</div>
@@ -456,8 +456,8 @@
 							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
 								<!-- <form class="form-horizontal" role="form"> -->
 								<div class="form-group">
-									<label class="col-md-3 control-label">Call To Action:</label>
-									<div class="col-md-6">
+									<label class="col-md-6 control-label">Call To Action:</label>
+									<div class="col-md-3">
 										<div class="checkbox-list">
 											<label style="position: absolute;top: 3px;"> <ui-switch  formControlName="callACtion"  color="lightgreen"
 													 (change)="enableCallToActionMethodTest($event)"></ui-switch>
@@ -466,7 +466,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-md-3 control-label">Call To Action At:</label>
 									<div class="col-md-6">
 										<div class="checkbox-list">
@@ -489,6 +489,28 @@
 												</ui-switch>
 												</label>
 										</div>
+									</div>
+								</div> -->
+									<div class="form-group">
+									<label class="col-md-3 control-label">Call To Action At:</label>
+									<div class="col-md-5">
+										<div class="checkbox-list">
+											<label > start Of the video</label>
+											<ui-switch  color="lightgreen"
+												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableStart == true"
+												(change)="startCallToactionOverlay($event)">
+											</ui-switch>
+									    </div>
+									</div>
+									<div class="col-md-1">or/btw</div>
+									<div class="col-md-3">
+										<div class="checkbox-list">
+											<label > end Of the video</label>
+												<ui-switch  color="lightgreen"
+													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableEnd == true"
+													 (change)="endCallToactionOverlay($event)">
+												</ui-switch>
+									    </div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -523,7 +545,7 @@
 									</label>
 									<div class="col-md-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
-											style="width: 173px; height: 52px;"placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
+											style="width: 173px; height: 52px;" placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
 											<!--<label *ngIf="upperTextValid == false" style="position:absolute;color:red;bottom: 29px">*</label>-->
 											<label>{{characterleft}} character(s) left</label>
 									</div>
@@ -533,9 +555,10 @@
 											<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;"><b>*</b></font>
 									</label>
 									<div class="col-md-9">
-										<input id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
-											placeholder="Hey I am here!" maxlength="56" #lowertext>
+										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
+											style="width: 173px; height: 52px;" placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
 											<!--<label *ngIf="lowerTextValid == false" style="color:red">*</label>-->
+											<label>{{lowerCharacterleft}} character(s) left</label>
 									</div>
 								</div>
 									<!-- <div class="form-actions right"
@@ -554,7 +577,7 @@
 
 		</div>
 	</div>
-	<div class="todo-content" *ngIf="!httpRequestLoader.isServerError">
+	<div class="todo-content" >
 		<div class="portlet light">
 			<!-- PROJECT HEAD -->
 			<div class="portlet-title">

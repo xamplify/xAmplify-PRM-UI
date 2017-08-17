@@ -11,7 +11,6 @@ import { VideoUtilService } from '../../services/video-util.service';
 import { XtremandLog } from '../../models/xtremand-log';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { UUID } from 'angular2-uuid';
 // logging info details
 enum LogAction {
@@ -38,7 +37,7 @@ enum LogAction {
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../edit-video/call-action.css'],
-    providers: [Pagination, XtremandLog, HttpRequestLoader]
+    providers: [Pagination, XtremandLog]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
@@ -90,7 +89,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public overLaySet = false;
     public fullScreenMode = false;
     showRelatedMessage: boolean;
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   //  shareEmbedDisabled = false;
     constructor(elementRef: ElementRef, private authenticationService: AuthenticationService, private router: Router,
         private videoFileService: VideoFileService, private videoUtilService: VideoUtilService, public pagination: Pagination,
@@ -378,9 +376,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
             },
             (error: any) => {
-             console.log('show play videos ():' + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-                this.httpRequestLoader.statusCode = error.status;
+              console.log('Play video component : show play videos method ():' + error);
+              this.router.navigate(['/home/error-occured-page/', error.status]);
             }
         );
     }

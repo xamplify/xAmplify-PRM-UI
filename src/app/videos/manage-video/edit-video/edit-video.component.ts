@@ -15,7 +15,6 @@ import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { VideoUtilService } from '../../services/video-util.service';
-import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 declare var $, videojs, swal: any;
 
 @Component({
@@ -37,7 +36,6 @@ declare var $, videojs, swal: any;
             ])
         ])
     ],
-    providers: [HttpRequestLoader]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -115,6 +113,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public is360Value: boolean;
     public maxLengthvalue = 75;
     public characterleft = 0;
+    public maxlengthvalueLowerText = 50;
+    public lowerCharacterleft = 0;
     public publish: any;
     public formErrors: any;
     public value360: boolean;
@@ -127,7 +127,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public lowerTextValid: boolean;
     public isValidTitle = false;
     public editVideoTitle: string;
-    public defaultDisabled = true;
     public defaultSettingValue: boolean;
     newEnableController: boolean;
     newComments: boolean;
@@ -148,7 +147,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -204,9 +202,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.saveVideoFile.upperText == null) {
             this.characterleft = this.maxLengthvalue;
         } else { this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length; }
+        if (this.saveVideoFile.lowerText == null) {
+            this.lowerCharacterleft = this.maxlengthvalueLowerText;
+        } else { this.lowerCharacterleft = this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length; }
         this.isPlayButton = this.saveVideoFile.name;
-        this.titleDiv = true;
-        this.colorControl = this.controlPlayers = this.callaction = false;
+       // this.titleDiv = true;
+       // this.colorControl = this.controlPlayers = this.callaction = false;
+        this.openStartingDivs();
         this.likesValues = 2;
         this.disLikesValues = 0;
         this.videoViews = this.saveVideoFile.views;
@@ -226,6 +228,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
     }  // closed constructor
+    openStartingDivs() {
+        this.titleDiv = true;
+        this.colorControl = this.controlPlayers = this.callaction = false;
+    }
     shareClick() {
         // this.router.navigate(['/embed-video', this.saveVideoFile.viewBy, this.saveVideoFile.alias]);
         //   this.showPreview();
@@ -386,6 +392,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // share window popup
     openWindow() {
+        // this.authenticationService.APP_URL +
         window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
@@ -688,6 +695,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     changeLowerText(lowerText: string) {
         this.saveVideoFile.lowerText = lowerText;
+        this.lowerCharacterleft = this.maxlengthvalueLowerText - lowerText.length;
         if (lowerText.length === 0) {
         this.lowerTextValid = false;
         } else { this.lowerTextValid = true; }
@@ -1172,6 +1180,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '')) {
                 this.tagsUndefined = true;
                // this.saveVideoFile.tags.length = 0;
+                this.openStartingDivs();
             }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
@@ -1205,14 +1214,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                   },
                   ( error: any ) => {
-                    this.logger.error(this.referenceService.errorPrepender + ' saveVideo File ():' + error);
-                    this.referenceService.showServerError(this.httpRequestLoader);
-                    this.httpRequestLoader.statusCode = error.status;
+                     this.logger.error('Edit video Component : saveVideo File method():' + error);
+                     this.router.navigate(['/home/error-occured-page/', error.status]);
                   }
             ),
                 () => this.logger.log(this.saveVideoFile);
            }
-        }
+        } else {  this.openStartingDivs(); }
     }
     validVideoTitle(videoTitle: string) {
         console.log(videoTitle.length);
@@ -1270,7 +1278,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoJSplayer.dispose();
         } else { }
         this.videoFileService.actionValue = ''; // need to change to empty
-        //  localStorage.removeItem('isOverlayValue');
         $('.h-video').remove();
         $('.p-video').remove();
         this.tempVideoFile = null;

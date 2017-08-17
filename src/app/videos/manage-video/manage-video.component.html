@@ -42,9 +42,8 @@
 		   </div>
 		   </div>
 				<!-- END PAGE HEADER-->
-					<app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 				<!-- BEGIN PAGE CONTENT-->
-				<div *ngIf="!httpRequestLoader.isServerError">
+				<div>
 				<div class="row" *ngIf="manageVideos" >
 				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">

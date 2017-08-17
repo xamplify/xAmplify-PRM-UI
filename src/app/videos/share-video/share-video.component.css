@@ -53,7 +53,8 @@
 .play-button {
 	background-color: #26a69a;
 	color: #FFF;
-	min-width: 100%
+	min-width: 100%;
+	padding: 12px 16px;
 }
 
 .w-8 {

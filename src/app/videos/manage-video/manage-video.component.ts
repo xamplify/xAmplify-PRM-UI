@@ -134,9 +134,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     } else { this.disableDropDowns = false; }
                 },
                 (error: any) => {
-                    this.logger.error(' Loading Videos():' + error);
-                     this.referenceService.showServerError(this.httpRequestLoader);
-                     this.httpRequestLoader.statusCode = error.status;
+                    this.logger.error(' manage Videos Component : Loading Videos method():' + error);
+                     this.router.navigate(['/home/error-occured-page/', error.status]);
                 },
                 () => console.log('load videos completed:'),
             );
@@ -184,9 +183,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     pagination = this.pagerService.getPagedItems(pagination, this.videos);
                 },
                 (error: any) => {
-                    this.logger.error(this.errorPrepender + ' Loading Videos():' + error);
-                    this.referenceService.showServerError(this.httpRequestLoader);
-                     this.httpRequestLoader.statusCode = error.status;
+                    this.logger.error('Manage-videos component:  Loading Videos():' + error);
+                    this.router.navigate(['/home/error-occured-page/', error.status]);
                 },
                 () => console.log('load videos completed:' + this.videos),
             );
@@ -409,6 +407,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
         this.homeComponent.getVideoTitles();
+        this.campaignVideo = false;
         if (videoFile != null) {
             this.pagination.pageIndex = 1;
             this.pagination.filterBy = 0;
@@ -446,6 +445,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showMessage = false;
         this.showUpdatevalue = false;
         this.deletedVideo = false;
+        this.campaignVideo = false;
         this.videoFileService.actionValue = '';
     }
     ngOnDestroy() {

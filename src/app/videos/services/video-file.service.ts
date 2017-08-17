@@ -1,7 +1,7 @@
-import { Injectable, OnInit} from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { ReferenceService} from '../../core/services/reference.service';
+import { ReferenceService } from '../../core/services/reference.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
@@ -38,7 +38,7 @@ export class VideoFileService {
     processVideoFile(responsePath: any): Observable<any> {
         console.log('response path in service ' + responsePath);
         const url = this.URL + 'process_video?path=' + responsePath + '&userId=' +
-        this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+            this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, '')
             .map(this.extractData)
             .catch(this.handleError);
@@ -58,8 +58,8 @@ export class VideoFileService {
         console.log(formData);
         const options = new RequestOptions({ headers: headers });
         const url = this.URL + 'uploadOwnThumbnail?access_token=' + this.authenticationService.access_token +
-         '&userId=' + this.authenticationService.user.id;
-        return this.http.post(url , formData  )
+            '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url, formData)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -95,12 +95,11 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     loadVideosCount() {
-        // this.logger.info( "Service class loadContactCount() completed" );
-       const url =  this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='
-       + this.authenticationService.access_token;
+        const url = this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='
+            + this.authenticationService.access_token;
         return this.http.get(url)
-            .map( this.extractData )
-            .catch( this.handleError );
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
@@ -135,98 +134,90 @@ export class VideoFileService {
                 .map(this.extractData)
                 .catch(this.handleError);
         } catch (error) {
-	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
+            // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
     showCampaignVideo(typeValue: string, videoAlias: string, campaignAlias: string, userAlias: string) {
-       try {
+        try {
             const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue + '&videoAlias=' +
-            videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
+                videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
             return this.http.get(url, '')
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         } catch (error) {
-	           // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
+            // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
     logEmbedVideoActions(actionLog: ActionLog) {
-       console.log(this.timeValue);
-       try {
-        if (actionLog.actionId === 2 || actionLog.actionId === 1) { this.campaignTimeValue = actionLog.startDuration; }
-        console.log(this.campaignTimeValue);
-        if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 1 && this.pause360Action === true)
-         || (actionLog.actionId === 2 && this.pause360Action === true)) {
-           console.log('service called replyed and ended the video');
-           this.replyVideo = false;
-         } else {
-           console.log(actionLog);
-           const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
-           return this.http.post(url, actionLog)
-              .map(this.extractData)
-              .catch(this.handleErrorLogAction);
+        console.log(this.timeValue);
+        try {
+            if (actionLog.actionId === 2 || actionLog.actionId === 1) { this.campaignTimeValue = actionLog.startDuration; }
+            console.log(this.campaignTimeValue);
+            if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 1 && this.pause360Action === true)
+                || (actionLog.actionId === 2 && this.pause360Action === true)) {
+                console.log('service called replyed and ended the video');
+                this.replyVideo = false;
+            } else {
+                console.log(actionLog);
+                const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
+                return this.http.post(url, actionLog)
+                    .map(this.extractData)
+                    .catch(this.handleErrorLogAction);
+            }
+        } catch (err) {
+            console.log(err);
         }
-      } catch(err) {
-          console.log(err);
-      }
     }
-     logCampaignVideoActions(xtremandLog: XtremandLog) {
-       try {
-        if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
-        console.log(this.campaignTimeValue);
-        if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
-         || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
-           console.log('service called replyed and ended the video');
-           this.replyVideo = false;
-         } else {
-           console.log(xtremandLog);
-           const url = this.authenticationService.REST_URL + 'user/logVideoAction';
-           return this.http.post(url, xtremandLog)
-              .map(this.extractData)
-              .catch(this.handleErrorLogAction);
-        }
-       } catch (error) {
-               console.log('error comes here');
+    logCampaignVideoActions(xtremandLog: XtremandLog) {
+        try {
+            if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
+            console.log(this.campaignTimeValue);
+            if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
+                || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
+                console.log('service called replyed and ended the video');
+                this.replyVideo = false;
+            } else {
+                console.log(xtremandLog);
+                const url = this.authenticationService.REST_URL + 'user/logVideoAction';
+                return this.http.post(url, xtremandLog)
+                    .map(this.extractData)
+                    .catch(this.handleErrorLogAction);
+            }
+        } catch (error) {
+            console.log('error comes here');
         }
     }
     logVideoViews(alias: string) {
-         const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias='+alias;
-           return this.http.post(url, '')
-              .map(this.extractData)
-              .catch(this.handleErrorLogAction);
+        const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias=' + alias;
+        return this.http.post(url, '')
+            .map(this.extractData)
+            .catch(this.handleErrorLogAction);
     }
     getJSONLocation(): Observable<any> {
-      const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
+        const locationurl = 'https://pro.ip-api.com/json/?key=7bvBGuqMHI5QTtq';
         return this.http.get(locationurl, '')
-        .map(this.extractData)
-        .catch(this.handleErrorLogAction);
+            .map(this.extractData)
+            .catch(this.handleErrorLogAction);
     }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
         return body || {};
     }
-    handleErrorLogAction( error: any ) {
-        const errMsg = ( error.message ) ? error.message :
+    handleErrorLogAction(error: any) {
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw( errMsg );
-     }
+        return Observable.throw(errMsg);
+    }
     handleError(error: any) {
         const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-      //  return Observable.throw(errMsg);
-        if (error.status === 500) {
-         //   const response =  JSON.parse(error['_body']);
+        if (error.status === 400 || error.status === 403 || error.status === 406 || error.status === 409 ||
+            error.status === 500 || error.status === 503) {
+            //   const response =  JSON.parse(error['_body']);
             return Observable.throw(error);
-        } else if (error.status === 400) {
-            return Observable.throw(error);
-        } else if (error.status === 409) {
-            return Observable.throw(error);
-        } else if (error.status === 406) {
-            return Observable.throw(error);
-        } else if (error.status === 503) {
-            return Observable.throw(error);
-        }  else {
-              return Observable.throw( errMsg );
+        } else {
+            return Observable.throw(errMsg);
         }
     }
     handleErrorDelete(error: any) {

@@ -1,6 +1,7 @@
-
+<div class="page-content">
+<div class="portlet light" style="padding:5px 5px 150px 10px">
+<div class="portlet-body">
 <div class="ex-page-content bootstrap snippets">
-
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">   
@@ -20,20 +21,20 @@
 				<img *ngIf= "Error409" alt="Image Not Found"
 					src="assets/images/error-pages/409image.png"
 					style="max-width: 100%; padding: 0 7em;">
-				<!-- <img *ngIf= "Error503" alt="Image Not Found"
-					src="assets/images/error-pages/503image.jpg"
-					style="max-width: 100%; padding: 0 3em;"> -->
+			    <h1 *ngIf="ErrorUndefined" style="position: relative; top: -26px; font-size: 275px;">{{errorStatus}}</h1>		
+			    <h1 *ngIf="errorDifferent" style="position: relative; top: -3px; font-size: 75px;font-weight: 500;">{{errorMessage}}</h1>		
 			</div>
 
 			<div class="col-sm-6">
 				<div class="message-box" style="left: -22px; position: relative;">
-					<!-- <h1 *ngIf="Error500" class="m-b-0">500</h1> -->
 					<h2 *ngIf="Error500"><strong>500 : Internal Server Error</strong></h2>
 					<h2 *ngIf="Error400"><strong>400 : Bad url Server Request</strong></h2>
 				    <h2 *ngIf="Error403"><strong>403 : Access Forbidden Error! </strong></h2>
 					<h2 *ngIf="Error406"><strong>406 : Not Acceptable Request</strong></h2>
 					<h2 *ngIf="Error409"><strong>409 : Conflict server Error</strong></h2>
 					<h2 *ngIf="Error503"><strong>503: Service Unavailable</strong></h2>
+					<h2 *ngIf="ErrorUndefined"><strong> {{errorStatus}}: Error Occured !</strong></h2>
+					<h2 *ngIf="errorDifferent"><strong> Error Occured !</strong></h2>
 					<p *ngIf="Error500" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
 							The server encountered an internal error or misconfiguration and was unable to complete
 							your <strong> {{errorMessage}} </strong> request.
@@ -61,23 +62,21 @@
 						and another one.Please contact ther server administrator, <a>aravindu@xtremand.com</a>  and inform them of the time
 						the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
 					</p>
-				    <!-- <p  *ngIf="Error503" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-					Ther server is temporarily unable to service your request due to maintenance downtime
-					website or capacity problems. Please try again later.Please contact ther server administrator, <a>aravindu@xtremand.com</a>  and inform them of the time
+					<p  *ngIf="ErrorUndefined || errorDifferent" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
+						Sorry, an error occurred on processing your request. The error has been logged.
+						Please contact ther server administrator, <a>aravindu@xtremand.com</a>  and inform them of the time
 						the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p> -->
+					</p>
+					
 					<div class="buttons-con">
 						<div class="action-link-wrap">
-							<!-- <a href="#"
-								class="btn btn-custom btn-info waves-effect waves-light m-t-20">Go
-								Back</a> <a href="#"
-								class="btn btn-custom btn-info waves-effect waves-light m-t-20">Go
-								to Home Page</a> -->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+</div>
+</div>
+</div>
 </div>

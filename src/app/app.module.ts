@@ -7,7 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShareButtonsModule } from 'ng2-sharebuttons';
-//import { ShareButtonsModule} from 'ngx-sharebuttons';
+// import { ShareButtonsModule} from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { ContactService } from './contacts/services/contact.service';
 
@@ -46,31 +46,32 @@ import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
-// import { NotFoundPageComponent  } from './error-pages/page-notfound.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
+import { ErrorPagesComponent } from './error-pages/error-pages.component';
 // import { CKEditorModule } from 'ng2-ckeditor';
 // import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
-@NgModule( {
+@NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
-                   ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent, 
-                   LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent],
+        ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent,
+        LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent
+    ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        MetaModule.forRoot(),  Ng2DeviceDetectorModule.forRoot()],
+        MetaModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],
     providers: [{
         provide: Http,
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
-    AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
-    TwitterService, FacebookService, Logger,
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
+        TwitterService, FacebookService, Logger,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 
 })
 export class AppModule { }
 
-export function httpService( backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService ) {
-    return new HttpService( backend, options, slimLoadingBarService );
+export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService) {
+    return new HttpService(backend, options, slimLoadingBarService);
 }

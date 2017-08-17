@@ -89,7 +89,7 @@ public seekStart360 = null;
                 this.embedUrl = document.location.href;
                 this.logVideoViewValue = true;
              }
- //setConfirmUnload(on) {
+ // setConfirmUnload(on) {
    // window.onbeforeunload = (on) ? this.setMessage : null;
  // }
  setMessage(){

@@ -2,11 +2,11 @@
 	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
 	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
 	.upperText{
-		font-size: 22px;color: white; word-break: break-all;
+		font-size: 17px;color: white; word-break: break-all;
        line-height: 1.3em;font-weight: 600;text-align: center; position: relative;top: -13px;
 	}
 	.lowerText{
-      color: white; word-break: break-all; font-size: 16px;
+      color: white; word-break: break-all; font-size: 15px;
       line-height: 1.0em;position: relative; text-align: center;
       top: 9px;
 	}
@@ -25,7 +25,7 @@
 <div class="portlet light">
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
-		<div class="col-md-7" *ngIf="!httpRequestLoader.isServerError">
+		<div class="col-md-7">
 		    <div>
 			<div id="newPlayerVideo"></div>
 			</div>
@@ -137,7 +137,6 @@
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
 				</div>
-	<app-error-pages  [errorStatus]="httpRequestLoader.statusCode" *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 				
 				<!-- emebd src Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
@@ -317,7 +316,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-5" style="margin-top: -10px;" *ngIf="!httpRequestLoader.isServerError">
+		<div class="col-md-5" style="margin-top: -10px;">
 			<div class="tabbable tabbable-custom tabbable-noborder">
 
 				<div class="tab-content">
