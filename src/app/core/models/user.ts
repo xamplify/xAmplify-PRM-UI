@@ -20,4 +20,5 @@ export class User {
     isChecked: boolean;
     userListIds: number[];
     alias: string;
+    userDefaultPage: string;
 }

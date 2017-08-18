@@ -26,6 +26,7 @@ export class TopnavbarComponent implements OnInit {
             subscribe(
                     data => {
                        console.log(data);
+                       refService.userDefaultPage = data.userDefaultPage;
                         var loggedInUser = data;
                        if(loggedInUser.firstName!=null){
                            this.model.displayName = loggedInUser.firstName;

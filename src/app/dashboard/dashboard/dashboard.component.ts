@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
     isDahboardDefaultPage: boolean;
     
     campaigns:Campaign[];
+    launchedCampaigns:Campaign[];
     totalCampaignsCount :number;
 
     constructor(private router: Router, private _dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,private videoFileService: VideoFileService,private twitterService: TwitterService,
@@ -395,6 +396,7 @@ export class DashboardComponent implements OnInit {
         .subscribe(
                 data => {
                     this.isDahboardDefaultPage = event;
+                    this.referenceService.userDefaultPage = defaultPage.toUpperCase();
                 },
                 error => console.log( error ),
                 () => {}
@@ -407,6 +409,17 @@ export class DashboardComponent implements OnInit {
             data => {
                 this.campaigns = data;
                 this.totalCampaignsCount = this.campaigns.length;
+            },
+            error => {},
+            () => this.logger.info("Finished listCampaign()")
+        );
+    }
+    
+    listLaunchedCampaign(){
+        this.campaignService.listLaunchedCampaign(this.authenticationService.getUserId())
+        .subscribe(
+            data => {
+                this.launchedCampaigns = data;
             },
             error => {},
             () => this.logger.info("Finished listCampaign()")

@@ -127,7 +127,13 @@ export class CampaignService {
         return this.http.get( this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId )
         .map( this.extractData )
         .catch( this.handleError );
-}
+    }
+    
+    listLaunchedCampaign(userId: number){
+        return this.http.get( this.URL + 'admin/listLaunchedCampaign?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
     private handleError(error: any) {
         if (error.status === 500) {
