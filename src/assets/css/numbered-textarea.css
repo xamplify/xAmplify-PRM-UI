@@ -1,10 +1,17 @@
-textarea{
-    background: url(http://i.imgur.com/2cOaJ.png);
-background-attachment: local;
-background-repeat: no-repeat;
-padding-left: 35px;
-padding-top: 12px;
-    border-color:#ccc;
-    font-size:14px;
+textarea {
+	background: url(http://i.imgur.com/2cOaJ.png);
+	background-attachment: local;
+	background-repeat: no-repeat;
+	padding-left: 35px;
+	padding-top: 12px;
+	border-color: #ccc;
+	font-size: 14px;
 }
 
+.custom-error-message {
+    padding: 5px;
+    border: 1px solid rgba(255, 0, 0, 0.21);
+    color: rgba(255, 0, 0, 0.7);
+    margin: 5px 0;
+    text-transform: capitalize;
+}
