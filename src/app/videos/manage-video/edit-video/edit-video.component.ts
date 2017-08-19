@@ -147,6 +147,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
+    // callActionOn = 'ON';
+    // callActionOff = 'OFF';
+    // callActionOnColor = 'green';
+    // callActionOffColor = 'red';
+    // callActionSize = 'small';
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
