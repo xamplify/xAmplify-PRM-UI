@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { Category } from '../../videos/models/category';
@@ -28,7 +29,8 @@ export class ReferenceService {
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
     userDefaultPage: string = 'WELCOME';
     public URL: string = this.authenticationService.REST_URL + 'admin/';
-    constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger) {
+    constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger,
+    private router: Router) {
         console.log('reference service constructor');
     }
 
@@ -44,6 +46,9 @@ export class ReferenceService {
         return this.http.get(url, "")
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    showErrorPage(error: any) {
+        this.router.navigate(['/home/error-occured-page/', error.status]);
     }
     showError(cause: string, methodName: string, componentName: string) {
        let message = "Error In " + methodName + "() " + componentName;

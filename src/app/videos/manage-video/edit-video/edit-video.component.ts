@@ -147,11 +147,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
-    // callActionOn = 'ON';
-    // callActionOff = 'OFF';
-    // callActionOnColor = 'green';
-    // callActionOffColor = 'red';
-    // callActionSize = 'small';
+    public labelText: string = "";
+    public inverse: boolean = false;
+    public baseClass: string = "bootstrap-switch";
+    public onText: string = "ON";
+    public offText: string = "OFF";
+    private _onColor: string = "primary";
+    private _offColor: string = "default"; 
+    public calldisabled: boolean = false;
+    public callreadonly: boolean = false;
+    public size = 'normal';
+    callanimate = true;
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -1072,7 +1078,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'title': [this.saveVideoFile.title, [
                 Validators.required,
                 Validators.minLength(4),
-                Validators.maxLength(256)
+                Validators.maxLength(255)
             ]
             ],
             'id': [this.saveVideoFile.id],
@@ -1220,7 +1226,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   },
                   ( error: any ) => {
                      this.logger.error('Edit video Component : saveVideo File method():' + error);
-                     this.router.navigate(['/home/error-occured-page/', error.status]);
+                     this.referenceService.showErrorPage(error);
                   }
             ),
                 () => this.logger.log(this.saveVideoFile);

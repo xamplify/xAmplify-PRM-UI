@@ -6,8 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ShareButtonsModule } from 'ng2-sharebuttons';
-// import { ShareButtonsModule} from 'ngx-sharebuttons';
+import { ShareButtonsModule} from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { ContactService } from './contacts/services/contact.service';
 

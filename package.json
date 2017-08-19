@@ -57,6 +57,7 @@
     "jquery.uniform": "^4.2.0",
     "jqvmap": "^1.5.1",
     "jscolor": "^0.1.2",
+    "jw-bootstrap-switch-ng2": "^1.0.4",
     "metronic": "^0.2.5",
     "ng2-ckeditor": "^1.1.4",
     "ng2-datetime": "^1.2.2",
