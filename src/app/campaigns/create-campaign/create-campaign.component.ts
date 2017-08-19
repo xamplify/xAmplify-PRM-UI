@@ -121,6 +121,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedEmailTemplateTypeIndex:number = 0;
     selectedEmailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
     selectedTemplateBody;string = "";
+    emailTemplate:EmailTemplate = new EmailTemplate();
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -202,6 +203,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isEmailTemplate = true;
                 this.isCampaignDraftEmailTemplate = true;
                 this.selectedTemplateBody = this.campaign.emailTemplate.body;
+                this.emailTemplate = this.campaign.emailTemplate;
             }
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
@@ -928,6 +930,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.selectedEmailTemplateRow = emailTemplate.id;
         this.isEmailTemplate = true;
         this.selectedTemplateBody = emailTemplate.body;
+        this.emailTemplate = emailTemplate;
        // this.campaign.emailTemplate = emailTemplate;
     }
     
@@ -1021,12 +1024,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             reply.subject = this.getCkEditorContent(reply.divId);
-            if(reply.replyTime!=undefined && reply.subject.length>0){
-                console.log(reply);
-            }else{
+            if(reply.replyTime==undefined || reply.subject.trim().length==0){
                 $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             }
-           
             
         }
         for(var i=0;i<this.urls.length;i++){
@@ -1036,10 +1036,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             url.body = this.getCkEditorContent(url.divId);
             let replyTime = url.replyTime;
-            if(replyTime!=undefined && url.subject!=null && url.body.length>0){
-                console.log(url);
+            if(url.scheduled){
+                if(replyTime==undefined || url.subject.trim().length==0|| url.body.trim().length==0){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                }  
             }else{
-                $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                if(url.subject.trim().length==0|| url.body.trim().length==0){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
             }
            
         }
@@ -1077,7 +1081,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        console.log(CKEDITOR.instances);
         let name = 'editor'+divId.split('-')[1];
         console.log(name);
-        return CKEDITOR.instances[name.trim()].getData();
+        return CKEDITOR.instances[name.trim()].getData().trim();
     }
     sendTestEmail(emailId:string){
         let self = this;
@@ -1439,6 +1443,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             length = length+1
             var id = 'click-'+ length;
             this.url.divId = id;
+            this.url.scheduled = false;
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);

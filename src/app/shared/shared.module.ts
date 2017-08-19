@@ -20,13 +20,15 @@ import {LoaderComponent} from '../loader/loader.component';
 import { ErrorPagesComponent } from '../error-pages/error-pages.component';
 import {BusyModule} from 'angular2-busy';
 import { TimepickerModule } from 'ngx-bootstrap';
+import { CKEditorModule } from 'ng2-ckeditor';
+import {CkEditor} from "../campaigns/ck-editor.directive";
 @NgModule({
        imports: [ CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-                TagInputModule, HttpModule, Ng2FilterPipeModule,  ColorPickerModule,BusyModule,TimepickerModule.forRoot()],
-                declarations: [ LoaderComponent, ErrorPagesComponent ],
+                TagInputModule, HttpModule, Ng2FilterPipeModule,  ColorPickerModule,BusyModule,TimepickerModule.forRoot(),CKEditorModule],
+       declarations: [ LoaderComponent, ErrorPagesComponent,CkEditor ],
         exports : [ FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                HttpModule, Ng2FilterPipeModule, LoaderComponent, ErrorPagesComponent,BusyModule,TimepickerModule],
+                HttpModule, Ng2FilterPipeModule, LoaderComponent, ErrorPagesComponent,BusyModule,TimepickerModule,CkEditor],
        providers: [ ],
 })
 

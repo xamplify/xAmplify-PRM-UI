@@ -12,7 +12,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { noWhiteSpaceValidator} from '../../form-validator';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
+declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-upload-email-template',
@@ -72,6 +72,20 @@ export class UploadEmailTemplateComponent implements OnInit {
             Layout.init();
             Demo.init();
             TableManaged.init();
+//            CKEDITOR.replace( 'editor1', {
+//                // Define the toolbar groups as it is a more accessible solution.
+//                toolbarGroups: [
+//                    {"name":"basicstyles","groups":["basicstyles"]},
+//                    {"name":"links","groups":["links"]},
+//                    {"name":"paragraph","groups":["list","blocks"]},
+//                    {"name":"document","groups":["mode"]},
+//                    {"name":"insert","groups":["insert"]},
+//                    {"name":"styles","groups":["styles"]},
+//                    {"name":"about","groups":["about"]}
+//                ],
+//                // Remove the redundant buttons from toolbar groups defined above.
+//                removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+//            } );
         } catch (errr) { }
     }
 
@@ -116,11 +130,10 @@ export class UploadEmailTemplateComponent implements OnInit {
                         let htmlText: string = reader.result;
                        this.htmlText= this.emailTemplateService.highLightHtml(htmlText);
                         $('.html').html(this.htmlText);
+                        CKEDITOR.instances.editor1.setData(htmlText);
                     }
             reader.readAsText(file);
             this.isUploaded = true;
-            this.showText = false;
-            this.isPreview = false;
             this.disable = true;
             $(".addfiles").attr("style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3");
             }
@@ -128,26 +141,13 @@ export class UploadEmailTemplateComponent implements OnInit {
         
     }
 
-
-    /******************Show Preview****************/
-    showPreview() {
-        this.isPreview = true;
-        this.htmlText = $('#textarea').text();
-        this.showText = true;
-
-    }
-    /******************Show HtmlContent****************/
-    showHtmlCode() {
-        this.isPreview = false;
-        this.showText = false;
-
-    }
     /***************Remove File****************/
     removeFile() {
         this.disable = false;
         this.isUploaded = false;
         $(".addfiles").attr("style", "float: left; margin-right: 9px; opacity:1");
         $('#fileId').val('');
+        CKEDITOR.instances.editor1.setData('');
     }
 
     checkAvailableNames(value: any) {
@@ -191,11 +191,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = $('#textarea').html()
-        .replace(/<br(\s*)\/*>/ig, '\n')
-        .replace(/<[p|div]\s/ig, '\n$0')
-        .replace(/(<([^>]+)>)/ig,"")
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
+        this.emailTemplate.body = CKEDITOR.instances.editor1.getData().trim();
         this.emailTemplate.userDefined = true;
         this.emailTemplate.subject = "assets/images/file_upload_icon.png";
         this.emailTemplate.type = EmailTemplateType.UPLOADED;

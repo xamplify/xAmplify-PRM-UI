@@ -6,4 +6,5 @@ export class Url{
     body:string;
     url:string;
     divId:string;
+    scheduled:boolean
 }

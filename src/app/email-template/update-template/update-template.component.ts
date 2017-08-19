@@ -11,7 +11,7 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
+declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-update-template',
@@ -23,16 +23,12 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
     public duplicateTemplateName: boolean = false;
     public invalidTemplateName: boolean = false;
-    public isPreview: boolean = false;
-    public showText: boolean = true;
     public isTemplateName: boolean = false;
     public disable: boolean;
     public htmlText: string;
     model: any = {};
     public availableTemplateNames: Array<string>;
-    isClicked:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
             private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,
             private authenticationService:AuthenticationService,private refService:ReferenceService) {
@@ -45,7 +41,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
         if (emailTemplateService.emailTemplate != undefined) {
-            this.isPreview = true;
             this.htmlText = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
         }
@@ -64,26 +59,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.emailTemplateService.emailTemplate = new EmailTemplate();
-    }
-
-
-    /******************Show Preview****************/
-    showPreview() {
-        this.isPreview = true;
-        this.htmlText = $('#textarea').text();
-        this.showText = true;
-
-    }
-    /******************Show HtmlContent****************/
-    showHtmlCode() {
-        this.isPreview = false;
-        this.showText = false;
-        if(!this.isClicked){
-            this.isClicked = true;
-            let text =  $('#textarea').text();
-            this.htmlText = this.emailTemplateService.highLightHtml(text);
-            $('.html').html(this.htmlText)
-        }
     }
 
     checkUpdatedAvailableNames(value: any) {
@@ -105,11 +80,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     updateHtmlTemplate() {
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = $('#textarea').html()
-        .replace(/<br(\s*)\/*>/ig, '\n')
-        .replace(/<[p|div]\s/ig, '\n$0')
-        .replace(/(<([^>]+)>)/ig,"")
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
+        this.emailTemplate.body = CKEDITOR.instances.txt_area.getData().trim();
         this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {

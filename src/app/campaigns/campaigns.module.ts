@@ -12,12 +12,10 @@ import { ContactService }  from '../contacts/services/contact.service';
 import { VideoFileService } from '../videos/services/video-file.service';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { AnalyticsComponent } from './analytics/analytics.component';
-import { CKEditorModule } from 'ng2-ckeditor';
-import {CkEditor} from "./ck-editor.directive";
 @NgModule({
 	
-  imports: [ CommonModule,SharedModule,CampaignsRoutingModule,CKEditorModule ],
-  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent, AnalyticsComponent,CkEditor],
+  imports: [ CommonModule,SharedModule,CampaignsRoutingModule ],
+  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent, AnalyticsComponent],
   providers :[ContactService,VideoFileService,EmailTemplateService]
 
 })
