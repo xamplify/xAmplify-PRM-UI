@@ -8,7 +8,7 @@ import { SaveVideoFile} from '../models/save-video-file';
 import { Logger } from 'angular2-logger/core';
 import { VideoUtilService } from '../services/video-util.service';
 import { User } from '../../core/models/user';
-import { ShareButton, ShareProvider } from 'ng2-sharebuttons';
+import { ShareButton, ShareProvider } from 'ngx-sharebuttons';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionLog } from '../models/action';
