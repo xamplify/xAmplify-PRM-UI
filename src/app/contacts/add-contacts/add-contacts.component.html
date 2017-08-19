@@ -90,7 +90,7 @@ color:blue;
 				<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="fileupload-buttonbar">
-							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="position:auto;border-right: 1px solid #999999;height: 150px;">
+							<div class="col-xs-6 col-sm-12 col-md-6 col-lg-6" style="position:auto;border-right: 1px solid #999999;height: 150px;">
 								<h4 class="col-xs-12">Add your contacts with given options</h4>
 								<section>
 									<div class="col-xs-12 col-sm-4 col-md-4">
@@ -118,9 +118,9 @@ color:blue;
 								<!-- The global file processing state -->
 								<span class="fileupload-process"> </span>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+							<div class="col-xs-6 col-sm-12 col-md-6 col-lg-6">
 							<h4 class="col-xs-12">Import from available cloud service</h4>
-								<div class="col-xs-3">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<button *ngIf="sfImageNormal" id="salesforceContact_button" style="background-color: white" (click) = "salesforceContacts()">
 										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass"
 											title="Click here To access user list from your Salesforce account"
@@ -138,7 +138,7 @@ color:blue;
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-3">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 								<button *ngIf="googleImageBlur" id="googleContact_button" style="background-color: white" (click) = "googleContacts()">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass"
 										title="Click here To access user list from your Google contacts"
@@ -156,7 +156,7 @@ color:blue;
 								</a>
 							</div>
 								</div>
-								<div class="col-xs-3">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 								<button *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" data-toggle="modal" data-target="#myModal">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass"
 										title="Click here To access user list from your Zoho account"
@@ -174,7 +174,7 @@ color:blue;
 								</a>
 							</div>
 								</div>
-								<div class="col-xs-3">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 								<button id="microsoftContact_button" style="background-color: white">
 									<figure>
 									 <img src="assets/images/crm/dynamics.png" class="imageClass imageblur mdImageClass"
