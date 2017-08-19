@@ -461,7 +461,7 @@
 												 <!-- <ui-switch  formControlName="callACtion"  color="lightgreen"
 													 (change)="enableCallToActionMethodTest($event)">
 												</ui-switch> -->
-													  <bSwitch
+													  <!-- <bSwitch
 															[switch-base-class]="baseClass"
 															[switch-wrapper-class]="wrapperClass"
 															[switch-off-text]="offText"
@@ -474,7 +474,9 @@
 															[switch-animate]="callanimate"
 															formControlName="callACtion" 
 															(onChangeState)="enableCallToActionMethodTest($event.currentValue)">
-													</bSwitch>
+													</bSwitch> -->
+														<switch [status]="enableCalltoAction" [onText]="onTextValue" [offText]="offTextValue" [onColor]="_onColor" 
+														[offColor]="_offColor" [size]="size" (statusChange)="enableCallToActionMethodTest($event)"></switch>
 											</label>
 										</div>
 									</div>

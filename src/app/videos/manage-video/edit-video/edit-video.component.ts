@@ -147,17 +147,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
-    public labelText: string = "";
-    public inverse: boolean = false;
-    public baseClass: string = "bootstrap-switch";
-    public onText: string = "ON";
-    public offText: string = "OFF";
-    private _onColor: string = "primary";
-    private _offColor: string = "default"; 
-    public calldisabled: boolean = false;
-    public callreadonly: boolean = false;
+    public onTextValue: string = "ON";
+    public offTextValue: string = "OFF";
+    private _onColor: string = "green";
+    private _offColor: string = "red"; 
     public size = 'normal';
-    callanimate = true;
     constructor(private referenceService: ReferenceService,
         private videoFileService: VideoFileService, private router: Router,
         private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
@@ -404,7 +398,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // share window popup
     openWindow() {
         // this.authenticationService.APP_URL +
-        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open(this.authenticationService.APP_URL + 'http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=420');
     }
     // normal and 360 video methods
