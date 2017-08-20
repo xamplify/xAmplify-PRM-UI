@@ -41,7 +41,6 @@ import { EmailTemplateService } from './email-template/services/email-template.s
 import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 
-import { MetaModule } from '@nglibs/meta';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
@@ -56,8 +55,7 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
         LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
-        CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        MetaModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],
+        CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],
     providers: [{
         provide: Http,
         useFactory: httpService,

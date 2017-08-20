@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { UiSwitchModule } from 'ngx-ui-switch/src';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
 import { HttpModule } from '@angular/http';
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
