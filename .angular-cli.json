@@ -9,7 +9,8 @@
 			"outDir": "xtremandApp",
 			"assets": [
 			             "assets/images",
-                         "favicon.ico",
+						 "favicon.ico",
+						 ".htaccess",
 						 "assets/admin/pages/img",
 						 "assets/admin/layout2/img",
 						 "assets/admin/pages/media",

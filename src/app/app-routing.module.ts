@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
@@ -10,6 +10,7 @@ import { EmailTemplateModule } from './email-template/email-template.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
 import { TeamModule } from './team/team.module';
+import { AppCustomPreloader } from './app-routing-loader';
 
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
@@ -32,10 +33,10 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
             { path: 'emailtemplate', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
-            { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule' },
+            { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
             { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
-            { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule' },
-            { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule' },
+            { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
+            { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
             { path: 'team', loadChildren: 'app/team/team.module#TeamModule' },
             { path: 'error-occured-page/:errorStatusId', component: ErrorPagesComponent }
@@ -55,7 +56,9 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader })
+            ],
+    exports: [RouterModule],
+    providers : [AppCustomPreloader]
 })
 export class AppRoutingModule { }
