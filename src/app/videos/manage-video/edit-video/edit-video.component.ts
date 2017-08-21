@@ -166,6 +166,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.editVideoTitle = this.saveVideoFile.title;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
+        if (this.saveVideoFile.viewBy === 'DRAFT') {
+            this.saveVideoFile.viewBy = 'PRIVATE';
+        }
         this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';
         this.logger.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
@@ -903,10 +906,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shareValues = this.saveVideoFile.allowSharing;
         this.embedVideo = this.saveVideoFile.allowEmbed;
         try {
-            this.buildForm();
-            this.defaultImagePaths();
-            this.defaultGifPaths();
-            this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
+        this.buildForm();
+        this.defaultImagePaths();
+        this.defaultGifPaths();
+        this.embedSourcePath(this.saveVideoFile.alias, this.saveVideoFile.viewBy);
         } catch (error) {
             console.log('error' + error);
         }
