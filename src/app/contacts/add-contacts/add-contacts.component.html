@@ -90,25 +90,25 @@ color:blue;
 				<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="fileupload-buttonbar">
-							<div class="col-xs-6 col-sm-12 col-md-6 col-lg-6" style="position:auto;border-right: 1px solid #999999;height: 150px;">
+							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6" style="position:auto;border-right: 1px solid #999999;height: 150px;">
 								<h4 class="col-xs-12">Add your contacts with given options</h4>
 								<section>
-									<div class="col-xs-12 col-sm-4 col-md-4">
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding:7px">
 										<button class="btn-primary btn-block" id="addContacts" (click)="addRow()">
 											<i class="fa fa-user-plus" style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase">Add Contact</h6>
+											<h6 class="uppercase" style="font-size: 11px">Add Contact</h6>
 										</button>
 									</div>
-									<div class="col-xs-12 col-sm-4 col-md-4">
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding:7px">
 										<button class="btn-success btn-block" id="copyFromClipBoard" (click)="copyFromClipboard()">
 											<i class="fa fa-users" style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase">Copy Form ClipBoard</h6>
+											<h6 class="uppercase" style="font-size: 11px">Copy Form ClipBoard</h6>
 										</button>
 									</div>
-									<div class="col-xs-12 col-sm-4 col-md-4">
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding:7px">
 										<button class="btn-info fileinput-button btn-block" id="uploadCSV">
 											<i class="fa fa-file-excel-o" style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase">Upload a CSV</h6>
+											<h6 class="uppercase" style="font-size: 11px">Upload a CSV</h6>
 											<input type="file" ng2FileSelect *ngIf="uploader.queue.length==0"
 												[uploader]="uploader" (change)="fileChange(input)" accept=".csv" #input />
 										</button>
@@ -118,7 +118,7 @@ color:blue;
 								<!-- The global file processing state -->
 								<span class="fileupload-process"> </span>
 							</div>
-							<div class="col-xs-6 col-sm-12 col-md-6 col-lg-6">
+							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 							<h4 class="col-xs-12">Import from available cloud service</h4>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<button *ngIf="sfImageNormal" id="salesforceContact_button" style="background-color: white" (click) = "salesforceContacts()">
@@ -215,7 +215,8 @@ color:blue;
 								  </div>
 							</div>
 							<div class="col-xs-12 col-md-6">
-								<section class="pull-right" style="margin-bottom: 10px;">
+								
+								<section class="pull-right" style="margin-bottom: 10px;margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green"
 										(click)="saveContacts()">
 										 Save <i class="fa fa-save"></i>
