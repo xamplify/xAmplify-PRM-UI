@@ -99,8 +99,30 @@ export class LoginComponent implements OnInit {
                 this.logError();
             }
         },
-            err => this.logError(),
-            () => console.log( 'login() Complete' ) );
+            //err => this.logError(),
+           // () => console.log( 'login() Complete' ),
+            
+            
+        
+        (error:any)=>{
+        	 var body = error['_body'];
+        	 if ( body != "" ) {
+                 var response = JSON.parse( body );
+                 if ( response.error_description == "Bad credentials" ) {
+                	 this.error = 'Username or password is incorrect';
+                	  setTimeout(()=> {
+                          this.error = '';
+                      },5000)
+                 }else if(response.error_description == "User is disabled" ){
+                	 this.error = 'Your account is not activated.!';
+                     setTimeout(()=> {
+                         this.error = '';
+                     },5000)
+                 }
+        	 }
+            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+            
+        });
         return false;
       }
     }
