@@ -50,15 +50,23 @@
 }
 
 .loaderSymbol{
-    height: 47px;
-    background-color: #d0cede;
-    margin-bottom: 7px;
+    height: 49px;
     margin-top: -15px;
     margin-left: -2px;
     color: black;
     border-color: #000000;
  }
-
+  .p-tag-loaderCss { 
+    top: -63px;
+    position: relative;
+    left: 36px;
+  }
+ .loader-image-tag {
+    width: 64px;
+    top: -22px;
+    left: -23px;
+    position: relative;
+ }
 .h2text {
 	font-weight: bold;color:blue;
 	}

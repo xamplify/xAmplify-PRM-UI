@@ -4,17 +4,6 @@
 /deep/ .vjs-device-button.vjs-control {
 	left:43%;
 }
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #ddd;
-}
-th, td {
-    border: none;
-    text-align: left;
-    padding: 8px;
-}
 </style>
 <!-- BEGIN CONTENT -->
 
@@ -116,9 +105,9 @@ th, td {
 					<br />
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 25px;">
 	                <div *ngIf="processing">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
-						 <img src="assets/images/loadbar.gif" style="width: 67px;top: -11px;left: -9px; position: absolute;"> 
-							<p style="top: 14px;position: absolute;left: 54px;">Please wait ..!!! your video got uploaded & we are processing..!!!!</p>
+						<div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
+						 <img src="assets/images/loadbar.gif" class="loader-image-tag"> 
+							<p class="p-tag-loaderCss">Please wait ..!!! your video got uploaded & we are processing..!!!!</p>
 						</div>
                     </div> 
                     <div *ngIf="maxSubscription ==true"  class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
@@ -129,7 +118,7 @@ th, td {
                             Codec is not supported for this video..We are unable to process your video file. Please upload another video file!!
                        <a  class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                     </div>
-					<div style="overflow-x:auto;">	
+					<div class="table-responsive">	
 					<table class="table" >
 							<tbody *ngIf="isDisable==false">
 							  <tr *ngFor="let item of uploader.queue">
