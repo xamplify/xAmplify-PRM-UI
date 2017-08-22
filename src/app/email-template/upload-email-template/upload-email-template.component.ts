@@ -128,9 +128,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 let reader: FileReader = new FileReader();
                 reader.onload = (e) => {
                         let htmlText: string = reader.result;
-                       this.htmlText= this.emailTemplateService.highLightHtml(htmlText);
-                        $('.html').html(this.htmlText);
-                        CKEDITOR.instances.editor1.setData(htmlText);
+                        this.model.content = htmlText;
                     }
             reader.readAsText(file);
             this.isUploaded = true;
@@ -147,7 +145,6 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.isUploaded = false;
         $(".addfiles").attr("style", "float: left; margin-right: 9px; opacity:1");
         $('#fileId').val('');
-        CKEDITOR.instances.editor1.setData('');
     }
 
     checkAvailableNames(value: any) {
@@ -191,7 +188,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = CKEDITOR.instances.editor1.getData().trim();
+        this.emailTemplate.body = this.model.content;
         this.emailTemplate.userDefined = true;
         this.emailTemplate.subject = "assets/images/file_upload_icon.png";
         this.emailTemplate.type = EmailTemplateType.UPLOADED;

@@ -11,7 +11,7 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
+declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 
 @Component({
     selector: 'app-update-template',
@@ -25,7 +25,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     public invalidTemplateName: boolean = false;
     public isTemplateName: boolean = false;
     public disable: boolean;
-    public htmlText: string;
     model: any = {};
     public availableTemplateNames: Array<string>;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -41,7 +40,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
         if (emailTemplateService.emailTemplate != undefined) {
-            this.htmlText = emailTemplateService.emailTemplate.body;
+            this.model.content = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
         }
 
@@ -80,7 +79,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     updateHtmlTemplate() {
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = CKEDITOR.instances.txt_area.getData().trim();
+        this.emailTemplate.body = this.model.content;
         this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {

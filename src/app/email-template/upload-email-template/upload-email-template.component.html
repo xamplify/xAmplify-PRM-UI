@@ -56,11 +56,11 @@
 						</table>
 						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: 85px;">
 					 		<br><label for="info"><font style="color: red;">***Please copy and add this below content to your HTML template, before you upload</font></label>
-						 	<div class="form-control" style="cursor: default;resize: none;height: 75px;" id="info" disabled="disabled">{{videoTag}}</div>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{videoTag}}</textarea>
 					</div>
 					</div>
-					<div class="col-xs-12" ><!-- *ngIf="isUploaded" -->
-					<textarea class="ckeditor" name="editor1" id="editor1"></textarea>
+					<div class="col-xs-12" *ngIf="isUploaded"><!--  -->
+					 <ckeditor [(ngModel)]="model.content" name="content"></ckeditor>
 					</div>
 			
 				<div class="clearfix" style="margin: 5px;"></div>

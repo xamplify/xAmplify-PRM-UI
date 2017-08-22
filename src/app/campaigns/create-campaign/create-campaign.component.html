@@ -393,7 +393,7 @@
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="destroyPreview()">×</button>
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="destroyPreview()">Ã—</button>
 	                 <h4 class="modal-title" id="modal-title"></h4>
 	
 	            </div>
@@ -426,8 +426,8 @@
 								<table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info">
 				                 <thead>
 				                  <tr>
-				                    <td align="center"><!-- selectedContactListIds?.length==contactsPagination.pagedItems.length -->
-				                    <input type="checkbox" name="all" [checked]="isAllChecked()" (change)="checkAll($event)" class="" id="checkAllExistingContacts"  />
+				                    <td align="center"><!-- selectedContactListIds?.length==contactsPagination.pagedItems.length [checked]="isAllChecked()"-->
+				                    <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
 				                    </td>
 				                    <th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending" aria-label="Date Uploaded: activate to sort column ascending">
 				                    Date Uploaded
@@ -809,7 +809,7 @@
 							</div>
 							<div class="col-sm-12" style="padding: 0">
 								<div>
-									<textarea>{{reply.subject}}</textarea>
+									 <ckeditor [(ngModel)]="reply.subject" name="subject"></ckeditor>
 								</div>
 							</div>
 						</form>
@@ -858,7 +858,7 @@
 							</div>
 							<div class="col-sm-12" style="padding: 0">
 								<div>
-									<textarea>{{url.body}}</textarea>
+									 <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
 								</div>
 							</div>
 						</form>
@@ -874,7 +874,7 @@
 			<div class="portlet light dashboard-stat2" style="padding-top: 2em;">
 				<div class="portlet-title border-none">
 				<div class="col-xs-12 center-block">
-						<button type="button"	class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;min-width: 10em;">← Previous</button>
+						<button type="button"	class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;min-width: 10em;">â†� Previous</button>
 						<button type="button" class="btn green" (click)="addEmailId()">Send Test Email</button>
 						<button type="submit" class="btn green"	[disabled]="!campaignLaunchForm.valid">{{buttonName}}</button>
 					</div>
@@ -890,7 +890,7 @@
 	    <div class="modal-dialog modal-lg" style="width: 75%;">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
 	                 <h4 class="modal-title" id="email-template-title"></h4>
 	
 	            </div>

@@ -10,9 +10,10 @@ import { UpdateTemplateComponent } from './update-template/update-template.compo
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
 
 import {EmailTemplateRoutingModule} from './email-template-routing.module';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
-  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule ],
+  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
                  UpdateTemplateComponent, UploadEmailTemplateComponent]
 })

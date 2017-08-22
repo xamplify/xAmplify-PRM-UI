@@ -105,7 +105,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;                           
     selectedRowClass:string = ""; 
-     selectedContactListIds = [];                           
+     selectedContactListIds = [];
+     isHeaderCheckBoxChecked:boolean = false;
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;  
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
@@ -329,6 +330,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="contacts"){
             this.contactsPagination.pageIndex = pageIndex;
             this.loadCampaignContacts(this.contactsPagination);
+           
+            
         }else if(module=="contactUsers"){
            this.contactsUsersPagination.pageIndex = pageIndex;
             this.loadUsers(this.id,this.contactsUsersPagination);
@@ -675,6 +678,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
                 this.contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
                 this.refService.loading(this.campaignContact.httpRequestLoader, false);
+                var contactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.selectedContactListIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                if(items.length==10){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }
+               
             },
             (error:string) => {
                 this.logger.error(this.refService.errorPrepender+" loadCampaignContacts():"+error);
@@ -757,6 +770,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    
     checkAll(ev:any){
         if(ev.target.checked){
+            console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
             let self = this;
@@ -767,6 +781,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         }else{
+           console.log("unceck");
             $('[name="campaignContact[]"]').prop('checked', false);
             this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
@@ -776,7 +791,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     isAllChecked() {
-        return this.contactsPagination.pagedItems.every(_ => _.state);
+      /*  setTimeout(()=>{
+            if($('[name="campaignContact[]"]:checked').length==this.contactsPagination.pagedItems.length){
+                $('#checkAllExistingContacts').prop("checked",true);
+            } 
+        },700);*/
       }
 
     
@@ -1023,7 +1042,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
-            reply.subject = this.getCkEditorContent(reply.divId);
             if(reply.replyTime==undefined || reply.subject.trim().length==0){
                 $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             }
@@ -1034,7 +1052,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log(url);
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
-            url.body = this.getCkEditorContent(url.divId);
             let replyTime = url.replyTime;
             if(url.scheduled){
                 if(replyTime==undefined || url.subject.trim().length==0|| url.body.trim().length==0){
@@ -1077,12 +1094,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         return data;
     }
    
-    getCkEditorContent(divId:string){
-       console.log(CKEDITOR.instances);
-        let name = 'editor'+divId.split('-')[1];
-        console.log(name);
-        return CKEDITOR.instances[name.trim()].getData().trim();
-    }
     sendTestEmail(emailId:string){
         let self = this;
         var data = this.getCampaignData(emailId);
@@ -1462,7 +1473,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          let index = divId.split('-')[1];
          let editorName = 'editor'+index;
          console.log("Removing"+editorName);
-         CKEDITOR.instances[editorName].destroy();
+         //CKEDITOR.instances[editorName].destroy();
      }
 
      
