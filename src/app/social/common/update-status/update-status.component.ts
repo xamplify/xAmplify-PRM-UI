@@ -31,6 +31,7 @@ export class UpdateStatusComponent implements OnInit {
     pager: any = {};
 
     videoUrl: string;
+    posterImage: string;
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
 
@@ -49,13 +50,17 @@ export class UpdateStatusComponent implements OnInit {
 
     previewVideo( videoFile: SaveVideoFile ) {
         this.selectedVideo = videoFile;
+        this.posterImage = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring( 0, this.videoUrl.lastIndexOf( "." ) );
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
 
-        /*this.videoPlayListSource( this.videoUrl );
-        this.videoPlayListSource( this.videoUrl );*/
         this.videoJSplayer.play();
+        
+        $('tr').click(function() {
+                    $('input[type=radio]',this).attr('checked','checked');
+                }
+        );
     }
 
     addVideo() {
