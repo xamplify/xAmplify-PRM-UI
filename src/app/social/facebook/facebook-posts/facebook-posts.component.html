@@ -10,7 +10,7 @@
       <li>Posts</li>
     </ul>
   </div>
-  <div class="row" style="display: flex;">
+  <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6" *ngIf="httpRequestLoader.isLoading">
       <app-social-loader ></app-social-loader>
     </div>
@@ -72,7 +72,7 @@
         <section *ngIf="socialConnection.emailId === null"><app-facebook-analytics></app-facebook-analytics></section>
         <section *ngIf="socialConnection.emailId !== null">
         	<div class="portlet light block rounded-0">
-				<h1 style="padding: 7em;">Blank Space</h1>
+				<h1 style="padding: 2em;">Blank Space</h1>
 			</div>
         </section>
     </div>

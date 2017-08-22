@@ -17,10 +17,10 @@ import { MyProfileComponent } from './user-profile/my-profile/my-profile.compone
 import { DefaultPageComponent } from './default-page/default-page.component';
 import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
-
+import {DragulaModule , DragulaService} from "ng2-dragula/ng2-dragula";
 
 @NgModule({
-    imports: [DasboardRoutingModule,SharedModule,CoreModule,CommonModule],
+    imports: [DasboardRoutingModule,SharedModule,CoreModule,CommonModule, DragulaModule],
     declarations: [DashboardComponent,TableAdvanceComponent,ViewsReportComponent,ExtraFaqComponent,
                    WelcomeComponent,
                    MyProfileComponent,

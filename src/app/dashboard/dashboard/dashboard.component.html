@@ -1,7 +1,103 @@
 <style type="text/css">
+.alert-dismissible .close {
+    top: 5px;
+    right: 0;
+}
+.alert-success,
+.alert-danger,
+.alert-warning {
+    color: #ffffff;
+    border-radius: 0;
+    padding: 3px 10px;
+}
+.alert-success{
+    background-color: #77bf81;
+}
+.alert-danger {
+	background-color: #ec6262;
+}
+.alert-warning {
+    background-color: #f1d43b;
+}
+.alert-success, .alert-danger, .alert-warning > h5 {
+	font-size: 14px;
+}
+hr{
+	margin: 1em 0;
+    border-top: 0.5px solid rgba(216, 214, 214, 0.4);
+}
 input[type=radio] {
 	position: relative;
 	opacity: 1 !important;
+}
+
+.gu-mirror {
+	position: fixed !important;
+	margin: 0 !important;
+	z-index: 9999 !important;
+	opacity: .8;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	filter: alpha(opacity = 80)
+}
+
+.gu-hide {
+	display: none !important
+}
+
+.gu-unselectable {
+	-webkit-user-select: none !important;
+	-moz-user-select: none !important;
+	-ms-user-select: none !important;
+	user-select: none !important
+}
+
+.gu-transit {
+    background: rgba(0, 169, 236, 0.13);
+    color: #00a6e7;
+}
+
+.gu-block{
+    border: 1px solid rgba(0, 166, 232, 0.5);
+    padding: 0 10px;
+    cursor: pointer;
+    margin: 3px;
+}
+
+.gu-block-content{
+	margin: 7px 0;
+}
+
+.scrollbar{
+	max-height: 200px;
+	overflow: auto;
+}
+.scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+.form-check-label{
+    border: 1px solid rgba(218, 218, 218, 0.53);
+    padding: 5px 10px;
+    width: 100%;
+    color: rgba(125, 125, 125, 0.74);
+    letter-spacing: 0.5px;
+    cursor: pointer;
 }
 </style>
 <div class="page-content">
@@ -26,43 +122,68 @@ input[type=radio] {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
       </div>
       <div class="modal-body">
 		<div class="clearfix">
-			<div class="col-xs-6">
-				<div class="form-check">
-				  <label class="form-check-label">
-				    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-				    LATEST
-				  </label>
-				</div>
-				<div class="form-check">
-				  <label class="form-check-label">
-				    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-				    TRENDING
-				  </label>
-				</div>
-				<div class="form-check">
-				  <label class="form-check-label">
-				    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option3" (click)="listLaunchedCampaign()">
-				    CUSTOMIZE
+			<div class="col-xs-12" *ngIf="userCampaignReport.response != null">
+				<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
+											   'alert-danger': userCampaignReport.response == 'ERROR', 
+											   'alert-warning': userCampaignReport.response == 'WARNING'}">
+                	<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button>
+                	<h5>
+                		<i class="fa" [ngClass]="{'fa-check': userCampaignReport.response == 'SUCCESS',
+											   'fa-exclamation': userCampaignReport.response == 'ERROR', 
+											   'fa-exclamation-triangle': userCampaignReport.response == 'WARNING'}" 
+                		aria-hidden="true" style="padding-right: 7px;"></i>
+                		{{userCampaignReport.responseMessage}}
+               		</h5>
+            	</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
+					<label class="form-check-label">
+				    <input class="form-check-input" type="radio" name="campaignReportType" [value]="item"
+				    	[checked]="item === userCampaignReport.campaignReportOption" (change)="onSelectionChangeCampaignReportOption(item)">
+				    {{item}}
 				  </label>
 				</div>
 			</div>
-			<div class="col-xs-6">
-				<div *ngFor="let item of launchedCampaigns">
-					<div class="checkbox">
-					  <label><input type="checkbox" value="{{item[0]}}">{{item[1]}}</label>
+			<div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
+				<hr>
+				<div class="wrapper">
+			        <div class="col-xs-12 col-md-6">
+				        <div class="portlet light border-radius-0">
+							<div class="portlet-title">
+								<h5>YOUR CAMPAIGNS</h5>
+							</div>
+							<div class="portlet-body scrollbar launchedCampaignsMaster" [dragula]='"bag-items"'>
+						        <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
+						        	<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+					        	</div>
+							</div>
+						</div>
 					</div>
-				</div>
+					<div class="col-xs-12 col-md-6">
+						<div class="portlet light border-radius-0">
+							<div class="portlet-title">
+								<h5>SELECTED CAMPAIGNS <b>(MAX 4)</b></h5>
+							</div>
+							<div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
+						        <div class="gu-block" *ngFor="let item of launchedCampaignsChild">
+						        	<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+					        	</div>
+							</div>
+						</div>
+			        </div>
+			    </div>
 			</div>
 		</div>
 		</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="color1 btn-campaign" (click)="validateUserCampaignReport(userCampaignReport)">Save changes</button>
+        <button type="button" class="btn btn-campaign " data-dismiss="modal" (click)="userCampaignReport.response = null">Close</button>
       </div>
     </div>
   </div>
@@ -71,12 +192,12 @@ input[type=radio] {
 <div class="page-bar portlet light border-radius-0">
 <div class="portlet-title">
 	<div class="caption flex">
-		<div class="col-xs-12 col-sm-6">
+		<div class="col-xs-6">
           <h4 *ngIf="totalCampaignsCount >= 4">Top 4 Campaigns</h4>
           <h4 *ngIf="totalCampaignsCount < 4 && totalCampaignsCount > 1">Top {{totalCampaignsCount}} Campaigns</h4>
           <h4 *ngIf="totalCampaignsCount === 1">Top {{totalCampaignsCount}} Campaign</h4>
         </div>
-        <div class="col-xs-12 col-sm-6" style="padding: 5px 10px;">
+        <div class="col-xs-6" style="padding: 5px 10px;">
 		  <a><i style="font-size: 1.3em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
           <a [routerLink]="['/home/campaigns/select-campaign']" class="btn btn-sm btn-primary color1 pull-right">Create Campaign</a>
         </div>
@@ -98,12 +219,12 @@ input[type=radio] {
 				        <svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12"
-						        stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaign[4]/campaign[3])}"/>
+						        stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaign[3]/campaign[4])}"/>
 						</svg>
-						<h2 class="percentage-value">{{campaign[4]*100/campaign[3]}}%</h2>
+						<h2 class="percentage-value">{{campaign[5]}}%</h2>
 						<h6 class="percentage-text">interaction</h6>
 			    	</section>
-			    	<h5 style="color: #00a6e8;margin-top: 3em;">Released on {{campaign[2] | date: 'short'}}</h5>
+			    	<h5 style="color: #00a6e8;margin-top: 3.2em;">Released on {{campaign[2] | date: 'short'}}</h5>
 				</div>
 			</div>
 		</div>

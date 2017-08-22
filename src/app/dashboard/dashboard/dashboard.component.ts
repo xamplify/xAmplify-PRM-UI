@@ -4,6 +4,7 @@ import { Logger } from 'angular2-logger/core';
 
 import {SocialConnection} from '../../social/models/social-connection';
 import { Campaign} from '../../campaigns/models/campaign';
+import {CampaignReport} from '../../campaigns/models/campaign-report';
 
 import { DashboardService } from '../dashboard.service';
 import { TwitterService } from '../../social/services/twitter.service';
@@ -18,7 +19,6 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
-
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
 
 @Component({
@@ -50,12 +50,20 @@ export class DashboardComponent implements OnInit {
     isDahboardDefaultPage: boolean;
     
     campaigns:Campaign[];
-    launchedCampaigns:Campaign[];
+    launchedCampaignsMaster:any[];
+    launchedCampaignsChild:any[] = new Array<any>();
     totalCampaignsCount :number;
+    campaignReportType: string;
+    campaignReportOptions = ['RECENT', 'TRENDING', 'CUSTOM'];
 
-    constructor(private router: Router, private _dashboardService: DashboardService,private pagination: Pagination,private contactService: ContactService,private videoFileService: VideoFileService,private twitterService: TwitterService,
-        private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
-        private utilService: UtilService, private userService: UserService, private campaignService: CampaignService, private referenceService:ReferenceService) {
+    loggedInUserId: number;
+    userCampaignReport: CampaignReport = new CampaignReport();
+
+    constructor( private router: Router, private _dashboardService: DashboardService, private pagination: Pagination,
+                private contactService: ContactService, private videoFileService: VideoFileService, private twitterService: TwitterService,
+                private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
+                private utilService: UtilService, private userService: UserService, private campaignService: CampaignService,
+                private referenceService: ReferenceService) {
             this.totalUploadedvideos = 0;
             this.totalContacts = 0;
             this.listOfEmailClicked = 0;
@@ -65,7 +73,6 @@ export class DashboardComponent implements OnInit {
             this.listOfTotalFollowers = 0;
             this.listOfTotalLeads = 0;
             this.listOfTotalShared = 0;
-          //  this.allFollowers = new Array<ContactList>();
     }
 
     dashboardStats() {
@@ -392,7 +399,7 @@ export class DashboardComponent implements OnInit {
             defaultPage = 'dashboard';
         else
             defaultPage = 'welcome';
-        this.userService.setUserDefaultPage(this.authenticationService.getUserId(), defaultPage)
+        this.userService.setUserDefaultPage(this.loggedInUserId, defaultPage)
         .subscribe(
                 data => {
                     this.isDahboardDefaultPage = event;
@@ -403,23 +410,12 @@ export class DashboardComponent implements OnInit {
         );
     }
     
-    listCampaignInteractionsData(userId: number){
-        this.campaignService.listCampaignInteractionsData(userId)
+    listCampaignInteractionsData(userId: number, reportType: string){
+        this.campaignService.listCampaignInteractionsData(userId, reportType)
         .subscribe(
             data => {
                 this.campaigns = data;
                 this.totalCampaignsCount = this.campaigns.length;
-            },
-            error => {},
-            () => this.logger.info("Finished listCampaign()")
-        );
-    }
-    
-    listLaunchedCampaign(){
-        this.campaignService.listLaunchedCampaign(this.authenticationService.getUserId())
-        .subscribe(
-            data => {
-                this.launchedCampaigns = data;
             },
             error => {},
             () => this.logger.info("Finished listCampaign()")
@@ -431,18 +427,108 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(["/home/campaigns/create-campaign"]);
     }
     
+    getUserCampaignReport(userId: number){
+        this.campaignService.getUserCampaignReport(userId)
+        .subscribe(
+            data => {
+                this.userCampaignReport = data['userCampaignReport'];
+                this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
+            },
+            error => {},
+            () => {
+                this.logger.info("Finished getUserCampaignReport()");
+                if(this.userCampaignReport == null){
+                    this.userCampaignReport = new CampaignReport();
+                    this.userCampaignReport.userId = userId;
+                    this.userCampaignReport.campaignReportOption = 'RECENT';
+                }
+                
+                this.setLaunchedCampaignsChild(this.userCampaignReport);                    
+                this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
+
+            }
+        );
+    }
+    
+    setLaunchedCampaignsChild( userCampaignReport: CampaignReport ) {
+        if ( ( 'CUSTOM' == userCampaignReport.campaignReportOption ) && ( null != userCampaignReport.campaigns ) ) {
+            var campaignsArray: string[] = userCampaignReport.campaigns.split( ',' );
+
+            for ( var i in campaignsArray ) {
+                var result = this.launchedCampaignsMaster.filter( function( obj ) {
+                    return obj.id == parseInt( campaignsArray[i] );
+                });
+                console.log( result );
+                this.launchedCampaignsChild.push( result[0] );
+            }
+            this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter( x => this.launchedCampaignsChild.indexOf( x ) < 0 );
+        }
+    }
+    
+    validateUserCampaignReport(userCampaignReport: CampaignReport){
+        let isValid = true;
+        if('CUSTOM' == userCampaignReport.campaignReportOption){
+            let campaignIds: string[] = [];
+            
+            $('.launchedCampaignsChild > div >h6').each(function(){
+                campaignIds.push($(this).attr('id')); 
+            });
+            userCampaignReport.campaigns = campaignIds.toString();
+            if(campaignIds.length > 4){
+                this.setCampaignReportResponse('WARNING', 'You can not add more than 4 campaigns.');
+                isValid = false;
+            }
+            if(campaignIds.length == 0){
+                this.setCampaignReportResponse('WARNING', 'Please select campaigns.');
+                isValid = false;
+            }
+        }
+        
+        if(isValid)
+            this.saveUserCampaignReport(userCampaignReport);
+        else
+            return false;
+    }
+    
+    saveUserCampaignReport(userCampaignReport: CampaignReport){
+        if(userCampaignReport.userId == null)
+            userCampaignReport.userId = this.loggedInUserId;
+
+        this.campaignService.saveUserCampaignReport(userCampaignReport)
+        .subscribe(
+            data => {
+                this.userCampaignReport = data;
+                this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
+                this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
+            },
+            error => {
+                this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
+            },
+            () => this.logger.info("Finished saveUserCampaignReport()")
+        );
+    }
+    
+    setCampaignReportResponse(response: string, responseMessage: string){
+        this.userCampaignReport.response = response;
+        this.userCampaignReport.responseMessage = responseMessage;
+    }
+    
+    onSelectionChangeCampaignReportOption(userCampaignReportOption: string){
+        this.userCampaignReport.campaignReportOption = userCampaignReportOption;
+    }
+    
     ngOnInit() {
         try {
-            const userId = this.authenticationService.getUserId();
-            this.getDefaultPage(userId);
-            this.listCampaignInteractionsData(userId);
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.getDefaultPage(this.loggedInUserId);
+            this.getUserCampaignReport(this.loggedInUserId);
             
-            /*this.totalViewsCount();
+            this.totalViewsCount();
             this.totalFollowersCount()
             this.uploadedVideosCount();
             this.totalContactsCount();
             this.emailOpenedCount();
-            this.emailClickedCount();*/
+            this.emailClickedCount();
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -467,7 +553,7 @@ export class DashboardComponent implements OnInit {
             this.facebookSparklineData();
             this.linkdinSparklineData();
             // this.showGaugeMeter();
-            this.listSocialAccounts(userId);
+            this.listSocialAccounts(this.loggedInUserId);
 
         } catch (err) {
             console.log(err);

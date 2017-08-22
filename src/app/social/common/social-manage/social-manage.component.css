@@ -1,5 +1,5 @@
 .box {
-	padding: 10px;
+	padding: 5px;
 }
 
 .portlet {
@@ -77,10 +77,9 @@ h5 {
 }
 
 .alert-success {
-	background: rgb(38, 220, 155);
+	background-color: #77bf81;
 	color: #ffffff;
-	border-radius: 0;
-	padding-left: 3em;
+	padding: 10px 20px;
 }
 
 .swal2-cancel {

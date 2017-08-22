@@ -16,14 +16,13 @@
       <div class="modal-body">
 		<div class="portlet light block rounded-0" *ngFor="let comment of comments">
 			<div class="portlet-title">
-				<div class="caption">
-					<div class="col-xs-12" style="display: flex;">
-						<h5 class="text-left">{{comment.from.name}}</h5>
-						<h6 class="text-right">{{comment.createdTime | date: 'short'}}</h6>
+					<div class="col-xs-12">
+						<h5>{{comment.from.name}} <span>{{comment.createdTime | date: 'short'}}</span></h5>
 					</div>
-				</div>
 			</div>
-			<div class="portlet-body"><p [innerHTML]="comment.message"></p></div>
+			<div class="portlet-body clearfix">
+				<h4 class="col-xs-12" [innerHTML]="comment.message"></h4>
+			</div>
 		</div>
       </div>
       <div class="modal-footer">

@@ -17,16 +17,16 @@
             <div class="row">
               <div class="portlet-body">
                 <div *ngIf="response === 'success'">
-                	<div class="alert alert-success" role="alert"> 
-                		<h2><b>Well done!</b> your settings have been saved successfully.</h2> 
-                		<h3>Click <a [routerLink]="['/home/dashboard']">here</a> to go to Home page</h3> 
+                	<div class="alert alert-success rounded-0" role="alert"> 
+                		<h4><b>Success!</b> your settings have been saved successfully.</h4> 
+                		<h5><a class="btn btn btn-primary" [routerLink]="['/home/dashboard']">DASHBOARD</a></h5> 
                		</div>
                 </div>
-                <div class="col-xs-12 text-center" style="padding: 10em;" *ngIf="socialConnections?.length == 0">
-                	<h2 class="text-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 27px;"></i> No accounts found.</h2>
-                	<h3>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social account.</h3>
+                <div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0">
+                	<h4 class="text-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.</h4>
+                	<h5>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social account.</h5>
                 </div>
-                <div class="col-xs-12" *ngIf="socialConnections?.length > 0">
+                <div *ngIf="socialConnections?.length > 0">
 	                <div class="col-md-3 col-sm-4 col-xs-12 box"
 	                  *ngFor="let socialConnection of socialConnections;let i = index">
 	                  <div class="portlet light block"
@@ -36,8 +36,6 @@
 	                    <div class="caption">
 	                      <div class="col-xs-12">
 	                        <i class="fa fa-check" aria-hidden="true" *ngIf="socialConnection.active"></i>
-	                        
-	                        
 	                        <h5 class="caption-subject uppercase text-center">{{socialConnection.profileName}}</h5>
 	                        <i class="fa fa-social pull-right"
 	                          [ngClass]="{'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK', 
@@ -45,7 +43,7 @@
 	                      </div>
 	                    </div>
 	                  </div>
-	                  <div class="portlet-body">
+	                  <div class="portlet-body hidden-xs">
 	                    <div class="row email-template-container">
 							<img class="img-responsive profile-picture center-block"
 								src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"> 

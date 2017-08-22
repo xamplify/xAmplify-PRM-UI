@@ -123,8 +123,8 @@ export class CampaignService {
             .catch( this.handleError );
     }
     
-    listCampaignInteractionsData(customerId: number){
-        return this.http.get( this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId )
+    listCampaignInteractionsData(customerId: number, reportType: string){
+        return this.http.get( this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId + '&reportType='+ reportType)
         .map( this.extractData )
         .catch( this.handleError );
     }
@@ -133,6 +133,18 @@ export class CampaignService {
         return this.http.get( this.URL + 'admin/listLaunchedCampaign?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    
+    getUserCampaignReport(userId: number){
+        return this.http.get( this.URL + 'admin/get-user-campaign-report?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    saveUserCampaignReport(data: any){
+        return this.http.post(this.URL + "admin/save-user-campaign-report?access_token=" + this.authenticationService.access_token, data)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     private handleError(error: any) {

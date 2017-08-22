@@ -39,6 +39,7 @@ textarea{
 	z-index: 1;
 	width: auto;
 	height: 100px;
+	margin: 0 auto;
 }
 
 .social-image {
