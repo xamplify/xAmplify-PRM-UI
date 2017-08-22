@@ -114,7 +114,7 @@
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
+											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedUrl}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
 									</div>
 									<span class="input-group-btn">
 										<div style="margin-top: 4px;">
@@ -453,60 +453,29 @@
 							</div>
 							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
 								<!-- <form class="form-horizontal" role="form"> -->
-								<div class="form-group">
+									<div class="form-group">
 									<label class="col-xs-6 control-label">Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-										<div class="checkbox-list">
-											<label style="position: absolute;top: 3px;">
+										<div>
 												 <!-- <ui-switch  formControlName="callACtion"  color="lightgreen"
 													 (change)="enableCallToActionMethodTest($event)">
 												</ui-switch> -->
-													  <!-- <bSwitch
-															[switch-base-class]="baseClass"
-															[switch-wrapper-class]="wrapperClass"
-															[switch-off-text]="offText"
-															[switch-on-text]="onText"
-															[switch-on-color]="_onColor"
-															[switch-off-color]="_offColor"
-															[switch-size]="size"
-															[switch-disabled]="calldisabled"
-															[switch-readonly]="callreadonly"
-															[switch-animate]="callanimate"
-															formControlName="callACtion" 
-															(onChangeState)="enableCallToActionMethodTest($event.currentValue)">
-													</bSwitch> -->
-														<switch [status]="enableCalltoAction" [onText]="onTextValue" [offText]="offTextValue" [onColor]="_onColor" 
-														[offColor]="_offColor" [size]="size" (statusChange)="enableCallToActionMethodTest($event)"></switch>
-											</label>
+															<!-- <bSwitch
+																[switch-off-text]="offTextValue"
+																[switch-on-text]="onTextValue"
+																[switch-on-color]="_onColor"
+																[switch-off-color]="_offColor"
+																[switch-size]="size"
+																[switch-animate]="animate"
+																[(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}"
+																(onChangeState) = "enableCallToActionMethodTest($event.currentValue)">
+														</bSwitch> -->
+														  <switch [status]="enableCalltoAction" [onText]="onTextValue" [offText]="offTextValue" [onColor]="_onColor" 
+														[offColor]="_offColor" [size]="size" (statusChange)="enableCallToActionMethodTest($event)"></switch>  
 										</div>
 									</div>
 								</div>
 								<div class="form-group"><hr style="margin: 0px 2px;"></div>
-								<!-- <div class="form-group">
-									<label class="col-md-3 control-label">Call To Action At:</label>
-									<div class="col-md-6">
-										<div class="checkbox-list">
-											<label style="position: relative;top:8px;"> start Of the video</label>
-											<label style="position: relative; top: -21px;left: 117px;">
-											<ui-switch  color="lightgreen"
-												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableStart == true"
-												(change)="startCallToactionOverlay($event)">
-											</ui-switch>
-											</label>
-									    </div>
-									</div>
-									<div class="col-md-6" style="position: absolute">
-									    <div class="checkbox-list">			
-												<label style="position: relative;right: -137px; top: 44px;"> end Of the video</label>
-												<label  style="position: relative; top: 17px; right: -251px;">
-												<ui-switch  color="lightgreen"
-													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableEnd == true"
-													 (change)="endCallToactionOverlay($event)">
-												</ui-switch>
-												</label>
-										</div>
-									</div>
-								</div> -->
 									<div class="form-group" style="padding: 1em">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Call To Action At:</label>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">

@@ -51,9 +51,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public defaultImagePath: any;
     public defaultSaveImagePath: string;
     public defaultGifImagePath: string;
-    private compPlayerColor: string;
-    private compControllerColor: string;
-    private videoJSplayer: any;
+    public compPlayerColor: string;
+    public compControllerColor: string;
+    public videoJSplayer: any;
     public videoUrl: string;
     public imageFilesfirst: string;
     public imageFilessecond: string;
@@ -149,14 +149,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     emptyDescription = false;
     public onTextValue: string = "ON";
     public offTextValue: string = "OFF";
-    private _onColor: string = "green";
-    private _offColor: string = "red"; 
+    public _onColor: string = "green";
+    public _offColor: string = "red"; 
     public size = 'normal';
-    constructor(private referenceService: ReferenceService,
-        private videoFileService: VideoFileService, private router: Router,
-        private route: ActivatedRoute, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef,
-        private authenticationService: AuthenticationService, private logger: Logger,
-        private sanitizer: DomSanitizer, private videoUtilService: VideoUtilService) {
+    public animate = true;
+    constructor(public referenceService: ReferenceService,
+        public videoFileService: VideoFileService, public router: Router,
+        public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
+        public authenticationService: AuthenticationService, public logger: Logger,
+        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
@@ -167,7 +168,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         if (this.saveVideoFile.viewBy === 'DRAFT') {
-            this.saveVideoFile.viewBy = 'PRIVATE';
+            this.saveVideoFile.viewBy = 'public';
         }
         this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';
