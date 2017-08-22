@@ -1,5 +1,12 @@
 <style type="text/css">
   a.disabled { pointer-events: none; cursor: not-allowed; }
+.custom-error-message {
+    padding: 5px;
+    border: 1px solid rgba(255, 0, 0, 0.21);
+    color: rgba(255, 0, 0, 0.7);
+    margin: 5px 0;
+    text-transform: capitalize;
+}
 </style>
 <div id="manageContacts" *ngIf="showManageContactData"
 	class="page-content">
@@ -61,7 +68,7 @@
 								<div class="page-toolbar">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px">
+											<div style="float: left; margin-right: 10px; width:50%">
 												<select class="form-control" [(ngModel)]="contactsSort"
 													(ngModelChange)="selectedSortByValue($event)">
 													<option *ngFor="let sort of sortContacts" [ngValue]="sort">
@@ -466,19 +473,9 @@
 					<div class="row">
 						<form class="form-inline" *ngIf="allContactData==true">
 						<form #f="ngForm">
-							<div class="col-xs-0 col-md-6 form-group"
+							<!-- <div class="col-xs-0 col-md-6 form-group"
 								style="margin-bottom: 8px">
-								<!-- <label for="name">ContactListName:</label> <input type="text"
-									class="form-control" [(ngModel)]="contactListName"
-									(ngModelChange)="changEvent($event)" required
-									id="contactListName" name="contactListName"
-									placeholder="Contact List Name"
-									#contactListName="ngModel">
-									<div style="margin-left: 118px;width:40%" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
-												class="alert alert-danger">
-												Minimum 4 letters required.
-											</div> -->
-											<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label>
+									<label class="col-sm-4" for="name" style="margin-top:6px">Contact List Name *</label>
 									 <input class="col-sm-8" type="text"
 									class="form-control" style="width:65%" id="contactListName"
 									 required
@@ -488,8 +485,8 @@
 									placeholder="Contact List Name"
 									#contactListName="ngModel">
 									<span *ngIf="isValidContactName" style="color: red;margin-left: 180px;">Contact List Name Already Exists</span>
-									<div style="margin-left: 178px;width:65%" [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
-												class="alert alert-danger">
+									<div [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)"
+												class="col-xs-8 alert alert-danger" style="width:65%" >
 												Minimum 4 letters required.
 											</div>
 											<div style="margin-left: 178px;width:65%" *ngIf="contactListNameError"
@@ -504,32 +501,61 @@
 										aria-label="close">&times;</a>
 												Please Enter Contacts.
 											</div>
-								<!-- <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListNameError"> <p style="color:red">Please Enter Contact List Name</p></div>
-    <div style="margin-left: 115px;margin-top: 16px" *ngIf="contactListUsersError"> <p style="color:red">Please select the atleast one User</p></div> -->
-								<!-- <div id="NameErrorMessage"
-									style="margin-left: 180px; width: 264px"
-									class="alert alert-danger alert-dismissable fade in"
-									*ngIf="contactListNameError">
-									<a href="#" class="close" data-dismiss="alert"
-										aria-label="close">&times;</a> Please enter the contact list name.
-								</div> -->
-								<!-- <div id="ContactsErrorMessage"
-									style="margin-left: 180px; width: 264px"
-									class="alert alert-danger alert-dismissable fade in"
-									*ngIf="contactListUsersError">
-									<a href="#" class="close" data-dismiss="alert"
-										aria-label="close">&times;</a> Please select the contacts.
-								</div> -->
+							</div> -->
+													<div class="contact-list-form">
+							<div class="col-xs-12 col-md-6">
+								<div class="form-group">
+								    <label for="name" class="col-xs-12 col-sm-5 control-label">Contact List Name *</label>
+								    <div class="col-xs-12 col-sm-7">
+							      <!-- 	<input type="text" class="form-control" id="contactListName" autocomplete="off"
+										(ngModelChange)="changEvent($event)" required
+										[(ngModel)]="model.contactListName" name="contactListName"
+										(input)="validateContactName(model.contactListName)"
+										minlength="4" placeholder="Contact List Name" #contactListName="ngModel"> -->
+								     <input type="text" autocomplete="off" class="form-control" id="contactListName"
+									 required [(ngModel)]="model.contactListName" name="contactListName"
+									minlength="4" (input)="validateContactName(model.contactListName)"
+									placeholder="Contact List Name" #contactListName="ngModel">
+								    <!-- Validation Messages -->
+								    <div *ngIf="isValidContactName">
+								    	<p class="custom-error-message">Contact List Name Already Exists</p>
+								    </div>
+									<!-- <div *ngIf="contactListName.invalid && (contactListName.dirty ||contactListName.touched)">
+										<p class="custom-error-message">Minimum 4 letters required.</p>
+									</div> -->
+									<div [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)">
+												<p class="custom-error-message">Minimum 4 letters required.</p>
+											</div>
 
+									<div *ngIf="contactListUsersError">
+								    	<p class="custom-error-message">Please enter the contact list name.</p>
+								  	</div>
+								    </div>
+								  </div>
 							</div>
+							<div class="col-xs-12 col-md-6">
+								
+								<section class="pull-right" style="margin-bottom: 10px;margin-top: 3px;">
+									<button id="sample_editable_1_new" class="btn green"
+										(click)="saveSelectedUsers()">
+										 Save <i class="fa fa-save"></i>
+									</button>
+									<button id="cancel_button" class="btn green"
+										(click)="cancelAllContactsCancel()">
+										Cancel<i class="fa fa-cancel"></i>
+									</button>
+								</section>
+							</div>
+
+						</div>
 							</form>
-							<div class="col-xs-0 col-md-6 form-group" align="right">
+							<!-- <div class="col-xs-0 col-md-6 form-group" align="right">
 								<button (click)="cancelAllContactsCancel()">Cancel</button>
 								<button style="background-color: #3598dc; color: white" [disabled] = "isValidContactName||noSaveButtonDisable"
 									(click)="saveSelectedUsers()">Save</button>
-							</div>
+							</div> -->
 						</form>
-						<div class="col-md-12">
+						<div class="col-xs-12 col-md-12">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div *ngIf="emptyContactsUsers" class="alert alert-info">
 								<strong>Info!</strong> No Contacts found please add the contact
