@@ -9,6 +9,7 @@ import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { Logger } from 'angular2-logger/core';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
@@ -150,7 +151,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public onTextValue = 'ON';
     public offTextValue = 'OFF';
     public _onColor = 'green';
-    public _offColor = 'red'; 
+    public _offColor = 'red';
     public size = 'normal';
     public animate = true;
     _onColorBswitch = 'success';
@@ -158,8 +159,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router,
         public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
-        public authenticationService: AuthenticationService, public logger: Logger,
-        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
+        public authenticationService: AuthenticationService, public logger: Logger, public xtremandLogger:
+        XtremandLogger, public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
@@ -174,6 +175,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';
+        this.xtremandLogger.info('edit Video compoent constructor' , this.ClipboardName);
         this.logger.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -507,12 +509,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (isValid === 'EndOftheVideo') {
                         const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                         const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                        if (event === "FullscreenOn") {
+                        if (event === 'FullscreenOn') {
                             isCallActionthere = true;
                             newThis.overLaySet = true;
                             newThis.fullScreenMode = true;
-                            $("#overlay-modal").css("width", "100%");
-                            $("#overlay-modal").css("height", "100%");
+                            $('#overlay-modal').css('width', '100%');
+                            $("#overlay-modal").css('height', '100%');
                             $('#videoId').append($('#overlay-modal').show());
                         } else {
                             newThis.overLaySet = false;
@@ -540,18 +542,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
                     if (event === 'FullscreenOn') {
-                        $(".vjs-tech").css("width", "100%");
-                        $(".vjs-tech").css("height", "100%");
-                    } else if (event === "FullscreenOff") {
-                          $("#videoId").css("width", "auto");
-                          $("#videoId").css("height", "299px");
+                        $('.vjs-tech').css('width', '100%');
+                        $('.vjs-tech').css('height', '100%');
+                    } else if (event === 'FullscreenOff') {
+                          $('#videoId').css('width', 'auto');
+                          $('#videoId').css('height', '299px');
                            newThis.fullScreenMode = false;
                            newThis.overLaySet = false;
                           if (isCallActionthere === true) {
                             newThis.overLaySet = false;
                             newThis.fullScreenMode = false;
-                            $("#overlay-modal").css("width", "auto");
-                            $("#overlay-modal").css("height", "299px");
+                            $('#overlay-modal').css('width', 'auto');
+                            $('#overlay-modal').css('height', '299px');
                             $('#videoId').append($('#overlay-modal').hide());
                             newThis.showEditModalDialog();
                           }
@@ -961,12 +963,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('.vjs-big-play-button').css('display', 'none');
                         const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                         const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                        if (event === "FullscreenOn") {
+                        if (event === 'FullscreenOn') {
                             isCallActionthere = true;
                             callactionValue.overLaySet = true;
                             callactionValue.fullScreenMode = true;
-                            $("#overlay-modal").css("width", "100%");
-                            $("#overlay-modal").css("height", "100%");
+                            $('#overlay-modal').css('width', '100%');
+                            $('#overlay-modal').css('height', '100%');
                             $('#edit_video_player').append($('#overlay-modal').show());
                         } else {
                             callactionValue.overLaySet = false;
@@ -995,11 +997,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
                     if (event === 'FullscreenOn') {
-                        $(".vjs-tech").css("width", "100%");
-                        $(".vjs-tech").css("height", "100%");
-                    } else if (event === "FullscreenOff") {
-                        $("#videoId").css("width", "640px");
-                        $("#videoId").css("height", "318px");
+                        $('.vjs-tech').css('width', '100%');
+                        $('.vjs-tech').css('height', '100%');
+                    } else if (event === 'FullscreenOff') {
+                        $('#videoId').css('width', '640px');
+                        $('#videoId').css('height', '318px');
                           callactionValue.fullScreenMode = false;
                           callactionValue.overLaySet = false;
                           if (isCallActionthere === true) {

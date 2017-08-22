@@ -309,16 +309,16 @@
 									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
 									   <div class="form-group">
-											<label class="col-md-3 control-label" style="margin-top:-6px">Default settings:</label>
-											<div class="col-md-9">
+											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px">Default settings:</label>
+											<div class="col-xs-9 col-sm-9 col-md-9">
 											 <ui-switch  color="lightgreen" [(ngModel)]="defaultSettingValue" [ngModelOptions]="{standalone: true}"
 											  (change)="defaultPlayerSettingsValues($event);"></ui-switch>
 											</div>
 										</div>
 									<div>
 										<div class="form-group">
-											<label class="col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
-											<div class="col-md-9">
+											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
+											<div class="col-xs-9 col-sm-9 col-md-9">
 												<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													(colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" 
 													[cpPositionRelativeToArrow]="false" [cpWidth]="'190px'"
@@ -327,15 +327,15 @@
 											</div>
 										</div> 
 										<div class="form-group">
-											<label class="col-md-3 control-label" style="margin-top:-5px">Enable Video Controller:</label>
-											<div class="col-md-9">
+											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-5px">Enable Video Controller:</label>
+											<div class="col-xs-9 col-sm-9 col-md-9">
 												<ui-switch color="lightgreen"  [(ngModel)]="newEnableController" [ngModelOptions]="{standalone: true}"
 												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label" style="margin-top:-6px">Controller Color:</label>
-											<div class="col-md-9">
+											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px">Controller Color:</label>
+											<div class="col-xs-9 col-sm-9 col-md-9">
 												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor"
 													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
@@ -345,11 +345,13 @@
 										</div>
 										<div class="form-group">
 											 <div>
-											   <label class="col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
-							            	   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 42%;"  
+											   <label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
+											  <div class="col-xs-9 col-sm-9 col-md-9" style="float: right;position: relative;top: -12px;">  
+											   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 44%;"  
 							            	  [class.disablePlayerValues]="disablePlayerSettingnew" (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
-											   <label style="position: absolute;top: 344px;right: 148px;">{{valueRange}}</label>
-										     </div>
+											   <p >{{valueRange}}</p>
+											 </div>	 
+											</div>
 										     <!--<div style="margin-left: 399px;margin-top: -26px;"><label>{{valueRange}}</label></div>-->
 										 </div>
 									  </div>
@@ -380,50 +382,50 @@
 									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Sharing:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="lightblue" [(ngModel)]="newAllowSharing" [ngModelOptions]="{standalone: true}"
 												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)"></ui-switch>
 											</div>
-											<label class="col-md-3 control-label">Enable Settings:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="red"  [(ngModel)]="newEnableSetting" [ngModelOptions]="{standalone: true}" 
 												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Fullscreen:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="lightblue" [(ngModel)]="newFullScreen" [ngModelOptions]="{standalone: true}" 
 												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)"></ui-switch>
 											</div>
-											<label class="col-md-3 control-label">Allow Comments:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="lightblue" [(ngModel)]="newComments" [ngModelOptions]="{standalone: true}"
 												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)"></ui-switch>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Likes:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
 												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch>
 											</div>
-                                           	<label class="col-md-3 control-label">Enable Casting:</label>
-											<div class="col-md-3">
+                                           	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 												<ui-switch color="orange"  [(ngModel)]="newEnableCasting" [ngModelOptions]="{standalone: true}"
 												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)"></ui-switch>
 										</div>
 
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label">Allow Embed:</label>
-											<div class="col-md-3">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 											 <ui-switch color="red" [(ngModel)]="newAllowEmbed" [ngModelOptions]="{standalone: true}"
 											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)"></ui-switch>
 											</div>
-												<label class="col-md-3 control-label">360 video:</label>
-											<div class="col-md-3">
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
 											 <ui-switch color="blue"   [(ngModel)]="newValue360" [ngModelOptions]="{standalone: true}"
 											  [disabled] ="disablePlayerSettingnew"
 											   (change)="is360VideoCheck($event)"></ui-switch>

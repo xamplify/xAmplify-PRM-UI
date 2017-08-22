@@ -75,14 +75,21 @@
 										<p class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></p>
 								   </div>
 									<div class="page-toolbar">
-									<div class="btn-group pull-right">
-										<div *ngIf="disableDropDowns == false" class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px">
+									<div class="btn-group pull-right col-xs-12 col-sm-12 col-md-12">
+										<div *ngIf="disableDropDowns == false" class="inputs" align="right">
+											<div  style="float: left;" class="col-xs-12 col-sm-3 col-md-3">
+                                             <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
+                                               <option  [value]="0" class="form-control">All Categories</option>
+                                               <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
+                                            </select>
+									       </div>
+											<div style="float: right;" class="col-xs-12 col-sm-3 col-md-3">
 												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 											</div>
-											<div class="portlet-input input-inline input-small">
+											<!--input-small  -->
+											<div class="portlet-input input-inline col-xs-12 col-sm-3 col-md-3" style="float: right;">
 												<div class="input-icon right">
 													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
@@ -93,12 +100,12 @@
 									</div>
 								</div>
 								<div class="margin-top-10" >
-									  <div *ngIf="disableDropDowns == false" style="width:28%">
+									  <!-- <div *ngIf="disableDropDowns == false" style="width:28%">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
-									  </div>
+									  </div> -->
 									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">
