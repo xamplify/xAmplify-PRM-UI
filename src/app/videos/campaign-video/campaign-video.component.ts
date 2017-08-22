@@ -36,7 +36,7 @@ enum LogAction {
 })
 export class CampaignVideoComponent implements OnInit , OnDestroy {
 campaignVideoFile: SaveVideoFile;
-private videoJSplayer: any;
+public videoJSplayer: any;
 public videoUrl: string;
 public posterImagePath: string;
 public is360Value: boolean;
@@ -57,9 +57,9 @@ public timeValue: any;
 public seekStart = null;
 public seekStart360 = null;
 LogAction: typeof LogAction = LogAction;
-  constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-            private _logger: Logger, private http: Http, private authenticationService: AuthenticationService,
-            private activatedRoute: ActivatedRoute, private xtremandLog: XtremandLog, private deviceService: Ng2DeviceService) {
+  constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
+            public _logger: Logger, public http: Http, public authenticationService: AuthenticationService,
+            public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;

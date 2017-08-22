@@ -10,7 +10,7 @@ declare var Metronic,Layout,Demo,Portfolio:any;
 })
 export class UserVideoComponent implements OnInit {
 
-constructor( private router: Router ) {}
+constructor( public router: Router ) {}
 
 ngOnInit() {
 

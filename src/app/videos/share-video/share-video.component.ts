@@ -43,7 +43,7 @@ enum LogAction {
 export class ShareVideoComponent implements OnInit, OnDestroy {
 embedVideoFile: SaveVideoFile;
 public user: User = new User();
-private videoJSplayer: any;
+public videoJSplayer: any;
 public imgURL: string;
 public videoUrl: string;
 model: any = {};
@@ -81,9 +81,9 @@ public overLaySet = false;
 public fullScreenMode = false;
 public seekStart = null;
 public seekStart360 = null;
-  constructor(private router: Router, private route: ActivatedRoute, private videoFileService: VideoFileService,
-              private logger: Logger, private videoUtilService: VideoUtilService, private metaService: Meta,
-              private http: Http, private actionLog: ActionLog, private deviceService: Ng2DeviceService) {
+  constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
+              public logger: Logger, public videoUtilService: VideoUtilService, public metaService: Meta,
+              public http: Http, public actionLog: ActionLog, public deviceService: Ng2DeviceService) {
                 console.log('share component constructor called');
                 console.log('url is on angular 2' + document.location.href);
                 this.embedUrl = document.location.href;

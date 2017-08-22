@@ -14,7 +14,6 @@ export class VideoUtilService {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return validation.test(email);
     }
-
   convertHexToRgba(hex: string, opacity: number) {
         hex = hex.replace('#', '');
         let r: number, g: number, b: number;
@@ -29,6 +28,13 @@ export class VideoUtilService {
         }
         const result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
         return result;
+    }
+    truncateHourZeros(length) {
+        const val = length.split(':');
+        if (val.length === 3 && val[0] === '00') {
+            length = val[1] + ':' + val[2];
+        }
+        return length;
     }
 
 }

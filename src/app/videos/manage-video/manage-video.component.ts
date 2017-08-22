@@ -7,6 +7,7 @@ import { VideoFileService } from '.././services/video-file.service';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { VideoUtilService } from '../services/video-util.service';
 import { HomeComponent } from '../../core/home/home.component';
 import { Logger } from 'angular2-logger/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -71,10 +72,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
     public videoSort: any = this.sortVideos[0];
-    constructor(private videoFileService: VideoFileService, private referenceService: ReferenceService,
-        private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private logger: Logger, private pagination: Pagination, private router: Router,
-        private homeComponent: HomeComponent) {
+    constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
+        public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
+        public pagerService: PagerService, public logger: Logger, public pagination: Pagination, public router: Router,
+        public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -84,13 +85,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.categoryNum = 0;
         this.isCategoryThere = false;
         this.searchKey = null;
-    }
-    truncateHourZeros(length) {
-        const val = length.split(":");
-        if (val.length === 3 && val[0] === "00") {
-            length = val[1] + ":" + val[2];
-        }
-        return length;
     }
     ngOnInit() {
         console.log(this.referenceService.videoTitles);
@@ -130,12 +124,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     this.allVideosCount = result.videos_count;
                     if (this.allVideosCount === 0) {
-                    this.disableDropDowns = true;
+                        this.disableDropDowns = true;
                     } else { this.disableDropDowns = false; }
                 },
                 (error: any) => {
                     this.logger.error(' manage Videos Component : Loading Videos method():' + error);
-                     this.router.navigate(['/home/error-occured-page/', error.status]);
+                    this.router.navigate(['/home/error-occured-page/', error.status]);
                 },
                 () => console.log('load videos completed:'),
             );
@@ -193,8 +187,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
     };
     titleCheckLength(title: string) {
-     if (title.length > 25) { title = title.substring(0, 24) + '...';}
-     return title;
+        if (title.length > 25) { title = title.substring(0, 24) + '...'; }
+        return title;
     }
     setPage(page: number) {
         if (page !== this.pagination.pageIndex) {
@@ -281,7 +275,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showPlayVideo(video: SaveVideoFile) {
-         this.videoFileService.videoViewBy = video.viewBy;
+        this.videoFileService.videoViewBy = video.viewBy;
         console.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
@@ -334,10 +328,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.referenceService.showServerError(this.httpRequestLoader);
             });
     }
-   videoTitleLength(title: string) {
-     if (title.length > 50) { title = title.substring(0, 50) + '.....'; }
-     return title;
-   }
+    videoTitleLength(title: string) {
+        if (title.length > 50) { title = title.substring(0, 50) + '.....'; }
+        return title;
+    }
     deleteVideoFile(alias: string, position: number, videoName: string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
         this.videoFileService.deleteVideoFile(alias)
@@ -364,7 +358,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.logger.error(this.errorPrepender + ' delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
-                }  else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+                } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     //  swal( 'Campaign Video!', error, 'error' );
                     const message = error.replace('mobinar', 'video');
                     this.campaignVideoMesg = message;
@@ -430,9 +424,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             } else { $('#message').slideUp(500); };
         }, 5000);
 
-      if (videoFile == null) {  this.showVideoName = '';
-      } else {
-        this.showVideoName = this.videoTitleLength(videoFile.title); }
+        if (videoFile == null) {
+        this.showVideoName = '';
+        } else {
+            this.showVideoName = this.videoTitleLength(videoFile.title);
+        }
         console.log('update method called ' + this.showVideoName);
     }
     goToManageVideos() {
