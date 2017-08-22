@@ -147,12 +147,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
-    public onTextValue: string = "ON";
-    public offTextValue: string = "OFF";
-    public _onColor: string = "green";
-    public _offColor: string = "red"; 
+    public onTextValue = 'ON';
+    public offTextValue = 'OFF';
+    public _onColor = 'green';
+    public _offColor = 'red'; 
     public size = 'normal';
     public animate = true;
+    _onColorBswitch = 'success';
+    _offColorBswitch = 'warning';
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router,
         public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -168,7 +170,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         if (this.saveVideoFile.viewBy === 'DRAFT') {
-            this.saveVideoFile.viewBy = 'public';
+            this.saveVideoFile.viewBy = 'PRIVATE';
         }
         this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';

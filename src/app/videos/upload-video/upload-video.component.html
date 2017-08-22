@@ -37,7 +37,7 @@
 			</ul>
 		</div>
        		<!-- Modal Start-->
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+         <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
            <div class="modal-dialog" role="document">
              <div class="modal-content" style="width:700px">
                <div class="modal-header">
@@ -77,8 +77,55 @@
               </div>
             </div>
           </div>
-       </div> 	
-     <!-- Modal End-->
+       </div> 	 -->
+	 <!-- Modal End-->
+	 <!--custom model poopup -->
+	  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+           <div class="modal-dialog" role="document">
+             <div class="modal-content">
+               <div class="modal-header">
+                <button [class.customDisableCss] = "closeModalId ==false" [disabled]="closeModalId ==false" type="button" class="closeModal" data-dismiss="modal"
+						aria-hidden="true" (click)="closeRecordPopup()">×</button>
+                  <h4 class="modal-title" id="myModalLabel"><strong>Record Video from webcam</strong></h4>
+               </div>
+              <div class="modal-body" style="padding: 0px 10px 0px 10px;">
+                <form>
+                   <div class="input-group" style="width: 100%;">
+                   <div>
+					<div id="script" style="display: block;">
+						<textarea id="script-text" style="width: 100% ;height:55px;line-height:16px; font-size: 14px;"  [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" 
+						[ngModelOptions]="{standalone:true}" placeholder=" Don't forget what you want to say. Add your script here.">
+						</textarea>	
+					</div>
+					<div id="scrollSpeedDiv">
+						<p >Scroll Speed: 1<font style="color: red;"> [fast]</font> - 10<font style="color: red;"> [slow]</font> </p> 
+						<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10" value="1" step="1"  [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" 
+						 style="border: 0px solid #cecece;padding-right: 0px; width:100%">
+					    <span style="display:inline;color: red;font-weight: bold;position: absolute; top: 63px; right: 7px;">{{changeVolume}}</span>
+						<button class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" style="float: right; margin-bottom: 4px;"
+							*ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true">Test Scroll Speed</button>
+						<button class="btn btn-primary" type="button" value="Stop" (click)="stop()" style="float: right; margin-bottom: 4px;"
+							*ngIf="stopButtonShow" [disabled]="stopButtonDisabled ==true">Stop</button>
+					</div>
+              </div>
+                     <video id="myVideo" class="col-xs-12 video-js vjs-default-skin"></video>
+                  </div>
+					<div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
+						<p *ngIf="RecordSave" style="background-color:orange;">
+							<img style="display:visible;color:#FFFFFF; background-color: orange;" src="assets/images/loading.gif">
+							<strong>Uploading your video & we are processing. please wait and do not refresh the page...!!!</strong>
+						</p>
+						<div *ngIf="hideSaveDiscard">
+						<button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
+						<button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
+						</div>
+					</div>
+               </form>
+              </div>
+            </div>
+          </div>
+       </div> 
+	  <!-- custom modal popup  -->
 		<!-- BEGIN PAGE CONTENT-->
 		<div class="portlet light">
 			<div class="portlet-body">
