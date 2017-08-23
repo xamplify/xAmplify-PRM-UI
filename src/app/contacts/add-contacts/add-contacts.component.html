@@ -338,10 +338,9 @@ color:blue;
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
-											<div
-												*ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
-												class="alert alert-danger">
-												Email is required and format should be <i>john@doe.com</i>.
+											<div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
+												class="custom-error-message">
+												Invalid EmailId.
 											</div></td>
 										<td><input type=Text [(ngModel)]="newContact.firstName"
 											class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">

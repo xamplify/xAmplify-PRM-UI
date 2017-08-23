@@ -526,9 +526,11 @@
 									<div [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)">
 												<p class="custom-error-message">Minimum 4 letters required.</p>
 											</div>
-
+									<div *ngIf="contactListNameError">
+								    	<p class="custom-error-message">Please Enter the ContactList Name.</p>
+								  	</div>
 									<div *ngIf="contactListUsersError">
-								    	<p class="custom-error-message">Please enter the contact list name.</p>
+								    	<p class="custom-error-message">Please Select the contacts.</p>
 								  	</div>
 								    </div>
 								  </div>
@@ -537,7 +539,7 @@
 								
 								<section class="pull-right" style="margin-bottom: 10px;margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green"
-										(click)="saveSelectedUsers()">
+										(click)="saveSelectedUsers()" [disabled] = "isValidContactName||noSaveButtonDisable">
 										 Save <i class="fa fa-save"></i>
 									</button>
 									<button id="cancel_button" class="btn green"
@@ -564,19 +566,19 @@
 							<div class="portlet box blue" *ngIf="hidingContactUsers" id="hidingOfContactUsers">
 								<div class="portlet-title">
 									<div class="caption" *ngIf="allContactData==true">
-										<i class="fa fa-edit"></i>List of All Contacts
+										<i class="fa fa-edit"></i>All Contacts List
 									</div>
 									<div class="caption" *ngIf="activeContactsData==true">
-										<i class="fa fa-edit"></i>List of Active Contacts
+										<i class="fa fa-edit"></i>Active Contacts List
 									</div>
 									<div class="caption" *ngIf="invalidContactData==true">
-										<i class="fa fa-edit"></i>List of Invalid Contacts
+										<i class="fa fa-edit"></i>Invalid Contacts List
 									</div>
 									<div class="caption" *ngIf="unsubscribedContactsData==true">
-										<i class="fa fa-edit"></i>List of Unsubscribed Contacts
+										<i class="fa fa-edit"></i>Unsubscribed Contacts List
 									</div>
 									<div class="caption" *ngIf="nonActiveContactsData==true">
-										<i class="fa fa-edit"></i>List of Non Active Contacts
+										<i class="fa fa-edit"></i>Non Active Contacts List
 									</div>
 									<div class="tools">
 										<a href="javascript:;" class="collapse"> </a> <a
