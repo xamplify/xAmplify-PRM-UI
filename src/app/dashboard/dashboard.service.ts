@@ -77,14 +77,9 @@ export class DashboardService {
         .catch(this.handleError);
     }
     
-    loadEmailClickedCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_gif_clicked_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );  
-    }
     
-    loadEmailOpenedCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_open_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    getEmailActionCount(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillog-count-by-user/"+userId+ "?access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }

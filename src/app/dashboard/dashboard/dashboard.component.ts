@@ -19,6 +19,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
+import { DashboardReport } from '../../core/models/dashboard-report';
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
 
 @Component({
@@ -31,17 +32,8 @@ export class DashboardComponent implements OnInit {
 
     dashboardStates: any;
     socialeMedia: any;
-    genderDemographicsMale: number = 50;
-    genderDemographicsFemale: number = 50;
-    totalContacts : number;
-    totalUploadedvideos : number;
-    listOfEmailClicked : number;
-    listOfEmailOpened : number;
-    listOfEmailWatched : number;
-    listOfTotalViews : number;
-    listOfTotalFollowers : number;
-    listOfTotalLeads : number;
-    listOfTotalShared : number;
+    dashboardReport: DashboardReport = new DashboardReport();
+    
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
@@ -64,15 +56,6 @@ export class DashboardComponent implements OnInit {
                 private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
                 private utilService: UtilService, private userService: UserService, private campaignService: CampaignService,
                 private referenceService: ReferenceService) {
-            this.totalUploadedvideos = 0;
-            this.totalContacts = 0;
-            this.listOfEmailClicked = 0;
-            this.listOfEmailOpened = 0;
-            this.listOfEmailWatched = 0;
-            this.listOfTotalViews = 0;
-            this.listOfTotalFollowers = 0;
-            this.listOfTotalLeads = 0;
-            this.listOfTotalShared = 0;
     }
 
     dashboardStats() {
@@ -101,8 +84,8 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.logger.info(data);
-                this.genderDemographicsMale = data['male'];
-                this.genderDemographicsFemale = data['female'];
+                this.dashboardReport.genderDemographicsMale = data['male'];
+                this.dashboardReport.genderDemographicsFemale = data['female'];
             },
             error => console.log(error),
             () => console.log('finished')
@@ -271,7 +254,7 @@ export class DashboardComponent implements OnInit {
         this.contactService.loadContactsCount()
             .subscribe(
             data => {
-                this.totalContacts = data.allcontacts;
+                this.dashboardReport.totalContacts = data.allcontacts;
             },
             error => console.log( error ),
             () => console.log( "LoadContactsCount Finished" )
@@ -293,7 +276,7 @@ export class DashboardComponent implements OnInit {
         try {
            this.videoFileService.loadVideosCount()
              .subscribe((result: any) => {
-                 this.totalUploadedvideos = result.videos_count;
+                 this.dashboardReport.totalUploadedvideos = result.videos_count;
              },
              (error: string) => {
                this.logger.error( ' Loading Videos():' + error);
@@ -305,22 +288,13 @@ export class DashboardComponent implements OnInit {
          }
      }
 
-    emailClickedCount() {
-        this._dashboardService.loadEmailClickedCount()
-            .subscribe(
-            data => {
-                this.listOfEmailClicked = data.email_gif_clicked_count;
-            },
-            error => console.log( error ),
-            () => console.log( "emailClickedCount completed" )
-            );
-    }
     
-    emailOpenedCount() {
-        this._dashboardService.loadEmailOpenedCount()
+    getEmailActionCount(userId: number) {
+        this._dashboardService.getEmailActionCount(userId)
             .subscribe(
             data => {
-                this.listOfEmailOpened = data.email_open_count;
+                this.dashboardReport.totalEmailOpened = data["email_opened_count"];
+                this.dashboardReport.totalEmailClicked = data["email_url_clicked_count"];
             },
             error => console.log( error ),
             () => console.log( "emailOpenedCount completed" )
@@ -331,7 +305,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailWatchedCount()
             .subscribe(
             data => {
-                this.listOfEmailWatched = data.email_watched_count;
+                this.dashboardReport.totalEmailWatched = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -342,7 +316,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadTotalViewsCount()
             .subscribe(
             data => {
-                this.listOfTotalViews = data.videos_views_count;
+                this.dashboardReport.totalViews = data.videos_views_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -353,7 +327,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadTotalFollowersCount()
             .subscribe(
             data => {
-                this.listOfTotalFollowers = data.email_watched_count;
+                this.dashboardReport.totalFollowers = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -364,7 +338,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadTotalLeadsCount()
             .subscribe(
             data => {
-                this.listOfTotalLeads = data.email_watched_count;
+                this.dashboardReport.totalLeads = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -375,7 +349,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadTotalSharedCount()
             .subscribe(
             data => {
-                this.listOfTotalShared = data.email_watched_count;
+                this.dashboardReport.totalShared = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -520,6 +494,7 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         try {
             this.loggedInUserId = this.authenticationService.getUserId();
+            
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
             
@@ -527,8 +502,9 @@ export class DashboardComponent implements OnInit {
             this.totalFollowersCount()
             this.uploadedVideosCount();
             this.totalContactsCount();
-            this.emailOpenedCount();
-            this.emailClickedCount();
+            
+            this.getEmailActionCount(this.loggedInUserId);
+            
             Metronic.init();
             Layout.init();
             Demo.init();
