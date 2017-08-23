@@ -19,8 +19,8 @@ export class TopnavbarComponent implements OnInit {
     notificationsCount: number = 0;
     isUserUpdated:boolean;
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    constructor( private router: Router,private userService:UserService, private twitterService: TwitterService,
-            private socialService: SocialService,private authenticationService:AuthenticationService,private refService:ReferenceService,private logger:Logger) {
+    constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
+            public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
             const userName = this.authenticationService.user.emailId;
             this.userService.getUserByUserName(userName).
             subscribe(
