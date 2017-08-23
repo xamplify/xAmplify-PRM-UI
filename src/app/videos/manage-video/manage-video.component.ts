@@ -111,16 +111,16 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.showUpdatevalue = false;
             }
             this.checkTotalRecords = true;
-            this.loadVideosCount();
+            this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
             console.log('manage videos ngOnInit completed');
         } catch (error) {
             this.logger.error('erro in ng oninit :' + error);
         }
     }
-    loadVideosCount() {
+    loadVideosCount(userId:number) {
         try {
-            this.videoFileService.loadVideosCount()
+            this.videoFileService.loadVideosCount(userId)
                 .subscribe((result: any) => {
                     this.allVideosCount = result.videos_count;
                     if (this.allVideosCount === 0) {
@@ -342,7 +342,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.deletedVideo = true;
                 this.deleteVideoName = this.videoTitleLength(videoName);
-                this.loadVideosCount();
+                this.loadVideosCount(this.authenticationService.user.id);
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
                     this.isvideoThere = true;

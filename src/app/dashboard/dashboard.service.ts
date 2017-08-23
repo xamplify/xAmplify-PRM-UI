@@ -84,32 +84,32 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    loadEmailWatchedCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    loadEmailWatchedCount(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalViewsCount(){
-        return this.http.get( this.url + "videos/views_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    loadTotalViewsCount(userId: number){
+        return this.http.get( this.url + "videos/views_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalFollowersCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    loadTotalFollowersCount(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalLeadsCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    loadTotalLeadsCount(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalSharedCount(){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
+    loadTotalSharedCount(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }

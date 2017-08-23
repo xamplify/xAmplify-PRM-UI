@@ -99,7 +99,15 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-
+    
+    loadContactsCountInDashboard(userId: number) {
+        this.logger.info( "Service class loadContactCount() completed" );
+        return this._http.get( this.url + "contacts_count?userId=" + userId + "&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    
     loadActiveContacts( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadActiveContact() completed" );
         return this._http.post( this.url + "contacts?contactType=active" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )

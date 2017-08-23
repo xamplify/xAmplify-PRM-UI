@@ -250,8 +250,8 @@ export class DashboardComponent implements OnInit {
 
     }
     
-    totalContactsCount() {
-        this.contactService.loadContactsCount()
+    totalContactsCount(userId: number) {
+        this.contactService.loadContactsCountInDashboard(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalContacts = data.allcontacts;
@@ -272,9 +272,9 @@ export class DashboardComponent implements OnInit {
             );
     }*/
     
-    uploadedVideosCount() {
+    uploadedVideosCount(userId: number) {
         try {
-           this.videoFileService.loadVideosCount()
+           this.videoFileService.loadVideosCount(userId)
              .subscribe((result: any) => {
                  this.dashboardReport.totalUploadedvideos = result.videos_count;
              },
@@ -301,8 +301,8 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    emailWatchedCount() {
-        this._dashboardService.loadEmailWatchedCount()
+    emailWatchedCount(userId: number) {
+        this._dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatched = data.email_watched_count;
@@ -312,8 +312,8 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    totalViewsCount() {
-        this._dashboardService.loadTotalViewsCount()
+    totalViewsCount(userId: number) {
+        this._dashboardService.loadTotalViewsCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalViews = data.videos_views_count;
@@ -323,8 +323,8 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    totalFollowersCount() {
-        this._dashboardService.loadTotalFollowersCount()
+    totalFollowersCount(userId: number) {
+        this._dashboardService.loadTotalFollowersCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalFollowers = data.email_watched_count;
@@ -334,8 +334,8 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    totalLeadsCount() {
-        this._dashboardService.loadTotalLeadsCount()
+    totalLeadsCount(userId: number) {
+        this._dashboardService.loadTotalLeadsCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalLeads = data.email_watched_count;
@@ -345,8 +345,8 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    totalSharedCount() {
-        this._dashboardService.loadTotalSharedCount()
+    totalSharedCount(userId: number) {
+        this._dashboardService.loadTotalSharedCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalShared = data.email_watched_count;
@@ -498,10 +498,10 @@ export class DashboardComponent implements OnInit {
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
             
-            this.totalViewsCount();
-            this.totalFollowersCount()
-            this.uploadedVideosCount();
-            this.totalContactsCount();
+            this.totalViewsCount(this.loggedInUserId);
+            this.totalFollowersCount(this.loggedInUserId)
+            this.uploadedVideosCount(this.loggedInUserId);
+            this.totalContactsCount(this.loggedInUserId);
             
             this.getEmailActionCount(this.loggedInUserId);
             

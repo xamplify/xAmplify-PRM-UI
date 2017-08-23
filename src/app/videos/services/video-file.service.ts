@@ -94,9 +94,8 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    loadVideosCount() {
-        const url = this.URL + 'videos_count?' + 'userId=' + this.authenticationService.user.id + '&access_token='
-            + this.authenticationService.access_token;
+    loadVideosCount(userId: number) {
+        const url = this.URL + 'videos_count?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

@@ -41,6 +41,7 @@ export class EditContactsComponent implements OnInit {
     noOfContactsDropdown : boolean = true;
     validCsvContacts : boolean;
     inValidCsvContacts : boolean;
+    isHeaderCheckBoxChecked:boolean = false;
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
@@ -48,6 +49,7 @@ export class EditContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     pagedItems: any[];
     checkedUserList = [];
+    selectedContactListIds = [];
     //removeUserIds = new Array()
     fileTypeError: boolean;
     Campaign: string;
@@ -458,14 +460,14 @@ export class EditContactsComponent implements OnInit {
 
     removeContactListUsers( contactListId: number ) {
         let self = this;
-        var removeUserIds = new Array();
+      /*  var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
             self.checkedUserList.push(id);
-        });
-        this.logger.info( removeUserIds );
-        this.contactService.removeContactList( this.contactListId, self.checkedUserList )
+        });*/
+        this.logger.info( this.selectedContactListIds );
+        this.contactService.removeContactList( this.contactListId, this.selectedContactListIds )
             .subscribe(
             ( data: any ) => {
                 data = data;
@@ -478,7 +480,7 @@ export class EditContactsComponent implements OnInit {
                 console.log( "update Contacts ListUsers:" + data );
                 this.deleteSucessMessage = true;
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
-                $.each( removeUserIds, function( index: number, value: any ) {
+                $.each( this.selectedContactListIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
                 });
@@ -499,13 +501,13 @@ export class EditContactsComponent implements OnInit {
     }
 
     showAlert( contactListId: number ) {
-        var removeUserIds = new Array();
+        /*var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
-        });
-        this.logger.info( "userIdForChecked" + removeUserIds );
-        if ( removeUserIds.length != 0 ) {
+        });*/
+        this.logger.info( "userIdForChecked" + this.selectedContactListIds );
+        if ( this.selectedContactListIds.length != 0 ) {
             this.logger.info( "contactListId in sweetAlert() " + this.contactListId );
             let self = this;
             swal( {
@@ -740,6 +742,60 @@ export class EditContactsComponent implements OnInit {
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         }
     }
+    
+    checkAll(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            //this.isContactList = true;
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                $('#row_'+id).addClass('contact-list-selected');
+             });
+            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+        }else{
+           console.log("unceck");
+            $('[name="campaignContact[]"]').prop('checked', false);
+            //this.isContactList = false;
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            this.selectedContactListIds = [];
+        }
+        ev.stopPropagation();
+    }
+    
+    highlightRow(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+        if(isChecked){
+            $('#row_'+contactId).addClass('contact-list-selected');
+            this.selectedContactListIds.push(contactId);
+        }else{
+            $('#row_'+contactId).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+        }
+        //this.contactsUtility();
+        event.stopPropagation();
+    }
+    highlightContactRow(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+          if(isChecked){
+              //Removing Highlighted Row
+              $('#'+contactId).prop( "checked", false );
+              $('#row_'+contactId).removeClass('contact-list-selected');
+              console.log("Revmoing"+contactId);
+              this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+        }else{
+            //Highlighting Row
+            $('#'+contactId).prop( "checked", true );
+            $('#row_'+contactId).addClass('contact-list-selected');
+            console.log("Adding"+contactId);
+            this.selectedContactListIds.push(contactId);
+        }
+         // this.contactsUtility();
+          event.stopPropagation();
+          console.log(this.selectedContactListIds);
+    }
 
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
         this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
@@ -772,6 +828,18 @@ export class EditContactsComponent implements OnInit {
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
                 this.checkingLoadContactsCount = false;
                 this.logger.log( this.allUsers );
+                
+                var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.selectedContactListIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                this.logger.log("CIDSS"+contactIds);
+                this.logger.log("IIDDDs"+this.selectedContactListIds);
+                if(items.length==10){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }
             },
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )

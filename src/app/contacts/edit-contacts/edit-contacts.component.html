@@ -380,9 +380,12 @@
 							id="sample_editable_1" *ngIf="contacts">
 							<thead>
 								<tr>
-									<th><input type="checkbox" [checked]="isAvailable"
+									<!-- <th><input type="checkbox" [checked]="isAvailable"
 										(change)="checked($event.target.checked)"></th>
-									<!-- <th>USERNAME</th> -->
+									<th>USERNAME</th> -->
+									 <td align="center">
+				                    <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
+				                    </td>
 									<th>EMAILID</th>
 									<th>FIRSTNAME</th>
 									<th>LASTNAME</th>
@@ -390,12 +393,22 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let contact of pagination.pagedItems;let i = index"
+								<tr *ngFor="let contact of pagination.pagedItems;let i = index" (click)="highlightContactRow(contacts.id,$event)"
+									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
 									id="row_{{contact.id}}">
-									<th><input type="checkbox" name="selectedUserIds"
+									<!-- <th><input type="checkbox" name="selectedUserIds"
 										id="selectedUserWithIds" value="{{contact.id}}"
-										[(ngModel)]="contact.isChecked" (click)="checkedUsers(contact.id)"></th>
+										[(ngModel)]="contact.isChecked" (click)="checkedUsers(contact.id)"></th> -->
 									<!-- <td>{{contact.userName}}</td> -->
+									
+									<td align="center" *ngIf="isAdd || !isCampaignDraftContactList ">
+					           		   <div class="form-group">
+						         	     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk" 
+						                 lang="{{contact.name}}"  name="campaignContact[]" value="{{contact.id}}" id="{{contact.id}}"
+						                 (click)="highlightRow(contact.id,$event)"/>
+					                   </div>
+					                </td>
+									
 									<td>{{contact.emailId}}</td>
 									<td>{{contact.firstName}}</td>
 									<td class="center">{{contact.lastName}}</td>
