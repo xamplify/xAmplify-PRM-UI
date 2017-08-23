@@ -777,7 +777,7 @@ export class EditContactsComponent implements OnInit {
         //this.contactsUtility();
         event.stopPropagation();
     }
-    highlightContactRow(contactId:number,event:any){
+    /*highlightContactRow(contactId:number,event:any){
         let isChecked = $('#'+contactId).is(':checked');
           if(isChecked){
               //Removing Highlighted Row
@@ -796,7 +796,7 @@ export class EditContactsComponent implements OnInit {
           event.stopPropagation();
           console.log(this.selectedContactListIds);
     }
-
+*/
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
         this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;

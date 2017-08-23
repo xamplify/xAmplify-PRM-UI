@@ -393,8 +393,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let contact of pagination.pagedItems;let i = index" (click)="highlightContactRow(contacts.id,$event)"
-									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+								<tr *ngFor="let contact of pagination.pagedItems;let i = index"
 									id="row_{{contact.id}}">
 									<!-- <th><input type="checkbox" name="selectedUserIds"
 										id="selectedUserWithIds" value="{{contact.id}}"
@@ -402,11 +401,10 @@
 									<!-- <td>{{contact.userName}}</td> -->
 									
 									<td align="center" *ngIf="isAdd || !isCampaignDraftContactList ">
-					           		   <div class="form-group">
 						         	     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk" 
+									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
 						                 lang="{{contact.name}}"  name="campaignContact[]" value="{{contact.id}}" id="{{contact.id}}"
 						                 (click)="highlightRow(contact.id,$event)"/>
-					                   </div>
 					                </td>
 									
 									<td>{{contact.emailId}}</td>
