@@ -213,22 +213,23 @@
 									</div>
 									<div class="form-group">
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;">Thumbnail</label>
-										  <label> <input name="options" ng-control="options" type="radio" [value]="1" (click)="changeThumbRadio();uploader.clearQueue();removeOwnThumbnail()"
+										  <label> <input name="options" ng-control="options" type="radio" [value]="1"
+												 (click)="changeThumbnailOption();uploader.clearQueue();clearOwnThumbnail()"
 											[(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="margin-top: 12px;" checked="checked">
 										</label>
 										<div class="col-xs-12 col-sm-6 col-md-12" *ngIf="thumbnailRadioOpen">
 											<!-- <label class="col-md-3 control-label customCss">Thumbnail:</label> -->
 											<label class="col-md-3 control-label customCss"></label>
 											<div class="radio-list">
-												<label class="radio-inline" (click)="changeImgRadio1()">
+												<label class="radio-inline" (click)="selectedImgFirst()">
 													<input type="hidden"  name="imagePath" formControlName="imagePath">
 													 <img [ngClass]="{colorImg:imgBoolean1==true ,colorShade :imgBoolean1==false}" src="{{imageFilesfirst}}" class="sizeImg">
 												</label>
-												<label class="radio-inline" (click)="changeImgRadio2()">
+												<label class="radio-inline" (click)="selectedImgSecond()">
 													<input type="hidden" name="imagePath" formControlName="imagePath"> 
 													<img [ngClass]="{colorImg:imgBoolean2==true ,colorShade :imgBoolean2==false}" src="{{imageFilessecond}}" class="sizeImg">
 												</label>
-												 <label class="radio-inline" (click)="changeImgRadio3()">
+												 <label class="radio-inline" (click)="selectedImgThird()">
 													<input type="hidden" name="imagePath" formControlName="imagePath">
 													 <img [ngClass]="{colorImg:imgBoolean3==true ,colorShade :imgBoolean3==false}"src="{{imageFilesthird}}" class="sizeImg">
 												</label>
@@ -239,7 +240,7 @@
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label">or: </label>
 										<div class="col-xs-12 col-sm-6 col-md-6" style="margin-left: -19px;">
 											<label class="radio-inline"> 
-											 <input name="options" (click)="changeRadio()" ng-control="options" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
+											 <input name="options" (click)="selectedOwnThumnailOption()" ng-control="options" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
 											 <strong>Upload your own Thumbnail</strong>
 											</label>
 										</div>
@@ -248,7 +249,7 @@
 												<input type="file" ng2FileSelect [uploader]="uploader" (change)="ownThumbnailfileChange($event)" *ngIf="uploader.queue.length==0">
 												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
 										    <div>
-												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();removeOwnThumbnail()">&times;</span>
+												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
 												<img *ngIf="imageUrlPath" [src] = imageUrlPath  style="height: 71px; width: 98px">
 											</div>
 												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required,max 10mb </div>
@@ -260,14 +261,14 @@
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label">Gif:</label>
 										<div class="col-xs-12 col-sm-9 col-md-9">
 											<div class="radio-list">
-												<label class="radio-inline" (click)="changeGifRadio1()">
+												<label class="radio-inline" (click)="selectedGifFirst()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
 												</label>
-												 <label class="radio-inline" (click)="changeGifRadio2()">
+												 <label class="radio-inline" (click)="selectedGifSecond()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" class="sizeImg">
-												</label> <label class="radio-inline" (click)="changeGifRadio3()">
+												</label> <label class="radio-inline" (click)="selectedGifThird()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
 													<img [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" class="sizeImg">
 												</label>
