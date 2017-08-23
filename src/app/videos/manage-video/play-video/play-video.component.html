@@ -18,7 +18,7 @@
 	 a.disabled { pointer-events: none; cursor: not-allowed; }
 	 a.disabledShare { pointer-events: none; cursor: not-allowed; opacity: 0.5 }
 	 .is360video{z-index: 900;}
-	 .overlaySet{margin-top:-317px;}
+	 .overlaySet{margin-top:-331px;}
 	 .bottomCss{bottom: -183px; }
 	 .imagePath{ height: 111px; width: 100%;}
 </style>
@@ -26,7 +26,7 @@
 <div class="portlet-body">
 	<div class="row margin-bottom-30">
 		<div class="col-md-7">
-		    <div>
+		    <div style="margin-bottom: 1em;">
 			<div id="newPlayerVideo"></div>
 			</div>
 			<div id="modalDialog"></div>
@@ -116,8 +116,51 @@
 					 </div>
 				</div>
 			<!-- modal popup end-->
-
-			<div>
+            <div>
+				<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
+			</div>
+			<div class="col-xs-12 col-sm-6" style="padding: 0;">
+				<a  *ngIf="shareVideo==true" class="btn btn-primary" style="    color: #fff;
+    background-color: #00a6e8;
+    border: 1px solid #00a6e8;
+    border-radius: 0;
+    padding: 5px 25px;
+    text-transform: lowercase;
+    letter-spacing: 1px;"
+					(click)="shareClick()">
+				<!--[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">-->
+					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
+				</a> 
+				<a  *ngIf="embedVideo==true" class="btn btn-primary" style="   color: #00a6e8;
+    background-color: #fff;
+    border: 1px solid #00a6e8;
+    border-radius: 0;
+    padding: 5px 25px;
+    text-transform: lowercase;
+    letter-spacing: 1px;"
+					data-toggle="modal" data-target="#myModal">
+						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
+				</a>
+			</div>
+			<div class="col-xs-12 col-sm-6" style="padding: 0;">
+				<div class="col-xs-12" style="padding: 0;">
+					<span class="pull-right" style="border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%;
+	text-align: right;">
+	<h4 style="color: #777;font-weight: 500;margin: 5px;">{{selectedVideo.views}} Views</h4></span>
+				</div>
+				<div class="col-xs-12" style="padding: 0;">
+					<span class="pull-right">
+						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+							{{likesValues}}</button>
+						<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
+							<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+							{{disLikesValues}}</button>
+					</span>
+				</div>	
+			</div>
+			
+			<!-- <div>
 				<span align="left">{{selectedVideo.views}} Views</span>
 				<div *ngIf="likes==true">
 					<span style="float: right">
@@ -125,18 +168,17 @@
 						<button class="fa fa-thumbs-down" style="color: #f3565d;" (click)="disLikesValuesDemo()">{{disLikesValues}}</button>
 					</span>
 				</div>
-			</div>
-		        <div>    <!--[class.disabledShare]="shareEmbedDisabled"-->
+			</div> -->
+		        <!-- <div>   
 				    <a  *ngIf="shareVideo==true" class="btn btn-primary" style="color:white; background-color: #00a6e8"
 				      (click)="shareClick()">
-					<!--[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">-->
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</a> 
 					<a  *ngIf="embedVideo==true" class="btn btn-primary" style="background-color: #00a6e8"
 						data-toggle="modal" data-target="#myModal">
 						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</a>
-				</div>
+				</div> -->
 				
 				<!-- emebd src Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
@@ -173,10 +215,13 @@
 					</div>
 				</div>
 				<!-- Modal End-->
-			<div id="testModal">
-				<h3 style="word-break: break-all;">{{selectedVideo.title}}</h3>
-				<h4>Description:</h4>
+			
+			<div>
+				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
 				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
+			</div>
+			<div>
+				<p>Category : {{selectedVideo.category.name}}</p>
 			</div>
 			<div>
 				<div class="slimScrollDiv"

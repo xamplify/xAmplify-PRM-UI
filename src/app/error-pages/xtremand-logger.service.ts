@@ -8,22 +8,31 @@ export class XtremandLogger {
 
 	constructor(public router: Router, public logger: Logger) { }
 
-	warn(data: any) { this.logger.warn(data); }
-
-	debug(data: any) {
-		this.logger.debug(data);
+	warn(...warnMessages) {
+		for (const warnMessage of warnMessages) {
+			this.logger.warn(warnMessage);
+		}
 	}
 
-	info(info: string, data: any) {
-		this.logger.info(info, data);
+	debug(...debugMessages) {
+		for (const debugMessage of debugMessages) {
+			this.logger.debug(debugMessage);
+		}
 	}
 
+	info(...infoMessages) {
+		for (const infoMessage of infoMessages) {
+			this.logger.info(infoMessage);
+		}
+	}
+	error(...errorMessages) {
+		for (const err of errorMessages) {
+			this.logger.error(err);
+		}
+	}
 	errorPage(error: any) {
 		this.router.navigate(['/home/error-occured-page/', error.status]);
 	}
 
-	error(cause: string, methodName: string, componentName: string) {
-		const message = 'Error In ' + methodName + '() ' + componentName;
-		this.logger.error(message + ':', cause);
-	}
+
 }

@@ -19,7 +19,7 @@
 							<!-- <input type="text"   placeholder="Template Name" class="form-control" formControlName="templateName" required/>
 							<div *ngIf="formErrors.templateName" class="alert alert-danger">{{ formErrors.templateName }}</div> -->
 							<input type="text" class="form-control" style="border-left: 5px solid #a94442" id="templateName" [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50"
-								placeholder="Please Enter Template Name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event,true)">
+								placeholder="Please Enter Template Name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event)">
 							<div *ngIf="!isValidTemplateName"	class="alert alert-danger">Name is required</div>
 							<div *ngIf="duplicateTemplateName &&isValidTemplateName " class="alert alert-danger">Duplicate	Name</div>
 						</form>
