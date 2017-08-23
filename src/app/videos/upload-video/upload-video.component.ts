@@ -23,7 +23,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public processVideoResp: SaveVideoFile;
     public URL = this.authenticationService.REST_URL + 'admin/uploadVideo?userId=' + this.authenticationService.user.id + '&access_token=';
     public uploader: FileUploader;
-    public file_srcs: string[] = [];
     public hasBaseDropZoneOver = false;
     public hasAnotherDropZoneOver = false;
     public videoPreviewPath: SafeUrl;
@@ -128,10 +127,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 // document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
             };
+            $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-            $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
-            $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
+             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
         } catch (err) {
@@ -232,16 +231,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     fileDropDisabled() {
         // this.isChecked =true;
         this.isFileDrop = true;
-        this.file_srcs.length = 0;
     }
     fileDropEnabled() {
         this.isChecked = false;
         this.isFileDrop = false;
     }
     removefileUploadVideo() {
-        this.file_srcs.length = 0;
         this.uploader.queue.length = 0;
-        console.log('length is zero' + this.file_srcs);
         this.defaultSettings();
         this.isChecked = false;
         this.isDisable = false;
@@ -357,6 +353,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.video-js .vjs-current-time').css('display', 'none');
             $('.vjs-time-divider').css('display', 'none !important');
+            $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
             $('.vjs-time-control .vjs-time-divider').css('display', 'none !important');
             $('.video-js .vjs-duration').css('display', 'none');
             $('.video-js .vjs-fullscreen-control').hide();
@@ -397,6 +394,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.player.on('deviceReady', function () {
                 self.saveVideo = false;
                 self.discardVideo = false;
+                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
+                $('.vjs-time-control .vjs-time-divider').css('display', 'none !important');
+                $('.video-js .vjs-duration').css('display', 'none');
                 $(".vjs-tech").css("width", "100%");
                 $(".vjs-tech").css("height", "100%");
                 $('.video-js .vjs-fullscreen-control').hide();

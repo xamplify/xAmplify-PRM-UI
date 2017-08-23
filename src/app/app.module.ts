@@ -17,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
-import { Logger } from 'angular2-logger/core';
+import { Logger, Options } from 'angular2-logger/core';
 import { LoginComponent } from './login/login.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
@@ -63,7 +63,7 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
-        TwitterService, FacebookService, Logger, XtremandLogger,
+        TwitterService, FacebookService, Logger, Options, XtremandLogger,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 
