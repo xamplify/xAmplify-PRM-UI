@@ -504,6 +504,7 @@ export class DashboardComponent implements OnInit {
             this.totalContactsCount(this.loggedInUserId);
             
             this.getEmailActionCount(this.loggedInUserId);
+            this.emailWatchedCount(this.loggedInUserId);
             
             Metronic.init();
             Layout.init();

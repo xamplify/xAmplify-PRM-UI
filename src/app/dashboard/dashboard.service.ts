@@ -85,7 +85,7 @@ export class DashboardService {
     }
     
     loadEmailWatchedCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.authenticationService.REST_URL + "campaign/usersWatchedCount-by-user/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=1" )
         .map( this.extractData )
         .catch( this.handleError );
     }

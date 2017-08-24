@@ -205,7 +205,7 @@ public validEmailPatternSuccess : boolean = false;
             $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-            $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+            $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             let reader = new FileReader();
@@ -609,7 +609,7 @@ public validEmailPatternSuccess : boolean = false;
             $('.zohoImageClass').attr('style', 'opacity: 1;');
             $('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
             $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83;px;left: 78px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -86px;left: 78px;');
             $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
             this.newUsers.length = 0;
             //this.model.contactListName = null;
@@ -640,7 +640,7 @@ public validEmailPatternSuccess : boolean = false;
             $('.googleImageClass').attr('style', 'opacity: 1;');
             $('.zohoImageClass').attr('style', 'opacity: 1;');
             $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83;px;left: 78px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
             $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
             $('#addContacts').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
             $('#uploadCSV').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
@@ -693,7 +693,7 @@ public validEmailPatternSuccess : boolean = false;
             $('.salesForceImageClass').attr('style', 'opacity: 1;');
             $('.googleImageClass').attr('style', 'opacity: 1;');
             $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
-            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83;px;left: 78px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
         }
         if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == true ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -716,7 +716,7 @@ public validEmailPatternSuccess : boolean = false;
             $('#uploadCSV').attr('style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);');
             $('.googleImageClass').attr('style', 'opacity: 1;');
             $('.zohoImageClass').attr('style', 'opacity: 1;');
-            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83;px;left: 78px;');
+            $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
             $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
         }
     }
@@ -746,7 +746,7 @@ public validEmailPatternSuccess : boolean = false;
         $('.googleImageClass').attr('style', 'opacity: 1;');
         $('.zohoImageClass').attr('style', 'opacity: 1;');
         $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
-        $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83;px;left: 78px;');
+        $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
         $('#ZgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;');
     }
 
