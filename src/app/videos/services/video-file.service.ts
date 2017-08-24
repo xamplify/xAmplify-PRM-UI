@@ -206,18 +206,12 @@ export class VideoFileService {
     handleErrorLogAction(error: any) {
         const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw(errMsg);
+        return Observable.throw(error);
     }
     handleError(error: any) {
         const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        if (error.status === 400 || error.status === 403 || error.status === 406 || error.status === 409 ||
-            error.status === 500 || error.status === 503) {
-            //   const response =  JSON.parse(error['_body']);
             return Observable.throw(error);
-        } else {
-            return Observable.throw(errMsg);
-        }
     }
     handleErrorDelete(error: any) {
         const errMsg = (error.message) ? error.message :

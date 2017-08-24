@@ -165,7 +165,7 @@
                             Codec is not supported for this video..We are unable to process your video file. Please upload another video file!!
                        <a  class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                     </div>
-					<div class="table-responsive">	
+					<!-- <div class="table-responsive">	
 					<table class="table" >
 							<tbody *ngIf="isDisable==false">
 							  <tr *ngFor="let item of uploader.queue">
@@ -204,6 +204,45 @@
 								</tr>
 							</tbody>
 						</table>
+						</div> -->
+					<div class="col-xs-12" style="padding: 0">
+							<div *ngIf="isDisable==false">
+							  <div *ngFor="let item of uploader.queue">
+							  	<div class="col-xs-12 col-md-3">
+								 <video *ngIf="!videoDisabled" id="my-video" style="margin: -7px;" controls preload="auto" width="auto" height="150" >
+											<source [src]='videoPreviewPath' type = 'video/mp4'>
+											<source [src]='videoPreviewPath' type = 'video/quicktime'>
+											<source [src]="videoPreviewPath" type = 'video/x-msvideo'> 
+											<source [src]="videoPreviewPath" type = 'video/mpeg'> 
+											<source [src]="videoPreviewPath" type = 'video/dvd'> 
+											<source [src]="videoPreviewPath" type = 'video/xvid'> 
+								   </video>
+								   <img *ngIf="!previewDisabled" src= "assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="228px" height="150px">
+								</div> 
+								<div class="col-xs-12 col-md-3">{{ trimVideoTitle(item?.file?.name) }}</div>
+								<div class="col-xs-12 col-md-3">
+									<div >{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+									</div>
+								</div>
+								<div class="text-center">
+									<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+									 <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+									 <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+								</div>
+								<div class="col-md-3" nowrap>
+										<button type="button" class="btn btn-success btn-xs" (click)="item.upload()" 
+											[disabled]="item.isReady || item.isUploading || item.isSuccess">
+											<span class="glyphicon glyphicon-upload"></span> Upload
+										</button>
+										<button type="button" class="btn btn-danger btn-xs" [disabled]="loading==true"
+											(click)="item.remove();removefileUploadVideo()">
+											<span class="glyphicon glyphicon-trash"></span> Remove
+										</button>
+								 </div>
+								</div>
+							</div>
 						</div>
 						<div>
 					</div>
@@ -212,7 +251,7 @@
 			
 				<div class="row">
 					<!--ended the file upload code   -->
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="margin-top: 16px;">
 						<p><span class="label label-danger"> NOTE: </span> &nbsp; This
 							plugins works only on Latest Chrome, Firefox, Safari, Opera &
 							Internet Explorer 10.

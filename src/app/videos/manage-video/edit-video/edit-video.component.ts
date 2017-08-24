@@ -11,7 +11,6 @@ import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import { Logger } from 'angular2-logger/core';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
@@ -156,8 +155,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router,
         public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
-        public authenticationService: AuthenticationService, public logger: Logger, public xtremandLogger:
-            XtremandLogger, public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
+        public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
+        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
@@ -172,8 +171,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.formErrors = this.videoUtilService.formErrors;
         this.ClipboardName = 'Copy to Clipboard';
-        this.xtremandLogger.info('edit Video compoent constructor', this.ClipboardName);
-        this.logger.log('EditVideoComponent constructor saveVedioFile : ' + this.saveVideoFile);
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.isFullscreen = true;
@@ -222,7 +219,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.likesValues = 2;
         this.disLikesValues = 0;
         this.videoViews = this.saveVideoFile.views;
-        this.logger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
+        this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
@@ -257,7 +254,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             const file: File = fileList[0];
             this.videoFileService.saveOwnThumbnailFile(file)
                 .subscribe((result: any) => {
-                    this.logger.log(result);
+                    this.xtremandLogger.log(result);
                     this.isThumb = true;
                     this.saveVideoFile.imagePath = result.path;
                     this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -408,7 +405,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     play360Video() {
         this.is360Value = true;
         $('edit_video_player').empty();
-        this.logger.log('Loaded 360 Video');
+        this.xtremandLogger.log('Loaded 360 Video');
         $('.h-video').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
@@ -422,6 +419,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         //   this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        $('#videoId').css('height', '299px');
+        $('#videoId').css('width', 'auto');
         const newThis = this;
         const player = videojs('videoId').ready(function () {
             this.hotkeys({
@@ -477,6 +476,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 const isValid = newThis.overLayValue;
                 const document: any = window.document;
                 let isCallActionthere = false;
+               $('#videoId').css('height', '299px');
+               $('#videoId').css('width', 'auto');
+                $('#newPlayerVideo').css('height', '299px');
+               $('#newPlayerVideo').css('width', 'auto');
                 player.ready(function () {
                     if (isValid === 'StartOftheVideo') {
                         player.play();
@@ -509,7 +512,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             newThis.overLaySet = true;
                             newThis.fullScreenMode = true;
                             $('#overlay-modal').css('width', '100%');
-                            $("#overlay-modal").css('height', '100%');
+                            $('#overlay-modal').css('height', '100%');
                             $('#videoId').append($('#overlay-modal').show());
                         } else {
                             newThis.overLaySet = false;
@@ -570,7 +573,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
         $('.video-js .vjs-control-bar').css('background-color', rgba);
         this.valueRange = value;
-        this.logger.log(this.valueRange);
+        this.xtremandLogger.log(this.valueRange);
     }
     allowComments(event: boolean) {
         this.comments = event;
@@ -1187,7 +1190,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log(this.saveVideoFile.tags);
             this.saveVideoFile.title = titleUpdatedValue;
             this.saveVideoFile.imagePath = this.defaultSaveImagePath;
-            this.logger.log('image path ' + this.defaultImagePath);
+            this.xtremandLogger.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
             this.saveVideoFile.imageFile = null;
             if (this.videoFileService.actionValue === 'Save') {
@@ -1200,8 +1203,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.videoFileService.showUpadte = true;
             }
             this.saveVideoFile.callACtion = this.enableCalltoAction;
-            this.logger.info(this.saveVideoFile.transparency);
-            this.logger.info(this.saveVideoFile);
+            this.xtremandLogger.info(this.saveVideoFile.transparency);
+            this.xtremandLogger.info(this.saveVideoFile);
             if (this.tagsUndefined === false) {
                 return this.videoFileService.saveVideo(this.saveVideoFile)
                     .subscribe((result: any) => {
@@ -1210,16 +1213,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.notifyParent.emit(this.saveVideoFile);
                             this.videoFileService.videoViewBy = 'Save';
                         } else {
-                            console.log('save video data object is null please try again:' + this.saveVideoFile);
-                            // swal('ERROR', this.saveVideoFile.error, 'error');
+                            this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                         }
                     },
                     (error: any) => {
-                        this.logger.error('Edit video Component : saveVideo File method():' + error);
-                        this.referenceService.showErrorPage(error);
-                    }
-                    ),
-                    () => this.logger.log(this.saveVideoFile);
+                        this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
+                        this.xtremandLogger.errorPage(error);
+                    } ),
+                    () => this.xtremandLogger.log(this.saveVideoFile);
             }
         } else { this.openStartingDivs(); }
     }
@@ -1238,14 +1239,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.saveVideoFile.title = videoTitle;
     }
     checkVideoTitleAvailability(arr, val) {
-        this.logger.log(arr.indexOf(val) > -1);
+        this.xtremandLogger.log(arr.indexOf(val) > -1);
         return arr.indexOf(val) > -1;
     }
     removeVideoTitlesWhiteSpaces() {
         for (let i = 0; i < this.referenceService.videoTitles.length; i++) {
             this.videoTitlesValues.push(this.referenceService.videoTitles[i].replace(/\s/g, ''));
         }
-        this.logger.debug(this.videoTitlesValues);
+        this.xtremandLogger.debug(this.videoTitlesValues);
     }
     descriptionInput(descriptionValue: string) {
         this.saveVideoFile.description = descriptionValue;
@@ -1264,16 +1265,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.user.emailId = this.model.email_id;
         this.user.firstName = this.firstName;
         this.user.lastName = this.lastName;
-        this.logger.debug(this.user);
+        this.xtremandLogger.debug(this.user);
     }
     cancelVideo() {
-        this.logger.log('EditVideoComponent : cancelVideo() ');
+        this.xtremandLogger.log('EditVideoComponent : cancelVideo() ');
         this.videoFileService.showSave = false;
         this.videoFileService.showUpadte = false;
         this.notifyParent.emit(null);
     }
     ngOnDestroy() {
-        this.logger.info('Deinit - Destroyed Edit-Video Component');
+        this.xtremandLogger.info('Deinit - Destroyed Edit-Video Component');
         if (this.is360Value !== true) {
             this.videoJSplayer.dispose();
         } else if (this.videoJSplayer) {

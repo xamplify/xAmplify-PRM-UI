@@ -172,6 +172,8 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        $('#videoId').css('height', '258px');
+        $('#videoId').css('width', 'auto');
         const newValue = this;
         const player = videojs('videoId').ready(function () {
             this.hotkeys({
@@ -224,11 +226,20 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
             clickToToggle: true,
             callback: function () {
                 const isValid = newValue.overLayValue;
+                const document: any = window.document;
                 player.ready(function () {
                     player.play();
                 });
-                player.on('ended', function () {
-                    console.log('video done');
+                player.on('fullscreenchange', function () {
+                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    if (event === 'FullscreenOn') {
+                        $('.vjs-tech').css('width', '100%');
+                        $('.vjs-tech').css('height', '100%');
+                    } else if (event === 'FullscreenOff') {
+                        $('#videoId').css('width', 'auto');
+                        $('#videoId').css('height', '258px');
+                    }
                 });
             }
         });

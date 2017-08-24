@@ -419,6 +419,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.testSpeed();
                 self.rageDisabled = true;
                 console.log('started recording!');
+                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
                 $(".vjs-tech").css("width", "100%");
                 $(".vjs-tech").css("height", "100%");
                 $('.video-js .vjs-fullscreen-control').hide();
@@ -432,6 +433,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.discardVideo = true; // discard button enabled
                 self.testSpeeddisabled = false; // enabled the test speed button
                 self.closeModalId = true; // close button enabled
+                  $('.video-js .vjs-control-bar').show();
+                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
                 $('.video-js .vjs-fullscreen-control').show();
                 self.stop();
                 self.rageDisabled = false;

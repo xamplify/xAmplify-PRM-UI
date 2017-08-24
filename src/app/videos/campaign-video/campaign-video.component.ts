@@ -227,7 +227,9 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
              this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
              this.videoUrl = this.videoUrl + '.mp4';
            //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
-             $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+            $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+            $('#videoId').css('height', '318px');
+            $('#videoId').css('width', 'auto');
             const selfPanorama = this;
             const player = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }).ready(function() {
                   this.hotkeys({

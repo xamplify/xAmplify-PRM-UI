@@ -75,22 +75,24 @@
 										<p class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></p>
 								   </div>
 									<div class="page-toolbar">
-									<div class="btn-group pull-right col-xs-12 col-sm-12 col-md-12">
+									<div class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 										<div *ngIf="disableDropDowns == false" class="inputs" align="right">
 											<div  style="float: left;" class="col-xs-12 col-sm-3 col-md-3">
-                                             <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
-                                               <option  [value]="0" class="form-control">All Categories</option>
-                                               <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
+											 <select class="form-control" style="cursor: pointer"
+											 [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
+                                               <option  [value]="0" >All Categories</option>
+                                               <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
                                             </select>
 									       </div>
-											<div style="float: right;" class="col-xs-12 col-sm-3 col-md-3">
-												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">
+											<div class="col-xs-12 col-sm-3 col-md-3">
+												<select class="form-control" style="cursor: pointer"
+												[(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
 											</div>
 											<!--input-small  -->
 											<div class="portlet-input input-inline col-xs-12 col-sm-3 col-md-3" style="float: right;">
-												<div class="input-icon right">
+												<div class="input-icon right" style="cursor:pointer">
 													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
 													 class="form-control input-circle" placeholder="search..."> <!-- (input)="searchDisableValue()" -->
