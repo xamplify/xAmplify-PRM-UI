@@ -48,6 +48,7 @@ sfImageBlur : boolean = false;
 sfImageNormal : boolean = false;
 zohoImageBlur : boolean = false;
 zohoImageNormal : boolean = false;
+noOptionsClickError : boolean = false;
     inValidCsvContacts : boolean; 
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
@@ -176,6 +177,7 @@ public validEmailPatternSuccess : boolean = false;
         if ( files[0].type == "application/vnd.ms-excel" ) {
             var outputstring = files[0].name.substring(0,files[0].name.lastIndexOf("."));
             this.fileTypeError = false;
+            this.noOptionsClickError = false;
             this.model.contactListName = outputstring;
             this.validateContactName(this.model.contactListName);
             this.removeCsvName = true;
@@ -590,6 +592,9 @@ public validEmailPatternSuccess : boolean = false;
             } else
                 this.saveSalesforceContactSelectedUsers( true );
         }
+        else{
+            this.noOptionsClickError = true;
+        }
     }
 
     cancelContacts() {
@@ -758,6 +763,7 @@ public validEmailPatternSuccess : boolean = false;
     addRow() {
         //this.removeCsv();
         this.fileTypeError = false;
+        this.noOptionsClickError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
         this.saveAddCotactsUsers = true;
@@ -797,6 +803,7 @@ public validEmailPatternSuccess : boolean = false;
     copyFromClipboard() {
         //this.removeCsv();
         this.fileTypeError = false;
+        this.noOptionsClickError = false;
         this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
         this.isContactsThere = false;
@@ -833,6 +840,7 @@ public validEmailPatternSuccess : boolean = false;
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
+        this.noOptionsClickError = false;
         this.logger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
         this.socialContact.lastName = '';
@@ -893,6 +901,7 @@ public validEmailPatternSuccess : boolean = false;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.gContacts.push( socialContact );
                     this.logger.info( this.getGoogleConatacts );
+                    this.googleImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1059,6 +1068,7 @@ public validEmailPatternSuccess : boolean = false;
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
+        this.noOptionsClickError = false;
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         if ( selectedDropDown == "DEFAULT" ) {
             alert( "Please Select the which you like to import from:" );
@@ -1105,6 +1115,7 @@ public validEmailPatternSuccess : boolean = false;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.logger.info( this.getZohoConatacts );
+                    this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1245,6 +1256,7 @@ public validEmailPatternSuccess : boolean = false;
     salesforceContacts() {
         this.contactType = "";
         this.isContactsThere = false;
+        this.noOptionsClickError = false;
         //this.removeCsv();
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
@@ -1323,6 +1335,7 @@ public validEmailPatternSuccess : boolean = false;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
                     this.logger.info( this.getSalesforceConatactList );
+                    this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1394,6 +1407,7 @@ public validEmailPatternSuccess : boolean = false;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
                     this.logger.info( this.getSalesforceConatactList );
+                    this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
