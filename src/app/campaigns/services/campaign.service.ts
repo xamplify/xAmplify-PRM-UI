@@ -93,26 +93,44 @@ export class CampaignService {
             .catch( this.handleError );
     }
     
-    getCampaignView(campaignId: number ) {
+    usersWatchList(campaignId: number ){
+        return this.http.get( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    emailActionList(campaignId: number, actionId: number ){
+        return this.http.get( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&actionId='+actionId)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    listCampaignViews(campaignId: number ) {
         return this.http.get( this.URL + 'campaignviews/'+campaignId+'?access_token=' + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
     
-    getEmailOpenCount( campaignId: number ) {
-        return this.http.get( this.URL + 'email_open_count/' + campaignId + '?access_token=' + this.authenticationService.access_token + '&actionId=13' )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    getEmailClickedCount( campaignId: number ) {
-        return this.http.get( this.URL + 'email_gif_clicked_count/' + campaignId + '?access_token=' + this.authenticationService.access_token + '&actionId=14' )
+    getCampaignViewsReportDurationWise(campaignId: number){
+        return this.http.get( this.URL + 'campaign/total-views/'+campaignId+'?access_token=' + this.authenticationService.access_token)
         .map( this.extractData )
         .catch( this.handleError );
     }
     
+    getEmailLogCountByCampaign( campaignId: number ) {
+        return this.http.get( this.URL + 'campaign/emaillog-count-by-campaign/' + campaignId + '?access_token=' + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     getEmailSentCount( campaignId: number ) {
         return this.http.get( this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    getCampaignWatchedUsersCount( campaignId: number ) {
+        return this.http.get( this.URL + 'campaign/watched-users-count/' + campaignId + '?access_token=' + this.authenticationService.access_token+'&actionId=1')
         .map( this.extractData )
         .catch( this.handleError );
     }

@@ -1,5 +1,5 @@
 <div class="page-content" [hidden]="isTimeLineView">
-	<div class="page-bar square-box margin-bottom-10px">
+	<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a
 				[routerLink]="['/home/dashboard']">Home</a> <i
@@ -9,19 +9,12 @@
 			<li>{{campaign.campaignName}}</li>
 		</ul>
 	</div>
-	<div class="page-bar" style="margin: 0 10px 10px 10px;">
-		<div class="col-xs-12 p-5x">
-			<h3 class="text-color-1" style="margin: 0.5em; font-weight: 400;">{{campaign.campaignName}}</h3>
-		</div>
-	</div>
-
 	<div class="col-xs-12 col-sm-6 p-5x">
 		<div class="p-5x">
 			<div class="portlet light border-radius-0">
 				<div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo bold">VIEWERSHIP
-							MAP</span>
+						<span class="caption-subject font-red-sunglo">VIEWERSHIP MAP</span>
 					</div>
 				</div>
 				<div class="portlet-body text-center">
@@ -32,44 +25,44 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x">
 		<div class="col-xs-6 col-sm-3 p-5x">
-			<div class="portlet light border-radius-0">
+			<button class="portlet light border-radius-0 color1-invert crcb" data-toggle="modal" data-target="#emailSentListModal" [disabled]="campaignReport.emailSentCount < 1">
 				<div class="portlet-body text-center">
-					<h1 class="text-color-1">
-						<b>{{emailSentCount}}</b>
+					<h1>
+						<b>{{campaignReport.emailSentCount}}</b>
 					</h1>
-					<h5>Emails Sent</h5>
+					<h5>Email Sent</h5>
 				</div>
-			</div>
+			</button>
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x">
-			<div class="portlet light border-radius-0">
+			<button class="portlet light border-radius-0 color2-invert crcb" (click)="emailActionList(campaign.campaignId, 13, 'opened')" [disabled]="campaignReport.emailOpenCount < 1">
 				<div class="portlet-body text-center">
-					<h1 class="text-color-2">
-						<b>{{emailOpenCount}}</b>
+					<h1>
+						<b>{{campaignReport.emailOpenCount}}</b>
 					</h1>
-					<h5>Emails Opened</h5>
+					<h5>Email Opened</h5>
 				</div>
-			</div>
+			</button>
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x">
-			<div class="portlet light border-radius-0">
+			<button class="portlet light border-radius-0 color3-invert crcb" (click)="emailActionList(campaign.campaignId, 15, 'clicked')" [disabled]="campaignReport.emailClickedCount < 1">
 				<div class="portlet-body text-center">
-					<h1 class="text-color-3">
-						<b>{{emailClickedCount}}</b>
+					<h1>
+						<b>{{campaignReport.emailClickedCount}}</b>
 					</h1>
 					<h5>Clicked URL</h5>
 				</div>
-			</div>
+			</button>
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x">
-			<div class="portlet light border-radius-0">
+			<button class="portlet light border-radius-0 color2-invert crcb" (click)="usersWatchList(campaign.campaignId)" [disabled]="campaignReport.usersWatchCount < 1">
 				<div class="portlet-body text-center">
-					<h1 class="text-color-4">
-						<b>0</b>
+					<h1>
+						<b>{{campaignReport.usersWatchCount}}</b>
 					</h1>
 					<h5>Users watched</h5>
 				</div>
-			</div>
+			</button>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x">
@@ -77,8 +70,7 @@
 			<div class="portlet light border-radius-0">
 				<div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo bold">TOTAL
-							VIEWS FOR THIS CAMPAIGN</span>
+						<span class="caption-subject font-red-sunglo">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 					</div>
 				</div>
 				<div class="portlet-body flex" style="padding: 1em 0;">
@@ -90,9 +82,9 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									stroke-dashoffset="339.292006588" />
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.lifetimeViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">0%</h2>
+							<h2 class="percentage-value">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount}}%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
@@ -105,9 +97,9 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									stroke-dashoffset="339.292006588" />
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.thisMonthViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">0%</h2>
+							<h2 class="percentage-value">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount}}%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This
@@ -121,9 +113,9 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									stroke-dashoffset="339.292006588" />
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.todayViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">0%</h2>
+							<h2 class="percentage-value">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount}}%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Today</h5>
@@ -138,13 +130,12 @@
 				<div class="portlet light border-radius-0">
 					<div class="portlet-title">
 						<div class="caption">
-							<span class="caption-subject font-red-sunglo bold">TOTAL
-								VIEWS FOR THIS CAMPAIGN</span>
+							<span class="caption-subject font-red-sunglo">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 						</div>
 					</div>
 					<div class="portlet-body">
 						<div class="table-responsive">
-							<table class="table table-hover">
+							<table class="table table-bordered table-striped table-hover">
 								<thead>
 									<tr>
 										<th>campaign</th>
@@ -154,12 +145,11 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let item of campaignviews"
-										(click)="getHeatMap(item)">
-										<td>{{item.campaignName}}</td>
-										<td>{{item.userEmail}}</td>
-										<td>{{item.latestView}}</td>
-										<td>{{item.viewsCount}}</td>
+									<tr *ngFor="let item of campaignViews" (click)="getHeatMap(item)">
+										<td><h6>{{item.campaignName}}</h6></td>
+										<td><h6>{{item.userEmail}}</h6></td>
+										<td><h6>{{item.latestView}}</h6></td>
+										<td><h6>{{item.viewsCount}}</h6></td>
 									</tr>
 								</tbody>
 							</table>
@@ -267,9 +257,7 @@
 							<span class="frst-date">1:30 PM, Monday<br> 08
 								October, 2017
 							</span> <span class="frst-date"></span>
-							<p>
-								Email published out to <b>{{selectedRow.userEmail}}</b>
-							</p>
+							<h4>Email published out to <b>{{selectedRow.userEmail}}</b></h4>
 						</div>
 
 					</div>
@@ -344,8 +332,128 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
+	</div>
+</div>
 
+
+<!-- Users Watch List Modal -->
+<div class="modal fade" id="usersWatchListModal" tabindex="-1"
+	role="dialog" aria-labelledby="usersWatchListModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="usersWatchListModalLabel">Users who
+					have watched the campaign</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>email address</th>
+									<th>Start Duration</th>
+									<th>Stop Duration</th>
+									<th>IP Address</th>
+									<th>Location</th>
+									<th>Device</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of campaignReport.usersWatchList">
+									<td><h6>{{item.emailId}}</h6></td>
+									<td><h6>{{item.startTime | date: 'short'}}</h6></td>
+									<td><h6>{{item.endTime | date: 'short'}}</h6></td>
+									<td><h6>{{item.ipAddress}}</h6></td>
+									<td><h6>{{item.state}}, {{item.country}}</h6></td>
+									<td><h6>{{item.deviceType}}, {{item.os}}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Email Opened/ Clicked List Modal -->
+<div class="modal fade" id="emailActionListModal" tabindex="-1"
+	role="dialog" aria-labelledby="emailActionListModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="emailActionListModalLabel">Users who {{campaignReport.emailActionName}} the email</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>email address</th>
+									<th>Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of campaignReport.emailActionList">
+									<td><h6>{{item.emailId}}</h6></td>
+									<td><h6>{{item.time | date: 'short'}}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Email Sent List Modal -->
+<div class="modal fade" id="emailSentListModal" tabindex="-1"
+	role="dialog" aria-labelledby="emailSentListModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>campaign</th>
+									<th>email address</th>
+									<th>latest view</th>
+									<th>views count</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of campaignViews" (click)="getHeatMap(item)">
+									<td><h6>{{item.campaignName}}</h6></td>
+									<td><h6>{{item.userEmail}}</h6></td>
+									<td><h6>{{item.latestView}}</h6></td>
+									<td><h6>{{item.viewsCount}}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

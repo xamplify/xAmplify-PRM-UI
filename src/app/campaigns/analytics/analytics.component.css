@@ -285,3 +285,19 @@ h1.bold {
 	height: 180px;
 	min-width: 100%;
 }
+
+tr > td > h6{
+	margin: 5px 0;
+	text-align: center;
+}
+.table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(102, 102, 102, 0.65);
+    text-align: center;
+}
+
+/* Campaign Report Count Block*/
+.crcb{
+	width: 100%;
+}

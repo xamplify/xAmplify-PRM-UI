@@ -179,7 +179,14 @@
                 </div>
                 <div class="modal-body clearfix">
                     <div class="row">
-                        <div *ngIf="totalRecords > 0" class="col-md-6 col-sm-6 col-xs-12">
+						<div class="col-md-6 col-sm-6 col-xs-12" id="preview-section">
+							<video id="videojs-video" class="video-js vjs-default-skin vjs-16-9" style="max-width: 100%;"
+								controls preload="auto" width="580" height="320"
+								data-setup='{"example_option":true}' [src] = videoUrl poster="{{posterImage}}">
+								<source [src] = videoUrl  type="video/mp4" />
+							</video>
+						</div>
+						<div *ngIf="totalRecords > 0" class="col-md-6 col-sm-6 col-xs-12">
                             <div class="table-responsive">
 	                            <table class="table table-hover" id="list-videos-table">
 	                                <thead>
@@ -227,13 +234,6 @@
                                         </ul>
 								<!-- pager end here -->
                         </div>
-						<div class="col-md-6 col-sm-6 col-xs-12" id="preview-section">
-							<video id="videojs-video" class="video-js vjs-default-skin" style="max-width: 100%;"
-								controls preload="auto" width="580" height="320"
-								data-setup='{"example_option":true}' [src] = videoUrl poster="{{posterImage}}">
-								<source [src] = videoUrl  type="video/mp4" />
-							</video>
-						</div>
 					</div>
                 </div>
                 <div class="modal-footer">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Campaign } from '../models/campaign';
+import { CampaignReport } from '../models/campaign-report';
 
 import { CampaignService } from '../services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
@@ -19,12 +20,11 @@ export class AnalyticsComponent implements OnInit {
     heatMapData: any;
     selectedRow: any = new Object();
     videoLength: number;
-    campaignviews: any;
+    campaignViews: any;
     countryWiseCampaignViews: any;
+    
+    campaignReport: CampaignReport = new CampaignReport;
 
-    emailOpenCount: number = 0;
-    emailClickedCount: number = 0;
-    emailSentCount: number = 0;
 
     constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private authenticationService: AuthenticationService ) {
         this.isTimeLineView = false;
@@ -66,48 +66,39 @@ export class AnalyticsComponent implements OnInit {
             )
     }
 
-    getCampaignView( campaignId: number ) {
-        this.campaignService.getCampaignView( campaignId )
+    listCampaignViews( campaignId: number ) {
+        this.campaignService.listCampaignViews( campaignId )
             .subscribe(
             data => {
-                this.campaignviews = data.campaignviews;
+                this.campaignViews = data.campaignviews;
             },
             error => console.log( error ),
             () => console.log()
             )
     }
     
-    getEmailOpenCount( campaignId: number ) {
-        this.campaignService.getEmailOpenCount( campaignId )
+    getCampaignViewsReportDurationWise( campaignId: number ) {
+        this.campaignService.getCampaignViewsReportDurationWise( campaignId )
             .subscribe(
             data => {
-                this.emailOpenCount = data.email_open_count;
+                this.campaignReport.thisMonthViewsCount = data.this_month_count;
+                this.campaignReport.lifetimeViewsCount = data.lifetime_count;
+                this.campaignReport.todayViewsCount = data.today_count;
             },
             error => console.log( error ),
             () => console.log()
             )
-    }
+}
     
-    getEmailClickedCount( campaignId: number ){
-        this.campaignService.getEmailClickedCount( campaignId )
-        .subscribe(
-        data => {
-            this.emailClickedCount = data.email_gif_clicked_count;
-        },
-        error => console.log( error ),
-        () => console.log()
-        )
-    }
-    
-    getEmailSentCount( campaignId: number ){
+    getEmailSentCount( campaignId: number ) {
         this.campaignService.getEmailSentCount( campaignId )
-        .subscribe(
-        data => {
-            this.emailSentCount = data.emails_sent_count;
-        },
-        error => console.log( error ),
-        () => console.log()
-        )
+            .subscribe(
+            data => {
+                this.campaignReport.emailSentCount = data.emails_sent_count;
+            },
+            error => console.log( error ),
+            () => console.log()
+            )
     }
     
     getCountryWiseCampaignViews(campaignId: number){
@@ -136,7 +127,7 @@ export class AnalyticsComponent implements OnInit {
                 map: 'custom/world'
             },
             title: {
-                text: 'The people who watch the campaign video'
+                text: 'The people who have watched the campaign video'
             },
             mapNavigation: {
                 enabled: true,
@@ -166,6 +157,54 @@ export class AnalyticsComponent implements OnInit {
         });
 
     }
+    
+    getEmailLogCountByCampaign( campaignId: number ) {
+        this.campaignService.getEmailLogCountByCampaign( campaignId )
+            .subscribe(
+            data => {
+                this.campaignReport.emailOpenCount = data["email_opened_count"];
+                this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+            },
+            error => console.log( error ),
+            () => console.log()
+            )
+    }
+    
+    getCampaignWatchedUsersCount(campaignId : number){
+        this.campaignService.getCampaignWatchedUsersCount( campaignId )
+        .subscribe(
+        data => {
+            this.campaignReport.usersWatchCount = data.campaign_users_watched;
+        },
+        error => console.log( error ),
+        () => console.log()
+        )
+    }
+    
+    usersWatchList(campaignId: number){
+        this.campaignService.usersWatchList( campaignId )
+        .subscribe(
+        data => {
+            this.campaignReport.usersWatchList = data.data;
+            $('#usersWatchListModal').modal();
+        },
+        error => console.log( error ),
+        () => console.log()
+        )
+    }
+    
+    emailActionList(campaignId: number, actionId: number, emailActionName: string){
+        this.campaignService.emailActionList( campaignId, actionId )
+        .subscribe(
+        data => {
+            this.campaignReport.emailActionList = data.data;
+            this.campaignReport.emailActionName = emailActionName;
+            $('#emailActionListModal').modal();
+        },
+        error => console.log( error ),
+        () => console.log()
+        )
+    }
 
     ngOnInit() {
         const userId = this.authenticationService.getUserId();
@@ -175,11 +214,12 @@ export class AnalyticsComponent implements OnInit {
         this.getCountryWiseCampaignViews(campaignId);
         this.renderMap();
 
-        this.getEmailOpenCount( campaignId );
-        this.getEmailClickedCount( campaignId );
         this.getEmailSentCount( campaignId );
+        this.getEmailLogCountByCampaign( campaignId );
+        this.getCampaignWatchedUsersCount( campaignId );
 
-        this.getCampaignView( campaignId );
+        this.getCampaignViewsReportDurationWise( campaignId );
+        this.listCampaignViews( campaignId );
     }
 
 }
