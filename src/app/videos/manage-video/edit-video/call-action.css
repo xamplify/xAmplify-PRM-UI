@@ -18,7 +18,7 @@
 .overlay {
 	height: 299px;
 	background: #222;
-	margin: 0 auto;
+    /*	margin: 0 auto; */
 	width: 100%;
 	display: table;
 	padding: 5em;
@@ -69,7 +69,7 @@
 	color: #FFF;
 	margin: 0;
 }
-
+/* 
 @media screen and (max-device-width: 480px) and (orientation: portrait)
 	{
 	.text-box {
@@ -121,4 +121,4 @@
 	.upper-text-heading {
 		font-size: 40px;
 	}
-}
+} */
