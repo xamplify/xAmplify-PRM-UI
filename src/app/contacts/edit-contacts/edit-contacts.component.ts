@@ -42,6 +42,7 @@ export class EditContactsComponent implements OnInit {
     validCsvContacts : boolean;
     inValidCsvContacts : boolean;
     isHeaderCheckBoxChecked:boolean = false;
+    isInvalidHeaderCheckBoxChecked:boolean = false;
     public clipBoard: boolean = false;
     public saveAddcontactUsers: boolean;
     public saveCopyfromClipboardUsers: boolean;
@@ -49,6 +50,8 @@ export class EditContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     pagedItems: any[];
     checkedUserList = [];
+    invalidRemovableContacts = [];
+    selectedInvalidContactIds = [];
     selectedContactListIds = [];
     //removeUserIds = new Array()
     fileTypeError: boolean;
@@ -899,6 +902,7 @@ export class EditContactsComponent implements OnInit {
         this.invalidContactData = false;
         this.unsubscribedContactsData = false;
         this.nonActiveContactsData = false;
+        this.invalidDeleteSucessMessage = false;
     }
 
     activeContactsDataShowing() {
@@ -990,15 +994,15 @@ export class EditContactsComponent implements OnInit {
                 }
                 
                 var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
-                var items = $.grep(this.selectedContactListIds, function(element) {
+                var items = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
                 this.logger.log("CIDSS"+contactIds);
-                this.logger.log("IIDDDs"+this.selectedContactListIds);
+                this.logger.log("IIDDDs"+this.selectedInvalidContactIds);
                 if(items.length==10){
-                    this.isHeaderCheckBoxChecked = true;
+                    this.isInvalidHeaderCheckBoxChecked = true;
                 }else{
-                    this.isHeaderCheckBoxChecked = false;
+                    this.isInvalidHeaderCheckBoxChecked = false;
                 }
             },
             error => console.log( error ),
@@ -1073,26 +1077,61 @@ export class EditContactsComponent implements OnInit {
         })
     }
 
+    checkAllInvalidContacts(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="invalidContact[]"]').prop('checked', true);
+            //this.isContactList = true;
+            let self = this;
+            $('[name="invalidContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedInvalidContactIds.push(parseInt(id));
+                $('#row_'+id).addClass('invalid-contacts-selected');
+             });
+            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+        }else{
+           console.log("unceck");
+            $('[name="invalidContact[]"]').prop('checked', false);
+            //this.isContactList = false;
+            $('#user_list_tb tr').removeClass("invalid-contacts-selected");
+            this.selectedInvalidContactIds = [];
+        }
+        ev.stopPropagation();
+    }
+    
+    invalidContactsSelectedUserIds(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+        if(isChecked){
+            $('#row_'+contactId).addClass('invalid-contacts-selected');
+            this.selectedInvalidContactIds.push(contactId);
+        }else{
+            $('#row_'+contactId).removeClass('invalid-contacts-selected');
+            this.selectedInvalidContactIds.splice($.inArray(contactId,this.selectedInvalidContactIds),1);
+        }
+        //this.contactsUtility();
+        event.stopPropagation();
+    }
+    
     removeInvalidContactListUsers() {
-        var removeUserIds = new Array();
+       /* var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
-        });
-        this.logger.info( removeUserIds );
-        this.contactService.removeContactList( this.contactListId, removeUserIds )
+        });*/
+        this.logger.info( this.selectedInvalidContactIds );
+        this.contactService.removeContactList( this.contactListId, this.selectedInvalidContactIds )
             .subscribe(
             ( data: any ) => {
                 data = data;
                 console.log( "update invalidContacts ListUsers:" + data );
                 this.invalidDeleteSucessMessage = true;
                 setTimeout( function() { $( "#showInvalidDeleteMessage" ).slideUp( 500 ); }, 2000 );
-                $.each( removeUserIds, function( index: number, value: any ) {
+                $.each( this.selectedInvalidContactIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
                 });
                 this.invalid_Contacts( this.pagination );
-
+                this.invlidContactsCount = data.invalidUsers;
             },
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -1101,12 +1140,12 @@ export class EditContactsComponent implements OnInit {
     }
 
     invalidContactsShowAlert() {
-        var removeUserIds = new Array();
+       /* var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
             removeUserIds.push( id );
-        });
-        if ( removeUserIds.length != 0 ) {
+        });*/
+        if ( this.selectedInvalidContactIds.length != 0 ) {
             this.logger.info( "contactListId in sweetAlert() " );
             let self = this;
             swal( {
