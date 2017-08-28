@@ -172,6 +172,9 @@ export class EditContactsComponent implements OnInit {
         if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
+            $('#checkAllExistingContacts').prop("checked",false);
+            //this.contactItemsSize = items;
+            this.getAllFilteredResults(this.pagination);
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
@@ -193,6 +196,9 @@ export class EditContactsComponent implements OnInit {
 
         else if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
+            $('#checkAllExistingContacts').prop("checked",false);
+            //this.contactItemsSize = items;
+            this.getAllFilteredResults(this.pagination);
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         } else if ( this.currentContactType == "active_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
@@ -209,6 +215,21 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
+    getAllFilteredResults(pagination:Pagination){
+        try{
+            this.pagination.pageIndex = 1;
+            this.pagination.filterBy = 10;
+            if(this.selectedDropDown=="all"){
+                this.pagination.maxResults = this.pagination.totalRecords;
+            }else{
+                this.pagination.maxResults = 10;
+            }
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+        }catch(error){
+            console.log(error, "Get Filtered Contacts","edit Contact Component")
+        }
+    }
+    
     checked( event: boolean ) {
         this.logger.info( "check value" + event )
         this.contacts.forEach(( contacts ) => {
@@ -966,6 +987,18 @@ export class EditContactsComponent implements OnInit {
                     this.noContactsFound1 = false;
                     this.hidingListUsersTable = true;
                     this.pagedItems = null;
+                }
+                
+                var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.selectedContactListIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                this.logger.log("CIDSS"+contactIds);
+                this.logger.log("IIDDDs"+this.selectedContactListIds);
+                if(items.length==10){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
                 }
             },
             error => console.log( error ),

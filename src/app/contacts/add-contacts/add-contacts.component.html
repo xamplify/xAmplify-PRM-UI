@@ -197,20 +197,20 @@ color:blue;
 										(ngModelChange)="changEvent($event)" required
 										[(ngModel)]="model.contactListName" name="contactListName"
 										(input)="validateContactName(model.contactListName)"
-										minlength="4" placeholder="Contact List Name" #contactListName="ngModel">
+										minlength="2" placeholder="Contact List Name" #contactListName="ngModel">
 								    
 								    <!-- Validation Messages -->
 								    <div *ngIf="isValidContactName">
 								    	<p class="custom-error-message">Contact List Name Already Exists</p>
 								    </div>
-									<div *ngIf="contactListName.invalid && (contactListName.dirty ||contactListName.touched)">
+								<!-- 	<div *ngIf="contactListName.invalid && (contactListName.dirty ||contactListName.touched)">
 										<p class="custom-error-message">Minimum 4 letters required.</p>
-									</div>
+									</div> -->
 
 									<div *ngIf="contactListNameError">
 								    	<p class="custom-error-message">Please enter the contact list name.</p>
 								  	</div>
-								  	<div *ngIf="noOptionsClickError">
+								  	<div *ngIf="noOptionsClickError ">
 								    	<p class="custom-error-message">Please select the given option.</p>
 								  	</div>
 								    </div>
@@ -340,10 +340,12 @@ color:blue;
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
-											<div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
+											<div *ngIf="emailNotValid || emailId.invalid && (emailId.dirty || emailId.touched)"
 												class="custom-error-message">
 												Invalid EmailId.
-											</div></td>
+											</div>
+											</td>
+											
 										<td><input type=Text [(ngModel)]="newContact.firstName"
 											class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
 											<!-- <div
