@@ -4,4 +4,5 @@ export class HttpRequestLoader{
     isClientError:boolean = false;
     statusCode:number=200;
     message:string = "";
+    isHorizontalCss:boolean = false;
 }

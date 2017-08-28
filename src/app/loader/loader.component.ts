@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+import { HttpRequestLoader } from '../core/models/http-request-loader';
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.css']
+  styleUrls: ['./loader.component.css'],
+  providers:[HttpRequestLoader],
 })
 export class LoaderComponent implements OnInit {
 
-  constructor() { }
-
+    @Input() model:boolean;
+    
+   constructor() {
+  }
   ngOnInit() {
   }
 

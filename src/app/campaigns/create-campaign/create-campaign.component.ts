@@ -52,7 +52,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isCategoryUpdated:boolean;
     isvideosLength:boolean;
     imagePath:string;
-    //campaignForm: FormGroup;
     campaign:Campaign;
     campaignVideo:CampaignVideo=new CampaignVideo();
     campaignContact:CampaignContact=new CampaignContact();
@@ -62,14 +61,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isAdd:boolean = true;
     name:string = "";
     width:string="";
-    campaignDetailsTabClass = "col-md-2 activestep";
-    videoTabClass:string = "col-md-2";
-    contactListTabClass:string = "col-md-2";
-    emailTemplateTabClass:string = "col-md-2";
-    launchCampaignTabClass:string = "col-md-2";
-    currentTabActiveClass:string = "col-md-2 activestep";
-    inActiveTabClass:string = "col-md-2";
-    successTabClass:string = "col-md-2 successstep";
+    
+    defaultTabClass = "col-block";
+    activeTabClass = "col-block col-block-active";
+    completedTabClass = "col-block col-block-complete";
+    disableTabClass = "col-block col-block-disable";
+    
+    campaignDetailsTabClass = this.activeTabClass;
+    videoTabClass:string = this.defaultTabClass;
+    contactListTabClass:string = this.defaultTabClass;
+    emailTemplateTabClass:string = this.defaultTabClass;
+    launchCampaignTabClass:string = this.defaultTabClass;
+    currentTabActiveClass:string = this.activeTabClass;
+    inActiveTabClass:string = this.defaultTabClass;
+    successTabClass:string = this.completedTabClass;
     /*************Pagination********************/
     videosPagination:Pagination = new Pagination();
     contactsUsersPagination:Pagination = new Pagination();
@@ -85,7 +90,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     messageDivClass:string = this.formGroupClass;
     campaignType:string = "";
     isCampaignDetailsFormValid:boolean = false;
-    
     /************Video******************/
     isVideo:boolean = false;
     isCampaignDraftVideo:boolean = false;
@@ -105,8 +109,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;                           
     selectedRowClass:string = ""; 
-     selectedContactListIds = [];
-     isHeaderCheckBoxChecked:boolean = false;
+    selectedContactListIds = [];
+    isHeaderCheckBoxChecked:boolean = false;
+    emptyContactsMessage:string = "";
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;  
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
@@ -330,8 +335,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="contacts"){
             this.contactsPagination.pageIndex = pageIndex;
             this.loadCampaignContacts(this.contactsPagination);
-           
-            
         }else if(module=="contactUsers"){
            this.contactsUsersPagination.pageIndex = pageIndex;
             this.loadUsers(this.id,this.contactsUsersPagination);
@@ -349,7 +352,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          var isValid = true;
          let self = this;
         $('#campaignDetailsForm input[type="text"]').each(function() {
-            if ( $(this).val() === '' ){
+            if ( $(this).val().trim() === '' ){
               isValid = false;
           }
              
@@ -395,7 +398,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      validateField(fieldId:string){
          var errorClass = "form-group has-error has-feedback";
          var successClass = "form-group has-success has-feedback";
-         let fieldValue = $('#'+fieldId).val();
+         let fieldValue = $('#'+fieldId).val().trim();
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
                  this.campaignNameDivClass = successClass;
@@ -492,6 +495,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     loadCampaignVideos(pagination:Pagination) {
+        this.campaignVideo.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignVideo.httpRequestLoader, true);
         this.videoFileService.loadVideoFiles(pagination)
             .subscribe(
@@ -663,6 +667,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    
     /*************************************************************Contact List***************************************************************************************/
     loadCampaignContacts(contactsPagination:Pagination) {
+        this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignContact.httpRequestLoader, true);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
@@ -682,7 +687,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                if(items.length==10){
+                console.log(contactIds);
+                console.log(this.selectedContactListIds);
+                console.log(items);
+                if(items.length==contactsPagination.maxResults){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
                     this.isHeaderCheckBoxChecked = false;
@@ -733,25 +741,33 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         this.contactsUtility();
         event.stopPropagation();
+    
+       
     }
-    highlightContactRow(contactId:number,event:any){
-        let isChecked = $('#'+contactId).is(':checked');
-          if(isChecked){
-              //Removing Highlighted Row
-              $('#'+contactId).prop( "checked", false );
-              $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-              console.log("Revmoing"+contactId);
-              this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+    highlightContactRow(contactId:number,event:any,count:number){
+        this.emptyContactsMessage = "";
+        if(count>0){
+            let isChecked = $('#'+contactId).is(':checked');
+            if(isChecked){
+                //Removing Highlighted Row
+                $('#'+contactId).prop( "checked", false );
+                $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+                console.log("Revmoing"+contactId);
+                this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+          }else{
+              //Highlighting Row
+              $('#'+contactId).prop( "checked", true );
+              $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+              console.log("Adding"+contactId);
+              this.selectedContactListIds.push(contactId);
+          }
+            this.contactsUtility();
+            event.stopPropagation();
+            console.log(this.selectedContactListIds);
         }else{
-            //Highlighting Row
-            $('#'+contactId).prop( "checked", true );
-            $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-            console.log("Adding"+contactId);
-            this.selectedContactListIds.push(contactId);
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
         }
-          this.contactsUtility();
-          event.stopPropagation();
-          console.log(this.selectedContactListIds);
+       
     }
     contactsUtility(){
         var trLength = $('#user_list_tb tbody tr').length;
@@ -777,26 +793,32 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('[name="campaignContact[]"]:checked').each(function(){
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+            if(this.selectedContactListIds.length==0){
+                this.isContactList = false;
+            }
         }else{
-           console.log("unceck");
             $('[name="campaignContact[]"]').prop('checked', false);
-            this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
-            this.selectedContactListIds = [];
+            if(this.contactsPagination.maxResults>30||(this.contactsPagination.maxResults==this.contactsPagination.totalRecords)){
+                this.isContactList = false;
+                this.selectedContactListIds = [];
+            }else{
+                this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+                let currentPageContactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                if(this.selectedContactListIds.length==0){
+                    this.isContactList = false;
+                }
+            }
+            
         }
         ev.stopPropagation();
     }
     
-    isAllChecked() {
-      /*  setTimeout(()=>{
-            if($('[name="campaignContact[]"]:checked').length==this.contactsPagination.pagedItems.length){
-                $('#checkAllExistingContacts').prop("checked",true);
-            } 
-        },700);*/
-      }
 
     
     /*******************************Preview*************************************/
@@ -853,6 +875,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       
       closeModelPopup(){
           this.contactsUsersPagination = new Pagination();
+      }
+      showContactsAlert(count:number){
+          this.emptyContactsMessage = "";
+          if(count==0){
+              this.emptyContactsMessage = "No Contacts Found For This Contact List";
+          }
       }
     
     /*************************************************************Email Template***************************************************************************************/
@@ -927,22 +955,22 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('#emailTemplateContent').html('');
         this.emailTemplateHrefLinks = [];
         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
-        if( this.emailTemplateHrefLinks.length>0){
-           this.setEmailTemplateData(emailTemplate);
-        }else{
+        if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
                 title: 'Are you sure?',
-                text: "This Template has no urls.",
+                text: "This Template has no urls.This will destroy all added ONCLICK data",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, Select it!'
-
             }).then( function() {
                self.setEmailTemplateData(emailTemplate);
+               self.urls = [];
             })
+        }else{
+            this.setEmailTemplateData(emailTemplate);
         }
     }
     setEmailTemplateData(emailTemplate:EmailTemplate){
@@ -950,7 +978,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.isEmailTemplate = true;
         this.selectedTemplateBody = emailTemplate.body;
         this.emailTemplate = emailTemplate;
-       // this.campaign.emailTemplate = emailTemplate;
     }
     
     getAnchorLinksFromEmailTemplate(body:string){
@@ -1042,9 +1069,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
-            if(reply.replyTime==undefined || reply.subject.trim().length==0){
-                $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+            if(reply.actionId!=16){
+                if(reply.replyTime==undefined || reply.replyTime==null || reply.subject.trim().length==0 || reply.replyInDays==null){
+                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
+            }else{
+                if(reply.subject.trim().length==0){
+                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
             }
+            
             
         }
         for(var i=0;i<this.urls.length;i++){
@@ -1054,7 +1088,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             let replyTime = url.replyTime;
             if(url.scheduled){
-                if(replyTime==undefined || url.subject.trim().length==0|| url.body.trim().length==0){
+                if(replyTime==undefined ||replyTime==null || url.subject.trim().length==0|| url.body.trim().length==0 || url.replyInDays==null){
                     $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
                 }  
             }else{
@@ -1139,6 +1173,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log(data);
             if(data.message=="success"){
                 this.isLaunched = true;
+                this.reInitialize();
             }
         },
         error => {
@@ -1180,9 +1215,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
     /********************************************On Destory********************************************/
     ngOnDestroy() {
-        this.campaignService.campaign = undefined;
-        this.names = [];
-        this.name = "";
         if(!this.isLaunched){
            if(this.isAdd){
                this.saveCampaignOnDestroy();
@@ -1197,16 +1229,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                    cancelButtonColor: '#d33',
                    confirmButtonText: 'Yes, Save it!'
 
-               }).then( function() {
-                   self.saveCampaignOnDestroy();
+               }).then(function() {
+                       self.saveCampaignOnDestroy();
+                   
+               },function (dismiss) {
+                   if (dismiss === 'cancel') {
+                       self.reInitialize();
+                   }
                })
            }
         }
+         }
+    
+    
+    reInitialize(){
         this.refService.campaignVideoFile = undefined;
         this.refService.selectedCampaignType = "";
         this.selectedContactListIds = [];
-         }
-    
+        this.campaignService.campaign = undefined;
+        this.names = [];
+        this.name = "";
+    }
     /*************************************************************Form Errors**************************************************************************************/
     formErrors = {
             'campaignName': '',
@@ -1461,7 +1504,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
      remove(divId:string,type:string){
        console.log(divId);
-       console.log( CKEDITOR.instances);
          if(type=="replies"){
              this.replies = this.spliceArray(this.replies,divId);
              console.log(this.replies);
@@ -1475,7 +1517,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          console.log("Removing"+editorName);
          //CKEDITOR.instances[editorName].destroy();
      }
-
      
      spliceArray(arr:any,id:string){
          arr = $.grep(arr, function(data, index) {

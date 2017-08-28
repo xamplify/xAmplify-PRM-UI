@@ -7,4 +7,5 @@ export class Reply{
     actionId:number;
     divId:string;
     emailAction:any;
+    scheduled:boolean;
 }

@@ -23,6 +23,9 @@ a.disabled {
 .underline {
     text-decoration: underline;
 }
+ .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
+ 
+
 
 .step {
     /*margin-top: 27px;*/
@@ -102,10 +105,17 @@ a.disabled {
     vertical-align: central;
 }
 
+
 .step .col-md-2 .col-md-2-success .activestep {
+   /* 	width: 20%;
+    background: #ececec;
+    margin: 0 1px;
+    cursor: pointer; */
     color: rgba(255, 165, 0, 0.65);
     vertical-align: central;
     border: 1px solid #f8c300;
+    cursor: pointer;
+   
 }
 
 .step #disableTab {
@@ -751,4 +761,45 @@ label img {
 
 .form-horizontal .form-group {
     margin-right: 0.5em;
+}
+
+
+
+/* NEW DESIGN CSS FOR CAMPAIGN STEPS  */
+ .col-block {
+    background: #fff;
+    margin: 0 1px;
+    cursor: pointer;
+    border: 1px solid #C0C0C0;
+}
+
+.col-block-active{
+	color: rgba(255, 165, 0, 0.65);
+    vertical-align: central;
+    border: 1px solid #f8c300;
+    background-color: #fff;
+}
+
+.col-block-active:hover{
+	background-color: rgba(255, 165, 0, 0.65);
+	color: #fff;
+}
+.col-block-disable{
+    cursor: not-allowed;
+    background: #ececec;
+}
+.col-block-complete{
+	color: #00a6e8;
+}
+.col-block-complete:hover{
+	background-color: #00a6e8;
+	color: #fff;
+}
+.cenetered-block{
+	margin: 0 auto;
+	text-align: center;
+	padding: 1em;
+}
+.cenetered-block > h5{
+	margin: 5px 0;
 }

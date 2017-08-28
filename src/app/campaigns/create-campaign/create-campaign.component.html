@@ -1,7 +1,3 @@
- <style type="text/css">
-  .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
-  a.disabled { pointer-events: none; cursor: not-allowed; }
-</style> 
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -22,60 +18,75 @@
 	</div><!-- End of Line 2 -->
 	<div class="page-bar">
 	<div class="container" style="width: 100%;border-radius: 5px;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);">
-		<div class="row" style="padding-left:0px;padding-right:0px;margin-right: 0px; margin-left: 0px;">
-			 <div class="row step" style="margin: 20px 0 10px;">
-	            <!-- ---------------------------Campaign Details--------------------------------------- -->
-			 	 <div  id="step2" [attr.class]="campaignDetailsTabClass"  (click) ="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
-                	<span class="fa fa-th-list"></span>
-                	<p>Campaign Details</p>
-            	</div>
-            	<!-- ---------------------------Select Video--------------------------------------- -->
-            	<div *ngIf="campaignType=='video'">
-            		<div  *ngIf="!isCampaignDetailsFormValid " class="col-md-2" id="disableTab" [ngStyle]="{ 'width': width }">
-	                <span class="fa fa-video-camera"></span>
-	                <p>Select a Video</p>
-	            </div>
-            	<div  *ngIf="isCampaignDetailsFormValid" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" 
-            			[ngStyle]="{ 'width': width }" ><!-- style="color: #00a6e8;" -->
-	                <span class="fa fa-video-camera"></span>
-	                <p>Select a Video</p>
-	            </div>
-            	</div>
-            	
-	            <!-- ---------------------------Contact List--------------------------------------- -->
-	             <div  *ngIf="!isCampaignDetailsFormValid  || !isVideo  " class="col-md-2"   id="disableTab" [ngStyle]="{ 'width': width }">
-                	<span class="fa fa-users"></span>
-                	<p>Contact Lists</p>
-           	   </div>
-	            <div id="step4"  *ngIf="isCampaignDetailsFormValid  && isVideo " [attr.class]="contactListTabClass"  (click)="resetActive($event, 60, 'step-4');" [ngStyle]="{ 'width': width }">
-                	<span class="fa fa-users"></span>
-                	<p>Contact Lists</p>
-           	   </div>
-			  <!-- ---------------------------Email Template--------------------------------------- -->
-			   <div *ngIf=" !isCampaignDetailsFormValid  || !isVideo || !isContactList" class="col-md-2"  id="disableTab" [ngStyle]="{ 'width': width }">
-                <span class="fa fa-envelope"></span>
-                <p>Email Template</p>
-            </div>
-            
-			  <div id="step5"  *ngIf=" isCampaignDetailsFormValid  && isVideo  && isContactList " [attr.class]="emailTemplateTabClass"   (click)="resetActive($event, 80, 'step-5');" [ngStyle]="{ 'width': width }">
-                <span class="fa fa-envelope"></span>
-                <p>Email Template</p>
-            </div>
-             <!-- ---------------------------Launch--------------------------------------- -->
-             <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate"  class="col-md-2" id="disableTab" [ngStyle]="{ 'width': width }">
-                <span class="fa fa-flag"></span>
-                <p>Launch</p>
-            </div>
-            
-            <div  id="step6"  *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate" [attr.class]="launchCampaignTabClass" 
-			  	(click)="resetActive($event, 100, 'step-6');addUserEmailIds();" [ngStyle]="{ 'width': width }">
-                <span class="fa fa-flag"></span>
-                <p>Launch</p>
-            </div>
-            
-			 </div><!-- End Of Line 20 -->
-		</div><!-- End Of Line 19 -->
-	
+		<div style="display: flex;padding-top: 1em;">
+		    <div id="step2" [attr.class]="campaignDetailsTabClass" (click) ="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-th-list"></span>
+                	<h5 class="hidden-xs">Campaign Details</h5>
+                </div>
+		    </div>
+		    
+		    <div *ngIf="!isCampaignDetailsFormValid && campaignType=='video'"  [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-video-camera"></span>
+                	<h5 class="hidden-xs">Select a Video</h5>
+                </div>
+		    </div>
+		     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'"  id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-video-camera"></span>
+                	<h5 class="hidden-xs">Select a Video</h5>
+                </div>
+		    </div>
+		    
+		    
+		    
+		    <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-users"></span>
+                	<h5 class="hidden-xs">Contact Lists</h5>
+                </div>
+		    </div>
+		    
+		    <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 60, 'step-4');">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-users"></span>
+                	<h5 class="hidden-xs">Contact Lists</h5>
+                </div>
+		    </div>
+		    
+		    
+		    
+		    <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-envelope"></span>
+                	<h5 class="hidden-xs">Email Template 3</h5>
+                </div>
+		    </div>
+		    
+		    <div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 80, 'step-5');">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-envelope"></span>
+                	<h5 class="hidden-xs">Email Template 3</h5>
+                </div>
+		    </div>
+		    
+		    <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-flag"></span>
+                	<h5 class="hidden-xs">Launch</h5>
+                </div>
+		    </div>
+		    
+		    <div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate" [attr.class]="launchCampaignTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
+		        <div class="cenetered-block">
+		        	<span class="fa fa-flag"></span>
+                	<h5 class="hidden-xs">Launch</h5>
+                </div>
+		    </div>
+		    
+		    
+		</div>
 		<!-- -------------------------------------Campaign Details--------------------------------------------------------- -->	
 		<div class="row setup-content step activeStepInfo" id="step-2">
 		<!-- <br> -->
@@ -183,6 +194,7 @@
 							<button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button"  
 							style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');"  
 							title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+							
 							<button  *ngIf="campaignType=='regular'" type="button" id="campaign-detail-next-button"  
 							style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" 
 							 title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
@@ -266,7 +278,7 @@
 								<tbody class="row_selected">
 								<tr>
 										<td colspan="5">
-											<app-loader *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
+											<app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
 											<app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError"></app-error-pages>
 										</td>
 									</tr>
@@ -410,7 +422,7 @@
     <div *ngIf="contactsPagination.totalRecords==0" class="alert alert-danger"><strong>No Contacts Found</strong></div> 
         <div class="col-xs-12" style="margin-top: 10px;">
             <div class="col-md-12 well text-center">
-            <app-loader *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
+            <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss"  *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
 			<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
 			<ng-container *ngIf=" contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                 <div class="row" id="user_list_table_view">
@@ -441,19 +453,19 @@
 				                  </tr>
 				                 </thead>
 				                	<tbody>
-									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts.id,$event)"
-									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1">
-					                     <td *ngIf="isAdd || !isCampaignDraftContactList ">
-					                      <div class="form-group">
-						                     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" class="chk"  lang="{{contacts.name}}"  name="campaignContact[]" value="{{contacts.id}}" id="{{contacts.id}}"
-						                      (click)="highlightRow(contacts.id,$event)"/>  <!-- [(ngModel)]="contacts.state" -->
+									 <tr role="row"  *ngFor ="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" 
+									 (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts)"
+									  [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)" 
+									  (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
+					                     <td>
+					                     	<div class="form-group" *ngIf="contacts.noOfContacts>0">
+							                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}"
+							                      [checked]="selectedContactListIds.indexOf(contacts.id)>-1"   
+							                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id,$event,contacts.noOfContacts)">
 					                      </div>
-					                     </td>
-					                     <td *ngIf="!isAdd && isCampaignDraftContactList"><!-- [(ngModel)]="contacts.state" -->
-					                     	<div class="form-group">
-						                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}"
-						                      [checked]="selectedContactListIds.indexOf(contacts.id)>-1"   
-						                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id,$event)">
+					                      
+					                      	<div class="form-group" *ngIf="contacts.noOfContacts==0">
+							                     <input type="checkbox" disabled="disabled" title="This Contact List Has No Contacts">
 					                      </div>
 					                     </td>
 					                     
@@ -787,20 +799,23 @@
         		<hr>
 					<div class="panel-body">
 						<form class="role" id="form-{{reply.divId}}">
+						<div *ngIf="reply.actionId!=16">	
 							<div class="form-group col-md-3">
 								<label for="days">Reply In X Days</label> 
 								<input	type="number" class="form-control" name="days"
-									 placeholder="Days" [(ngModel)]="reply.replyInDays">
+									 placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 							</div>
 							<div class="form-group col-md-3">
 								<label for="time">Send Time</label> 
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
 							</div>
+						</div>
 							<div class="form-group col-md-3">
 								<label for="reason">Reason</label> 
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
-						            <option  [value]="13" [selected]="reply.action ==13">Email Opened</option>
-						            <option  [value]="0" [selected]="reply.action ==0">Email Not Opened</option>
+						            <option  [value]="13" [selected]="reply.actionId ==13">Email Opened</option>
+						            <option  [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
+						            <option  [value]="16" [selected]="reply.actionId ==16">Send immediately After Email Opened</option>
 					          </select>
 							</div>
 							<div class="form-group col-md-3" style="padding-top: 1.9em;">
@@ -824,7 +839,7 @@
 					<div class="panel-body">
 						<form class="role" id="form-{{url.divId}}">
 						<div class="form-group col-md-3">
-								<label for="reason">When To Send Email {{url.scheduled}}</label> 
+								<label for="reason">When To Send Email</label> 
 								<select class="form-control" name="scheduleEmail" [(ngModel)]="url.scheduled">
 						            <option  [value]="false" [selected]="url.scheduled ==false">Send Immediately After Clicked</option>
 						            <option  [value]="true" [selected]="url.scheduled ==true">Schedule</option>
@@ -833,7 +848,7 @@
 						<div *ngIf="url.scheduled=='true'">	
 						<div class="form-group col-md-3">
 								<label for="days">Wait X Days After Click</label>
-								 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days">
+								 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
 							</div>
 						<div class="form-group col-md-3">
 							<label for="time">Send Time</label> 

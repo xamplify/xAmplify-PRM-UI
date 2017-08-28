@@ -18,7 +18,6 @@ import { SocialLoginComponent } from './social/common/social-login/social-login.
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
-import { DummyComponent } from './loader/dummy/dummy.component';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
@@ -48,7 +47,6 @@ export const routes: Routes = [
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'embed-video/:type/:alias', component: ShareVideoComponent },
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent },
-    { path: 'dummyPage', component: DummyComponent },
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'user/logEmailURLClick', component: LogEmailClickComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },

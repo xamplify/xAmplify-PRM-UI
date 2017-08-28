@@ -24,7 +24,6 @@ import { SocialCallbackComponent } from './social/common/social-callback/social-
 
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
-import { DummyComponent } from './loader/dummy/dummy.component';
 
 import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
@@ -52,7 +51,7 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
 // import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 @NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
-        ShareVideoComponent, CampaignVideoComponent, DummyComponent, ActivateAccountComponent,
+        ShareVideoComponent, CampaignVideoComponent, ActivateAccountComponent,
         LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,

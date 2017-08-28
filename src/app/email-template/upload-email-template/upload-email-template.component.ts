@@ -147,7 +147,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         $('#fileId').val('');
     }
 
-    checkAvailableNames(value: any) {
+    checkAvailableNames(event:any,value: any) {
         if (value.trim().length > 0 ) {
             this.isValidTemplateName = true;
             $("#templateName").attr('style','border-left: 5px solid #42A948');
