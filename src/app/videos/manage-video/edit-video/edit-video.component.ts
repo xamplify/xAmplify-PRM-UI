@@ -1,5 +1,5 @@
 import {
-    Component, OnInit, OnDestroy, Input, Output, Renderer, EventEmitter, ChangeDetectorRef, AfterViewInit,
+    Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
     style, state, animate, transition, trigger
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -139,7 +139,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     disablePlayerSettingnew: boolean;
     loadRangeDisable: boolean;
     enableVideoControl: boolean;
-    tagsUndefined = false;
     loadNgOninit = true;
     videoTitlesValues = [];
     overLaySet = false;
@@ -152,6 +151,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     _offColorBswitch = 'warning';
     public size = 'normal';
     public animate = true;
+    public checkTag : string;
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router,
         public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -218,7 +218,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.openStartingDivs();
         this.likesValues = 2;
         this.disLikesValues = 0;
-        this.videoViews = this.saveVideoFile.views;
         this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;
         this.uploader = new FileUploader({
@@ -234,11 +233,22 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
+         $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="r-video">');
     }  // closed constructor
     openStartingDivs() {
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
     }
+     public startsWithAt(control: FormControl) {
+        let checkTag: string;
+        if (control.value.charAt(0) === ' ' &&  checkTag.length === 0) {
+            return { 'startsWithAt': true };
+        }
+        return null;
+    }
+
+    public validatorsTag = [this.startsWithAt];
+
     shareClick() {
         this.openWindow();
     }
@@ -881,9 +891,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     show360ModalDialog() {
         $('#overLayDialog').append($('#overlay-modal').show());
     }
-    tagsInput() {
-        this.tagsUndefined = false;
-    }
     ngOnInit() {
         this.removeVideoTitlesWhiteSpaces();
         this.loadRangeDisable = true;
@@ -930,7 +937,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 let isCallActionthere = false;
                 this.ready(function () {
                     if (isValid === 'StartOftheVideo') {
-                        $('.vjs-big-play-button').css('display', 'none');
+                        $('.video-js.vjs-default-skin .vjs-big-play-button').css('display', 'none');
                         player.play();
                         player.pause();
                         callactionValue.showEditModalDialog();
@@ -1181,11 +1188,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             }
-            if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '')) {
-                this.tagsUndefined = true;
-                // this.saveVideoFile.tags.length = 0;
-                this.openStartingDivs();
-            }
+            // if (this.saveVideoFile.tags.length === 1 && (tags[0]['value'] === '' || tags[0] === '')) {
+            //     this.tagsUndefined = true;
+            //     this.saveVideoFile.tags.length = 0;
+            //     this.openStartingDivs();
+            // }
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
             this.saveVideoFile.title = titleUpdatedValue;
@@ -1205,7 +1212,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.callACtion = this.enableCalltoAction;
             this.xtremandLogger.info(this.saveVideoFile.transparency);
             this.xtremandLogger.info(this.saveVideoFile);
-            if (this.tagsUndefined === false) {
                 return this.videoFileService.saveVideo(this.saveVideoFile)
                     .subscribe((result: any) => {
                         if (this.saveVideoFile != null) {
@@ -1221,8 +1227,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.xtremandLogger.errorPage(error);
                     } ),
                     () => this.xtremandLogger.log(this.saveVideoFile);
-            }
-        } else { this.openStartingDivs(); }
+        }
     }
     validVideoTitle(videoTitle: string) {
         console.log(videoTitle.length);

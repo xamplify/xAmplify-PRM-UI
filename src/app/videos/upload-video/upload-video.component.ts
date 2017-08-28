@@ -294,6 +294,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
+        this.router.navigate(['./home/videos']);
     }
     trimVideoTitle(title: string) {
         if (title.length > 40) {
@@ -351,14 +352,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.video-js .vjs-current-time').css('display', 'none');
-            $('.vjs-time-divider').css('display', 'none !important');
-            $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
-            $('.vjs-time-control .vjs-time-divider').css('display', 'none !important');
-            $('.video-js .vjs-duration').css('display', 'none');
-            $('.video-js .vjs-fullscreen-control').hide();
-            $(".vjs-tech").css("width", "100%");
-            $(".vjs-tech").css("height", "100%");
             const self = this;
             self.player = videojs('myVideo',
                 {
@@ -394,13 +387,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.player.on('deviceReady', function () {
                 self.saveVideo = false;
                 self.discardVideo = false;
-                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
-                $('.vjs-time-control .vjs-time-divider').css('display', 'none !important');
-                $('.video-js .vjs-duration').css('display', 'none');
-                $(".vjs-tech").css("width", "100%");
-                $(".vjs-tech").css("height", "100%");
                 $('.video-js .vjs-fullscreen-control').hide();
-                //  $(".vjs-fullscreen-control .vjs-control vjs-button").css("display","none !important");
                 console.log('device error:', this.player.deviceErrorCode);
             });
             self.player.on('error', function (error: any) {
@@ -419,10 +406,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.testSpeed();
                 self.rageDisabled = true;
                 console.log('started recording!');
-                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
-                $(".vjs-tech").css("width", "100%");
-                $(".vjs-tech").css("height", "100%");
-                $('.video-js .vjs-fullscreen-control').hide();
+                // $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
                 // $("#script-text").animate({ scrollTop: $("#script-text").prop("scrollHeight") }, volume);
                 self.saveVideo = false; // save button disabled
                 self.discardVideo = false; // discard button disabled
@@ -433,8 +417,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.discardVideo = true; // discard button enabled
                 self.testSpeeddisabled = false; // enabled the test speed button
                 self.closeModalId = true; // close button enabled
-                  $('.video-js .vjs-control-bar').show();
-                $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
                 $('.video-js .vjs-fullscreen-control').show();
                 self.stop();
                 self.rageDisabled = false;

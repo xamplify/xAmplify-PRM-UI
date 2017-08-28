@@ -38,44 +38,6 @@
 				 <source [src] = videoUrl  type="video/mp4" />>
 			</video>	
 			</div>
-	      <!-- call to action modal popup-->
-			  <!--<div id="overlay-modal" class="video-js" [ngClass]="['showVideoDiv']"
-			   style="height: 318px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">   
-               <label style="margin-top: 23px;"></label>
-                <form #f="ngForm" novalidate>
-                  <div>
-                  <p style="font-size: 22px; text-align: center; color: white;word-break: break-all;line-height: 1.5em;margin:0;">{{selectedVideo.upperText}}</p>
-                  </div>
-                 <div style="width: 500px;margin-top: 26px;">
-                 <div *ngIf="isFistNameChecked==true" id="message1" style="margin-left: 63px; float: left; width: 236px;">
-                     <input type="text" [(ngModel)]="firstName" name="firstName" class="form-group paddingCss"   (ngModelChange)="checkingCallToActionValues()"
-                     placeholder="First name" style="font-size: 22px;width: 232px; height: 51px;color:black">
-                 </div>  
-                 <div *ngIf="isFistNameChecked==true" id="message2" style="float: left; width: 121px;">
-                    <input type="text" [(ngModel)]="lastName" name="lastName" class="form-group paddingCss"  (ngModelChange)="checkingCallToActionValues()"
-                     placeholder="Last name" style="font-size: 22px;width: 238px; height: 51px;color:black;margin-left: 7px;">
-                </div> 
-                  <div id="maimessage" [class.emailCustomCss]="isPlayButton==false" style="width: 500px;"> 
-                    <div style=" width: 106px;">
-                    <input type="text" [(ngModel)]="model.email_id" name="email_id" class="form-group paddingCss" (ngModelChange)="checkingCallToActionValues()"
-                   placeholder="Email" style=" width: 311px; height: 51px; margin-left: 63px; font-size: 22px; color: black;" 
-                   pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-				    #email_id="ngModel">
-				    </div>
-				     <div id="replay-video" [class.isPlayButtonCss]="isPlayButton==false" style=" float: left;width: 106px;font-size: 37px;margin-left: 373px; margin-top: -66px;">  
-                      <a><button id="playorsubmit" type="button" class="btn green button" [class.isPlaySubmit]= "isPlay==true" [disabled]="isOverlay==true" style=" margin-left: 1px;margin-top: 0px;" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button></a>
-                    </div>
-                 </div> 
-               </div>
-                <div [class.isOffirstname]="isPlayButton==false">
-                 <p style="font-size: 16px;text-align:center;color:white" [class.isLowerTextCss]="isPlayButton==false">{{selectedVideo.lowerText}}</p>
-                </div> 
-                   <div>
-                     <label *ngIf="videoOverlaySubmit=='SUBMIT'" id="replay-video1" style="float:left; color:white;cursor:pointer;margin-top: -32px; position:absolute" (click)="repeatPlayVideo()"><i class="fa fa-repeat" aria-hidden="true" style="font-size: 26px; margin-left: 11px;margin-top: 27px;"></i></label>
-                      <label *ngIf="isSkipChecked==true" id="skipOverlay" style="float:right;color:white;cursor:pointer;margin-top:-32px" (click)="skipOverlay()"><i class="fa fa-share" aria-hidden="true" style="font-size: 26px;margin-top: 30px;"></i><b style="font-size: 13px; color:white;" >skip</b></label>
-                 </div>  
-                </form>     
-          </div>-->
 		    	<!-- video overlay modal popup -->
 		
              <div id="overlay-modal" class="video-js overlay is360video"  [class.overlaySet]="overLaySet==false"
@@ -120,33 +82,18 @@
 				<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
 			</div>
 			<div class="col-xs-12 col-sm-6" style="padding: 0;">
-				<a  *ngIf="shareVideo==true" class="btn btn-primary" style="    color: #fff;
-    background-color: #00a6e8;
-    border: 1px solid #00a6e8;
-    border-radius: 0;
-    padding: 5px 25px;
-    text-transform: lowercase;
-    letter-spacing: 1px;"
-					(click)="shareClick()">
-				<!--[routerLink]="['../../../embed-video', selectedVideo.viewBy,selectedVideo.alias]">-->
+				<a  *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 				</a> 
-				<a  *ngIf="embedVideo==true" class="btn btn-primary" style="   color: #00a6e8;
-    background-color: #fff;
-    border: 1px solid #00a6e8;
-    border-radius: 0;
-    padding: 5px 25px;
-    text-transform: lowercase;
-    letter-spacing: 1px;"
+				<a  *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" 
 					data-toggle="modal" data-target="#myModal">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-6" style="padding: 0;">
 				<div class="col-xs-12" style="padding: 0;">
-					<span class="pull-right" style="border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%;
-	text-align: right;">
-	<h4 style="color: #777;font-weight: 500;margin: 5px;">{{selectedVideo.views}} Views</h4></span>
+					<span class="pull-right videoViews">
+	           <h4 class="viewsh4">{{selectedVideo.views}} views</h4></span>
 				</div>
 				<div class="col-xs-12" style="padding: 0;">
 					<span class="pull-right">
@@ -159,26 +106,6 @@
 					</span>
 				</div>	
 			</div>
-			
-			<!-- <div>
-				<span align="left">{{selectedVideo.views}} Views</span>
-				<div *ngIf="likes==true">
-					<span style="float: right">
-						<button class="fa fa-thumbs-up" style="color: #337ab7;" (click)="likesValuesDemo()">{{likesValues}}</button> &nbsp;
-						<button class="fa fa-thumbs-down" style="color: #f3565d;" (click)="disLikesValuesDemo()">{{disLikesValues}}</button>
-					</span>
-				</div>
-			</div> -->
-		        <!-- <div>   
-				    <a  *ngIf="shareVideo==true" class="btn btn-primary" style="color:white; background-color: #00a6e8"
-				      (click)="shareClick()">
-						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-					</a> 
-					<a  *ngIf="embedVideo==true" class="btn btn-primary" style="background-color: #00a6e8"
-						data-toggle="modal" data-target="#myModal">
-						 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
-					</a>
-				</div> -->
 				
 				<!-- emebd src Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
@@ -194,21 +121,25 @@
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
 											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{selectedVideo.title}}</a></textarea>
 									</div>
-									<span class="input-group-btn">
+									<div class="col-xs-12 col-sm-12 col-md-12">
 										<div style="margin-top: 4px;">
-											<label style="font-size: 16px;margin-left: 6px;">video size:
-											   <select style="font-size: 12px; margin-top: -6px;" class="videoSizeCss"[(ngModel)]="videosize" [ngModelOptions]="{standalone: true}" (change)="embedVideoSizes()">
+											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">video size:
+											   <select class="videoSizeCss"[(ngModel)]="videosize" [ngModelOptions]="{standalone: true}"
+												 (change)="embedVideoSizes()">
 												<option style="font-size:12px" *ngFor="let size of videoSizes" [value]="size">{{size}}</option>
 											</select>  
-											 </label>
-											<label style="font-size: 16px;margin-left: 6px;">allow full screen :
+											</div>
+											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Allow Full Screen :
 											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
-											</label>
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="position:absolute; right:0px;background: #00a6e8; color: #FFF;"
+											</div>
+											<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 0">
+											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"
+											  style="width:100%; background: #00a6e8; color: #FFF;border-radius: 1px;"
 												(click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
 											</button>
+											</div>
 										</div>
-									</span>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -379,17 +310,12 @@
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
 												<div class="mix-details">
 													<h4>{{titleCheckLength(videoFile.title)}}</h4>
-													<a class="mix-preview fancybox-button"
-														(click)="showVideo(videoFile, i)"
-														title="play video"
-														data-rel="fancybox-button"> <i class="fa fa-play"></i>
-													</a> <span align="right"
-														style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-													<span align="left"
-														style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
-													<span align="left"
-														style="bottom: 10px; left: 10px; position: absolute;">by
-														customer</span>
+													<a class="mix-preview fancybox-button" (click)="showVideo(videoFile, i)"
+														title="play video" data-rel="fancybox-button"> <i class="fa fa-play" style="margin-right:0px"></i>
+													</a>
+													<span align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+													<span align="left" style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
+													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">by customer</span>
 												</div>
 											</div>
 										</div>
