@@ -1487,7 +1487,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             length = length+1;
             var id = 'reply-'+length;
             this.reply.divId = id;
-            this.reply.actionId = 0;
+            this.reply.actionId =0;
             this.replies.push(this.reply);
             this.allItems.push(id);
           }
