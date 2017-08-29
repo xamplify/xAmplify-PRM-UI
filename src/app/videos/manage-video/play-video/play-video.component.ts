@@ -101,7 +101,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.likesValues = 2;
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
-    }
+      }
     embedSourcePath(alias: string, viewBy: string) {
     this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
     console.log(this.embedSrcPath);
@@ -542,6 +542,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.is360Value = true;
         $('#newPlayerVideo').empty();
         $('.h-video').remove();
+        $('.playvideo-css').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
@@ -756,6 +757,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     playNormalVideoFiles() {
         $('.p-video').remove();
+        $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="playvideo-css">');
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
@@ -985,6 +987,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         $('.h-video').remove();
         $('.p-video').remove();
+        $('.playvideo-css').remove();
     }
 
     // the below code is used for logging //////////////////////////////

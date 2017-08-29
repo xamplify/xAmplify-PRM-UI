@@ -86,7 +86,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public gifBoolean3: boolean;
     public likesValues: number;
     public disLikesValues: number;
-    public videoViews: number;
     public isPlay = false;
     public isThumb: boolean;
     public isPlayButton: boolean;
@@ -151,7 +150,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     _offColorBswitch = 'warning';
     public size = 'normal';
     public animate = true;
-    public checkTag : string;
+    public checkTag: string;
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router,
         public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -233,8 +232,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
-         $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="r-video">');
-    }  // closed constructor
+   }  // closed constructor
     openStartingDivs() {
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
@@ -417,6 +415,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('edit_video_player').empty();
         this.xtremandLogger.log('Loaded 360 Video');
         $('.h-video').remove();
+        $('.video-css').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
@@ -922,6 +921,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo').empty();
         if (this.saveVideoFile.is360video !== true) {
             $('.p-video').remove();
+            $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="video-css">');
             $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
@@ -1288,6 +1288,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoFileService.actionValue = ''; // need to change to empty
         $('.h-video').remove();
         $('.p-video').remove();
+        $('.video-css').remove();
         this.tempVideoFile = null;
     }
 }

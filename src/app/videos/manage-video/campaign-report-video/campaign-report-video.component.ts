@@ -28,7 +28,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService) {
         this._elementRef = elementRef;
-    }
+      }
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -79,6 +79,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
     } // ng After view closed
     playNormalVideo() {
         $('.p-video').remove();
+        $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="campaign-css">');
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
@@ -160,6 +161,7 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
         this.is360Value = true;
         console.log('Loaded 360 Video');
         $('.h-video').remove();
+        $('.campaign-css').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript" class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript" class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
@@ -255,5 +257,6 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
         } else { }
         $('.h-video').remove();
         $('.p-video').remove();
+        $('.campaign-css').remove();
     }
 }

@@ -11,7 +11,6 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLog } from '../models/xtremand-log';
 import { ActionLog } from '../models/action';
 import { User } from '../../core/models/user';
-declare var swal: any;
 
 @Injectable()
 export class VideoFileService {
