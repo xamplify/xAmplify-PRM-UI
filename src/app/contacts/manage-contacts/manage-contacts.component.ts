@@ -968,7 +968,7 @@ export class ManageContactsComponent implements OnInit {
         }
     }
     */
-    checkAllInvalidContacts(ev:any){
+/*    checkAllInvalidContacts(ev:any){
         if(ev.target.checked){
             console.log("checked");
             $('[name="invalidContact[]"]').prop('checked', true);
@@ -1030,7 +1030,91 @@ export class ManageContactsComponent implements OnInit {
         }
         //this.contactsUtility();
         event.stopPropagation();
+    }*/
+    
+    checkAllInvalidContacts(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="invalidContact[]"]').prop('checked', true);
+            //this.isContactList = true;
+            let self = this;
+            $('[name="invalidContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedInvalidContactIds.push(parseInt(id));
+                $('#row_'+id).addClass('invalid-contacts-selected');
+             });
+            for ( var i = 0; i < this.pagination.pagedItems.length; i++ ) {
+                    var object = {
+                        "id": this.pagination.pagedItems[i].id,
+                        "userName": null,
+                        "emailId": this.pagination.pagedItems[i].emailId,
+                        "firstName": this.pagination.pagedItems[i].firstName,
+                        "lastName": this.pagination.pagedItems[i].lastName,
+                        "mobileNumber": null,
+                        "interests": null,
+                        "occupation": null,
+                        "description": null,
+                        "websiteUrl": null,
+                        "profileImagePath": null,
+                        "userListIds": this.pagination.pagedItems[i].userListIds
+                    }
+                    console.log( object );
+                    this.invalidRemovableContacts.push( object );
+
+            }
+            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+        }else{
+           console.log("unceck");
+            $('[name="invalidContact[]"]').prop('checked', false);
+            //this.isContactList = false;
+            $('#user_list_tb tr').removeClass("invalid-contacts-selected");
+            this.selectedInvalidContactIds = [];
+        }
+        ev.stopPropagation();
     }
+    
+    invalidContactsSelectedUserIds(contactId:number,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+        if(isChecked){
+            $('#row_'+contactId).addClass('invalid-contacts-selected');
+            this.selectedInvalidContactIds.push(contactId);
+            for ( var i = 0; i < this.userListIds.length; i++ ) {
+                if ( contactId == this.userListIds[i].id ) {
+                    var object = {
+                        "id": this.userListIds[i].id,
+                        "userName": null,
+                        "emailId": this.userListIds[i].emailId,
+                        "firstName": this.userListIds[i].firstName,
+                        "lastName": this.userListIds[i].lastName,
+                        "mobileNumber": null,
+                        "interests": null,
+                        "occupation": null,
+                        "description": null,
+                        "websiteUrl": null,
+                        "profileImagePath": null,
+                        "userListIds": this.userListIds[i].userListIds
+                    }
+                    console.log( object );
+                    this.invalidRemovableContacts.push( object );
+
+                }
+            }
+        }else{
+            $('#row_'+contactId).removeClass('invalid-contacts-selected');
+            this.selectedInvalidContactIds.splice($.inArray(contactId,this.selectedInvalidContactIds),1);
+            for(let i = 0; i< this.invalidRemovableContacts.length; i++) {
+                console.log(contactId +' : '+ this.invalidRemovableContacts[i].id);
+                if(contactId === this.invalidRemovableContacts[i].id){
+                    this.invalidRemovableContacts.splice(i,1);
+                    console.log(this.invalidRemovableContacts);
+                    break;
+                }
+            }
+        }
+        //this.contactsUtility();
+        event.stopPropagation();
+    }
+    
     
     
     /*checkAll(ev:any){
