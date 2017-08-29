@@ -630,7 +630,7 @@ export class ManageContactsComponent implements OnInit {
             this.pagination.pageIndex = 1;
                 $('#checkAllExistingContacts').prop("checked",false);
                 //this.selectedDropDown = "all";
-                this.getAllFilteredResults(this.pagination);
+                //this.getAllFilteredResults(this.pagination);
             }catch(error){
                 console.log(error, "getSelectedContacts","ManageContactComponent");
             }
@@ -659,7 +659,7 @@ export class ManageContactsComponent implements OnInit {
                 this.pagination.pageIndex = 1;
                     $('#checkAllExistingContacts').prop("checked",true);
                     //this.selectedDropDown = "all";
-                    this.getAllFilteredResults(this.pagination);
+                    //this.getAllFilteredResults(this.pagination);
                 }catch(error){
                     console.log(error, "getSelectedContacts","ManageContactComponent");
                 }
@@ -943,7 +943,7 @@ export class ManageContactsComponent implements OnInit {
         })
     }
 
-    getNumberOfContactItemsPerPage(items:any){
+    /*getNumberOfContactItemsPerPage(items:any){
         try{
             $('#checkAllExistingContacts').prop("checked",false);
            // this.contactItemsSize = items;
@@ -967,7 +967,7 @@ export class ManageContactsComponent implements OnInit {
             console.log(error, "Get Filtered Contacts","Publish Content Component")
         }
     }
-    
+    */
     checkAllInvalidContacts(ev:any){
         if(ev.target.checked){
             console.log("checked");
