@@ -60,14 +60,14 @@
 		    <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
 		        	<span class="fa fa-envelope"></span>
-                	<h5 class="hidden-xs">Email Template 3</h5>
+                	<h5 class="hidden-xs">Email Template</h5>
                 </div>
 		    </div>
 		    
 		    <div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 80, 'step-5');">
 		        <div class="cenetered-block">
 		        	<span class="fa fa-envelope"></span>
-                	<h5 class="hidden-xs">Email Template 3</h5>
+                	<h5 class="hidden-xs">Email Template</h5>
                 </div>
 		    </div>
 		    
