@@ -211,7 +211,7 @@ color:blue;
 								    	<p class="custom-error-message">Please enter the contact list name.</p>
 								  	</div>
 								  	<div *ngIf="noOptionsClickError ">
-								    	<p class="custom-error-message">Please select the given option.</p>
+								    	<p class="custom-error-message">Please select one of the option.</p>
 								  	</div>
 								    </div>
 								  </div>
@@ -656,6 +656,7 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
+  								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Salesforce account will remove from Xtremand.</p>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkSalesforceAccount()">UnLink Account</button>
  								  </div>
   					        </form>
@@ -679,6 +680,7 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
+  								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Zoho account will remove from Xtremand.</p>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkZohoAccount()">UnLink Account</button>
  								  </div>
   					        </form>
@@ -701,6 +703,7 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
+  								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Google account will remove from Xtremand.</p>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkGoogleAccount()">UnLink Account</button>
  								  </div>
   					        </form>
