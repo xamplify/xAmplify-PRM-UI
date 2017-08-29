@@ -626,7 +626,7 @@
 				                  					  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
 				                 				    </td> -->
 				                 				    
-				                 				    <td align="center">
+				                 				    <td align="center" *ngIf="allContactData==true">
 				                    <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
 				                    </td>
 				                 				    
@@ -634,9 +634,12 @@
 													type="checkbox" [checked]="isAvailable"
 													(change)="invalidContactsChecked($event.target.checked)">
 												</th> -->
-												<td align="center" *ngIf="invalidContactData==true">
+												<!-- <td align="center" *ngIf="invalidContactData==true">
 				                  					  <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"  (change)="checkAllInvalidContacts($event)" class="" id="checkAllExistingInvalidContacts" />
-				                 				    </td>
+				                 				    </td> -->
+				                 				    <td align="center" *ngIf="invalidContactData==true">
+				                    <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"  (change)="checkAllInvalidContacts($event)" class="" id="checkAllExistingInvalidContacts" />
+				                    </td>
 												<!-- <th>
 										 USERNAME
 									</th> -->
@@ -665,7 +668,7 @@
 						                               (click)="highlightRow(allcontacts.id,allcontacts.emailId,$event)"/>
 					                                </td> -->
 					                                
-					                                <td align="center" *ngIf="isAdd || !isCampaignDraftContactList ">
+					                                <td align="center" *ngIf="allContactData==true">
 						         	     <input type="checkbox" [checked]="selectedContactListIds.indexOf(allcontacts.id)>-1" class="chk" 
 									  [class.contact-list-selected]="selectedContactListIds.indexOf(allcontacts.id)>-1"
 						                 lang="{{allcontacts.name}}"  name="campaignContact[]" value="{{allcontacts.id}}" id="{{allcontacts.id}}"
@@ -681,12 +684,20 @@
 												<!-- <td>
 										 {{allcontacts.userName}}
 									</td> -->
-												<td *ngIf="invalidContactData==true" align="center">
+									<td align="center" *ngIf="invalidContactData==true">
+						         	     <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1" class="chk" 
+									  [class.contact-list-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+						                 lang="{{allcontacts.name}}"  name="invalidContact[]" value="{{allcontacts.id}}" id="{{allcontacts.id}}"
+						                 (click)="invalidContactsSelectedUserIds(allcontacts.id,allcontacts.emailId,allcontacts.firstName,allcontacts.lastName,$event)"/>
+					                </td>
+									
+									
+												<!-- <td *ngIf="invalidContactData==true" align="center">
 						         	                 <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1" class="chk" 
 									                   [class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
 						                               lang="{{allcontacts.name}}"  name="invalidContact[]" value="{{allcontacts.id}}" id="{{allcontacts.id}}"
 						                               (click)="invalidContactsSelectedUserIds(allcontacts.id,$event)"/>
-					                                </td>
+					                                </td> -->
 												<td>{{allcontacts.emailId}}</td>
 												<td>{{allcontacts.firstName}}</td>
 												<td class="center">{{allcontacts.lastName}}</td>

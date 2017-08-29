@@ -1032,6 +1032,7 @@ export class ManageContactsComponent implements OnInit {
         event.stopPropagation();
     }
     
+    
     /*checkAll(ev:any){
         if(ev.target.checked){
             console.log("checked");
