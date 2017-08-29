@@ -77,10 +77,10 @@
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
 													<div style="top: 30%; position: relative;">
-														<a *ngIf="campaign.launched==false" class="mix-preview4 fancybox-button" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
-															<i class="fa fa-pencil-square-o"></i>
+														<a *ngIf="campaign.launched==false" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
+															<i class="fa fa-pencil-square-o"></i><!-- class="mix-preview4 fancybox-button" -->
 														</a> 
-														<a class="mix-preview6 fancybox-button" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
+														<a class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
