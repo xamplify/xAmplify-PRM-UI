@@ -137,6 +137,7 @@ public seekStart360 = null;
         }
       // this.checkingCallToActionValues();
        this.defaultVideoSettings();
+       this.transperancyControllBar(this.embedVideoFile.transparency);
      //  this.transperancyControllBar(this.embedVideoFile.transparency);
        if (this.embedVideoFile.enableVideoController === false) {
            this.defaultVideoControllers();
@@ -697,7 +698,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
     }
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.embedVideoFile.controllerColor, value);
-        $('.video-js .vjs-control-bar').css('background-color', rgba);
+     //   $('.video-js .vjs-control-bar').css('background-color', rgba);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
     }
    extractData( res: Response ) {
        const body = res.json();

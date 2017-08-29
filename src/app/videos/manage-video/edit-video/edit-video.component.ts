@@ -415,7 +415,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('edit_video_player').empty();
         this.xtremandLogger.log('Loaded 360 Video');
         $('.h-video').remove();
-        $('.video-css').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
@@ -580,7 +579,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             color = '#fbfbfb';
         } else { color = this.saveVideoFile.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        $('.video-js .vjs-control-bar').css('background-color', rgba);
+       // $('.video-js .vjs-control-bar').css('background-color', rgba);
+         $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
         this.valueRange = value;
         this.xtremandLogger.log(this.valueRange);
     }
@@ -921,7 +921,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo').empty();
         if (this.saveVideoFile.is360video !== true) {
             $('.p-video').remove();
-            $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="video-css">');
             $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
@@ -1288,7 +1287,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoFileService.actionValue = ''; // need to change to empty
         $('.h-video').remove();
         $('.p-video').remove();
-        $('.video-css').remove();
         this.tempVideoFile = null;
     }
 }

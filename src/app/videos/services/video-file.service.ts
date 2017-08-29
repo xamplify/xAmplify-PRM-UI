@@ -3,8 +3,6 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 import { SaveVideoFile } from '../models/save-video-file';
 import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';

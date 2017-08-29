@@ -9,13 +9,13 @@ import { UploadVideoComponent } from './upload-video/upload-video.component';
 import { UserVideoComponent } from './user-video/user-video.component';
 import { EditVideoComponent } from './manage-video/edit-video/edit-video.component';
 import { PlayVideoComponent } from './manage-video/play-video/play-video.component';
-import { CampaignReportVideoComponent } from './manage-video/campaign-report-video/campaign-report-video.component';
+import { VideoBasedReportsComponent } from './manage-video/video-based-reports/video-based-reports.component';
 import { VideoUtilService} from './services/video-util.service';
 
 @NgModule({
   imports: [ SharedModule, VideosRoutingModule ],
   declarations: [ ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
-                 EditVideoComponent, PlayVideoComponent, CampaignReportVideoComponent ],
+                 EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent ],
   providers: [ VideoUtilService ]
 
 })

@@ -5,11 +5,11 @@ import { VideoUtilService } from '../../services/video-util.service';
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, require: any;
 
 @Component({
-    selector: 'app-campaign-report-video',
-    templateUrl: './campaign-report-video.component.html',
-    styleUrls: ['./campaign-report-video.component.css', '../../../../assets/css/video-css/video-js.custom.css']
+    selector: 'app-video-based-report',
+    templateUrl: './video-based-reports.component.html',
+    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css']
 })
-export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterViewInit {
+export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
     public _elementRef: ElementRef;
     public videoJSplayer: any;
@@ -48,7 +48,8 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
     }
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
-        $('.video-js .vjs-control-bar').css('background-color', rgba);
+    //    $('.video-js .vjs-control-bar').css('background-color', rgba);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
     }
     ngOnInit() {
         this.posterImagePath = this.selectedVideo.imagePath;
@@ -79,7 +80,6 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
     } // ng After view closed
     playNormalVideo() {
         $('.p-video').remove();
-        $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet"  class="campaign-css">');
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
@@ -161,7 +161,6 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
         this.is360Value = true;
         console.log('Loaded 360 Video');
         $('.h-video').remove();
-        $('.campaign-css').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript" class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript" class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
@@ -257,6 +256,5 @@ export class CampaignReportVideoComponent implements OnInit, OnDestroy, AfterVie
         } else { }
         $('.h-video').remove();
         $('.p-video').remove();
-        $('.campaign-css').remove();
     }
 }

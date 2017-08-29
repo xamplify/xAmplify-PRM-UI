@@ -6,6 +6,7 @@ import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 import { Logger } from 'angular2-logger/core';
 import { XtremandLog } from '../models/xtremand-log';
 declare var $, videojs: any;
@@ -59,7 +60,8 @@ public seekStart360 = null;
 LogAction: typeof LogAction = LogAction;
   constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
             public _logger: Logger, public http: Http, public authenticationService: AuthenticationService,
-            public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService) {
+            public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService ,
+            public videoUtilService: VideoUtilService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
@@ -183,6 +185,8 @@ deviceDectorInfo() {
         $('.video-js .vjs-play-progress').css('background-color', this.campaignVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.campaignVideoFile.playerColor);
         $('.video-js .vjs-control-bar').css('background-color', this.campaignVideoFile.controllerColor);
+        const rgba = this.videoUtilService.convertHexToRgba(this.campaignVideoFile.controllerColor, this.campaignVideoFile.transparency);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
    }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
