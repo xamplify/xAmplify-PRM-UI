@@ -223,14 +223,14 @@
 					<div class="ribbon" *ngIf="contactList.socialNetwork=='SALESFORCE'"><span>SALESFORCE</span></div> -->
 							<h4 style="top: 10%; position: relative;">{{contactListNameLength(contactList.name)}}</h4>
 							<div style="top: 12%; position: relative;">
-								<a class="mix-preview5 fancybox-button" (click)="downloadContactList(contactList.id)"
+								<a class="mix-preview5" (click)="downloadContactList(contactList.id)"
 									title="Dowload List" data-rel="fancybox-button"> <i
 									class="fa fa-cloud-download"></i>
-								</a> <a class="mix-preview4 fancybox-button"
+								</a> <a class="mix-preview4"
 									(click)="editContactList(contactList.id)" title="Edit List"
 									data-rel="fancybox-button"> <i
 									class="fa fa-pencil-square-o"></i>
-								</a> <a class="mix-preview6 fancybox-button"
+								</a> <a class="mix-preview6"
 									(click)="showAlert(contactList.id)" title="Delete List"
 									data-rel="fancybox-button" lang="{{contactList.id}}"> <i
 									class="fa fa-trash"></i>
