@@ -19,7 +19,7 @@
 	 .bottomCss{bottom: -183px; }
 </style>
 
-<div class="portlet light" style="padding:5px 5px 210px 17px">
+<div class="portlet light" style="padding:0px 5px 690px 17px">
 	<div class="portlet-body">   	
 			<!--<div *ngIf="is360Value==false">
 		  <video id="embed_video_player" class="video-js vjs-default-skin"
@@ -28,16 +28,16 @@
 				  <source [src]=videoUrl type="video/mp4" />
 	       </video>
 	   </div>-->
-		<div>
+	<div class="col-md-6" style="padding:0">	
+	     <div>
 			<div id="newPlayerVideo"></div>
         </div>
 			<div id="overLayDialog"></div>
-          <!-- modal popup started here-->
-            <div id="overlay-modal" class="video-js overlay is360video"  
+          <!-- modal popup started here--> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
+            <!-- <div id="overlay-modal" class="video-js overlay is360video"  
               style="height: 318px; width: 640px;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
-					<!--<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>-->
 					<form #f="ngForm" novalidate>
-					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
+					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> 
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
 						<div class="flex" *ngIf="isFistNameChecked==true" >
 							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
@@ -69,8 +69,78 @@
                       	<b style="font-size: 13px; color:white;" >skip</b>
 					  </div>
 					 </div>
+				</div> -->
+			<div id="overlay-modal" class="video-js overlay is360video" 
+              style="height: 318px; width: -webkit-fill-available;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+					<!--<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>-->
+					<form #f="ngForm" novalidate>
+					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
+						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
+						<div class="flex" *ngIf="isFistNameChecked==true" >
+							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
+								class="form-control text-box m21" placeholder="First Name">
+							<input type="text" name="lastName"  [(ngModel)]="lastName" (ngModelChange)="checkingCallToActionValues()"
+							   class="form-control text-box m21" placeholder="Last Name">
+						</div>
+						<div class="flex m02">
+							<div class="w-8">
+								<input type="text" name="email_id"  [(ngModel)]="model.email_id" (ngModelChange)="checkingCallToActionValues()"
+								 class="form-control text-box" placeholder="Email Address"
+								 pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+				                 #email_id="ngModel">
+							</div>
+							<div class="w-4">
+								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="isOverlay==true"
+								 (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button>
+							</div>
+						</div>
+                         <h4 class="upper-text-heading lowerText">{{lowerTextValue}}</h4>
+					 </div>
+				   </form>
+				     <div>
+					 <div *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+						 <i class="fa fa-repeat" aria-hidden="true"></i>
+					</div>
+                      <div  *ngIf="isSkipChecked==true"  id="skipOverlay" style="cursor: pointer">
+                      	<i class="fa fa-forward" aria-hidden="true"></i>
+                      	<b style="font-size: 13px; color:white;" >skip</b>
+					  </div>
+					 </div>
 				</div>
+
+            <div class="col-xs-12" style="padding:0">
+				<h3 style="word-break: break-all;color:#777">{{embedVideoFile.title}}</h3>
+			</div>
+
+           <!-- <div class="col-xs-12 col-sm-6" style="padding: 0;">
+				<div class="col-xs-12" style="padding: 0;">
+					<span class="pull-right videoViews">
+	           <h4 class="viewsh4">{{embedVideoFile.views}} views</h4></span>
+				</div>
+				<div class="col-xs-12" style="padding: 0;">
+					<span class="pull-right">
+						<button style="color: #337ab7; background: #fff;">
+							<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+							{{likesValues}}</button>
+						<button style="color: #f3565d; background: #fff;padding: 0;">
+							<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+							{{disLikesValues}}</button>
+					</span>
+				</div>	
+			</div> -->
+
+			<div class="col-xs-12" style="padding:0">
+				<strong>Uploaded on :{{embedVideoFile.uploadedDate}}</strong>
+				<p align="justify" style="word-break: break-all;"> {{embedVideoFile.description}}</p>
+			</div>
+			<div class="col-xs-12" style="padding:0">
+				<!-- <p>Category : {{embedVideoFile.category.name}}</p> -->
+				 <share-buttons (popUpClosed)="shareMethod()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
+			</div>
 <!-- 2 modal popup end here-->
+    </div>
+    <!-- <share-buttons (popUpClosed)="shareMethod()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
    </div>
-    <share-buttons (popUpClosed)="shareMethod()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
-</div>
+	</div>
+<div class="col-md-6"> </div>
+   

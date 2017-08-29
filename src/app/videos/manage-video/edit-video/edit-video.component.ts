@@ -406,8 +406,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // share window popup
     openWindow() {
         // this.authenticationService.APP_URL +
-        window.open(this.authenticationService.APP_URL + '/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
-            'mywindow', 'menubar=1,resizable=1,width=670,height=420');
+        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+            'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // normal and 360 video methods
     play360Video() {
@@ -1152,6 +1152,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveVideo() {
         this.validVideoTitle(this.saveVideoFile.title);
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
+        const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
         if (this.isValidTitle === false) {
             this.submitted = true;
             this.saveVideoFile = this.videoForm.value;
@@ -1195,6 +1196,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.tags = this.newTags;
             console.log(this.saveVideoFile.tags);
             this.saveVideoFile.title = titleUpdatedValue;
+            this.saveVideoFile.description = descriptionData;
             this.saveVideoFile.imagePath = this.defaultSaveImagePath;
             this.xtremandLogger.log('image path ' + this.defaultImagePath);
             this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
@@ -1226,9 +1228,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.xtremandLogger.errorPage(error);
                     } ),
                     () => this.xtremandLogger.log(this.saveVideoFile);
-        }
+           } else { if ( this.titleDiv !== true ) { this.openStartingDivs(); } }
     }
     validVideoTitle(videoTitle: string) {
+        this.saveVideoFile.title = videoTitle;
         console.log(videoTitle.length);
         if (videoTitle.replace(/\s/g, '').length) {
         this.emptyTitle = false;
@@ -1240,7 +1243,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             videoTitle = videoTitle.replace(/\s/g, '');
             this.isValidTitle = this.checkVideoTitleAvailability(this.videoTitlesValues, videoTitle.toLowerCase());
         }
-        this.saveVideoFile.title = videoTitle;
     }
     checkVideoTitleAvailability(arr, val) {
         this.xtremandLogger.log(arr.indexOf(val) > -1);

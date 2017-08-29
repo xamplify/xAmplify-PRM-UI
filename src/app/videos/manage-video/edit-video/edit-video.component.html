@@ -222,9 +222,9 @@
 									</div>
 									<div class="form-group">
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;">Thumbnail</label>
-										  <label> <input name="options" ng-control="options" type="radio" [value]="1"
+										  <label> <input name="options" type="radio" 
 												 (click)="changeThumbnailOption();uploader.clearQueue();clearOwnThumbnail()"
-											[(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="margin-top: 12px;" checked="checked">
+											[(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="margin-top: 12px;" [checked]='true'>
 										</label>
 										<div class="col-xs-12 col-sm-6 col-md-12" *ngIf="thumbnailRadioOpen">
 											<!-- <label class="col-md-3 control-label customCss">Thumbnail:</label> -->
@@ -249,7 +249,7 @@
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label">or: </label>
 										<div class="col-xs-12 col-sm-6 col-md-6" style="margin-left: -19px;">
 											<label class="radio-inline"> 
-											 <input name="options" (click)="selectedOwnThumnailOption()" ng-control="options" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
+											 <input name="options" (click)="selectedOwnThumnailOption()" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
 											 <strong>Upload your own Thumbnail</strong>
 											</label>
 										</div>

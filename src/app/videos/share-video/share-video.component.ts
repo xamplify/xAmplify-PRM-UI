@@ -434,14 +434,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
                     } else if (event === "FullscreenOff") {
-                          $("#videoId").css("width", "640px");
+                          $("#videoId").css("width", "auto");
                           $("#videoId").css("height", "318px");
                            player360.fullScreenMode = false;
                            player360.overLaySet = false;
                           if (isCallActionthere === true) {
                             player360.overLaySet = false;
                             player360.fullScreenMode = false;
-                            $("#overlay-modal").css("width", "640px");
+                            $("#overlay-modal").css("width", "auto");
                             $("#overlay-modal").css("height", "318px");
                             $('#videoId').append($('#overlay-modal').hide());
                           //  player360.showEditModalDialog();
@@ -452,7 +452,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                });
               }
               });
-            $('#videoId').css('width', '640px');
+            $('#videoId').css('width', 'auto');
             $('#videoId').css('height', '318px');
     }
     playNormalVideo() {
@@ -472,7 +472,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
            //  this.videoUrl = this.videoUrl + '.mp4?access_token=fab3819f-ee3f-4e39-aa23-c3c330784bc6';
           //   $("#newPlayerVideo video").append('<source src='+this.videoUrl+' type="video/mp4">');
              $('#videoId').css('height', '318px');
-             $('#videoId').css('width', '640px');
+             $('#videoId').css('width', 'auto');
              $('.video-js .vjs-tech').css('width', '100%');
              $('.video-js .vjs-tech').css('height', '100%');
              const self = this;
@@ -593,7 +593,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                             isCallActionthere = true;
                             self.overLaySet = true;
                             self.fullScreenMode = true;
-                            $("#videoId").css("width", "640px");
+                            $("#videoId").css("width", "auto");
                             $("#videoId").css("height", "318px");
                             $("#overlay-modal").css("width", "100%");
                             $("#overlay-modal").css("height", "100%");
@@ -629,14 +629,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
                     } else if (event === "FullscreenOff") {
-                        $("#videoId").css("width", "640px");
+                        $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "318px");
                            self.fullScreenMode = false;
                            self.overLaySet = false;
                           if (isCallActionthere === true) {
                             self.overLaySet = false;
                             self.fullScreenMode = false;
-                            $("#overlay-modal").css("width", "640px");
+                            $("#overlay-modal").css("width", "auto");
                             $("#overlay-modal").css("height", "318px");
                             $('#videoId').append($('#overlay-modal').show());
                            // newThis.showEditModalDialog();

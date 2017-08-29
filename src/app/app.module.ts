@@ -41,14 +41,14 @@ import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { XtremandLogger } from './error-pages/xtremand-logger.service';
+import { VideoUtilService} from './videos/services/video-util.service';
 
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
-// import { CKEditorModule } from 'ng2-ckeditor';
-// import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
+
 @NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
         ShareVideoComponent, CampaignVideoComponent, ActivateAccountComponent,
@@ -62,7 +62,7 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
-        TwitterService, FacebookService, Logger, Options, XtremandLogger,
+        TwitterService, FacebookService, Logger, Options, XtremandLogger, VideoUtilService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 

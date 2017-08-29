@@ -375,7 +375,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                  });
               }
               });
-            $('#videoId').css('width', '640px');
+            $('#videoId').css('width', 'auto');
             $('#videoId').css('height', '318px');
     }
     playNormalVideo() {
@@ -395,7 +395,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
             $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         //     $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
              $('#videoId').css('height', '318px');
-             $('#videoId').css('width', '640px');
+             $('#videoId').css('width', 'auto');
              $('.video-js .vjs-tech').css('width', '100%');
              $('.video-js .vjs-tech').css('height', '100%');
               const self = this;
@@ -409,6 +409,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                     self.videoFileService.pauseAction = false;
                     let seekCheck = false;
                     this.ready(function () {
+                        $('.video-js .vjs-tech').css('width', '100%');
+                        $('.video-js .vjs-tech').css('height', '100%');
                         $('.vjs-big-play-button').css('display', 'block');
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;

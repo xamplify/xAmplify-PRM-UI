@@ -1,16 +1,28 @@
-<div class="portlet light" style="padding:5px 5px 190px 17px">
+<div class="portlet light" style="padding:5px 5px 690px 17px">
 	 <div class="portlet-body">   	
-	   <div style="position: absolute; right: 0"> 
-		   <button type="button" class="btn green button" (click)="LoginThroghCampaign()">Login To Applciation</button></div>
-	    <div>
-		  <div id="newPlayerVideo"></div>
-        </div>
-	 </div>
-     <div>
+			  <div class="col-xs-12 col-sm-6 col-md-6" style="padding:0">
+						<div id="newPlayerVideo"></div>
+						<div class="col-xs-12" style="padding:0">
+					<h3 style="word-break: break-all;color:#777">{{campaignVideoFile.title}}</h3>
+				</div>
+				<div class="col-xs-12" style="padding:0">
+					<strong>Uploaded on :{{campaignVideoFile.uploadedDate}}</strong>
+					<p align="justify" style="word-break: break-all;"> {{campaignVideoFile.description}}</p>
+				</div>
+				<div>
+					<p>Category : {{campaignVideoFile.category.name}}</p>
+				</div>
+				</div>
+	  <div class="col-xs-12 col-sm-6 col-md-6"> 
+		   <button type="button" style="float:right" class="btn green button" (click)="LoginThroghCampaign()" >Login To Applciation</button>
+	    </div>
+	</div>
+     <!-- <div>
 		  <h3>{{title}}</h3>
 		  <h4>Description:</h4>
 		  <p align="justify"> {{description}}</p>
-	 </div>
+	 </div> -->
+
 	 <!--<div *ngIf="isButtonNeed">
 		 <button class="btn btn-default" (click)="clickButton()">Click FOr Destroy</button>
 	 </div>-->
