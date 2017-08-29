@@ -914,7 +914,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.gContacts.push( socialContact );
                     this.logger.info( this.getGoogleConatacts );
-                    this.googleImageNormal = true;
+                    //this.googleImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1128,7 +1128,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.logger.info( this.getZohoConatacts );
-                    this.zohoImageNormal = true;
+                   // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1348,7 +1348,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
                     this.logger.info( this.getSalesforceConatactList );
-                    this.sfImageNormal = true;
+                    //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1420,7 +1420,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
                     this.logger.info( this.getSalesforceConatactList );
-                    this.sfImageNormal = true;
+                    //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
