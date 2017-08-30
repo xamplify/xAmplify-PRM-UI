@@ -1202,6 +1202,7 @@ export class ManageContactsComponent implements OnInit {
     
     
     checkAll(ev:any){
+        this.contactListUsersError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
@@ -1226,11 +1227,13 @@ export class ManageContactsComponent implements OnInit {
             //this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
             this.selectedContactListIds = [];
+            this.allselectedUsers.length = 0;
         }
         ev.stopPropagation();
     }
     
     highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
+        this.contactListUsersError = false;
         let isChecked = $('#'+contactId).is(':checked');
         let self = this;
         if(isChecked){

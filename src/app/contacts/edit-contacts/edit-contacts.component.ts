@@ -851,7 +851,7 @@ export class EditContactsComponent implements OnInit {
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
         }
         //this.contactsUtility();
-        if(contactId == this.pagination.pagedItems.length || contactId == 10){
+        if(this.selectedContactListIds.length == this.pagination.pagedItems.length ){
             this.isHeaderCheckBoxChecked = true;
         }else{
             this.isHeaderCheckBoxChecked = false;
