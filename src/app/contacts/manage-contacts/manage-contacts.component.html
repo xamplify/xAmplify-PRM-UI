@@ -35,6 +35,11 @@
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>Success!</strong> Contact List has been created successfully.
 	</div>
+	<div *ngIf="deleteUserSucessMessage" id="showDeleteUserMessage"
+			class="alert alert-success alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Success!</strong> Contact List has been Deleted successfully.
+		</div>
  <div *ngIf="showAll">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">

@@ -21,6 +21,7 @@ declare var swal: any;
 export class ContactService {
 
     public successMessage: boolean;
+    public deleteUserSucessMessage: boolean;
     public socialContact: SocialContact[];
     public zohoContact: ZohoContact;
     public salesforceContact: SalesforceContact;
@@ -170,6 +171,14 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
+    deleteContactListFromEdit( contactListId: number ) {
+        this.deleteUserSucessMessage = true;
+        return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
+             .map( this.extractData )
+             .catch( this.handleErrorDelete );
+     }
+    
+    
     saveContactList( contactListName: string, users: Array<User> ): Observable<User[]> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
@@ -431,7 +440,7 @@ export class ContactService {
         const errMsg = ( error.message ) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
          const errorbody = error._body;
-         if ( errorbody.indexOf('contactlist Users is being used in one or more campaigns. Please delete those campaigns first.') >= 0) {
+         if ( errorbody.indexOf('contactlist is being used in one or more campaigns. Please delete those campaigns first.') >= 0) {
             return Observable.throw( errorbody );
            }
          else {

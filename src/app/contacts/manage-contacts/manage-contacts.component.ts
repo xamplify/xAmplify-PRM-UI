@@ -28,6 +28,7 @@ declare let jsPDF;
 })
 export class ManageContactsComponent implements OnInit {
     public show: boolean = false;
+    public deleteUserSucessMessage: boolean = false;
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
     allContacts: number;
@@ -127,7 +128,7 @@ export class ManageContactsComponent implements OnInit {
     ];
     public contactsUsersSort: any = this.sortContactUsers[0];
 
-    constructor( private contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
+    constructor( public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, ) {
         this.show = false;
         this.showAll = true;
@@ -152,6 +153,11 @@ export class ManageContactsComponent implements OnInit {
             this.show = this.contactService.successMessage;
             setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );
             this.logger.info( "Success Message in manage contact pape" + this.show );
+        }
+        if ( this.contactService.deleteUserSucessMessage == true ) {
+            this.deleteUserSucessMessage = this.contactService.deleteUserSucessMessage;
+            setTimeout( function() { $( "#showDeleteUserMessage" ).slideUp( 500 ); }, 2000 );
+            this.logger.info( " delete Success Message in manage contact pape" + this.show );
         }
         this.noSaveButtonDisable = true;
     }
@@ -574,6 +580,7 @@ export class ManageContactsComponent implements OnInit {
 
     backToManageContactPage() {
         this.invalidDeleteSucessMessage = false;
+        this.loadContactListsNames();
         this.allselectedUsers.length = 0;
         $('[name="campaignContact[]"]').prop('checked', false);
         //this.isContactList = false;
@@ -1435,5 +1442,6 @@ export class ManageContactsComponent implements OnInit {
     ngOnDestroy() {
         this.logger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;
+        this.contactService.deleteUserSucessMessage = false;
     }
 }

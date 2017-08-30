@@ -512,16 +512,17 @@ export class EditContactsComponent implements OnInit {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                if ( error.includes( 'Please delete those campaigns first.' )) {
                     this.Campaign = error;
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    console.log( this.deleteErrorMessage );
                 }
-                console.log( error );
             },
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
-            )
+            () => this.logger.info( "deleted completed" )
+            );
         this.deleteSucessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -534,6 +535,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.selectedContactListIds.length != 0 ) {
             this.logger.info( "contactListId in sweetAlert() " + this.contactListId );
             let self = this;
+            if( this.totalRecords != 1 || this.totalRecords != this.selectedContactListIds.length ){
             swal( {
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -547,6 +549,23 @@ export class EditContactsComponent implements OnInit {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.removeContactListUsers( contactListId );
             })
+            }
+            if( this.totalRecords == 1 || this.totalRecords == this.selectedContactListIds.length){
+                swal( {
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this! If you delete all Users, your contact list aslo will delete.",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+
+                }).then( function( myData: any ) {
+                    console.log( "ManageContacts showAlert then()" + myData );
+                    self.deleteContactList( );
+                })
+                }
+
         }
     }
 
@@ -1133,12 +1152,23 @@ export class EditContactsComponent implements OnInit {
                 this.invalid_Contacts( this.pagination );
                 this.invlidContactsCount = data.invalidUsers;
             },
-            error => this.logger.error( error ),
+            /*error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.invalidDeleteSucessMessage = false;
     }
-
+*/          ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                this.Campaign = error;
+                console.log( error );
+                this.deleteErrorMessage = true;
+                setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                },
+                () => this.logger.info( "deleted completed" )
+            );
+        this.deleteSucessMessage = false;
+    }
     invalidContactsShowAlert() {
        /* var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
@@ -1182,16 +1212,62 @@ export class EditContactsComponent implements OnInit {
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
-            )
+            ( error: any ) => {
+                if ( error.includes( 'Please delete those campaigns first.' )) {
+                    this.Campaign = error;
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    console.log( this.deleteErrorMessage );
+                }
+            },
+            () => this.logger.info( "deleted completed" )
+            );
         this.deleteSucessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
+    deleteContactList() {
+        this.logger.info( "MangeContacts deleteContactList : " + this.selectedContactListId );
+        this.contactService.deleteContactListFromEdit( this.selectedContactListId )
+            .subscribe(
+            data => {
+                console.log( "MangeContacts deleteContactList success : " + data );
+                //this.contactsCount();
+                $( '#contactListDiv_' + this.selectedContactListId ).remove();
+                //this.backToEditContacts()
+                this.deleteSucessMessage = true;
+                setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
+                //this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                this.refresh();
+                this.contactService.deleteUserSucessMessage = true;
+                /*if (this.pagination.pagedItems.length === 1) {
+                    this.isvideoThere = true;
+                    this.pagination.pageIndex  = 1;
+                    this.loadContactLists(this.pagination);
+                    
+
+              }*/
+            },
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    //swal( 'Campaign contact!', error, 'error' );
+                    this.Campaign = error;
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
+            },
+            () => this.logger.info( "deleted completed" )
+            );
+        this.deleteSucessMessage = false;
+        this.deleteErrorMessage = false;
+    }
+    
     showAlert1( contactId: number ) {
         this.contactIds.push( this.contactUsersId )
         this.logger.info( "contactListId in sweetAlert() " + this.contactIds );
         let self = this;
+        if( this.totalRecords != 1){
         swal( {
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -1205,6 +1281,23 @@ export class EditContactsComponent implements OnInit {
             console.log( "ManageContacts showAlert then()" + myData );
             self.removeContactListUsers1( contactId );
         })
+        }
+        
+        if( this.totalRecords == 1){
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to revert this! If you delete all Users, your contact list aslo will delete.",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.deleteContactList( );
+            })
+            }
     }
 
     ngOnInit() {
