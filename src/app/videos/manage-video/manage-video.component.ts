@@ -87,6 +87,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.searchKey = null;
     }
     ngOnInit() {
+         if (this.referenceService.homeMethodsCalled === false) {
+            this.homeComponent.getVideoTitles();
+            this.homeComponent.getCategorisService();
+            this.referenceService.homeMethodsCalled = true;
+         }
         console.log(this.referenceService.videoTitles);
         console.log('MangeVideosComponent ngOnInit()');
         this.logger.log('This is a priority level 5 log message...');

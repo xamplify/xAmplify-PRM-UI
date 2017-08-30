@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit {
 		   });
 		}
         ngOnInit() {
-           this.getCategorisService();
-		   this.getVideoTitles();
-		   this.getVideoDefaultSettings();
+        //  this.getCategorisService();
+		//  this.getVideoTitles();
+		  this.getVideoDefaultSettings();
        }
 
 }

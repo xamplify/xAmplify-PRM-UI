@@ -152,8 +152,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public animate = true;
     public checkTag: string;
     constructor(public referenceService: ReferenceService,
-        public videoFileService: VideoFileService, public router: Router,
-        public route: ActivatedRoute, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
+        public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute, 
+        public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
         public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
@@ -891,6 +891,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#overLayDialog').append($('#overlay-modal').show());
     }
     ngOnInit() {
+        console.log(this.referenceService.videoTitles);
         this.removeVideoTitlesWhiteSpaces();
         this.loadRangeDisable = true;
         $('#overlay-modal').hide();

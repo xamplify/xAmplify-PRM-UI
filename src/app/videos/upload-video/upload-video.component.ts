@@ -11,12 +11,14 @@ import { VideoFileService } from '../services/video-file.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { SaveVideoFile } from '../models/save-video-file';
+import { HomeComponent} from '../../core/home/home.component';
 declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
 
 @Component({
     selector: 'app-upload-video',
     templateUrl: './upload-video.component.html',
-    styleUrls: ['./upload-video.component.css', '../../../assets/css/video-css/video-js.custom.css']
+    styleUrls: ['./upload-video.component.css', '../../../assets/css/video-css/video-js.custom.css'],
+    providers: [HomeComponent]
 })
 export class UploadVideoComponent implements OnInit, OnDestroy {
 
@@ -75,7 +77,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     constructor(private http: Http, private router: Router,
         private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
         private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
-        private sanitizer: DomSanitizer, private refService: ReferenceService, private deviceService: Ng2DeviceService) {
+        private sanitizer: DomSanitizer, private refService: ReferenceService,public homeComponent: HomeComponent,
+        private deviceService: Ng2DeviceService) {
         try {
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;
@@ -684,11 +687,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         return false;
     }
     ngOnInit() {
-        try {
+      try {
+        if (this.refService.homeMethodsCalled === false) {
+            this.homeComponent.getVideoTitles();
+            this.homeComponent.getCategorisService();
+            this.refService.homeMethodsCalled = true;
+         }
             this.defaultSettings();
         } catch (err) {
             console.error('ERROR : FileUploadComponent : ngOnInit() ' + err);
-        }
+      }
     }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
