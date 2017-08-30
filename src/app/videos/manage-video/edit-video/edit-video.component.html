@@ -255,13 +255,13 @@
 										</div>
 										<div class="col-xs-12 col-sm-9 col-md-9" style="top: 7px; position: relative;">
 											<div *ngIf="openOwnThumbnail">
-												<input type="file" ng2FileSelect [uploader]="uploader" (change)="ownThumbnailfileChange($event)" *ngIf="uploader.queue.length==0">
+												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" (change)="ownThumbnailfileChange($event)" *ngIf="uploader.queue.length==0">
 												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
 										    <div>
 												  <span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
 												<img *ngIf="imageUrlPath" [src] = imageUrlPath  style="height: 71px; width: 98px">
 											</div>
-												<div *ngIf="ownThumbnail" class="alert alert-danger">image file is required,max 10mb </div>
+												<div *ngIf="ownThumbnail" class="alert alert-danger">Only image file is allowed, max 10mb </div>
 												<!--  <div *ngIf="formErrors.imageFile" class="alert alert-danger">{{formErrors.imageFile}}</div> -->
 											</div>
 										</div>
@@ -314,9 +314,8 @@
 								</div>
 							</div>
 							<div class="portlet-body form" *ngIf="colorControl" [@fadeInOut]>
-								<!-- <form class="form-horizontal" role="form"> -->
-								<div class="portlet-body form" data-initialized="1"
-									style="overflow: hidden; width: auto; height: auto">
+								<!-- <form class="form-horizontal" role="form"> below div overflow:hidden-->
+								<div class="portlet-body form" data-initialized="1" style="width: auto; height: auto">
 									<div class="form-body">
 									   <div class="form-group">
 											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px">Default settings:</label>

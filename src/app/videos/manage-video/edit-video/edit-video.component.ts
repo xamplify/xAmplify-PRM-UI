@@ -220,11 +220,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;
         this.uploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
+            allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
+            // console.log(fileItem._file);
+            // const isSupportfile = fileItem._file.type.toString();
+            // this.checkMimeTypes(isSupportfile);
             this.ownThumb = true;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
@@ -233,6 +236,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
    }  // closed constructor
+
+//    checkMimeTypes(isSupportfile: string) {
+//         if (isSupportfile === 'image/jpg' || 'image/jpeg' || 'image/png') {
+//             this.mimeTypeSupported = true;
+//             }
+//         }
     openStartingDivs() {
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
@@ -258,8 +267,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     ownThumbnailfileChange(event: any) {
         const fileList: FileList = event.target.files;
+        console.log(fileList[0].type);
         if (fileList.length > 0) {
             const file: File = fileList[0];
+            const isSupportfile: any = fileList[0].type;
+            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
             this.videoFileService.saveOwnThumbnailFile(file)
                 .subscribe((result: any) => {
                     this.xtremandLogger.log(result);
@@ -267,6 +279,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.saveVideoFile.imagePath = result.path;
                     this.defaultSaveImagePath = this.saveVideoFile.imagePath;
                 });
+             } else {
+                 (<HTMLInputElement>document.getElementById('ownFileuplad')).value = '';
+                 this.xtremandLogger.log('not supported image thumbnail file');
+                }
         }
     }
     selectedImgFirst() {
@@ -406,7 +422,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // share window popup
     openWindow() {
         // this.authenticationService.APP_URL +
-        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open(this.authenticationService.APP_URL + '/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // normal and 360 video methods
