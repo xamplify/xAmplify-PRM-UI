@@ -413,9 +413,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
-        this.homeComponent.getVideoTitles();
         this.campaignVideo = false;
         if (videoFile != null) {
+            this.homeComponent.getVideoTitles();
             this.pagination.pageIndex = 1;
             this.pagination.filterBy = 0;
             this.pagination.sortcolumn = null;
@@ -442,7 +442,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         } else {
             this.showVideoName = this.videoTitleLength(videoFile.title);
         }
-        console.log('update method called ' + this.showVideoName);
+        this.xtremandLogger.info('update method called ' + this.showVideoName);
     }
     goToManageVideos() {
         console.log('come to goto manage videos :');

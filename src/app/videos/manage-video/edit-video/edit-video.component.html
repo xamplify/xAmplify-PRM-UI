@@ -329,10 +329,7 @@
 											<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px">Player Color:</label>
 											<div class="col-xs-9 col-sm-9 col-md-9">
 												<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													(colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" 
-													[cpPositionRelativeToArrow]="false" [cpWidth]="'190px'"
-													[cpHeight]="'200px'"
-													 />
+													(colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" />
 											</div>
 										</div> 
 										<div class="form-group">
@@ -347,21 +344,9 @@
 											<div class="col-xs-9 col-sm-9 col-md-9">
 												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor"
-													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
-													 [cpPositionRelativeToArrow]="false" [cpWidth]="'190px'" [cpHeight]="'200px'"
-													 />
+													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
 											</div>
 										</div>
-										<!-- <div class="form-group">
-											 <div>
-											   <label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px;margin-right: 13px;">Transparency:</label>
-											  <div class="col-xs-9 col-sm-9 col-md-9" style="float: right;position: relative;top: -12px;">  
-											   <input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 44%;"  
-							            	  [class.disablePlayerValues]="disablePlayerSettingnew" (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
-											   <p >{{valueRange}}</p>
-											 </div>	 
-											</div>
-										 </div> -->
 										 <div class="form-group">
 											 <div class="col-xs-3 col-sm-3 col-md-3 control-label" style="font-size:14px;padding:0">Transparency:</div>
 											  <div class="col-xs-9 col-sm-9 col-md-9" style="padding:0">  
