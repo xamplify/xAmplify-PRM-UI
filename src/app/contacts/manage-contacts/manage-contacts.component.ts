@@ -301,7 +301,9 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
-                  this.names.push(data.names);
+                this.names.length = 0;  
+                this.names.push(data.names);
+                  this.logger.log(this.names);
             },
             error => {
                 this.logger.error( error )
@@ -688,6 +690,7 @@ export class ManageContactsComponent implements OnInit {
     
     all_Contacts( pagination: Pagination ) {
         //this.pagination.maxResults = 12;
+        this.loadContactListsNames();
         this.logger.log( pagination );
         this.contactService.loadAllContacts( pagination )
             .subscribe(
