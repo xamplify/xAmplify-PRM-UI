@@ -519,7 +519,7 @@
 										minlength="4" placeholder="Contact List Name" #contactListName="ngModel"> -->
 								     <input type="text" autocomplete="off" class="form-control" id="contactListName"
 									 required [(ngModel)]="model.contactListName" name="contactListName"
-									minlength="4" (input)="validateContactName(model.contactListName)"
+									minlength="1" (input)="validateContactName(model.contactListName)"
 									placeholder="Contact List Name" #contactListName="ngModel">
 								    <!-- Validation Messages -->
 								    <div *ngIf="isValidContactName">
@@ -528,9 +528,9 @@
 									<!-- <div *ngIf="contactListName.invalid && (contactListName.dirty ||contactListName.touched)">
 										<p class="custom-error-message">Minimum 4 letters required.</p>
 									</div> -->
-									<div [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)">
+									<!-- <div [hidden]="contactListName.valid || (contactListName.pristine && !f.submitted)">
 												<p class="custom-error-message">Minimum 4 letters required.</p>
-											</div>
+											</div> -->
 									<div *ngIf="contactListNameError">
 								    	<p class="custom-error-message">Please Enter the ContactList Name.</p>
 								  	</div>
@@ -585,12 +585,12 @@
 									<div class="caption" *ngIf="nonActiveContactsData==true">
 										<i class="fa fa-edit"></i>Non Active Contacts List
 									</div>
-									<div class="tools">
+									<!-- <div class="tools">
 										<a href="javascript:;" class="collapse"> </a> <a
 											href="#portlet-config" data-toggle="modal" class="config">
 										</a> <a href="javascript:;" class="reload"> </a> <a
 											href="javascript:;" class="remove"> </a>
-									</div>
+									</div> -->
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">

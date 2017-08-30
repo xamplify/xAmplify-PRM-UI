@@ -146,12 +146,12 @@
 					<div class="caption">
 						<i class="fa fa-edit"></i>List of Contacts
 					</div>
-					<div class="tools">
+					<!-- <div class="tools">
 						<a href="javascript:;" class="collapse"> </a> <a
 							href="#portlet-config" data-toggle="modal" class="config"> </a> <a
 							href="javascript:;" class="reload"> </a> <a href="javascript:;"
 							class="remove"> </a>
-					</div>
+					</div> -->
 				</div>
 				<div class="portlet-body">
 					<div class="table-toolbar">
@@ -340,12 +340,12 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>File Preview
 									</div>
-									<div class="tools">
+									<!-- <div class="tools">
 										<a href="javascript:;" class="collapse"> </a> <a
 											href="#portlet-config" data-toggle="modal" class="config">
 										</a> <a href="javascript:;" class="reload"> </a> <a
 											href="javascript:;" class="remove"> </a>
-									</div>
+									</div> -->
 								</div>
 								<div class="portlet-body">
 
@@ -430,8 +430,8 @@
 											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
 											#emailId="ngModel">
 											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
-												class="alert alert-danger">
-												Email is required and format should be <i>john@doe.com</i>.
+												class="custom-error-message">
+												Invalid EmailId.
 											</div></td>
 									<td><input type=Text [(ngModel)]="newContact.firstName"
 										class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
@@ -546,12 +546,12 @@
 				<div class="caption" *ngIf="nonActiveContactsData==true">
 					<i class="fa fa-edit"></i>Non Active Contacts List
 				</div>
-				<div class="tools">
+				<!-- <div class="tools">
 					<a href="javascript:;" class="collapse"> </a> <a
 						href="#portlet-config" data-toggle="modal" class="config"> </a> <a
 						href="javascript:;" class="reload"> </a> <a href="javascript:;"
 						class="remove"> </a>
-				</div>
+				</div> -->
 			</div>
 			<div class="portlet-body">
 				<div class="table-toolbar">
