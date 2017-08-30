@@ -1,19 +1,20 @@
 import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit, Renderer} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
+// import { HashLocationStrategy, Location, LocationStrategy , PathLocationStrategy } from '@angular/common';
 import { VideoFileService} from '../services/video-file.service';
 import { SaveVideoFile} from '../models/save-video-file';
 import { Logger } from 'angular2-logger/core';
 import { VideoUtilService } from '../services/video-util.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
 import { ShareButton, ShareProvider } from 'ngx-sharebuttons';
-import { DOCUMENT } from '@angular/platform-browser';
+// import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionLog } from '../models/action';
 declare var $, videojs: any;
-import { Meta, MetaDefinition } from '@angular/platform-browser';
+// import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
 // logging info details
@@ -82,9 +83,9 @@ public fullScreenMode = false;
 public seekStart = null;
 public seekStart360 = null;
   constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
-              public logger: Logger, public videoUtilService: VideoUtilService, public metaService: Meta,
+              public logger: Logger, public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
               public http: Http, public actionLog: ActionLog, public deviceService: Ng2DeviceService) {
-                console.log('share component constructor called');
+                this.xtremandLogger.log('share component constructor called');
                 console.log('url is on angular 2' + document.location.href);
                 this.embedUrl = document.location.href;
                 this.logVideoViewValue = true;
@@ -100,7 +101,7 @@ public seekStart360 = null;
     return this.http.get(this.shareUrl)
       .map( this.extractData )
       .catch( this.handleError )
-      .subscribe((result: any) => { });
+      .subscribe((result: any) => { }, (error: any) =>{ this.xtremandLogger.errorPage(error);});
    }
   getVideo(alias: string , viewby: string) {
     this.videoFileService.getVideo(alias, viewby)
@@ -150,13 +151,13 @@ public seekStart360 = null;
          this.shareMetaTags();
           // twitter og info
             const twiettrDec = 'Xtremand is the only complete studio album by Jeff Buckley, released on August 23,';
-            const twitterCard: MetaDefinition = { property: 'twitter:card', content: 'Tags summary' };
-            const twitterSite: MetaDefinition = { property: 'twitter:site', content: '@michlbrmly'};
-            const twitterTitle: MetaDefinition = { property: 'twitter:title', content: 'Xtremand Meta tags' };
-            const twitterDesc: MetaDefinition = { property: 'twitter:description', content : twiettrDec};
-            const twitterImage: MetaDefinition = { property: 'twitter:image', content : this.imgURL };
-            const twitterUrl: MetaDefinition = { property: 'twitter:url', content: this.embedUrl };
-           // open graph meta tags info
+        //     const twitterCard: MetaDefinition = { property: 'twitter:card', content: 'Tags summary' };
+        //     const twitterSite: MetaDefinition = { property: 'twitter:site', content: '@michlbrmly'};
+        //     const twitterTitle: MetaDefinition = { property: 'twitter:title', content: 'Xtremand Meta tags' };
+        //     const twitterDesc: MetaDefinition = { property: 'twitter:description', content : twiettrDec};
+        //     const twitterImage: MetaDefinition = { property: 'twitter:image', content : this.imgURL };
+        //     const twitterUrl: MetaDefinition = { property: 'twitter:url', content: this.embedUrl };
+        //    // open graph meta tags info
             // const ogDescription  = 'Xtremand is the only complete studio album by Jeff Buckley, released on August 23';
             // const ogtitle: MetaDefinition   =  { property: 'og:title', content: 'Xtremand Meta tags' };
             // const ogSiteproperty: MetaDefinition = { property: 'og:site_name', content: 'My Favourite Albums'};
@@ -171,7 +172,7 @@ public seekStart360 = null;
             // this.metaService.updateTag({ content: 'New Updated tags info'}, "property='og:title'");
             // this.metaService.updateTag({content:'Embed videos'},"property ='twitter:card'");
             // console.log(this.metaService.getTag(selector));
-    });
+    }, (error: any) =>{ this.xtremandLogger.errorPage(error);});
   }
   ngOnInit() {
    //  this.setConfirmUnload(true);
@@ -750,7 +751,10 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
        this.defaultLocationJsonValues(data);
         console.log(data);
         },
-     error => console.log(error));
+     (error: any) => {
+          console.log(error);
+          this.xtremandLogger.errorPage(error);
+        });
   }
    createSessionId() {
     this.sessionId = UUID.UUID();
@@ -783,7 +787,8 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
         this.logger.debug(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe( (result: any) => {
-                this.logger.info('Save user Form call to acton is successfull' + result); });
+                this.logger.info('Save user Form call to acton is successfull' + result); },
+            (error: any) => { this.xtremandLogger.errorPage(error);});
        }
 shareMethod() {
         this.actionLog.actionId = this.LogAction.shareMobinar;

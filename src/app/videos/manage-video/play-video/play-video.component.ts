@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { ReferenceService } from '../../../core/services/reference.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { VideoFileService } from '../../services/video-file.service';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
@@ -93,7 +94,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     showRelatedMessage: boolean;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService, public router: Router,
         public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
-        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
+        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger:XtremandLogger,
         public pagerService: PagerService, public referenceService: ReferenceService) {
         this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
@@ -376,7 +377,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             (error: any) => {
                 console.log('Play video component : show play videos method ():' + error);
-                this.router.navigate(['/home/error-occured-page/', error.status]);
+                this.xtremandLogger.errorPage(error);
+               // this.router.navigate(['/home/error-occured-page/', error.status]);
             }
             );
     }
@@ -496,8 +498,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else { this.showRelatedMessage = false; }
                     pagination = this.pagerService.getPagedItems(pagination, this.allVideos);
                 },
-                (error: string) => {
+                (error: any) => {
                     console.log(error);
+                    this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load All videos completed:' + this.allVideos),
             );
@@ -1026,7 +1029,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultLocationJsonValues(data);
                 console.log(data);
             },
-            error => console.log(error));
+            (error: any) => {
+                this.xtremandLogger.log(error);
+                this.xtremandLogger.errorPage(error);
+            }
+        );
     }
     createSessionId() {
         this.sessionId = UUID.UUID();

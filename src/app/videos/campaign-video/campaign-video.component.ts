@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import { Logger } from 'angular2-logger/core';
 import { XtremandLog } from '../models/xtremand-log';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
@@ -61,7 +62,7 @@ LogAction: typeof LogAction = LogAction;
   constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
             public _logger: Logger, public http: Http, public authenticationService: AuthenticationService,
             public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService ,
-            public videoUtilService: VideoUtilService) {
+            public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
@@ -119,7 +120,11 @@ deviceDectorInfo() {
         }
        this.defaultVideoSettings();
           console.log(this.videoUrl);
-    });
+       }, (error: any) => {
+            this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
+            this.xtremandLogger.errorPage(error);
+         }
+    );
   }
  truncateHourZeros(length){
     const val = length.split(":");
@@ -157,17 +162,20 @@ deviceDectorInfo() {
     .subscribe(
      (data: any) => {
        this.defaultLocationJsonValues(data);
-        console.log(data);
+        this.xtremandLogger.log(data);
         },
-     error => console.log(error));
+      (error: any) => {
+          this.xtremandLogger.log(error);
+          this.xtremandLogger.errorPage(error);
+         });
   }
   createSessionId() {
     this.sessionId = UUID.UUID();
-    console.log(this.sessionId);
+    this.xtremandLogger.log(this.sessionId);
   }
   ngOnInit() {
      this.createSessionId();
-     console.log('public video component ngOnInit called');
+     this.xtremandLogger.log('public video component ngOnInit called');
      this.deviceDectorInfo();
      this.activatedRoute.queryParams.subscribe(
         ( param: any ) => {
@@ -175,12 +183,16 @@ deviceDectorInfo() {
             this.videoAlias = param['videoAlias'];
             this.campaignAlias = param['campaignAlias'];
             this.userAlias = param['userAlias'];
-        });
+        },
+         (error: any) => {
+          this.xtremandLogger.log(error);
+          this.xtremandLogger.errorPage(error);
+         });
      this.xtremandLogDefaultActions();
      this.getCampaignVideo();
   }
     defaultVideoSettings() {
-        console.log('default settings called');
+        this.xtremandLogger.log('default settings called');
         $('.video-js').css('color', this.campaignVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.campaignVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.campaignVideoFile.playerColor);
@@ -194,7 +206,7 @@ deviceDectorInfo() {
     videoLogAction(xtremandLog: XtremandLog) {
        this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
        (result: any) => {
-         console.log('successfully logged the actions' + xtremandLog.actionId);
+         this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);
       },
       (error: any) => {
         console.log('successfully skipped unused logged the actions'  + xtremandLog.actionId);

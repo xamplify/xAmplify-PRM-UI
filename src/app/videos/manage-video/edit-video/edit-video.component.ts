@@ -406,7 +406,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // share window popup
     openWindow() {
         // this.authenticationService.APP_URL +
-        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
             'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // normal and 360 video methods
@@ -577,6 +577,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         let color: any;
         if (this.saveVideoFile.controllerColor === '#fff') {
             color = '#fbfbfb';
+        } else if (this.saveVideoFile.controllerColor === '#ccc') { 
+            color = '#cccddd';
         } else { color = this.saveVideoFile.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
        // $('.video-js .vjs-control-bar').css('background-color', rgba);
@@ -651,13 +653,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js').css('color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
-        this.transperancyControllBar(this.valueRange);
+       // this.transperancyControllBar(this.valueRange);
     }
     changeControllerColor(event: any) {
         this.saveVideoFile.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
-        this.transperancyControllBar(this.valueRange);
+        $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.saveVideoFile.controllerColor+'!important');
+    //    $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
+     //   this.transperancyControllBar(this.valueRange);
     }
     changeFullscreen(event: any) {
         this.saveVideoFile.allowFullscreen = event;

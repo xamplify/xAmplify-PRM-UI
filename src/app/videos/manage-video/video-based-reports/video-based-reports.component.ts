@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, OnDestroy, AfterViewInit } from '
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, require: any;
 
 @Component({
@@ -26,7 +27,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isPlay: boolean;
     model: any = {};
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
-        public videoUtilService: VideoUtilService) {
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef;
       }
     defaultVideoSettings() {
@@ -64,7 +65,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
-        console.log('called ng after view init');
+        this.xtremandLogger.log('called ng after view init');
         $('#newPlayerVideo').empty();
         if (this.selectedVideo.is360video !== true) {
             this.is360Value = false;
@@ -159,7 +160,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     play360Video() {
         this.is360Value = true;
-        console.log('Loaded 360 Video');
+        this.xtremandLogger.log('Loaded 360 Video');
         $('.h-video').remove();
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript" class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript" class="p-video" />');
@@ -248,7 +249,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         $('#videoId').css('height', '258px');
     }
     ngOnDestroy() {
-        console.log('Deinit - Destroyed Component');
+        this.xtremandLogger.log('Deinit - Destroyed Component');
         if (this.is360Value !== true) {
             this.videoJSplayer.dispose();
         } else if (this.videoJSplayer) {

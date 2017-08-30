@@ -8,6 +8,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoUtilService } from '../services/video-util.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HomeComponent } from '../../core/home/home.component';
 import { Logger } from 'angular2-logger/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -74,8 +75,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     public videoSort: any = this.sortVideos[0];
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
-        public pagerService: PagerService, public logger: Logger, public pagination: Pagination, public router: Router,
-        public homeComponent: HomeComponent) {
+        public pagerService: PagerService, public logger: Logger, public pagination: Pagination,
+        public router: Router, public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
         this.showUpdatevalue = false;
@@ -123,7 +124,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.logger.error('erro in ng oninit :' + error);
         }
     }
-    loadVideosCount(userId:number) {
+    loadVideosCount(userId: number) {
         try {
             this.videoFileService.loadVideosCount(userId)
                 .subscribe((result: any) => {
@@ -133,8 +134,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     } else { this.disableDropDowns = false; }
                 },
                 (error: any) => {
-                    this.logger.error(' manage Videos Component : Loading Videos method():' + error);
-                    this.router.navigate(['/home/error-occured-page/', error.status]);
+                    this.xtremandLogger.error(' manage Videos Component : Loading Videos method():' + error);
+                   // this.router.navigate(['/home/error-occured-page/', error.status]);
+                   this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:'),
             );
@@ -182,8 +184,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     pagination = this.pagerService.getPagedItems(pagination, this.videos);
                 },
                 (error: any) => {
-                    this.logger.error('Manage-videos component:  Loading Videos():' + error);
-                    this.router.navigate(['/home/error-occured-page/', error.status]);
+                    this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);
+                  //  this.router.navigate(['/home/error-occured-page/', error.status]);
+                    this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:' + this.videos),
             );
@@ -273,9 +276,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.campaignReport = false;
             },
             (error: any) => {
-                this.logger.error(this.errorPrepender + 'show edit videos ():' + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-                this.httpRequestLoader.statusCode = error.status;
+                this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+               // this.referenceService.showServerError(this.httpRequestLoader);
+              //  this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -294,9 +298,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = false;
             },
             (error: any) => {
-                this.logger.error(this.errorPrepender + ' show play videos ():' + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-                this.httpRequestLoader.statusCode = error.status;
+                this.xtremandLogger.error(this.errorPrepender + ' show play videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+                // this.referenceService.showServerError(this.httpRequestLoader);
+                // this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -314,9 +319,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = false;
             },
             (error: any) => {
-                this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-                this.httpRequestLoader.statusCode = error.status;
+                this.logger.error(this.errorPrepender + ' show video campaign videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+                // this.referenceService.showServerError(this.httpRequestLoader);
+                // this.httpRequestLoader.statusCode = error.status;
             });
     }
     campaignRouter(video: SaveVideoFile) {
@@ -329,8 +335,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl('/home/campaigns/create-campaign');
             },
             (error: string) => {
-                this.logger.error(this.errorPrepender + ' show campaign videos ():' + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
+                this.xtremandLogger.error(this.errorPrepender + ' show campaign videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+              //  this.referenceService.showServerError(this.httpRequestLoader);
             });
     }
     videoTitleLength(title: string) {
@@ -372,9 +379,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                         $('#campaignVideo').slideUp(500);
                     }, 5000);
                 } else {
-                    this.logger.error(this.errorPrepender + ' delete videos ():' + error);
-                    this.referenceService.showServerError(this.httpRequestLoader);
-                    this.httpRequestLoader.statusCode = error.status;
+                    this.xtremandLogger.error(this.errorPrepender + ' delete videos ():' + error);
+                    this.xtremandLogger.errorPage(error);
+                    // this.referenceService.showServerError(this.httpRequestLoader);
+                    // this.httpRequestLoader.statusCode = error.status;
                 }
                 console.log(error);
             },

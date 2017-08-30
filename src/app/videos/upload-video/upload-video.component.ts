@@ -9,9 +9,10 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { UploadCloudvideoService } from '../services/upload-cloudvideo.service';
 import { VideoFileService } from '../services/video-file.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { SaveVideoFile } from '../models/save-video-file';
-import { HomeComponent} from '../../core/home/home.component';
+import { HomeComponent } from '../../core/home/home.component';
 declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
 
 @Component({
@@ -74,11 +75,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     browserInfo: string;
     videoDisabled = false;
     previewDisabled = false;
-    constructor(private http: Http, private router: Router,
-        private authenticationService: AuthenticationService, private changeDetectorRef: ChangeDetectorRef,
-        private videoFileService: VideoFileService, private cloudUploadService: UploadCloudvideoService,
-        private sanitizer: DomSanitizer, private refService: ReferenceService,public homeComponent: HomeComponent,
-        private deviceService: Ng2DeviceService) {
+    constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
+        public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
+        public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
+        public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
+        public deviceService: Ng2DeviceService) {
         try {
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;
@@ -133,7 +134,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
+            $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
         } catch (err) {
@@ -203,7 +204,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         console.log(this.processVideoResp.error);
                     }
                 }
-            }),
+            },
+           (error: any) => {
+               this.xtremandLogger.errorPage(error);
+           }),
             () => console.log('process video is:' + this.processVideoResp);
     }
 
@@ -275,7 +279,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             (result: any) => {
                 this.responsePath = result;
                 this.processVideo(result.path);
-            }
+            },(error: any) => {
+               this.xtremandLogger.errorPage(error);
+           }
             );
     }
     removeRecordVideo() {
@@ -416,7 +422,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             // user completed recording and stream is available
             self.player.on('finishRecord', function () {
-            self.saveVideo = true; // save button enabled
+                self.saveVideo = true; // save button enabled
                 self.discardVideo = true; // discard button enabled
                 self.testSpeeddisabled = false; // enabled the test speed button
                 self.closeModalId = true; // close button enabled
@@ -550,7 +556,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log(result);
                 this.processing = true;
                 this.processVideo(result.path);
-            });
+            },
+           (error: any) => {
+               this.xtremandLogger.errorPage(error);
+           });
     }
     /* box retreive videos */
     downloadFrombox() {
@@ -578,7 +587,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         swal.close();
                         self.processing = true;
                         self.processVideo(result.path);
-                    });
+                    }, (error: any) => {
+                     self.xtremandLogger.errorPage(error);
+                   });
             } else {
                 swal('Only video files can be uploaded.');
             }
@@ -659,6 +670,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     swal.close();
                     this.processing = true;
                     this.processVideo(result.path);
+                }, (error: any) => {
+               this.xtremandLogger.errorPage(error);
                 });
         } else {
             swal('Only video files can be uploaded');
@@ -687,16 +700,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         return false;
     }
     ngOnInit() {
-      try {
-        if (this.refService.homeMethodsCalled === false) {
-            this.homeComponent.getVideoTitles();
-            this.homeComponent.getCategorisService();
-            this.refService.homeMethodsCalled = true;
-         }
+        try {
+            if (this.refService.homeMethodsCalled === false) {
+                this.homeComponent.getVideoTitles();
+                this.homeComponent.getCategorisService();
+                this.refService.homeMethodsCalled = true;
+            }
             this.defaultSettings();
         } catch (err) {
             console.error('ERROR : FileUploadComponent : ngOnInit() ' + err);
-      }
+        }
     }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Component');
