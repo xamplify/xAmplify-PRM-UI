@@ -788,29 +788,9 @@ export class EditContactsComponent implements OnInit {
     }
     
     checkAll(ev:any){
-        /*if(ev.target.checked){
-            console.log("checked");
-            $('[name="campaignContact[]"]').prop('checked', true);
-            //this.isContactList = true;
-            let self = this;
-            $('[name="campaignContact[]"]:checked').each(function(){
-                var id = $(this).val();
-                self.selectedContactListIds.push(parseInt(id));
-                $('#row_'+id).addClass('contact-list-selected');
-             });
-            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
-        }else{
-           console.log("unceck");
-            $('[name="campaignContact[]"]').prop('checked', false);
-            //this.isContactList = false;
-            $('#user_list_tb tr').removeClass("contact-list-selected");
-            this.selectedContactListIds = [];
-        }
-        ev.stopPropagation();*/
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
-            //this.isContactList = true;
             let self = this;
             $('[name="campaignContact[]"]:checked').each(function(){
                 var id = $(this).val();
@@ -819,24 +799,15 @@ export class EditContactsComponent implements OnInit {
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
-            /*if(this.selectedContactListIds.length==0){
-                this.isContactList = false;
-            }*/
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("contact-list-selected");
             if(this.pagination.maxResults==this.pagination.totalRecords){
-               // this.isContactList = false;
                 this.selectedContactListIds = [];
             }else{
-               // this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
                 let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedContactListIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
-                /*if(this.selectedContactListIds.length==0){
-                    this.isContactList = false;
-                }*/
             }
-            
         }
         ev.stopPropagation();
     }
@@ -921,7 +892,7 @@ export class EditContactsComponent implements OnInit {
                 }else{
                     this.isHeaderCheckBoxChecked = false;
                 }*/
-                if(items.length==pagination.totalRecords || items.length == 10){
+                if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
                     this.isHeaderCheckBoxChecked = false;
@@ -956,6 +927,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     backToEditContacts() {
+        this.pagination.maxResults = 10;
         this.showAllContactData = false;
         this.showEditContactData = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -1060,9 +1032,14 @@ export class EditContactsComponent implements OnInit {
                 var items = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("CIDSS"+contactIds);
-                this.logger.log("IIDDDs"+this.selectedInvalidContactIds);
-                if(items.length==10){
+                this.logger.log("pagination contacts Ids"+contactIds);
+                this.logger.log("selected contacts Ids"+this.selectedInvalidContactIds);
+                /*if(items.length==10){
+                    this.isInvalidHeaderCheckBoxChecked = true;
+                }else{
+                    this.isInvalidHeaderCheckBoxChecked = false;
+                }*/
+                if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isInvalidHeaderCheckBoxChecked = true;
                 }else{
                     this.isInvalidHeaderCheckBoxChecked = false;
@@ -1151,13 +1128,17 @@ export class EditContactsComponent implements OnInit {
                 self.selectedInvalidContactIds.push(parseInt(id));
                 $('#row_'+id).addClass('invalid-contacts-selected');
              });
-            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+            this.selectedInvalidContactIds = this.refService.removeDuplicates(this.selectedInvalidContactIds);
         }else{
            console.log("unceck");
             $('[name="invalidContact[]"]').prop('checked', false);
-            //this.isContactList = false;
             $('#user_list_tb tr').removeClass("invalid-contacts-selected");
-            this.selectedInvalidContactIds = [];
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedInvalidContactIds = [];
+            }else{
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedInvalidContactIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedInvalidContactIds, currentPageContactIds);
+            }
         }
         ev.stopPropagation();
     }
@@ -1171,7 +1152,11 @@ export class EditContactsComponent implements OnInit {
             $('#row_'+contactId).removeClass('invalid-contacts-selected');
             this.selectedInvalidContactIds.splice($.inArray(contactId,this.selectedInvalidContactIds),1);
         }
-        //this.contactsUtility();
+        if(this.selectedInvalidContactIds.length == this.pagination.pagedItems.length ){
+            this.isInvalidHeaderCheckBoxChecked = true;
+        }else{
+            this.isInvalidHeaderCheckBoxChecked = false;
+        }
         event.stopPropagation();
     }
     
