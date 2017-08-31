@@ -225,9 +225,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
-            // console.log(fileItem._file);
-            // const isSupportfile = fileItem._file.type.toString();
-            // this.checkMimeTypes(isSupportfile);
             this.ownThumb = true;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
@@ -237,12 +234,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         // need to modify this code for embed video modal popup
    }  // closed constructor
 
-//    checkMimeTypes(isSupportfile: string) {
-//         if (isSupportfile === 'image/jpg' || 'image/jpeg' || 'image/png') {
-//             this.mimeTypeSupported = true;
-//             }
-//         }
-    openStartingDivs() {
+   openStartingDivs() {
         this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
     }
@@ -265,6 +257,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.imageUrlPath = false;
         this.ownThumb = false;
         this.ownThumbnail = true;
+        this.isThumb = false;
     }
     ownThumbnailfileChange(event: any) {
         const fileList: FileList = event.target.files;
@@ -323,11 +316,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isThumb = false;
         this.thumbnailRadioOpen = false;
     }
-    changeThumbnailOption() {
+    changeImageThumbnailOption() {
         this.openOwnThumbnail = false;
         this.thumbnailRadioOpen = true;
         this.ownThumbnail = false;
         this.isThumb = true;
+        this.imageUrlPath = false;
     }
     selectedGifFirst() {
         this.gifBoolean1 = true;
