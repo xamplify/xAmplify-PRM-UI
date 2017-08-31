@@ -27,6 +27,7 @@ export class ReferenceService {
     public videoTitles: string[];
     defaultPlayerSettings: DefaultVideoPlayer;
     public homeMethodsCalled = false;
+    defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'WELCOME';

@@ -39,7 +39,10 @@ export class HomeComponent implements OnInit {
         ngOnInit() {
         //  this.getCategorisService();
 		//  this.getVideoTitles();
-		  this.getVideoDefaultSettings();
+			if (this.referenceService.defaulgVideoMethodCalled === false) {
+			this.getVideoDefaultSettings();
+			this.referenceService.defaulgVideoMethodCalled = true;
+			}
        }
 
 }
