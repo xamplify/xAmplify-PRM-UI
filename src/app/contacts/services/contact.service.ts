@@ -54,23 +54,23 @@ export class ContactService {
     
     unlinkSalesforceAccount(): Observable<ContactList[]> {
         this.logger.info( "Service class unlink salesforce() completed" );
-        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=SALESFORCE')
             .map( this.extractData )
-            .catch( this.handleError );
+            .catch( this.handleErrorDelete );
     }
     
     unlinkGoogleAccount(): Observable<ContactList[]> {
         this.logger.info( "Service class unlink google() completed" );
-        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=GOOGLE')
             .map( this.extractData )
-            .catch( this.handleError );
+            .catch( this.handleErrorDelete );
     }
     
     unlinkZohoAccount(): Observable<ContactList[]> {
         this.logger.info( "Service class unlink zoho() completed" );
-        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=ZOHO')
             .map( this.extractData )
-            .catch( this.handleError );
+            .catch( this.handleErrorDelete );
     }
     
     loadContactListsNames(): Observable<ContactList[]> {

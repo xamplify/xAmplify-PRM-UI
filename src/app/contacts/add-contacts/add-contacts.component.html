@@ -216,6 +216,7 @@ color:blue;
 								    </div>
 								  </div>
 							</div>
+							
 							<div class="col-xs-12 col-md-6">
 								
 								<section class="pull-right" style="margin-bottom: 10px;margin-top: 3px;">
@@ -231,7 +232,9 @@ color:blue;
 							</div>
 
 						</div>
-						
+						<!-- <div *ngIf="unlinkGoogleSuccessMessage">
+								    	<p class="custom-error-message">Please select one of the option.</p>
+					 </div> -->
 						<div *ngIf="removeCsvName" id="removeCsv"
 									style="margin-top: 15px;margin-bottom: -20px; padding-left: 1cm">
 									<table class="table">
@@ -287,7 +290,22 @@ color:blue;
 			class="col-xs-8 alert alert-danger alert-dismissable">
 			 <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
-		</div>					
+		</div>			
+		<div *ngIf="deleteErrorMessage" id="campaignError"
+			class="col-xs-12 alert alert-danger alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Danger!</strong>{{Campaign}}
+		</div>	
+		 <div *ngIf="unlinkGoogleSuccessMessage" class="col-xs-12 alert alert-success">
+  						<strong>Success!</strong> Your Google Account successfully Removed.
+					</div>
+					<div *ngIf="unlinkSalesforceSuccessMessage" class="col-xs-12 alert alert-success">
+  						<strong>Success!</strong> Your Salesforce Account successfully Removed.
+					</div>
+					<div *ngIf="unlinkZohoSuccessMessage" class="col-xs-12 alert alert-success">
+  						<strong>Success!</strong> Your Zoho Account successfully Removed.
+					</div>
+						
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
 						<h3>Copy from text -- paste below</h3>
@@ -340,10 +358,19 @@ color:blue;
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
-											<div *ngIf="emailNotValid || emailId.invalid && (emailId.dirty || emailId.touched)"
+											
+											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+												class="custom-error-message">
+												Invalid EmailId.
+											</div><!-- <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
 												class="custom-error-message">
 												Invalid EmailId.
 											</div>
+											
+											<div *ngIf="!emailId.touched " 
+												class="custom-error-message">
+												Invalid EmailId.
+											</div> -->
 											</td>
 											
 										<td><input type=Text [(ngModel)]="newContact.firstName"

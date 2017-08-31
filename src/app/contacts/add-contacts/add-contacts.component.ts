@@ -39,6 +39,8 @@ export class AddContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     model: any = {};
     names: string[] = [];
+    deleteErrorMessage: boolean;
+    Campaign : string;
     invalidPatternEmails: string[] = [];
     isValidContactName: boolean;
     validCsvContacts: boolean;
@@ -49,6 +51,9 @@ export class AddContactsComponent implements OnInit {
     zohoImageBlur: boolean = false;
     zohoImageNormal: boolean = false;
     noOptionsClickError: boolean = false;
+    unlinkGoogleSuccessMessage : boolean = false;
+    unlinkSalesforceSuccessMessage : boolean = false;
+    unlinkZohoSuccessMessage : boolean = false;
     inValidCsvContacts: boolean;
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
@@ -347,7 +352,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     checkingRowEails( a: boolean, b: boolean, c: boolean ) {
-        this.validEmailPatternSuccess = false;
+        this.emailNotValid = false;
         if ( a == true ) {
             this.validEmailPatternSuccess = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1571,46 +1576,69 @@ export class AddContactsComponent implements OnInit {
         this.contactService.unlinkSalesforceAccount()
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
-                this.contactLists = data.listOfUserLists;
-                this.names.push( data.names );
-                console.log( this.names );
+                $( "#settingsSalesforce .close" ).click()
+                this.unlinkSalesforceSuccessMessage = true;
+                this.socialContactImage();
             },
-            error => {
-                this.logger.error( error )
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    this.Campaign = error;
+                    $( "#settingsSalesforce .close" ).click()
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
             },
-            () => this.logger.info( "Add contact component unlink salesforce Account() finished" )
-            )
+            () => this.logger.info( "deleted completed" )
+            );
+        this.unlinkSalesforceSuccessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
     unlinkGoogleAccount() {
         this.contactService.unlinkGoogleAccount()
             .subscribe(
-            ( data: any ) => {
-                this.logger.info( data );
-                this.contactLists = data.listOfUserLists;
-                this.names.push( data.names );
+            data => {
+                $( "#settingsGoolge .close" ).click()
+                this.unlinkGoogleSuccessMessage = true;
+                this.socialContactImage();
             },
-            error => {
-                this.logger.error( error )
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    this.Campaign = error;
+                    $( "#settingsGoolge .close" ).click()
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
             },
-            () => this.logger.info( "Add contact component unlink Google Account() finished" )
-            )
+            () => this.logger.info( "deleted completed" )
+            );
+        this.unlinkGoogleSuccessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
     unlinkZohoAccount() {
         this.contactService.unlinkZohoAccount()
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
-                this.contactLists = data.listOfUserLists;
-                this.names.push( data.names );
+                $( "#settingsZoho .close" ).click()
+                this.socialContactImage();
+                this.unlinkZohoSuccessMessage = true;
             },
-            error => {
-                this.logger.error( error )
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    this.Campaign = error;
+                    $( "#settingsZoho .close" ).click()
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
             },
-            () => this.logger.info( "Add contact component unlink Zoho Account() finished" )
-            )
+            () => this.logger.info( "deleted completed" )
+            );
+        this.unlinkZohoSuccessMessage = false;
+        this.deleteErrorMessage = false;
     }
 
     ngOnInit() {
