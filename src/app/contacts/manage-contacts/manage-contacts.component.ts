@@ -78,6 +78,7 @@ export class ManageContactsComponent implements OnInit {
     public getZohoConatacts: any;
     public zContacts: Set<SocialContact>;
     public allContactUsers: Array<ContactList>;
+    public tempAllContactUsers = [];
     public activeContactUsers: Array<ContactList>;
     public invalidContactUsers: Array<ContactList>;
     public unsubscribedContactUsers: Array<ContactList>;
@@ -128,7 +129,7 @@ export class ManageContactsComponent implements OnInit {
     ];
     public contactsUsersSort: any = this.sortContactUsers[0];
 
-    constructor( public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
+    constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
         private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, ) {
         this.show = false;
         this.showAll = true;
@@ -350,7 +351,6 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    //swal( 'Campaign contact!', error, 'error' );
                     this.Campaign = error;
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
@@ -359,10 +359,6 @@ export class ManageContactsComponent implements OnInit {
             },
             () => this.logger.info( "deleted completed" )
             );
-       /* if (this.contactLists.length==null) {
-            this.pagination.pageIndex = 1;
-            this.loadContactLists( this.pagination );
-         }*/
         this.deleteSucessMessage = false;
         this.deleteErrorMessage = false;
     }
@@ -719,18 +715,36 @@ export class ManageContactsComponent implements OnInit {
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("CIDSS"+contactIds);
-                this.logger.log("IIDDDs"+this.selectedContactListIds);
-                if(items.length==10){
+                this.logger.log("Contact Ids"+contactIds);
+                this.logger.log("Selected Contact Ids"+this.selectedContactListIds);
+                /*if(items.length==10){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }*/
+                if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
                     this.isHeaderCheckBoxChecked = false;
                 }
+                this.tempAllContactUsers.push(this.allContactUsers);
             },
             error => console.log( error ),
             () => console.log( "finished" )
             );
     }
+    
+/*    all_ContactsUsersTotalRecords( pagination: Pagination ) {
+        this.pagination.maxResults = this.pagination.totalRecords;
+        this.contactService.loadAllContacts( pagination )
+            .subscribe(
+            ( data: any ) => {
+                this.tempAllContactUsers = data.listOfUsers;
+            },
+            error => console.log( error ),
+            () => console.log( "finished" )
+            );
+    }*/
     
     validateContactName(contactName:string){
         if(contactName.replace(/\s\s+/g, '').length == 0){ 
@@ -759,6 +773,7 @@ export class ManageContactsComponent implements OnInit {
         this.pagination = new Pagination();
         this.currentContactType = "all_contacts";
         this.all_Contacts( this.pagination );
+        //this.all_ContactsUsersTotalRecords( this.pagination );
     }
 
     activeContactsDataShowing() {
@@ -859,9 +874,9 @@ export class ManageContactsComponent implements OnInit {
                 var items = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("CIDSS"+contactIds);
-                this.logger.log("IIDDDs"+this.selectedInvalidContactIds);
-                if(items.length==10){
+                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds);
+                this.logger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
+                if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isInvalidHeaderCheckBoxChecked = true;
                 }else{
                     this.isInvalidHeaderCheckBoxChecked = false;
@@ -1043,7 +1058,7 @@ export class ManageContactsComponent implements OnInit {
     }*/
     
     checkAllInvalidContacts(ev:any){
-        if(ev.target.checked){
+      /*  if(ev.target.checked){
             console.log("checked");
             $('[name="invalidContact[]"]').prop('checked', true);
             //this.isContactList = true;
@@ -1079,6 +1094,56 @@ export class ManageContactsComponent implements OnInit {
             //this.isContactList = false;
             $('#user_list_tb tr').removeClass("invalid-contacts-selected");
             this.selectedInvalidContactIds = [];
+        }*/
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="invalidContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="invalidContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedInvalidContactIds.push(parseInt(id));
+                console.log(self.selectedInvalidContactIds);
+                $('#campaignContactListTable_'+id).addClass('invalid-contacts-selected');
+             });
+            for ( var i = 0; i < this.pagination.pagedItems.length; i++ ) {
+                var object = {
+                    "id": this.pagination.pagedItems[i].id,
+                    "userName": null,
+                    "emailId": this.pagination.pagedItems[i].emailId,
+                    "firstName": this.pagination.pagedItems[i].firstName,
+                    "lastName": this.pagination.pagedItems[i].lastName,
+                    "mobileNumber": null,
+                    "interests": null,
+                    "occupation": null,
+                    "description": null,
+                    "websiteUrl": null,
+                    "profileImagePath": null,
+                    "userListIds": this.pagination.pagedItems[i].userListIds
+                }
+                console.log( object );
+                this.invalidRemovableContacts.push( object );
+
+        }
+            this.selectedInvalidContactIds = this.referenceService.removeDuplicates(this.selectedInvalidContactIds);
+        }else{
+            $('[name="invalidContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("invalid-contacts-selected");
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedInvalidContactIds = [];
+            }else{
+                for(let i=0; i< this.pagination.pagedItems.length; i++){
+                    var paginarionIds =[this.pagination.pagedItems[i].id];
+                    for(let j=0; j< this.pagination.pagedItems.length; j++){
+                        var removePageIds =[this.invalidRemovableContacts[j].id];
+                        if(paginarionIds == removePageIds){
+                        this.invalidRemovableContacts.splice(i,1);
+                    }
+                    }
+                }
+                
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedInvalidContactIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedInvalidContactIds, currentPageContactIds);
+            }
         }
         ev.stopPropagation();
     }
@@ -1121,116 +1186,163 @@ export class ManageContactsComponent implements OnInit {
                 }
             }
         }
-        //this.contactsUtility();
-        event.stopPropagation();
+        if(this.selectedContactListIds.length == this.pagination.pagedItems.length ){
+            this.isInvalidHeaderCheckBoxChecked = true;
+        }else{
+            this.isInvalidHeaderCheckBoxChecked = false;
+        }
+     //   event.stopPropagation();
     }
-    
-    
     
     /*checkAll(ev:any){
-        if(ev.target.checked){
-            console.log("checked");
-            $('[name="campaignContact[]"]').prop('checked', true);
-            let self = this;
-            //self.selectedContactListIds.push(parseInt(id));
-            $('[name="campaignContact[]"]:checked').each(function(){
-                var id = $(this).val();
-                self.selectedContactListIds.push(parseInt(id));
-                $('#row_'+id).addClass('contact-list-selected');
-                $( 'input[name="campaignContact[]"]:checked' ).each( function() {
-                    var userInformation = $( this ).val().split( ',' );
-                    let user = new User();
-                    user.emailId = userInformation[1];
-                    user.firstName = userInformation[2];
-                    user.lastName = userInformation[3];
-                    self.allselectedUsers.push(user);
-                });
-             });
-            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
-            for(let i=0; i<=this.allContactUsers.length-1; i++){
-                let user = new User();
-                user.emailId = this.allContactUsers[i].emailId;
-                user.firstName = this.allContactUsers[i].firstName;
-                user.lastName = this.allContactUsers[i].lastName;
-                self.allselectedUsers.push(user);
-            }
-            
-        }else{
-           console.log("unceck");
-            $('[name="campaignContact[]"]').prop('checked', false);
-            //this.isContactList = false;
-            $('#user_list_tb tr').removeClass("contact-list-selected");
-            this.selectedContactListIds = [];
-        }
-        ev.stopPropagation();
-    }
-    
-    highlightRow(contactId:any,email:any,event:any){
-        let isChecked = $('#'+contactId).is(':checked');
-        let self = this;
-        if(isChecked){
-            $('#row_'+contactId).addClass('contact-list-selected');
-            this.selectedContactListIds.push(contactId);
-            $( 'input[name="campaignContact[]"]:checked' ).each( function() {
-                var userInformation = $( this ).val().split( ',' );
-                let user = new User();
-                user.emailId = userInformation[1];
-                user.firstName = userInformation[2];
-                user.lastName = userInformation[3];
-                self.allselectedUsers.push(user);
-            });
-        }else{
-            $('#row_'+contactId).removeClass('contact-list-selected');
-             for(let i = 0; i< this.allselectedUsers.length; i++) {
-                 console.log(email +' : '+ this.allselectedUsers[i].emailId);
-                 if(email === this.allselectedUsers[i].emailId){
-                     this.allselectedUsers.splice(i,1);
-                     console.log(this.allselectedUsers);
-                     break;
-                 }
-             }
-          //   this.allselectedUsers = $.grep(self.allselectedUsers,
-           //          function(o,i) { return o.emailId === email;},
-            //         true);
-            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
-          // this.allselectedUsers.splice($.inArray(email,this.allselectedUsers),1);
-        }
-        //this.contactsUtility();
-        event.stopPropagation();
-    }
-    */
-    
-    
-    checkAll(ev:any){
         this.contactListUsersError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
-            //this.isContactList = true;
             let self = this;
             $('[name="campaignContact[]"]:checked').each(function(){
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                //$('#row_'+id).addClass('contact-list-selected');
+             });
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedContactListIds = [];
+            }else{
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        ev.stopPropagation();
+    }
+    */
+    checkAll(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#ContactListTable_'+id).addClass('contact-list-selected');
+             });
+            for(let i=0; i< this.pagination.pagedItems.length; i++){
+                let user = new User();
+                user.id = this.pagination.pagedItems[i].id;
+                user.emailId = this.pagination.pagedItems[i].emailId;
+                user.firstName = this.pagination.pagedItems[i].firstName;
+                user.lastName = this.pagination.pagedItems[i].lastName;
+                self.allselectedUsers.push(user);
+            }
+            console.log(this.allselectedUsers);
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedContactListIds = [];
+            }else{
+                for(let i=0; i< this.pagination.pagedItems.length; i++){
+                    var paginarionIds =[this.pagination.pagedItems[i].id];
+                    for(let j=0; j< this.pagination.pagedItems.length; j++){
+                        var removePageIds =[this.allselectedUsers[j].id];
+                        if(paginarionIds == removePageIds){
+                        this.allselectedUsers.splice(i,1);
+                    }
+                    }
+                }
+                
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        ev.stopPropagation();
+    }
+    /*checkAll(ev:any){
+        this.contactListUsersError = false;
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                console.log($(this));
+                self.selectedContactListIds.push(parseInt(id));
                 $('#row_'+id).addClass('contact-list-selected');
              });
-            for(let i=0; i<=this.pagination.pagedItems.length-1; i++){
+            for(let i=0; i< this.pagination.pagedItems.length; i++){
                 let user = new User();
                 user.emailId = this.pagination.pagedItems[i].emailId;
                 user.firstName = this.pagination.pagedItems[i].firstName;
                 user.lastName = this.pagination.pagedItems[i].lastName;
                 self.allselectedUsers.push(user);
             }
-            //this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+            console.log(this.allselectedUsers);
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
         }else{
            console.log("unceck");
+           
             $('[name="campaignContact[]"]').prop('checked', false);
-            //this.isContactList = false;
             $('#user_list_tb tr').removeClass("contact-list-selected");
-            this.selectedContactListIds = [];
-            this.allselectedUsers.length = 0;
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            }else{
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                console.log(this.allselectedUsers);
+                console.log(this.pagination.pagedItems);
+                for(let i = 0; i< this.allselectedUsers.length; i++) {
+                    if(this.allselectedUsers.length <=  this.pagination.pagedItems.length){
+                    if(this.allselectedUsers[i].emailId === this.pagination.pagedItems[i].emailId){
+                        this.allselectedUsers.splice(i,1);
+                        console.log(this.allselectedUsers);
+                    }
+                    }else if(this.allselectedUsers.length > this.pagination.pagedItems.length){
+                        if( this.pagination.pagedItems[i].emailId === this.allselectedUsers[i].emailId){
+                            this.allselectedUsers.splice(i,1);
+                            console.log(this.allselectedUsers);
+                        }
+                    }
+                    if(this.tempAllContactUsers[i].emailId === this.allselectedUsers[i].emailId){
+                        this.allselectedUsers.splice(i,1);
+                        console.log(this.allselectedUsers);
+                    }
+                }
+                console.log(this.pagination.pagedItems);
+                console.log(this.allselectedUsers);
+                
+            }
+        }
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#campaignContactListTable_'+id).addClass('contact-list-selected');
+             });
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.pagination.maxResults==this.pagination.totalRecords){
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            }else{
+                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
         }
         ev.stopPropagation();
-    }
+    }*/
     
     highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
         this.contactListUsersError = false;
@@ -1257,7 +1369,6 @@ export class ManageContactsComponent implements OnInit {
             }
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
         }
-        //this.contactsUtility();
         event.stopPropagation();
     }
     
@@ -1284,12 +1395,12 @@ export class ManageContactsComponent implements OnInit {
         });*/
         
         //console.log( selectedUsers );
-        this.logger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        this.logger.info( "SelectedUserIDs:" + this.selectedContactListIds );
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         if ( this.model.contactListName != "" && !this.isValidContactName && this.model.contactListName != " ") {
             if ( this.selectedContactListIds.length != 0 ) {
                 if(this.model.contactListName.length != ""){
-                    this.contactService.saveContactList( this.model.contactListName, this.allselectedUsers )
+                    this.contactService.saveContactList( this.model.contactListName, this.selectedContactListIds )
                     .subscribe(
                     data => {
                         data = data;
@@ -1352,7 +1463,7 @@ export class ManageContactsComponent implements OnInit {
 
             }
         }
-        this.logger.info( invalidUsers );
+        this.logger.info( this.invalidRemovableContacts );
         this.contactService.removeInvalidContactListUsers( this.invalidRemovableContacts )
             .subscribe(
             data => {
