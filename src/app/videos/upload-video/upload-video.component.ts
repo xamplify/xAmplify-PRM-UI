@@ -131,12 +131,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 // document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
             };
+           if(this.refService.uploadRetrivejsCalled === false) {
             $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
+             this.refService.uploadRetrivejsCalled = true;  
+        }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
@@ -722,6 +725,5 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.redirectPge = true;
             swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!');
         }
-        $('.r-video').remove();
     }
 }

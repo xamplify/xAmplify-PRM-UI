@@ -69,15 +69,11 @@
 							<div class="tab-content">
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->	
-								   <!-- <div *ngIf="disableDropDowns" style="color: #515658; background :gainsboro"
-								    class="col-md-12 alert alert alert-danger alert-dismissable alertMessageCustom alignMentNovideos">
-										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<p class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: #00a6e8" routerLink="../../videos" >Upload Video Page</a></p>
-								   </div> -->
-								   	<div *ngIf="disableDropDowns" class="col-md-12 alert alert-info">
-										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<p class="noVideos"> No videos Found !!! Want to upload videos, Please visit <a style="color: currentColor" routerLink="../../videos" >Upload Video Page</a></p>
-								   </div>
+									   <div *ngIf="disableDropDowns" class="alert alert-info">
+										   <strong >No videos Found !!! Want to upload videos, Please visit
+											    <a style="color: #2a4c77; text-decoration: underline;" routerLink="../../videos" >Upload Video Page</a>
+										   </strong>
+									  </div>
 									<div class="page-toolbar">
 									<div class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 										<div *ngIf="disableDropDowns == false" class="inputs" align="right">
@@ -106,12 +102,6 @@
 									</div>
 								</div>
 								<div class="margin-top-10" >
-									  <!-- <div *ngIf="disableDropDowns == false" style="width:28%">
-                                             <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
-                                               <option  [value]="0" class="form-control">All Categories</option>
-                                               <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
-                                            </select>
-									  </div> -->
 									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">

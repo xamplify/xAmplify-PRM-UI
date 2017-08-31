@@ -1,12 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../../core/services/reference.service';
@@ -49,9 +50,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     active = false;
     defaultPlayerSuccess = false;
     isPlayed = false;
-    constructor(private fb: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService,
-        private logger: Logger, private refService: ReferenceService, private videoUtilService: VideoUtilService) {
+    constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
+        public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
+        public router: Router) {
         this.userData = this.authenticationService.userProfile;
+        if (this.isEmpty(this.userData)) {
+          this.router.navigateByUrl('/home/dashboard');
+        } else {
         console.log(this.userData);
         if (this.userData.firstName !== null) {
             this.parentModel.displayName = this.userData.firstName;
@@ -61,6 +66,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
             this.userProfileImage = this.userData.profileImagePath;
             this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+        }
         }
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
@@ -89,7 +95,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
     }
-
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
     clearImage() {
         $('div#previewImage > img').remove();
         $('div#previewImage').append('<img src="assets/images/upload-profile.png"/>');
@@ -639,7 +647,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     ngOnDestroy() {
-        this.videoJSplayer.dispose();
+        if(this.isPlayed === true) { 
+        this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
     }
 }

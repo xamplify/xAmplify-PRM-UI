@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../core/models/user';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 declare var Metronic: any;
 declare var Layout: any;
@@ -16,8 +17,11 @@ export class ProfileHelpComponent implements OnInit {
   userData: User;
   userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
   parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(public authenticationService: AuthenticationService, public router: Router) {
      this.userData = this.authenticationService.userProfile;
+     if (this.isEmpty(this.userData)) {
+          this.router.navigateByUrl('/home/dashboard');
+        } else {
       if (this.userData.firstName !== null ) {
         this.parentModel.displayName =  this.userData.firstName;
      }else {
@@ -27,8 +31,11 @@ export class ProfileHelpComponent implements OnInit {
         this.userProfileImage = this.userData.profileImagePath;
          this.parentModel.profilePicutrePath = this.userData.profileImagePath;
       }
+    }
   }
-
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
   ngOnInit() {
       try {
           Metronic.init();

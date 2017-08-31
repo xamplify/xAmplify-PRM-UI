@@ -257,7 +257,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public validatorsTag = [this.startsWithAt];
 
     shareClick() {
-        this.openWindow();
+        window.open(this.authenticationService.APP_URL + '/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
@@ -418,12 +419,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     closeEmbedModal() {
         this.ClipboardName = 'Copy to Clipboard';
-    }
-    // share window popup
-    openWindow() {
-        // this.authenticationService.APP_URL +
-        window.open(this.authenticationService.APP_URL + '/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
-            'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // normal and 360 video methods
     play360Video() {
