@@ -8,4 +8,5 @@ export class Reply{
     divId:string;
     emailAction:any;
     scheduled:boolean;
+    replyInDaysSum:number;
 }

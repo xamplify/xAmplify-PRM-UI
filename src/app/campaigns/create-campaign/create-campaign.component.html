@@ -795,7 +795,7 @@
         	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" >
-        		<h4><b>ADD REPLY:</b></h4>
+        		<h4><b>ADD REPLY-{{i+1}}</b></h4>
         		<hr>
 					<div class="panel-body">
 						<form class="role" id="form-{{reply.divId}}">
@@ -834,7 +834,7 @@
 				<!-- ------------ADD ON CLICK------------------------ -->
 				<div *ngFor="let url of urls;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{url.divId}}">
-        		<h4><b>ADD ON CLICK:</b></h4>
+        		<h4><b>ADD ON CLICK-{{i+1}}</b></h4>
         		<hr>
 					<div class="panel-body">
 						<form class="role" id="form-{{url.divId}}">
@@ -868,8 +868,12 @@
 							</select>
 						</div>
 							<div class="form-group col-md-3" style="padding-top: 1.9em;float: right;">
-								<button type="button" class="btn btn-danger"
-									(click)="remove(url.divId,'url')">Delete</button>
+								<button type="button" class="btn btn-danger"(click)="remove(url.divId,'url')">
+									Delete
+								</button>
+									<!-- <a class="mix-preview6"  title="Delete Row" data-rel="fancybox-button"> 
+										<i class="fa fa-trash"></i>
+									</a> -->
 							</div>
 							<div class="col-sm-12" style="padding: 0">
 								<div>

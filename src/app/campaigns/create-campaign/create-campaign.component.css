@@ -803,3 +803,6 @@ label img {
 .cenetered-block > h5{
 	margin: 5px 0;
 }
+.left{
+	float: left;
+}

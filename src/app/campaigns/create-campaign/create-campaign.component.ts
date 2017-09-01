@@ -149,6 +149,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     allItems= [];
     emailTemplateHrefLinks:any[] = [];
     dataError:boolean = false;
+    emailNotOpenedReplyDaysSum:number = 0;
+    emailOpenedReplyDaysSum:number = 0;
+    onClickScheduledDaysSum:number = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:Logger,private videoFileService:VideoFileService,
@@ -688,9 +691,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     return $.inArray(element, contactIds ) !== -1;
                 });
                 console.log(contactIds);
-                console.log(this.selectedContactListIds);
                 console.log(items);
-                if(items.length==contactsPagination.maxResults){
+               console.log(items.length+"::::::::::::"+contactIds.length);//items.length==contactsPagination.maxResults ||
+                if(items.length==contactIds.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
                     this.isHeaderCheckBoxChecked = false;
@@ -1057,7 +1060,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               self.sendTestEmail(email);
               })
        }
-   
     getCampaignData( emailId: string ) {
         if ( this.campaignType == "regular" ) {
             this.campaign.regularEmail = true;
@@ -1065,39 +1067,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign.regularEmail = false;
         }
         this.filteredSocialStatusProviders();
-        for(var i=0;i<this.replies.length;i++){
-            let reply = this.replies[i];
-            $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
-            $('#'+reply.divId).addClass('portlet light dashboard-stat2');
-            if(reply.actionId!=16){
-                if(reply.replyTime==undefined || reply.replyTime==null || reply.subject.trim().length==0 || reply.replyInDays==null){
-                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
-            }else{
-                if(reply.subject.trim().length==0){
-                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
-            }
-            
-            
-        }
-        for(var i=0;i<this.urls.length;i++){
-            let url = this.urls[i];
-            console.log(url);
-            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
-            $('#'+url.divId).addClass('portlet light dashboard-stat2');
-            let replyTime = url.replyTime;
-            if(url.scheduled){
-                if(replyTime==undefined ||replyTime==null || url.subject.trim().length==0|| url.body.trim().length==0 || url.replyInDays==null){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                }  
-            }else{
-                if(url.subject.trim().length==0|| url.body.trim().length==0){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
-            }
-           
-        }
+        //
+        this.getRepliesData();
+        this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         var data = {
             'campaignName': this.campaign.campaignName,
@@ -1128,6 +1100,83 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         return data;
     }
    
+    getRepliesData(){
+        for(var i=0;i<this.replies.length;i++){
+            let reply = this.replies[i];
+            $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2');
+            if(reply.actionId!=16){
+                if(reply.replyTime==undefined || reply.replyTime==null || reply.subject.trim().length==0 || reply.replyInDays==null){
+                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
+            }else{
+                if(reply.subject==undefined || reply.subject==null || reply.subject.trim().length==0){
+                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
+            }
+            var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+            if(errorLength==0){
+                this.addEmailNotOpenedReplyDaysSum(reply, i);
+                this.addEmailOpenedReplyDaysSum(reply, i);
+            }
+           
+        }
+    }
+
+    addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
+        if(reply.actionId==0){
+            if(index==0){
+                this.emailNotOpenedReplyDaysSum = reply.replyInDays;
+            }else{
+                this.emailNotOpenedReplyDaysSum = reply.replyInDays+this.emailNotOpenedReplyDaysSum;
+            }
+            reply.replyInDaysSum = this.emailNotOpenedReplyDaysSum;
+        }
+    }
+    addEmailOpenedReplyDaysSum(reply:Reply,index:number){
+        if(reply.actionId==13){
+            if(index==0){
+                this.emailOpenedReplyDaysSum = reply.replyInDays;
+            }else{
+                this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
+            }
+            reply.replyInDaysSum = this.emailOpenedReplyDaysSum;
+        }
+    }
+    
+    
+    getOnClickData(){
+        for(var i=0;i<this.urls.length;i++){
+            let url = this.urls[i];
+            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
+            $('#'+url.divId).addClass('portlet light dashboard-stat2');
+            let replyTime = url.replyTime;
+            if(url.scheduled){
+                if(replyTime==undefined ||replyTime==null || url.subject.trim().length==0|| url.body.trim().length==0 || url.replyInDays==null){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                } 
+                var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+                if(errorLength==0){
+                    this.addOnClickScheduledDaysSum(url, i);
+                }
+               
+            }else{
+                if(url.subject==undefined || url.subject==null || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                }
+            }
+           
+        }
+    }
+    
+    addOnClickScheduledDaysSum(url:Url,i:number){
+        if(i==0){
+            this.onClickScheduledDaysSum = url.replyInDays;
+        }else{
+            this.onClickScheduledDaysSum = url.replyInDays+this.onClickScheduledDaysSum;
+            url.replyInDaysSum = this.onClickScheduledDaysSum;
+        }
+    }
     sendTestEmail(emailId:string){
         let self = this;
         var data = this.getCampaignData(emailId);
@@ -1177,9 +1226,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         },
         error => {
-            this.logger.error("error in launchCampaign()", error);
+            this.logger.error("error in saveCampaignOnDestroy()", error);
         },
-        () => this.logger.info("Finished launchCampaign()")
+        () => this.logger.info("Finished saveCampaignOnDestroy()")
     );
     return false;
     }
