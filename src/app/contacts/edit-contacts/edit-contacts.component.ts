@@ -422,6 +422,7 @@ export class EditContactsComponent implements OnInit {
                             $( this ).remove();
                         });
                         this.users.length = 0;
+                        //this.removeCsv();
                         this.successMessage = true;
                         setTimeout( function() { $( "#saveContactsMessage" ).slideUp( 500 ); }, 2000 );
                         $( "button#add_contact" ).prop( 'disabled', false );

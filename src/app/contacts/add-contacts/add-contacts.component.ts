@@ -37,6 +37,7 @@ export class AddContactsComponent implements OnInit {
     public clipboardUsers: Array<User>;
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
+    selectedZohoDropDown : string = 'DEFAULT';
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
@@ -211,7 +212,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#salesforceContact_button" ).prop( 'disabled', true );
             $( "button#zohoContact_button" ).prop( 'disabled', true );
             $( "button#microsoftContact_button" ).prop( 'disabled', true );
-            $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
 
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -801,7 +802,7 @@ export class AddContactsComponent implements OnInit {
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
-        $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -841,7 +842,7 @@ export class AddContactsComponent implements OnInit {
         $( "button#salesforceContact_button" ).prop( 'disabled', true );
         $( "button#zohoContact_button" ).prop( 'disabled', true );
         $( "button#microsoftContact_button" ).prop( 'disabled', true );
-        $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         this.clipBoard = true;
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
@@ -931,9 +932,9 @@ export class AddContactsComponent implements OnInit {
                     $( "button#zohoContact_button" ).prop( 'disabled', true );
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -991,7 +992,7 @@ export class AddContactsComponent implements OnInit {
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1087,23 +1088,24 @@ export class AddContactsComponent implements OnInit {
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
         this.noOptionsClickError = false;
-        var selectedDropDown = $( "select.opts:visible option:selected " ).val();
-        if ( selectedDropDown == "DEFAULT" ) {
+        let self = this;
+        self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( self.selectedZohoDropDown == "DEFAULT" ) {
             alert( "Please Select the which you like to import from:" );
             return false;
         }
         else {
-            if ( selectedDropDown == "contact" ) {
-                this.contactType = selectedDropDown;
-                this.logger.log( selectedDropDown );
+            if ( self.selectedZohoDropDown == "contact" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.logger.log( self.selectedZohoDropDown );
             }
-            else if ( selectedDropDown == "lead" ) {
-                this.contactType = selectedDropDown;
-                this.logger.log( selectedDropDown );
+            else if ( this.selectedZohoDropDown == "lead" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.logger.log( self.selectedZohoDropDown );
             }
             this.logger.log( this.userName );
             this.logger.log( this.password );
-            this.getZohoContacts( this.contactType, this.userName, this.password );
+            this.getZohoContacts( self.contactType, this.userName, this.password );
         }
     }
 
@@ -1148,9 +1150,9 @@ export class AddContactsComponent implements OnInit {
                     $( "#myModal .close" ).click()
 
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1207,7 +1209,7 @@ export class AddContactsComponent implements OnInit {
         console.log( selectedUsers );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1367,9 +1369,9 @@ export class AddContactsComponent implements OnInit {
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     this.hideModal();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1437,9 +1439,9 @@ export class AddContactsComponent implements OnInit {
                     $( "button#googleContact_button" ).prop( 'disabled', true );
                     $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     this.hideModal();
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
@@ -1468,7 +1470,7 @@ export class AddContactsComponent implements OnInit {
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1525,30 +1527,18 @@ export class AddContactsComponent implements OnInit {
             data => {
                 this.storeLogin = data;
                 if ( this.storeLogin.GOOGLE == true ) {
-                    // this.googleImage = 'assets/images/crm/google_check.png';
                     this.googleImageNormal = true;
                 } else {
-                    //this.googleImage = 'assets/images/crm/google_gear.png';
-                    //this.googleImage = 'assets/images/crm/google.png';
                     this.googleImageBlur = true;
-                    //$('.googleImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
                 }
                 if ( this.storeLogin.SALESFORCE == true ) {
-                    //this.salesforceImage = 'assets/images/crm/sf_check.png';
                     this.sfImageNormal = true;
                 } else {
-                    //this.salesforceImage = 'assets/images/crm/sf_gear.png';
-                    //this.salesforceImage = 'assets/images/crm/sf.png';
                     this.sfImageBlur = true;
-                    //$('.salesForceImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
                 }
                 if ( this.storeLogin.ZOHO == true ) {
-                    // this.zohoImage = 'assets/images/crm/Zoho_check.png';
                     this.zohoImageNormal = true;
                 } else {
-                    //this.zohoImage = 'assets/images/crm/Zoho_gear.png';
-                    // $('.zohoImageClass').attr('style', '-webkit-filter: blur(1px); -moz-filter: blur(1px);-o-filter: blur(1px);-ms-filter: blur(1px);filter: blur(1px);margin:11px;');
-                    //this.zohoImage = 'assets/images/crm/Zoho.png';
                     this.zohoImageBlur = true;
                 }
             },
@@ -1576,8 +1566,10 @@ export class AddContactsComponent implements OnInit {
         this.contactService.unlinkSalesforceAccount()
             .subscribe(
             ( data: any ) => {
+                this.socialContactImage();
                 $( "#settingsSalesforce .close" ).click()
                 this.unlinkSalesforceSuccessMessage = true;
+                setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 this.socialContactImage();
             },
             ( error: any ) => {
@@ -1585,7 +1577,7 @@ export class AddContactsComponent implements OnInit {
                     this.Campaign = error;
                     $( "#settingsSalesforce .close" ).click()
                     this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    setTimeout( function() { $( "#salesforceSuccessMessage" ).slideUp( 500 ); }, 3000 );
                 }
                 console.log( error );
             },
@@ -1599,9 +1591,10 @@ export class AddContactsComponent implements OnInit {
         this.contactService.unlinkGoogleAccount()
             .subscribe(
             data => {
+                this.socialContactImage();
                 $( "#settingsGoolge .close" ).click()
                 this.unlinkGoogleSuccessMessage = true;
-                this.socialContactImage();
+                setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
@@ -1622,9 +1615,10 @@ export class AddContactsComponent implements OnInit {
         this.contactService.unlinkZohoAccount()
             .subscribe(
             ( data: any ) => {
-                $( "#settingsZoho .close" ).click()
                 this.socialContactImage();
+                $( "#settingsZoho .close" ).click()
                 this.unlinkZohoSuccessMessage = true;
+                setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {

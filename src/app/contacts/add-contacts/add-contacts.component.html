@@ -296,13 +296,13 @@ color:blue;
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Danger!</strong>{{Campaign}}
 		</div>	
-		 <div *ngIf="unlinkGoogleSuccessMessage" class="col-xs-12 alert alert-success">
+		 <div *ngIf="unlinkGoogleSuccessMessage" id="googleSuccessMessage" class="col-xs-12 alert alert-success">
   						<strong>Success!</strong> Your Google Account successfully Removed.
 					</div>
-					<div *ngIf="unlinkSalesforceSuccessMessage" class="col-xs-12 alert alert-success">
+					<div *ngIf="unlinkSalesforceSuccessMessage" id="salesforceSuccessMessage" class="col-xs-12 alert alert-success">
   						<strong>Success!</strong> Your Salesforce Account successfully Removed.
 					</div>
-					<div *ngIf="unlinkZohoSuccessMessage" class="col-xs-12 alert alert-success">
+					<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage" class="col-xs-12 alert alert-success">
   						<strong>Success!</strong> Your Zoho Account successfully Removed.
 					</div>
 						
@@ -639,7 +639,7 @@ color:blue;
       					</div>
       					<div class="modal-footer">
         					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       						<button type="button" class="btn btn-primary" (click) = "zohoContacts()">Authorize</button>
+       						<button type="button" class="btn btn-primary" [disabled]="selectedZohoDropDown == 'DEFAULT'" (click) = "zohoContacts()">Authorize</button>
      		 			</div>
     				</div>
   				</div>
@@ -708,6 +708,8 @@ color:blue;
       						<form class="form-horizontal">
   								  <div class="form-group">
   								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Zoho account will remove from Xtremand.</p>
+  								  <div style="margin-left:20px;width:90%">Would you link to delete associated contact litsts:<input type="checkbox" name="vehicle" value="Bike">
+  								  </div>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkZohoAccount()">UnLink Account</button>
  								  </div>
   					        </form>
