@@ -131,7 +131,7 @@
 							<div *ngIf="isDisable==false">
 							  <div *ngFor="let item of uploader.queue">
 							  	<div class="col-xs-12 col-sm-3 col-md-3">
-								 <video *ngIf="!videoDisabled" id="my-video" style="margin: -7px;" controls preload="auto" width="auto" height="150" >
+								 <video *ngIf="!videoDisabled" id="my-video" style="margin: -7px;" controls preload="auto" width="250" height="150" >
 											<source [src]='videoPreviewPath' type = 'video/mp4'>
 											<source [src]='videoPreviewPath' type = 'video/quicktime'>
 											<source [src]="videoPreviewPath" type = 'video/x-msvideo'> 
@@ -139,21 +139,16 @@
 											<source [src]="videoPreviewPath" type = 'video/dvd'> 
 											<source [src]="videoPreviewPath" type = 'video/xvid'> 
 								   </video>
-								   <img *ngIf="!previewDisabled" src= "assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="auto" height="150">
+								   <img *ngIf="!previewDisabled" src= "assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="250" height="150">
 								</div> 
-								<div class="col-xs-12 col-sm-3 col-md-3">{{ trimVideoTitle(item?.file?.name) }}</div>
-								<div class="col-xs-12 col-sm-3 col-md-3">
+								<div class="col-xs-12 col-sm-4 col-md-4">{{ trimVideoTitle(item?.file?.name) }}</div>
+								<div class="col-xs-12 col-sm-2 col-md-2">
 									<div >{{(item?.file?.size/1024/1024).toFixed(2) }} MB</div>
 									<div class="progress" style="width:50%">
 										<div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
 									</div>
 								</div>
-								<!-- <div class="text-center">
-									<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-									 <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-									 <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-								</div> -->
-								<div class="col-xs-12 col-sm-3 col-md-3" nowrap>
+								<div class="col-xs-12 col-sm-3 col-md-3" nowrap style="padding:0">
 										<button class="text-center" style="background-color:white; cursor:default">
 											<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
 											<span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
@@ -178,7 +173,7 @@
 			
 				<div class="row">
 					<!--ended the file upload code   -->
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-6">
 						<p><span class="label label-danger"> NOTE: </span> &nbsp; This
 							plugins works only on Latest Chrome, Firefox, Safari, Opera &
 							Internet Explorer 10.
@@ -189,7 +184,7 @@
 							<h3>Drop Video File </h3>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-top: 42px;">
+					<div class="col-xs-12 col-sm-6 col-md-8 col-lg-6" style="padding-top: 42px;">
 						<!-- <div style="float: left; width: 100px;" class="zoomin">
 						   <img src="assets/images/record.png" title="Click here To Record from computer acttached camera"
 								(click)="cameraChange()" height="80" width="80" class="camera" style=" border: 5px; margin: 10px;">
@@ -231,13 +226,13 @@
 								(click)="boxChange()" height="80" width="auto" style="cursor:pointer; border: 1px; margin: 10px;">
 								<div style="position: relative;left: 28px;">Box</div>
 					   </div>
-					   <div  class="col-xs-4 col-sm-4 col-md-2 zoomin">			
+					   <div  class="col-xs-5 col-sm-5 col-md-2 zoomin">			
 						   <img src="assets/images/GoogleDrive.png" class="googleDrive" title="Click here To access videos from your GoogleDrive account"
 								(click)="googleDriveChange()" height="80" width="auto" style="cursor: pointer; border: 1px; margin: 10px;">
 								<div style=" position: relative;left: 7px;">GoogleDrive</div>
 								
 					   </div>
-					    <div class="col-xs-4 col-sm-4 col-md-2 zoomin">			
+					    <div class="col-xs-7 col-sm-7 col-md-2 zoomin" >			
 					        <img src="assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
 								height="80" width="auto" style="cursor: pointer; border: 1px; margin: 10px;">
 								<div style="position: relative;left: 11px;">One Drive</div>

@@ -42,7 +42,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     pageBar: boolean;
     showVideoName: string;
     public totalRecords: number;
-    categoryNum: number;
+    categoryNum : number;
     public isCategoryUpdated: boolean;
     categoryAnother = 'All Categories';
     public searchKey: string;
@@ -83,7 +83,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.isvideosLength = false;
         this.pageBar = false;
         this.isvideoThere = false;
-        this.categoryNum = 0;
+        this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.isCategoryThere = false;
         this.searchKey = null;
     }
@@ -211,7 +211,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showUpdatevalue = false;
         this.isvideoThere = false;
         console.log(this.categoryNum);
-        this.pagination.filterBy = this.categoryNum;
+      //  this.pagination.filterBy = this.categoryNum;
+        this.videoFileService.categoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
@@ -417,9 +418,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         if (videoFile != null) {
             this.homeComponent.getVideoTitles();
             this.pagination.pageIndex = 1;
-            this.pagination.filterBy = 0;
             this.pagination.sortcolumn = null;
             this.pagination.sortingOrder = null;
+            this.videoFileService.categoryNumber = 0;
             this.searchKey = null;
             this.loadVideos(this.pagination);
         }

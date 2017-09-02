@@ -151,6 +151,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public size = 'normal';
     public animate = true;
     public checkTag: string;
+    isThisDraftVideo = false;
     constructor(public referenceService: ReferenceService,
         public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute, 
         public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -166,6 +167,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         if (this.saveVideoFile.viewBy === 'DRAFT') {
+            this.isThisDraftVideo = true;
             this.saveVideoFile.viewBy = 'PRIVATE';
         }
         this.formErrors = this.videoUtilService.formErrors;

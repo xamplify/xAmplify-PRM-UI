@@ -112,15 +112,15 @@
 									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
 										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
-											<div class="mix-inner">
-												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath">
-												<div class="mix-details" style="z-index: 700;padding: 7px;">
+											<div class="mix-inner" style="height: 173px;">
+												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
+												<div class="mix-details" style="z-index: 700;padding: 11px;">
 													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
-													<a class="mix-preview2 " (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
+													<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
 													</a>
-													<a class="mix-preview1 "  (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
+													<a class="mix-preview1"  style="left: 16%;" (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 													<a class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" 
@@ -128,7 +128,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													</div>
-													<div style="top: 30%; position: relative;">
+													<div style="top: 27%; position: relative;">
 													<a class="mix-preview2 "  (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="" style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													</a>

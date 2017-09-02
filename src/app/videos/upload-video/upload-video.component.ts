@@ -138,7 +138,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-             this.refService.uploadRetrivejsCalled = true;  
+             this.refService.uploadRetrivejsCalled = true;
         }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
@@ -529,6 +529,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.oneDrive').attr('style', 'cursor:pointer; opacity:1');
         $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
     }
+    enableDropdown() {
+        this.isDisable = false;
+        this.isFileProgress = false;
+        this.isSelectedVideo = false;
+        this.router.navigate(['./home/videos']);
+    }
     downloadFromDropbox() {
         if (this.processing !== true) {
             const self = this;
@@ -661,6 +667,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.downloadGDriveFile(doc.id, doc.name);
         } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
             self.defaultSettings();
+            self.enableDropdown();
         }
     }
     downloadGDriveFile(fileId: any, name: string) {

@@ -28,6 +28,7 @@ export class VideoFileService {
     public campaignTimeValue: any;
     public pauseAction: boolean;
     public pause360Action: boolean;
+    public categoryNumber = 0;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -72,9 +73,8 @@ export class VideoFileService {
     }
 
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
-        if (pagination.filterBy == null) { pagination.filterBy = 0; }
         console.log(pagination);
-        const url = this.URL + 'listVideosNew/' + pagination.filterBy +
+        const url = this.URL + 'listVideosNew/' + this.categoryNumber +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
         return this.http.post(url, pagination, '')
