@@ -92,6 +92,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public overLaySet = false;
     public fullScreenMode = false;
     showRelatedMessage: boolean;
+    isThisDraftVideo  = false;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService, public router: Router,
         public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
         public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger:XtremandLogger,
@@ -135,6 +136,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedVideo = this.selectedVideo.allowEmbed;
         console.log(this.selectedVideo);
         this.is360Value = this.selectedVideo.is360video;
+           if (this.selectedVideo.viewBy === 'DRAFT') {
+            this.isThisDraftVideo = true;
+        }
         this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {

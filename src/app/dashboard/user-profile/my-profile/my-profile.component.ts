@@ -146,6 +146,32 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         }
     }
+    videojsCall(){
+       if(!this.videoJSplayer){
+        const self = this;
+        this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
+            { "controls": true, "autoplay": false, "preload": "auto" },
+            function () {
+                this.ready(function () {
+                    $('.vjs-big-play-button').css('display', 'block');
+                    self.isPlayed = false;
+                });
+                this.on('play', function () {
+                     self.isPlayed  = true;
+                     $('.vjs-big-play-button').css('display', 'none');
+                });
+                this.on('pause', function () {
+                     self.isPlayed  = true;
+                     $('.vjs-big-play-button').css('display', 'none');
+                });
+            });
+             this.defaultVideoSettings();
+            this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
+            if (this.refService.defaultPlayerSettings.enableVideoController === false) {
+            this.defaultVideoControllers();
+        }
+       } else { this.logger.log('you already initialized the videojs');}
+    }
     ngOnInit() {
         try {
        //    $("#defaultPlayerSettings").hide();
@@ -164,25 +190,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (err) { }
     }
     ngAfterViewInit() {
-        const self = this;
+        // const self = this;
         $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="profile-video"/>');
         this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
-        this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
-            { "controls": true, "autoplay": false, "preload": "auto" },
-            function () {
-                this.ready(function () {
-                    $('.vjs-big-play-button').css('display', 'block');
-                    self.isPlayed = false;
-                });
-                this.on('play', function () {
-                     self.isPlayed  = true;
-                     $('.vjs-big-play-button').css('display', 'none');
-                });
-                this.on('pause', function () {
-                     self.isPlayed  = true;
-                     $('.vjs-big-play-button').css('display', 'none');
-                });
-            });
+        // this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
+        //     { "controls": true, "autoplay": false, "preload": "auto" },
+        //     function () {
+        //         this.ready(function () {
+        //             $('.vjs-big-play-button').css('display', 'block');
+        //             self.isPlayed = false;
+        //         });
+        //         this.on('play', function () {
+        //              self.isPlayed  = true;
+        //              $('.vjs-big-play-button').css('display', 'none');
+        //         });
+        //         this.on('pause', function () {
+        //              self.isPlayed  = true;
+        //              $('.vjs-big-play-button').css('display', 'none');
+        //         });
+        //     });
         this.defaultVideoSettings();
         this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
         if (this.refService.defaultPlayerSettings.enableVideoController === false) {
@@ -520,7 +546,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     changeControllerColor(event: any) {
         this.defaultVideoPlayer.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('background-color', this.defaultVideoPlayer.controllerColor);
+        $('.video-js .vjs-control-bar').css('cssTex','background-color:'+this.defaultVideoPlayer.controllerColor+'!important');
         this.transperancyControllBar(this.valueRange);
     }
     changePlayerColor(event: any) {
