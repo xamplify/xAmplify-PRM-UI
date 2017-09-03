@@ -14,6 +14,7 @@ import { SaveVideoFile } from '../../models/save-video-file';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 declare var $, videojs: any;
 // logging info details
 enum LogAction {
@@ -40,7 +41,7 @@ enum LogAction {
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../edit-video/call-action.css'],
-    providers: [Pagination, XtremandLog]
+    providers: [Pagination, XtremandLog, HttpRequestLoader]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
@@ -93,6 +94,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public fullScreenMode = false;
     showRelatedMessage: boolean;
     isThisDraftVideo  = false;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService, public router: Router,
         public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
         public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger:XtremandLogger,
@@ -482,6 +484,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pagination.maxResults = 13;
         // this.pagination.maxResults = this.totalRecords;
         try {
+            this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoFiles(pagination)
                 .subscribe((result: any) => {
                     this.allVideos = result.listOfMobinars;
@@ -501,6 +504,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.showRelatedMessage = true;
                     } else { this.showRelatedMessage = false; }
                     pagination = this.pagerService.getPagedItems(pagination, this.allVideos);
+                    this.referenceService.loading(this.httpRequestLoader, false);
                 },
                 (error: any) => {
                     console.log(error);

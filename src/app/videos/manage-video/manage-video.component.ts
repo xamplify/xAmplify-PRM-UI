@@ -182,6 +182,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.isCategoryThere = true;
                     this.isCategoryUpdated = false;
                     pagination = this.pagerService.getPagedItems(pagination, this.videos);
+                    this.referenceService.loading(this.httpRequestLoader, false);
                 },
                 (error: any) => {
                     this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);
