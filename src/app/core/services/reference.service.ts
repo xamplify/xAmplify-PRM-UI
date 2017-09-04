@@ -29,6 +29,7 @@ export class ReferenceService {
     public homeMethodsCalled = false;
     defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
+    topNavbarUserService = false;
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'WELCOME';
     public URL: string = this.authenticationService.REST_URL + 'admin/';

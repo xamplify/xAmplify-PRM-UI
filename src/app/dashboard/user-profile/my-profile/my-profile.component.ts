@@ -608,8 +608,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('background-color', this.refService.defaultPlayerSettings.playerColor);
         if (this.refService.defaultPlayerSettings.controllerColor === '#fff') {
             const event = '#fbfbfb';
-            $('.video-js .vjs-control-bar').css('background-color', event);
-        } else { $('.video-js .vjs-control-bar').css('background-color', this.refService.defaultPlayerSettings.controllerColor); }
+            $('.video-js .vjs-control-bar').css('cssText','background-color:'+ event+'!important');
+        } else { $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.refService.defaultPlayerSettings.controllerColor+'!important'); }
         if (this.refService.defaultPlayerSettings.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
