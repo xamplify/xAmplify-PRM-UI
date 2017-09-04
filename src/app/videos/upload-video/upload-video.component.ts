@@ -13,7 +13,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { SaveVideoFile } from '../models/save-video-file';
 import { HomeComponent } from '../../core/home/home.component';
-declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive, $, videojs: any;
+declare var Dropbox, swal, google, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
+declare var QuickSidebar, Metronic, Demo, Layout, Index, $, videojs: any;
 
 @Component({
     selector: 'app-upload-video',
@@ -710,6 +711,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         return false;
     }
     ngOnInit() {
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        Index.init();
+        QuickSidebar.init();
         try {
             if (this.refService.homeMethodsCalled === false) {
                 this.homeComponent.getVideoTitles();

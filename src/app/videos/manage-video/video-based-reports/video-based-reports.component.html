@@ -169,18 +169,37 @@
 							<a class="title" href="javascript:;"> Views </a>
 						</div>
 					</div> -->
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="easy-pie-chart">
 							<div class="number transactions" data-percent="55">
 								<span> +55 </span> %
 							</div>
 							<a class="title" href="javascript:;"> Watched Fully </a>
 						</div>
+					</div> -->
+					<div class="col-xs-4 text-center">
+						<section class="percentage-circle">
+							<svg width="100" height="120" viewBox="0 0 120 120"
+								style="transform: rotate(-90deg)">
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+									stroke-width="12" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
+									stroke-width="12" stroke-dasharray="339.292006588"
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+						</svg>
+							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
+							<!-- <h6 class="percentage-text">views</h6> -->
+						</section>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 18px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
 					<div class="col-md-4">
 						<div class="sparkline-chart">
-							<div class="number" id="sparkline_bar2"></div>
+							<div class="number" id="sparkline_bar2">
+								<canvas width="113" height="55"
+									style="display: inline-block; width: 113px; height: 55px; vertical-align: top;">
+								</canvas>
+							</div>
 							<a class="title" href="javascript:;"> Minutes Watched </a>
 						</div>
 					</div>
@@ -191,13 +210,28 @@
 							<a class="title" href="javascript:;"> Average Duration </a>
 						</div>
 					</div> -->
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="easy-pie-chart">
 							<div class="number bounce" data-percent="46">
 								<span> +46 </span> %
 							</div>
 							<a class="title" href="javascript:;"> Shared </a>
 						</div>
+					</div> -->
+							<div class="col-xs-4 text-center">
+						<section class="percentage-circle">
+							<svg width="100" height="120" viewBox="0 0 120 120"
+								style="transform: rotate(-90deg)">
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+									stroke-width="12" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
+									stroke-width="12" stroke-dasharray="339.292006588"
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.46)}"/>
+						</svg>
+							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">46%</h2>
+							<!-- <h6 class="percentage-text">views</h6> -->
+						</section>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 18px;font-weight: 400;">Shared</h5>
 					</div>
 				</div>
 			</div>

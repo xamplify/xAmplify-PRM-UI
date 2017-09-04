@@ -102,7 +102,7 @@
 									</div>
 								</div>
 								<div class="margin-top-10" >
-									<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+									<app-loader *ngIf="!videos && httpRequestLoader.isLoading"></app-loader>
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">
 									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>

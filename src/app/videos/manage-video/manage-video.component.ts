@@ -12,7 +12,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HomeComponent } from '../../core/home/home.component';
 import { Logger } from 'angular2-logger/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var swal, require, $: any;
+declare var swal , QuickSidebar, Metronic, Demo, Layout, Index, $: any;
 
 @Component({
     selector: 'app-manage-video',
@@ -42,7 +42,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     pageBar: boolean;
     showVideoName: string;
     public totalRecords: number;
-    categoryNum : number;
+    categoryNum: number;
     public isCategoryUpdated: boolean;
     categoryAnother = 'All Categories';
     public searchKey: string;
@@ -88,11 +88,16 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.searchKey = null;
     }
     ngOnInit() {
-         if (this.referenceService.homeMethodsCalled === false) {
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        Index.init();
+        QuickSidebar.init();
+        if (this.referenceService.homeMethodsCalled === false) {
             this.homeComponent.getVideoTitles();
             this.homeComponent.getCategorisService();
             this.referenceService.homeMethodsCalled = true;
-         }
+        }
         console.log(this.referenceService.videoTitles);
         console.log('MangeVideosComponent ngOnInit()');
         this.logger.log('This is a priority level 5 log message...');
@@ -135,8 +140,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 },
                 (error: any) => {
                     this.xtremandLogger.error(' manage Videos Component : Loading Videos method():' + error);
-                   // this.router.navigate(['/home/error-occured-page/', error.status]);
-                   this.xtremandLogger.errorPage(error);
+                    // this.router.navigate(['/home/error-occured-page/', error.status]);
+                    this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:'),
             );
@@ -186,7 +191,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 },
                 (error: any) => {
                     this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);
-                  //  this.router.navigate(['/home/error-occured-page/', error.status]);
+                    //  this.router.navigate(['/home/error-occured-page/', error.status]);
                     this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:' + this.videos),
@@ -212,7 +217,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showUpdatevalue = false;
         this.isvideoThere = false;
         console.log(this.categoryNum);
-      //  this.pagination.filterBy = this.categoryNum;
+        //  this.pagination.filterBy = this.categoryNum;
         this.videoFileService.categoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
@@ -280,8 +285,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-               // this.referenceService.showServerError(this.httpRequestLoader);
-              //  this.httpRequestLoader.statusCode = error.status;
+                // this.referenceService.showServerError(this.httpRequestLoader);
+                //  this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -339,7 +344,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: string) => {
                 this.xtremandLogger.error(this.errorPrepender + ' show campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-              //  this.referenceService.showServerError(this.httpRequestLoader);
+                //  this.referenceService.showServerError(this.httpRequestLoader);
             });
     }
     videoTitleLength(title: string) {
@@ -440,7 +445,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }, 5000);
 
         if (videoFile == null) {
-        this.showVideoName = '';
+            this.showVideoName = '';
         } else {
             this.showVideoName = this.videoTitleLength(videoFile.title);
         }

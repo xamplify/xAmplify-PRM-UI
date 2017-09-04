@@ -546,8 +546,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     changeControllerColor(event: any) {
         this.defaultVideoPlayer.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('cssTex','background-color:'+this.defaultVideoPlayer.controllerColor+'!important');
-        this.transperancyControllBar(this.valueRange);
+        $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.defaultVideoPlayer.controllerColor+'!important');
     }
     changePlayerColor(event: any) {
         this.defaultVideoPlayer.playerColor = event;
@@ -555,7 +554,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js').css('color', this.defaultVideoPlayer.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.defaultVideoPlayer.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.defaultVideoPlayer.playerColor);
-        this.transperancyControllBar(this.valueRange);
     }
     transperancyControllBar(value: any) {
         this.valueRange = value;
@@ -565,7 +563,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             color = '#fbfbfb';
         } else { color = this.defaultVideoPlayer.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        $('.video-js .vjs-control-bar').css('background-color', rgba);
+        $('.video-js .vjs-control-bar').css('cssText','background-color:'+ rgba+'!important');
         console.log(this.valueRange);
     }
     defaulttransperancyControllBar(value: any) {

@@ -16,7 +16,7 @@ import { Category } from '../../models/category';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { VideoUtilService } from '../../services/video-util.service';
-declare var $, videojs, swal: any;
+declare var swal , videojs, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
 
 @Component({
     selector: 'app-edit-video',
@@ -107,8 +107,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public lastNameValid = false;
     public videoOverlaySubmit: string;
     public overLayValue: string; // videojs value overlay
-    public startCalltoAction: boolean;   // not required for start of the video
-    public endCalltoAction: boolean;   // not required for end of the video
+    public startCalltoAction: boolean;   // nod for start of the video
+    public endCalltoAction: boolean;   // nod for end of the video
     public is360Value: boolean;
     public maxLengthvalue = 75;
     public characterleft = 0;
@@ -901,6 +901,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#overLayDialog').append($('#overlay-modal').show());
     }
     ngOnInit() {
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        Index.init();
+        QuickSidebar.init();
         console.log(this.referenceService.videoTitles);
         this.removeVideoTitlesWhiteSpaces();
         this.loadRangeDisable = true;

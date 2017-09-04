@@ -15,7 +15,7 @@ import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
-declare var $, videojs: any;
+declare var $, videojs, QuickSidebar, Metronic, Layout, Demo, Index: any;
 // logging info details
 enum LogAction {
     playVideo = 1,
@@ -464,6 +464,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     ngOnInit() {
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        Index.init();
+        QuickSidebar.init();
         this.createSessionId();
         this.deviceDectorInfo();
         this.xtremandLogDefaultActions();
