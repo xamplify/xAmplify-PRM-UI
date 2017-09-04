@@ -1085,8 +1085,6 @@ export class ManageContactsComponent implements OnInit {
     }
     
     checkAll(ev:any){
-        //alert("selectedAllContacts:"+this.allselectedUsers.length);
-        //alert("selectedIds:"+this.selectedContactListIds.length);
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);

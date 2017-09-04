@@ -38,6 +38,9 @@ export class AddContactsComponent implements OnInit {
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
     selectedZohoDropDown : string = 'DEFAULT';
+googleCheckboxValue: boolean = false;
+salesforceCheckboxValue: boolean = false;
+zohoCheckboxValue: boolean = false;
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
@@ -1563,10 +1566,12 @@ export class AddContactsComponent implements OnInit {
     }
 
     unlinkSalesforceAccount() {
-        this.contactService.unlinkSalesforceAccount()
+        this.contactService.unlinkSalesforceAccount(this.salesforceCheckboxValue)
             .subscribe(
             ( data: any ) => {
-                this.socialContactImage();
+                $( "#salesforceContact_buttonNormal" ).hide();
+                $( "#salesforceGear" ).hide();
+                this.sfImageBlur = true;
                 $( "#settingsSalesforce .close" ).click()
                 this.unlinkSalesforceSuccessMessage = true;
                 setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
@@ -1588,10 +1593,13 @@ export class AddContactsComponent implements OnInit {
     }
 
     unlinkGoogleAccount() {
-        this.contactService.unlinkGoogleAccount()
+        this.contactService.unlinkGoogleAccount(this.googleCheckboxValue)
             .subscribe(
             data => {
-                this.socialContactImage();
+                //this.socialContactImage();
+                $( "#googleContact_buttonNormal" ).hide();
+                $( "#GoogleGear" ).hide();
+                this.googleImageBlur = true;
                 $( "#settingsGoolge .close" ).click()
                 this.unlinkGoogleSuccessMessage = true;
                 setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
@@ -1612,10 +1620,13 @@ export class AddContactsComponent implements OnInit {
     }
 
     unlinkZohoAccount() {
-        this.contactService.unlinkZohoAccount()
+        console.log(this.zohoCheckboxValue);
+        this.contactService.unlinkZohoAccount(this.zohoCheckboxValue)
             .subscribe(
             ( data: any ) => {
-                this.socialContactImage();
+                $( "#zohoContact_buttonNormal" ).hide();
+                $( "#zohoGear" ).hide();
+                this.zohoImageBlur = true;
                 $( "#settingsZoho .close" ).click()
                 this.unlinkZohoSuccessMessage = true;
                 setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );

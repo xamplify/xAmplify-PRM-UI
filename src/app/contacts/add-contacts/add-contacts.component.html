@@ -120,7 +120,7 @@ color:blue;
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 							<h4 class="col-xs-12">Import from available cloud service</h4>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-									<button *ngIf="sfImageNormal" id="salesforceContact_button" style="background-color: white" (click) = "salesforceContacts()">
+									<button *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click) = "salesforceContacts()">
 										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass"
 											title="Click here To access user list from your Salesforce account"
 											height="86" width="90">
@@ -131,7 +131,7 @@ color:blue;
 											height="86" width="90"
 											onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/sf.png';">
 									</button>
-									<div style="position: relative" id="salesforceGear" *ngIf="sfImageNormal" data-toggle="modal" data-target="#settingsSalesforce">
+									<div id = "salesforceGear" style="position: relative" id="salesforceGear" *ngIf="sfImageNormal" data-toggle="modal" data-target="#settingsSalesforce">
 										<a> 
 											<i id="SgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -83px;left: 77px;"></i>
 										</a>
@@ -144,12 +144,12 @@ color:blue;
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/google.png';">
 								</button>
-								<button id="googleContact_button" *ngIf="googleImageNormal" style="background-color: white" (click) = "googleContacts()">
+								<button id="googleContact_buttonNormal" *ngIf="googleImageNormal" style="background-color: white" (click) = "googleContacts()">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass"
 										title="Click here To access user list from your Google contacts"
 										height="86" width="90">
 								</button>
-								<div style="position: relative" *ngIf="googleImageNormal" data-toggle="modal" data-target="#settingsGoolge">
+								<div id ="GoogleGear" style="position: relative" *ngIf="googleImageNormal" data-toggle="modal" data-target="#settingsGoolge">
 								<a> 
 									<i id="GgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px; top: -83px;left: 77px;"></i>
 								</a>
@@ -162,12 +162,12 @@ color:blue;
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
 								</button>
-								<button *ngIf="zohoImageNormal" id="zohoContact_button" style="background-color: white" data-toggle="modal" data-target="#myModal">
+								<button *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" data-toggle="modal" data-target="#myModal">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass"
 										title="Click here To access user list from your Zoho account"
 										height="86" width="90">
 								</button>
-							<div style="position: relative" *ngIf="zohoImageNormal" data-toggle="modal" data-target="#settingsZoho">
+							<div id ="zohoGear" style="position: relative" *ngIf="zohoImageNormal" data-toggle="modal" data-target="#settingsZoho">
 								<a> 
 									<i id="ZgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -83px;left: 77px;"></i>
 								</a>
@@ -396,7 +396,7 @@ color:blue;
 										<div class="caption">
 											<i class="fa fa-edit"></i>File Preview
 										</div>
-										<<!-- div class="tools">
+										<!-- div class="tools">
 											<a href="javascript:;" class="collapse"> </a> <a
 												href="#portlet-config" data-toggle="modal" class="config">
 											</a> <a href="javascript:;" class="reload"> </a> <a
@@ -684,6 +684,9 @@ color:blue;
       						<form class="form-horizontal">
   								  <div class="form-group">
   								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Salesforce account will remove from Xtremand.</p>
+    							<div style="margin-left:20px;width:90%">Would you link to delete associated contact litsts:
+    							<input type="checkbox" [(ngModel)]="salesforceCheckboxValue" [ngModelOptions]="{standalone: true}">
+  								  </div>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkSalesforceAccount()">UnLink Account</button>
  								  </div>
   					        </form>
@@ -708,7 +711,8 @@ color:blue;
       						<form class="form-horizontal">
   								  <div class="form-group">
   								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Zoho account will remove from Xtremand.</p>
-  								  <div style="margin-left:20px;width:90%">Would you link to delete associated contact litsts:<input type="checkbox" name="vehicle" value="Bike">
+  								  <div style="margin-left:20px;width:90%">Would you link to delete associated contact litsts: 
+  								  <input type="checkbox" [(ngModel)]="checkboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkZohoAccount()">UnLink Account</button>
  								  </div>
@@ -733,6 +737,9 @@ color:blue;
       						<form class="form-horizontal">
   								  <div class="form-group">
   								  <p style="margin-left:20px;width:90%">If you click Unlink account button, your Google account will remove from Xtremand.</p>
+  								  <div style="margin-left:20px;width:90%">Would you link to delete associated contact litsts:
+  								  <input type="checkbox" [(ngModel)]="googleCheckboxValue" [ngModelOptions]="{standalone: true}">
+  								  </div>
     									<button type="button" class="btn btn-default" style="margin-left:38%" (click)="unlinkGoogleAccount()">UnLink Account</button>
  								  </div>
   					        </form>
