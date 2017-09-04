@@ -92,7 +92,7 @@
 	<div class="col-md-6 col-sm-6">
 		<div class="portlet light ">
 			<div class="portlet-title">
-				<div class="caption">
+				<!-- <div class="caption">
 					<i class="icon-cursor font-purple-intense hide"></i> <span
 						class="caption-subject font-purple-intense bold uppercase">Video
 						Stats</span>
@@ -102,11 +102,14 @@
 						class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
 						<i class="fa fa-repeat"></i> Reload
 					</a>
-				</div>
+				</div> -->
+			  <div>
+				<h3 style="word-break: break-all;color:#3c3a3a">{{selectedVideo.title}}</h3>
+			 </div>
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="easy-pie-chart">
 							<div class="number transactions" data-percent="55">
 								<span> +55 </span> %
@@ -131,7 +134,15 @@
 							</div>
 							<a class="title" href="javascript:;"> Shared </a>
 						</div>
-					</div>
+					</div> -->
+            <div class="col-md-12">
+				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
+				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
+			</div>
+			<div class="col-md-12">
+				<p>Category : {{selectedVideo.category.name}}</p>
+			</div>
+
 				</div>
 			</div>
 		</div>
@@ -152,10 +163,18 @@
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="sparkline-chart">
 							<div class="number" id="sparkline_bar"></div>
 							<a class="title" href="javascript:;"> Views </a>
+						</div>
+					</div> -->
+					<div class="col-md-4">
+						<div class="easy-pie-chart">
+							<div class="number transactions" data-percent="55">
+								<span> +55 </span> %
+							</div>
+							<a class="title" href="javascript:;"> Watched Fully </a>
 						</div>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
@@ -166,10 +185,18 @@
 						</div>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="sparkline-chart">
 							<div class="number" id="sparkline_line"></div>
 							<a class="title" href="javascript:;"> Average Duration </a>
+						</div>
+					</div> -->
+					<div class="col-md-4">
+						<div class="easy-pie-chart">
+							<div class="number bounce" data-percent="46">
+								<span> +46 </span> %
+							</div>
+							<a class="title" href="javascript:;"> Shared </a>
 						</div>
 					</div>
 				</div>

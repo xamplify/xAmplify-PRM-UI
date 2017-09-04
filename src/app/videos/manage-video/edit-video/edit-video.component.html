@@ -94,7 +94,7 @@
 					<span class="pull-right videoViews" >
 	            <h4 class="viewsh4">{{saveVideoFile.views}} views</h4></span>
 				</div>
-				<div class="col-xs-12" style="padding: 0;">
+				<div *ngIf="likes" class="col-xs-12" style="padding: 0;">
 					<span class="pull-right">
 						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
 							<i class="fa fa-thumbs-up" aria-hidden="true"></i>
