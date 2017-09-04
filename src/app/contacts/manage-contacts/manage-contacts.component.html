@@ -246,7 +246,7 @@
 							</a> -->
 							</div>
 							<div style="top: 38%; position: relative;"
-								*ngIf="contactList.socialNetwork=='GOOGLE'">
+								*ngIf="contactList.synchronisedList == true">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeGoogleContactList"
 									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
@@ -255,7 +255,7 @@
 								</a>
 							</div>
 							<div style="top: 38%; position: relative;"
-								*ngIf="contactList.socialNetwork=='ZOHO'">
+								*ngIf="contactList.synchronisedList == true">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeZohoContactList" data-toggle="modal"
 									data-target="#myModal" data-rel="fancybox-button"
@@ -264,7 +264,7 @@
 								</a>
 							</div>
 							<div style="top: 38%; position: relative;"
-								*ngIf="contactList.socialNetwork=='SALESFORCE'">
+								*ngIf="contactList.synchronisedList == true">
 								<a class="mix-preview2 fancybox-button"
 									title="sychronizeSalesforceContactList"
 									(click)="salesforceContactsSynchronizationAuthentication(contactList.id)"

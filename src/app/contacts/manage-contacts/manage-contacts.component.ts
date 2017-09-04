@@ -79,7 +79,6 @@ export class ManageContactsComponent implements OnInit {
     public getZohoConatacts: any;
     public zContacts: Set<SocialContact>;
     public allContactUsers: Array<ContactList>;
-    public tempAllContactUsers = [];
     public activeContactUsers: Array<ContactList>;
     public invalidContactUsers: Array<ContactList>;
     public unsubscribedContactUsers: Array<ContactList>;
@@ -728,7 +727,6 @@ export class ManageContactsComponent implements OnInit {
                 }else{
                     this.isHeaderCheckBoxChecked = false;
                 }
-                this.tempAllContactUsers.push(this.allContactUsers);
             },
             error => console.log( error ),
             () => console.log( "finished" )
