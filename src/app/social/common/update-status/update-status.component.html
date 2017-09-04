@@ -182,8 +182,8 @@
 						<div class="col-md-6 col-sm-6 col-xs-12" id="preview-section">
 							<video id="videojs-video" class="video-js vjs-default-skin vjs-16-9" style="max-width: 100%;"
 								controls preload="auto" width="580" height="320"
-								data-setup='{"example_option":true}' [src] = videoUrl poster="{{posterImage}}">
-								<source [src] = videoUrl  type="video/mp4" />
+								[src] = videoUrl poster="{{posterImage}}">
+								<source [src] = videoUrl  type="video/mp4"/>
 							</video>
 						</div>
 						<div *ngIf="totalRecords > 0" class="col-md-6 col-sm-6 col-xs-12">
@@ -204,7 +204,7 @@
                                         	</td>
 	                                        <td (click)="previewVideo(video)">
 	                                        	<h5>{{video.title}}</h5>
-	                                        	<h6>{{video.videoLength}}</h6>
+	                                        	<h6 style="margin: 5px 0 0 0">{{video.videoLength}}</h6>
 	                                        </td>
 	                                        <td>
 	                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>

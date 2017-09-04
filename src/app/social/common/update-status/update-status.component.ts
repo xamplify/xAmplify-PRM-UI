@@ -58,8 +58,8 @@ export class UpdateStatusComponent implements OnInit {
         this.videoJSplayer.play();
         
         $('tr').click(function() {
-                    $('input[type=radio]',this).attr('checked','checked');
-                }
+                $('input[type=radio]',this).attr('checked','checked');
+            }
         );
     }
 
