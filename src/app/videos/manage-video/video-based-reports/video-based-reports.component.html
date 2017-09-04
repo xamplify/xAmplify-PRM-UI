@@ -177,7 +177,7 @@
 							<a class="title" href="javascript:;"> Watched Fully </a>
 						</div>
 					</div> -->
-					<div class="col-xs-4 text-center">
+					<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
 							<svg width="100" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
@@ -190,17 +190,14 @@
 							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
 							<!-- <h6 class="percentage-text">views</h6> -->
 						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 18px;font-weight: 400;">Watched Fully</h5>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
-					<div class="col-md-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="sparkline-chart">
 							<div class="number" id="sparkline_bar2">
-								<canvas width="113" height="55"
-									style="display: inline-block; width: 113px; height: 55px; vertical-align: top;">
-								</canvas>
 							</div>
-							<a class="title" href="javascript:;"> Minutes Watched </a>
+							<a class="title" href="javascript:;" style="margin-right: -30px;"> Minutes Watched </a>
 						</div>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
@@ -218,7 +215,7 @@
 							<a class="title" href="javascript:;"> Shared </a>
 						</div>
 					</div> -->
-							<div class="col-xs-4 text-center">
+							<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
 							<svg width="100" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
@@ -231,7 +228,7 @@
 							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">46%</h2>
 							<!-- <h6 class="percentage-text">views</h6> -->
 						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 18px;font-weight: 400;">Shared</h5>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Shared</h5>
 					</div>
 				</div>
 			</div>
@@ -271,9 +268,9 @@
 		<!-- END PORTLET-->
 	</div>
 	<div class="row">
-		<div class="col-md-6 col-sm-6">
+		<!-- <div class="col-md-6 col-sm-6"> -->
 			<!-- BEGIN REGIONAL STATS PORTLET-->
-			<div class="portlet light ">
+			<!-- <div class="portlet light ">
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-share font-red-sunglo"></i> <span
@@ -302,9 +299,23 @@
 						<div id="vmap_germany" class="vmaps display-none"></div>
 					</div>
 				</div>
+			</div> -->
+				<div class="col-xs-12 col-sm-6 col-md-6 p-5x">
+				<div class="p-5x">
+					<div class="portlet light border-radius-0">
+						<div class="portlet-title">
+							<div class="caption">
+								<span class="caption-subject font-red-sunglo">VIEWERSHIP MAP</span>
+							</div>
+						</div>
+						<div class="portlet-body text-center">
+							<div id="world-map" style="max-width: 100%; min-height: 400px;"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- END REGIONAL STATS PORTLET-->
-		</div>
+		<!-- </div> -->
 		<div class="clearfix"></div>
 		<div class="row"></div>
 	</div>

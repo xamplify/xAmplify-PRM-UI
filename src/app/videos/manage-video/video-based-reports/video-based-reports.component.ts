@@ -3,7 +3,7 @@ import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, require: any;
+declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
@@ -25,7 +25,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public videoOverlaySubmit: string;
     public isSkipChecked: boolean;
     public isPlay: boolean;
-    model: any = {};
+    public countryWiseVideoViews: any;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef;
@@ -52,7 +52,63 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     //    $('.video-js .vjs-control-bar').css('background-color', rgba);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
     }
+     renderMap() {
+        const countryData = this.countryWiseVideoViews;
+        const data = [];
+        for ( let i in countryData ) {
+            var arr: any = [countryData[i][0].toLowerCase(), countryData[i][1]];
+            data.push( arr );
+        }
+        // Create the chart
+        Highcharts.mapChart( 'world-map', {
+            chart: {
+                map: 'custom/world'
+            },
+            title: {
+                text: 'The people who have watched the video'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                min: 0
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                data: data,
+                name: 'Views',
+                states: {
+                    hover: {
+                        color: '#BADA55'
+                    }
+                },
+                dataLabels: {
+                    enabled: false,
+                    format: '{point.name}'
+                }
+            }]
+        });
+
+    }
+    minutesSparklineData() {
+        const myvalues = [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8];
+        $('#sparkline_bar2').sparkline(myvalues, {
+            type: 'bar',
+            width: '80',
+            barWidth: 6,
+            height: '91',
+            barColor: '#f4f91b',
+            negBarColor: '#e02222'
+        });
+    }
     ngOnInit() {
+        this.renderMap();
+        this.minutesSparklineData();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
         Index.init();
@@ -61,7 +117,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         Index.initCalendar();
         Index.initCharts();
         Index.initChat();
-        Index.initMiniCharts();
+      //  Index.initMiniCharts();
         Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
