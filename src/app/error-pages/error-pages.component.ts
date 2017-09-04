@@ -39,7 +39,9 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
       this.router.navigate(['/serviceunavailable']);
     } else if (this.errorStatus === 403) {
       this.Error403 = true;
-    } else if (this.isNumber(this.errorStatus)) {
+    } else if(this.errorStatus === 0) {
+       this.router.navigate(['/serviceunavailable']);
+    }else if (this.isNumber(this.errorStatus)) {
       this.ErrorUndefined = true;
       this.errorStatus = this.errorStatus;
       console.log(this.errorStatus);

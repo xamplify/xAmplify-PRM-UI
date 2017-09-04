@@ -22,7 +22,7 @@ declare var swal , videojs, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
     selector: 'app-edit-video',
     templateUrl: './edit-video.component.html',
     styleUrls: ['./edit-video.component.css', './foundation-themes.scss', './call-action.css',
-        '../../../../assets/css/video-css/video-js.custom.css',
+        '../../../../assets/css/video-css/video-js.custom.css', '../../../../assets/css/todo.css',
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
     ],
     animations: [
