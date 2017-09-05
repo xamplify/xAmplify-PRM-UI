@@ -58,6 +58,24 @@ export class ReferenceService {
         .catch(this.handleError);
     }
     
+    listCampaignVideoNotifications(userId:number){
+        return this.http.get(this.URL+"get-campaign-video-notifications/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    markNotificationsAsRead(id:number,type:string){
+        let url = "update-campaign-email-notification/";
+        if(type=="video"){
+            url = "update-campaign-video-notification/"
+        }
+        return this.http.get(this.URL+url+id+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    
+    
     showErrorPage(error: any) {
         this.router.navigate(['/home/error-occured-page/', error.status]);
     }

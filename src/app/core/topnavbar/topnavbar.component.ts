@@ -18,8 +18,10 @@ export class TopnavbarComponent implements OnInit {
     notifications:any;
     notificationsCount: number = 0;
     isUserUpdated:boolean;
-    campaignEmailNotificationCount:number=0;
     campaignEmailNotifications:any;
+    campaignEmailNotificationCount:number = 0;
+    campaignVideoWatchedNotifications:any;
+    campaignVideoWatchedNotificationCount:number = 0;
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
@@ -88,6 +90,7 @@ export class TopnavbarComponent implements OnInit {
         );
     }
     
+    
     listCampaignEmailNotifications(){
         this.refService.listCampaignEmailNotifications(this.authenticationService.user.id)
         .subscribe(
@@ -101,9 +104,41 @@ export class TopnavbarComponent implements OnInit {
         );
     }
     
+    listCampaignVideoNotifications(){
+        this.refService.listCampaignVideoNotifications(this.authenticationService.user.id)
+        .subscribe(
+            data => {
+                console.log(data);
+                this.campaignVideoWatchedNotifications = data;
+                this.campaignVideoWatchedNotificationCount = this.getUnReadNotificationCount(this.campaignVideoWatchedNotifications.map(function(a) {return a.openCount}));
+            },
+            error => console.log(error),
+            () => console.log("Finished")
+        );
+    }
+    markAsRead(id:number,type:string){
+        this.refService.markNotificationsAsRead(id,type)
+        .subscribe(
+            data => {
+                console.log("updated successfully");
+            },
+            error => console.log(error),
+            () => console.log("Finished")
+        );
+    }
+    getUnReadNotificationCount(array:any){
+        var count = 0;
+        for(var i = 0; i < array.length; ++i){
+            if(array[i] == 0)
+                count++;
+        }
+        return count;
+    }
+    
     ngOnInit(){
         //this.listTwitterNotifications();
         this.listCampaignEmailNotifications();
+        this.listCampaignVideoNotifications();
     }
     
 }
