@@ -110,4 +110,12 @@ export class ReferenceService {
         }//for close
         return array1;
     }
+    replaceMultipleSpacesWithSingleSpace(text:string){
+        if(text!=undefined){
+            return  text.replace(/ +(?= )/g,'').trim();
+        }else{
+            return "";
+        }
+        
+     }
 }
