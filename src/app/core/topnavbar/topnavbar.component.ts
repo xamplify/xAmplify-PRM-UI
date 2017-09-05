@@ -24,6 +24,8 @@ export class TopnavbarComponent implements OnInit {
     constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
             const userName = this.authenticationService.user.emailId;
+            if (this.refService.topNavbarUserService === false) {
+                this.refService.topNavbarUserService = true;
             this.userService.getUserByUserName(userName).
             subscribe(
                     data => {
@@ -48,6 +50,7 @@ export class TopnavbarComponent implements OnInit {
                     error => {this.logger.error(this.refService.errorPrepender+" Constructor():"+error)},
                     () => console.log("Finished")
                 );
+            }
     }
    
     

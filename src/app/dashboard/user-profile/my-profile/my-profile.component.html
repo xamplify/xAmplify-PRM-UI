@@ -499,7 +499,7 @@
 					<div class="col-xs-6 colsm-6 col-md-6">
 						<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
 							formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-							[cpWidth]="'200px'" [cpHeight]="'265px'" />
+							[cpWidth]="'200px'" [cpHeight]="'265px'"  [cpPosition]="'bottom'" />
 					</div>
 					
 				</div>
@@ -515,7 +515,8 @@
 					<div class="col-xs-6 colsm-6 col-md-6" >
 						<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 							formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" 
-							(colorPickerChange)="changeControllerColor($event)" [value]="compControllerColor" />
+							(colorPickerChange)="changeControllerColor($event)" 
+							[value]="compControllerColor"  [cpPosition]="'bottom'"/>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
