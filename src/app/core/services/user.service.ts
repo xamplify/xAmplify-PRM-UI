@@ -100,6 +100,7 @@ export class UserService {
             .catch( this.handleError );
     }
     
+ 
     private extractData( res: Response ) {
         console.log( res );
         let body = res;

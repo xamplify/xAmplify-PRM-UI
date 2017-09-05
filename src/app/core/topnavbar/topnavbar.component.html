@@ -100,17 +100,22 @@
 					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-envelope-open"></i>
-						<span class="badge badge-default">
-						4 </span>
+						<span class="badge badge-default">{{campaignEmailNotificationCount}}</span>
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">
-								<h3>You have <span class="bold">7 New</span> Messages</h3>
-								<a href="page_inbox.html">view all</a>
+								<h3>You have <span class="bold">{{campaignEmailNotificationCount}} New</span> Messages</h3>
+								<a href="javascript:void(0)">view all</a>
 							</li>
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-									<li>
+								<li *ngFor="let item of campaignEmailNotifications">
+										<a href="javascript:void(0)">
+										<span class="time">
+										{{item.campaignId}} Opened By {{item.userId}} at {{item.time | date: 'medium'}}</span>
+										</a>
+									</li>
+									<!-- <li>
 										<a href="inbox.html?a=view">
 										<span class="photo">
 										<img src="assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
@@ -179,7 +184,7 @@
 										<span class="message">
 										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
 										</a>
-									</li>
+									</li> -->
 								</ul>
 							</li>
 						</ul>

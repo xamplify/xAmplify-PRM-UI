@@ -18,6 +18,8 @@ export class TopnavbarComponent implements OnInit {
     notifications:any;
     notificationsCount: number = 0;
     isUserUpdated:boolean;
+    campaignEmailNotificationCount:number=0;
+    campaignEmailNotifications:any;
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
@@ -83,8 +85,22 @@ export class TopnavbarComponent implements OnInit {
         );
     }
     
+    listCampaignEmailNotifications(){
+        this.refService.listCampaignEmailNotifications(this.authenticationService.user.id)
+        .subscribe(
+            data => {
+                console.log(data);
+                this.campaignEmailNotificationCount = data.length;
+                this.campaignEmailNotifications = data;
+            },
+            error => console.log(error),
+            () => console.log("Finished")
+        );
+    }
+    
     ngOnInit(){
         //this.listTwitterNotifications();
+        this.listCampaignEmailNotifications();
     }
     
 }

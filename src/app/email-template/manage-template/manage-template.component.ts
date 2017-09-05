@@ -83,6 +83,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     listEmailTemplates( pagination: Pagination ) {
             this.refService.loading(this.httpRequestLoader, true);
+            this.pagination.maxResults = 12;
             this.emailTemplateService.listTemplates( pagination, this.authenticationService.user.id)
                 .subscribe(
                 ( data: any ) => {

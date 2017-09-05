@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild, ElementRef,HostListener} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
@@ -40,7 +40,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, fl
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css'],
-  providers:[HttpRequestLoader],
+  providers:[HttpRequestLoader]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -96,6 +96,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     videoId:number=0;
     draftMessage:string = "";
     launchVideoPreview:SaveVideoFile = new SaveVideoFile();
+    videoSearchInput:string = "";
+    filteredVideoIds: Array<number>;
+    showSelectedVideo:boolean = false;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -112,6 +115,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedContactListIds = [];
     isHeaderCheckBoxChecked:boolean = false;
     emptyContactsMessage:string = "";
+    contactSearchInput:string = "";
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;  
     campaignDefaultEmailTemplates: Array<EmailTemplate>;  
@@ -128,6 +132,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedEmailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
     selectedTemplateBody;string = "";
     emailTemplate:EmailTemplate = new EmailTemplate();
+    emailTemplateSearchInput:string = "";
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -379,7 +384,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          }
      }
      validateCampaignName(campaignName:string){
-         let lowerCaseCampaignName = campaignName.toLowerCase().trim();
+         let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
          var list = this.names[0];
          console.log(list);
          if(this.isAdd){
@@ -500,7 +505,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadCampaignVideos(pagination:Pagination) {
         this.campaignVideo.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignVideo.httpRequestLoader, true);
-        this.videoFileService.loadVideoFiles(pagination)
+        this.videoFileService.loadCampaignVideos(pagination,pagination.videoCategoryId)
             .subscribe(
             (result:any) => {
                 this.campaignVideos = result.listOfMobinars;
@@ -526,6 +531,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCategoryThere = true;
                 this.isCategoryUpdated = false;
                this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
+               console.log( this.videosPagination);
+               this.filterVideosForEditCampaign();
                this.refService.loading(this.campaignVideo.httpRequestLoader, false);
             },
             (error:string) => {
@@ -543,17 +550,50 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.showMessage = false;
             this.showUpdatevalue = false;
             this.isvideoThere = false;
-            this.videosPagination.filterBy =  event.target.value;
+            this.videosPagination.videoCategoryId =  event.target.value;
             this.videosPagination.pageIndex = 1;
             this.loadCampaignVideos(this.videosPagination);
         }else{
-            this.videosPagination.filterBy = null;
+            this.videosPagination.videoCategoryId = 0;
             this.videosPagination.pageIndex = 1;
             this.loadCampaignVideos(this.videosPagination);
         }
        
     }
-     
+    filterVideosByType(event:any){
+        if(event.target.value!=""){
+            this.videosPagination.filterBy = event.target.value.trim();
+        }else{
+            this.videosPagination.filterBy = null;
+        }
+        this.videosPagination.pageIndex = 1;
+        this.loadCampaignVideos(this.videosPagination);
+    }
+    searchVideo(){
+        this.videosPagination.pageIndex = 1;
+        if(this.videoSearchInput==""){
+            this.videoSearchInput=null;
+        }
+        this.videosPagination.searchKey = this.videoSearchInput;
+        this.loadCampaignVideos(this.videosPagination);
+    }
+    filterVideosForEditCampaign(){
+        if(this.videosPagination.filterBy==null && this.videosPagination.searchKey==null && this.videosPagination.videoCategoryId==0){
+            if(this.videosPagination.pageIndex==1){
+                this.showSelectedVideo=true;
+            }else{
+                this.showSelectedVideo=false;
+            }
+        }else{
+            this.filteredVideoIds = this.videosPagination.pagedItems.map(function(a) {return a.id;});
+            if(this.filteredVideoIds.indexOf(this.videoId)>-1){
+                this.showSelectedVideo=true;
+            }else{
+                this.showSelectedVideo=false;
+            }
+        }
+    } 
+    
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
         this.appendVideoData(videoFile, "main_video", "modal-title");
@@ -607,7 +647,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
             $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#"+titleId).append(title);
+            $("#"+titleId).append('Title:'+title);
             $("#"+divId).append(str);
             console.log("360 video path"+videoPath);
             videoPath = videoPath.replace(".m3u8",".mp4");
@@ -633,7 +673,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
-            $("#"+titleId).append(title);
+            $("#"+titleId).append('Title:'+title);
             $("#"+divId).append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             console.log("Video Path:::"+videoPath);
@@ -667,11 +707,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             });
         
     }
+    
    
     /*************************************************************Contact List***************************************************************************************/
     loadCampaignContacts(contactsPagination:Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignContact.httpRequestLoader, true);
+        console.log(this.contactsPagination);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data:any) => {
@@ -732,6 +774,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }catch(error){
             console.log(error, "Get Filtered Contacts","Publish Content Component")
         }
+    }
+    searchContactList(){
+        this.contactsPagination.pageIndex = 1;
+        this.contactsPagination.searchKey = this.contactSearchInput;
+        this.loadCampaignContacts(this.contactsPagination);
     }
     highlightRow(contactId:number,event:any){
         let isChecked = $('#'+contactId).is(':checked');
@@ -890,6 +937,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplates(pagination:Pagination){
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         pagination.campaignDefaultTemplate = true;
+        pagination.maxResults = 12;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -944,15 +992,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
            this.selectedEmailTemplateType = EmailTemplateType.NONE;
        }
-        
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
-        
-        
     }
-    
-    
+    searchEmailTemplate(){
+        this.emailTemplatesPagination.pageIndex = 1;
+        this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
+        this.loadEmailTemplates(this.emailTemplatesPagination);
+    }
  
     setEmailTemplate(emailTemplate:EmailTemplate){
         $('#emailTemplateContent').html('');
@@ -1072,15 +1120,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         var data = {
-            'campaignName': this.campaign.campaignName,
-            'fromName': this.campaign.fromName,
-            'subjectLine': this.campaign.subjectLine,
+            'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
+            'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
+            'subjectLine': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
-            'preHeader': this.campaign.preHeader,
-            'message': this.campaign.message,
+            'preHeader': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
+            'message': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.message),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
-            'replyVideo': this.campaign.replyVideo,
+            'replyVideo': true,
             'socialSharingIcons': this.campaign.socialSharingIcons,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
@@ -1298,6 +1346,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaignService.campaign = undefined;
         this.names = [];
         this.name = "";
+        this.refService.isCampaignFromVideoRouter = false;
     }
     /*************************************************************Form Errors**************************************************************************************/
     formErrors = {
@@ -1572,5 +1621,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              return data.divId != id
           });
          return arr;
+     }
+     @HostListener('window:unload', [ '$event' ])
+     unloadHandler(event) {
+       alert("Dfd");
      }
 }

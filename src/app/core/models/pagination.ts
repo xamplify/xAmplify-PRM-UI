@@ -14,5 +14,6 @@ export class Pagination {
         campaignDefaultTemplate:boolean=false;
         emailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
         isLoading:boolean = false;
+        videoCategoryId:number = 0;
 
 }

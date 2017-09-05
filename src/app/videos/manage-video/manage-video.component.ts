@@ -339,6 +339,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log(video);
                 this.referenceService.campaignVideoFile = videoFile;
                 this.referenceService.selectedCampaignType = 'video';
+                this.referenceService.isCampaignFromVideoRouter = true;
                 this.router.navigateByUrl('/home/campaigns/create-campaign');
             },
             (error: string) => {

@@ -19,6 +19,7 @@ export class ReferenceService {
     public refcategories: Category[];
     public userName: any;
     public selectedCampaignType: string = "";
+    public isCampaignFromVideoRouter:boolean = false;
     campaignSuccessMessage: string = "";
     isCreated: boolean = false;
     isUpdated: boolean = false;
@@ -51,6 +52,12 @@ export class ReferenceService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    listCampaignEmailNotifications(userId:number){
+        return this.http.get(this.URL+"get-campaign-email-notifications/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     showErrorPage(error: any) {
         this.router.navigate(['/home/error-occured-page/', error.status]);
     }
