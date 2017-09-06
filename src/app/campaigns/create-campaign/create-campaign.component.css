@@ -731,7 +731,7 @@ label img {
 .dashboard-stat2,
 .portlet {
     border-radius: 0 !important;
-    padding-top: 2em;
+    /* padding-top: 2em; */
 }
 .border-error{
 	 border-radius: 0 !important;
@@ -803,6 +803,16 @@ label img {
 .cenetered-block > h5{
 	margin: 5px 0;
 }
+
+.cenetered-block > span{
+	font-size: 24px;
+}
 .left{
 	float: left;
+}
+.ellipsis {
+    white-space: nowrap; 
+    width: 20em; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }

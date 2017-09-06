@@ -98,8 +98,8 @@ export class TopnavbarComponent implements OnInit {
         .subscribe(
             data => {
                 console.log(data);
-                this.campaignEmailNotificationCount = data.length;
                 this.campaignEmailNotifications = data;
+                this.campaignEmailNotificationCount = this.getUnReadNotificationCount(this.campaignEmailNotifications.map(function(a) {return a.openCount}));
             },
             error => console.log(error),
             () => console.log("Finished")
