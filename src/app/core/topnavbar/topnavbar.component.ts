@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Logger } from "angular2-logger/core";
+import { UtilService } from '../../core/services/util.service'
 declare var swal: any;
 @Component({
   selector: 'app-topnavbar',
@@ -23,11 +24,12 @@ export class TopnavbarComponent implements OnInit {
     campaignVideoWatchedNotifications:any;
     campaignVideoWatchedNotificationCount:number = 0;
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
+    constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,public utilService: UtilService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
             const userName = this.authenticationService.user.emailId;
-            if (this.refService.topNavbarUserService === false) {
+            if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
                 this.refService.topNavbarUserService = true;
+                this.utilService.topnavBareLoading = true;
             this.userService.getUserByUserName(userName).
             subscribe(
                     data => {

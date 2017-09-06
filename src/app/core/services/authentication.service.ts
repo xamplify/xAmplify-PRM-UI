@@ -23,7 +23,7 @@ export class AuthenticationService {
     public userToken: UserToken = new UserToken();
     public redirectUrl: string;
     map: any;
-    constructor( private http: Http, private router: Router ) {
+    constructor( private http: Http, private router: Router, private utilService: UtilService ) {
         this.APP_URL = 'http://xtremand.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
         //this.REST_URL = "http://localhost:8080/xtremand-rest/";
@@ -105,5 +105,6 @@ export class AuthenticationService {
         this.access_token = null;
         this.refresh_token = null;
         localStorage.removeItem( 'currentUser' );
+        this.utilService.topnavBareLoading = false;
     }
 }

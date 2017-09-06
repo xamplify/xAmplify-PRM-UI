@@ -3,12 +3,18 @@ import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
+import { ChartModule } from 'angular2-highcharts'; 
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
     templateUrl: './video-based-reports.component.html',
-    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css']
+    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+    styles: [`
+      chart {
+        display: block;
+      }
+    `],
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
@@ -26,10 +32,64 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isSkipChecked: boolean;
     public isPlay: boolean;
     public countryWiseVideoViews: any;
+    options: Object;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef;
       }
+    areaCharts(){
+         Highcharts.chart( 'twitter-area-chart', {
+          chart: {
+                type: 'area',
+                plotBorderWidth: 3
+            },
+            credits: false,
+            xAxis: {
+              categories: ['02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017'],
+                labels: {
+                    align: 'right'
+                },
+             	startOnTick: false,
+	          	endOnTick: false,
+                min: 0,
+               type: 'datetime',
+                dateTimeLabelFormats: {
+                 //  month: '%Y' 
+                }
+               // gridLineWidth: 0.1
+            },
+            yAxis: {
+            	startOnTick: false,
+                endOnTick: false,
+                min: 0, 
+                title: {
+                    text: ''
+                },
+                labels: {
+                    align: 'right',
+                    formatter: function() {
+                        return this.value;
+                    }
+                }
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                formatter: function() {
+                    return this.y + 'visits';
+                    //  return  '<span style="color:red"> +this.y+</span>' + 'M$';
+                },
+                backgroundColor: 'blue',
+                borderWidth: 0
+            },
+            series: [{
+                color: 'pink',
+                showInLegend: false,
+                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600]
+            }]
+        });
+    }
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -121,6 +181,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
+       this.areaCharts();
         this.xtremandLogger.log('called ng after view init');
         $('#newPlayerVideo').empty();
         if (this.selectedVideo.is360video !== true) {
