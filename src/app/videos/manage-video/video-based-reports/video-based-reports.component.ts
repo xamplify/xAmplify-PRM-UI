@@ -11,9 +11,14 @@ declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, High
     templateUrl: './video-based-reports.component.html',
     styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
     styles: [`
-      chart {
+      chart { 
         display: block;
       }
+      table {
+         border: 1px solid black;
+         height: 10%;
+         width: 35%;
+        }
     `],
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -32,26 +37,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isSkipChecked: boolean;
     public isPlay: boolean;
     public countryWiseVideoViews: any;
-    options: Object;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
-        this._elementRef = elementRef;
-      }
-    areaCharts(){
-         Highcharts.chart( 'twitter-area-chart', {
+        this._elementRef = elementRef; 
+       }
+      areaCharts(){
+         Highcharts.chart( 'area-chart', {
           chart: {
                 type: 'area',
-                plotBorderWidth: 3
+                plotBorderWidth: 1
             },
             credits: false,
             xAxis: {
-              categories: ['02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'],
+              categories: ['01/2017', '02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'],
                 labels: {
                     align: 'right'
                 },
              	startOnTick: false,
 	          	endOnTick: false,
-                min: 0,
+                min: 1,
                type: 'datetime',
                 dateTimeLabelFormats: {
                  //  month: '%Y' 
@@ -59,9 +63,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                // gridLineWidth: 0.1
             },
             yAxis: {
-            	startOnTick: false,
+                startOnTick: false,
                 endOnTick: false,
-                min: 0, 
+                min: 0 , 
                 title: {
                     text: ''
                 },
@@ -80,13 +84,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     return this.y + 'visits';
                     //  return  '<span style="color:red"> +this.y+</span>' + 'M$';
                 },
-                backgroundColor: 'blue',
+                backgroundColor: '#e0e0e0',
                 borderWidth: 0
             },
             series: [{
                 color: 'pink',
                 showInLegend: false,
-                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600]
+                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600, 6000, 7600, 4300]
             }]
         });
     }
