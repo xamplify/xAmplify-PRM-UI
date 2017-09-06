@@ -41,6 +41,7 @@ export class AddContactsComponent implements OnInit {
 googleCheckboxValue: boolean = false;
 salesforceCheckboxValue: boolean = false;
 zohoCheckboxValue: boolean = false;
+zohoCredentialError = '';
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
@@ -1144,6 +1145,30 @@ zohoCheckboxValue: boolean = false;
         }
     }
 
+    hideZohoModal(){
+        $( "#zohoShowLoginPopup" ).hide();
+    }
+    
+    checkingZohoContactsAuthentication(){
+        this.contactService.checkingZohoAuthentication()
+        .subscribe(
+        ( data: any ) => {
+            this.logger.info( data );
+            if(data.showLogin == true){
+                $( "#zohoShowLoginPopup" ).show();
+            }
+            if(data.authSuccess == true){
+                $( "#zohoShowAuthorisedPopup" ).show();
+            }
+        },
+        error => {
+            this.logger.error( error )
+        },
+        () => this.logger.info( "Add contact component loadContactListsName() finished" )
+        )
+
+    }
+    
     getZohoContacts( contactType: any, username: string, password: string ) {
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
@@ -1157,9 +1182,110 @@ zohoCheckboxValue: boolean = false;
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
+                this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
+                   // this.hideZohoModal();
+                }
+                for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
+                    this.zContacts.push( socialContact );
+                    this.logger.info( this.getZohoConatacts );
+                   // this.zohoImageNormal = true;
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                    $( "#Zfile_preview" ).show();
+                    $( "button#addContacts" ).prop( 'disabled', true );
+                    $( "button#uploadCSV" ).prop( 'disabled', true );
+                    $( "input[type='file']" ).attr( "disabled", true );
+                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
+                    $( "button#cancel_button" ).prop( 'disabled', false );
+                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
+                    $( "button#googleContact_button" ).prop( 'disabled', true );
+                    $( "button#zohoContact_button" ).prop( 'disabled', true );
+                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     $( "#myModal .close" ).click()
+                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
+                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
+                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
+
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
+            },
+            (error:any)=>{
+                var body = error['_body'];
+                if ( body != "" ) {
+                    var response = JSON.parse( body );
+                    if ( response.message == "Username or password is incorrect" ) {
+                        this.zohoCredentialError = 'Username or password is incorrect';
+                         setTimeout(()=> {
+                             this.zohoCredentialError = '';
+                         },5000)
+                    }
+                    if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                        this.zohoCredentialError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                         setTimeout(()=> {
+                             this.zohoCredentialError = '';
+                         },5000)
+                    }
+                }
+               console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+               
+           },
+            () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+    
+    hideZohoAuthorisedPopup(){
+        $( "#zohoShowAuthorisedPopup" ).hide();
+    }
+    authorisedZohoContacts( contactType: any ) {
+        this.saveAddCotactsUsers = false;
+        this.saveClipBoardUsers = false;
+        this.saveCsvUsers = false;
+        this.saveGoogleContactUsers = false;
+        this.saveZohoContactUsers = true;
+        this.saveSalesforceContactUsers = false;
+        let self = this;
+        self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( self.selectedZohoDropDown == "DEFAULT" ) {
+            alert( "Please Select the which you like to import from:" );
+            return false;
+        }
+        else {
+            if ( self.selectedZohoDropDown == "contact" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.logger.log( self.selectedZohoDropDown );
+            }
+            else if ( this.selectedZohoDropDown == "lead" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.logger.log( self.selectedZohoDropDown );
+            }
+            
+        }
+        
+        this.socialContact.socialNetwork = "ZOHO";
+        this.socialContact.contactType = self.contactType;
+        this.contactService.getZohoAutherizedContacts( this.socialContact )
+            .subscribe(
+            data => {
+                this.getZohoConatacts = data;
+                this.hideZohoAuthorisedPopup();
+                if ( this.getZohoConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                   // this.hideZohoModal();
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
