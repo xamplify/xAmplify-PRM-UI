@@ -295,7 +295,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    googleContactsSynchronize( contactListId: number, socialContact: SocialContact ): Observable<Response> {
+    contactListSynchronization( contactListId: number, socialContact: SocialContact ): Observable<Response> {
         var requestoptions = new RequestOptions( {
             body: socialContact,
         })
@@ -311,7 +311,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    zohoContactsSynchronize( contactListId: number, socialContact: SocialContact ): Observable<Response> {
+    /*zohoContactsSynchronize( contactListId: number, socialContact: SocialContact ): Observable<Response> {
         var requestoptions = new RequestOptions( {
             body: socialContact,
         })
@@ -340,6 +340,13 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    */
+    checkingZohoAuthentication() {
+        this.logger.info( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token );
+        return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     getZohoContacts( username: string, password: string, contactType: string ) {
         this.zohoContact = { "userName": username, "password": password, "contactType": contactType };
@@ -351,8 +358,26 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.zohoContactsUrl + "?access_token=" + this.authenticationService.access_token;
+        var url = this.zohoContactsUrl + "?userId=" + this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( url, this.zohoContact )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getZohoAutherizedContacts( socialContact: SocialContact ) {
+        this.logger.info( "get zoho contacts :" + socialContact );
+        this.successMessage = true;
+        var requestoptions = new RequestOptions( {
+            body: socialContact,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id;
+        this.logger.info( "contactService getzohoAuthorizedContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
+        return this._http.post( url, socialContact )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -422,7 +447,7 @@ export class ContactService {
     handleError( error: any ) {
         let errMsg = ( error.message ) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw( errMsg );
+        return Observable.throw( error );
     }
     
     handleErrorDelete( error: any ) {

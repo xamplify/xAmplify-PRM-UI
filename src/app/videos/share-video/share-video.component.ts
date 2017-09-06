@@ -790,14 +790,14 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                 this.logger.info('Save user Form call to acton is successfull' + result); },
             (error: any) => { this.xtremandLogger.errorPage(error);});
        }
-shareMethod() {
-        this.actionLog.actionId = this.LogAction.shareMobinar;
+    sharedSuccess() {
+        this.actionLog.actionId = 12;
         this.actionLog.startTime = new Date();
         this.actionLog.endTime = new Date();
-        this.actionLog.startDuration = this.trimCurrentTime(new Date().getTime());
-        this.actionLog.stopDuration = this.trimCurrentTime(new Date().getTime());
+        this.actionLog.startDuration = 0
+        this.actionLog.stopDuration = 0;
         this.videoLogAction(this.actionLog);
-}
+    }
 clickButton() {
     this.actionLog.actionId = this.LogAction.videoStopped;
     this.actionLog.startTime = new Date();
@@ -815,18 +815,5 @@ clickButton() {
           $('.p-video').remove();
      this.videoFileService.replyVideo = false;
     //  this.sub.unsubscribe();
-    // og info
-    //  this.metaService.removeTag("property='og:title'");
-    //  this.metaService.removeTag("property='og:site_name'");
-    //  this.metaService.removeTag("property='og:url'");
-    //  this.metaService.removeTag("property='og:description'");
-    //  this.metaService.removeTag("property='og:image'");
-    // twitter og info
-    //  this.metaService.removeTag("property='twitter:card'");
-    //  this.metaService.removeTag("property='twitter:site'");
-    //  this.metaService.removeTag("property='twitter:title'");
-    //  this.metaService.removeTag("property='twitter:description'");
-    //  this.metaService.removeTag("property='twitter:url'");
-    //  this.metaService.removeTag("property='twitter:image'");
   }
 }

@@ -109,88 +109,53 @@
 							</li>
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-								<li *ngFor="let item of campaignEmailNotifications">
-										<a href="javascript:void(0)">
-										<span class="time">
-										{{item.campaignId}} Opened By {{item.userId}} at {{item.time | date: 'medium'}}</span>
+								<ng-container *ngFor="let emailNotification of campaignEmailNotifications">
+								<li *ngIf="emailNotification.openCount>0" class="read-notification" >
+										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email')">
+										 	<b>{{emailNotification.userEmailId}}</b> Opened Email at {{emailNotification.time | date: 'medium'}}
 										</a>
 									</li>
-									<!-- <li>
-										<a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Lisa Wong </span>
-										<span class="time">Just Now </span>
-										</span>
-										<span class="message">
-										Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+									<li *ngIf="emailNotification.openCount==0" class="unread-notification">
+										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email')">
+										 	<b>{{emailNotification.userEmailId}}</b> Opened Email at {{emailNotification.time | date: 'medium'}}
 										</a>
 									</li>
-									<li>
-										<a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Richard Doe </span>
-										<span class="time">16 mins </span>
-										</span>
-										<span class="message">
-										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+									</ng-container>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="fa fa-play-circle"></i>
+						<span class="badge badge-default">{{campaignVideoWatchedNotificationCount}}</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="external">
+								<h3>You have <span class="bold">{{campaignVideoWatchedNotificationCount}} New</span> Messages</h3>
+								<a href="javascript:void(0)">view all</a>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+								<ng-container *ngFor="let videoNotification of campaignVideoWatchedNotifications">
+									<li *ngIf="videoNotification.openCount>0" class="read-notification" >
+										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video')">
+										 	<b>{{videoNotification.campaignName}}</b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
 									</li>
-									<li>
-										<a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="assets/admin/layout2/img/avatar1.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Bob Nilson </span>
-										<span class="time">2 hrs </span>
-										</span>
-										<span class="message">
-										Vivamus sed nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
+									<li *ngIf="videoNotification.openCount==0" class="unread-notification" >
+										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video')">
+										 	<b>{{videoNotification.campaignName}}</b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
 									</li>
-									<li>
-										<a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="assets/admin/layout2/img/avatar2.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Lisa Wong </span>
-										<span class="time">40 mins </span>
-										</span>
-										<span class="message">
-										Vivamus sed auctor 40% nibh congue nibh... </span>
-										</a>
-									</li>
-									<li>
-										<a href="inbox.html?a=view">
-										<span class="photo">
-										<img src="assets/admin/layout2/img/avatar3.jpg" class="img-circle" alt="">
-										</span>
-										<span class="subject">
-										<span class="from">
-										Richard Doe </span>
-										<span class="time">46 mins </span>
-										</span>
-										<span class="message">
-										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-										</a>
-									</li> -->
+								</ng-container>
 								</ul>
 							</li>
 						</ul>
 					</li>
 					<!-- END INBOX DROPDOWN -->
 					<!-- BEGIN TODO DROPDOWN -->
+					
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">

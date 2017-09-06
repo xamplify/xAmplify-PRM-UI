@@ -188,7 +188,9 @@
 			<strong>Success!</strong> Contact List has been Synchronized
 			successfully.
 		</div>
-		
+		<div *ngIf="zohoAuthStorageError" class="col-xs-12 alert alert-danger">
+								<span>{{zohoAuthStorageError}}</span>
+							</div>
 		<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Contact lists found.. !!!</strong>
@@ -247,31 +249,31 @@
 							</div>
 							<div style="top: 38%; position: relative;"
 								*ngIf="contactList.synchronisedList == true">
-								<a class="mix-preview2 fancybox-button"
-									title="sychronizeGoogleContactList"
-									(click)="googleContactsSynchronizationAuthentication(contactList.id)"
+								<a class="mix-preview2"
+									title="sychronizeContactList"
+									(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 									data-rel="fancybox-button" style="left: 38%;"> <i
 									class="fa fa-refresh" aria-hidden="true"></i>
 								</a>
 							</div>
-							<div style="top: 38%; position: relative;"
+						<!-- 	<div style="top: 38%; position: relative;"
 								*ngIf="contactList.synchronisedList == true">
-								<a class="mix-preview2 fancybox-button"
-									title="sychronizeZohoContactList" data-toggle="modal"
-									data-target="#myModal" data-rel="fancybox-button"
+								<a class="mix-preview2"
+									title="sychronizeZohoContactList" (click)="zohoContactsSyncronize(contactList.id)"
+									  data-rel="fancybox-button"
 									style="left: 38%;"> <i class="fa fa-refresh"
 									aria-hidden="true"></i>
 								</a>
 							</div>
 							<div style="top: 38%; position: relative;"
 								*ngIf="contactList.synchronisedList == true">
-								<a class="mix-preview2 fancybox-button"
+								<a class="mix-preview2"
 									title="sychronizeSalesforceContactList"
 									(click)="salesforceContactsSynchronizationAuthentication(contactList.id)"
 									data-rel="fancybox-button" style="left: 38%;"> <i
 									class="fa fa-refresh" aria-hidden="true"></i>
 								</a>
-							</div>
+							</div> -->
 
 							<span align="right"
 								style="bottom: 10px; float: right; position: absolute; right: 10px;">Created
@@ -283,7 +285,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+<!-- 				<div class="modal" id="myModal" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel" data-keyboard="false"
 					data-backdrop="static">
 					<div class="modal-dialog" role="document">
@@ -330,7 +332,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>

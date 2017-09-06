@@ -27,6 +27,9 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     public disable: boolean;
     model: any = {};
     public availableTemplateNames: Array<string>;
+    videoTag:string = "";
+    isVideoTagError:boolean = false;
+    videoTagsError:string = "";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
             private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,
@@ -39,6 +42,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             (error: any) => logger.error(error),
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
+        this.videoTag = "<a href='<xtremandURL>'>\n   <img src='<xtremandImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
         if (emailTemplateService.emailTemplate != undefined) {
             this.model.content = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
@@ -87,7 +91,10 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                 if (data == "success") {
                     this.refService.isUpdated = true;
                     this.router.navigate(["/home/emailtemplate/manageTemplates"]);
-                }
+                    } else{
+                        this.isVideoTagError = true;
+                        this.videoTagsError = data;
+                    }
             },
             (error: string) => {
                 this.logger.error(this.refService.errorPrepender+" listDefaultTemplates():"+error);

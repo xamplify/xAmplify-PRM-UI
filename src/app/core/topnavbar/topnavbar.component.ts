@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Logger } from "angular2-logger/core";
+import { UtilService } from '../../core/services/util.service'
 declare var swal: any;
 @Component({
   selector: 'app-topnavbar',
@@ -18,12 +19,17 @@ export class TopnavbarComponent implements OnInit {
     notifications:any;
     notificationsCount: number = 0;
     isUserUpdated:boolean;
-    campaignEmailNotificationCount:number=0;
     campaignEmailNotifications:any;
+    campaignEmailNotificationCount:number = 0;
+    campaignVideoWatchedNotifications:any;
+    campaignVideoWatchedNotificationCount:number = 0;
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,
+    constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,public utilService: UtilService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
             const userName = this.authenticationService.user.emailId;
+            if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
+                this.refService.topNavbarUserService = true;
+                this.utilService.topnavBareLoading = true;
             this.userService.getUserByUserName(userName).
             subscribe(
                     data => {
@@ -48,6 +54,7 @@ export class TopnavbarComponent implements OnInit {
                     error => {this.logger.error(this.refService.errorPrepender+" Constructor():"+error)},
                     () => console.log("Finished")
                 );
+            }
     }
    
     
@@ -85,22 +92,55 @@ export class TopnavbarComponent implements OnInit {
         );
     }
     
+    
     listCampaignEmailNotifications(){
         this.refService.listCampaignEmailNotifications(this.authenticationService.user.id)
         .subscribe(
             data => {
                 console.log(data);
-                this.campaignEmailNotificationCount = data.length;
                 this.campaignEmailNotifications = data;
+                this.campaignEmailNotificationCount = this.getUnReadNotificationCount(this.campaignEmailNotifications.map(function(a) {return a.openCount}));
             },
             error => console.log(error),
             () => console.log("Finished")
         );
     }
     
+    listCampaignVideoNotifications(){
+        this.refService.listCampaignVideoNotifications(this.authenticationService.user.id)
+        .subscribe(
+            data => {
+                console.log(data);
+                this.campaignVideoWatchedNotifications = data;
+                this.campaignVideoWatchedNotificationCount = this.getUnReadNotificationCount(this.campaignVideoWatchedNotifications.map(function(a) {return a.openCount}));
+            },
+            error => console.log(error),
+            () => console.log("Finished")
+        );
+    }
+    markAsRead(id:number,type:string){
+        this.refService.markNotificationsAsRead(id,type)
+        .subscribe(
+            data => {
+                console.log("updated successfully");
+            },
+            error => console.log(error),
+            () => console.log("Finished")
+        );
+    }
+    getUnReadNotificationCount(array:any){
+        var count = 0;
+        for(var i = 0; i < array.length; ++i){
+            if(array[i] == 0)
+                count++;
+        }
+        return count;
+    }
+    
     ngOnInit(){
         //this.listTwitterNotifications();
         this.listCampaignEmailNotifications();
+        this.listCampaignVideoNotifications();
     }
     
 }

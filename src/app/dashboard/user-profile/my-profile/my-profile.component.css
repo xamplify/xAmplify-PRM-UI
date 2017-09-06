@@ -1,6 +1,6 @@
   /deep/.video-js .vjs-big-play-button {
-        top: 57px;
-        left: 120px;
+        top: 57px !important;
+        left: 120px !important;
     }
   .videoCssDefault{ 
         position: absolute;

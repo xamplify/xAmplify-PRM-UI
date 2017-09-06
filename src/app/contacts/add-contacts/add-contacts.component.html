@@ -156,13 +156,13 @@ color:blue;
 							</div>
 								</div>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-								<button *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" data-toggle="modal" data-target="#myModal">
+								<button *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass"
 										title="Click here To access user list from your Zoho account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
 								</button>
-								<button *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" data-toggle="modal" data-target="#myModal">
+								<button *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="checkingZohoContactsAuthentication()">
 									<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass"
 										title="Click here To access user list from your Zoho account"
 										height="86" width="90">
@@ -305,7 +305,9 @@ color:blue;
 					<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage" class="col-xs-12 alert alert-success">
   						<strong>Success!</strong> Your Zoho Account successfully Removed.
 					</div>
-						
+						<div *ngIf="zohoAuthStorageError" class="col-xs-12 alert alert-danger">
+								<span>{{zohoAuthStorageError}}</span>
+							</div>
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
 						<h3>Copy from text -- paste below</h3>
@@ -602,7 +604,8 @@ color:blue;
 
 
 <!-- MODALS -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+<div id="zohoId">
+<div class="modal" id="zohoShowLoginPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
@@ -613,6 +616,9 @@ color:blue;
      						 </div>
      					 <div class="modal-body">
       						<form class="form-horizontal">
+      						<div *ngIf="zohoCredentialError" class="alert alert-danger">
+								<span>{{zohoCredentialError}}</span>
+							</div>
   								  <div class="form-group">
     									<label class="control-label col-sm-3" for="email">Email:</label>
     								<div class="col-sm-8">
@@ -638,12 +644,57 @@ color:blue;
   					        </form>
       					</div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoModal()">Close</button>
        						<button type="button" class="btn btn-primary" (click) = "zohoContacts()">Authorize</button>
      		 			</div>
     				</div>
   				</div>
 			</div>
+			</div>
+			
+			<div class="modal" id="zohoShowAuthorisedPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  					<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<div><img src = "assets/images/zoho.png"
+        								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
+        							<h4 class="modal-title" id="myModalLabel" align="center"><b>Retrieve Zoho Contacts</b></h4></div>
+     						 </div>
+     					 <div class="modal-body">
+      						<form class="form-horizontal">
+  								  <!-- <div class="form-group">
+    									<label class="control-label col-sm-3" for="email">Email:</label>
+    								<div class="col-sm-8">
+     									 <input type="email" style="width: 75%" class="form-control" id="email" placeholder="Enter email" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
+  									</div>
+ 								  </div> -->
+  								<!-- <div class="form-group">
+    								<label class="control-label col-sm-3" for="pwd">Password:</label>
+   									 <div class="col-sm-8"> 
+    									<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="Enter password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+    								 </div>
+  								</div> -->
+					 		    <div class="form-group">
+    							  <label class="control-label col-sm-3" for="pwd">Import From:</label>
+   									 <div class="col-sm-8"> 
+    									<select class="opts form-control" style="width: 75%">
+    					    				<option selected value="DEFAULT">Select</option>
+    					   	 				<option value="contact"> Contacts </option>
+  						    				<option value="lead"> Leads </option>
+  					       		 		</select>
+  					           		 </div>
+  					            </div>
+  					        </form>
+      					</div>
+      					<div class="modal-footer">
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()">Close</button>
+       						<button type="button" class="btn btn-primary" (click) = "authorisedZohoContacts()">Authorize</button>
+     		 			</div>
+    				</div>
+  				</div>
+			</div>
+			
 			
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   					<div class="modal-dialog" role="document">
@@ -683,7 +734,7 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
-  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking your Salesforce account, your account will be removed from Xtremand.</p>
+  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your Salesforce account will be removed from Xtremand.</p>
     							<div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact lists:
     							<input type="checkbox" [(ngModel)]="salesforceCheckboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>
@@ -697,7 +748,6 @@ color:blue;
     				</div>
   				</div>
 			</div>
-			
 				<div class="modal fade" id="settingsZoho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
@@ -710,9 +760,9 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
-  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking your Zoho account, your account will be removed from Xtremand.</p>
+  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your Zoho account will be removed from Xtremand.</p>
   								  <div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact litsts: 
-  								  <input type="checkbox" [(ngModel)]="checkboxValue" [ngModelOptions]="{standalone: true}">
+  								  <input type="checkbox" [(ngModel)]="zohoCheckboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>
     									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkZohoAccount()">UnLink Account</button>
  								  </div>
@@ -736,7 +786,7 @@ color:blue;
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
-  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking your Goolge account, your account will be removed from Xtremand.</p>
+  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your Goolge account will be removed from Xtremand.</p>
   								  <div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact litsts:
   								  <input type="checkbox" [(ngModel)]="googleCheckboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>

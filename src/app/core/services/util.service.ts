@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UtilService {
+    topnavBareLoading = false;
     constructor( private http: Http ) { }
 
     intlNumberFormat( num ) {

@@ -968,9 +968,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#email-template-title").append(emailTemplate.name);
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
-            $("#htmlContent").append(updatedBody);
+            if(emailTemplate.body.indexOf("<xtremandImgURL>")>-1){
+                let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
+                updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
+                $("#htmlContent").append(updatedBody);
+            }else if(emailTemplate.body.indexOf("&lt;xtremandImgURL&gt;")>-1){
+                let updatedBody = emailTemplate.body.replace("&lt;xtremandImgURL&gt;",selectedVideoGifPath);
+                updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
+                $("#htmlContent").append(updatedBody);
+            }
+            
         }else{
           $("#htmlContent").append(emailTemplate.body);
         }
@@ -1154,11 +1161,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             if(reply.actionId!=16){
-                if(reply.replyTime==undefined || reply.replyTime==null || reply.subject.trim().length==0 || reply.replyInDays==null){
+                if(reply.replyTime==undefined || reply.replyTime==null ||reply.subject==null || reply.subject==undefined || reply.subject.trim().length==0 || reply.replyInDays==null){
                     $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
                 }
             }else{
-                if(reply.subject==undefined || reply.subject==null || reply.subject.trim().length==0){
+                if(reply.subject==undefined || reply.subject==null  || reply.subject.trim().length==0){
                     $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
                 }
             }
@@ -1200,7 +1207,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             let replyTime = url.replyTime;
             if(url.scheduled){
-                if(replyTime==undefined ||replyTime==null || url.subject.trim().length==0|| url.body.trim().length==0 || url.replyInDays==null){
+                if(replyTime==undefined ||replyTime==null || url.subject==null ||url.subject==undefined ||  url.subject.trim().length==0 ||url.body==null || url.body==undefined || url.body.trim().length==0 ||  url.replyInDays==null){
                     $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
                 } 
                 var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -1209,12 +1216,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
                
             }else{
-                if(url.subject==undefined || url.subject==null || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
+                if(url.subject==undefined || url.subject==null ||url.subject==undefined || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
                     $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
                 }
             }
            
         }
+        
     }
     
     addOnClickScheduledDaysSum(url:Url,i:number){
@@ -1262,25 +1270,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     
-    saveCampaignOnDestroy(){
-        var data = this.getCampaignData("");
-        this.campaignService.saveCampaign( data )
-        .subscribe(
-        data => {
-            console.log(data);
-            if(data.message=="success"){
-                this.isLaunched = true;
-                this.reInitialize();
-            }
-        },
-        error => {
-            this.logger.error("error in saveCampaignOnDestroy()", error);
-        },
-        () => this.logger.info("Finished saveCampaignOnDestroy()")
-    );
-    return false;
-    }
-  
+   
     launchCampaign(){
         var data = this.getCampaignData("");
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
@@ -1328,6 +1318,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                }).then(function() {
                        self.saveCampaignOnDestroy();
+                       self.getRepliesData();
+                       self.getOnClickData();
                    
                },function (dismiss) {
                    if (dismiss === 'cancel') {
@@ -1338,6 +1330,31 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
          }
     
+    saveCampaignOnDestroy(){
+        var data = this.getCampaignData("");
+        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if(errorLength==0){
+            this.dataError = false;
+            this.campaignService.saveCampaign( data )
+            .subscribe(
+            data => {
+                console.log(data);
+                if(data.message=="success"){
+                    this.isLaunched = true;
+                    this.reInitialize();
+                }
+            },
+            error => {
+                this.logger.error("error in saveCampaignOnDestroy()", error);
+            },
+            () => this.logger.info("Finished saveCampaignOnDestroy()")
+        );
+        }else{
+            alert("data not saved");
+        }
+    return false;
+    }
+  
     
     reInitialize(){
         this.refService.campaignVideoFile = undefined;

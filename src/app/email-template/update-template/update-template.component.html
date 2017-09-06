@@ -35,6 +35,11 @@
 					</form>
 					<br/>
 				</div>
+				<div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
+				<!-- <div *ngIf="emailTemplateService.emailTemplate.videoTemplate" class="form-group" id="infoDiv" style="margin-top: 85px;">
+					 		<br><label for="info"><font style="color: red;">***Please copy and add this below content to your HTML template, before you upload</font></label>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{videoTag}}</textarea>
+					</div> -->
 				<div class="clearfix" style="margin: 5px;"></div>
 				<div class="panel panel-success">
 				<ckeditor [(ngModel)]="model.content" name="subject"></ckeditor>
