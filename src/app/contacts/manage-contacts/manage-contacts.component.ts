@@ -42,6 +42,7 @@ export class ManageContactsComponent implements OnInit {
     selectedInvalidContactIds = [];
     invalidRemovableContacts = [];
     paginationAllData = [];
+    zohoAuthStorageError = '';
     selectedAllContactUsers = new Array<User>();
     isHeaderCheckBoxChecked:boolean = false;
     isInvalidHeaderCheckBoxChecked:boolean = false;
@@ -418,8 +419,29 @@ export class ManageContactsComponent implements OnInit {
     let blob: Blob = data.blob();
     window['saveAs']( blob, 'UserList.csv' );
 }*/
-    googleContactsSynchronizationAuthentication( contactListId: number ) {
+    
+    synchronizeContactList(contactListId: number, socialNetwork : string){
+        if(socialNetwork == 'GOOGLE'){
+            this.googleContactsSynchronizationAuthentication( contactListId , socialNetwork);
+        }
+        else if(socialNetwork == 'SALESFORCE' ){
+            this.salesforceContactsSynchronizationAuthentication( contactListId , socialNetwork);
+        }
+        else if(socialNetwork == 'ZOHO' ){
+            this.zohoContactsSynchronizationAuthentication( contactListId , socialNetwork);
+        }
+    }
+    
+    
+    googleContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string) {
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+        for ( let i = 0; i < this.contactLists.length; i++ ) {
+            if ( this.contactLists[i].id == contactListId ) {
+                this.contactType = this.contactLists[i].contactType;
+            }
+        }
+        this.socialContact.contactType = this.contactType;
+        this.socialContact.socialNetwork = socialNetwork;
         this.contactService.googleLogin()
             .subscribe(
             data => {
@@ -427,7 +449,8 @@ export class ManageContactsComponent implements OnInit {
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     console.log( "AddContactComponent googleContacts() Authentication Success" );
-                    this.googleContactsSyncronize( contactListId );
+                    //this.googleContactsSyncronize( contactListId );
+                    this.syncronizeContactList( contactListId, socialNetwork);
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
                     console.log( data.redirectUrl );
@@ -440,7 +463,7 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
-    googleContactsSyncronize( contactListId: number ) {
+    /*googleContactsSyncronize( contactListId: number ) {
         this.socialContact.socialNetwork = "GOOGLE";
         this.logger.info( "googleContactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
         this.logger.info( "googleContactsSyncronize() ContactListId" + contactListId );
@@ -458,18 +481,66 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.info( "googleContactsSyncronize() completed" )
             );
         this.synchronizationSucessMessage = false;
+    }*/
+    
+    syncronizeContactList( contactListId: number, socialNetwork : string ) {
+        this.socialContact.socialNetwork = socialNetwork;
+        this.logger.info( "contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
+        this.logger.info( "contactsSyncronize() ContactListId" + contactListId );
+        this.contactService.contactListSynchronization( contactListId, this.socialContact )
+            .subscribe(
+            data => {
+                data
+                swal.close();
+                this.synchronizationSucessMessage = true;
+                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );
+                this.loadContactLists( this.pagination );
+                this.contactsCount();
+            },
+            error => this.logger.error( error ),
+            () => this.logger.info( "googleContactsSyncronize() completed" )
+            );
+        this.synchronizationSucessMessage = false;
     }
 
-    zohoContactsSynchronizationAuthentication( contactListId: number ) {
-        this.socialContact.socialNetwork = "ZOHO";
-        $( "#myModal .close" ).click()
+    zohoContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string ) {
+        //$( "#myModal .close" ).click()
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         for ( let i = 0; i < this.contactLists.length; i++ ) {
             if ( this.contactLists[i].id == contactListId ) {
                 this.contactType = this.contactLists[i].contactType;
             }
         }
-        this.contactService.getZohoContacts( this.userName, this.password, this.contactType )
+        this.socialContact.socialNetwork = "ZOHO";
+        this.socialContact.contactType = this.contactType;
+        this.contactService.checkingZohoAuthentication()
+        .subscribe(
+        ( data: any ) => {
+            this.logger.info( data );
+            /*if(data.showLogin == true){
+                $( "#zohoShowLoginPopup" ).show();
+            }*/
+            if(data.authSuccess == true){
+                this.syncronizeContactList( contactListId, socialNetwork );
+            }
+        },
+        (error:any)=>{
+            var body = error['_body'];
+            if ( body != "" ) {
+                var response = JSON.parse( body );
+                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                     setTimeout(()=> {
+                         this.zohoAuthStorageError = '';
+                     },5000)
+                }
+            }
+           console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+           
+       },
+        () => this.logger.info( "Add contact component loadContactListsName() finished" )
+        )
+        /*this.contactService.getZohoContacts( this.userName, this.password, this.contactType )
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
@@ -478,10 +549,10 @@ export class ManageContactsComponent implements OnInit {
             },
             error => this.logger.error( error ),
             () => this.logger.log( "zohocontact data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
-            );
+            );*/
     }
 
-    zohoContactsSyncronize( contactListId: number ) {
+/*    zohoContactsSyncronize( contactListId: number ) {
         this.socialContact.socialNetwork = "ZOHO";
         for ( let i = 0; i < this.contactLists.length; i++ ) {
             if ( this.contactLists[i].id == contactListId ) {
@@ -493,8 +564,6 @@ export class ManageContactsComponent implements OnInit {
         this.logger.info( "zohoSyncronize() contactType:" + this.contactType );
         this.logger.info( "zohoSyncronize() socialNetWork:" + this.socialContact.socialNetwork );
         this.logger.info( "zohoContactsSyncronize() ContactListId:" + contactListId );
-        this.logger.info( "zohoSyncronize() userName:" + this.userName );
-        this.logger.info( "zohoContactsSyncronize() passward:" + this.password );
         this.contactService.zohoContactsSynchronize( contactListId, this.socialContact )
             .subscribe(
             data => {
@@ -510,12 +579,19 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.info( "zohoContactsSyncronize() completed" )
             );
         this.synchronizationSucessMessage = false;
-    }
+    }*/
 
-    salesforceContactsSynchronizationAuthentication( contactListId: number ) {
-        this.socialContact.socialNetwork = "salesforce";
+    salesforceContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string) {
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+        for ( let i = 0; i < this.contactLists.length; i++ ) {
+            if ( this.contactLists[i].id == contactListId ) {
+                this.alias = this.contactLists[i].alias;
+                this.contactType = this.contactLists[i].contactType;
+            }
+        }
+        this.socialContact.contactType = this.contactType;
+        this.socialContact.socialNetwork = socialNetwork;
         this.contactService.salesforceLogin()
             .subscribe(
             data => {
@@ -523,7 +599,8 @@ export class ManageContactsComponent implements OnInit {
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     console.log( "AddContactComponent salesforce() Authentication Success" );
-                    this.salesforceContactsSyncronize( contactListId );
+                    //this.salesforceContactsSyncronize( contactListId );
+                    this.syncronizeContactList( contactListId, socialNetwork );
 
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
@@ -537,7 +614,7 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
-    salesforceContactsSyncronize( contactListId: number ) {
+/*    salesforceContactsSyncronize( contactListId: number ) {
         this.socialContact.socialNetwork = "SALESFORCE";
         for ( let i = 0; i < this.contactLists.length; i++ ) {
             if ( this.contactLists[i].id == contactListId ) {
@@ -565,7 +642,7 @@ export class ManageContactsComponent implements OnInit {
             () => this.logger.info( "salesforceContactsSyncronize() completed" )
             );
         this.synchronizationSucessMessage = false;
-    }
+    }*/
 
 
     editContactList( contactSelectedListId: number ) {

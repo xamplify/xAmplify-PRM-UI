@@ -1194,6 +1194,7 @@ zohoAuthStorageError = '';
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
+                this.socialContactImage();
                 this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
