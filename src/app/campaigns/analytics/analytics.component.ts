@@ -22,7 +22,7 @@ export class AnalyticsComponent implements OnInit {
     videoLength: number;
     campaignViews: any;
     countryWiseCampaignViews: any;
-    
+    emailLogs: any;
     campaignReport: CampaignReport = new CampaignReport;
 
 
@@ -88,7 +88,7 @@ export class AnalyticsComponent implements OnInit {
             error => console.log( error ),
             () => console.log()
             )
-}
+    }
     
     getEmailSentCount( campaignId: number ) {
         this.campaignService.getEmailSentCount( campaignId )
@@ -204,6 +204,23 @@ export class AnalyticsComponent implements OnInit {
         error => console.log( error ),
         () => console.log()
         )
+    }
+    
+    listEmailLogsByCampaignAndUser( campaignId: number, userId: number ) {
+        this.campaignService.listEmailLogsByCampaignAndUser( campaignId, userId )
+            .subscribe(
+            data => {
+                this.emailLogs = data;
+            },
+            error => console.log( error ),
+            () => console.log()
+            )
+    }
+    
+    userTimeline(item: any){
+        this.listEmailLogsByCampaignAndUser(item.campaignId, item.userId);
+        if(! this.campaign.regularEmail)
+            this.getHeatMap(item);
     }
 
     ngOnInit() {

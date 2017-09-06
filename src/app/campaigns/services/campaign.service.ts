@@ -164,6 +164,12 @@ export class CampaignService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    listEmailLogsByCampaignAndUser( campaignId: number, userId: number ) {
+        return this.http.get( this.URL + 'campaign-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     private handleError(error: any) {
         if (error.status === 500) {
