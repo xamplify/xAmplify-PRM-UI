@@ -1182,6 +1182,10 @@ zohoAuthStorageError = '';
     }
     
     getZohoContacts( contactType: any, username: string, password: string ) {
+        /*$( "#zohoContact_button" ).hide();
+        $( "#zohoContact_buttonNormal" ).show();*/
+        this.zohoImageBlur = false;
+        this.zohoImageNormal = true;
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
