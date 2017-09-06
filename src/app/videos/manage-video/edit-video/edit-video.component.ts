@@ -13,6 +13,7 @@ import { ReferenceService } from '../../../core/services/reference.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
+import { CallActionSwitch } from '../../models/call-action-switch';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { VideoUtilService } from '../../services/video-util.service';
@@ -36,6 +37,7 @@ declare var swal , videojs, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
             ])
         ])
     ],
+    providers: [CallActionSwitch]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -144,15 +146,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     emptyTitle = false;
     emptyDescription = false;
-    public onTextValue = 'ON';
-    public offTextValue = 'OFF';
-     _onColorBswitch = 'success';
-    _offColorBswitch = 'warning';
-    public size = 'normal';
-    public animate = true;
     public checkTag: string;
     isThisDraftVideo = false;
-    constructor(public referenceService: ReferenceService,
+    constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute, 
         public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -251,7 +247,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public validatorsTag = [this.startsWithAt];
 
     shareClick() {
-        window.open(this.authenticationService.APP_URL + '/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
         'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // image path and gif image path methods

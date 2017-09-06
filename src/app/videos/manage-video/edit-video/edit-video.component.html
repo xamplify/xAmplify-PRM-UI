@@ -464,12 +464,12 @@
 											(change)="enableCallToActionMethodTest($event)">
 									      </ui-switch> -->
 										  <bSwitch
-											[switch-off-text]="offTextValue"
-											[switch-on-text]="onTextValue"
-											[switch-on-color]="_onColorBswitch"
-											[switch-off-color]="_offColorBswitch"
-											[switch-size]="size"
-											[switch-animate]="animate"
+											[switch-off-text]="callActionSwitch.offTextValue"
+											[switch-on-text]="callActionSwitch.onTextValue"
+											[switch-on-color]="callActionSwitch.onColorBswitch"
+											[switch-off-color]="callActionSwitch.offColorBswitch"
+											[switch-size]="callActionSwitch.size"
+											[switch-animate]="callActionSwitch.animate"
 											[(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}"
 											(onChangeState) = "enableCallToActionMethodTest($event.currentValue)">
 										 </bSwitch> 

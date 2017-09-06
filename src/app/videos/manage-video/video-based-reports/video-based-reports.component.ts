@@ -45,7 +45,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             credits: false,
             xAxis: {
-              categories: ['02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017'],
+              categories: ['02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'],
                 labels: {
                     align: 'right'
                 },
@@ -114,11 +114,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
      renderMap() {
         const countryData = this.countryWiseVideoViews;
-        const data = [];
-        for ( let i in countryData ) {
-            var arr: any = [countryData[i][0].toLowerCase(), countryData[i][1]];
-            data.push( arr );
-        }
+        const data = [["in", 1], ["us", 2]];
+        
         // Create the chart
         Highcharts.mapChart( 'world-map', {
             chart: {
