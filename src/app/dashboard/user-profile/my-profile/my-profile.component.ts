@@ -572,7 +572,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             color = '#fbfbfb';
         } else { color = this.refService.defaultPlayerSettings.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        $('.video-js .vjs-control-bar').css('background-color', rgba);
+        $('.video-js .vjs-control-bar').css('cssText','background-color:'+rgba+'!important');
     }
     allowLikes(event: any) {
         this.defaultVideoPlayer.allowLikes = event;
