@@ -305,7 +305,9 @@ color:blue;
 					<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage" class="col-xs-12 alert alert-success">
   						<strong>Success!</strong> Your Zoho Account successfully Removed.
 					</div>
-						
+						<div *ngIf="zohoAuthStorageError" class="col-xs-12 alert alert-danger">
+								<span>{{zohoAuthStorageError}}</span>
+							</div>
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
 						<h3>Copy from text -- paste below</h3>

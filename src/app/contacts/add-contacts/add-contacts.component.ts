@@ -42,6 +42,7 @@ googleCheckboxValue: boolean = false;
 salesforceCheckboxValue: boolean = false;
 zohoCheckboxValue: boolean = false;
 zohoCredentialError = '';
+zohoAuthStorageError = '';
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
@@ -1161,9 +1162,20 @@ zohoCredentialError = '';
                 $( "#zohoShowAuthorisedPopup" ).show();
             }
         },
-        error => {
-            this.logger.error( error )
-        },
+        (error:any)=>{
+            var body = error['_body'];
+            if ( body != "" ) {
+                var response = JSON.parse( body );
+                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                     setTimeout(()=> {
+                         this.zohoAuthStorageError = '';
+                     },5000)
+                }
+            }
+           console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+           
+       },
         () => this.logger.info( "Add contact component loadContactListsName() finished" )
         )
 
