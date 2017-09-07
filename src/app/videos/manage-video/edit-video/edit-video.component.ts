@@ -247,7 +247,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public validatorsTag = [this.startsWithAt];
 
     shareClick() {
-        window.open('http://localhost:4200/embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+        window.open(this.authenticationService.APP_URL+'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
         'mywindow', 'menubar=1,resizable=1,width=670,height=485');
     }
     // image path and gif image path methods
