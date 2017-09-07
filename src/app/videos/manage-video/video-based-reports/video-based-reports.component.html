@@ -8,8 +8,28 @@
 			 <div>
 				  <div id="newPlayerVideo"></div>
 			 </div>
+		  <div>
+			<div>
+			  <div style="margin-top: -16px;">
+				<h3 style="word-break: break-all;color:#3c3a3a">{{selectedVideo.title}}</h3>
+			 </div>
+			</div>
+			<div >
+				<div class="row">
+            <div class="col-md-12">
+				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
+			</div>
+			<div class="col-md-12">
+				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
+			</div>
+		    	<div class="col-md-12">
+			    	<p><strong>Category : </strong>{{selectedVideo.category.name}}</p>
+			    </div>
+				</div>
+			</div>
 		</div>
-		
+		</div>
+<!-- 		
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-light blue-soft"
 				routerLink = "../table_advance">
@@ -58,99 +78,8 @@
 					<div class="desc">Clicked</div>
 				</div>
 			</a>
-		</div>
-		
-		<!-- <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light blue-sharp"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-users"></i>
-				</div>
-				<div class="details">
-					<div class="number">89</div>
-					<div class="desc">Leads</div>
-				</div>
-			</a>
-		</div>
-		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light purple-soft"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-heart"></i>
-				</div>
-				<div class="details">
-					<div class="number">89</div>
-					<div class="desc">Favorites</div>
-				</div>
-			</a>
 		</div> -->
-	</div>
-</div>
-<!-- END DASHBOARD STATS -->
-<div class="clearfix"></div>
-<div class="row">
-	<div class="col-md-6 col-sm-6">
-		<div class="portlet light ">
-			<div class="portlet-title">
-				<!-- <div class="caption">
-					<i class="icon-cursor font-purple-intense hide"></i> <span
-						class="caption-subject font-purple-intense bold uppercase">Video
-						Stats</span>
-				</div>
-				<div class="actions">
-					<a href="javascript:;"
-						class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
-						<i class="fa fa-repeat"></i> Reload
-					</a>
-				</div> -->
-			  <div>
-				<h3 style="word-break: break-all;color:#3c3a3a">{{selectedVideo.title}}</h3>
-			 </div>
-			</div>
-			<div class="portlet-body">
-				<div class="row">
-					<!-- <div class="col-md-4">
-						<div class="easy-pie-chart">
-							<div class="number transactions" data-percent="55">
-								<span> +55 </span> %
-							</div>
-							<a class="title" href="javascript:;"> Watched Fully </a>
-						</div>
-					</div>
-					<div class="margin-bottom-10 visible-sm"></div>
-					<div class="col-md-4">
-						<div class="easy-pie-chart">
-							<div class="number visits" data-percent="85">
-								<span> +85 </span> %
-							</div>
-							<a class="title" href="javascript:;"> Favorited </a>
-						</div>
-					</div>
-					<div class="margin-bottom-10 visible-sm"></div>
-					<div class="col-md-4">
-						<div class="easy-pie-chart">
-							<div class="number bounce" data-percent="46">
-								<span> +46 </span> %
-							</div>
-							<a class="title" href="javascript:;"> Shared </a>
-						</div>
-					</div> -->
-            <div class="col-md-12">
-				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
-			</div>
-			<div class="col-md-12">
-			    <p style="font-weight:600; margin-top: 12px;"> Description : </p>
-				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
-			</div>
-			<div class="col-md-12">
-				<p><strong>Category : </strong>{{selectedVideo.category.name}}</p>
-			</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-6 col-sm-6">
+		<div class="col-md-6 col-sm-6">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -166,20 +95,6 @@
 			</div>
 			<div class="portlet-body">
 				<div class="row" style="margin-top: -17px;">
-					<!-- <div class="col-md-4">
-						<div class="sparkline-chart">
-							<div class="number" id="sparkline_bar"></div>
-							<a class="title" href="javascript:;"> Views </a>
-						</div>
-					</div> -->
-					<!-- <div class="col-md-4">
-						<div class="easy-pie-chart">
-							<div class="number transactions" data-percent="55">
-								<span> +55 </span> %
-							</div>
-							<a class="title" href="javascript:;"> Watched Fully </a>
-						</div>
-					</div> -->
 					<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
 							<svg width="100" height="120" viewBox="0 0 120 120"
@@ -191,7 +106,6 @@
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
 						</svg>
 							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
-							<!-- <h6 class="percentage-text">views</h6> -->
 						</section>
 						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 					</div>
@@ -204,20 +118,92 @@
 						</div>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
-					<!-- <div class="col-md-4">
+							<div class="col-xs-12 col-md-4 text-center">
+						<section class="percentage-circle">
+							<svg width="100" height="120" viewBox="0 0 120 120"
+								style="transform: rotate(-90deg)">
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+									stroke-width="12" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
+									stroke-width="12" stroke-dasharray="339.292006588"
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.87746)}"/>
+						</svg>
+							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">87746</h2>
+						</section>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Views</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+</div>
+<!-- END DASHBOARD STATS -->
+<div class="clearfix"></div>
+<div class="row">
+	<!-- <div class="col-md-6 col-sm-6">
+		<div class="portlet light ">
+			<div class="portlet-title">
+			  <div>
+				<h3 style="word-break: break-all;color:#3c3a3a">{{selectedVideo.title}}</h3>
+			 </div>
+			</div>
+			<div class="portlet-body">
+				<div class="row">
+            <div class="col-md-12">
+				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
+			</div>
+			<div class="col-md-12">
+			    <p style="font-weight:600; margin-top: 12px;"> Description : </p>
+				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
+			</div>
+		    	<div class="col-md-12">
+			    	<p><strong>Category : </strong>{{selectedVideo.category.name}}</p>
+			    </div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<!-- <div class="col-md-6 col-sm-6">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-equalizer font-purple-plum hide"></i> <span
+						class="caption-subject font-red-sunglo bold uppercase">Day
+						Stats</span> <span class="caption-helper">Campaign related</span>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"> </a> <a href="#portlet-config"
+						data-toggle="modal" class="config"> </a> <a href="" class="reload">
+					</a> <a href="" class="remove"> </a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="row" style="margin-top: -17px;">
+					<div class="col-xs-12 col-md-4 text-center">
+						<section class="percentage-circle">
+							<svg width="100" height="120" viewBox="0 0 120 120"
+								style="transform: rotate(-90deg)">
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+									stroke-width="12" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
+									stroke-width="12" stroke-dasharray="339.292006588"
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+						</svg>
+							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
+						</section>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Watched Fully</h5>
+					</div>
+					<div class="margin-bottom-10 visible-sm"></div>
+					<div class="col-xs-12 col-md-4">
 						<div class="sparkline-chart">
-							<div class="number" id="sparkline_line"></div>
-							<a class="title" href="javascript:;"> Average Duration </a>
-						</div>
-					</div> -->
-					<!-- <div class="col-md-4">
-						<div class="easy-pie-chart">
-							<div class="number bounce" data-percent="46">
-								<span> +46 </span> %
+							<div class="number" id="sparkline_bar2">
 							</div>
-							<a class="title" href="javascript:;"> Shared </a>
+							<a class="title" href="javascript:;" style="margin-right: -30px;"> Minutes Watched </a>
 						</div>
-					</div> -->
+					</div>
+					<div class="margin-bottom-10 visible-sm"></div>
 							<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
 							<svg width="100" height="120" viewBox="0 0 120 120"
@@ -229,14 +215,13 @@
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.46)}"/>
 						</svg>
 							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">46%</h2>
-							<!-- <h6 class="percentage-text">views</h6> -->
 						</section>
 						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Shared</h5>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>
 <div class="row">
 	<div class="col-md-6 col-sm-6">
@@ -248,62 +233,14 @@
 						class="caption-subject font-green-sharp bold uppercase">Campaign
 						Views</span> <span class="caption-helper">weekly stats...</span>
 				</div>
-				<div class="actions">
-					<div class="btn-group btn-group-devided" data-toggle="buttons">
-						<label
-							class="btn btn-transparent grey-salsa btn-circle btn-sm active">
-							<input type="radio" name="options" class="toggle" id="option1">New
-						</label> <label class="btn btn-transparent grey-salsa btn-circle btn-sm">
-							<input type="radio" name="options" class="toggle" id="option2">Returning
-						</label>
-					</div>
-				</div>
 			</div>
 			<div class="portlet-body">
-				<!-- <div id="site_statistics_loading">
-					<img src="assets/admin/layout2/img/loading.gif" alt="loading" />
-				</div>
-				<div id="site_statistics_content" class="display-none">
-					<div id="site_statistics" class="chart"></div>
-				</div> -->
 				<div id="area-chart"></div>
 			</div>
 		</div>
 		<!-- END PORTLET-->
 	</div>
 	<div class="row">
-		<!-- <div class="col-md-6 col-sm-6"> -->
-			<!-- BEGIN REGIONAL STATS PORTLET-->
-			<!-- <div class="portlet light ">
-				<div class="portlet-title">
-					<div class="caption">
-						<i class="icon-share font-red-sunglo"></i> <span
-							class="caption-subject font-red-sunglo bold uppercase">Regional
-							Stats</span>
-					</div>
-					<div class="btn-toolbar margin-bottom-10">
-						<div class="btn-group btn-group-circle" data-toggle="buttons">
-							<a href="" class="btn grey-salsa btn-sm active"> Users </a> <a
-								href="" class="btn grey-salsa btn-sm"> Views </a>
-						</div>
-
-					</div>
-				</div>
-				<div class="portlet-body">
-					<div id="region_statistics_loading">
-						<img src="assets/admin/layout2/img/loading.gif"
-							alt="loading" />
-					</div>
-					<div id="region_statistics_content" class="display-none">
-
-						<div id="vmap_world" class="vmaps display-none"></div>
-						<div id="vmap_usa" class="vmaps display-none"></div>
-						<div id="vmap_europe" class="vmaps display-none"></div>
-						<div id="vmap_russia" class="vmaps display-none"></div>
-						<div id="vmap_germany" class="vmaps display-none"></div>
-					</div>
-				</div>
-			</div> -->
 				<div class="col-xs-12 col-sm-6 col-md-6 p-5x">
 				<div class="p-5x">
 					<div class="portlet light border-radius-0">
@@ -319,7 +256,6 @@
 				</div>
 			</div>
 			<!-- END REGIONAL STATS PORTLET-->
-		<!-- </div> -->
 		<div class="clearfix"></div>
 		<div class="row"></div>
 	</div>
