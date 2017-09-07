@@ -1264,7 +1264,7 @@ zohoAuthStorageError = '';
     hideZohoAuthorisedPopup(){
         $( "#zohoShowAuthorisedPopup" ).hide();
     }
-    authorisedZohoContacts( contactType: any ) {
+    authorisedZohoContacts() {
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
