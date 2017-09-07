@@ -176,7 +176,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "all" ) {
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
-            $('#checkAllExistingContacts').prop("checked",false);
+           // $('#checkAllExistingContacts').prop("checked",false);
             //this.contactItemsSize = items;
             this.getAllFilteredResults(this.pagination);
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -200,7 +200,7 @@ export class EditContactsComponent implements OnInit {
 
         else if ( this.currentContactType == "all_contacts" && this.selectedDropDown == "page" ) {
             this.pagination.maxResults = 10;
-            $('#checkAllExistingContacts').prop("checked",false);
+           // $('#checkAllExistingContacts').prop("checked",false);
             //this.contactItemsSize = items;
             this.getAllFilteredResults(this.pagination);
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -889,6 +889,11 @@ export class EditContactsComponent implements OnInit {
                 this.logger.log("paginationUserIDs"+contactIds);
                 this.logger.log("Selected UserIDs"+this.selectedContactListIds);
                 /*if(items.length==10){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }*/
+                /*if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
                     this.isHeaderCheckBoxChecked = false;

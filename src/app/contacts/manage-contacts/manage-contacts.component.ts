@@ -713,7 +713,7 @@ export class ManageContactsComponent implements OnInit {
             try{
             this.pagination.maxResults = this.totalRecords;
             this.pagination.pageIndex = 1;
-                $('#checkAllExistingContacts').prop("checked",false);
+                //$('#checkAllExistingContacts').prop("checked",false);
                 //this.selectedDropDown = "all";
                 //this.getAllFilteredResults(this.pagination);
             }catch(error){
@@ -742,7 +742,7 @@ export class ManageContactsComponent implements OnInit {
             try{
                 this.pagination.maxResults = 10;
                 this.pagination.pageIndex = 1;
-                    $('#checkAllExistingContacts').prop("checked",true);
+                   // $('#checkAllExistingContacts').prop("checked",true);
                     //this.selectedDropDown = "all";
                     //this.getAllFilteredResults(this.pagination);
                 }catch(error){
