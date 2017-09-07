@@ -309,6 +309,7 @@ const str = '<video id=videoId poster=' + this.posterImagePath +' class="video-j
                      selfPanorama.xtremandLog.endTime = new Date();
                      selfPanorama.xtremandLog.startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                      selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                       selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                      if (selfPanorama.logVideoViewValue === true) {
                        selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                        selfPanorama.logVideoViewsCount();

@@ -3,7 +3,7 @@ import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import { ChartModule } from 'angular2-highcharts'; 
+import { ChartModule } from 'angular2-highcharts';
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
 
 @Component({
@@ -47,8 +47,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
          Highcharts.chart( 'area-chart', {
           chart: {
                 type: 'area',
-                plotBorderWidth: 1,
-                 marginTop: 80
+                plotBorderWidth: 1
             },
             credits: false,
             xAxis: {
