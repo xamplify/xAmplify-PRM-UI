@@ -303,9 +303,12 @@ export class ManageContactsComponent implements OnInit {
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
-                this.names.length = 0;  
-                this.names.push(data.names);
-                  this.logger.log(this.names);
+                this.names.length = 0; 
+                for(let i=0;i< data.names.length;i++){
+                    this.names.push( data.names[i].replace(/\s/g, '') );
+                    }
+                /*this.names.push(data.names);
+                  this.logger.log(this.names);*/
             },
             error => {
                 this.logger.error( error )
@@ -829,8 +832,8 @@ export class ManageContactsComponent implements OnInit {
             this.noSaveButtonDisable = false;
         }
         
-        let lowerCaseContactName = contactName.toLowerCase().trim();
-        var list = this.names[0];
+        let lowerCaseContactName = contactName.toLowerCase().replace(/\s/g, '');
+        var list = this.names;
         console.log(list);
         if($.inArray(lowerCaseContactName, list) > -1){
             this.isValidContactName = true;  

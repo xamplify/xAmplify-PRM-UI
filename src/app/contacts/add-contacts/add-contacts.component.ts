@@ -142,12 +142,8 @@ zohoAuthStorageError = '';
     validateContactName( contactName: string ) {
         this.noOptionsClickError = false;
         this.contactListNameError = false;
-        /* if(this.isValidContactName == true ){
-             this.contactListNameError = false;
-             this.noOptionsClickError = false;
-         }*/
-        let lowerCaseContactName = contactName.toLowerCase().trim();
-        var list = this.names[0];
+        let lowerCaseContactName = contactName.toLowerCase().replace(/\s/g, '');
+        var list = this.names;
         console.log( list );
         if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
@@ -1740,7 +1736,9 @@ zohoAuthStorageError = '';
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
-                this.names.push( data.names );
+                for(let i=0;i< data.names.length;i++){
+                this.names.push( data.names[i].replace(/\s/g, '') );
+                }
             },
             error => {
                 this.logger.error( error )
