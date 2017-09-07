@@ -37,25 +37,27 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isSkipChecked: boolean;
     public isPlay: boolean;
     public countryWiseVideoViews: any;
+    public categories: any;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef; 
+        this.categories = ['01/2017', '02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'];
        }
       areaCharts(){
          Highcharts.chart( 'area-chart', {
           chart: {
                 type: 'area',
-                plotBorderWidth: 1
+                plotBorderWidth: 1,
+                 marginTop: 80
             },
             credits: false,
             xAxis: {
-              categories: ['01/2017', '02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'],
-                labels: {
-                    align: 'right'
-                },
-             	startOnTick: false,
-	          	endOnTick: false,
-                min: 1,
+              categories: this.categories,
+               min: 0.5,
+                max: this.categories.length-1.5,
+                startOnTick: false,
+                endOnTick: false,
+                tickLength : 0,  // lines for x-axis
                type: 'datetime',
                 dateTimeLabelFormats: {
                  //  month: '%Y' 
@@ -70,10 +72,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     text: ''
                 },
                 labels: {
-                    align: 'right',
-                    formatter: function() {
-                        return this.value;
-                    }
+                    // align: 'right',
+                    // formatter: function() {
+                    //     return this.value;
+                    // }
+                formatter: function () {
+                    return Math.round(this.value);
+                }
                 }
             },
             title: {
@@ -90,7 +95,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             series: [{
                 color: 'pink',
                 showInLegend: false,
-                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600, 6000, 7600, 4300]
+                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600, 6000, 4400, 4300]
             }]
         });
     }
