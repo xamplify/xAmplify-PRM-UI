@@ -1163,6 +1163,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     checkAll(ev:any){
+        this.contactListUsersError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
