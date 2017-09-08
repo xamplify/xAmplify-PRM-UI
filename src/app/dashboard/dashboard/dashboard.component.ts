@@ -323,33 +323,33 @@ export class DashboardComponent implements OnInit {
             );
     }
     
-    totalFollowersCount(userId: number) {
-        this._dashboardService.loadTotalFollowersCount(userId)
+    totalEmailTemplatesCount(userId: number) {
+        this._dashboardService.loadTotalEmailTemplatesCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalFollowers = data.email_watched_count;
+                this.dashboardReport.toalEmailTemplates = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
             );
     }
     
-    totalLeadsCount(userId: number) {
-        this._dashboardService.loadTotalLeadsCount(userId)
+    totalCreatedCampaignsCount(userId: number) {
+        this._dashboardService.loadTotalCampaignsCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalLeads = data.email_watched_count;
+                this.dashboardReport.totalCreatedCampaigns = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
             );
     }
     
-    totalSharedCount(userId: number) {
-        this._dashboardService.loadTotalSharedCount(userId)
+    totalConnectedSocialAccountsCount(userId: number) {
+        this._dashboardService.loadTotalConnectedSocialAccountsCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalShared = data.email_watched_count;
+                this.dashboardReport.totalSocialAccounts = data.email_watched_count;
             },
             error => console.log( error ),
             () => console.log( "emailWatchedCount completed" )
@@ -499,7 +499,9 @@ export class DashboardComponent implements OnInit {
             this.getUserCampaignReport(this.loggedInUserId);
             
             this.totalViewsCount(this.loggedInUserId);
-            this.totalFollowersCount(this.loggedInUserId)
+            this.totalEmailTemplatesCount(this.loggedInUserId)
+            this.totalCreatedCampaignsCount(this.loggedInUserId)
+            this.totalConnectedSocialAccountsCount(this.loggedInUserId)
             this.uploadedVideosCount(this.loggedInUserId);
             this.totalContactsCount(this.loggedInUserId);
             

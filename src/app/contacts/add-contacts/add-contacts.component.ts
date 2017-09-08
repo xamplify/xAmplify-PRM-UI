@@ -1410,6 +1410,15 @@ zohoAuthStorageError = '';
 
     onChange( item: any ) {
         this.logger.log( item );
+        /*if(this.salesforceListViewName != 'DEFAULT'){
+        $( "button#salesforce_save_button" ).prop( 'disabled', false );
+        }*/
+        if(this.salesforceListViewName == "DEFAULT"){
+            $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
+        }else{
+            $( "button#salesforce_save_button" ).prop( 'disabled', false ); 
+        }
+        
         this.salesforceListViewId = item;
         for ( var i = 0; i < this.salesforceListViewsData.length; i++ ) {
             this.logger.log( this.salesforceListViewsData[i].listViewId );
@@ -1424,8 +1433,14 @@ zohoAuthStorageError = '';
         this.contactType = event.target["value"];
         this.socialNetwork = "salesforce";
         this.salesforceListViewsData = [];
-
+        if(this.contactType == "DEFAULT"){
+            $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
+        }else{
+            $( "button#salesforce_save_button" ).prop( 'disabled', false ); 
+        }
+        
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
             this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
                 .subscribe(
                 data => {
@@ -1482,6 +1497,7 @@ zohoAuthStorageError = '';
     }
 
     checkingPopupValues() {
+        $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
             this.getSalesforceListViewContacts( this.contactType );
         } else {
@@ -1515,6 +1531,7 @@ zohoAuthStorageError = '';
             this.contactType = selectedDropDown;
             this.logger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
         }
+        
         this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
             .subscribe(
             data => {

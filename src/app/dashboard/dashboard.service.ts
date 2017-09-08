@@ -96,19 +96,19 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    loadTotalFollowersCount(userId: number){
+    loadTotalEmailTemplatesCount(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalLeadsCount(userId: number){
+    loadTotalCampaignsCount(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    loadTotalSharedCount(userId: number){
+    loadTotalConnectedSocialAccountsCount(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );

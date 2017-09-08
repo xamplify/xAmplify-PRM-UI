@@ -11,7 +11,7 @@ export class DashboardReport {
     totalEmailWatched: number = 0;
 
     totalViews: number = 0;
-    totalFollowers: number = 0;
-    totalLeads: number = 0;
-    totalShared: number = 0;
+    toalEmailTemplates: number = 0;
+    totalCreatedCampaigns: number = 0;
+    totalSocialAccounts: number = 0;
 }

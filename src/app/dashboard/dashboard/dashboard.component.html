@@ -289,25 +289,25 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft"
-				[routerLink]="['./followers']">
+				[routerLink]="['../../emailtemplate']">
 				<div class="visual">
 					<i class="fa fa-smile-o"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalFollowers}}</div>
-					<div class="desc">Followers</div>
+					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
+					<div class="desc">Total Templates</div>
 				</div>
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter blue-sharp"
-				[routerLink]="['./']">
+				[routerLink]="['../../campaigns/managepublish']">
 				<div class="visual">
 					<i class="fa fa-user-secret"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalLeads}}</div>
-					<div class="desc">Leads</div>
+					<div class="number">{{dashboardReport.totalCreatedCampaigns}}</div>
+					<div class="desc">Total Campaigns</div>
 				</div>
 			</a>
 		</div>
@@ -318,8 +318,8 @@ input[type=radio] {
 					<i class="fa fa-share"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalShared}}</div>
-					<div class="desc">Shared</div>
+					<div class="number">{{dashboardReport.totalSocialAccounts}}</div>
+					<div class="desc">Connected Accounts</div>
 				</div>
 			</a>
 		</div>
