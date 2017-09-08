@@ -20,7 +20,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
 import { DashboardReport } from '../../core/models/dashboard-report';
-declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Tasks: any;
+declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
     selector: 'app-dashboard',
@@ -159,6 +159,46 @@ export class DashboardComponent implements OnInit {
             barColor: '#007bb6',
             barSpacing: '3'
         });
+    }
+renderMap() {
+     //   const countryData = this.countryWiseVideoViews;
+        const data = [["in", 1], ["us", 2]];
+        
+        // Create the chart
+        Highcharts.mapChart( 'world-map', {
+            chart: {
+                map: 'custom/world'
+            },
+            title: {
+                text: 'The people who have watched the video'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                min: 0
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                data: data,
+                name: 'Views',
+                states: {
+                    hover: {
+                        color: '#BADA55'
+                    }
+                },
+                dataLabels: {
+                    enabled: false,
+                    format: '{point.name}'
+                }
+            }]
+        });
+
     }
 
 
@@ -494,20 +534,17 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         try {
             this.loggedInUserId = this.authenticationService.getUserId();
-            
+            this.renderMap();
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
-            
             this.totalViewsCount(this.loggedInUserId);
             this.totalEmailTemplatesCount(this.loggedInUserId)
             this.totalCreatedCampaignsCount(this.loggedInUserId)
             this.totalConnectedSocialAccountsCount(this.loggedInUserId)
             this.uploadedVideosCount(this.loggedInUserId);
             this.totalContactsCount(this.loggedInUserId);
-            
             this.getEmailActionCount(this.loggedInUserId);
             this.emailWatchedCount(this.loggedInUserId);
-            
             Metronic.init();
             Layout.init();
             Demo.init();
