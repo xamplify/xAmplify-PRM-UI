@@ -80,9 +80,14 @@
 														<a *ngIf="campaign.launched==false" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button"> 
 															<i class="fa fa-pencil-square-o"></i><!-- class="mix-preview4 fancybox-button" -->
 														</a> 
+														<a *ngIf="campaign.launched" class="mix-preview4" data-rel="fancybox-button"
+														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="">
+																<i class="fa fa-line-chart"></i>
+														</a>
 														<a class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
 															<i class="fa fa-trash"></i>
 														</a>
+														
 													</div>
 													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">
 														<b  *ngIf="campaign.launched">Launched On</b>

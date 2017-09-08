@@ -8,7 +8,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from '../../core/services/reference.service';
 import { Logger } from "angular2-logger/core";
 import { UtilService } from '../../core/services/util.service'
-declare var swal: any;
+declare var swal,$: any;
 @Component({
   selector: 'app-topnavbar',
   templateUrl: './topnavbar.component.html',
@@ -135,6 +135,16 @@ export class TopnavbarComponent implements OnInit {
                 count++;
         }
         return count;
+    }
+    markItAsRead(index:number,id:string){
+       let liId = id+index;
+       $('#'+liId).removeClass('unread-notification');
+       $('#'+liId).addClass('read-notification');
+       if(id=="video-notification-"){
+           this.campaignVideoWatchedNotificationCount= this.campaignVideoWatchedNotificationCount-1;
+       }else{
+           this.campaignEmailNotificationCount = this.campaignEmailNotificationCount-1;
+       }
     }
     
     ngOnInit(){

@@ -190,15 +190,16 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.body = this.model.content;
         this.emailTemplate.userDefined = true;
-        this.emailTemplate.subject = "assets/images/file_upload_icon.png";
         this.emailTemplate.type = EmailTemplateType.UPLOADED;
         console.log(this.emailTemplate);
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;
             this.emailTemplate.desc = "Regular Template";
+            this.emailTemplate.subject = "assets/images/normal-email-template.png";
         } else {
             this.emailTemplate.videoTemplate = true;
             this.emailTemplate.desc = "Video Template";
+            this.emailTemplate.subject = "assets/images/video-email-template.png";
         }
         this.emailTemplateService.save(this.emailTemplate)
             .subscribe(

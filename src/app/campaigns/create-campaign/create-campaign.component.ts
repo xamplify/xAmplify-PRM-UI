@@ -133,6 +133,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedTemplateBody;string = "";
     emailTemplate:EmailTemplate = new EmailTemplate();
     emailTemplateSearchInput:string = "";
+    filteredEmailTemplateIds: Array<number>;
+    showSelectedEmailTemplate:boolean = false;
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -196,6 +198,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isVideo = true;
                 this.videoTabClass  = this.successTabClass;
                 this.videoId = selectedVideoId;
+                this.selectedRow = selectedVideoId;
                 this.isCampaignDraftVideo = true;
                 this.launchVideoPreview = this.campaignService.campaign.campaignVideoFile;
             }
@@ -597,7 +600,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
         this.appendVideoData(videoFile, "main_video", "modal-title");
-        $("#show_preview").modal({backdrop: 'static', keyboard: false});
+        $("#show_preview").modal();
     }
     destroyPreview(){
         var player = videojs("videoId");
@@ -936,8 +939,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        pagination.campaignDefaultTemplate = true;
+        if(pagination.searchKey==null || pagination.searchKey==""){
+            pagination.campaignDefaultTemplate = true;
+        }else{
+            pagination.campaignDefaultTemplate = false;
+            pagination.isEmailTemplateSearchedFromCampaign = true;
+        }
         pagination.maxResults = 12;
+        console.log(pagination);
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -947,6 +956,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                     this.isEmailTemplate = false;
                 }
+                this.filterEmailTemplateForEditCampaign();
                 this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
             },
             (error:string) => {
@@ -960,7 +970,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
-        console.log(emailTemplate.body);
         let body = emailTemplate.body;
         this.selectedEmailTemplateName = emailTemplate.name;
         $("#htmlContent").empty();
@@ -968,16 +977,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#email-template-title").append(emailTemplate.name);
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            if(emailTemplate.body.indexOf("<xtremandImgURL>")>-1){
-                let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
-                updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
-                $("#htmlContent").append(updatedBody);
-            }else if(emailTemplate.body.indexOf("&lt;xtremandImgURL&gt;")>-1){
-                let updatedBody = emailTemplate.body.replace("&lt;xtremandImgURL&gt;",selectedVideoGifPath);
-                updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
-                $("#htmlContent").append(updatedBody);
-            }
-            
+            let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("&lt;xtremandImgURL&gt;",selectedVideoGifPath);
+            $("#htmlContent").append(updatedBody);
         }else{
           $("#htmlContent").append(emailTemplate.body);
         }
@@ -1050,7 +1053,22 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);
         console.log(this.emailTemplateHrefLinks);
     }
-
+    filterEmailTemplateForEditCampaign(){
+        if(this.emailTemplatesPagination.emailTemplateType==0 && this.emailTemplatesPagination.searchKey==null){
+            if(this.emailTemplatesPagination.pageIndex==1){
+                this.showSelectedEmailTemplate=true;
+            }else{
+                this.showSelectedEmailTemplate=false;
+            }
+        }else{
+            this.filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+            if(this.filteredEmailTemplateIds.indexOf(this.emailTemplateId)>-1){
+                this.showSelectedEmailTemplate=true;
+            }else{
+                this.showSelectedEmailTemplate=false;
+            }
+        }
+    } 
     /*************************************************************Launch Campaign***************************************************************************************/
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
@@ -1136,7 +1154,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
-            'socialSharingIcons': this.campaign.socialSharingIcons,
+            'socialSharingIcons': true,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
             'userListIds': this.selectedContactListIds,
@@ -1332,6 +1350,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
+        data['scheduleCampaign'] = "SAVE";
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
@@ -1638,9 +1657,5 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              return data.divId != id
           });
          return arr;
-     }
-     @HostListener('window:unload', [ '$event' ])
-     unloadHandler(event) {
-       alert("Dfd");
      }
 }

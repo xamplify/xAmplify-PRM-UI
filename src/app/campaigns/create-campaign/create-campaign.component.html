@@ -156,18 +156,18 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-group">
+								<!-- 	<div class="form-group">
 										<label class="control-label col-md-3">Sharing Options</label>
 										<div class="col-md-9">
 											<div class="email-options-checkbox-group email-options-notify">
-												<!-- <div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
+												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
 													<div class="col-sm-1 ui-switch-custom-div">
 													<ui-switch color="green" size="medium" [(ngModel)]="campaign.replyVideo" name="replyVideo"  (change)=setReplyWithVideo($event)></ui-switch>
 													</div>
 													<div>
 														<label style="margin-top: 10px;">Reply with Video</label>
 													</div>	
-												</div> -->
+												</div>
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
 													<ui-switch color="green" size="medium" [(ngModel)]="campaign.socialSharingIcons" name="socialSharingIcons"  (change)=setSocialSharingIcons($event)></ui-switch>
@@ -178,7 +178,7 @@
 												</div>
 											</div>
 										</div>
-									</div>
+									</div> -->
 									<div class="form-group last" [attr.class]="messageDivClass">
 										<label class="control-label col-md-3">Notification Message<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
@@ -299,11 +299,11 @@
 								<ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	
 								<!-- ------------------Selected Video Row-->
 									<ng-container *ngIf="showSelectedVideo==true">
-									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" class="active"
+									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==campaignService.campaign.campaignVideoFile.id"
 									 id="selectedVideoRow" (click)="setClickedRow(campaign.campaignVideoFile)">
-									<!-- --------------Thumbnail--------------------------- -->
+									<!-- --------------Thumbnail--------------------------- --><!-- campaign.campaignVideoFile.id===videoId -->
 										<td style="text-align: center;">
-											 <input type="radio" [checked]="campaign.campaignVideoFile.id===videoId" (click)="setClickedRow(campaign.campaignVideoFile)"   
+											 <input type="radio" [checked]="selectedRow==campaignService.campaign.campaignVideoFile.id" (click)="setClickedRow(campaign.campaignVideoFile)"   
 											 	name="videoFileId" [value]="campaign.campaignVideoFile.id"  id="campaign_video_id_{{campaign.campaignVideoFile.id}}"> 
 												<a href="javascript:void(0)" (mouseover)="showPreview(campaign.campaignVideoFile)">
 													<img src="{{campaign.campaignVideoFile.imagePath}}" width="100px" height="50px">
@@ -556,22 +556,26 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<div class="row">
-							<ul class="mix-filter">
-								<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex">All Email Templates</li>
-								<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
-								<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-								
-								<li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li>
-								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
-							</ul>
-						</div>
-						 <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-							<div class="portlet-input input-inline input-large">
-								<div class="input-icon right">
-									<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
-									<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}">
+							<div class="col-xs-12 col-sm-8 text-left">
+								<ul class="mix-filter">
+									<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex">All Email Templates</li>
+									<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
+									<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>
+									<li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+									
+									<li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li>
+									<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
+									<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
+								</ul>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+								<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+									<div class="portlet-input input-inline input-large">
+										<div class="input-icon right">
+											<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
+											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" style="width: 217px;height: 34px;">
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -580,6 +584,7 @@
 				<div class="portlet-body">
 					<div class="row">
 						<form role="form" class="form-horizontal form-bordered form-label-stripped">
+							 
 								<div class="col-xs-12">
 								<app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
@@ -589,12 +594,13 @@
 											<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
 											<div class="row-fluid">
 											<div class="row mix-grid" style="margin-top: 10px">
-												<!-- -----------Selected Email Template--------------- -->
+											<ng-container *ngIf="showSelectedEmailTemplate">
+												<!-- -----------Selected Email Template--------------- --><!-- && 
+												(selectedEmailTemplateType==0 ||selectedEmailTemplateType=='NONE' ||selectedEmailTemplateType==campaign.emailTemplate.type)  --> 
 												<div (click)="setEmailTemplate(campaign.emailTemplate)" 
-												*ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && 
-												(selectedEmailTemplateType==campaign.emailTemplate.type ||selectedEmailTemplateType=='NONE' || selectedEmailTemplateType==0) && emailTemplatesPagination.pageIndex==1">
+												*ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
 													<div class="col-md-3 col-sm-4 col-xs-6 box"	>
-													<div class="portlet light block" [class.active]="emailTemplateId == selectedEmailTemplateRow">
+													<div class="portlet light block" [class.active]="emailTemplateId == selectedEmailTemplateRow"><!-- [class.active]="emailTemplateId == selectedEmailTemplateRow" -->
 														<div class="portlet-title">
 															<div class="caption">
 																<div class="col-xs-12">
@@ -616,6 +622,7 @@
 													</div>
 												</div>	
 												</div>
+										</ng-container>		
 											<!-- -----------All Email Templates--------------- -->
 											<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index"
 														 (click)="setEmailTemplate(emailTemplate)"  >
@@ -684,7 +691,7 @@
 			<div class="col-xs-12">
 			<div class="col-xs-12 well text-center" style="margin-top: 10px;">
 			<div class="col-xs-12">
-			<div class="portlet light dashboard-stat2 clearfix" *ngIf="campaign.socialSharingIcons"><!-- style="min-height: 5.5em;" -->
+			<div class="portlet light dashboard-stat2 clearfix"><!-- style="min-height: 5.5em;" -->
 				<button type="button" class="btn green square-button pull-right" (click)="socialStatus.isEnable = !socialStatus.isEnable">
 				<i class="fa fa-share-alt fa-social" aria-hidden="true"></i> Social Share</button>
 			
@@ -833,7 +840,7 @@
         	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" >
-        		<h4><b>ADD REPLY-{{i+1}}</b></h4>
+        		<h4 class="text-left"><b>ADD REPLY-{{i+1}}</b></h4>
         		<hr>
 					<div class="panel-body">
 						<form class="role" id="form-{{reply.divId}}">
@@ -857,8 +864,9 @@
 					          </select>
 							</div>
 							<div class="form-group col-md-3" style="padding-top: 1.9em;">
-								<button type="button" class="btn btn-danger"
-									(click)="remove(reply.divId,'replies')">Delete</button>
+								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
 							</div>
 							<div class="col-sm-12" style="padding: 0">
 								<div>
@@ -872,52 +880,50 @@
 				<!-- ------------ADD ON CLICK------------------------ -->
 				<div *ngFor="let url of urls;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{url.divId}}">
-        		<h4><b>ADD ON CLICK-{{i+1}}</b></h4>
+        		<h4 class="text-left"><b>ADD ON CLICK-{{i+1}}</b></h4>
         		<hr>
 					<div class="panel-body">
+					
 						<form class="role" id="form-{{url.divId}}">
-						<div class="form-group col-md-3">
+						<div class="col-xs-11">
+							<div class="form-group col-md-3">
 								<label for="reason">When To Send Email</label> 
 								<select class="form-control" name="scheduleEmail" [(ngModel)]="url.scheduled">
 						            <option  [value]="false" [selected]="url.scheduled ==false">Send Immediately After Clicked</option>
 						            <option  [value]="true" [selected]="url.scheduled ==true">Schedule</option>
 					          </select>
 							</div>
-						<div *ngIf="url.scheduled=='true'">	
-						<div class="form-group col-md-3">
-								<label for="days">Wait X Days After Click</label>
-								 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-							</div>
-						<div class="form-group col-md-3">
-							<label for="time">Send Time</label> 
-							<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
-						</div>
-						</div>
-						<div class="form-group col-md-6">
-								<label for="time">Subject</label> 
-								 <input	type="text" class="form-control" name="subject"	[(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
-							</div>
-						<div class="form-group col-md-3">
-							<label for="reason">Available Urls</label> 
-							<select	class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
-								<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
-								    {{hrefLink}}
-								  </option>
-							</select>
-						</div>
-							<div class="form-group col-md-3" style="padding-top: 1.9em;float: right;">
-								<button type="button" class="btn btn-danger"(click)="remove(url.divId,'url')">
-									Delete
-								</button>
-									<!-- <a class="mix-preview6"  title="Delete Row" data-rel="fancybox-button"> 
-										<i class="fa fa-trash"></i>
-									</a> -->
-							</div>
-							<div class="col-sm-12" style="padding: 0">
-								<div>
-									 <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
+							<div *ngIf="url.scheduled=='true'">	
+								<div class="form-group col-md-3">
+										<label for="days">Wait X Days After Click</label>
+										 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
+									</div>
+								<div class="form-group col-md-6">
+									<label for="time">Send Time</label> 
+									<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
 								</div>
 							</div>
+							<div class="form-group col-md-6">
+									<label for="time">Subject</label> 
+									 <input	type="text" class="form-control" name="subject"	[(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
+							</div>
+							<div class="form-group col-md-3">
+								<label for="reason">Available Urls</label> 
+								<select	class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
+									<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
+									    {{hrefLink}}
+									  </option>
+								</select>
+							</div>
+						</div>
+						<div class="col-xs-1">
+							<button type="button" class="btn btn-danger"(click)="remove(url.divId,'url')">
+									<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</div>
+						<div class="col-sm-12">
+							 <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
+						</div>
 						</form>
 					</div>
 				</div>	
