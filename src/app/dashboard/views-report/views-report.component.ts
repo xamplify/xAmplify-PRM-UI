@@ -11,7 +11,6 @@ import { Category } from '../../videos/models/category';
 import { DashboardService } from '../dashboard.service';
 import { ContactList } from '../../contacts/models/contact-list';
 import { ContactService } from '../../contacts/services/contact.service';
-
 declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 
 @Component({
@@ -109,17 +108,6 @@ export class ViewsReportComponent implements OnInit {
             negBarColor: '#e02222'
         });
     }
-
-    /*defaultGifPaths() {
-        if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[0]) {
-             this.gifBoolean1 = true; this.gifBoolean2 = this.gifBoolean3 = false;
-        } else if (this.saveVideoFile.gifImagePath === this.saveVideoFile.gifFiles[1]) {
-             this.gifBoolean2 = true; this.gifBoolean1 = this.gifBoolean3 = false;
-        } else if ( this.saveVideoFile.gifImagePath = this.saveVideoFile.gifFiles[2]) {
-            this.gifBoolean3 = true; this.gifBoolean1 = this.gifBoolean2 = false;
-        } else { this.gifBoolean1 = this.gifBoolean2 = this.gifBoolean3 = false; }
-    }*/
-
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 12;
         try {
@@ -129,10 +117,6 @@ export class ViewsReportComponent implements OnInit {
                     this.videos = result.listOfMobinars;
                     this.totalRecords = result.totalRecords;
                     pagination.totalRecords = this.totalRecords;
-                    /*if (this.checkTotalRecords === true) {
-                         this.allRecords = this.totalRecords;
-                         this.checkTotalRecords = false;
-                     }*/
                     if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                         this.categories = result.categories;
                         this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
@@ -259,20 +243,15 @@ export class ViewsReportComponent implements OnInit {
                     clickToToggle: true,
                     callback: function () {
                         player.pause();
-                        $("#main_video").empty();
-                    }
+                        $("#main_video").empty(); }
                 });
-
             }
         }
-
     }
     playVideo() {
         $('#main_video_src').empty();
         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
     }
-
-
     appendVideoData(videoFile: SaveVideoFile, divId: string, titleId: string) {
         console.log(videoFile);
         var alias = videoFile.alias;
@@ -349,9 +328,15 @@ export class ViewsReportComponent implements OnInit {
         $("video").bind("contextmenu", function () {
             return false;
         });
-
+     this.defaultVideoSettings(videoFile);
     }
-
+    defaultVideoSettings(videoFile: SaveVideoFile){
+        console.log('default settings called');
+        $('.video-js').css('color', videoFile.playerColor);
+        $('.video-js .vjs-play-progress').css('background-color', videoFile.playerColor);
+        $('.video-js .vjs-volume-level').css('background-color', videoFile.playerColor);
+        $('.video-js .vjs-control-bar').css('background-color', videoFile.controllerColor);
+    }
     backToReport() {
         this.showDatailedData = false;
         this.showVideoData = true;
@@ -359,10 +344,7 @@ export class ViewsReportComponent implements OnInit {
         this.pagination.sortingOrder = null;
         this.loadVideos(this.pagination);
         this.currentPageType = null;
-
-        //this.selectedSortByValue( event );
     }
-
     showViewsData() {
         this.showDatailedData = true;
         this.showVideoData = false;
@@ -370,11 +352,8 @@ export class ViewsReportComponent implements OnInit {
         this.pagination.sortingOrder = null;
         this.totalViewsForVideo(this.pagination);
         this.currentPageType = "views_page";
-
     }
-
     totalViewsForVideo(pagination: Pagination) {
-        //this.pagination.maxResults = 12;
         this.logger.log(pagination);
         this.contactService.loadAllContacts(pagination)
             .subscribe(
@@ -424,11 +403,10 @@ export class ViewsReportComponent implements OnInit {
             this.minutesSparklineData(videoFile);
             this.averageSparklineData(videoFile);
             var videoFile: any;
-            this.videoJSplayer = videojs(document.getElementById('edit_video_player_' + videoFile), {}, function () {
-                const player = this;
-            });
-        }
-        catch (err) { }
+            // this.videoJSplayer = videojs(document.getElementById('edit_video_player_' + videoFile), {}, function () {
+            //     const player = this;
+            // });
+        } catch (err) { }
     }
 
 }

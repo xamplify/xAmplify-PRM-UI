@@ -148,8 +148,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     emptyDescription = false;
     public checkTag: string;
     isThisDraftVideo = false;
+    selectedImagePath: string;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
-        public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute, 
+        public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute,
         public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
         public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
@@ -170,6 +171,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ClipboardName = 'Copy to Clipboard';
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
+        this.selectedImagePath = this.saveVideoFile.imagePath;
         this.isFullscreen = true;
         this.showOverLay = true;
         this.model.email_id = this.authenticationService.user.emailId;
@@ -243,9 +245,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         return null;
     }
-
     public validatorsTag = [this.startsWithAt];
-
     shareClick() {
         window.open(this.authenticationService.APP_URL+'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
         'mywindow', 'menubar=1,resizable=1,width=670,height=485');
@@ -256,6 +256,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownThumb = false;
         this.ownThumbnail = true;
         this.isThumb = false;
+        this.defaultSaveImagePath = this.selectedImagePath;
     }
     ownThumbnailfileChange(event: any) {
         const fileList: FileList = event.target.files;
@@ -320,6 +321,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownThumbnail = false;
         this.isThumb = true;
         this.imageUrlPath = false;
+        this.defaultSaveImagePath = this.selectedImagePath;
     }
     selectedGifFirst() {
         this.gifBoolean1 = true;

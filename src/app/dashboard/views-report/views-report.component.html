@@ -47,14 +47,14 @@
 				</div>
 				<div class="page-bar" style="padding:4px">
 				<div class="col-md-12">
-				<div class="col-md-4" style="width:29%;margin-left:-15px" *ngIf = "showVideoData">
+				<div class="col-md-4" style="width:29%;margin-left:-15px; padding:0" *ngIf = "showVideoData">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" class="form-control">All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
 									</div>
 				<div class="col-md-8">
-									<div class="btn-group pull-right">
+									<div class="btn-group pull-right" style="margin-right: -80px;">
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px" *ngIf = "showVideoData">
 												<select class="form-control" [(ngModel)]="videoSort"   (ngModelChange)="selectedSortByValue($event)">

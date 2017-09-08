@@ -22,65 +22,15 @@
 			<div class="col-md-12">
 				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
 			</div>
-		    	<div class="col-md-12">
+		    	<div class="col-md-12" style="margin-top: -9px;margin-bottom: -17px;">
 			    	<p><strong>Category : </strong>{{selectedVideo.category.name}}</p>
 			    </div>
 				</div>
 			</div>
 		</div>
 		</div>
-<!-- 		
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light blue-soft"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-eye"></i>
-				</div>
-				<div class="details">
-					<div class="number">49%</div>
-					<div class="desc">Viewed</div>
-				</div>
-			</a>
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light red-soft"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-envelope"></i>
-				</div>
-				<div class="details">
-					<div class="number">100%</div>
-					<div class="desc">Delivered</div>
-				</div>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light yellow-gold"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-folder-open"></i>
-				</div>
-				<div class="details">
-					<div class="number">89%</div>
-					<div class="desc">Opened</div>
-				</div>
-			</a>
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-light green-soft"
-				routerLink = "../table_advance">
-				<div class="visual">
-					<i class="fa fa-hand-o-up"></i>
-				</div>
-				<div class="details">
-					<div class="number">49%</div>
-					<div class="desc">Clicked</div>
-				</div>
-			</a>
-		</div> -->
 		<div class="col-md-6 col-sm-6">
-		<div class="portlet light ">
+		<div class="portlet light " style="width: 105%;">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-equalizer font-purple-plum hide"></i> <span
@@ -93,11 +43,11 @@
 					</a> <a href="" class="remove"> </a>
 				</div>
 			</div>
-			<div class="portlet-body">
-				<div class="row" style="margin-top: -17px;">
+			<div class="portlet-body" style="padding-top: 47px;">
+				<div class="row">
 					<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
-							<svg width="100" height="120" viewBox="0 0 120 120"
+							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
 									stroke-width="12" />
@@ -105,32 +55,33 @@
 									stroke-width="12" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
 						</svg>
-							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
+							<h2 class="percentage-value">57%</h2>
 						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Watched Fully</h5>
+						<h5 style="text-align: center; color: #2f2f2f;margin-top: 71px;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
 					<div class="col-xs-12 col-md-4">
 						<div class="sparkline-chart">
 							<div class="number" id="sparkline_bar2">
 							</div>
-							<a class="title" href="javascript:;" style="margin-right: -30px;"> Minutes Watched </a>
+							<a class="title" href="javascript:;" style="margin-right: -24px;text-decoration: none; margin-top: 17px;"> Minutes Watched </a>
 						</div>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
 							<div class="col-xs-12 col-md-4 text-center">
 						<section class="percentage-circle">
-							<svg width="100" height="120" viewBox="0 0 120 120"
+							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.87746)}"/>
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
 						</svg>
-							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">87746</h2>
+							<h2 class="percentage-value">57</h2>
+								<h6 class="percentage-text">views</h6>
 						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Views</h5>
+						<h5 style="text-align: center; color: #2f2f2f; margin: 3.5em;font-size: 17px;font-weight: 400;">Views</h5>
 					</div>
 				</div>
 			</div>
@@ -141,88 +92,6 @@
 </div>
 <!-- END DASHBOARD STATS -->
 <div class="clearfix"></div>
-<div class="row">
-	<!-- <div class="col-md-6 col-sm-6">
-		<div class="portlet light ">
-			<div class="portlet-title">
-			  <div>
-				<h3 style="word-break: break-all;color:#3c3a3a">{{selectedVideo.title}}</h3>
-			 </div>
-			</div>
-			<div class="portlet-body">
-				<div class="row">
-            <div class="col-md-12">
-				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
-			</div>
-			<div class="col-md-12">
-			    <p style="font-weight:600; margin-top: 12px;"> Description : </p>
-				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
-			</div>
-		    	<div class="col-md-12">
-			    	<p><strong>Category : </strong>{{selectedVideo.category.name}}</p>
-			    </div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- <div class="col-md-6 col-sm-6">
-		<div class="portlet light ">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="icon-equalizer font-purple-plum hide"></i> <span
-						class="caption-subject font-red-sunglo bold uppercase">Day
-						Stats</span> <span class="caption-helper">Campaign related</span>
-				</div>
-				<div class="tools">
-					<a href="" class="collapse"> </a> <a href="#portlet-config"
-						data-toggle="modal" class="config"> </a> <a href="" class="reload">
-					</a> <a href="" class="remove"> </a>
-				</div>
-			</div>
-			<div class="portlet-body">
-				<div class="row" style="margin-top: -17px;">
-					<div class="col-xs-12 col-md-4 text-center">
-						<section class="percentage-circle">
-							<svg width="100" height="120" viewBox="0 0 120 120"
-								style="transform: rotate(-90deg)">
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="12" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
-						</svg>
-							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">57%</h2>
-						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Watched Fully</h5>
-					</div>
-					<div class="margin-bottom-10 visible-sm"></div>
-					<div class="col-xs-12 col-md-4">
-						<div class="sparkline-chart">
-							<div class="number" id="sparkline_bar2">
-							</div>
-							<a class="title" href="javascript:;" style="margin-right: -30px;"> Minutes Watched </a>
-						</div>
-					</div>
-					<div class="margin-bottom-10 visible-sm"></div>
-							<div class="col-xs-12 col-md-4 text-center">
-						<section class="percentage-circle">
-							<svg width="100" height="120" viewBox="0 0 120 120"
-								style="transform: rotate(-90deg)">
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="12" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.46)}"/>
-						</svg>
-							<h2 class="percentage-value" style="margin: -2.93em -10px 0 0;">46%</h2>
-						</section>
-						<h5 style="text-align: center; color: #2f2f2f; margin-top: 2.4em;font-size: 17px;font-weight: 400;">Shared</h5>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-</div>
 <div class="row">
 	<div class="col-md-6 col-sm-6">
 		<!-- BEGIN PORTLET-->

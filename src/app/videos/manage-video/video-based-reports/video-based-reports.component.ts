@@ -38,6 +38,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isPlay: boolean;
     public countryWiseVideoViews: any;
     public categories: any;
+    public videoViews: number;
+    public videoViewscount: number;
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef; 
@@ -110,6 +112,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             $('.video-js .vjs-fullscreen-control').show();
         }
     }
+    nFormatter(num) {
+     if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+     }
+     if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+     }
+     if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+     }
+     return num;
+}
     defaultVideoControllers() {
         if (this.selectedVideo.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
@@ -123,7 +137,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
      renderMap() {
         const countryData = this.countryWiseVideoViews;
         const data = [["in", 1], ["us", 2]];
-        
         // Create the chart
         Highcharts.mapChart( 'world-map', {
             chart: {
@@ -164,14 +177,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         const myvalues = [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8];
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
-            width: '80',
+            width: '120',
             barWidth: 6,
-            height: '91',
+            height: '111',
             barColor: '#f4f91b',
             negBarColor: '#e02222'
         });
     }
     ngOnInit() {
+       this.videoViews =  this.nFormatter(978);
         this.renderMap();
         this.minutesSparklineData();
         this.posterImagePath = this.selectedVideo.imagePath;
