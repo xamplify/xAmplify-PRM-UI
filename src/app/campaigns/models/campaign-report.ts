@@ -1,3 +1,4 @@
+import { Pagination } from '../../core/models/pagination';
 export class CampaignReport {
     id: number;
     userId: number;
@@ -18,6 +19,6 @@ export class CampaignReport {
     emailSentList: any;
     usersWatchList: any;
 
-    emailActionName: string;
+    emailActionId: number;
     emailActionList: any;
 }

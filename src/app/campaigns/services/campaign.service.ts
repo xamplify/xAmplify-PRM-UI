@@ -93,14 +93,20 @@ export class CampaignService {
             .catch( this.handleError );
     }
     
+    getHeatMapByUniqueSession(sessionId: string){
+        return this.http.get( this.URL + 'user-video-heat-map-by-unique-session?access_token=' + this.authenticationService.access_token + '&sessionId='+sessionId )
+        .map( this.extractData )
+        .catch( this.handleError );
+}
+    
     usersWatchList(campaignId: number ){
         return this.http.get( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token)
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    emailActionList(campaignId: number, actionId: number ){
-        return this.http.get( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&actionId='+actionId)
+    emailActionList(campaignId: number, actionId: number, pageNumber: number ){
+        return this.http.get( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&actionId='+actionId+'&pageNumber='+pageNumber)
         .map( this.extractData )
         .catch( this.handleError );
     }

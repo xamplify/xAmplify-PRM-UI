@@ -13,11 +13,12 @@ import { VideoFileService } from '../videos/services/video-file.service';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { HeatMapComponent } from './heat-map/heat-map.component';
 //import {CkEditor} from "../campaigns/ck-editor.directive";
 @NgModule({
 	
   imports: [ CommonModule,SharedModule,CampaignsRoutingModule,CKEditorModule ],
-  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent, AnalyticsComponent/*,CkEditor*/],
+  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent, AnalyticsComponent, HeatMapComponent/*,CkEditor*/],
   providers :[ContactService,VideoFileService,EmailTemplateService]
 
 })

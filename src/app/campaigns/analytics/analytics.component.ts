@@ -6,18 +6,18 @@ import { CampaignReport } from '../models/campaign-report';
 import { CampaignService } from '../services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-
+import { PagerService } from '../../core/services/pager.service';
+import { Pagination } from '../../core/models/pagination';
 declare var $, Highcharts: any;
 @Component( {
     selector: 'app-analytics',
     templateUrl: './analytics.component.html',
-    styleUrls: ['./analytics.component.css', './timeline.css']
+    styleUrls: ['./analytics.component.css', './timeline.css'],
+    providers: [PagerService, Pagination]
 })
 export class AnalyticsComponent implements OnInit {
     isTimeLineView: boolean;
     campaign: Campaign;
-    numbers: string[] = new Array();
-    heatMapData: any;
     selectedRow: any = new Object();
     videoLength: number;
     campaignViews: any;
@@ -26,44 +26,14 @@ export class AnalyticsComponent implements OnInit {
     campaignReport: CampaignReport = new CampaignReport;
 
 
-    constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private authenticationService: AuthenticationService ) {
+    constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, 
+            private authenticationService: AuthenticationService, private pagerService: PagerService, private pagination: Pagination ) {
         this.isTimeLineView = false;
         this.campaign = new Campaign();
 
     }
     showTimeline() {
         this.isTimeLineView = !this.isTimeLineView;
-    }
-
-    getCampaignById( campaignId: number ) {
-        var obj = { 'campaignId': campaignId }
-        this.campaignService.getCampaignById( obj )
-            .subscribe(
-            data => {
-                this.campaign = data;
-            },
-            error => console.log( error ),
-            () => console.log()
-            )
-    }
-
-    getHeatMap(item: any) {
-        this.heatMapData = "";
-        this.numbers = [];
-        this.selectedRow = item;
-        this.isTimeLineView = !this.isTimeLineView;
-        this.campaignService.getHeatMap( item.userId, item.campaignId )
-            .subscribe(
-            data => {
-                this.heatMapData = data;
-                for(var i=0; i<=100; i++){
-                    this.numbers.push(this.utilService.convertSecondsToHHMMSS(this.heatMapData.videoLength*i/100));
-                }
-                console.log(this.numbers);
-            },
-            error => console.log( error ),
-            () => console.log()
-            )
     }
 
     listCampaignViews( campaignId: number ) {
@@ -193,13 +163,28 @@ export class AnalyticsComponent implements OnInit {
         )
     }
     
-    emailActionList(campaignId: number, actionId: number, emailActionName: string){
-        this.campaignService.emailActionList( campaignId, actionId )
+    setPage( page: number ) {
+        if (page !== this.pagination.pageIndex) {
+            this.pagination.pageIndex = page;
+            if(this.campaignReport.emailActionId == 13 || this.campaignReport.emailActionId == 15)
+                this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionId, page);
+        }
+    }
+    
+    emailActionList(campaignId: number, actionId: number, pageNumber: number){
+        this.campaignService.emailActionList( campaignId, actionId, pageNumber )
         .subscribe(
         data => {
             this.campaignReport.emailActionList = data.data;
-            this.campaignReport.emailActionName = emailActionName;
+            this.campaignReport.emailActionId = actionId;
             $('#emailActionListModal').modal();
+            
+            if(actionId == 13)
+                this.pagination.totalRecords = this.campaignReport.emailOpenCount;
+            else if(actionId = 15)
+                this.pagination.totalRecords = this.campaignReport.emailClickedCount;
+            
+            this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignReport.emailActionList );
         },
         error => console.log( error ),
         () => console.log()
@@ -219,8 +204,27 @@ export class AnalyticsComponent implements OnInit {
     
     userTimeline(item: any){
         this.listEmailLogsByCampaignAndUser(item.campaignId, item.userId);
-        if(! this.campaign.regularEmail)
-            this.getHeatMap(item);
+        this.selectedRow = item;
+        this.isTimeLineView = !this.isTimeLineView;
+    }
+    
+    getCampaignById( campaignId: number ) {
+        var obj = { 'campaignId': campaignId }
+        this.campaignService.getCampaignById( obj )
+            .subscribe(
+            data => {
+                this.campaign = data;
+            },
+            error => console.log( error ),
+            () => {
+                    if(! this.campaign.regularEmail){
+                        this.getCountryWiseCampaignViews(campaignId);
+                        this.renderMap();
+                        
+                        this.getCampaignViewsReportDurationWise( campaignId );
+                    }
+                }
+            )
     }
 
     ngOnInit() {
@@ -228,14 +232,11 @@ export class AnalyticsComponent implements OnInit {
         let campaignId = this.route.snapshot.params['campaignId'];
 
         this.getCampaignById( campaignId );
-        this.getCountryWiseCampaignViews(campaignId);
-        this.renderMap();
-
+        
         this.getEmailSentCount( campaignId );
         this.getEmailLogCountByCampaign( campaignId );
         this.getCampaignWatchedUsersCount( campaignId );
 
-        this.getCampaignViewsReportDurationWise( campaignId );
         this.listCampaignViews( campaignId );
     }
 
