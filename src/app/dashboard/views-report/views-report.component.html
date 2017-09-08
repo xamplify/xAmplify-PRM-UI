@@ -45,6 +45,7 @@
 						
 					</ul>
 				</div>
+				<div class="page-bar" style="padding:4px">
 				<div class="col-md-12">
 				<div class="col-md-4" style="width:29%;margin-left:-15px" *ngIf = "showVideoData">
                                              <select class="form-control" [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
@@ -52,7 +53,7 @@
                                                <option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
                                             </select>
 									</div>
-				<div class="col-md-8;page-toolbar">
+				<div class="col-md-8">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px" *ngIf = "showVideoData">
@@ -77,6 +78,7 @@
 											</div>
 										</div>
 									</div>
+								</div>
 								</div>
 								</div>
 								
@@ -145,9 +147,10 @@
 	    </div>
 			   	<div *ngIf = "showVideoData">			
 				<div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+				<div class="portlet light">
 				<div class="col-md-12"><h4><b>Video Stats:</b>{{videoFile.title}}</h4></div>
 				<div class="row">
-					<div class="col-md-12" style="margin-top: 10px;">
+					<!-- <div class="col-md-12" style="margin-top: 10px;">
 						
 					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 						<a class="dashboard-stat dashboard-stat-light blue-soft" (click) = "showViewsData()">
@@ -197,7 +200,7 @@
 						</div>
 						</a>
 					</div>
-				<!-- 	<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 						<a class="dashboard-stat dashboard-stat-light yellow-gold href="table_advanced.html">
 						<div class="visual">
 							<i class="fa fa-comment"></i>
@@ -211,7 +214,7 @@
 							</div>
 						</div>
 						</a> 
-					</div> -->
+					</div>
 					
 					 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 						<a class="dashboard-stat dashboard-stat-light yellow-gold" [routerLink]="['../table_advance']">
@@ -261,7 +264,7 @@
 						</div>
 						</a>
 					</div>
-				</div>
+				</div> -->
 				<div class="col-md-12">
 				<div class="col-md-6">
 						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
@@ -330,7 +333,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12"><hr></div>
+				<!-- <div class="col-md-12"><hr></div> -->
+				</div>
 				</div>
 				</div>
 				</div>
