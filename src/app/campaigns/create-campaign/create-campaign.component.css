@@ -459,13 +459,13 @@ a.disabled {
     border: 1px solid #FFF
 }
 
-.ellipsis {
+/* .ellipsis {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     float: left !important
-}
+} */
 
 .profile-image {
     z-index: 1;
@@ -810,9 +810,4 @@ label img {
 .left{
 	float: left;
 }
-.ellipsis {
-    white-space: nowrap; 
-    width: 20em; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-}
+

@@ -1295,6 +1295,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
+            this.refService.goToTop();
             this.campaignService.saveCampaign( data )
             .subscribe(
             response => {

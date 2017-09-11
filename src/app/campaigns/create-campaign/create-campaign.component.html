@@ -103,7 +103,7 @@
 											<font style="color: red"><b>*</b></font>
 										</label>
 										<div class="col-md-9">
-											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" />
+											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
 											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 										</div>
 									</div>
@@ -111,26 +111,26 @@
 									<div class="form-group" [attr.class]="fromNameDivClass">
 										<label class="control-label col-md-3">From Name<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');"  />
+											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200"  />
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="subjectLineDivClass">
 										<label class="control-label col-md-3">Subject Line<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" />
+											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="200" />
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="fromEmaiDivClass">
 										<label class="control-label col-md-3">From Email<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');"  />
+											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');" maxlength="200" />
 											<span *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span>
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="preHeaderDivClass">
 										<label class="control-label col-md-3">Pre Header<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');"  />
+											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200"  />
 										</div>
 									</div>
 									<div class="form-group">
@@ -182,7 +182,7 @@
 									<div class="form-group last" [attr.class]="messageDivClass">
 										<label class="control-label col-md-3">Notification Message<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
-											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm();validateField('message');"  />
+											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm();validateField('message');" maxlength="200" />
 										</div>
 									</div>
 								</div>

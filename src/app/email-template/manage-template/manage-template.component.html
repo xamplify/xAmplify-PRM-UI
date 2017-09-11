@@ -59,8 +59,8 @@
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 								<div class="portlet light block">
 									<div class="portlet-title">
-										<div class="caption">
-											<h4 class="caption-subject font-purple-intense uppercase text-center">{{emailTemplate.name}}</h4>
+										<div class="ellipsis">
+											<h4 class="caption-subject font-purple-intense  text-center ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
 										</div>
 									</div>
 									<div class="portlet-body">

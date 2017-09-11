@@ -108,7 +108,7 @@
 								<!-- <a href="javascript:void(0)">view all</a> -->
 							</li>
 							<li>
-								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+								<ul class="dropdown-menu-list scroller" style="height: 275px;overflow-y: auto;" data-handle-color="#637283">
 								<ng-container *ngFor="let emailNotification of campaignEmailNotifications;let i=index">
 								<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
 										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
@@ -136,7 +136,7 @@
 								<!-- <a href="javascript:void(0)">view all</a> -->
 							</li>
 							<li>
-								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+								<ul class="dropdown-menu-list scroller" style="height: 275px;overflow: auto" data-handle-color="#637283">
 								<ng-container *ngFor="let videoNotification of campaignVideoWatchedNotifications;let i=index">
 									<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}" >
 										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
