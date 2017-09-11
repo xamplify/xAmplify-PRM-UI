@@ -163,7 +163,7 @@
 
 <div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
 	<div class="page-bar">
-		<a (click)="isTimeLineView = !isTimeLineView" class="pull-right"
+		<a (click)="isTimeLineView = !isTimeLineView;resetTopNavBarValue()" class="pull-right"
 			style="margin: 1em;"> <span class="glyphicon glyphicon-remove"
 			aria-hidden="true"></span>
 		</a>

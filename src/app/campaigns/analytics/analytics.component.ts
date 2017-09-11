@@ -8,6 +8,7 @@ import { UtilService } from '../../core/services/util.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var $, Highcharts: any;
 @Component( {
     selector: 'app-analytics',
@@ -27,9 +28,13 @@ export class AnalyticsComponent implements OnInit {
 
 
     constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, 
-            private authenticationService: AuthenticationService, private pagerService: PagerService, private pagination: Pagination ) {
+            private authenticationService: AuthenticationService, private pagerService: PagerService, private pagination: Pagination,private referenceService:ReferenceService ) {
         this.isTimeLineView = false;
         this.campaign = new Campaign();
+        if(this.referenceService.isFromTopNavBar){
+            this.userTimeline(this.referenceService.topNavBarNotificationDetails.campaignId, this.referenceService.topNavBarNotificationDetails.userId, this.referenceService.topNavBarNotificationDetails.emailId);
+            
+        }
 
     }
     showTimeline() {
@@ -227,6 +232,10 @@ export class AnalyticsComponent implements OnInit {
             )
     }
 
+    resetTopNavBarValue(){
+        this.referenceService.isFromTopNavBar=false;
+    }
+    
     ngOnInit() {
         const userId = this.authenticationService.getUserId();
         let campaignId = this.route.snapshot.params['campaignId'];

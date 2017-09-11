@@ -111,12 +111,12 @@
 								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 								<ng-container *ngFor="let emailNotification of campaignEmailNotifications;let i=index">
 								<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
-										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email')">
+										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
 										</a>
 									</li>
 									<li *ngIf="emailNotification.openCount==0" class="unread-notification"  id="email-notification-{{i}}">
-										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');markItAsRead(i,'email-notification-')">
+										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');markItAsRead(i,'email-notification-');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
 										</a>
 									</li>
@@ -139,12 +139,12 @@
 								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
 								<ng-container *ngFor="let videoNotification of campaignVideoWatchedNotifications;let i=index">
 									<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}" >
-										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');">
+										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}} ( {{videoNotification.campaignName}} ) </b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
 									</li>
 									<li *ngIf="videoNotification.openCount==0" class="unread-notification" id="video-notification-{{i}}" >
-										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');markItAsRead(i,'video-notification-')">
+										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');markItAsRead(i,'video-notification-');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}}( {{videoNotification.campaignName}} )</b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
 									</li>

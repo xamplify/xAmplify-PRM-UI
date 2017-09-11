@@ -147,6 +147,14 @@ export class TopnavbarComponent implements OnInit {
        }
     }
     
+    gotoDetails(campaignId:number,userId:number,emailId:string){
+        this.refService.isFromTopNavBar = true;
+        this.refService.topNavBarNotificationDetails.campaignId = campaignId;
+        this.refService.topNavBarNotificationDetails.userId = userId;
+        this.refService.topNavBarNotificationDetails.emailId = emailId;
+        this.router.navigateByUrl('/home/campaigns/'+campaignId+'/details');
+    }
+    
     ngOnInit(){
         //this.listTwitterNotifications();
         this.listCampaignEmailNotifications();

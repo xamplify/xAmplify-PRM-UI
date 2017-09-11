@@ -31,6 +31,8 @@ export class ReferenceService {
     defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
     topNavbarUserService = false;
+    isFromTopNavBar:boolean = false;
+    topNavBarNotificationDetails:any= new Object();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'WELCOME';
     public URL: string = this.authenticationService.REST_URL + 'admin/';

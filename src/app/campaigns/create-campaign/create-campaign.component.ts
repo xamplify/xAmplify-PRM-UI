@@ -600,7 +600,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
         this.appendVideoData(videoFile, "main_video", "modal-title");
-        $("#show_preview").modal();
+        $("#show_preview").modal('show');
     }
     destroyPreview(){
         var player = videojs("videoId");
@@ -986,7 +986,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         $('.modal .modal-body').css('overflow-y', 'auto'); 
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal({backdrop: 'static', keyboard: false});
+        $("#show_email_template_preivew").modal('show');
     }
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
