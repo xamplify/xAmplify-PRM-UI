@@ -202,9 +202,9 @@ export class AnalyticsComponent implements OnInit {
             )
     }
     
-    userTimeline(item: any){
-        this.listEmailLogsByCampaignAndUser(item.campaignId, item.userId);
-        this.selectedRow = item;
+    userTimeline(campaignId: number, userId: number, emailId: string){
+        this.listEmailLogsByCampaignAndUser(campaignId, userId);
+        this.selectedRow.userEmail = emailId;
         this.isTimeLineView = !this.isTimeLineView;
     }
     
