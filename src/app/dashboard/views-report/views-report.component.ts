@@ -73,9 +73,9 @@ export class ViewsReportComponent implements OnInit {
         this.isCategoryThere = false;
     }
 
-    viewsSparklineData(videoFile: number) {
+    viewsSparklineData() {
         const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
-        $('#sparkline_bar_' + videoFile).sparkline(myvalues, {
+        $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
             width: '100',
             barWidth: 5,
@@ -85,14 +85,14 @@ export class ViewsReportComponent implements OnInit {
         });
     }
 
-    minutesSparklineData(videoFile: number) {
-        const myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
-        $('#sparkline_bar2_' + videoFile).sparkline(myvalues, {
+    minutesSparklineData() {
+        const myvalues = [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8];
+        $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
-            width: '100',
-            barWidth: 5,
-            height: '55',
-            barColor: '#35aa47',
+            width: '120',
+            barWidth: 6,
+            height: '111',
+            barColor: '#f4f91b',
             negBarColor: '#e02222'
         });
     }
@@ -109,7 +109,7 @@ export class ViewsReportComponent implements OnInit {
         });
     }
     loadVideos(pagination: Pagination) {
-        this.pagination.maxResults = 12;
+        this.pagination.maxResults = 5;
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoForViewsReport(pagination)
@@ -205,21 +205,6 @@ export class ViewsReportComponent implements OnInit {
         this.pagination.sortcolumn = this.sortcolumn;
         this.pagination.sortingOrder = this.sortingOrder;
         this.totalViewsForVideo(this.pagination);
-
-        /*if ( this.currentContactType == null ) {
-            this.loadContactLists( this.pagination );
-        }
-        else if ( this.currentContactType == "all_contacts" ) {
-            this.all_Contacts( this.pagination );
-        } else if ( this.currentContactType == "active_contacts" ) {
-            this.active_Contacts( this.pagination );
-        } else if ( this.currentContactType == "invalid_contacts" ) {
-            this.invalid_Contacts( this.pagination );
-        } else if ( this.currentContactType == "unSubscribed_contacts" ) {
-            this.unSubscribed_Contacts( this.pagination );
-        } else if ( this.currentContactType == "nonActive_contacts" ) {
-            this.nonActive_Contacts( this.pagination );
-        }*/
     }
 
     showPreview(videoFile: SaveVideoFile) {
@@ -275,16 +260,13 @@ export class ViewsReportComponent implements OnInit {
             console.log("360 video path" + videoPath);
             videoPath = videoPath.replace(".m3u8", ".mp4");
             console.log("Updated 360 video path" + videoPath);
-            //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             $("#" + divId + " video").append('<source src="' + videoPath + '" type="video/mp4">');
             var player = videojs('videoId');
             player.panorama({
                 autoMobileOrientation: true,
                 clickAndDrag: true,
                 clickToToggle: true,
-                callback: function () {
-                    player.ready();
-                }
+                callback: function () {  player.ready(); }
             });
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
@@ -298,7 +280,6 @@ export class ViewsReportComponent implements OnInit {
             var str = '<video id=videoId  poster=' + fullImagePath + ' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#" + titleId).append(title);
             $("#" + divId).append(str);
-            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             console.log("Video Path:::" + videoPath);
             videoPath = videoPath.substring(0, videoPath.lastIndexOf('.'));
             videoPath = videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
@@ -319,9 +300,7 @@ export class ViewsReportComponent implements OnInit {
                         $(".vjs-tech").css("height", "100%");
                     } else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "550px");
-
                     }
-
                 });
             }
         }
@@ -330,7 +309,7 @@ export class ViewsReportComponent implements OnInit {
         });
      this.defaultVideoSettings(videoFile);
     }
-    defaultVideoSettings(videoFile: SaveVideoFile){
+    defaultVideoSettings(videoFile: SaveVideoFile) {
         console.log('default settings called');
         $('.video-js').css('color', videoFile.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', videoFile.playerColor);
@@ -360,7 +339,7 @@ export class ViewsReportComponent implements OnInit {
             (data: any) => {
                 this.totalViewsForThisVideo = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if (data.totalRecords.length == 0) {
+                if (data.totalRecords.length === 0) {
                     this.emptyViewsRecord = true;
                 } else {
                     pagination.totalRecords = this.totalRecords;
@@ -368,18 +347,9 @@ export class ViewsReportComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems(pagination, this.totalViewsForThisVideo);
                     this.logger.log(data);
                 }
-                /*if (this.allFollowers.length == 0) {
-                    this.emptyContactsUsers = true;
-                    this.hidingContactUsers = false;
-                 }
-                 else {
-                     this.emptyContactsUsers = false;
-                     this.hidingContactUsers = true;
-                     this.pagedItems = null ;
-                 }*/
             },
             error => console.log(error),
-            () => console.log("finished")
+            () => console.log('finished')
             );
     }
 
@@ -399,13 +369,9 @@ export class ViewsReportComponent implements OnInit {
             Index.initChat();
             Index.initMiniCharts();
             Tasks.initDashboardWidget();
-            this.viewsSparklineData(videoFile);
-            this.minutesSparklineData(videoFile);
-            this.averageSparklineData(videoFile);
-            var videoFile: any;
-            // this.videoJSplayer = videojs(document.getElementById('edit_video_player_' + videoFile), {}, function () {
-            //     const player = this;
-            // });
+          //  this.viewsSparklineData();
+             this.minutesSparklineData();
+            // this.averageSparklineData(videoFile);
         } catch (err) { }
     }
 

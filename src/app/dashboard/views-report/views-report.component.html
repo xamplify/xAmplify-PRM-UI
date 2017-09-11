@@ -92,44 +92,6 @@
 				
 				<!-- END CONTAINER -->
 												<!-- <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
-									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-										<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
-										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
-											<div class="mix-inner">
-												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="">
-												<div class="mix-details" style="z-index: 700;padding: 7px;">
-													<h4>{{videoFile.title}}</h4>
-													<div style="top: 2%; position: relative; margin-left: 5px;">
-													<a class="mix-preview2 fancybox-button" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="fancybox-button">
-														<i class="fa fa-play"></i>
-													</a>
-													<a class="mix-preview1 fancybox-button"  (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="fancybox-button">
-														<i class="fa fa-pencil-square-o"></i>
-													</a>
-													<a class="mix-preview3 fancybox-button" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" 
-													title="Video Based Reports"  data-rel="fancybox-button">
-														<i class="fa fa-line-chart"></i>
-													</a>
-													</div>
-													<div style="top: 30%; position: relative;">
-													<a class="mix-preview2 fancybox-button"  (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="fancybox-button" style="left:29%;margin-top :18px">
-														<i class="fa fa-bullhorn"></i>
-													</a>
-													 <a class="mix-preview6 fancybox-button" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" 
-													 title="Delete Video" data-rel="fancybox-button" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
-							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
-						                             </a>
-													</div>
-													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{truncateHourZeros(videoFile.videoLength)}}</span>
-												    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
-													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">#{{videoFile.id}}</span>
-												</div>
-											</div>
-											<div>
-										 </div>
-										</div>
-										</div>
 									</div> -->
 	<div class="modal" id="show_preview">
 	    <div class="modal-dialog">
@@ -150,134 +112,11 @@
 				<div class="portlet light">
 				<div class="col-md-12"><h4><b>Video Stats:</b>{{videoFile.title}}</h4></div>
 				<div class="row">
-					<!-- <div class="col-md-12" style="margin-top: 10px;">
-						
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light blue-soft" (click) = "showViewsData()">
-						<div class="visual">
-							<i class="fa fa-eye"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{videoFile.views}}
-							</div>
-							<div class="desc">
-								 Total Views
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light red-soft" [routerLink]="['../table_advance']">
-						<div class="visual">
-							<i class="fa fa-angellist"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{videoFile.leads}}
-							</div>
-							<div class="desc">
-								 Leads
-							</div>
-						</div>
-						</a>
-					</div>
-					
-					
-					
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light blue-sharp" [routerLink]="['../table_advance']">
-						<div class="visual">
-							<i class="fa fa-heart"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 {{videoFile.favourites}}
-							</div>
-							<div class="desc">
-								 Favorites
-							</div>
-						</div>
-						</a>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light yellow-gold href="table_advanced.html">
-						<div class="visual">
-							<i class="fa fa-comment"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 89
-							</div>
-							<div class="desc">
-								 Comments
-							</div>
-						</div>
-						</a> 
-					</div>
-					
-					 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light yellow-gold" [routerLink]="['../table_advance']">
-						<div class="visual">
-							<i class="fa fa-comment"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 {{videoFile.comments}}
-							</div>
-							<div class="desc">
-								 Comments
-							</div>
-						</div>
-						</a>
-					</div>
-					
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light green-soft" [routerLink]="['../table_advance']">
-						<div class="visual">
-							<i class="fa fa-thumbs-o-up"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{videoFile.likes}}
-							</div>
-							<div class="desc">
-								 Liked
-							</div>
-						</div>
-						</a>
-					</div>
-					
-					 
-				 	<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-						<a class="dashboard-stat dashboard-stat-light purple-soft" [routerLink]="['../table_advance']">
-						<div class="visual">
-							<i class="fa fa-thumbs-o-down"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								{{videoFile.dislikes}}
-							</div>
-							<div class="desc">
-								 Disliked
-							</div>
-						</div>
-						</a>
-					</div>
-				</div> -->
 				<div class="col-md-12">
 				<div class="col-md-6">
-						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
-													<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:525px; height:245px">
-												</a>
-						
-						<!-- <iframe src="http://player.vimeo.com/video/22439234" style="width:100%; height:250px;border:0" allowfullscreen>
-						</iframe> -->
-						<!-- <img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:83%; height:80%" data-toggle="modal" data-target="#myModal"> -->
-						<!-- <video id="edit_video_player_{{videoFile.id}}" class="video-js vjs-default-skin vjs-nofull" controls  height="299" poster="{{videoFile.imagePath}}"
-                 data-setup='{"example_option":true }'>
-				  <source src = "http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>
-				</video> -->
+					<a href="javascript:void(0)" (click)="showPreview(videoFile)">
+						<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:525px; height:245px">
+					</a>
 				</div>
 				<div class="col-md-6 col-sm-6">
 						<div class="portlet light" style="height: 248px;">
@@ -317,13 +156,27 @@
 									</div>
 									<div class="margin-bottom-10 visible-sm">
 									</div>
-									<div class="col-md-4">
+									<!-- <div class="col-md-4">
 										<div class="sparkline-chart">
 											<div class="number" id="sparkline_bar2_{{videoFile.id}}"><canvas width="107" height="55" style="display: inline-block; width: 107px; height: 55px; vertical-align: top;"></canvas></div>
 											<a class="title" href="javascript:;">
 											Minutes Watched
 											</a>
 										</div>
+									</div> -->
+									<div class="col-xs-12 col-md-4 text-center">
+										<section class="percentage-circle">
+											<svg width="120" height="120" viewBox="0 0 120 120"
+												style="transform: rotate(-90deg)">
+											<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+													stroke-width="12" />
+											<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
+													stroke-width="12" stroke-dasharray="339.292006588"
+													[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+										</svg>
+											<h2 class="percentage-value">57%</h2>
+										</section>
+										<h5 style="text-align: center; color: #2f2f2f;margin-top: 71px;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 									</div>
 									<div class="margin-bottom-10 visible-sm">
 									</div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, OnDestroy, AfterViewInit } from '
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
+import { VideoBaseReportService } from '../../services/video-base-report.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ChartModule } from 'angular2-highcharts';
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
@@ -38,11 +39,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isPlay: boolean;
     public countryWiseVideoViews: any;
     public categories: any;
-    public videoViews: number;
     public videoViewscount: number;
+    public watchedFully: number;
+    chartsData = [57, [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8], 67];
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
-        this._elementRef = elementRef; 
+         public videoBaseReportService : VideoBaseReportService, public videoUtilService: VideoUtilService, 
+         public xtremandLogger: XtremandLogger) {
+        this._elementRef = elementRef;
+        this.videoViewscount = 55;
+        this.watchedFully = 50;
         this.categories = ['01/2017', '02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'];
        }
       areaCharts(){
@@ -100,6 +105,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
         });
     }
+    numberFormat(viewCount: any) {
+      const views = viewCount * 100;
+      return views;
+    }
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -123,7 +132,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
      }
      return num;
-}
+   }
     defaultVideoControllers() {
         if (this.selectedVideo.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
@@ -131,12 +140,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
-    //    $('.video-js .vjs-control-bar').css('background-color', rgba);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
     }
      renderMap() {
-        const countryData = this.countryWiseVideoViews;
-        const data = [["in", 1], ["us", 2]];
+        const data = this.countryWiseVideoViews;
+       // const data = [["in", 1], ["us", 2],["au", 3], ["br",1],["cl",92]];
         // Create the chart
         Highcharts.mapChart( 'world-map', {
             chart: {
@@ -174,7 +182,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     }
     minutesSparklineData() {
-        const myvalues = [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8];
+        const myvalues = this.chartsData[1];
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
             width: '120',
@@ -184,8 +192,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             negBarColor: '#e02222'
         });
     }
+   getCountryCampaignData() {
+      this.countryWiseVideoViews =  this.videoBaseReportService.countryData;
+   }
     ngOnInit() {
-       this.videoViews =  this.nFormatter(978);
+        this.getCountryCampaignData();
         this.renderMap();
         this.minutesSparklineData();
         this.posterImagePath = this.selectedVideo.imagePath;

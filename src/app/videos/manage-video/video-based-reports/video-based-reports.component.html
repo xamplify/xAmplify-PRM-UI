@@ -53,15 +53,15 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"/>
 						</svg>
-							<h2 class="percentage-value">57%</h2>
+							<h2 class="percentage-value">{{watchedFully}}%</h2>
 						</section>
 						<h5 style="text-align: center; color: #2f2f2f;margin-top: 71px;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="margin-bottom-10 visible-sm"></div>
 					<div class="col-xs-12 col-md-4">
-						<div class="sparkline-chart">
+						<div class="sparkline-chart" style="margin-left: -13px;">
 							<div class="number" id="sparkline_bar2">
 							</div>
 							<a class="title" href="javascript:;" style="margin-right: -24px;text-decoration: none; margin-top: 17px;"> Minutes Watched </a>
@@ -76,9 +76,9 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoViewscount/100)}"/>
 						</svg>
-							<h2 class="percentage-value">57</h2>
+							<h2 class="percentage-value">{{videoViewscount}}</h2>
 								<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #2f2f2f; margin: 3.5em;font-size: 17px;font-weight: 400;">Views</h5>
