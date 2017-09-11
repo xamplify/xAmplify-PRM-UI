@@ -45,8 +45,6 @@ public totalRecords: number;
 emailOpenedData : any;
 emailClickedData : any;
 emailWatchedData : any;
-currentPage : string;
-
     
     campaigns:Campaign[];
     launchedCampaignsMaster:any[];
@@ -59,8 +57,8 @@ currentPage : string;
     userCampaignReport: CampaignReport = new CampaignReport();
     public newPagination: Pagination;
     public emailClickedPagination = new Pagination;
+    public emailWatchedPagination = new Pagination;
     constructor( private router: Router, private _dashboardService: DashboardService, public pagination: Pagination,public emailOpenedPagination: Pagination,
-           public emailWatchedPagination: Pagination,
                 private contactService: ContactService, private videoFileService: VideoFileService, private twitterService: TwitterService,
                 private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
                 private utilService: UtilService, private userService: UserService, private campaignService: CampaignService,
@@ -567,7 +565,6 @@ renderMap() {
     
     totalEmailOpenedData(pagination : Pagination) {
         //this.pagination = new Pagination();
-        this.currentPage = "emailOpened";
         this.pagination.maxResults = 10;
         this.logger.log(this.pagination);
         this.contactService.loadAllContacts(this.pagination)
@@ -595,7 +592,6 @@ renderMap() {
     totalEmailClickedData(emailClickedPagination : Pagination ) {
         
         //this.pagination = new Pagination();
-        this.currentPage = "emailClicked";
         this.emailClickedPagination.maxResults = 10;
         this.logger.log(this.emailClickedPagination);
         this.contactService.loadInvalidContacts(  this.emailClickedPagination)
@@ -619,7 +615,6 @@ renderMap() {
     
     totalEmailWatchedData(pagination : Pagination) {
         //this.pagination = new Pagination();
-        this.currentPage = "emailWatched";
         this.emailWatchedPagination.maxResults = 10;
         this.logger.log(this.pagination);
         this.contactService.loadNonActiveContacts(this.emailWatchedPagination)
