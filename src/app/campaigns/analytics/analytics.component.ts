@@ -14,7 +14,6 @@ declare var $, Highcharts: any;
     selector: 'app-analytics',
     templateUrl: './analytics.component.html',
     styleUrls: ['./analytics.component.css', './timeline.css'],
-    providers: [PagerService, Pagination]
 })
 export class AnalyticsComponent implements OnInit {
     isTimeLineView: boolean;
@@ -26,9 +25,12 @@ export class AnalyticsComponent implements OnInit {
     emailLogs: any;
     campaignReport: CampaignReport = new CampaignReport;
 
+    campaignViewsPagination: Pagination = new Pagination();
+    emailActionListPagination: Pagination = new Pagination();
+    usersWatchListPagination: Pagination = new Pagination();
 
     constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, 
-            private authenticationService: AuthenticationService, private pagerService: PagerService, private pagination: Pagination,private referenceService:ReferenceService ) {
+            private authenticationService: AuthenticationService, private pagerService: PagerService, private referenceService:ReferenceService ) {
         this.isTimeLineView = false;
         this.campaign = new Campaign();
         if(this.referenceService.isFromTopNavBar){
@@ -41,11 +43,13 @@ export class AnalyticsComponent implements OnInit {
         this.isTimeLineView = !this.isTimeLineView;
     }
 
-    listCampaignViews( campaignId: number ) {
-        this.campaignService.listCampaignViews( campaignId )
+    listCampaignViews( campaignId: number, pageNumber: number ) {
+        this.campaignService.listCampaignViews( campaignId, pageNumber )
             .subscribe(
             data => {
                 this.campaignViews = data.campaignviews;
+                this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+                this.campaignViewsPagination = this.pagerService.getPagedItems( this.campaignViewsPagination, this.campaignViews );
             },
             error => console.log( error ),
             () => console.log()
@@ -72,7 +76,9 @@ export class AnalyticsComponent implements OnInit {
                 this.campaignReport.emailSentCount = data.emails_sent_count;
             },
             error => console.log( error ),
-            () => console.log()
+            () => {
+                this.listCampaignViews( campaignId, 1 );
+            }
             )
     }
     
@@ -156,23 +162,49 @@ export class AnalyticsComponent implements OnInit {
         )
     }
     
-    usersWatchList(campaignId: number){
-        this.campaignService.usersWatchList( campaignId )
+    usersWatchCount(campaignId: number){
+        this.campaignService.usersWatchCount(campaignId)
         .subscribe(
         data => {
-            this.campaignReport.usersWatchList = data.data;
-            $('#usersWatchListModal').modal();
+            this.campaignReport.usersWatchCount = data.data;
         },
         error => console.log( error ),
         () => console.log()
         )
     }
     
-    setPage( page: number ) {
-        if (page !== this.pagination.pageIndex) {
-            this.pagination.pageIndex = page;
-            if(this.campaignReport.emailActionId == 13 || this.campaignReport.emailActionId == 15)
-                this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionId, page);
+    usersWatchList(campaignId: number, pageNumber: number){
+        this.campaignService.usersWatchList( campaignId, pageNumber )
+        .subscribe(
+        data => {
+            this.campaignReport.usersWatchList = data.data;
+            $('#usersWatchListModal').modal();
+            
+            this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
+            this.usersWatchListPagination = this.pagerService.getPagedItems( this.usersWatchListPagination, this.campaignReport.usersWatchList );
+        },
+        error => console.log( error ),
+        () => console.log()
+        )
+    }
+    
+    setPage( page: number, type: string ) {
+        if(type === 'campaignViews'){
+            if (page !== this.campaignViewsPagination.pageIndex) {
+                this.campaignViewsPagination.pageIndex = page;
+                this.listCampaignViews(this.campaign.campaignId, page);
+            }
+        }else if(type === 'emailAction'){
+            if (page !== this.emailActionListPagination.pageIndex) {
+                this.emailActionListPagination.pageIndex = page;
+                if(this.campaignReport.emailActionId == 13 || this.campaignReport.emailActionId == 15)
+                    this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionId, page);
+            }
+        }else if(type === 'usersWatch'){
+            if (page !== this.usersWatchListPagination.pageIndex) {
+                this.usersWatchListPagination.pageIndex = page;
+                this.usersWatchList(this.campaign.campaignId, page);
+            }
         }
     }
     
@@ -185,11 +217,11 @@ export class AnalyticsComponent implements OnInit {
             $('#emailActionListModal').modal();
             
             if(actionId == 13)
-                this.pagination.totalRecords = this.campaignReport.emailOpenCount;
+                this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
             else if(actionId = 15)
-                this.pagination.totalRecords = this.campaignReport.emailClickedCount;
+                this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
             
-            this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignReport.emailActionList );
+            this.emailActionListPagination = this.pagerService.getPagedItems( this.emailActionListPagination, this.campaignReport.emailActionList );
         },
         error => console.log( error ),
         () => console.log()
@@ -245,8 +277,6 @@ export class AnalyticsComponent implements OnInit {
         this.getEmailSentCount( campaignId );
         this.getEmailLogCountByCampaign( campaignId );
         this.getCampaignWatchedUsersCount( campaignId );
-
-        this.listCampaignViews( campaignId );
     }
 
 }

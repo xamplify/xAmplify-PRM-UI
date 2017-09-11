@@ -97,10 +97,16 @@ export class CampaignService {
         return this.http.get( this.URL + 'user-video-heat-map-by-unique-session?access_token=' + this.authenticationService.access_token + '&sessionId='+sessionId )
         .map( this.extractData )
         .catch( this.handleError );
-}
+    }
     
-    usersWatchList(campaignId: number ){
-        return this.http.get( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+    usersWatchCount(campaignId: number){
+        return this.http.get( this.URL + 'campaign/watched-users-count/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    usersWatchList(campaignId: number, pageNumber: number ){
+        return this.http.get( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&pageNumber='+pageNumber)
         .map( this.extractData )
         .catch( this.handleError );
     }
@@ -111,8 +117,8 @@ export class CampaignService {
         .catch( this.handleError );
     }
     
-    listCampaignViews(campaignId: number ) {
-        return this.http.get( this.URL + 'campaignviews/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+    listCampaignViews(campaignId: number, pageNumber: number ) {
+        return this.http.get( this.URL + 'campaignviews/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&pageNumber='+pageNumber)
             .map( this.extractData )
             .catch( this.handleError );
     }
