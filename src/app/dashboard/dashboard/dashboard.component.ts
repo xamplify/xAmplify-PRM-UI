@@ -20,6 +20,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
 import { DashboardReport } from '../../core/models/dashboard-report';
+import { PagerService } from '../../core/services/pager.service';
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -40,6 +41,12 @@ export class DashboardComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
 
     isDahboardDefaultPage: boolean;
+public totalRecords: number;
+emailOpenedData : any;
+emailClickedData : any;
+emailWatchedData : any;
+currentPage : string;
+
     
     campaigns:Campaign[];
     launchedCampaignsMaster:any[];
@@ -50,12 +57,15 @@ export class DashboardComponent implements OnInit {
 
     loggedInUserId: number;
     userCampaignReport: CampaignReport = new CampaignReport();
-
-    constructor( private router: Router, private _dashboardService: DashboardService, private pagination: Pagination,
+    public newPagination: Pagination;
+    public emailClickedPagination = new Pagination;
+    constructor( private router: Router, private _dashboardService: DashboardService, public pagination: Pagination,public emailOpenedPagination: Pagination,
+           public emailWatchedPagination: Pagination,
                 private contactService: ContactService, private videoFileService: VideoFileService, private twitterService: TwitterService,
                 private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
                 private utilService: UtilService, private userService: UserService, private campaignService: CampaignService,
-                private referenceService: ReferenceService) {
+                private referenceService: ReferenceService,public pagerService: PagerService) {
+ 
     }
 
     dashboardStats() {
@@ -531,8 +541,108 @@ renderMap() {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
     
+    setPage(page: number) {
+        this.pagination.pageIndex = page;
+        this.totalEmailOpenedData(this.pagination);
+    //}
+        /*if(this.currentPage == "emailOpened"){
+            this.totalEmailOpenedData(this.pagination);
+        }
+        else if(this.currentPage == "emailClicked"){
+            this.totalEmailClickedData(this.pagination);
+        }
+        else if(this.currentPage == "emailWatched"){
+            this.totalEmailWatchedData(this.pagination);
+        }*/
+        }
+    setEmailClickedPage(page: number) {
+        this.emailClickedPagination.pageIndex = page;
+        this.totalEmailClickedData(this.emailClickedPagination);
+    }
+    
+    setEmailWatchedPage(page: number) {
+        this.emailWatchedPagination.pageIndex = page;
+        this.totalEmailWatchedData(this.emailWatchedPagination);
+    }
+    
+    totalEmailOpenedData(pagination : Pagination) {
+        //this.pagination = new Pagination();
+        this.currentPage = "emailOpened";
+        this.pagination.maxResults = 10;
+        this.logger.log(this.pagination);
+        this.contactService.loadAllContacts(this.pagination)
+            .subscribe(
+            (data: any) => {
+                this.emailOpenedData = data.listOfUsers;
+                this.totalRecords = data.totalRecords;
+                if (data.totalRecords.length == 0) {
+                    //this.emptyViewsRecord = true;
+                } else {
+                    this.pagination.totalRecords = this.totalRecords;
+                    this.logger.info(this.emailOpenedData);
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.emailOpenedData);
+                    this.logger.log(data);
+                }
+            },
+            error => console.log(error),
+            () => console.log("finished")
+            );
+    }
+    emailClicked(){
+        this.totalEmailClickedData(this.emailClickedPagination);
+    }
+    
+    totalEmailClickedData(emailClickedPagination : Pagination ) {
+        
+        //this.pagination = new Pagination();
+        this.currentPage = "emailClicked";
+        this.emailClickedPagination.maxResults = 10;
+        this.logger.log(this.emailClickedPagination);
+        this.contactService.loadInvalidContacts(  this.emailClickedPagination)
+            .subscribe(
+            (data: any) => {
+                this.emailClickedData = data.listOfUsers;
+                this.totalRecords = data.totalRecords;
+                if (data.totalRecords.length == 0) {
+                    //this.emptyViewsRecord = true;
+                } else {
+                    this.emailClickedPagination.totalRecords = this.totalRecords;
+                    this.logger.info(this.emailClickedData);
+                    this.emailClickedPagination = this.pagerService.getPagedItems(emailClickedPagination, this.emailClickedData);
+                    this.logger.log(data);
+                }
+            },
+            error => console.log(error),
+            () => console.log("finished")
+            );
+    }
+    
+    totalEmailWatchedData(pagination : Pagination) {
+        //this.pagination = new Pagination();
+        this.currentPage = "emailWatched";
+        this.emailWatchedPagination.maxResults = 10;
+        this.logger.log(this.pagination);
+        this.contactService.loadNonActiveContacts(this.emailWatchedPagination)
+            .subscribe(
+            (data: any) => {
+                this.emailWatchedData = data.listOfUsers;
+                this.totalRecords = data.totalRecords;
+                if (data.totalRecords.length == 0) {
+                    //this.emptyViewsRecord = true;
+                } else {
+                    this.emailWatchedPagination.totalRecords = this.totalRecords;
+                    this.logger.info(this.emailWatchedData);
+                    this.emailWatchedPagination = this.pagerService.getPagedItems(this.emailWatchedPagination, this.emailWatchedData);
+                    this.logger.log(data);
+                }
+            },
+            error => console.log(error),
+            () => console.log("finished")
+            );
+    }
     ngOnInit() {
         try {
+            console.log(this.emailClickedPagination);
             this.loggedInUserId = this.authenticationService.getUserId();
             this.renderMap();
             this.getDefaultPage(this.loggedInUserId);
