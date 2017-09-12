@@ -162,14 +162,12 @@ export class AnalyticsComponent implements OnInit {
         )
     }
     
-    usersWatchCount(campaignId: number){
-        this.campaignService.usersWatchCount(campaignId)
+    campaignWatchedUsersListCount(campaignId: number){
+        this.campaignService.campaignWatchedUsersListCount( campaignId)
         .subscribe(
-        data => {
-            this.campaignReport.usersWatchCount = data.data;
-        },
-        error => console.log( error ),
-        () => console.log()
+            data => this.usersWatchListPagination.totalRecords = data,
+            error => console.log( error ),
+            () => console.log()
         )
     }
     
@@ -180,7 +178,6 @@ export class AnalyticsComponent implements OnInit {
             this.campaignReport.usersWatchList = data.data;
             $('#usersWatchListModal').modal();
             
-            this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
             this.usersWatchListPagination = this.pagerService.getPagedItems( this.usersWatchListPagination, this.campaignReport.usersWatchList );
         },
         error => console.log( error ),
@@ -259,6 +256,9 @@ export class AnalyticsComponent implements OnInit {
                         this.renderMap();
                         
                         this.getCampaignViewsReportDurationWise( campaignId );
+                        
+                        this.getCampaignWatchedUsersCount( campaignId );
+                        this.campaignWatchedUsersListCount(campaignId);
                     }
                 }
             )
@@ -276,7 +276,6 @@ export class AnalyticsComponent implements OnInit {
         
         this.getEmailSentCount( campaignId );
         this.getEmailLogCountByCampaign( campaignId );
-        this.getCampaignWatchedUsersCount( campaignId );
     }
 
 }

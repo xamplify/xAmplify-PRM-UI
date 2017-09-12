@@ -354,19 +354,19 @@
 					<!--pager here  -->
 		 			<ul *ngIf="usersWatchListPagination.pager.pages && usersWatchListPagination.pager.pages.length" class="pagination">
                        <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}">
-                          <a (click)="setPage(1, 'emailAction')" [class.disabled]="usersWatchListPagination.pager.currentPage === 1">First</a>
+                          <a (click)="setPage(1, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === 1">First</a>
                        </li>
                        <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}" >
-                           <a (click)="setPage(usersWatchListPagination.pager.currentPage - 1, 'emailAction')"  [class.disabled]="usersWatchListPagination.pager.currentPage === 1">Previous</a>
+                           <a (click)="setPage(usersWatchListPagination.pager.currentPage - 1, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === 1">Previous</a>
                         </li>
                         <li *ngFor="let page of usersWatchListPagination.pager.pages" [ngClass]="{active:usersWatchListPagination.pager.currentPage === page}">
-                           <a (click)="setPage(page, 'emailAction')">{{page}}</a>
+                           <a (click)="setPage(page, 'usersWatch')">{{page}}</a>
                         </li>
                         <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
-                            <a (click)="setPage(usersWatchListPagination.pager.currentPage + 1, 'emailAction')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Next</a>
+                            <a (click)="setPage(usersWatchListPagination.pager.currentPage + 1, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Next</a>
                         </li>
                          <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
-                            <a (click)="setPage(usersWatchListPagination.pager.totalPages, 'emailAction')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Last</a>
+                            <a (click)="setPage(usersWatchListPagination.pager.totalPages, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Last</a>
                         </li>
                     </ul>
 					<!-- pager end here -->

@@ -99,8 +99,8 @@ export class CampaignService {
         .catch( this.handleError );
     }
     
-    usersWatchCount(campaignId: number){
-        return this.http.get( this.URL + 'campaign/watched-users-count/'+campaignId+'?access_token=' + this.authenticationService.access_token)
+    campaignWatchedUsersListCount(campaignId: number){
+        return this.http.get( this.URL + 'campaign/watched-users-list-count/'+campaignId+'?access_token=' + this.authenticationService.access_token)
         .map( this.extractData )
         .catch( this.handleError );
     }
