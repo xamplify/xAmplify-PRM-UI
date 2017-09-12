@@ -102,7 +102,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
-        this.likesValues = 2;
+        this.likesValues = 0;
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
       }

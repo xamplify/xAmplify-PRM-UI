@@ -215,7 +215,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.titleDiv = true;
         // this.colorControl = this.controlPlayers = this.callaction = false;
         this.openStartingDivs();
-        this.likesValues = 2;
+        this.likesValues = 0;
         this.disLikesValues = 0;
         this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
         this.ownThumb = false;

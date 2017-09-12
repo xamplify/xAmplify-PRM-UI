@@ -40,15 +40,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public countryWiseVideoViews: any;
     public categories: any;
     public videoViewscount: number;
+    public videoViewscountbind: number;
     public watchedFully: number;
     chartsData = [57, [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8], 67];
+    campaignViews = [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600, 6000, 4400, 4300];
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
-         public videoBaseReportService : VideoBaseReportService, public videoUtilService: VideoUtilService, 
+         public videoBaseReportService: VideoBaseReportService, public videoUtilService: VideoUtilService, 
          public xtremandLogger: XtremandLogger) {
         this._elementRef = elementRef;
-        this.videoViewscount = 55;
-        this.watchedFully = 50;
-        this.categories = ['01/2017', '02/2017', '03/2017', '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'];
+        this.categories = ['01/2017', '02/2017', '03/2017',
+         '04/2017', '05/2017', '06/2017', '07/2017', '08/2017', '09/2017', '10/2017', '11/2017', '12/2017'];
        }
       areaCharts(){
          Highcharts.chart( 'area-chart', {
@@ -101,13 +102,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             series: [{
                 color: 'pink',
                 showInLegend: false,
-                data: [1500, 2500, 1700, 800, 1500, 2350, 1500, 1300, 4600, 6000, 4400, 4300]
+                data: this.campaignViews
             }]
         });
-    }
-    numberFormat(viewCount: any) {
-      const views = viewCount * 100;
-      return views;
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -144,7 +141,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
      renderMap() {
         const data = this.countryWiseVideoViews;
-       // const data = [["in", 1], ["us", 2],["au", 3], ["br",1],["cl",92]];
         // Create the chart
         Highcharts.mapChart( 'world-map', {
             chart: {
@@ -192,12 +188,43 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             negBarColor: '#e02222'
         });
     }
-   getCountryCampaignData() {
-      this.countryWiseVideoViews =  this.videoBaseReportService.countryData;
+   getCampaignVideoCountriesAndViews(alias: any) {
+    try {
+        this.videoBaseReportService.getCampaignVideoCountriesAndViews(alias)
+            .subscribe((result: any) => { 
+                const viewsData = result.video_views_count_data;
+                this.categories = result.video_views_count_data.months;
+                this.campaignViews =  result.video_views_count_data.monthlyViews;
+                this.countryWiseVideoViews = result.video_views_count_data.countrywiseViews;
+                console.log(result);
+                this.areaCharts();
+                this.renderMap();
+            } );
+    }catch (error) { console.log(error); }
+   }
+   getWatchedCountInfo(alias: any){
+     try {
+        this.videoBaseReportService.getWatchedFullyData(alias)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.watchedFully = result.video_views_count_data.watchedfullypercentage;
+            } );
+    }catch (error) { console.log(error); }
+   }
+   getViewsCount(){
+        this.videoViewscount = this.selectedVideo.views;
+        this.videoViewscountbind = this.videoViewscount;
+        this.videoViewscountbind  = this.nFormatter(this.videoViewscountbind);
+        const stringValue  = '0.' + this.videoViewscount.toString();
+        const value  = Number(stringValue);
+        this.videoViewscount =  value;
    }
     ngOnInit() {
-        this.getCountryCampaignData();
-        this.renderMap();
+        this.getWatchedCountInfo(this.selectedVideo.alias);
+        this.getViewsCount();
+        this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
+
+      //  this.renderMap();
         this.minutesSparklineData();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
@@ -211,7 +238,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
-       this.areaCharts();
+      // this.areaCharts();
         this.xtremandLogger.log('called ng after view init');
         $('#newPlayerVideo').empty();
         if (this.selectedVideo.is360video !== true) {

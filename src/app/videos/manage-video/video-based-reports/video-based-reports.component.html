@@ -4,7 +4,7 @@
 </style>
 <div class="row">
 	<div class="col-md-12">
-		<div class="col-md-6 portlet light" style="border-radius: 1px;">
+		<div class="col-md-6 portlet light">
 			 <div>
 				  <div id="newPlayerVideo"></div>
 			 </div>
@@ -35,7 +35,7 @@
 				<div class="caption">
 					<i class="icon-equalizer font-purple-plum hide"></i> <span
 						class="caption-subject font-red-sunglo bold uppercase">Day
-						Stats</span> <span class="caption-helper">Campaign related</span>
+						Stats</span> <span class="caption-helper">Video related</span>
 				</div>
 				<div class="tools">
 					<a href="" class="collapse"> </a> <a href="#portlet-config"
@@ -76,9 +76,9 @@
 									stroke-width="12" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
 									stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoViewscount/100)}"/>
+									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoViewscount)}"/>
 						</svg>
-							<h2 class="percentage-value">{{videoViewscount}}</h2>
+							<h2 class="percentage-value">{{videoViewscountbind}}</h2>
 								<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #2f2f2f; margin: 3.5em;font-size: 17px;font-weight: 400;">Views</h5>
