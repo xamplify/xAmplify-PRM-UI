@@ -96,6 +96,24 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
+    loadEmailOpenedData(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=13")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadEmailClickedData(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=15")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadDashboardReportsCount(userId: number){
+        return this.http.get( this.url + "videos/views_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
     loadTotalEmailTemplatesCount(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )

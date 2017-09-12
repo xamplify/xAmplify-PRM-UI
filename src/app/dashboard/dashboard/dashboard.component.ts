@@ -298,6 +298,22 @@ renderMap() {
 
     }
     
+    dashboardReportsCount(userId: number) {
+        this._dashboardService.loadDashboardReportsCount(userId)
+            .subscribe(
+            data => {
+                this.dashboardReport.totalViews = data.videos_views_count;
+                this.dashboardReport.totalContacts = data.allcontacts;
+                this.dashboardReport.totalUploadedvideos = data.videos_count;
+                this.dashboardReport.toalEmailTemplates = data.toalEmailTemplates;
+                this.dashboardReport.totalCreatedCampaigns = data.totalCreatedCampaigns;
+                this.dashboardReport.totalSocialAccounts = data.totalSocialAccounts;
+            },
+            error => console.log( error ),
+            () => console.log( "emailWatchedCount completed" )
+            );
+    }
+    
     totalContactsCount(userId: number) {
         this.contactService.loadContactsCountInDashboard(userId)
             .subscribe(
@@ -308,17 +324,6 @@ renderMap() {
             () => console.log( "LoadContactsCount Finished" )
             );
     }
-    
-    /*uploadedVideosCount() {
-        this.videoFileService.loadVideosCount()
-            .subscribe(
-            data => {
-                this.totalUploadedvideos = data;
-            },
-            error => console.log( error ),
-            () => console.log( "LoadContactsCount Finished" )
-            );
-    }*/
     
     uploadedVideosCount(userId: number) {
         try {
@@ -541,7 +546,7 @@ renderMap() {
     
     setPage(page: number) {
         this.pagination.pageIndex = page;
-        this.totalEmailOpenedData(this.pagination);
+       // this.totalEmailOpenedData(this.pagination);
     //}
         /*if(this.currentPage == "emailOpened"){
             this.totalEmailOpenedData(this.pagination);
@@ -555,7 +560,7 @@ renderMap() {
         }
     setEmailClickedPage(page: number) {
         this.emailClickedPagination.pageIndex = page;
-        this.totalEmailClickedData(this.emailClickedPagination);
+        this.totalEmailClickedData();
     }
     
     setEmailWatchedPage(page: number) {
@@ -563,14 +568,22 @@ renderMap() {
         this.totalEmailWatchedData(this.emailWatchedPagination);
     }
     
-    totalEmailOpenedData(pagination : Pagination) {
+    totalEmailOpenedData() {
         //this.pagination = new Pagination();
-        this.pagination.maxResults = 10;
-        this.logger.log(this.pagination);
-        this.contactService.loadAllContacts(this.pagination)
+        this.loggedInUserId = this.authenticationService.getUserId();
+        //this.pagination.maxResults = 10;
+        this._dashboardService.loadEmailOpenedData(this.loggedInUserId)
             .subscribe(
+                result => {
+                    this.emailOpenedData = result;
+                },
+                error => console.log( error ),
+                () => { }
+                );   
+        /*.subscribe(
             (data: any) => {
                 this.emailOpenedData = data.listOfUsers;
+                this.logger.log(data);
                 this.totalRecords = data.totalRecords;
                 if (data.totalRecords.length == 0) {
                     //this.emptyViewsRecord = true;
@@ -578,26 +591,34 @@ renderMap() {
                     this.pagination.totalRecords = this.totalRecords;
                     this.logger.info(this.emailOpenedData);
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.emailOpenedData);
-                    this.logger.log(data);
+                    
                 }
             },
             error => console.log(error),
             () => console.log("finished")
-            );
+            );*/
     }
     emailClicked(){
-        this.totalEmailClickedData(this.emailClickedPagination);
+        this.totalEmailClickedData();
     }
     
-    totalEmailClickedData(emailClickedPagination : Pagination ) {
+    totalEmailClickedData() {
         
         //this.pagination = new Pagination();
-        this.emailClickedPagination.maxResults = 10;
-        this.logger.log(this.emailClickedPagination);
-        this.contactService.loadInvalidContacts(  this.emailClickedPagination)
-            .subscribe(
+        //this.emailClickedPagination.maxResults = 10;
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this._dashboardService.loadEmailClickedData(this.loggedInUserId)
+        .subscribe(
+                result => {
+                    this.emailClickedData = result;
+                },
+                error => console.log( error ),
+                () => { }
+                );   
+        /*.subscribe(
             (data: any) => {
                 this.emailClickedData = data.listOfUsers;
+                this.logger.log(data);
                 this.totalRecords = data.totalRecords;
                 if (data.totalRecords.length == 0) {
                     //this.emptyViewsRecord = true;
@@ -605,12 +626,11 @@ renderMap() {
                     this.emailClickedPagination.totalRecords = this.totalRecords;
                     this.logger.info(this.emailClickedData);
                     this.emailClickedPagination = this.pagerService.getPagedItems(emailClickedPagination, this.emailClickedData);
-                    this.logger.log(data);
                 }
             },
             error => console.log(error),
             () => console.log("finished")
-            );
+            );*/
     }
     
     totalEmailWatchedData(pagination : Pagination) {
@@ -637,7 +657,7 @@ renderMap() {
     }
     ngOnInit() {
         try {
-            console.log(this.emailClickedPagination);
+            this.dashboardReportsCount(this.loggedInUserId);
             this.loggedInUserId = this.authenticationService.getUserId();
             this.renderMap();
             this.getDefaultPage(this.loggedInUserId);

@@ -660,7 +660,7 @@ input[type=radio] {
 								<div class="col-xs-4 sparkline-chart">
 									<div class="visual">
 										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png"
-										(click)="totalEmailOpenedData(newPagination)" title="view emailOpened data" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
+										(click)="totalEmailOpenedData()" title="view emailOpened data" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
 									</div>
 									<div class="details">
 										<div class="number" style="color: #f36360; margin-top: 5px;">
@@ -719,26 +719,29 @@ input[type=radio] {
 					    <thead>
 						<tr>
 							<th>EMAILID</th>
-							<th>NAME</th>
+							<th>FIRST NAME</th>
+							<th>LAST NAME</th>
 							<th style="text-align:center">DATE & TIME</th>
-							<th>LOCATION</th>
-							<th>BROWSER</th>
-							<th>PLATFORM</th>
+							<th>CAMPAIGN NAME</th>
+							<!-- <th>BROWSER</th>
+							<th>PLATFORM</th> -->
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
-							<td>{{allcontacts.emailId}}</td>
-							<td>{{allcontacts.firstName}} {{allcontacts.lastName}}</td>
-							<td class="center">20-07-1017 10.26 AM</td>
-							<td>Hyderabad</td>
+						<tr *ngFor="let emailOpenedData of emailOpenedData;let i = index">
+							<td>{{emailOpenedData.emailId}}</td>
+							<td>{{emailOpenedData.firstName}}</td>
+							<td>{{emailOpenedData.lastName}}</td>
+							<td class="center">{{emailOpenedData.time}}</td>
+							<td>{{emailOpenedData.campaignName}}</td>
+							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
-							<td>Windowns 10</td>
+							<td>Windowns 10</td> -->
 						</tr>
 					</tbody>
 				</table>  
 				</div> 
-				<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+				<!-- <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
 						(click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a></li>
 						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
@@ -754,7 +757,7 @@ input[type=radio] {
 					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
 				<a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 			</li>
-		</ul>					
+		</ul>		 -->			
                         </div>
       					<div class="modal-footer">
         					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
