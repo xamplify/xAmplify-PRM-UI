@@ -658,8 +658,9 @@ input[type=radio] {
 						<div class="portlet-body">
 							<div class="row">
 								<div class="col-xs-4 sparkline-chart">
-									<div class="visual" (click)="totalEmailOpenedData(newPagination)" data-toggle="modal" data-target="#emailOpenedModal">
-										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png">
+									<div class="visual">
+										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png"
+										(click)="totalEmailOpenedData(newPagination)" title="view emailOpened data" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
 									</div>
 									<div class="details">
 										<div class="number" style="color: #f36360; margin-top: 5px;">
@@ -668,8 +669,9 @@ input[type=radio] {
 									</div>
 								</div>
 								<div class="col-xs-4 sparkline-chart">
-									<div class="visual" (click)="emailClicked()" data-toggle="modal" data-target="#emailClickedModal">
-										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
+									<div class="visual">
+										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png"
+										(click)="emailClicked()" title="view emailClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 									</div>
 									<div class="details">
 										<div class="number" style="color: #7ccacb; margin-top: 5px;">
@@ -678,8 +680,9 @@ input[type=radio] {
 									</div>
 								</div>
 								<div class="col-xs-4 sparkline-chart">
-									<div class="visual" (click)="totalEmailWatchedData(newPagination)" data-toggle="modal" data-target="#emailWatchedModal">
-										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
+									<div class="visual">
+										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png"
+										(click)="totalEmailWatchedData(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
 									</div>
 									<div class="details">
 										<div class="number" style="color: #b0dcc1; margin-top: 5px;">
