@@ -87,6 +87,22 @@ emailWatchedData : any;
             'linkedIn': '276'
         };
     }
+    
+    genderDemographics( userId: number ) {
+        this.socialService.genderDemographics( userId )
+            .subscribe(
+                data => {
+                    this.dashboardReport.genderDemographicsMale = data['M'];
+                    this.dashboardReport.genderDemographicsFemale = data['F'];
+                    this.dashboardReport.genderDemographicsTotal = 
+                        this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
+                },
+                error => console.log( error ),
+                () => { }
+            );
+
+}
+    
     getGenderDemographics(socialConnection: SocialConnection) {
         this._dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
@@ -695,7 +711,8 @@ renderMap() {
             this.linkdinSparklineData();
             // this.showGaugeMeter();
             this.listSocialAccounts(this.loggedInUserId);
-
+            
+            this.genderDemographics(this.loggedInUserId);
         } catch (err) {
             console.log(err);
         }

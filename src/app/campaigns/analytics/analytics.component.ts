@@ -30,7 +30,7 @@ export class AnalyticsComponent implements OnInit {
     usersWatchListPagination: Pagination = new Pagination();
 
     constructor( private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, 
-            private authenticationService: AuthenticationService, private pagerService: PagerService, private referenceService:ReferenceService ) {
+            private authenticationService: AuthenticationService, public pagerService: PagerService, private referenceService:ReferenceService ) {
         this.isTimeLineView = false;
         this.campaign = new Campaign();
         if(this.referenceService.isFromTopNavBar){

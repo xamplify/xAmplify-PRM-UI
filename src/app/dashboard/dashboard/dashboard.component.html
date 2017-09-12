@@ -445,25 +445,33 @@ input[type=radio] {
 				<div class="portlet-body">
 					<div class="row">
 						<div class="col-xs-6">
-							<div class="sparkline-chart">
-								<div class="visual" style="color: #007bb6; font-size: 72px;">
+							<div class="text-center">
+								<div class="visual" style="color: #007bb6; font-size: 64px;">
 									<i class="fa fa-male" style="color: #007bb6; font-size: 72px; padding: 10px"></i>
 								</div>
 								<div class="details">
 									<div class="number" style="color: #007bb6;">
-										{{dashboardReport.genderDemographicsMale}}% <small>Male</small>
+										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+											<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+										</span>
+											<ng-template #default_gender_demographics>N/A</ng-template>
+											<h5>Male</h5>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-6">
-							<div class="sparkline-chart">
-								<div class="visual" style="color: #dd4b39; font-size: 72px;">
+							<div class="text-center">
+								<div class="visual" style="color: #dd4b39; font-size: 64px;">
 									<i class="fa fa-female" style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
 								</div>
 								<div class="details">
 									<div class="number" style="color: #ff2c82;">
-										{{dashboardReport.genderDemographicsFemale}}% <small>Female</small>
+										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+											<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+										</span>
+											<ng-template #default_gender_demographics>N/A</ng-template>
+											<h5>Female</h5>
 									</div>
 								</div>
 							</div>

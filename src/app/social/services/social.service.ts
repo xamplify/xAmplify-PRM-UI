@@ -140,6 +140,12 @@ export class SocialService {
         }
         return socialConnections;
     }
+    
+    genderDemographics( userId: number ) {
+        return this.http.get( this.URL + 'social/gender-demographics?access_token='+ this.authenticationService.access_token + '&userId=' + userId )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     private extractData( res: Response ) {
         const body = res.json();

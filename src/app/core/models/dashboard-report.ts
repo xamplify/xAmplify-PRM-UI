@@ -1,6 +1,7 @@
 export class DashboardReport {
-    genderDemographicsMale: number = 50;
-    genderDemographicsFemale: number = 50;
+    genderDemographicsMale: number = 0;
+    genderDemographicsFemale: number = 0;
+    genderDemographicsTotal: number = 0;
 
     totalContacts: number = 0;
 
