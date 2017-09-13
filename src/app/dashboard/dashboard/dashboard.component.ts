@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from 'angular2-logger/core';
 
-import {SocialConnection} from '../../social/models/social-connection';
-import { Campaign} from '../../campaigns/models/campaign';
-import {CampaignReport} from '../../campaigns/models/campaign-report';
+import { SocialConnection } from '../../social/models/social-connection';
+import { Campaign } from '../../campaigns/models/campaign';
+import { CampaignReport } from '../../campaigns/models/campaign-report';
 
 import { DashboardService } from '../dashboard.service';
 import { TwitterService } from '../../social/services/twitter.service';
@@ -17,24 +17,25 @@ import { ContactService } from '../../contacts/services/contact.service';
 import { UserService } from '../../core/services/user.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { VideoFileService} from '../../videos/services/video-file.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { PagerService } from '../../core/services/pager.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService,Pagination]
+    providers: [DashboardService, Pagination]
 })
 export class DashboardComponent implements OnInit {
 
     dashboardStates: any;
     socialeMedia: any;
     dashboardReport: DashboardReport = new DashboardReport();
-    
+
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
@@ -42,31 +43,30 @@ export class DashboardComponent implements OnInit {
 
     isDahboardDefaultPage: boolean;
     public totalRecords: number;
-    emailOpenedData : any;
-    emailClickedData : any;
-    emailWatchedData : any;
-    noDataFound : boolean = false;
-    
-    campaigns:Campaign[];
-    launchedCampaignsMaster:any[];
-    launchedCampaignsChild:any[] = new Array<any>();
-    totalCampaignsCount :number;
+    emailOpenedData: any;
+    emailClickedData: any;
+    emailWatchedData: any;
+    noDataFound: boolean = false;
+
+    campaigns: Campaign[];
+    launchedCampaignsMaster: any[];
+    launchedCampaignsChild: any[] = new Array<any>();
+    totalCampaignsCount: number;
     campaignReportType: string;
     campaignReportOptions = ['RECENT', 'TRENDING', 'CUSTOM'];
-
+    countryViewsData: any;
     loggedInUserId: number;
     userCampaignReport: CampaignReport = new CampaignReport();
     public newPagination: Pagination;
     public emailClickedPagination = new Pagination;
     public emailWatchedPagination = new Pagination;
-    constructor( private router: Router, private _dashboardService: DashboardService, public pagination: Pagination,public emailOpenedPagination: Pagination,
-                private contactService: ContactService, private videoFileService: VideoFileService, private twitterService: TwitterService,
-                private socialService: SocialService, private authenticationService: AuthenticationService, private logger: Logger,
-                private utilService: UtilService, private userService: UserService, private campaignService: CampaignService,
-                private referenceService: ReferenceService,public pagerService: PagerService) {
- 
+    constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
+        public emailOpenedPagination: Pagination, public contactService: ContactService,
+        public videoFileService: VideoFileService, public twitterService: TwitterService,
+        public socialService: SocialService, public authenticationService: AuthenticationService, public logger: Logger,
+        public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
+        public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
     }
-
     dashboardStats() {
         console.log('dashboardStats() : DashBoardComponent');
         this.dashboardStates = {
@@ -88,22 +88,22 @@ export class DashboardComponent implements OnInit {
             'linkedIn': '276'
         };
     }
-    
-    genderDemographics( userId: number ) {
-        this.socialService.genderDemographics( userId )
+
+    genderDemographics(userId: number) {
+        this.socialService.genderDemographics(userId)
             .subscribe(
-                data => {
-                    this.dashboardReport.genderDemographicsMale = data['M'];
-                    this.dashboardReport.genderDemographicsFemale = data['F'];
-                    this.dashboardReport.genderDemographicsTotal = 
-                        this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
-                },
-                error => console.log( error ),
-                () => { }
+            data => {
+                this.dashboardReport.genderDemographicsMale = data['M'];
+                this.dashboardReport.genderDemographicsFemale = data['F'];
+                this.dashboardReport.genderDemographicsTotal =
+                    this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
+            },
+            error => console.log(error),
+            () => { }
             );
 
-}
-    
+    }
+
     getGenderDemographics(socialConnection: SocialConnection) {
         this._dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
@@ -185,12 +185,11 @@ export class DashboardComponent implements OnInit {
             barSpacing: '3'
         });
     }
-renderMap() {
-     //   const countryData = this.countryWiseVideoViews;
-        const data = [["in", 1], ["us", 2]];
-        
-        // Create the chart
-        Highcharts.mapChart( 'world-map', {
+    renderMap() {
+        //   const countryData = this.countryWiseVideoViews;
+       // const data = [["in", 1], ["us", 2]];
+       const data = this.countryViewsData;
+        Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
             },
@@ -225,11 +224,7 @@ renderMap() {
         });
 
     }
-
-
     showGaugeMeter() {
-
-
         $('#googleplus').data('percent', 66);
         $('#googleplus').gaugeMeter();
 
@@ -248,8 +243,6 @@ renderMap() {
 
         $('#watched').data('percent', 100);
         $('#watched').gaugeMeter();
-
-
     }
 
     // TFFF == TweetsFriendsFollowersFavorites
@@ -314,7 +307,7 @@ renderMap() {
             );
 
     }
-    
+
     dashboardReportsCount() {
         this.loggedInUserId = this.authenticationService.getUserId();
         this._dashboardService.loadDashboardReportsCount(this.loggedInUserId)
@@ -327,39 +320,39 @@ renderMap() {
                 this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
                 this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
             },
-            error => console.log( error ),
-            () => console.log( "dashboard reports counts completed" )
+            error => console.log(error),
+            () => console.log("dashboard reports counts completed")
             );
     }
-    
+
     totalContactsCount(userId: number) {
         this.contactService.loadContactsCountInDashboard(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalContacts = data.allcontacts;
             },
-            error => console.log( error ),
-            () => console.log( "LoadContactsCount Finished" )
+            error => console.log(error),
+            () => console.log("LoadContactsCount Finished")
             );
     }
-    
+
     uploadedVideosCount(userId: number) {
         try {
-           this.videoFileService.loadVideosCount(userId)
-             .subscribe((result: any) => {
-                 this.dashboardReport.totalUploadedvideos = result.videos_count;
-             },
-             (error: string) => {
-               this.logger.error( ' Loading Videos():' + error);
-             },
-             () => console.log('load videos completed:' ),
-             );
-         } catch (error) {
-             this.logger.error('erro in load videos :' + error);
-         }
-     }
+            this.videoFileService.loadVideosCount(userId)
+                .subscribe((result: any) => {
+                    this.dashboardReport.totalUploadedvideos = result.videos_count;
+                },
+                (error: string) => {
+                    this.logger.error(' Loading Videos():' + error);
+                },
+                () => console.log('load videos completed:'),
+            );
+        } catch (error) {
+            this.logger.error('erro in load videos :' + error);
+        }
+    }
 
-    
+
     getEmailActionCount(userId: number) {
         this._dashboardService.getEmailActionCount(userId)
             .subscribe(
@@ -367,180 +360,180 @@ renderMap() {
                 this.dashboardReport.totalEmailOpened = data["email_opened_count"];
                 this.dashboardReport.totalEmailClicked = data["email_url_clicked_count"];
             },
-            error => console.log( error ),
-            () => console.log( "emailOpenedCount completed" )
+            error => console.log(error),
+            () => console.log("emailOpenedCount completed")
             );
     }
-    
+
     emailWatchedCount(userId: number) {
         this._dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatched = data.email_watched_count;
             },
-            error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
             );
     }
-    
+
     totalViewsCount(userId: number) {
         this._dashboardService.loadTotalViewsCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalViews = data.videos_views_count;
             },
-            error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
             );
     }
-    
+
     totalEmailTemplatesCount(userId: number) {
         this._dashboardService.loadTotalEmailTemplatesCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.toalEmailTemplates = data.email_watched_count;
             },
-            error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
             );
     }
-    
+
     totalCreatedCampaignsCount(userId: number) {
         this._dashboardService.loadTotalCampaignsCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalCreatedCampaigns = data.email_watched_count;
             },
-            error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
             );
     }
-    
+
     totalConnectedSocialAccountsCount(userId: number) {
         this._dashboardService.loadTotalConnectedSocialAccountsCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalSocialAccounts = data.email_watched_count;
             },
-            error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
             );
     }
-    
-    getDefaultPage( userId: number ) {
-        this.userService.getUserDefaultPage( userId )
+
+    getDefaultPage(userId: number) {
+        this.userService.getUserDefaultPage(userId)
             .subscribe(
             data => {
-                this.isDahboardDefaultPage = data['_body'].includes( 'dashboard' );
+                this.isDahboardDefaultPage = data['_body'].includes('dashboard');
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => { }
             );
     }
-    
+
     setDashboardAsDefaultPage(event: any) {
         let defaultPage;
-        if(event)
+        if (event)
             defaultPage = 'dashboard';
         else
             defaultPage = 'welcome';
         this.userService.setUserDefaultPage(this.loggedInUserId, defaultPage)
-        .subscribe(
-                data => {
-                    this.isDahboardDefaultPage = event;
-                    this.referenceService.userDefaultPage = defaultPage.toUpperCase();
-                },
-                error => console.log( error ),
-                () => {}
-        );
+            .subscribe(
+            data => {
+                this.isDahboardDefaultPage = event;
+                this.referenceService.userDefaultPage = defaultPage.toUpperCase();
+            },
+            error => console.log(error),
+            () => { }
+            );
     }
-    
-    listCampaignInteractionsData(userId: number, reportType: string){
+
+    listCampaignInteractionsData(userId: number, reportType: string) {
         this.campaignService.listCampaignInteractionsData(userId, reportType)
-        .subscribe(
+            .subscribe(
             data => {
                 this.campaigns = data;
                 this.totalCampaignsCount = this.campaigns.length;
             },
-            error => {},
+            error => { },
             () => this.logger.info("Finished listCampaign()")
-        );
+            );
     }
-    
-    createCampaign(campaignType: string){
+
+    createCampaign(campaignType: string) {
         this.referenceService.selectedCampaignType = campaignType;
         this.router.navigate(["/home/campaigns/create-campaign"]);
     }
-    
-    getUserCampaignReport(userId: number){
+
+    getUserCampaignReport(userId: number) {
         this.campaignService.getUserCampaignReport(userId)
-        .subscribe(
+            .subscribe(
             data => {
                 this.userCampaignReport = data['userCampaignReport'];
                 this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
             },
-            error => {},
+            error => { },
             () => {
                 this.logger.info("Finished getUserCampaignReport()");
-                if(this.userCampaignReport == null){
+                if (this.userCampaignReport == null) {
                     this.userCampaignReport = new CampaignReport();
                     this.userCampaignReport.userId = userId;
                     this.userCampaignReport.campaignReportOption = 'RECENT';
                 }
-                
-                this.setLaunchedCampaignsChild(this.userCampaignReport);                    
+
+                this.setLaunchedCampaignsChild(this.userCampaignReport);
                 this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
 
             }
-        );
+            );
     }
-    
-    setLaunchedCampaignsChild( userCampaignReport: CampaignReport ) {
-        if ( ( 'CUSTOM' == userCampaignReport.campaignReportOption ) && ( null != userCampaignReport.campaigns ) ) {
-            var campaignsArray: string[] = userCampaignReport.campaigns.split( ',' );
 
-            for ( var i in campaignsArray ) {
-                var result = this.launchedCampaignsMaster.filter( function( obj ) {
-                    return obj.id == parseInt( campaignsArray[i] );
+    setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
+        if (('CUSTOM' == userCampaignReport.campaignReportOption) && (null != userCampaignReport.campaigns)) {
+            var campaignsArray: string[] = userCampaignReport.campaigns.split(',');
+
+            for (var i in campaignsArray) {
+                var result = this.launchedCampaignsMaster.filter(function (obj) {
+                    return obj.id == parseInt(campaignsArray[i]);
                 });
-                console.log( result );
-                this.launchedCampaignsChild.push( result[0] );
+                console.log(result);
+                this.launchedCampaignsChild.push(result[0]);
             }
-            this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter( x => this.launchedCampaignsChild.indexOf( x ) < 0 );
+            this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter(x => this.launchedCampaignsChild.indexOf(x) < 0);
         }
     }
-    
-    validateUserCampaignReport(userCampaignReport: CampaignReport){
+
+    validateUserCampaignReport(userCampaignReport: CampaignReport) {
         let isValid = true;
-        if('CUSTOM' == userCampaignReport.campaignReportOption){
+        if ('CUSTOM' == userCampaignReport.campaignReportOption) {
             let campaignIds: string[] = [];
-            
-            $('.launchedCampaignsChild > div >h6').each(function(){
-                campaignIds.push($(this).attr('id')); 
+
+            $('.launchedCampaignsChild > div >h6').each(function () {
+                campaignIds.push($(this).attr('id'));
             });
             userCampaignReport.campaigns = campaignIds.toString();
-            if(campaignIds.length > 4){
+            if (campaignIds.length > 4) {
                 this.setCampaignReportResponse('WARNING', 'You can not add more than 4 campaigns.');
                 isValid = false;
             }
-            if(campaignIds.length == 0){
+            if (campaignIds.length == 0) {
                 this.setCampaignReportResponse('WARNING', 'Please select campaigns.');
                 isValid = false;
             }
         }
-        
-        if(isValid)
+
+        if (isValid)
             this.saveUserCampaignReport(userCampaignReport);
         else
             return false;
     }
-    
-    saveUserCampaignReport(userCampaignReport: CampaignReport){
-        if(userCampaignReport.userId == null)
+
+    saveUserCampaignReport(userCampaignReport: CampaignReport) {
+        if (userCampaignReport.userId == null)
             userCampaignReport.userId = this.loggedInUserId;
 
         this.campaignService.saveUserCampaignReport(userCampaignReport)
-        .subscribe(
+            .subscribe(
             data => {
                 this.userCampaignReport = data;
                 this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
@@ -550,22 +543,22 @@ renderMap() {
                 this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
             },
             () => this.logger.info("Finished saveUserCampaignReport()")
-        );
+            );
     }
-    
-    setCampaignReportResponse(response: string, responseMessage: string){
+
+    setCampaignReportResponse(response: string, responseMessage: string) {
         this.userCampaignReport.response = response;
         this.userCampaignReport.responseMessage = responseMessage;
     }
-    
-    onSelectionChangeCampaignReportOption(userCampaignReportOption: string){
+
+    onSelectionChangeCampaignReportOption(userCampaignReportOption: string) {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
-    
+
     setPage(page: number) {
         this.pagination.pageIndex = page;
-       // this.totalEmailOpenedData(this.pagination);
-    //}
+        // this.totalEmailOpenedData(this.pagination);
+        //}
         /*if(this.currentPage == "emailOpened"){
             this.totalEmailOpenedData(this.pagination);
         }
@@ -575,32 +568,32 @@ renderMap() {
         else if(this.currentPage == "emailWatched"){
             this.totalEmailWatchedData(this.pagination);
         }*/
-        }
+    }
     setEmailClickedPage(page: number) {
         this.emailClickedPagination.pageIndex = page;
         this.totalEmailClickedData();
     }
-    
+
     setEmailWatchedPage(page: number) {
         this.emailWatchedPagination.pageIndex = page;
         this.totalEmailWatchedData(this.emailWatchedPagination);
     }
-    
+
     totalEmailOpenedData() {
         //this.pagination = new Pagination();
         this.loggedInUserId = this.authenticationService.getUserId();
         //this.pagination.maxResults = 10;
         this._dashboardService.loadEmailOpenedData(this.loggedInUserId)
             .subscribe(
-                result => {
-                    this.emailOpenedData = result;
-                    if(this.emailOpenedData.length == 0){
-                        this.noDataFound = true;
-                    }
-                },
-                error => console.log( error ),
-                () => { }
-                );   
+            result => {
+                this.emailOpenedData = result;
+                if (this.emailOpenedData.length == 0) {
+                    this.noDataFound = true;
+                }
+            },
+            error => console.log(error),
+            () => { }
+            );
         /*.subscribe(
             (data: any) => {
                 this.emailOpenedData = data.listOfUsers;
@@ -619,26 +612,26 @@ renderMap() {
             () => console.log("finished")
             );*/
     }
-    emailClicked(){
+    emailClicked() {
         this.totalEmailClickedData();
     }
-    
+
     totalEmailClickedData() {
-        
+
         //this.pagination = new Pagination();
         //this.emailClickedPagination.maxResults = 10;
         this.loggedInUserId = this.authenticationService.getUserId();
         this._dashboardService.loadEmailClickedData(this.loggedInUserId)
-        .subscribe(
-                result => {
-                    this.emailClickedData = result;
-                    if(this.emailOpenedData.length == 0){
-                        this.noDataFound = true;
-                    }
-                },
-                error => console.log( error ),
-                () => { }
-                );   
+            .subscribe(
+            result => {
+                this.emailClickedData = result;
+                if (this.emailOpenedData.length == 0) {
+                    this.noDataFound = true;
+                }
+            },
+            error => console.log(error),
+            () => { }
+            );
         /*.subscribe(
             (data: any) => {
                 this.emailClickedData = data.listOfUsers;
@@ -656,8 +649,8 @@ renderMap() {
             () => console.log("finished")
             );*/
     }
-    
-    totalEmailWatchedData(pagination : Pagination) {
+
+    totalEmailWatchedData(pagination: Pagination) {
         //this.pagination = new Pagination();
         this.emailWatchedPagination.maxResults = 10;
         this.logger.log(this.pagination);
@@ -666,7 +659,7 @@ renderMap() {
             (data: any) => {
                 this.emailWatchedData = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if(this.emailOpenedData.length == 0){
+                if (this.emailOpenedData.length == 0) {
                     this.noDataFound = true;
                 }
                 if (data.totalRecords.length == 0) {
@@ -682,21 +675,32 @@ renderMap() {
             () => console.log("finished")
             );
     }
+    getCountriesTotalViewsData() {
+        this._dashboardService.getCountryViewsDetails().
+        subscribe(result => {
+            this.countryViewsData = result.countrywiseusers;
+            this.renderMap();
+        },
+        (error: any) => {
+            this.xtremandLogger.error(error);
+            this.xtremandLogger.errorPage(error);
+        });
+    }
     ngOnInit() {
         try {
             this.dashboardReportsCount();
             this.loggedInUserId = this.authenticationService.getUserId();
-            this.renderMap();
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
-           /* this.totalViewsCount(this.loggedInUserId);
-            this.totalEmailTemplatesCount(this.loggedInUserId)
-            this.totalCreatedCampaignsCount(this.loggedInUserId)
-            this.totalConnectedSocialAccountsCount(this.loggedInUserId)
-            this.uploadedVideosCount(this.loggedInUserId);
-            this.totalContactsCount(this.loggedInUserId);*/
+            /* this.totalViewsCount(this.loggedInUserId);
+             this.totalEmailTemplatesCount(this.loggedInUserId)
+             this.totalCreatedCampaignsCount(this.loggedInUserId)
+             this.totalConnectedSocialAccountsCount(this.loggedInUserId)
+             this.uploadedVideosCount(this.loggedInUserId);
+             this.totalContactsCount(this.loggedInUserId);*/
             this.getEmailActionCount(this.loggedInUserId);
             this.emailWatchedCount(this.loggedInUserId);
+            this.getCountriesTotalViewsData();
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -722,7 +726,7 @@ renderMap() {
             this.linkdinSparklineData();
             // this.showGaugeMeter();
             this.listSocialAccounts(this.loggedInUserId);
-            
+
             this.genderDemographics(this.loggedInUserId);
         } catch (err) {
             console.log(err);

@@ -581,11 +581,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     transperancyControllBar(value: any) {
         let color: any = this.saveVideoFile.controllerColor;
        if (color.includes('rgba')) {
-          color = this.rgb2hex(this.saveVideoFile.controllerColor)
+          color = this.rgb2hex(this.saveVideoFile.controllerColor);
        }
         if (this.saveVideoFile.controllerColor === '#fff') {
             color = '#fbfbfb';
-        } else if (this.saveVideoFile.controllerColor === '#ccc') { 
+        } else if (this.saveVideoFile.controllerColor === '#ccc') {
             color = '#cccddd';
         } else { color = this.saveVideoFile.controllerColor; }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
@@ -673,7 +673,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     changeControllerColor(event: any) {
         this.saveVideoFile.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.saveVideoFile.controllerColor+'!important');
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+this.saveVideoFile.controllerColor+'!important');
     //    $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor);
      //   this.transperancyControllBar(this.valueRange);
     }

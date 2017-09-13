@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import { Observable }     from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SaveVideoFile } from '../videos/models/save-video-file';
 import { Pagination } from '../core/models/pagination';
 import 'rxjs/add/operator/catch';
@@ -142,16 +142,23 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+    getCountryViewsDetails() {
+         const url = this.authenticationService.REST_URL + 'countrywise_users_count?userId=' + this.authenticationService.user.id + 
+         '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
-        //console.log("response.json(): "+body);
+        // console.log("response.json(): "+body);
         return body || {};
     }
 
     private handleError(error: any) {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw(errMsg);
+        return Observable.throw(error);
     }
 }
