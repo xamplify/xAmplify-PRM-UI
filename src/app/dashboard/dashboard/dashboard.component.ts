@@ -41,10 +41,11 @@ export class DashboardComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
 
     isDahboardDefaultPage: boolean;
-public totalRecords: number;
-emailOpenedData : any;
-emailClickedData : any;
-emailWatchedData : any;
+    public totalRecords: number;
+    emailOpenedData : any;
+    emailClickedData : any;
+    emailWatchedData : any;
+    noDataFound : boolean = false;
     
     campaigns:Campaign[];
     launchedCampaignsMaster:any[];
@@ -593,6 +594,9 @@ renderMap() {
             .subscribe(
                 result => {
                     this.emailOpenedData = result;
+                    if(this.emailOpenedData.length == 0){
+                        this.noDataFound = true;
+                    }
                 },
                 error => console.log( error ),
                 () => { }
@@ -628,6 +632,9 @@ renderMap() {
         .subscribe(
                 result => {
                     this.emailClickedData = result;
+                    if(this.emailOpenedData.length == 0){
+                        this.noDataFound = true;
+                    }
                 },
                 error => console.log( error ),
                 () => { }
@@ -659,6 +666,9 @@ renderMap() {
             (data: any) => {
                 this.emailWatchedData = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                if(this.emailOpenedData.length == 0){
+                    this.noDataFound = true;
+                }
                 if (data.totalRecords.length == 0) {
                     //this.emptyViewsRecord = true;
                 } else {
