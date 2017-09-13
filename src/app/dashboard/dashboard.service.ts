@@ -109,7 +109,7 @@ export class DashboardService {
     }
     
     loadDashboardReportsCount(userId: number){
-        return this.http.get( this.url + "videos/views_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.authenticationService.REST_URL + "dashboard_analytics_count?userId=" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }

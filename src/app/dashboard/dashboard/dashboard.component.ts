@@ -314,19 +314,20 @@ renderMap() {
 
     }
     
-    dashboardReportsCount(userId: number) {
-        this._dashboardService.loadDashboardReportsCount(userId)
+    dashboardReportsCount() {
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this._dashboardService.loadDashboardReportsCount(this.loggedInUserId)
             .subscribe(
             data => {
-                this.dashboardReport.totalViews = data.videos_views_count;
-                this.dashboardReport.totalContacts = data.allcontacts;
-                this.dashboardReport.totalUploadedvideos = data.videos_count;
-                this.dashboardReport.toalEmailTemplates = data.toalEmailTemplates;
-                this.dashboardReport.totalCreatedCampaigns = data.totalCreatedCampaigns;
-                this.dashboardReport.totalSocialAccounts = data.totalSocialAccounts;
+                this.dashboardReport.totalViews = data.totalVideoViewsCount;
+                this.dashboardReport.totalContacts = data.totalcontactsCount;
+                this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
+                this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
+                this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
+                this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
             },
             error => console.log( error ),
-            () => console.log( "emailWatchedCount completed" )
+            () => console.log( "dashboard reports counts completed" )
             );
     }
     
@@ -673,17 +674,17 @@ renderMap() {
     }
     ngOnInit() {
         try {
-            this.dashboardReportsCount(this.loggedInUserId);
+            this.dashboardReportsCount();
             this.loggedInUserId = this.authenticationService.getUserId();
             this.renderMap();
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
-            this.totalViewsCount(this.loggedInUserId);
+           /* this.totalViewsCount(this.loggedInUserId);
             this.totalEmailTemplatesCount(this.loggedInUserId)
             this.totalCreatedCampaignsCount(this.loggedInUserId)
             this.totalConnectedSocialAccountsCount(this.loggedInUserId)
             this.uploadedVideosCount(this.loggedInUserId);
-            this.totalContactsCount(this.loggedInUserId);
+            this.totalContactsCount(this.loggedInUserId);*/
             this.getEmailActionCount(this.loggedInUserId);
             this.emailWatchedCount(this.loggedInUserId);
             Metronic.init();
