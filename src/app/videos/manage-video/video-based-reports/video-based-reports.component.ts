@@ -267,7 +267,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '258px');
+        $('#videoId').css('height', '300px');
         $('#videoId').css('width', 'auto');
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
@@ -348,7 +348,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        $('#videoId').css('height', '258px');
+        $('#videoId').css('height', '300px');
         $('#videoId').css('width', 'auto');
         const newValue = this;
         const player = videojs('videoId').ready(function () {
@@ -414,14 +414,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         $('.vjs-tech').css('height', '100%');
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '258px');
+                        $('#videoId').css('height', '300px');
                     }
                 });
             }
         });
         $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '258px');
+        $('#videoId').css('height', '300px');
     }
+    
     ngOnDestroy() {
         this.xtremandLogger.log('Deinit - Destroyed Component');
         if (this.is360Value !== true) {
