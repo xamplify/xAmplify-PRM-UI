@@ -325,34 +325,6 @@ export class DashboardComponent implements OnInit {
             );
     }
 
-    totalContactsCount(userId: number) {
-        this.contactService.loadContactsCountInDashboard(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalContacts = data.allcontacts;
-            },
-            error => console.log(error),
-            () => console.log("LoadContactsCount Finished")
-            );
-    }
-
-    uploadedVideosCount(userId: number) {
-        try {
-            this.videoFileService.loadVideosCount(userId)
-                .subscribe((result: any) => {
-                    this.dashboardReport.totalUploadedvideos = result.videos_count;
-                },
-                (error: string) => {
-                    this.logger.error(' Loading Videos():' + error);
-                },
-                () => console.log('load videos completed:'),
-            );
-        } catch (error) {
-            this.logger.error('erro in load videos :' + error);
-        }
-    }
-
-
     getEmailActionCount(userId: number) {
         this._dashboardService.getEmailActionCount(userId)
             .subscribe(
@@ -370,50 +342,6 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatched = data.email_watched_count;
-            },
-            error => console.log(error),
-            () => console.log("emailWatchedCount completed")
-            );
-    }
-
-    totalViewsCount(userId: number) {
-        this._dashboardService.loadTotalViewsCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalViews = data.videos_views_count;
-            },
-            error => console.log(error),
-            () => console.log("emailWatchedCount completed")
-            );
-    }
-
-    totalEmailTemplatesCount(userId: number) {
-        this._dashboardService.loadTotalEmailTemplatesCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.toalEmailTemplates = data.email_watched_count;
-            },
-            error => console.log(error),
-            () => console.log("emailWatchedCount completed")
-            );
-    }
-
-    totalCreatedCampaignsCount(userId: number) {
-        this._dashboardService.loadTotalCampaignsCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalCreatedCampaigns = data.email_watched_count;
-            },
-            error => console.log(error),
-            () => console.log("emailWatchedCount completed")
-            );
-    }
-
-    totalConnectedSocialAccountsCount(userId: number) {
-        this._dashboardService.loadTotalConnectedSocialAccountsCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalSocialAccounts = data.email_watched_count;
             },
             error => console.log(error),
             () => console.log("emailWatchedCount completed")
@@ -683,7 +611,7 @@ export class DashboardComponent implements OnInit {
         },
         (error: any) => {
             this.xtremandLogger.error(error);
-            this.xtremandLogger.errorPage(error);
+            //this.xtremandLogger.errorPage(error);
         });
     }
     ngOnInit() {
@@ -692,12 +620,6 @@ export class DashboardComponent implements OnInit {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);
-            /* this.totalViewsCount(this.loggedInUserId);
-             this.totalEmailTemplatesCount(this.loggedInUserId)
-             this.totalCreatedCampaignsCount(this.loggedInUserId)
-             this.totalConnectedSocialAccountsCount(this.loggedInUserId)
-             this.uploadedVideosCount(this.loggedInUserId);
-             this.totalContactsCount(this.loggedInUserId);*/
             this.getEmailActionCount(this.loggedInUserId);
             this.emailWatchedCount(this.loggedInUserId);
             this.getCountriesTotalViewsData();

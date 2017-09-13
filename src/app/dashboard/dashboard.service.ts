@@ -90,12 +90,6 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    loadTotalViewsCount(userId: number){
-        return this.http.get( this.url + "videos/views_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
     loadEmailOpenedData(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=13")
         .map( this.extractData )
@@ -110,24 +104,6 @@ export class DashboardService {
     
     loadDashboardReportsCount(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "dashboard_analytics_count?userId=" +userId+ "&access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    loadTotalEmailTemplatesCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    loadTotalCampaignsCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    loadTotalConnectedSocialAccountsCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "email_watched_count?" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
