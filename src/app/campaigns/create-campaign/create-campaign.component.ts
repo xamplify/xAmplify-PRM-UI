@@ -96,6 +96,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     videoId:number=0;
     draftMessage:string = "";
     launchVideoPreview:SaveVideoFile = new SaveVideoFile();
+    savedVideoFile:SaveVideoFile = new SaveVideoFile();
     videoSearchInput:string = "";
     filteredVideoIds: Array<number>;
     showSelectedVideo:boolean = false;
@@ -168,6 +169,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.campaign = new Campaign();
+        this.savedVideoFile = new SaveVideoFile();
+        this.launchVideoPreview = new SaveVideoFile();
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.user.id;
             this.campaign.userId = this.loggedInUserId;
@@ -201,6 +204,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedRow = selectedVideoId;
                 this.isCampaignDraftVideo = true;
                 this.launchVideoPreview = this.campaignService.campaign.campaignVideoFile;
+                this.savedVideoFile = this.campaignService.campaign.campaignVideoFile;
             }
             
             /***********Select Contact List Tab*************************/
@@ -264,6 +268,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaign.campaignVideoFile = this.refService.campaignVideoFile;
                 this.campaignType = this.refService.selectedCampaignType;
                 this.campaign.selectedVideoId = selectedVideoId;
+                this.savedVideoFile = this.refService.campaignVideoFile;
+                this.selectedRow = this.refService.campaignVideoFile.id;
             }
         }
     }
@@ -1302,6 +1308,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 console.log(response);
                 if(response.message=="success"){
                     this.isLaunched = true;
+                    this.reInitialize();
                     this.router.navigate(["/home/campaigns/managepublish"]);
                 }else{
                 }
@@ -1370,7 +1377,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             () => this.logger.info("Finished saveCampaignOnDestroy()")
         );
         }else{
-            alert("data not saved");
+            
         }
     return false;
     }

@@ -299,14 +299,14 @@
 								<ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	
 								<!-- ------------------Selected Video Row-->
 									<ng-container *ngIf="showSelectedVideo==true">
-									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==campaignService.campaign.campaignVideoFile.id"
-									 id="selectedVideoRow" (click)="setClickedRow(campaign.campaignVideoFile)">
-									<!-- --------------Thumbnail--------------------------- --><!-- campaign.campaignVideoFile.id===videoId -->
+									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id"
+									 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile)">
+									<!-- --------------Thumbnail--------------------------- --><!-- savedVideoFile.id===videoId -->
 										<td style="text-align: center;">
-											 <input type="radio" [checked]="selectedRow==campaignService.campaign.campaignVideoFile.id" (click)="setClickedRow(campaign.campaignVideoFile)"   
-											 	name="videoFileId" [value]="campaign.campaignVideoFile.id"  id="campaign_video_id_{{campaign.campaignVideoFile.id}}"> 
-												<a href="javascript:void(0)" (mouseover)="showPreview(campaign.campaignVideoFile)">
-													<img src="{{campaign.campaignVideoFile.imagePath}}" width="100px" height="50px">
+											 <input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile)"   
+											 	name="videoFileId" [value]="savedVideoFile.id"  id="campaign_video_id_{{savedVideoFile.id}}"> 
+												<a href="javascript:void(0)" (mouseover)="showPreview(savedVideoFile)">
+													<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
 												</a>
 										</td>
 										
@@ -316,26 +316,26 @@
 											<div class="col-md-12">
 												<p style="margin: 0;">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;" class="shortenLength shortened">{{campaign.campaignVideoFile.title}}</b>
+														<b style="font-size: 13px;" class="shortenLength shortened">{{savedVideoFile.title}}</b>
 													</a>
 												</p>
-												<p>by <b>{{campaign.campaignVideoFile.uploadedBy}}</b> </p>
-												<p>  <span style="float:right">{{campaign.campaignVideoFile.uploadedDate}} </span></p>
+												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
+												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
 											</div>
 										</div>
 										</td>
 										<!-- --------------Category--------------------------- -->
 										<td style="text-align: center;">
-											{{campaign.campaignVideoFile.category.name}}
+											{{savedVideoFile.category.name}}
 										</td>
 										<!-- --------------Published To--------------------------- -->
 										<td style="text-align: center;">
-											<span class="label label-blue" style="color: #607D8B"><b>{{campaign.campaignVideoFile.viewBy | lowercase}}</b></span>
+											<span class="label label-blue" style="color: #607D8B"><b>{{savedVideoFile.viewBy | lowercase}}</b></span>
 										</td>
 										<!-- --------------Status--------------------------- -->
 										<td style="text-align: center;">
-											<img src="assets/images/draft.png" *ngIf="campaign.campaignVideoFile.viewBy=='DRAFT'">
-											<img src="assets/images/success.png" *ngIf="campaign.campaignVideoFile.viewBy!='DRAFT'">
+											<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
+											<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
 										</td>
 									</tr>
 									</ng-container>
