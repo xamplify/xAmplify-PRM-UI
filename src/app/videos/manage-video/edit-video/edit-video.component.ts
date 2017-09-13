@@ -587,7 +587,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             color = '#fbfbfb';
         } else if (this.saveVideoFile.controllerColor === '#ccc') {
             color = '#cccddd';
-        } else { color = this.saveVideoFile.controllerColor; }
+        } 
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
        // $('.video-js .vjs-control-bar').css('background-color', rgba);
          $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
