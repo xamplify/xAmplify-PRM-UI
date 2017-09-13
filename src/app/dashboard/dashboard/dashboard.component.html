@@ -740,7 +740,7 @@ input[type=radio] {
 							<td>{{emailOpenedData.emailId}}</td>
 							<td>{{emailOpenedData.firstName}}</td>
 							<td>{{emailOpenedData.lastName}}</td>
-							<td class="center">{{emailOpenedData.time}}</td>
+							<td class="center">{{emailOpenedData.time |date:'MM/dd/yyyy @ h:mma'}}</td>
 							<td>{{emailOpenedData.campaignName}}</td>
 							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
@@ -803,7 +803,7 @@ input[type=radio] {
 							<td>{{emailClicked.emailId}}</td>
 							<td>{{emailClicked.firstName}}</td>
 							<td>{{emailClicked.lastName}}</td>
-							<td class="center">{{emailClicked.time}}</td>
+							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
 							<td>{{emailClicked.campaignName}}</td>
 							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
