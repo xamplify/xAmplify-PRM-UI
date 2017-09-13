@@ -146,7 +146,8 @@
 			</div>
 			<!-- video ended  -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style=" top: -15px;">
-				<form class="form-horizontal" role="form" [formGroup]="videoForm" *ngIf="active" (ngSubmit)="saveVideo()">
+				<form class="form-horizontal" role="form" [formGroup]="videoForm"
+				 *ngIf="active" (ngSubmit)="saveVideo()" novalidate>
 					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">

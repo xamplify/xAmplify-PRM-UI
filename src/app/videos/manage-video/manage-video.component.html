@@ -129,7 +129,10 @@
 													</a>
 													</div>
 													<div style="top: 27%; position: relative;">
-													<a class="mix-preview2 "  (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="" style="left:29%;margin-top :18px">
+													<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="" style="left:29%;margin-top :18px">
+														<i class="fa fa-bullhorn"></i>
+													</a>
+													<a class="mix-preview2" style="cursor: not-allowed;" *ngIf="videoFile.viewBy=='DRAFT'"  title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													</a>
 													 <a class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" 
