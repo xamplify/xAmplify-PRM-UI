@@ -17,13 +17,14 @@
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
 		<div class="col-md-12">
-			<form id="add-team-member">
+			<form id="add-team-member-form">
 				<div class="col-sm-3 ">
 					<div class="form-group" [attr.class]="emaillIdDivClass">
-						<input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateForm(team.emailId);">
+						<input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId);checkDuplicateEmailIds(team.emailId);validateForm(team.emailId);">
 						<span class="text-danger" *ngIf="!validEmailId&& team.emailId?.length>0">Invalid Email Id</span>
-						<span *ngIf="!validEmailId && team.emailId?.length>0" class="glyphicon glyphicon-remove form-control-feedback"></span>
-						<span *ngIf="validEmailId" class="glyphicon glyphicon-ok form-control-feedback"></span>
+						<span class="text-danger" *ngIf="duplicateEmailId">Already Exists</span>
+						<span *ngIf="(!validEmailId && team.emailId?.length>0) || duplicateEmailId" class="glyphicon glyphicon-remove form-control-feedback"></span>
+						<span *ngIf="validEmailId && !duplicateEmailId && team.emailId?.length>0" class="glyphicon glyphicon-ok form-control-feedback"></span>
 					</div>
 				</div>
 				<div class="col-sm-3 ">
@@ -36,8 +37,8 @@
 						<input type="text"  name="last"  class="form-control" id="lastName" placeholder="Last Name"  [(ngModel)]="team.lastName" name="lastName">
 					</div>
 				</div>
-				<button type="button" class="btn btn-primary" *ngIf="validEmailId" (click)="addTeamMember()">Add</button>
-				<button  class="btn btn-primary" *ngIf="!validEmailId" disabled="disabled">Add</button>
+				<button type="button" class="btn btn-primary" *ngIf="validEmailId && !duplicateEmailId" (click)="addTeamMember()">Add</button>
+				<button  class="btn btn-primary" *ngIf="!validEmailId || duplicateEmailId" disabled="disabled">Add</button>
 			</form>
 		</div>
 		<br>
@@ -99,23 +100,26 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let teamMember of teamMembers;let i=index">
-									<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId}}</td>
-									<td><input type="checkbox"></td>
-									<td><input type="checkbox"></td>
-									<td><input type="checkbox"></td>
-									<td><input type="checkbox"></td>
-									<td><input type="checkbox"></td>
-									<td><input type="checkbox"></td>
-									<td><a class="btn-sm"><em class="fa fa-times"></em></a></td>
-								</tr>
+							<ng-container *ngFor="let teamMember of teamMembers;let i=index">
+							<tr id="team-member-{{i}}">
+								<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td>
+								<td><input type="checkbox" (change)="addAllAuthorities($event,teamMember)"  [(ngModel)]="teamMember.isAll" ></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.isVideo"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.isContact"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.isCampaign"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.isStats"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.isEmail"></td>
+								<td><a class="btn-sm" (click)="deleteRow(i)"><em	class="fa fa-times"></em></a></td>
+							</tr>
+							</ng-container>
+								
 							</tbody>
 						</table>
 					</div>
 					<hr>
 					<div class="pull-right">
-						<button class="btn btn-primary">Save</button>
-						<button class="btn btn-secondary">Cancel</button>
+						<button class="btn btn-primary" (click)="save()">Save</button>
+						<button class="btn btn-secondary" (click)="clearRows()">Cancel</button>
 					</div>
 				</div>
 			</div>

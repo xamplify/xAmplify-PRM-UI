@@ -394,7 +394,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          }
      }
      validateCampaignName(campaignName:string){
-         let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
+        // let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
+         let lowerCaseCampaignName = campaignName.toLowerCase().trim();//Remove all spaces
          var list = this.names[0];
          console.log(list);
          if(this.isAdd){
