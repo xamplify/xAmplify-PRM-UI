@@ -76,6 +76,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     browserInfo: string;
     videoDisabled = false;
     previewDisabled = false;
+    errorIsThere = false;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -118,29 +119,24 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
-                //  this.processing = true;
-                //  this.isFileDrop = true;
                 this.processVideo(JSON.parse(response).path);
             };
             this.uploader.onProgressItem = (fileItem: FileItem, progress: any) => {
                 this.changeDetectorRef.detectChanges();
                 this.loading = true;
                 this.isFileProgress = true;
-                // this.processing = true;
-                // this.isDisable =true;
                 this.isFileDrop = true;
-                // document.getElementById('openf').onclick = function (e) { e.preventDefault(); };
                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
             };
-           if(this.refService.uploadRetrivejsCalled === false) {
+        //   if(this.refService.uploadRetrivejsCalled === false) {
             $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-             this.refService.uploadRetrivejsCalled = true;
-        }
+        //     this.refService.uploadRetrivejsCalled = true;
+       // }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
@@ -172,7 +168,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.loading = false;
                 this.processing = false;
                 if (this.processVideoResp != null && this.processVideoResp.error === null) {
-                    console.log('process video data :' + this.processVideoResp);
+                    console.log('process video data :' + JSON.stringify(this.processVideoResp));
                     this.videoFileService.saveVideoFile = this.processVideoResp;
                     if (this.videoFileService.saveVideoFile.imageFiles == null) {
                         this.videoFileService.saveVideoFile.imageFiles = [];
@@ -210,7 +206,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 }
             },
            (error: any) => {
-               this.xtremandLogger.errorPage(error);
+              $('#myModal').modal('hide');
+              this.errorIsThere = true;
+              this.xtremandLogger.errorPage(error);
            }),
             () => console.log('process video is:' + this.processVideoResp);
     }
@@ -284,7 +282,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.responsePath = result;
                 this.processVideo(result.path);
             },(error: any) => {
-               this.xtremandLogger.errorPage(error);
+                 this.errorIsThere = true;
+                this.xtremandLogger.errorPage(error);
            }
             );
     }
@@ -482,7 +481,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     googleDriveChange() {
         if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
-            this.sweetAlertMesg === 'Drive') { swal('Oops...', 'You minimized Google Drive window!", "error'); }
+            this.sweetAlertMesg === 'Drive') { swal('Oops...', 'You minimized Google Drive window!', 'error'); }
         if (this.isChecked !== true && this.cloudBox === false && this.camera === false && this.cloudOneDrive === false &&
             this.cloudDropbox === false) {
             this.cloudDrive = true;
@@ -568,7 +567,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.processVideo(result.path);
             },
            (error: any) => {
-               this.xtremandLogger.errorPage(error);
+             this.errorIsThere = true;   
+            this.xtremandLogger.errorPage(error);
            });
     }
     /* box retreive videos */
@@ -598,7 +598,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         self.processing = true;
                         self.processVideo(result.path);
                     }, (error: any) => {
-                     self.xtremandLogger.errorPage(error);
+                       self.errorIsThere = true;
+                        self.xtremandLogger.errorPage(error);
                    });
             } else {
                 swal('Only video files can be uploaded.');
@@ -682,7 +683,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     this.processing = true;
                     this.processVideo(result.path);
                 }, (error: any) => {
-               this.xtremandLogger.errorPage(error);
+                 this.errorIsThere = true;
+                 this.xtremandLogger.errorPage(error);
                 });
         } else {
             swal('Only video files can be uploaded');
@@ -724,13 +726,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy() {
+        $('r-video').remove();
         console.log('Deinit - Destroyed Component');
         if (this.playerInit === true) {
             this.player.recorder.destroy();
             // this.player.recorder.stopDevice();
         }
         this.isChecked = false;
-        if (this.processing === true) {
+        if (this.processing === true && this.errorIsThere === false) {
             this.redirectPge = true;
             swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!');
         }

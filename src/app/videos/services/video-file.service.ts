@@ -43,7 +43,8 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     saveRecordedVideo(formData: any) {
-        const url = this.URL + 'saveRecordedVideo?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'saveRecordedVideo?&userId=' + this.authenticationService.user.id +
+        '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, formData)
             .map(this.extractData)
             .catch(this.handleError);

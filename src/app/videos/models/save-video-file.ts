@@ -1,5 +1,5 @@
 import {Category} from '../models/category';
-import { FileDropDirective, FileItem } from 'ng2-file-upload';
+// import { FileDropDirective, FileItem } from 'ng2-file-upload';
 export class SaveVideoFile {
     id: number;
     title: string;
@@ -44,4 +44,5 @@ export class SaveVideoFile {
     is360video: boolean;
     defaultSetting: boolean;
     views: number;
+    watchedFully: number;
  }

@@ -1134,7 +1134,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'is360video': [this.saveVideoFile.is360video],
             'defaultSetting': [this.saveVideoFile.defaultSetting],
             'category': [this.saveVideoFile.category],
-            'views': [this.saveVideoFile.views]
+            'views': [this.saveVideoFile.views],
+            'watchedFully': [this.saveVideoFile.watchedFully]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
 

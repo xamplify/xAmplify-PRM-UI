@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Pagination } from '../../core/models/pagination';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
+
 import { ReferenceService } from '../../core/services/reference.service';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 import { PagerService } from '../../core/services/pager.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
-import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { Category } from '../../videos/models/category';
 import { DashboardService } from '../dashboard.service';
-import { ContactList } from '../../contacts/models/contact-list';
 import { ContactService } from '../../contacts/services/contact.service';
+
+import { SaveVideoFile } from '../../videos/models/save-video-file';
+import { Category } from '../../videos/models/category';
+import { ContactList } from '../../contacts/models/contact-list';
+import { Pagination } from '../../core/models/pagination';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+
 declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 
 @Component({
@@ -68,7 +72,8 @@ export class ViewsReportComponent implements OnInit {
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
-        public logger: Logger, public pagination: Pagination, public authenticationService: AuthenticationService) {
+        public logger: XtremandLogger, public pagination: Pagination, public authenticationService: AuthenticationService,
+       public videoUtilService: VideoUtilService) {
         this.categoryNum = 0;
         this.isCategoryThere = false;
     }
@@ -137,8 +142,8 @@ export class ViewsReportComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems(pagination, this.videos);
                 },
                 (error: string) => {
-                    this.logger.error(this.errorPrepender + ' Loading Videos():' + error);
-                    this.referenceService.showServerError(this.httpRequestLoader);
+                    this.logger.error('error in videos: views report page' + error);
+                    this.logger.errorPage(error);
                 },
                 () => console.log('load videos completed:' + this.videos),
             );

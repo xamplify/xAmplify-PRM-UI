@@ -79,7 +79,7 @@ a.disabled {
 								</div>
 								</div>
 								
-								<div *ngIf="isvideoThere==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="margin-top:20px">
+								<div *ngIf="isvideoThere==true"  class="col-md-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
 						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						           <strong>No Videos found.. !!!</strong>
 			                </div>
@@ -122,7 +122,7 @@ a.disabled {
 				<div class="col-xs-12 col-sm-6">
 					<div class="row">
 						<div class="col-xs-4 text-center">
-							<section class="percentage-circle">
+							<!-- <section class="percentage-circle">
 								<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588"
@@ -131,7 +131,10 @@ a.disabled {
 								<h2 class="percentage-value">78</h2>
 								<h6 class="percentage-text">views</h6>
 							</section>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: 50px;font-size: 17px;font-weight: 400;">Views</h5>
+							<h5 style="text-align: center; color: #2f2f2f;margin-top: 50px;font-size: 17px;font-weight: 400;">Views</h5> -->
+					<h1 style="margin-top: 48px;">{{videoUtilService.nFormatter(videoFile.views)}}</h1>
+						<h5 style="text-align: center; color: #2f2f2f; margin: 3.4em;font-size: 17px;font-weight: 400;">Views</h5>
+			
 						</div>
 						<div class="col-xs-4 text-center">
 							<section class="percentage-circle">

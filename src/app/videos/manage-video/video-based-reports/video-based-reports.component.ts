@@ -116,18 +116,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             $('.video-js .vjs-fullscreen-control').show();
         }
     }
-    nFormatter(num) {
-     if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
-     }
-     if (num >= 1000000) {
-        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-     }
-     if (num >= 1000) {
-        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-     }
-     return num;
-   }
     defaultVideoControllers() {
         if (this.selectedVideo.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
@@ -220,7 +208,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
    getViewsCount(){
         this.videoViewscount = this.selectedVideo.views;
         this.videoViewscountbind = this.videoViewscount;
-        this.videoViewscountbind  = this.nFormatter(this.videoViewscountbind);
+        this.videoViewscountbind  = this.videoUtilService.nFormatter(this.videoViewscountbind);
         const stringValue  = '0.' + this.videoViewscount.toString();
         const value  = Number(stringValue);
         this.videoViewscount =  value;
