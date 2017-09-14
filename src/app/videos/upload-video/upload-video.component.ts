@@ -480,24 +480,24 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     googleDriveChange() {
-        if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
-            this.sweetAlertMesg === 'Drive') { swal('Oops...', 'You minimized Google Drive window!', 'error'); }
-        if (this.isChecked !== true && this.cloudBox === false && this.camera === false && this.cloudOneDrive === false &&
-            this.cloudDropbox === false) {
-            this.cloudDrive = true;
-            this.isDisable = true;
-            this.isFileDrop = true;
-            this.isChecked = true;
-            this.sweetAlertDisabled = false;
+        // if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+        //     this.sweetAlertMesg === 'Drive') { swal('Oops...', 'You minimized Google Drive window!', 'error'); }
+        // if (this.isChecked !== true && this.cloudBox === false && this.camera === false && this.cloudOneDrive === false &&
+        //     this.cloudDropbox === false) {
+         //   this.cloudDrive = true;
+          //  this.isDisable = true;
+          //  this.isFileDrop = true;
+          //  this.isChecked = true;
+          //  this.sweetAlertDisabled = false;
             this.sweetAlertMesg = 'Drive';
-            this.fileDropDisabled();
+          //  this.fileDropDisabled();
             this.onApiLoad();    // google drive code
-            $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
-        }
+            // $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
+            // $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
+            // $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
+            // $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
+            // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+       // }
     }
     defaultDesabled() {
         this.sweetAlertDisabled = true;
@@ -663,13 +663,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
             const doc = data[google.picker.Response.DOCUMENTS][0];
             swal({
-                title: 'Retriving video from Google Drive...!', text: 'Please Wait...It`s processing',
+                text: 'Retriving video from Google Drive...! Please Wait...It`s processing',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
             });
             self.downloadGDriveFile(doc.id, doc.name);
         } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
-            self.defaultSettings();
-            self.enableDropdown();
+          //  self.defaultSettings();
+          //  self.enableDropdown();
         }
     }
     downloadGDriveFile(fileId: any, name: string) {
