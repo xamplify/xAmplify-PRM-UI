@@ -71,7 +71,7 @@ export class SocialCallbackComponent implements OnInit {
         if ( !this.socialConnection.existingUser )
             this.router.navigate( ['/home/social/manage/' + this.providerName] );
         else
-            this.router.navigate( [''] );
+            this.router.navigate( ['/home/dashboard/default'] );
     }
 
     ngOnInit() {

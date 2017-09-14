@@ -5,7 +5,7 @@
 			<div class="page-sidebar navbar-collapse collapse">
 				<!-- BEGIN SIDEBAR MENU -->
 				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'dashboard'}">
 						<a [routerLink]="['./dashboard']" >
 						<i class="icon-home"></i>
 						<span class="title">Account Dashboard</span>
@@ -13,7 +13,7 @@
 						</a>
 					</li>
 					
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'videos'}">
 						<a>
 						<i class="fa fa-video-camera"></i>
 						<!--  <i class="icon-camcorder"></i>-->
@@ -36,10 +36,7 @@
 							</li>
 						</ul>
 					</li>
-					
-					
-					
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'contacts'}">
 						<a>
 						<i class="fa fa-list-ul"></i>
 						<span class="title">Contacts</span>
@@ -61,7 +58,7 @@
 							</li>
 						</ul>
 					</li>
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a>
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
@@ -85,7 +82,7 @@
 							</li>
 						</ul>
 					</li>
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'campaigns'}">
 						<a>
 						<i class="fa fa-bullhorn"></i>
 						<span class="title">Campaign</span>
@@ -109,7 +106,7 @@
 					</li>
 					
 					
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'team'}">
 						<a>
 						<i class="fa fa-users"></i>
 						<span class="title">Team</span>
@@ -130,7 +127,7 @@
 							</li>
 						</ul>
 					</li>
-					<li [routerLinkActive]="['start','active']">
+					<li [ngClass]="{'active':  baseRoute === 'upgrade'}">
 						<a  [routerLink]="['./upgrade']">
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>
@@ -138,16 +135,6 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<!--  for demo purpose i am hiding this left navigations -->
-					<!-- <li [routerLinkActive]="['start','active']">
-						<a  [routerLink] ="['./videos/page_portfolio']">
-						<i class="fa fa-video-camera"></i>
-						<span class="title">User Videos</span>
-						<span class="arrow "></span>
-						<span class="selected"></span>
-						</a>
-					</li> -->
-					<!-- ended  --> <!--  <i class="icon-camcorder"></i>-->
 					<li>
 						<a [routerLink] ="['/login']">
 						<i class="icon-logout"></i>
