@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
     averageSparklineData() {
         const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
         $('#sparkline_line').sparkline(myvalues, {
-            type: 'bar',
+            type: 'line',
             width: '100',
             barWidth: 5,
             height: '55',
@@ -558,7 +558,7 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             result => {
                 this.emailUrlClickedData = result;
-                if (this.emailOpenedData.length == 0) {
+                if (this.emailUrlClickedData.length == 0) {
                     this.noDataFound = true;
                 }
             },
@@ -592,7 +592,7 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             result => {
                 this.emailGifClickedData = result;
-                if (this.emailOpenedData.length == 0) {
+                if (this.emailGifClickedData.length == 0) {
                     this.noDataFound = true;
                 }
             },
@@ -627,7 +627,7 @@ export class DashboardComponent implements OnInit {
             (data: any) => {
                 this.emailWatchedData = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if (this.emailOpenedData.length == 0) {
+                if (this.emailWatchedData.length == 0) {
                     this.noDataFound = true;
                 }
                 if (data.totalRecords.length == 0) {
@@ -651,7 +651,7 @@ export class DashboardComponent implements OnInit {
         },
         (error: any) => {
             this.xtremandLogger.error(error);
-            //this.xtremandLogger.errorPage(error);
+            this.xtremandLogger.errorPage(error);
         });
     }
     ngOnInit() {
