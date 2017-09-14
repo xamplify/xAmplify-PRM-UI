@@ -96,8 +96,14 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    loadEmailClickedData(userId: number){
+    loadEmailUrlClickedData(userId: number){
         return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=15")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadEmailGifClickedData(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=14")
         .map( this.extractData )
         .catch( this.handleError );
     }

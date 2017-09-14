@@ -7,7 +7,8 @@ export class DashboardReport {
 
     totalUploadedvideos: number = 0;
 
-    totalEmailClicked: number = 0;
+    totalEmailUrlClicked: number = 0;
+    totalEmailGifClicked: number = 0;
     totalEmailOpened: number = 0;
     totalEmailWatched: number = 0;
 

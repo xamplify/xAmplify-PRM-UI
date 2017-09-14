@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
     public totalRecords: number;
     emailOpenedData: any;
     emailClickedData: any;
+    emailGifClickedData: any;
     emailWatchedData: any;
     noDataFound: boolean = false;
 
@@ -330,7 +331,8 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailOpened = data["email_opened_count"];
-                this.dashboardReport.totalEmailClicked = data["email_url_clicked_count"];
+                this.dashboardReport.totalEmailUrlClicked = data["email_url_clicked_count"];
+                this.dashboardReport.totalEmailGifClicked = data["email_gif_clicked_count"];
             },
             error => console.log(error),
             () => console.log("emailOpenedCount completed")
@@ -342,6 +344,9 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatched = data.email_watched_count;
+                if(this.dashboardReport.totalEmailWatched == undefined){
+                    this.dashboardReport.totalEmailWatched = 0;
+                }
             },
             error => console.log(error),
             () => console.log("emailWatchedCount completed")
@@ -499,7 +504,7 @@ export class DashboardComponent implements OnInit {
     }
     setEmailClickedPage(page: number) {
         this.emailClickedPagination.pageIndex = page;
-        this.totalEmailClickedData();
+        this.totalEmailUrlClickedData();
     }
 
     setEmailWatchedPage(page: number) {
@@ -541,15 +546,15 @@ export class DashboardComponent implements OnInit {
             );*/
     }
     emailClicked() {
-        this.totalEmailClickedData();
+        this.totalEmailUrlClickedData();
     }
 
-    totalEmailClickedData() {
+    totalEmailUrlClickedData() {
 
         //this.pagination = new Pagination();
         //this.emailClickedPagination.maxResults = 10;
         this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.loadEmailClickedData(this.loggedInUserId)
+        this._dashboardService.loadEmailUrlClickedData(this.loggedInUserId)
             .subscribe(
             result => {
                 this.emailClickedData = result;
@@ -577,6 +582,41 @@ export class DashboardComponent implements OnInit {
             () => console.log("finished")
             );*/
     }
+    
+    totalEmailGifClickedData() {
+
+        //this.pagination = new Pagination();
+        //this.emailClickedPagination.maxResults = 10;
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this._dashboardService.loadEmailGifClickedData(this.loggedInUserId)
+            .subscribe(
+            result => {
+                this.emailGifClickedData = result;
+                if (this.emailOpenedData.length == 0) {
+                    this.noDataFound = true;
+                }
+            },
+            error => console.log(error),
+            () => { }
+            );
+        /*.subscribe(
+            (data: any) => {
+                this.emailClickedData = data.listOfUsers;
+                this.logger.log(data);
+                this.totalRecords = data.totalRecords;
+                if (data.totalRecords.length == 0) {
+                    //this.emptyViewsRecord = true;
+                } else {
+                    this.emailClickedPagination.totalRecords = this.totalRecords;
+                    this.logger.info(this.emailClickedData);
+                    this.emailClickedPagination = this.pagerService.getPagedItems(emailClickedPagination, this.emailClickedData);
+                }
+            },
+            error => console.log(error),
+            () => console.log("finished")
+            );*/
+    }
+
 
     totalEmailWatchedData(pagination: Pagination) {
         //this.pagination = new Pagination();
