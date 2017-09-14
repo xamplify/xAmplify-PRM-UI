@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { ReferenceService } from '../../core/services/reference.service';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { Logger } from 'angular2-logger/core';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { ReferenceService } from '../../core/services/reference.service';
 declare var Metronic , Layout , Demo, swal , Portfolio: any;
-
 @Component({
   selector: 'app-select-template',
   templateUrl: './select-template.component.html',

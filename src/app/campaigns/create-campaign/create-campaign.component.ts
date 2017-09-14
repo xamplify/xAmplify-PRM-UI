@@ -29,7 +29,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SocialStatus } from "../../social/models/social-status";
 import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
-
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
 
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery,CKEDITOR:any;
@@ -40,7 +40,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, fl
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css'],
-  providers:[HttpRequestLoader]
+  providers:[HttpRequestLoader,CallActionSwitch]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -165,7 +165,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private logger:Logger,private videoFileService:VideoFileService,
                 private authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
-                private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService
+                private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
+                public callActionSwitch: CallActionSwitch
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.campaign = new Campaign();

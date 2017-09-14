@@ -1,0 +1,83 @@
+table#add-team-member-table th, table#add-team-member-table td {
+	text-align: center;
+}
+
+table#add-team-member-table>tbody>tr>td {
+	border-top: none;
+}
+
+table#add-team-member-table td:first-child, table#add-team-member-table th:first-child
+	{
+	text-align: left
+}
+
+.fa-user {
+	padding-right: 10px;
+}
+
+.fa-times {
+	color: #F3565D;
+}
+
+hr {
+	padding: 5px 0;
+	color: #616161;
+}
+
+.user-permission-img {
+	padding-right: 10px;
+}
+
+.portlet.box, .portlet>.portlet-body {
+	border-radius: 0;
+}
+
+.empty-box {
+	padding: 2em;
+}
+
+.empty-box-content>p {
+	color: #b5b5b5;
+	margin: 0;
+}
+
+.empty-box-content>.btn-primary {
+	background-color: #5fc0ec;
+	border-color: #357ebd;
+	border-radius: 0;
+	margin-top: 2em;
+	padding: 0.5em 1em;
+}
+
+.portlet {
+	border-radius: 0;
+	margin: 1em;
+}
+
+.portlet.light {
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+}
+
+.fa.fa-user-plus {
+	font-size: 1.3em;
+	color: #a5a4a4;
+}
+
+.text-danger{
+	color: red
+}
+
+.has-error .form-control{
+	border-color: #a94442;
+}
+.has-success .form-control{
+	border-color: #3c763d;
+}
+.has-error .form-control-feedback{
+	right: 0px;
+	margin-top: 10px;
+}
+.has-success .form-control-feedback{
+	right: 0px;
+	margin-top: 10px;
+}
