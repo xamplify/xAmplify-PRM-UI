@@ -818,12 +818,12 @@ input[type=radio] {
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let emailClicked of emailClickedData;let i = index">
-							<td>{{emailClicked.emailId}}</td>
-							<td>{{emailClicked.firstName}}</td>
-							<td>{{emailClicked.lastName}}</td>
-							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{emailClicked.campaignName}}</td>
+						<tr *ngFor="let emailUrlClicked of emailClickedData;let i = index">
+							<td>{{emailUrlClicked.emailId}}</td>
+							<td>{{emailUrlClicked.firstName}}</td>
+							<td>{{emailUrlClicked.lastName}}</td>
+							<td class="center">{{emailUrlClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
+							<td>{{emailUrlClicked.campaignName}}</td>
 							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
 							<td>Windowns 10</td> -->
@@ -885,12 +885,12 @@ input[type=radio] {
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let emailClicked of emailGifClickedData;let i = index">
-							<td>{{emailClicked.emailId}}</td>
-							<td>{{emailClicked.firstName}}</td>
-							<td>{{emailClicked.lastName}}</td>
-							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{emailClicked.campaignName}}</td>
+						<tr *ngFor="let emailGifClicked of emailGifClickedData;let i = index">
+							<td>{{emailGifClicked.emailId}}</td>
+							<td>{{emailGifClicked.firstName}}</td>
+							<td>{{emailGifClicked.lastName}}</td>
+							<td class="center">{{emailGifClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
+							<td>{{emailGifClicked.campaignName}}</td>
 							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
 							<td>Windowns 10</td> -->

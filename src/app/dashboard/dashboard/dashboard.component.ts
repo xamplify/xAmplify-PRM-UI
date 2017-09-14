@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     isDahboardDefaultPage: boolean;
     public totalRecords: number;
     emailOpenedData: any;
-    emailClickedData: any;
+    emailUrlClickedData: any;
     emailGifClickedData: any;
     emailWatchedData: any;
     noDataFound: boolean = false;
@@ -557,7 +557,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailUrlClickedData(this.loggedInUserId)
             .subscribe(
             result => {
-                this.emailClickedData = result;
+                this.emailUrlClickedData = result;
                 if (this.emailOpenedData.length == 0) {
                     this.noDataFound = true;
                 }
