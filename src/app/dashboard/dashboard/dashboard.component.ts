@@ -43,11 +43,6 @@ export class DashboardComponent implements OnInit {
 
     isDahboardDefaultPage: boolean;
     public totalRecords: number;
-    emailOpenedData: any;
-    emailUrlClickedData: any;
-    emailGifClickedData: any;
-    emailWatchedData: any;
-    noDataFound: boolean = false;
 
     campaigns: Campaign[];
     launchedCampaignsMaster: any[];
@@ -225,27 +220,6 @@ export class DashboardComponent implements OnInit {
         });
 
     }
-    showGaugeMeter() {
-        $('#googleplus').data('percent', 66);
-        $('#googleplus').gaugeMeter();
-
-        $('#facebook').data('percent', 100);
-        $('#facebook').gaugeMeter();
-
-        $('#linkdin').data('percent', 100);
-        $('#linkdin').gaugeMeter();
-
-
-        $('#opened').data('percent', 76);
-        $('#opened').gaugeMeter();
-
-        $('#clicked').data('percent', 68);
-        $('#clicked').gaugeMeter();
-
-        $('#watched').data('percent', 100);
-        $('#watched').gaugeMeter();
-    }
-
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
         this.logger.log('getTotalCountOfTFFF() method invoke started.');
@@ -330,9 +304,9 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.getEmailActionCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalEmailOpened = data["email_opened_count"];
-                this.dashboardReport.totalEmailUrlClicked = data["email_url_clicked_count"];
-                this.dashboardReport.totalEmailGifClicked = data["email_gif_clicked_count"];
+                this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
+                this.dashboardReport.totalEmailUrlClickedCount = data["email_url_clicked_count"];
+                this.dashboardReport.totalEmailGifClickedCount = data["email_gif_clicked_count"];
             },
             error => console.log(error),
             () => console.log("emailOpenedCount completed")
@@ -343,9 +317,9 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalEmailWatched = data.email_watched_count;
-                if(this.dashboardReport.totalEmailWatched == undefined){
-                    this.dashboardReport.totalEmailWatched = 0;
+                this.dashboardReport.totalEmailWatchedCount = data.email_watched_count;
+                if(this.dashboardReport.totalEmailWatchedCount == undefined){
+                    this.dashboardReport.totalEmailWatchedCount = 0;
                 }
             },
             error => console.log(error),
@@ -502,124 +476,28 @@ export class DashboardComponent implements OnInit {
             this.totalEmailWatchedData(this.pagination);
         }*/
     }
-    setEmailClickedPage(page: number) {
-        this.emailClickedPagination.pageIndex = page;
-        this.totalEmailUrlClickedData();
-    }
 
     setEmailWatchedPage(page: number) {
         this.emailWatchedPagination.pageIndex = page;
         this.totalEmailWatchedData(this.emailWatchedPagination);
     }
-
-    totalEmailOpenedData() {
-        //this.pagination = new Pagination();
-        this.loggedInUserId = this.authenticationService.getUserId();
-        //this.pagination.maxResults = 10;
-        this._dashboardService.loadEmailOpenedData(this.loggedInUserId)
-            .subscribe(
-            result => {
-                this.emailOpenedData = result;
-                if (this.emailOpenedData.length == 0) {
-                    this.noDataFound = true;
-                }
-            },
-            error => console.log(error),
-            () => { }
-            );
-        /*.subscribe(
-            (data: any) => {
-                this.emailOpenedData = data.listOfUsers;
-                this.logger.log(data);
-                this.totalRecords = data.totalRecords;
-                if (data.totalRecords.length == 0) {
-                    //this.emptyViewsRecord = true;
-                } else {
-                    this.pagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.emailOpenedData);
-                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.emailOpenedData);
-                    
-                }
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );*/
-        this.noDataFound = false;
-    }
-    emailClicked() {
-        this.totalEmailUrlClickedData();
-    }
-
-    totalEmailUrlClickedData() {
-
-        //this.pagination = new Pagination();
-        //this.emailClickedPagination.maxResults = 10;
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.loadEmailUrlClickedData(this.loggedInUserId)
-            .subscribe(
-            result => {
-                this.emailUrlClickedData = result;
-                if (this.emailUrlClickedData.length == 0) {
-                    this.noDataFound = true;
-                }
-            },
-            error => console.log(error),
-            () => { }
-            );
-        /*.subscribe(
-            (data: any) => {
-                this.emailClickedData = data.listOfUsers;
-                this.logger.log(data);
-                this.totalRecords = data.totalRecords;
-                if (data.totalRecords.length == 0) {
-                    //this.emptyViewsRecord = true;
-                } else {
-                    this.emailClickedPagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.emailClickedData);
-                    this.emailClickedPagination = this.pagerService.getPagedItems(emailClickedPagination, this.emailClickedData);
-                }
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );*/
-        this.noDataFound = false;
-    }
     
-    totalEmailGifClickedData() {
-
-        //this.pagination = new Pagination();
-        //this.emailClickedPagination.maxResults = 10;
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.loadEmailGifClickedData(this.loggedInUserId)
+    listEmailLogsByUserIdAndActionId(actionId: number){
+        // this.loggedInUserId = this.authenticationService.getUserId();
+        this._dashboardService.listEmailLogsByUserIdAndActionId(this.loggedInUserId, actionId)
             .subscribe(
             result => {
-                this.emailGifClickedData = result;
-                if (this.emailGifClickedData.length == 0) {
-                    this.noDataFound = true;
-                }
+                if(actionId == 13)
+                    this.dashboardReport.emailOpenedList = result;
+                else if(actionId == 14)
+                    this.dashboardReport.emailGifClickedList = result;
+                else if(actionId == 15)
+                    this.dashboardReport.emailUrlClickedList = result;
             },
             error => console.log(error),
             () => { }
             );
-        /*.subscribe(
-            (data: any) => {
-                this.emailClickedData = data.listOfUsers;
-                this.logger.log(data);
-                this.totalRecords = data.totalRecords;
-                if (data.totalRecords.length == 0) {
-                    //this.emptyViewsRecord = true;
-                } else {
-                    this.emailClickedPagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.emailClickedData);
-                    this.emailClickedPagination = this.pagerService.getPagedItems(emailClickedPagination, this.emailClickedData);
-                }
-            },
-            error => console.log(error),
-            () => console.log("finished")
-            );*/
-        this.noDataFound = false;
     }
-
 
     totalEmailWatchedData(pagination: Pagination) {
         //this.pagination = new Pagination();
@@ -628,24 +506,22 @@ export class DashboardComponent implements OnInit {
         this.contactService.loadNonActiveContacts(this.emailWatchedPagination)
             .subscribe(
             (data: any) => {
-                this.emailWatchedData = data.listOfUsers;
+                this.dashboardReport.emailWatchedList = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if (this.emailWatchedData.length == 0) {
-                    this.noDataFound = true;
+                if (this.dashboardReport.emailWatchedList.length == 0) {
                 }
                 if (data.totalRecords.length == 0) {
                     //this.emptyViewsRecord = true;
                 } else {
                     this.emailWatchedPagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.emailWatchedData);
-                    this.emailWatchedPagination = this.pagerService.getPagedItems(this.emailWatchedPagination, this.emailWatchedData);
+                    this.logger.info(this.dashboardReport.emailWatchedList);
+                    this.emailWatchedPagination = this.pagerService.getPagedItems(this.emailWatchedPagination, this.dashboardReport.emailWatchedList);
                     this.logger.log(data);
                 }
             },
             error => console.log(error),
             () => console.log("finished")
             );
-        this.noDataFound = false;
     }
     getCountriesTotalViewsData() {
         this._dashboardService.getCountryViewsDetails().
@@ -690,7 +566,6 @@ export class DashboardComponent implements OnInit {
             this.googleplusSparklineData();
             this.facebookSparklineData();
             this.linkdinSparklineData();
-            // this.showGaugeMeter();
             this.listSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);

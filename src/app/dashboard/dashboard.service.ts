@@ -90,20 +90,8 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    loadEmailOpenedData(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=13")
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    loadEmailUrlClickedData(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=15")
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    loadEmailGifClickedData(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=14")
+    listEmailLogsByUserIdAndActionId(userId: number, actionId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" + userId + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId)
         .map( this.extractData )
         .catch( this.handleError );
     }
