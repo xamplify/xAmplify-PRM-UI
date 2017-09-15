@@ -1,14 +1,25 @@
 <div class="page-content">
-	
+	<div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
+		<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
+					   'alert-danger': userDefaultPage.responseType == 'ERROR'}">
+          	<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null"><span aria-hidden="true">&times;</span></button>
+          	<h4 class="flex" style="padding-top: 10px;">
+          		<i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
+					   'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" 
+          		aria-hidden="true" style="padding-right: 7px;"></i>
+          		<span>{{userDefaultPage.responseMessage}}</span>
+       		</h4>
+      	</div>
+	</div>
 	<div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
 		<div class="col-xs-12 col-sm-6">
 			<h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">Welcome to Xtremand</h4>
 		</div>
-		<div class="col-xs-12 col-sm-6" [hidden]="isDefaultPage">
+		<div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
 			<div style="display: flex;float: right;">
 				<h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
 				<div style="margin: 3px 0 3px 20px;">
-					<ui-switch [(ngModel)]="isDefaultPage" color="lightgreen" 
+					<ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen" 
 						size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
 				</div>
 			</div>

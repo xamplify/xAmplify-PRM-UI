@@ -20,6 +20,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { Pagination } from '../../core/models/pagination';
 import { DashboardReport } from '../../core/models/dashboard-report';
+import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
@@ -35,13 +36,12 @@ export class DashboardComponent implements OnInit {
     dashboardStates: any;
     socialeMedia: any;
     dashboardReport: DashboardReport = new DashboardReport();
-
+    userDefaultPage: UserDefaultPage = new UserDefaultPage();
     weeklyTweetsCount: number;
     twitterTotalTweetsCount: number;
     twitterTotalFollowersCount: any;
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
 
-    isDahboardDefaultPage: boolean;
     public totalRecords: number;
 
     campaigns: Campaign[];
@@ -328,32 +328,35 @@ export class DashboardComponent implements OnInit {
     }
 
     getDefaultPage(userId: number) {
-        this.userService.getUserDefaultPage(userId)
-            .subscribe(
-            data => {
-                this.isDahboardDefaultPage = data['_body'].includes('dashboard');
-            },
-            error => console.log(error),
-            () => { }
-            );
-    }
+        this.userService.getUserDefaultPage( userId )
+        .subscribe(
+        data => {
+            if(data['_body'].includes('dashboard')){
+                this.userDefaultPage.isCurrentPageDefaultPage = true;
+                this.referenceService.userDefaultPage = 'DASHBOARD';
+            }
+        },
+        error => console.log( error ),
+        () => { }
+        );
+}
 
     setDashboardAsDefaultPage(event: any) {
-        let defaultPage;
-        if (event)
-            defaultPage = 'dashboard';
-        else
-            defaultPage = 'welcome';
-        this.userService.setUserDefaultPage(this.loggedInUserId, defaultPage)
+        this.referenceService.userDefaultPage = event ?  'DASHBOARD': 'WELCOME';
+        this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
-            data => {
-                this.isDahboardDefaultPage = event;
-                this.referenceService.userDefaultPage = defaultPage.toUpperCase();
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    this.userDefaultPage.isCurrentPageDefaultPage = event;
+                    this.userDefaultPage.responseType = 'SUCCESS';
+                    this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
+                },
+                error => {
+                    this.userDefaultPage.responseType = 'ERROR';
+                    this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
+                },
+                () => { }
             );
-    }
+    }   
 
     listCampaignInteractionsData(userId: number, reportType: string) {
         this.campaignService.listCampaignInteractionsData(userId, reportType)

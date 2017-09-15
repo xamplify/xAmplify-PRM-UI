@@ -34,7 +34,7 @@ export class ReferenceService {
     isFromTopNavBar:boolean = false;
     topNavBarNotificationDetails:any= new Object();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    userDefaultPage: string = 'WELCOME';
+    userDefaultPage: string = 'welcome';
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger,
         private router: Router) {

@@ -4,37 +4,43 @@ import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 
+import { UserDefaultPage } from '../../core/models/user-default-page';
+
 @Component( {
     selector: 'app-welcome',
     templateUrl: './welcome.component.html',
     styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-    isDefaultPage: boolean;
+    userDefaultPage: UserDefaultPage = new UserDefaultPage();
     constructor( private userService: UserService, private authenticationService: AuthenticationService, private referenceService: ReferenceService ) { }
+    
     getDefaultPage( userId: number ) {
         this.userService.getUserDefaultPage( userId )
             .subscribe(
             data => {
-                this.isDefaultPage = data['_body'].includes( 'welcome' );
+                if(data['_body'].includes('welcome')){
+                    this.userDefaultPage.isCurrentPageDefaultPage = true;
+                    this.referenceService.userDefaultPage = 'WELCOME';
+                }
             },
             error => console.log( error ),
             () => { }
             );
     }
     setWelcomeAsDefaultPage( event: any ) {
-        let defaultPage;
-        if ( event )
-            defaultPage = 'welcome';
-        else
-            defaultPage = 'dashboard';
-        this.userService.setUserDefaultPage( this.authenticationService.getUserId(), defaultPage )
+        this.referenceService.userDefaultPage = event ?  'WELCOME': 'DASHBOARD';
+        this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
             data => {
-                this.isDefaultPage = event;
-                this.referenceService.userDefaultPage = defaultPage.toUpperCase();
+                this.userDefaultPage.isCurrentPageDefaultPage = event;
+                this.userDefaultPage.responseType = 'SUCCESS';
+                this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
             },
-            error => console.log( error ),
+            error => {
+                this.userDefaultPage.responseType = 'ERROR';
+                this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
+            },
             () => { }
             );
     }
