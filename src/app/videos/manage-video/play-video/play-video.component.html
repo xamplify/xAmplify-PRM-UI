@@ -21,6 +21,7 @@
 	 .overlaySet{margin-top:-331px;}
 	 .bottomCss{bottom: -183px; }
 	 .imagePath{ height: 111px; width: 100%;}
+	  textarea { resize: vertical; }
 </style>
 <div class="portlet light">
 <div class="portlet-body">
@@ -120,7 +121,7 @@
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{selectedVideo.title}}</a></textarea>
+											data-event="share_video_with_embed_code" style="height: 150px;  min-height: 140px; max-height:160px"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{selectedVideo.title}}</a></textarea>
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<div style="margin-top: 4px;">

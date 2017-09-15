@@ -141,9 +141,9 @@ a.disabled {
 								<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588"
-										[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - 0.57)}"/>
+										[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"/>
 								</svg>
-								<h2 class="percentage-value">57%</h2>
+								<h2 class="percentage-value">{{videoFile.watchedFully}}%</h2>
 							</section>
 							<h5 style="text-align: center; color: #2f2f2f;margin-top: 71px;font-size: 17px;font-weight: 400;">Watched Fully</h5>
 						</div>

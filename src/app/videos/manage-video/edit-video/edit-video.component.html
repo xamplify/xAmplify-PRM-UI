@@ -23,9 +23,7 @@
 	 .is360video{z-index: 900;}
 	 .overlaySet{margin-top:-299px;}
 	 .bottomCss{bottom: -183px; }
-	 textarea { 
-		resize:vertical; 
-    }
+	 textarea { resize:vertical; }
 </style>
 
 <div class="portlet light">
@@ -119,7 +117,7 @@
 								<form>
 									<div class="input-group" style="width: 100%;">
 										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code"style="height: 150px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedUrl}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
+											data-event="share_video_with_embed_code" style="height: 150px;  min-height: 140px; max-height:160px"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedUrl}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedUrl}}" target="_blank">{{saveVideoFile.title}}</a></textarea>
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<div style="margin-top: 4px;">
@@ -178,7 +176,7 @@
 								</div>
 							</div>
 							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
-								<div class="form-body">
+								<div class="form-body" style="padding:9px">
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Title:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
@@ -289,7 +287,8 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Description:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<textarea (input)="descriptionInput(descriptionValue.value)" class="form-control" rows="3" formControlName="description" required #descriptionValue></textarea>
+											<textarea (input)="descriptionInput(descriptionValue.value)" class="form-control" rows="3" style="min-height: 70px; max-height:110px;"
+											formControlName="description" required #descriptionValue></textarea>
 											<div *ngIf="formErrors.description" class="alert alert-danger">{{formErrors.description}}</div>
 											<div *ngIf="emptyDescription && formErrors.description==false" class="alert alert-danger">description shouldn't be empty</div>
 										</div>
@@ -537,7 +536,7 @@
 									</label>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
-											style="width: 100%; height: 52px;" placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
+											style="width: 100%; height: 52px; min-height: 52px; max-height:70px;" placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
 											<!--<label *ngIf="upperTextValid == false" style="position:absolute;color:red;bottom: 29px">*</label>-->
 											<label style="float:right; font-size: 11px;">{{characterleft}}</label>
 									</div>
@@ -548,7 +547,7 @@
 									</label>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
-											style="width: 100%; height: 52px;" placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
+											style="width: 100%; height: 52px;min-height: 52px; max-height:70px;" placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
 											<!--<label *ngIf="lowerTextValid == false" style="color:red">*</label>-->
 											<label style="float:right; font-size: 11px;">{{lowerCharacterleft}}</label>
 									</div>
