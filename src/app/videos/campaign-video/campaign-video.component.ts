@@ -13,6 +13,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
+import { UtilService } from '../../core/services/util.service';
 enum LogAction {
     playVideo = 1,
     pauseVideo = 2,
@@ -59,10 +60,11 @@ public timeValue: any;
 public seekStart = null;
 public seekStart360 = null;
 LogAction: typeof LogAction = LogAction;
+public emailLog: any;
   constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
             public _logger: Logger, public http: Http, public authenticationService: AuthenticationService,
             public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService ,
-            public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) {
+            public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService) {
             console.log('share component constructor called');
             console.log('url is on angular 2' + document.location.href);
             this.publicRouterUrl = document.location.href;
@@ -101,31 +103,68 @@ deviceDectorInfo() {
         this.xtremandLog.longitude = data.lon;
         this.xtremandLog.countryCode = data.countryCode;
     }
-  getCampaignVideo() {
-    this.videoFileService.showCampaignVideo(this.typeValue, this.videoAlias, this.campaignAlias, this.userAlias)
-        .subscribe(
-         (result: SaveVideoFile) => {
-          this.campaignVideoFile = result;
-          console.log(result);
-          this.posterImagePath = this.campaignVideoFile.imagePath;
-          this.is360Value  =  this.campaignVideoFile.is360video;
-          this.title = this.campaignVideoFile.title;
-          this.description = this.campaignVideoFile.description;
-          this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
-          console.log(this.videoLength);
-        if (this.campaignVideoFile.is360video === true) {
-         this.play360Video();
-        } else {
-          this.playNormalVideo();
-        }
-       this.defaultVideoSettings();
-          console.log(this.videoUrl);
-       }, (error: any) => {
-            this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
-            this.xtremandLogger.errorPage(error);
-         }
-    );
-  }
+    
+    getCampaignVideo() {
+        this.utilService.getJSONLocation()
+            .subscribe(
+            (data: any) => {
+                console.log("data :" + data);
+
+                this.deviceInfo = this.deviceService.getDeviceInfo();
+                if (this.deviceInfo.device === 'unknown') {
+                    this.deviceInfo.device = 'computer';
+                }
+
+                this.emailLog = {
+                    'userAlias': this.userAlias,
+                    'campaignAlias': this.campaignAlias,
+                    'time': new Date(),
+                    'deviceType': this.deviceInfo.device,
+                    'os': this.deviceInfo.os,
+                    'city': data.city,
+                    'country': data.country,
+                    'isp': data.isp,
+                    'ipAddress': data.query,
+                    'state': data.regionName,
+                    'zip': data.zip,
+                    'latitude': data.lat,
+                    'longitude': data.lon,
+                    'countryCode': data.countryCode,
+                    'videoAlias': this.videoAlias,
+                    'actionId': 14
+                };
+
+                console.log("emailLog" + this.emailLog);
+
+                this.videoFileService.showCampaignVideo(this.typeValue, this.emailLog)
+                    .subscribe(
+                    (result: SaveVideoFile) => {
+                        this.campaignVideoFile = result;
+                        console.log(result);
+                        this.posterImagePath = this.campaignVideoFile.imagePath;
+                        this.is360Value = this.campaignVideoFile.is360video;
+                        this.title = this.campaignVideoFile.title;
+                        this.description = this.campaignVideoFile.description;
+                        this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
+                        console.log(this.videoLength);
+                        if (this.campaignVideoFile.is360video === true) {
+                            this.play360Video();
+                        } else {
+                            this.playNormalVideo();
+                        }
+                        this.defaultVideoSettings();
+                        console.log(this.videoUrl);
+                    }, (error: any) => {
+                        this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    );
+
+            },
+            error => console.log(error));
+    }
+    
+    
  truncateHourZeros(length){
     const val = length.split(":");
     if (val.length == 3 && val[0] == "00") {

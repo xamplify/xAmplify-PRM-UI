@@ -134,17 +134,16 @@ export class VideoFileService {
             // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
     }
-    showCampaignVideo(typeValue: string, videoAlias: string, campaignAlias: string, userAlias: string) {
+    
+    showCampaignVideo(typeValue: string, emailLog: any) {
         try {
-            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue + '&videoAlias=' +
-                videoAlias + '&campaignAlias=' + campaignAlias + '&userAlias=' + userAlias;
-            return this.http.get(url, '')
+            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue;
+            return this.http.post(url, emailLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         } catch (error) {
-            // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
         }
-    }
+ }
     logEmbedVideoActions(actionLog: ActionLog) {
         console.log(this.timeValue);
         try {
