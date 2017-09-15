@@ -3,6 +3,6 @@ export class CallActionSwitch {
      offTextValue = 'OFF';
      onColorBswitch = 'success';
      offColorBswitch = 'warning';
-     size = 'normal';
+     size = 'small';
      animate = true;
 }
