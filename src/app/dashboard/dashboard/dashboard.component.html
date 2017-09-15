@@ -875,7 +875,7 @@ input[type=radio] {
      						 </div>
      					 <div class="modal-body">
      					 <div *ngIf="dashboardReport.emailGifClickedList?.length == 0" class="col-xs-12 alert alert-info">
-					           <h4>No Records found.. !!!</h4>
+					           <strong>No Records found.. !!!</strong>
 		                </div>
      					 <div class="table-responsive">
   					   <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
@@ -940,8 +940,7 @@ input[type=radio] {
      						<h4 align="center">Email Watched Data</h4>
      						 </div>
      					 <div class="modal-body">
-     					 <div *ngIf="noDataFound" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     					 <div *ngIf="emailWatchedPagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
 						           <strong>No Records found.. !!!</strong>
 			                </div>
      					 <div class="table-responsive">
