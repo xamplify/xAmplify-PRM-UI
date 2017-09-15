@@ -509,6 +509,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
         $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
     }
+    googleDriveDisabled() {
+        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+        this.defaultDesabled();
+    }
     defaultSettings() {
         this.cloudDropbox = false;
         this.cloudBox = false;
@@ -659,6 +663,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     pickerCallback(data: any) {
+        this.getGoogleInfo(data);
         const self = this;
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
             const doc = data[google.picker.Response.DOCUMENTS][0];
@@ -681,6 +686,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     console.log(result);
                     swal.close();
                     this.processing = true;
+                    this.googleDriveDisabled();
                     this.processVideo(result.path);
                 }, (error: any) => {
                  this.errorIsThere = true;
@@ -711,6 +717,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 return true;
         }
         return false;
+    }
+    getGoogleInfo(data: any) {
     }
     ngOnInit() {
         QuickSidebar.init();

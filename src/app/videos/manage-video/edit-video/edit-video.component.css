@@ -74,3 +74,9 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
 .viewsh4{
     color: #777;font-weight: 500;margin: 5px;
 }
+.activeDiv {
+    cursor: pointer;
+}
+.inactiveDiv { pointer-events: none; cursor: not-allowed; }
+
+.ng2-tags-container > *{ margin-right: 5px; }

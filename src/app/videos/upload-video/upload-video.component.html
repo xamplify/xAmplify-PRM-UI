@@ -1,10 +1,11 @@
 <style type="text/css">
 .customDisableCss{ cursor:not-allowed !important; opacity:0.6 ; pointer-events: none;  } 
 .cursorCss{ cursor :pointer; }
-textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
-/* :host /deep/ .vjs-device-button.vjs-control {
-	left:43%;
-} */
+/* textarea { resize:vertical;  max-height: 100px; min-height: 60px;} */
+ textarea { resize:none; 	max-height: 100%; max-width: 100%; 	min-height: 100%; min-width: 100%;
+			padding: 10px;
+      }
+  .page-bar{border-radius: 0}
 </style>
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
@@ -37,9 +38,10 @@ textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
 			</ul>
 		</div>
 	 <!--custom model poopup -->
-	  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+	  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		 data-keyboard="false" data-backdrop="static">
            <div class="modal-dialog" role="document">
-             <div class="modal-content">
+             <div class="modal-content" style="border-radius:0">
                <div class="modal-header">
                 <button [class.customDisableCss] = "closeModalId ==false" [disabled]="closeModalId ==false" type="button" class="closeModal" data-dismiss="modal"
 						aria-hidden="true" (click)="closeRecordPopup()">×</button>
@@ -94,11 +96,10 @@ textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-						<!--<div> {{browserInfo}}</div>-->
 						<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button" ><span> <i class="fa fa-plus"></i>Add file...</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" [class.customDisableCss] ="isFileProgress==true"
-						     *ngIf="uploader.queue.length==0" 
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob" 
+							 [class.customDisableCss] ="isFileProgress==true" *ngIf="uploader.queue.length==0" 
 							 [disabled]="loading==true||isDisable == true || isSelectedVideo == true" #input />
 						</div> </div>
 					 <div *ngIf="MultipleVideo" style="float: left; width: 113px;">
@@ -186,7 +187,7 @@ textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-8 col-lg-6" style="padding-top: 42px;">
-					   <div style="float: left; width: 100px;" class="zoomin">
+					   <!-- <div style="float: left; width: 100px;" class="zoomin">
 						   <img src="assets/images/record.png" title="Click here To Record from computer acttached camera"
 								(click)="cameraChange()" height="80" width="80" class="camera" style=" border: 5px; margin: 10px;">
 								<small style="margin-left: 18px; font-size: 13px;">Camera</small>
@@ -211,8 +212,8 @@ textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
 					        <img src="assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
 								height="80" width="80" style="cursor: pointer; border: 1px; margin: 10px;">
 								<small style=" margin-left: 12px;font-size: 13px;">One Drive</small>
-					   </div>			
-						<!-- <div  class="col-xs-4 col-sm-4 col-md-2 zoomin">
+					   </div>			 -->
+						 <div  class="col-xs-4 col-sm-4 col-md-2 zoomin">
 						   <img src="assets/images/record.png" title="Click here To Record from computer acttached camera"
 								(click)="cameraChange()" height="80" width="auto" class="camera" style=" border: 5px; margin: 10px;">
 								<div style="position: relative;left: 18px;">Camera</div>
@@ -237,7 +238,7 @@ textarea { resize:vertical;  max-height: 100px; min-height: 60px;}
 					        <img src="assets/images/onedrive.png" class="oneDrive" title="Click here To access videos from your OneDrive account"
 								height="80" width="auto" style="cursor: pointer; border: 1px; margin: 10px;">
 								<div style="position: relative;left: 11px;">One Drive</div>
-					   </div> -->
+					   </div>
 					</div>
 				</div>
 				<div class="clearfix" style="margin: 5px;"></div>

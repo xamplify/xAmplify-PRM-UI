@@ -149,6 +149,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public checkTag: string;
     isThisDraftVideo = false;
     selectedImagePath: string;
+    onColorValue = 'green';
+    offColorValue = 'red';
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute,
         public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -342,12 +344,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
     // div hide and show methods
-    titleDivChange(event: boolean) {
-        this.titleDiv = event;
+    titleDivChange() {
+        this.titleDiv = true;
         this.colorControl = this.controlPlayers = this.callaction = false;
     }
-    colorControlChange(event: boolean) {
-        this.colorControl = event;
+    colorControlChange() {
+       $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        this.colorControl = true;
         this.titleDiv = this.controlPlayers = this.callaction = false;
         const disable = this;
         this.loadRangeDisable = false;
@@ -361,9 +364,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }, 1);
     }
-    controlPlayerChange(event: any) {
-        this.controlPlayers = event;
-        this.colorControl = this.titleDiv = this.callaction = false; const disable = this;
+    controlPlayerChange() {
+        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        this.controlPlayers = true;
+        this.colorControl = this.titleDiv = this.callaction = false;
+        const disable = this;
         this.loadRangeDisable = false;
         setTimeout(function () {
             if (disable.defaultSettingValue === true) {
@@ -371,8 +376,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             } else { disable.disablePlayerSettingnew = false; }
         }, 1);
     }
-    callToActionChange(event: any) {
-        this.callaction = event;
+    callToActionChange() {
+        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        this.callaction = true;
         this.controlPlayers = this.colorControl = this.titleDiv = false;
         const disable = this;
         setTimeout(function () {
@@ -615,6 +621,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultPlayerSettingsValues(event: boolean) {
         if (event === true) {
+            this.defaultSettingValue = true;
             this.disablePlayerSettingnew = true;
             if (this.loadRangeDisable !== true) {
                 (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
@@ -637,6 +644,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.newAllowSharing = this.defaultPlayerValues.allowSharing;
             this.newValue360 = this.defaultPlayerValues.is360video;
         } else {
+             this.defaultSettingValue = false;
             if (this.loadRangeDisable !== true) {
                 (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
             }

@@ -1,4 +1,6 @@
 <style type="text/css">
+	.portlet, .portlet-body{border-radius: 0;}
+	.p0{padding: 0;margin: 0;}
 	 a.disabled { pointer-events: none; cursor: not-allowed; }
 	.ownThumnailCss{margin-top: -22px;}
 	.clipboard{ padding: 6px 44px;}
@@ -23,7 +25,14 @@
 	 .is360video{z-index: 900;}
 	 .overlaySet{margin-top:-299px;}
 	 .bottomCss{bottom: -183px; }
-	 textarea { resize:vertical; }
+	 textarea { resize:none;
+			max-height: 100%;
+			max-width: 100%;
+			min-height: 100%;
+			min-width: 100%;
+			padding: 10px;
+      }
+
 </style>
 
 <div class="portlet light">
@@ -162,17 +171,17 @@
 
 						<!-- BEGIN SAMPLE FORM PORTLET-->
 						<div class="portlet box green " style="margin-top: 3px;">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-info-circle"></i>{{titleOfVideo}} Video Info
-								</div>
-								<div class="tools">
-									<a [class.disabled]="titleDiv"> 
-									<i *ngIf="titleDiv==false" (click)="titleDivChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
-									<i *ngIf="titleDiv==true"  (click)="titleDivChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
-									 <!--<ui-switch [(ngModel)]="titleDiv" [disabled] ="titleDiv" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small"
-									  (change)="titleDivChange($event)"></ui-switch>-->
-									</a> <a href="" class="reload"></a>
+							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
+								<div class="col-xs-12 caption p0">
+									<!-- <i class="fa fa-info-circle"></i> -->
+									<div class="col-xs-11 p0">
+										<h4 class="p0">{{titleOfVideo}} Video Info</h4>
+									</div>
+									<div class="col-xs-1 text-right p0">
+										<a>
+										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !titleDiv, 'fa-angle-up': titleDiv}"></i>
+										</a> 
+									</div>
 								</div>
 							</div>
 							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
@@ -217,7 +226,6 @@
 											<tag-input formControlName="tags"  [theme]="'foundation-theme'" 
 											[validators]="validatorsTag" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
-											<!-- <div *ngIf="tagsUndefined && formErrors.tags==false" class="alert alert-danger">tag name should not be empty</div> -->
 										</div>
 									</div>
 									<div class="form-group" style="margin-top: 30px;">
@@ -300,17 +308,17 @@
 
 						<!-- BEGIN Customize FORM PORTLET-->
 						<div class="portlet box blue">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-cogs "></i>Apperance of the player
-								</div>
-								<div class="tools">
-									<a [class.disabled]="colorControl==true">
-									<i *ngIf="colorControl==false" (click)="colorControlChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
-									<i *ngIf="colorControl==true"  (click)="colorControlChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
-									 <!--<ui-switch [(ngModel)]="colorControl" [disabled]="colorControl" [ngModelOptions]="{standalone: true}" color="lightgreen" size="small" 
-									(change)="colorControlChange($event)"></ui-switch>-->
-									</a> <a href="" class="reload"></a>
+							<div class="portlet-title" [ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}"
+						      (click)="colorControlChange();">
+								<div class="col-xs-12 caption p0">
+									<div class="col-xs-11 p0">
+										<h4 class="p0">Appearance of the player</h4>
+									</div>
+									<div class="col-xs-1 text-right p0">
+										<a>
+										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !colorControl, 'fa-angle-up': colorControl}"></i>
+										</a> 
+									</div>
 								</div>
 							</div>
 							<div class="portlet-body form" *ngIf="colorControl" [@fadeInOut]>
@@ -319,8 +327,13 @@
 									   <div class="form-group">
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-											 <ui-switch  color="lightgreen" [(ngModel)]="defaultSettingValue" [ngModelOptions]="{standalone: true}"
-											  (change)="defaultPlayerSettingsValues($event);"></ui-switch>
+											  <!-- <ui-switch  color="lightgreen" [(ngModel)]="defaultSettingValue" [ngModelOptions]="{standalone: true}"
+											  (change)="defaultPlayerSettingsValues($event);">
+											</ui-switch>  -->
+											  <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" 
+												(statusChange)="defaultPlayerSettingsValues($event)">
+										  	 </switch> 
 											</div>
 										</div>
 									<div>
@@ -335,8 +348,13 @@
 										<div class="form-group">
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Controller:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-												<ui-switch color="lightgreen"  [(ngModel)]="newEnableController" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)"></ui-switch>
+												<!-- <ui-switch color="lightgreen"  [(ngModel)]="newEnableController" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)">
+												</ui-switch> -->
+											  <switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="enableVideoControllers($event)">
+										  	 </switch>
 											</div>
 										</div>
 										<div class="form-group">
@@ -367,72 +385,111 @@
 						<!-- END SAMPLE FORM PORTLET-->
 						<!-- BEGIN Customize FORM PORTLET-->
 						<div class="portlet box red">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-cogs "></i>Controls of the player
-								</div>
-								<div class="tools">
-									<a [class.disabled]="controlPlayers == true"> 
-										<i *ngIf="controlPlayers==false" (click)="controlPlayerChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
-								 	    <i *ngIf="controlPlayers==true"  (click)="controlPlayerChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
-									<!--<ui-switch [(ngModel)]="controlPlayers" [disabled]="controlPlayers" [ngModelOptions]="{standalone: true}" color="lightgreen"
-											size="small" (change)="controlPlayerChange($event)"></ui-switch>-->
-									</a> <a href="" class="reload"></a>
-								</div>
+							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}"
+							 (click)="controlPlayerChange();">
+							 <div class="col-xs-12 caption p0">
+									<!-- <i class="fa fa-info-circle"></i> -->
+									<div class="col-xs-11 p0">
+										<h4 class="p0">Controls of the player</h4>
+									</div>
+									<div class="col-xs-1 text-right p0">
+										<a>
+										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !controlPlayers, 'fa-angle-up': controlPlayers}"></i>
+										</a> 
+									</div>
+								</div>	
 							</div>
 							<div class="portlet-body form" *ngIf="controlPlayers" [@fadeInOut]>
-								<!-- <form class="form-horizontal" role="form" style="margin-left: 25%;"> -->
 								<div class="portlet-body form" data-initialized="1"
 									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="lightblue" [(ngModel)]="newAllowSharing" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)"></ui-switch>
+												<!-- <ui-switch color="lightblue" [(ngModel)]="newAllowSharing" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)">
+												</ui-switch> -->
+											 <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="allowSharing($event)">
+											</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="red"  [(ngModel)]="newEnableSetting" [ngModelOptions]="{standalone: true}" 
-												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)"></ui-switch>
+												<!-- <ui-switch color="red"  [(ngModel)]="newEnableSetting" [ngModelOptions]="{standalone: true}" 
+												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)">
+												</ui-switch> -->
+												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="enableSettings($event)">
+											</switch>
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="lightblue" [(ngModel)]="newFullScreen" [ngModelOptions]="{standalone: true}" 
-												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)"></ui-switch>
+												<!-- <ui-switch color="lightblue" [(ngModel)]="newFullScreen" [ngModelOptions]="{standalone: true}" 
+												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)">
+												</ui-switch> -->
+											<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="changeFullscreen($event)">
+											</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="lightblue" [(ngModel)]="newComments" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)"></ui-switch>
+												<!-- <ui-switch color="lightblue" [(ngModel)]="newComments" [ngModelOptions]="{standalone: true}"
+												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)">
+												</ui-switch> -->
+											<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="allowComments($event)">
+											</switch>
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
-												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch>
+												<!-- <ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
+												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch> -->
+										     <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="allowLikes($event)">
+											</switch>
 											</div>
                                            	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<ui-switch color="orange"  [(ngModel)]="newEnableCasting" [ngModelOptions]="{standalone: true}"
-												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)"></ui-switch>
+												<!-- <ui-switch color="orange"  [(ngModel)]="newEnableCasting" [ngModelOptions]="{standalone: true}"
+												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)">
+											</ui-switch> -->
+												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="enableCastings($event)">
+											</switch>
 										</div>
 
 										</div>
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-											 <ui-switch color="red" [(ngModel)]="newAllowEmbed" [ngModelOptions]="{standalone: true}"
-											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)"></ui-switch>
+											 <!-- <ui-switch color="red" [(ngModel)]="newAllowEmbed" [ngModelOptions]="{standalone: true}"
+											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)">
+											</ui-switch> -->
+											<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="allowEmbedVideo($event)">
+											</switch>
 											</div>
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-											 <ui-switch color="blue"   [(ngModel)]="newValue360" [ngModelOptions]="{standalone: true}"
+											 <!-- <ui-switch color="blue"   [(ngModel)]="newValue360" [ngModelOptions]="{standalone: true}"
 											  [disabled] ="disablePlayerSettingnew"
-											   (change)="is360VideoCheck($event)"></ui-switch>
+											   (change)="is360VideoCheck($event)"></ui-switch> -->
+											<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												(statusChange)="is360VideoCheck($event)">
+											</switch>
+												  
 											</div>
 										</div>
 									</div>
@@ -441,43 +498,32 @@
 							</div>
 						</div>
 						<!-- END SAMPLE FORM PORTLET-->
-
 						<!-- BEGIN Customize FORM PORTLET-->
-						<div class="portlet box yellow">
-							<div class="portlet-title">
-								<div class="caption">
-									<i class="fa fa-cogs "></i>Call to Action
-								</div>
-								<div class="tools">
-									<a [class.disabled] ="callaction==true">
-										<i *ngIf="callaction==false" (click)="callToActionChange(true);" class="fa fa-angle-double-down iconSize" aria-hidden="true"></i>
-								 	    <i *ngIf="callaction==true"  (click)="callToActionChange(false);" class="fa fa-angle-double-up iconSize" aria-hidden="true"></i>
-										<!-- <ui-switch [(ngModel)]="callaction" [disabled]="callaction" [ngModelOptions]="{standalone: true}" color="lightgreen"
-											size="small" (change)="callToActionChange($event)"></ui-switch>-->
-									</a> <a href="" class="reload"></a>
-								</div>
+						<div class="portlet box yellow" id="callaction">
+							<div class="portlet-title"  (click)="callToActionChange();" 
+							[ngClass]="{'activeDiv':!callaction , 'inactiveDiv' :callaction}">
+							<div class="col-xs-12 caption p0">
+									<div class="col-xs-11 p0">
+										<h4 class="p0">Call to Action</h4>
+									</div>
+									<div class="col-xs-1 text-right p0">
+										<a>
+										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !callaction, 'fa-angle-up': callaction}"></i>
+										</a> 
+									</div>
+								</div>		
 							</div>
 							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
-								<!-- <form class="form-horizontal" role="form"> -->
 									<div class="form-group">
 									<label class="col-xs-6 control-label">Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
-										   <!-- <ui-switch  formControlName="callACtion"  color="lightgreen"
-											(change)="enableCallToActionMethodTest($event)">
-									      </ui-switch> -->
-										  <bSwitch
-											[switch-off-text]="callActionSwitch.offTextValue"
-											[switch-on-text]="callActionSwitch.onTextValue"
-											[switch-on-color]="callActionSwitch.onColorBswitch"
-											[switch-off-color]="callActionSwitch.offColorBswitch"
-											[switch-size]="callActionSwitch.size"
-											[switch-animate]="callActionSwitch.animate"
+										  <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
+											[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
+											[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
 											[(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}"
 											(onChangeState) = "enableCallToActionMethodTest($event.currentValue)">
 										 </bSwitch> 
-										  <!-- <switch [status]="enableCalltoAction" [onText]="onTextValue" [offText]="offTextValue" [onColor]="_onColor" 
-											[offColor]="_offColor" [size]="size" (statusChange)="enableCallToActionMethodTest($event)"></switch>   -->
 										</div>
 									</div>
 								</div>
@@ -485,22 +531,38 @@
 									<div class="form-group" style="padding: 1em">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Call To Action At:</label>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
-										<div class="checkbox-list">
+										<div >
 											<label > start Of the video</label>
-											<ui-switch  color="lightgreen"
+											<!-- <ui-switch  color="lightgreen"
 												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableStart == true"
 												(change)="startCallToactionOverlay($event)">
-											</ui-switch>
+											</ui-switch> -->
+										 <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
+											[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
+											[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+											[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"
+											(onChangeState) = "startCallToactionOverlay($event.currentValue)">
+										 </bSwitch>
 									    </div>
 									</div>
 									<div class="col-xs-3 col-sm-3 col-md-1 col-lg-1" style="padding: 1em; left: -21px;">(Or)</div>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
-										<div class="checkbox-list">
+										<div >
 											<label > end Of the video</label>
-												<ui-switch  color="lightgreen"
+												<!-- <ui-switch  color="lightgreen"
 													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableEnd == true"
 													 (change)="endCallToactionOverlay($event)">
-												</ui-switch>
+												</ui-switch> -->
+											<!-- <switch [status]="endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size"
+												[disabled]="disableEnd" (statusChange)="endCallToactionOverlay($event)">
+											</switch>		 -->
+										 <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
+											[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
+											[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+											[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"
+											(onChangeState) = "endCallToactionOverlay($event.currentValue)">
+										 </bSwitch>
 									    </div>
 									</div>
 								</div>
@@ -537,7 +599,6 @@
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)"
 											style="width: 100%; height: 52px; min-height: 52px; max-height:70px;" placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
-											<!--<label *ngIf="upperTextValid == false" style="position:absolute;color:red;bottom: 29px">*</label>-->
 											<label style="float:right; font-size: 11px;">{{characterleft}}</label>
 									</div>
 								</div>
@@ -548,24 +609,15 @@
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
 											style="width: 100%; height: 52px;min-height: 52px; max-height:70px;" placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
-											<!--<label *ngIf="lowerTextValid == false" style="color:red">*</label>-->
 											<label style="float:right; font-size: 11px;">{{lowerCharacterleft}}</label>
 									</div>
 								</div>
-									<!-- <div class="form-actions right"
-									style="padding-bottom: 0px; padding-top: 10px;">
-									<button type="button" class="btn default">Cancel</button>
-									<button type="submit" class="btn green">Save</button>
-								</div> -->
-								<!-- </form> -->
 							</div>
 						</div>
 
 					</div>
 				</form>
 			</div>
-			<!-- END SAMPLE FORM PORTLET-->
-
 		</div>
 	</div>
 	<div class="todo-content" >
