@@ -544,6 +544,7 @@ export class DashboardComponent implements OnInit {
             error => console.log(error),
             () => console.log("finished")
             );*/
+        this.noDataFound = false;
     }
     emailClicked() {
         this.totalEmailUrlClickedData();
@@ -581,6 +582,7 @@ export class DashboardComponent implements OnInit {
             error => console.log(error),
             () => console.log("finished")
             );*/
+        this.noDataFound = false;
     }
     
     totalEmailGifClickedData() {
@@ -615,6 +617,7 @@ export class DashboardComponent implements OnInit {
             error => console.log(error),
             () => console.log("finished")
             );*/
+        this.noDataFound = false;
     }
 
 
@@ -642,6 +645,7 @@ export class DashboardComponent implements OnInit {
             error => console.log(error),
             () => console.log("finished")
             );
+        this.noDataFound = false;
     }
     getCountriesTotalViewsData() {
         this._dashboardService.getCountryViewsDetails().
