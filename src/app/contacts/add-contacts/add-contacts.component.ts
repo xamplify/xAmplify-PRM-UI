@@ -30,6 +30,8 @@ declare var $: any;
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination]
 })
 export class AddContactsComponent implements OnInit {
+    settingSocialNetwork : string;
+    isUnLinkSocialNetwork : boolean = false;
     public contactLists: Array<ContactList>;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
@@ -38,11 +40,11 @@ export class AddContactsComponent implements OnInit {
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
     selectedZohoDropDown : string = 'DEFAULT';
-googleCheckboxValue: boolean = false;
-salesforceCheckboxValue: boolean = false;
-zohoCheckboxValue: boolean = false;
-zohoCredentialError = '';
-zohoAuthStorageError = '';
+    googleCheckboxValue: boolean = false;
+    salesforceCheckboxValue: boolean = false;
+    zohoCheckboxValue: boolean = false;
+    zohoCredentialError = '';
+    zohoAuthStorageError = '';
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
@@ -415,7 +417,7 @@ zohoAuthStorageError = '';
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.validEmailPatternSuccess == true ) {
-            this.logger.info( this.newUsers[0].emailId );
+            this.logger.info( this.newUsers[0].emailId.toLowerCase() );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
                     this.saveValidEmails();
@@ -433,13 +435,18 @@ zohoAuthStorageError = '';
             this.noOptionsClickError = false;
         }
         else {
+            if(this.isValidContactName == false){
             this.contactListNameError = true;
+            }
             this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
            }
          }
 
     saveValidEmails() {
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
+        for(var i=0; i< this.newUsers.length;i++){
+            this.newUsers[i].emailId = this.convertToLowerCase(this.newUsers[i].emailId);
+        }
         this.contactService.saveContactList( this.model.contactListName, this.newUsers )
             .subscribe(
             data => {
@@ -516,16 +523,9 @@ zohoAuthStorageError = '';
     }
 
     saveClipboardValidEmails() {
-        /*var isValidData: boolean = true;
-        for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
-            //var data = allTextLines[i].split( splitValue );
-            if ( !this.validateEmailAddress( this.clipboardUsers[i].emailId ) ) {
-                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + this.clipboardUsers[i].emailId + "</h4>" );
-                isValidData = false;
-            }
-            
-        }*/
-        //if(!isValidData){
+        for(var i=0; i< this.clipboardUsers.length;i++){
+            this.clipboardUsers[i].emailId = this.convertToLowerCase(this.clipboardUsers[i].emailId);
+        }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != ' ' ) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
@@ -563,6 +563,9 @@ zohoAuthStorageError = '';
                     }
                 }
                 if ( this.validCsvContacts == true ) {
+                    for(var i=0; i< this.contacts.length;i++){
+                        this.contacts[i].emailId = this.convertToLowerCase(this.contacts[i].emailId);
+                    }
                     this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                     this.contactService.saveContactList( this.model.contactListName, this.contacts )
                         .subscribe(
@@ -623,7 +626,11 @@ zohoAuthStorageError = '';
     cancelContacts() {
         this.contactListNameError = false;
         this.noOptionsClickError = false;
+        this.isValidContactName = false
         this.emailNotValid = false;
+        this.gContacts.length = 0;
+        this.zContacts.length = 0;
+        this.salesforceContactUsers.length = 0;
         if ( this.saveAddCotactsUsers == true && this.saveClipBoardUsers == false && this.saveGoogleContactUsers == false && this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
             $( "#sample_editable_1" ).hide();
             $( "button#uploadCSV" ).prop( 'disabled', false );
@@ -1180,8 +1187,6 @@ zohoAuthStorageError = '';
     getZohoContacts( contactType: any, username: string, password: string ) {
         /*$( "#zohoContact_button" ).hide();
         $( "#zohoContact_buttonNormal" ).show();*/
-        this.zohoImageBlur = false;
-        this.zohoImageNormal = true;
         this.saveAddCotactsUsers = false;
         this.saveClipBoardUsers = false;
         this.saveCsvUsers = false;
@@ -1194,6 +1199,8 @@ zohoAuthStorageError = '';
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
+                this.zohoImageBlur = false;
+                this.zohoImageNormal = true;
                 this.socialContactImage();
                 this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
@@ -1764,88 +1771,68 @@ zohoAuthStorageError = '';
             )
     }
 
-    unlinkSalesforceAccount() {
-        this.contactService.unlinkSalesforceAccount(this.salesforceCheckboxValue)
-            .subscribe(
-            ( data: any ) => {
-                $( "#salesforceContact_buttonNormal" ).hide();
-                $( "#salesforceGear" ).hide();
-                this.sfImageBlur = true;
-                $( "#settingsSalesforce .close" ).click()
-                this.unlinkSalesforceSuccessMessage = true;
-                setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                this.socialContactImage();
-            },
-            ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    this.Campaign = error;
-                    $( "#settingsSalesforce .close" ).click()
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#salesforceSuccessMessage" ).slideUp( 500 ); }, 3000 );
+    
+    unlinkSocailAccount(){
+        let socialNetwork = this.settingSocialNetwork.toUpperCase();
+        console.log("CheckBoXValueUNlink"+this.isUnLinkSocialNetwork);
+        this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
+        .subscribe(
+                ( data: any ) => {
+                    if(socialNetwork == 'SALESFORCE'){
+                        $( "#salesforceContact_buttonNormal" ).hide();
+                        $( "#salesforceGear" ).hide();
+                        this.sfImageBlur = true;
+                        this.unlinkSalesforceSuccessMessage = true;
+                        setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                        this.socialContactImage();
+                   }
+                    else if(socialNetwork == 'GOOGLE'){
+                        $( "#googleContact_buttonNormal" ).hide();
+                        $( "#GoogleGear" ).hide();
+                        this.googleImageBlur = true;
+                        this.unlinkGoogleSuccessMessage = true;
+                        setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    }
+                    else if(socialNetwork == 'ZOHO'){
+                        $( "#zohoContact_buttonNormal" ).hide();
+                        $( "#zohoGear" ).hide();
+                        this.zohoImageBlur = true;
+                        this.unlinkZohoSuccessMessage = true;
+                        setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    }
+                },
+                ( error: any ) => {
+                    if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                        this.Campaign = error;
+                        $( "#settingsSalesforce .close" ).click()
+                        this.deleteErrorMessage = true;
+                        setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    }
+                    console.log( error );
+                },
+                () => {
+                    $( "#settingSocialNetwork .close" ).click();
+                    this.cancelContacts();
+                    this.logger.info( "deleted completed" );
                 }
-                console.log( error );
-            },
-            () => this.logger.info( "deleted completed" )
-            );
-        this.unlinkSalesforceSuccessMessage = false;
-        this.deleteErrorMessage = false;
+                );
+            this.unlinkSalesforceSuccessMessage = false;
+            this.unlinkGoogleSuccessMessage = false;
+            this.unlinkZohoSuccessMessage = false;
+            this.deleteErrorMessage = false;
     }
-
-    unlinkGoogleAccount() {
-        this.contactService.unlinkGoogleAccount(this.googleCheckboxValue)
-            .subscribe(
-            data => {
-                //this.socialContactImage();
-                $( "#googleContact_buttonNormal" ).hide();
-                $( "#GoogleGear" ).hide();
-                this.googleImageBlur = true;
-                $( "#settingsGoolge .close" ).click()
-                this.unlinkGoogleSuccessMessage = true;
-                setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
-            },
-            ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    this.Campaign = error;
-                    $( "#settingsGoolge .close" ).click()
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                }
-                console.log( error );
-            },
-            () => this.logger.info( "deleted completed" )
-            );
-        this.unlinkGoogleSuccessMessage = false;
-        this.deleteErrorMessage = false;
+    
+    convertToLowerCase(text : string){
+        return text.toLowerCase();
     }
-
-    unlinkZohoAccount() {
-        console.log(this.zohoCheckboxValue);
-        this.contactService.unlinkZohoAccount(this.zohoCheckboxValue)
-            .subscribe(
-            ( data: any ) => {
-                $( "#zohoContact_buttonNormal" ).hide();
-                $( "#zohoGear" ).hide();
-                this.zohoImageBlur = true;
-                $( "#settingsZoho .close" ).click()
-                this.unlinkZohoSuccessMessage = true;
-                setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
-            },
-            ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    this.Campaign = error;
-                    $( "#settingsZoho .close" ).click()
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                }
-                console.log( error );
-            },
-            () => this.logger.info( "deleted completed" )
-            );
-        this.unlinkZohoSuccessMessage = false;
-        this.deleteErrorMessage = false;
+    
+    settingSocialNetworkOpenModal(socialNetwork: string){
+        this.settingSocialNetwork = socialNetwork;
+        $('#settingSocialNetwork').modal();
     }
 
     ngOnInit() {
+        
         this.socialContactImage();
         this.hideModal();
         this.gContactsValue = true;

@@ -305,8 +305,8 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
-                this.dashboardReport.totalEmailUrlClickedCount = data["email_url_clicked_count"];
-                this.dashboardReport.totalEmailGifClickedCount = data["email_gif_clicked_count"];
+                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"];
+               // this.dashboardReport.totalEmailGifClickedCount = data["email_gif_clicked_count"];
             },
             error => console.log(error),
             () => console.log("emailOpenedCount completed")
@@ -482,22 +482,28 @@ export class DashboardComponent implements OnInit {
         this.totalEmailWatchedData(this.emailWatchedPagination);
     }
     
-    listEmailLogsByUserIdAndActionId(actionId: number){
-        // this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.listEmailLogsByUserIdAndActionId(this.loggedInUserId, actionId)
+    listOfEmailOpenLogs(actionId: number){
+        this._dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId)
             .subscribe(
             result => {
-                if(actionId == 13)
                     this.dashboardReport.emailOpenedList = result;
-                else if(actionId == 14)
-                    this.dashboardReport.emailGifClickedList = result;
-                else if(actionId == 15)
-                    this.dashboardReport.emailUrlClickedList = result;
             },
             error => console.log(error),
             () => { }
             );
     }
+    
+    listOfEmailClickedLogs(){
+        this._dashboardService.listEmailClickedLogs(this.loggedInUserId)
+            .subscribe(
+            result => {
+                    this.dashboardReport.emailClickedList = result;
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
+    
 
     totalEmailWatchedData(pagination: Pagination) {
         //this.pagination = new Pagination();

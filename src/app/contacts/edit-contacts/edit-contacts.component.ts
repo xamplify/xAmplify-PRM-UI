@@ -1203,6 +1203,7 @@ export class EditContactsComponent implements OnInit {
                 () => this.logger.info( "deleted completed" )
             );
         this.deleteSucessMessage = false;
+        this.invalidDeleteSucessMessage = false;
     }
     invalidContactsShowAlert() {
        /* var removeUserIds = new Array();

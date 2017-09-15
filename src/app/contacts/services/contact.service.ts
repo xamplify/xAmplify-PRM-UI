@@ -52,23 +52,9 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    unlinkSalesforceAccount(checkboxValue:boolean): Observable<ContactList[]> {
-        this.logger.info( "Service class unlink salesforce() completed" );
-        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=SALESFORCE' + '&deleteContactList=' + checkboxValue)
-            .map( this.extractData )
-            .catch( this.handleErrorDelete );
-    }
-    
-    unlinkGoogleAccount(checkboxValue:boolean): Observable<ContactList[]> {
-        this.logger.info( "Service class unlink google() completed" );
-        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=GOOGLE' + '&deleteContactList=' + checkboxValue)
-            .map( this.extractData )
-            .catch( this.handleErrorDelete );
-    }
-    
-    unlinkZohoAccount(checkboxValue:boolean): Observable<ContactList[]> {
-        this.logger.info( "Service class unlink zoho() completed" );
-        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork=ZOHO' + '&deleteContactList=' + checkboxValue)
+    unlinkSocailAccount(socialNetwork: string, isDeleteContactList:boolean): Observable<ContactList[]> {
+        this.logger.info( "unlinkSocailAccount() method invoked" );
+        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }

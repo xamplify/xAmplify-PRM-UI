@@ -426,7 +426,7 @@
 											<input type=Text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											maxlength="32" required 
-											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+											pattern="^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,15})+$"
 											#emailId="ngModel">
 											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
 												class="custom-error-message">

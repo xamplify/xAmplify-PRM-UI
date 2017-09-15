@@ -8,13 +8,12 @@ export class DashboardReport {
     totalUploadedvideos: number = 0;
 
     totalEmailOpenedCount: number = 0;
-    totalEmailUrlClickedCount: number = 0;
-    totalEmailGifClickedCount: number = 0;
+    totalEmailClickedCount: number = 0;
+   // totalEmailGifClickedCount: number = 0;
     totalEmailWatchedCount: number = 0;
 
     emailOpenedList: any;
-    emailUrlClickedList: any;
-    emailGifClickedList: any;
+    emailClickedList: any;
     emailWatchedList: any;
 
     totalViews: number = 0;

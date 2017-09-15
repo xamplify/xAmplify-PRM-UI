@@ -90,8 +90,14 @@ export class DashboardService {
         .catch( this.handleError );
     }
     
-    listEmailLogsByUserIdAndActionId(userId: number, actionId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillogs-by-user-and-action/" + userId + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId)
+    listEmailOpenLogs(userId: number, actionId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/email-logs-by-user-and-action/" + userId + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    listEmailClickedLogs(userId: number){
+        return this.http.get( this.authenticationService.REST_URL + "campaign/email-click-logs-by-user/" + userId + "?access_token=" + this.authenticationService.access_token)
         .map( this.extractData )
         .catch( this.handleError );
     }

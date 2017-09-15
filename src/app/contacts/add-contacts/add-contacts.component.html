@@ -131,7 +131,7 @@ color:blue;
 											height="86" width="90"
 											onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/sf.png';">
 									</button>
-									<div id = "salesforceGear" style="position: relative" id="salesforceGear" *ngIf="sfImageNormal" data-toggle="modal" data-target="#settingsSalesforce">
+									<div id = "salesforceGear" style="position: relative" id="salesforceGear" *ngIf="sfImageNormal" (click)="settingSocialNetworkOpenModal('salesforce')">
 										<a> 
 											<i id="SgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -83px;left: 77px;"></i>
 										</a>
@@ -149,7 +149,7 @@ color:blue;
 										title="Click here To access user list from your Google contacts"
 										height="86" width="90">
 								</button>
-								<div id ="GoogleGear" style="position: relative" *ngIf="googleImageNormal" data-toggle="modal" data-target="#settingsGoolge">
+								<div id ="GoogleGear" style="position: relative" *ngIf="googleImageNormal" (click)="settingSocialNetworkOpenModal('google')">
 								<a> 
 									<i id="GgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px; top: -83px;left: 77px;"></i>
 								</a>
@@ -167,7 +167,7 @@ color:blue;
 										title="Click here To access user list from your Zoho account"
 										height="86" width="90">
 								</button>
-							<div id ="zohoGear" style="position: relative" *ngIf="zohoImageNormal" data-toggle="modal" data-target="#settingsZoho">
+							<div id ="zohoGear" style="position: relative" *ngIf="zohoImageNormal" (click)="settingSocialNetworkOpenModal('zoho')">
 								<a> 
 									<i id="ZgearIcon" class="fa fa-cog" aria-hidden="true" style="position: relative;font-size: 19px;top: -83px;left: 77px;"></i>
 								</a>
@@ -358,7 +358,7 @@ color:blue;
 										id="row_{{newContact.id}}">
 										<td><input type=Text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #emailId="ngModel" 
+											required pattern="^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,15})+$" #emailId="ngModel" 
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
 											
 											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
@@ -720,25 +720,21 @@ color:blue;
   				</div>
 			</div>
 			
-			
-			
-			<div class="modal fade" id="settingsSalesforce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+			<div class="modal" id="settingSocialNetwork" tabindex="-1" role="dialog" aria-labelledby="settingSocialNetworkModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<div><img src = "assets/images/Salesforce-01.png"
-        								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
-        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-8%"><b>SalesForce Account Settings</b></h4></div>
+        							<div><h4 class="modal-title" id="settingSocialNetworkModalLabel">{{settingSocialNetwork}} Account Settings</h4></div>
      						 </div>
      					 <div class="modal-body">
       						<form class="form-horizontal">
   								  <div class="form-group">
-  								  <p style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your Salesforce account will be removed from Xtremand.</p>
-    							<div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact lists:
-    							<input type="checkbox" [(ngModel)]="salesforceCheckboxValue" [ngModelOptions]="{standalone: true}">
-  								  </div>
-    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkSalesforceAccount()">UnLink Account</button>
+  								 	 <h4 style="margin-left:20px;"><span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your {{settingSocialNetwork}} account will be removed from Xtremand.</h4>
+    								<h4 style="margin-left:20px;"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact lists:
+    								<input type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
+  								  	</h4>
+    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkSocailAccount()">UnLink Account</button>
  								  </div>
   					        </form>
       					</div>
@@ -748,7 +744,9 @@ color:blue;
     				</div>
   				</div>
 			</div>
-				<div class="modal fade" id="settingsZoho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+			
+			
+<!-- 				<div class="modal fade" id="settingsZoho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
@@ -764,7 +762,7 @@ color:blue;
   								  <div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact litsts: 
   								  <input type="checkbox" [(ngModel)]="zohoCheckboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>
-    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkZohoAccount()">UnLink Account</button>
+    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkSocailAccount('ZOHO')">UnLink Account</button>
  								  </div>
   					        </form>
       					</div>
@@ -790,7 +788,7 @@ color:blue;
   								  <div style="margin-left:20px;width:90%"><span class="glyphicon glyphicon-triangle-right"></span>Would you link to delete associated contact litsts:
   								  <input type="checkbox" [(ngModel)]="googleCheckboxValue" [ngModelOptions]="{standalone: true}">
   								  </div>
-    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkGoogleAccount()">UnLink Account</button>
+    									<button type="button" class="btn btn-primary" style="margin-left:38%;margin-top:2%" (click)="unlinkSocailAccount('GOOGLE')">UnLink Account</button>
  								  </div>
   					        </form>
       					</div>
@@ -799,7 +797,7 @@ color:blue;
      		 			</div>
     				</div>
   				</div>
-			</div>						
+			</div>	 -->					
 <div id="salesforceId">
 			<div class="modal" id="salesforceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document">

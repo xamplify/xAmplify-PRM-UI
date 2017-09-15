@@ -666,7 +666,7 @@ input[type=radio] {
 						</div>
 						<div class="portlet-body">
 							<div class="row">
-								<div class="col-xs-3 sparkline-chart" (click)="listEmailLogsByUserIdAndActionId(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
+								<div class="col-xs-4 sparkline-chart" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
 									<div class="visual">
 										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png" title="view emailOpened data" >
 									</div>
@@ -679,7 +679,7 @@ input[type=radio] {
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-3 sparkline-chart" (click)="listEmailLogsByUserIdAndActionId(14)" title="view emailGifClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailGifClickedModal">
+								<!-- <div class="col-xs-3 sparkline-chart" (click)="listEmailLogsByUserIdAndActionId(14)" title="view emailGifClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailGifClickedModal">
 									<div class="visual">
 										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
 									</div>
@@ -691,21 +691,21 @@ input[type=radio] {
 											<span class="email-action-desscription">gif clicked</span></h4>
 										</div>
 									</div>
-								</div>
-								<div class="col-xs-3 sparkline-chart" (click)="listEmailLogsByUserIdAndActionId(15)" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
+								</div> -->
+								<div class="col-xs-4 sparkline-chart" (click)="listOfEmailClickedLogs()" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 									<div class="visual">
 										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
 									</div>
 									<div class="details">
 									 <div class="number" style="color: #b0dcc1; margin-top: 5px;">
 											<h4>
-											<b>{{dashboardReport.totalEmailUrlClickedCount}}</b>
+											<b>{{dashboardReport.totalEmailClickedCount}}</b>
 											<br>
-											<span class="email-action-desscription">url clicked</span></h4>
+											<span class="email-action-desscription">clicked</span></h4>
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-3 sparkline-chart" (click)="totalEmailWatchedData(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
+								<div class="col-xs-4 sparkline-chart" (click)="totalEmailWatchedData(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
 									<div class="visual">
 										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
 									</div>
@@ -805,10 +805,10 @@ input[type=radio] {
         							<!-- <div><img src = "assets/images/google.jpg"
         								 alt = "Picture of a happy monkey" style="height:55px" width="90px" />
         							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-7%"><b>Email Opened Data</b></h4></div> -->
-     						<h4 align="center">Email Url Clicked Data</h4>
+     						<h4 align="center">Email Clicked Data</h4>
      						 </div>
      					 <div class="modal-body">
-     					 <div *ngIf="dashboardReport.emailUrlClickedList?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
+     					 <div *ngIf="dashboardReport.emailClickedList?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
 					           <strong>No Records found.. !!!</strong>
 			                </div>
      					 <div class="table-responsive">
@@ -825,12 +825,12 @@ input[type=radio] {
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let emailUrlClicked of dashboardReport.emailUrlClickedList;let i = index">
-							<td>{{emailUrlClicked.emailId}}</td>
-							<td>{{emailUrlClicked.firstName}}</td>
-							<td>{{emailUrlClicked.lastName}}</td>
-							<td class="center">{{emailUrlClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{emailUrlClicked.campaignName}}</td>
+						<tr *ngFor="let emailClicked of dashboardReport.emailClickedList;let i = index">
+							<td>{{emailClicked.emailId}}</td>
+							<td>{{emailClicked.firstName}}</td>
+							<td>{{emailClicked.lastName}}</td>
+							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
+							<td>{{emailClicked.campaignName}}</td>
 							<!-- <td>Hyderabad</td>
 							<td>Google Chrome</td>
 							<td>Windowns 10</td> -->
@@ -863,7 +863,7 @@ input[type=radio] {
   				</div>
 			</div>
 			
-						<div class="modal fade" id="emailGifClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+				<div class="modal fade" id="emailGifClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
