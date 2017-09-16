@@ -145,7 +145,7 @@ input[type=radio] {
       </div>
       <div class="modal-body">
 		<div class="clearfix">
-			<div class="col-xs-12" *ngIf="userCampaignReport.response != null">
+			<div class="col-xs-12" style="margin-bottom: 10px;" *ngIf="userCampaignReport.response != null">
 				<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
 											   'alert-danger': userCampaignReport.response == 'ERROR', 
 											   'alert-warning': userCampaignReport.response == 'WARNING'}">
@@ -453,7 +453,7 @@ input[type=radio] {
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-equalizer font-purple-plum hide"></i> 
-						<span class="caption-subject font-red-sunglo bold uppercase">Gender Demographics</span>
+						<span class="caption-subject font-red-sunglo uppercase">Gender Demographics</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -461,7 +461,7 @@ input[type=radio] {
 						<div class="col-xs-6">
 							<div class="text-center">
 								<div class="visual" style="color: #007bb6; font-size: 64px;">
-									<i class="fa fa-male" style="color: #007bb6; font-size: 72px; padding: 10px"></i>
+									<i class="fa fa-male" style="color: #007bb6; font-size: 60px; padding: 10px"></i>
 								</div>
 								<div class="details">
 									<div class="number" style="color: #007bb6;">
@@ -477,7 +477,7 @@ input[type=radio] {
 						<div class="col-xs-6">
 							<div class="text-center">
 								<div class="visual" style="color: #dd4b39; font-size: 64px;">
-									<i class="fa fa-female" style="color: #ff2c82; font-size: 72px; padding: 10px"></i>
+									<i class="fa fa-female" style="color: #ff2c82; font-size: 60px; padding: 10px"></i>
 								</div>
 								<div class="details">
 									<div class="number" style="color: #ff2c82;">
@@ -499,7 +499,7 @@ input[type=radio] {
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-cursor font-purple-intense hide"></i> 
-						<span class="caption-subject font-purple-intense bold uppercase">Social Followers</span>
+						<span class="caption-subject font-purple-intense uppercase">Social Followers</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -577,55 +577,12 @@ input[type=radio] {
 				<div class="portlet light ">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="icon-share font-red-sunglo"></i> <span
-								class="caption-subject font-red-sunglo bold uppercase">Regional
-								Stats</span>
+							<i class="fa fa-globe"></i> 
+							<span class="caption-subject font-red-sunglo uppercase">regional statistics</span>
 						</div>
-						<div class="btn-toolbar margin-bottom-10">
-							<div class="actions">
-
-								<a class="btn btn-circle btn-icon-only btn-default fullscreen"
-									href="javascript:;"> </a>
-
-							</div>
-
-							<!-- <div class="btn-group pull-right" style="padding-top: 10px;">
-								<a href=""
-									class="btn btn-circle grey-salsa btn-sm dropdown-toggle"
-									data-toggle="dropdown" data-hover="dropdown"
-									data-close-others="true"> Select Region <span
-									class="fa fa-angle-down"> </span>
-								</a>
-								<ul class="dropdown-menu pull-right">
-									<li><a href="javascript:;" id="regional_stat_world">
-											World </a></li>
-									<li><a href="javascript:;" id="regional_stat_usa"> USA
-									</a></li>
-									<li><a href="javascript:;" id="regional_stat_europe">
-											Europe </a></li>
-									<li><a href="javascript:;" id="regional_stat_russia">
-											Russia </a></li>
-									<li><a href="javascript:;" id="regional_stat_germany">
-											Germany </a></li>
-								</ul>
-							</div> -->
-						</div>
-
 					</div>
-
 					<div class="portlet-body">
-						<!-- <div id="region_statistics_loading">
-							<img src="assets/admin/layout2/img/loading.gif" alt="loading" />
-						</div>
-						<div id="region_statistics_content" class="display-none">
-
-							<div id="vmap_world" class="vmaps display-none"></div>
-							<div id="vmap_usa" class="vmaps display-none"></div>
-							<div id="vmap_europe" class="vmaps display-none"></div>
-							<div id="vmap_russia" class="vmaps display-none"></div>
-							<div id="vmap_germany" class="vmaps display-none"></div>
-						</div> -->
-							<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
+						<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
 					</div>
 				</div>
 				<!-- END REGIONAL STATS PORTLET-->
@@ -638,7 +595,7 @@ input[type=radio] {
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="icon-equalizer font-purple-plum hide"></i> 
-								<span class="caption-subject font-red-sunglo bold uppercase">Video Stats</span>
+								<span class="caption-subject font-red-sunglo uppercase">Video Stats</span>
 							</div>
 						</div>
 						<div class="portlet-body">
@@ -674,7 +631,7 @@ input[type=radio] {
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="icon-cursor font-purple-intense hide"></i> 
-								<span class="caption-subject font-purple-intense bold uppercase">Email Stats</span>
+								<span class="caption-subject font-purple-intense uppercase">Email Stats</span>
 							</div>
 						</div>
 						<div class="portlet-body">

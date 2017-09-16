@@ -6,4 +6,11 @@
   border-left: 5px solid #a94442 !important; /* red */
 }
 
+.portlet.light[_ngcontent-c5] {
+    border-radius: 0;
+}
 
+.portlet.light > .portlet-title > .caption > .caption-subject {
+    font-size: 15px;
+    margin: 0;
+}
