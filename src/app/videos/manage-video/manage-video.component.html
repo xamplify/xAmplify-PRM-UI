@@ -45,7 +45,7 @@
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div>
-				<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+				
 				<div class="row" *ngIf="manageVideos" >
 				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
@@ -77,7 +77,7 @@
 										   </strong>
 									  </div>
 									<div class="page-toolbar">
-									<div class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
+									<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 										<div *ngIf="disableDropDowns == false" class="inputs" align="right">
 											<div  style="padding:0" class="col-xs-12 col-sm-6 col-md-6">
 											 <select class="form-control" style="cursor: pointer; width:50%; position: relative;float:left"
@@ -104,9 +104,10 @@
 										</div>
 									</div>
 								</div>
+								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 								<div class="margin-top-10" >
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
-									  class="col-md-9 alert alert alert-danger alert-dismissable">
+									  class="col-md-9 alert alert-info alert-dismissable">
 									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 										<p>Sorry, no videos found..!!</p>
 									</div>

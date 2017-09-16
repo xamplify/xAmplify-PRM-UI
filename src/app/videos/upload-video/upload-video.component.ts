@@ -77,6 +77,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     videoDisabled = false;
     previewDisabled = false;
     errorIsThere = false;
+    maxSizeOver = false;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -212,7 +213,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
            }),
             () => console.log('process video is:' + this.processVideoResp);
     }
-
+    fileSizeCheck(event: any){
+        const fileList: FileList = event.target.files;
+        console.log(fileList[0].type);
+        if (fileList.length > 0) {
+            const file: File = fileList[0];
+            const isSizeExceded: any = fileList[0].size;
+            const size = isSizeExceded / (1024 * 1024);
+            if(size > this.maxVideoSize){
+            	this.maxSizeOver = true;
+            } else { this.maxSizeOver = false; }
+            
+        }
+    }
     public fileOverBase(e: any): void {
         if (this.isFileDrop === false && this.isFileProgress === false) {
             this.hasBaseDropZoneOver = e;
