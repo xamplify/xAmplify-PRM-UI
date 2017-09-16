@@ -214,9 +214,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.lowerCharacterleft = this.maxlengthvalueLowerText;
         } else { this.lowerCharacterleft = this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length; }
         this.isPlayButton = this.saveVideoFile.name;
-        // this.titleDiv = true;
-        // this.colorControl = this.controlPlayers = this.callaction = false;
         this.openStartingDivs();
+        this.fileChangeM3U8(this.saveVideoFile.videoPath);
         this.likesValues = 0;
         this.disLikesValues = 0;
         this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
@@ -235,6 +234,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
         // need to modify this code for embed video modal popup
    }  // closed constructor
+  fileChangeM3U8( input: any ) {
+      console.log(input);
+      //  this.readFiles( input.files );
+    }
+
 
    openStartingDivs() {
         this.titleDiv = true;
@@ -365,7 +369,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 1);
     }
     controlPlayerChange() {
-        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        $( 'html,body' ).animate( { scrollTop: 300 }, 'slow' );
         this.controlPlayers = true;
         this.colorControl = this.titleDiv = this.callaction = false;
         const disable = this;

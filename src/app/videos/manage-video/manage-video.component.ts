@@ -143,7 +143,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     // this.router.navigate(['/home/error-occured-page/', error.status]);
                     this.xtremandLogger.errorPage(error);
                 },
-                () => console.log('load videos completed:'),
+                () => console.log('load videos completed:')
             );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -191,10 +191,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 },
                 (error: any) => {
                     this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);
-                    //  this.router.navigate(['/home/error-occured-page/', error.status]);
                     this.xtremandLogger.errorPage(error);
                 },
-                () => console.log('load videos completed:' + this.videos),
+                () => console.log('load videos completed:' + this.videos)
             );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -231,6 +230,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.searchDisable = true;
         }
     }
+    searchKeyValue(){
+    	this.pagination.searchKey = this.searchKey;
+    }
     searchVideoTitelName() {
         // if ( this.searchKey !== null && this.searchDisable === false ){
         this.showMessage = false;
@@ -260,7 +262,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
-        console.log('show edit video method in mange videos ' + JSON.stringify(video));
+    	this.referenceService.loading(this.httpRequestLoader, true);
+    	console.log('show edit video method in mange videos ' + JSON.stringify(video));
         console.log(video.alias);
         this.deletedVideo = false;
         this.selectedVideoFile = video;
@@ -269,6 +272,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             .subscribe((editVideoFile: SaveVideoFile) => {
                 console.log('enter the show edit vidoe method');
                 this.editDetails = editVideoFile;
+                this.referenceService.loading(this.httpRequestLoader, false);
                 if (editVideoFile.imageFiles == null) {
                     editVideoFile.imageFiles = [];
                 }
@@ -285,18 +289,18 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-                // this.referenceService.showServerError(this.httpRequestLoader);
-                //  this.httpRequestLoader.statusCode = error.status;
-            }
+             }
             );
     }
     showPlayVideo(video: SaveVideoFile) {
-        this.videoFileService.videoViewBy = video.viewBy;
+    	this.referenceService.loading(this.httpRequestLoader, true);
+    	this.videoFileService.videoViewBy = video.viewBy;
         console.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
                 console.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
+                this.referenceService.loading(this.httpRequestLoader, false);
                 this.manageVideos = false;
                 this.editVideo = false;
                 this.playVideo = true;
@@ -313,11 +317,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showCampaignVideoReport(video: SaveVideoFile) {
-        console.log('ManageVideoComponent campaign report:');
+    	this.referenceService.loading(this.httpRequestLoader, true);
+    	console.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((campaignVideoFile: SaveVideoFile) => {
                 console.log(video);
                 this.selectedVideo = campaignVideoFile;
+                this.referenceService.loading(this.httpRequestLoader, false);
                 this.campaignReport = true;
                 this.manageVideos = false;
                 this.editVideo = false;

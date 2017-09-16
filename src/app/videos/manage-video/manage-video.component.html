@@ -45,6 +45,7 @@
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
 				<div>
+				<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 				<div class="row" *ngIf="manageVideos" >
 				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
 						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
@@ -96,14 +97,14 @@
 												<div class="input-icon right" style="cursor:pointer">
 													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
-													 class="form-control input-circle" placeholder="search..."> <!-- (input)="searchDisableValue()" -->
+													 (input)="searchKeyValue()"  class="form-control input-circle" placeholder="search..."> 
+													 <!-- (input)="searchDisableValue()" -->
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="margin-top-10" >
-									<app-loader *ngIf="!videos && httpRequestLoader.isLoading"></app-loader>
 									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
 									  class="col-md-9 alert alert alert-danger alert-dismissable">
 									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>

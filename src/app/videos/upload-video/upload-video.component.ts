@@ -350,6 +350,25 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 });
         }
     }
+    // checkCameraBlock(){
+    //       if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+    //         this.cloudOneDrive === false && this.cloudBox === false) {
+    //     const recordBlocked  = this;
+    //     navigator.getUserMedia(
+    //         {   // we would like to use video but not audio
+    //             video: true,
+    //             audio: false
+    //         },
+    //         function() {
+    //            recordBlocked.cameraChange();
+    //         },
+    //         function() {
+    //             alert('no permission to access the camera, please enable the camera');
+    //             console.log('user did not give access to the camera');
+    //         }
+    //     );
+    //   }
+    // }
     cameraChange() {
         if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
@@ -559,7 +578,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     dropbox(files: any) {
         swal({
-            title: 'Retriving video from dropbox...!', text: 'Please Wait...It`s processing',
+            text: 'Retriving video from dropbox...! Please Wait...It`s processing',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
         });
         console.log('files ' + files);
@@ -591,7 +610,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         boxSelect.success(function (files: any) {
             if (self.isVideo(files[0].name)) {
                 swal({
-                    title: 'Retriving video from box...!', text: 'Please Wait...It`s processing',
+                    text: 'Retriving video from box...! Please Wait...It`s processing',
                     allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                 });
                 console.log(files);
