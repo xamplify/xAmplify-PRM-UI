@@ -1,4 +1,15 @@
 <style type="text/css">
+b, strong {
+    font-weight: 500;
+}
+.social-disable{
+	color: #e2e2e2 !important;
+}
+.twitter-color{color: #33CCFF;}
+.google-color{color: #C63D2D;}
+.facebook-color{color: #3B5998;}
+.linkedin-color{color: #4875B4;}
+.fa1{font-size: 32px;}
 .email-action-desscription{font-size: 12px; text-transform: lowercase;}
 .alert-dismissible .close {
     top: 5px;
@@ -457,35 +468,35 @@ input[type=radio] {
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="row">
+					<div class="clearfix" style="margin-top: 15px;">
 						<div class="col-xs-6">
-							<div class="text-center">
-								<div class="visual" style="color: #007bb6; font-size: 64px;">
-									<i class="fa fa-male" style="color: #007bb6; font-size: 60px; padding: 10px"></i>
+							<div class="facebook-color text-center">
+								<div class="visual">
+									<i class="fa fa-male fa1"></i>
 								</div>
 								<div class="details">
-									<div class="number" style="color: #007bb6;">
+									<div class="number">
 										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
 											<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
 										</span>
-											<ng-template #default_gender_demographics>N/A</ng-template>
+											<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
 											<h5>Male</h5>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-6">
-							<div class="text-center">
-								<div class="visual" style="color: #dd4b39; font-size: 64px;">
-									<i class="fa fa-female" style="color: #ff2c82; font-size: 60px; padding: 10px"></i>
+							<div class="google-color text-center">
+								<div class="visual">
+									<i class="fa fa-female fa1"></i>
 								</div>
 								<div class="details">
-									<div class="number" style="color: #ff2c82;">
+									<div class="number">
 										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
 											<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
 										</span>
-											<ng-template #default_gender_demographics>N/A</ng-template>
-											<h5>Female</h5>
+										<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
+										<h5>Female</h5>
 									</div>
 								</div>
 							</div>
@@ -503,68 +514,65 @@ input[type=radio] {
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="row">
+					<div class="clearfix" style="margin-top: 15px;">
 						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-xs-6 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
+							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
 								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
 									style="text-decoration: none;">
-									<div class="sparkline-chart">
-										<div class="visual" style="color: #007bb6; font-size: 60px;">
-											<i class="fa fa-twitter" style="color: #33CCFF; font-size: 70px;"></i>
+									<div class="twitter-color">
+										<div class="visual ">
+											<i class="fa fa-twitter fa1"></i>
 										</div>
 										<div class="details">
-											<div class="number" style="color: #33CCFF;">
-												<span>{{twitterTotalFollowersCount}}</span> <br> <small>Followers</small>
+											<div class="number">
+												<h4><b>{{twitterTotalFollowersCount}}</b></h4>
+												<h5>Followers</h5>
 											</div>
 										</div>
 									</div>
 								</a>
 							</div>
 						</section>
-						<div class="col-xs-6 col-sm-3">
-							<div class="sparkline-chart">
-								<div class="visual" style="color: #007bb6; font-size: 60px;">
-									<i class="fa fa-google-plus"
-										style="color: #C63D2D; font-size: 70px;"></i>
+						<div class="col-xs-4 col-sm-3">
+							<div class="text-center google-color social-disable">
+								<div class="visual">
+									<i class="fa fa-google-plus fa1"></i>
 								</div>
-
 								<div class="details">
-									<div class="number" style="color: #C63D2D;">
-										100 K <br> <small>Followers</small>
+									<div class="number">
+										<h4><b>100 K</b></h4>
+										<h5>Followers</h5>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="col-xs-6 col-sm-3">
-							<div class="sparkline-chart">
-								<div class="visual" style="color: #007bb6; font-size: 60px;">
-									<i class="fa fa-facebook"
-										style="color: #3B5998; font-size: 70px;"></i>
+						<div class="col-xs-4 col-sm-3">
+							<div class="text-center facebook-color social-disable">
+								<div class="visual">
+									<i class="fa fa-facebook fa1"></i>
 								</div>
-
 								<div class="details">
-									<div class="number" style="color: #3B5998;">
-										2.3 M <br> <small>Fans</small>
+									<div class="number">
+										<h4><b>2.3 M</b></h4>
+										<h5>Fans</h5>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-6 col-sm-3">
-							<div class="sparkline-chart">
-								<div class="visual" style="color: #4875B4; font-size: 60px;">
-									<i class="fa fa-linkedin"
-										style="color: #4875B4; font-size: 70px;"></i>
+						<div class="col-xs-4 col-sm-3">
+							<div class="text-center linkedin-color social-disable">
+								<div class="visual">
+									<i class="fa fa-linkedin fa1"></i>
 								</div>
-
 								<div class="details">
-									<div class="number" style="color: #4875B4;">
-										6,000 <br> <small>Followers</small>
+									<div class="number">
+										<h4><b>1.3 K</b></h4>
+										<h5>Followers</h5>
 									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
