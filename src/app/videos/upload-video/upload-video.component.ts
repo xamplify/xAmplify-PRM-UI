@@ -173,6 +173,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log(result);
                 this.loading = false;
                 this.processing = false;
+                this.cloudStorageSelected = false;
                 if (this.processVideoResp != null && this.processVideoResp.error === null) {
                     console.log('process video data :' + JSON.stringify(this.processVideoResp));
                     this.videoFileService.saveVideoFile = this.processVideoResp;
