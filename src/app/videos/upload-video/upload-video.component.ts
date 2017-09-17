@@ -205,6 +205,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             this.player.recorder.reset();
                             //   this.player.recorder.stopDevice();
                             $('#myModal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop fade in').remove();
                         }
                         console.log(this.processVideoResp.error);
                     }
@@ -779,6 +781,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         swal.close();
         $('r-video').remove();
         console.log('Deinit - Destroyed Component');
+        if(this.camera === true){
+               $('#myModal').modal('hide');
+               $('body').removeClass('modal-open');
+               $('.modal-backdrop fade in').remove();
+        }
         if (this.playerInit === true) {
             this.player.recorder.destroy();
             // this.player.recorder.stopDevice();
