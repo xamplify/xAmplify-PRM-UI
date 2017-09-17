@@ -591,7 +591,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     transperancyControllBar(value: any) {
         let color: any = this.saveVideoFile.controllerColor;
        if (color.includes('rgba')) {
-          color = this.rgb2hex(this.saveVideoFile.controllerColor);
+          color = this.videoUtilService.convertRgbToHex(this.saveVideoFile.controllerColor);
        }
         if (this.saveVideoFile.controllerColor === '#fff') {
             color = '#fbfbfb';
@@ -603,13 +603,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
          $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
         this.valueRange = value;
         this.xtremandLogger.log(this.valueRange);
-    }
-   rgb2hex(rgb){
-        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-        return (rgb && rgb.length === 4) ? "#" +
-        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
     }
     allowComments(event: boolean) {
         this.comments = event;

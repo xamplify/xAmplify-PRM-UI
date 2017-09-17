@@ -78,6 +78,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     previewDisabled = false;
     errorIsThere = false;
     maxSizeOver = false;
+    cloudStorageSelected = false;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -389,6 +390,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         );
     }
     cameraChange() {
+    //    if (this.refService.isEnabledCamera === false) {
+    //     this.checkCameraBlock();
+    //     this.refService.isEnabledCamera = true;
+    //    } 
         if (!this.refService.cameraIsthere) {
            // alert('no permission to access the camera, please enable the camera');
            swal('Oops...',
@@ -589,6 +594,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const options = {
                 success: function (files: any) {
                     console.log(files[0].name);
+                    self.cloudStorageSelected = true;
                     self.dropbox(files);
                 },
                 cancel: function () {
@@ -634,6 +640,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         const self = this;
         boxSelect.success(function (files: any) {
             if (self.isVideo(files[0].name)) {
+                self.cloudStorageSelected = true;
                 swal({
                     text: 'Retriving video from box...! Please Wait...It`s processing',
                     allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
@@ -707,9 +714,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     pickerCallback(data: any) {
-        this.getGoogleInfo(data);
         const self = this;
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+          //  google.script.host.close();
+             self.cloudStorageSelected = true;
             const doc = data[google.picker.Response.DOCUMENTS][0];
             swal({
                 text: 'Retriving video from Google Drive...! Please Wait...It`s processing',
@@ -717,8 +725,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             self.downloadGDriveFile(doc.id, doc.name);
         } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
-          //  self.defaultSettings();
-          //  self.enableDropdown();
+          //  google.script.host.close();
         }
     }
     downloadGDriveFile(fileId: any, name: string) {
@@ -762,8 +769,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         return false;
     }
-    getGoogleInfo(data: any) {
-    }
     ngOnInit() {
         QuickSidebar.init();
         try {
@@ -778,7 +783,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy() {
-        swal.close();
+      //  swal.close();
         $('r-video').remove();
         console.log('Deinit - Destroyed Component');
         if(this.camera === true){
@@ -791,9 +796,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             // this.player.recorder.stopDevice();
         }
         this.isChecked = false;
-        if (this.processing === true && this.errorIsThere === false) {
+        if (( this.cloudStorageSelected === true || this.processing === true) && this.errorIsThere === false) {
             this.redirectPge = true;
-            swal('','Video is processing backend! your video will be saved as draft mode in manage videos!!');
+            swal('', 'Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }
     }
 }
