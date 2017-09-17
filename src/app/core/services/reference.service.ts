@@ -32,6 +32,8 @@ export class ReferenceService {
     uploadRetrivejsCalled = false;
     topNavbarUserService = false;
     isFromTopNavBar:boolean = false;
+    isEnabledCamera = false;
+    cameraIsthere: boolean;
     topNavBarNotificationDetails:any= new Object();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'welcome';

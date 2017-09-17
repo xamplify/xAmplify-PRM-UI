@@ -13,7 +13,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { SaveVideoFile } from '../models/save-video-file';
 import { HomeComponent } from '../../core/home/home.component';
-declare var Dropbox, swal, google,QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
+declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
 
 @Component({
@@ -110,7 +110,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 fileItem.withCredentials = false;
-                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
                 console.log(fileItem._file);
                 const isSupportfile = fileItem._file.type.toString();
                 this.checkMimeTypes(isSupportfile);
@@ -127,17 +127,21 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.loading = true;
                 this.isFileProgress = true;
                 this.isFileDrop = true;
-                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
             };
-        //   if(this.refService.uploadRetrivejsCalled === false) {
+           if(this.refService.uploadRetrivejsCalled === false) {
             $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-        //     this.refService.uploadRetrivejsCalled = true;
-       // }
+             this.refService.uploadRetrivejsCalled = true;
+        }
+       if (this.refService.isEnabledCamera === false) {
+        this.checkCameraBlock();
+        this.refService.isEnabledCamera = true;
+       }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
@@ -220,10 +224,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const file: File = fileList[0];
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
-            if(size > this.maxVideoSize){
+            if (size > this.maxVideoSize){
             	this.maxSizeOver = true;
             } else { this.maxSizeOver = false; }
-            
         }
     }
     public fileOverBase(e: any): void {
@@ -242,9 +245,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             console.log('file got it');
             console.log(file);
             console.log(file[0].type);
-            // this.defaultDesabled();
         } else {
-            // this.isDisable = true;
             this.isFileDrop = true;
             file = null;
             console.log('drop file will not work in progress');
@@ -319,7 +320,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
-        this.router.navigate(['./home/videos']);
+       // this.router.navigate(['./home/videos']);
     }
     trimVideoTitle(title: string) {
         if (title.length > 40) {
@@ -363,27 +364,36 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 });
         }
     }
-    // checkCameraBlock(){
-    //       if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
-    //         this.cloudOneDrive === false && this.cloudBox === false) {
-    //     const recordBlocked  = this;
-    //     navigator.getUserMedia(
-    //         {   // we would like to use video but not audio
-    //             video: true,
-    //             audio: false
-    //         },
-    //         function() {
-    //            recordBlocked.cameraChange();
-    //         },
-    //         function() {
-    //             alert('no permission to access the camera, please enable the camera');
-    //             console.log('user did not give access to the camera');
-    //         }
-    //     );
-    //   }
-    // }
+    checkCameraBlock() {
+        const recordBlocked  = this;
+        navigator.getUserMedia(
+            {   // we would like to use video but not audio
+                video: true,
+                audio: true
+            },
+            function(stream) {
+                const localStream = stream;
+                const track = stream.getTracks()[0];
+               track.stop();
+               localStream.stop();
+               localStream.getVideoTracks()[0].stop();
+               recordBlocked.refService.cameraIsthere = true;
+            },
+            function() {
+                recordBlocked.refService.cameraIsthere = false;
+              //  alert('no permission to access the camera, please enable the camera');
+                console.log('user did not give access to the camera');
+            }
+        );
+    }
     cameraChange() {
-        if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+        if (!this.refService.cameraIsthere) {
+           // alert('no permission to access the camera, please enable the camera');
+           swal('Oops...',
+           'No permission to access the camera, please enable the camera and refresh the page once you enable it!', 
+           'error');
+        }
+        if (this.refService.cameraIsthere && this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
             this.camera = true;
             this.isDisable = true;
@@ -486,7 +496,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
     boxChange() {
@@ -508,7 +518,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
     googleDriveChange() {
@@ -542,7 +552,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
     }
     googleDriveDisabled() {
-        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
+        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         this.defaultDesabled();
     }
     defaultSettings() {
@@ -717,9 +727,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     console.log(result);
                     swal.close();
-                    this.processing = true;
-                    this.googleDriveDisabled();
-                    this.processVideo(result.path);
+                    self.processing = true;
+                    self.googleDriveDisabled();
+                    self.processVideo(result.path);
                 }, (error: any) => {
                  this.errorIsThere = true;
                  this.xtremandLogger.errorPage(error);
@@ -766,6 +776,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy() {
+        swal.close();
         $('r-video').remove();
         console.log('Deinit - Destroyed Component');
         if (this.playerInit === true) {
@@ -775,7 +786,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.isChecked = false;
         if (this.processing === true && this.errorIsThere === false) {
             this.redirectPge = true;
-            swal('Video is processing backend!', 'your video will be saved as draft mode in manage videos!!');
+            swal('','Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }
     }
 }
