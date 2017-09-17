@@ -103,12 +103,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.logger.log('This is a priority level 5 log message...');
         try {
             if (this.videoFileService.actionValue === 'Save') {
-                console.log('MangeVideosComponent : ngonit ');
+            	this.referenceService.loading(this.httpRequestLoader, true);
+            	console.log('MangeVideosComponent : ngonit ');
                 this.editVideo = true;
                 this.manageVideos = false;
                 this.playVideo = false;
                 this.campaignReport = false;
                 console.log('opening edit video');
+                this.referenceService.loading(this.httpRequestLoader, false);
                 this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
             }
@@ -140,7 +142,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 },
                 (error: any) => {
                     this.xtremandLogger.error(' manage Videos Component : Loading Videos method():' + error);
-                    // this.router.navigate(['/home/error-occured-page/', error.status]);
                     this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:')
@@ -311,8 +312,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.xtremandLogger.error(this.errorPrepender + ' show play videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-                // this.referenceService.showServerError(this.httpRequestLoader);
-                // this.httpRequestLoader.statusCode = error.status;
             }
             );
     }
@@ -476,6 +475,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.isvideoThere = false;
         this.deletedVideo = false;
         this.videoFileService.videoViewBy = '';
+        swal.close();
     }
 
 }

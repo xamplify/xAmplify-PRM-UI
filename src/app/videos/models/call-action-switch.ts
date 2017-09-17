@@ -5,4 +5,11 @@ export class CallActionSwitch {
      offColorBswitch = 'warning';
      size = 'small';
      animate = true;
+     onBlueColorSwitch = 'blue';
+     onGrayColorSwitch = 'gray';
+     onGreenColorSwitch = 'green';
+     onRedColorSwitch = 'red';
+     onSkyBlueColorSwitch = 'sky-blue';
+     onYellowColorSwitch = 'yellow';
+     onDefaultColorSwitch = 'default';
 }

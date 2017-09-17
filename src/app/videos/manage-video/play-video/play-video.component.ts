@@ -1002,6 +1002,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         $('.h-video').remove();
         $('.p-video').remove();
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
 
     // the below code is used for logging //////////////////////////////

@@ -89,7 +89,7 @@
 					(click)="shareClick()" [disabled]="isThisDraftVideo">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 				</button> 
-				<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" 
+				<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-dismiss="modal"
 					data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 				</button>
@@ -327,7 +327,7 @@
 											  (change)="defaultPlayerSettingsValues($event);">
 											</ui-switch>  -->
 											  <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" 
+												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" 
 												(statusChange)="defaultPlayerSettingsValues($event)">
 										  	 </switch> 
 											</div>
@@ -348,7 +348,7 @@
 												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)">
 												</ui-switch> -->
 											  <switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableVideoControllers($event)">
 										  	 </switch>
 											</div>
@@ -406,7 +406,7 @@
 												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)">
 												</ui-switch> -->
 											 <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowSharing($event)">
 											</switch>
 											</div>
@@ -416,7 +416,7 @@
 												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)">
 												</ui-switch> -->
 												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableSettings($event)">
 											</switch>
 											</div>
@@ -428,7 +428,7 @@
 												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)">
 												</ui-switch> -->
 											<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="changeFullscreen($event)">
 											</switch>
 											</div>
@@ -438,7 +438,7 @@
 												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)">
 												</ui-switch> -->
 											<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowComments($event)">
 											</switch>
 											</div>
@@ -449,7 +449,7 @@
 												<!-- <ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
 												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch> -->
 										     <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowLikes($event)">
 											</switch>
 											</div>
@@ -459,7 +459,7 @@
 												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)">
 											</ui-switch> -->
 												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onYellowColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableCastings($event)">
 											</switch>
 										</div>
@@ -472,7 +472,7 @@
 											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)">
 											</ui-switch> -->
 											<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowEmbedVideo($event)">
 											</switch>
 											</div>
@@ -482,7 +482,7 @@
 											  [disabled] ="disablePlayerSettingnew"
 											   (change)="is360VideoCheck($event)"></ui-switch> -->
 											<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												[onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="is360VideoCheck($event)">
 											</switch>
 												  

@@ -150,7 +150,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isThisDraftVideo = false;
     selectedImagePath: string;
     onColorValue = 'green';
-    offColorValue = 'red';
+    offColorValue = 'default';
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute,
         public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -1327,5 +1327,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         $('.p-video').remove();
         this.tempVideoFile = null;
+      //  $('#myModal').hide();
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
 }
