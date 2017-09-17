@@ -4,10 +4,10 @@ declare var Metronic ,Layout,Demo , TableManaged :any ;
 
 @Component({
   selector: 'app-manage-team',
-  templateUrl: './manage-team.component.html',
-  styleUrls: ['./manage-team.component.css']
+  templateUrl: './manage-team-members.component.html',
+  styleUrls: ['./manage-team-members.component.css']
 })
-export class ManageTeamComponent implements OnInit {
+export class ManageTeamMembersComponent implements OnInit {
 
   constructor() { }
 

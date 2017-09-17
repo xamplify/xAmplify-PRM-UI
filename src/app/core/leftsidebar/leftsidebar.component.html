@@ -25,12 +25,12 @@
 						<li>
 						      <a  [routerLink]="['./videos']">
 								<i class="fa fa-file-video-o"></i>
-								<span class="title">Uplaod videos</span>
+								<span class="title">Upload videos</span>
 								</a>
 							</li>
 							<li>
 					       <a  [routerLink]="['./videos/manage_videos']">
-								<i class="icon-cloud-upload"></i>
+								<i class="fa fa-list"></i>
 								<span class="title">Manage Videos</span>
 								</a>
 							</li>
@@ -52,7 +52,7 @@
 							</li>
 							<li>
 								<a  [routerLink]="['./contacts/manageContacts']">
-								<i class="icon-cloud-upload"></i>
+								<i class="fa fa-list"></i>
 								<span class="title">Manage Contacts</span>
 								</a>
 							</li>
@@ -76,7 +76,7 @@
 							</li>
 						<li>
 				              <a  [routerLink]="['./emailtemplate']">
-								<i class="fa fa-video-camera"></i>
+								<i class="fa fa-list"></i>
 								<span class="title">Manage Email Templates</span>
 								</a>
 							</li>
@@ -92,13 +92,13 @@
 						<ul class="sub-menu">
 						<li>
 								<a  [routerLink] ="['./campaigns']">
-								<i class="fa fa-file-video-o"></i>
+								<i class="fa fa-bullhorn"></i>
 								<span class="title">Create Campaign</span>
 								</a>
 							</li>
 							<li>
 								<a  [routerLink] ="['./campaigns/managepublish']">
-								<i class="icon-cloud-upload"></i>
+								<i class="fa fa-list"></i>
 								<span class="title">Manage Campaigns</span>
 								</a>
 							</li>
@@ -115,16 +115,16 @@
 						</a>
 						<ul class="sub-menu" >
 						<li>
-								<a [routerLink]="['./team']">
-								<i class="fa fa-user-secret"></i>
-								Manage Team</a>
-							</li>
-							<li>
-								
-								<a  [routerLink]="['./team/add-team']">
+						<a  [routerLink]="['./team/add-team']">
 								<i class="fa fa-user-plus"></i>
 								Add Member</a>
 							</li>
+						<li>
+								<a [routerLink]="['./team']">
+								<i class="fa fa-list"></i>
+								Manage Team</a>
+							</li>
+							
 						</ul>
 					</li>
 					<li [ngClass]="{'active':  baseRoute === 'upgrade'}">

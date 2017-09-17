@@ -102,7 +102,7 @@
 						<i class="icon-envelope-open"></i>
 						<span class="badge badge-default">{{campaignEmailNotificationCount}}</span>
 						</a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" *ngIf="campaignEmailNotificationCount>0">
 							<li class="external">
 								<h3>You have <span class="bold">{{campaignEmailNotificationCount}} New</span> Messages</h3>
 								<!-- <a href="javascript:void(0)">view all</a> -->
@@ -130,7 +130,7 @@
 						<i class="fa fa-play-circle"></i>
 						<span class="badge badge-default">{{campaignVideoWatchedNotificationCount}}</span>
 						</a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" *ngIf="campaignVideoWatchedNotificationCount>0">
 							<li class="external">
 								<h3>You have <span class="bold">{{campaignVideoWatchedNotificationCount}} New</span> Messages</h3>
 								<!-- <a href="javascript:void(0)">view all</a> -->

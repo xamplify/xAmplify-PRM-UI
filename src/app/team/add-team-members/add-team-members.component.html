@@ -1,0 +1,223 @@
+<div class="page-content">
+<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home"></i> 
+				<a [routerLink]="['../../dashboard']">Home</a> 
+				<i	class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a>Add Team Members</a>
+			</li>
+		</ul>
+	</div>
+		<div class="alert alert-danger" *ngIf="uiError?.length>0">
+	  		<strong>{{uiError}}</strong> 
+		</div>
+		<div class="alert alert-danger" *ngIf="emptyRolesLength>0">
+	  		<strong>Please assign atleast one role to team member</strong> 
+		</div>
+		<div class="alert alert-success">
+	  		<strong>Team Member(s) Added Successfully</strong> 
+		</div>
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="row">
+		<div class="div-loader" *ngIf="isProcessing">
+			<div id="process-loader"></div>
+		</div>
+		<div *ngIf="!isProcessing">
+		<div class="col-md-12">
+			<form id="add-team-member-form">
+				<div class="col-sm-3 ">
+					<div class="form-group" [attr.class]="emaillIdDivClass">
+						<input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId);checkDuplicateEmailIds(team.emailId);validateForm(team.emailId);">
+						<span class="text-danger" *ngIf="!validEmailId&& team.emailId?.length>0">Invalid Email Id</span>
+						<span class="text-danger" *ngIf="duplicateEmailId">Already Exists</span>
+						<span *ngIf="(!validEmailId && team.emailId?.length>0) || duplicateEmailId" class="glyphicon glyphicon-remove form-control-feedback"></span>
+						<span *ngIf="validEmailId && !duplicateEmailId && team.emailId?.length>0" class="glyphicon glyphicon-ok form-control-feedback"></span>
+					</div>
+				</div>
+				<div class="col-sm-3 ">
+					<div class="form-group">
+							<input type="text" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName"/>
+					</div>
+				</div>
+				<div class="col-sm-3 ">
+					<div class="form-group">
+						<input type="text"  name="last"  class="form-control" id="lastName" placeholder="Last Name"  [(ngModel)]="team.lastName" name="lastName">
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary" *ngIf="validEmailId && !duplicateEmailId" (click)="addTeamMember()">Add</button>
+				<button  class="btn btn-primary" *ngIf="!validEmailId || duplicateEmailId" disabled="disabled">Add</button>
+			</form>
+		</div>
+		<br>
+		<hr>
+		<br>
+
+		<div class="portlet light" *ngIf="pagination.totalRecords==0">
+			<div class="portlet-body">
+				<div class="empty-box"></div>
+				<div class="empty-box-content text-center">
+					<h1>
+						<i class="fa fa-user-plus" aria-hidden="true"></i>
+					</h1>
+					<h3>Add members to your team</h3>
+					<p>Fill in your team page by inviting or adding team members.</p>
+					<p>The invited team members will receive an email with a link
+						to create their profiles</p>
+					<!-- <button class="btn btn-primary">Add new</button> -->
+				</div>
+				<div class="empty-box"></div>
+			</div>
+		</div>
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div class="portlet box blue" *ngIf="!emptyTable">
+				<div class="portlet-title">
+					<div class="caption">Added Team Members</div>
+				</div>
+				<div class="portlet-body clearfix">
+					<div class="table-responsive">
+						<table class="table" id="add-team-member-table">
+							<thead>
+								<tr>
+									<th class="table-checkbox">
+										<h4>
+											<img src="assets/images/user-permission.png" class="user-permission-img">User & Permissions
+										</h4>
+									</th>
+									<th>
+										<i class="fa fa-check-circle" aria-hidden="true"></i><br>All
+									</th>
+									<th>
+										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
+									</th>
+									<th>
+										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
+									</th>
+									<th>
+										<i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
+									</th>
+									<th>
+										<i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
+									</th>
+									<th>
+										<i class="fa fa-envelope" aria-hidden="true"></i><br>Email
+									</th>
+									<th>
+										<!-- <i class="fa fa-trash" aria-hidden="true"></i><br>Delete -->
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							<ng-container *ngFor="let teamMember of teamMembers;let i=index">
+							<tr id="team-member-{{i}}">
+								<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td>
+								<td><input type="checkbox" (change)="addAllAuthorities($event,teamMember)"  [(ngModel)]="teamMember.all"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><em	class="fa fa-times"></em></a></td>
+							</tr>
+							</ng-container>
+								
+							</tbody>
+						</table>
+					</div>
+					<hr>
+					<div class="pull-right">
+						<button class="btn btn-primary" (click)="save()">Save</button>
+						<button class="btn btn-secondary" (click)="clearRows()">Cancel</button>
+					</div>
+				</div>
+			</div>
+			<!-- ---------------List Of Team Members -->
+			<div class="portlet box blue" *ngIf="pagination.totalRecords>0 && emptyTable">
+				<div class="portlet-title">
+					<div class="caption">Team Members List</div>
+				</div>
+				<div class="portlet-body clearfix">
+					<div class="table-responsive">
+					<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+						<table class="table" id="list-team-member-table"  *ngIf="!httpRequestLoader.isLoading">
+							<thead>
+								<tr>
+									<th class="table-checkbox">
+										<h4>
+											<img src="assets/images/user-permission.png" class="user-permission-img">User & Permissions
+										</h4>
+									</th>
+									<th>
+										<i class="fa fa-check-circle" aria-hidden="true"></i><br>All
+									</th>
+									<th>
+										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
+									</th>
+									<th>
+										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
+									</th>
+									<th>
+										<i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
+									</th>
+									<th>
+										<i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
+									</th>
+									<th>
+										<i class="fa fa-envelope" aria-hidden="true"></i><br>Email
+									</th>
+									<th>
+										<!-- <i class="fa fa-trash" aria-hidden="true"></i><br>Delete -->
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							<ng-container *ngFor="let teamMember of teamMembersList;let i=index">
+							<tr id="team-member-{{i}}">
+								<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td>
+								<td><input type="checkbox" (change)="addAllAuthorities($event,teamMember)"  [(ngModel)]="teamMember.all"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><input type="checkbox" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i)"></td>
+								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><em	class="fa fa-times"></em></a></td>
+							</tr>
+							</ng-container>
+							</tbody>
+						</table>
+					</div>
+					<hr>
+						<!-- -----------Pagination-------------- -->
+						<div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">   
+						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+		                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+		                           <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+		                        </li>
+		                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+		                            <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+		                         </li>
+		                         <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+		                            <a (click)="setPage(page)">{{page}}</a>
+		                         </li>
+		                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+		                             <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+		                         </li>
+		                          <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+		                             <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+		                         </li>
+		                       </ul>
+					</div>
+					<!-- -----------End Of Pagination-------------- -->
+					<div class="pull-right" style="margin-top: 9px;" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+						<button class="btn btn-primary" (click)="update()">Update</button>
+					</div>
+				</div>
+			</div>
+			<!-- END EXAMPLE TABLE PORTLET-->
+	</div>
+	</div>
+	<!-- END PAGE CONTENT -->
+</div>
+

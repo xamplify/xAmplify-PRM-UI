@@ -9,7 +9,7 @@ import { ContactsModule } from './contacts/contacts.module';
 import { EmailTemplateModule } from './email-template/email-template.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
-import { TeamModule } from './team/team.module';
+import { TeamMemberModule } from './team/team-member.module';
 import { AppCustomPreloader } from './app-routing-loader';
 
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
@@ -37,7 +37,7 @@ export const routes: Routes = [
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
-            { path: 'team', loadChildren: 'app/team/team.module#TeamModule' },
+            { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
             { path: 'error-occured-page/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
