@@ -12,19 +12,15 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
-declare var swal: any;
-declare var $: any;
-declare var Metronic: any;
-declare var Layout: any;
-declare var Demo: any;
-declare var videojs: any;
+import { CallActionSwitch } from '../../../videos/models/call-action-switch';
+declare var swal, $, Metronic, Layout, Demo, videojs: any;
 
 @Component({
     selector: 'app-my-profile',
     templateUrl: './my-profile.component.html',
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService]
+    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     public defaultVideoPlayer: DefaultVideoPlayer;
@@ -52,8 +48,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isPlayed = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router) {
+        public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
+        this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData)) {
           this.router.navigateByUrl('/home/dashboard');
         } else {
@@ -557,11 +554,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     transperancyControllBar(value: any) {
         this.valueRange = value;
-        let color: any;
+        let color: any = this.defaultVideoPlayer.controllerColor;
+       if (color.includes('rgba')) {
+          color = this.videoUtilService.convertRgbToHex(this.defaultVideoPlayer.controllerColor);
+       }
         this.defaultVideoPlayer.transparency = value;
         if (this.defaultVideoPlayer.controllerColor === '#fff') {
             color = '#fbfbfb';
-        } else { color = this.defaultVideoPlayer.controllerColor; }
+        } else if (this.defaultVideoPlayer.controllerColor === '#ccc') {
+            color = '#cccddd';
+        }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
         $('.video-js .vjs-control-bar').css('cssText','background-color:'+ rgba+'!important');
         console.log(this.valueRange);

@@ -744,7 +744,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     self.picker.setVisible(false);
                     self.picker.dispose();
                     }
-                    self.googleDriveDisabled();
+                   if ( !self.redirectPge ) { self.googleDriveDisabled(); }
                     self.processVideo(result.path);
                 }, (error: any) => {
                  this.errorIsThere = true;
