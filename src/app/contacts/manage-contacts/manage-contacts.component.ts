@@ -112,7 +112,6 @@ export class ManageContactsComponent implements OnInit {
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
     public currentContactType: string = null;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    //downloadUrl = this.authenticationService.REST_URL + "admin/"
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '', 'for': '' },
@@ -155,18 +154,6 @@ export class ManageContactsComponent implements OnInit {
         }
         this.noSaveButtonDisable = true;
     }
-
-    /*searchDisableValue() {
-        console.log( this.searchKey );
-        if ( this.searchKey !== null || this.searchKey.length !== 0 ) {
-            this.searchDisable = false;
-        }
-        if ( this.searchKey.length == 0 || this.searchKey == '' ) {
-            this.searchDisable = true;
-        }
-    }*/
-    
-
     
     contactListNameLength(title: string) {
         if (title.length > 25) { title = title.substring(0, 25) + '....'; }
@@ -174,14 +161,12 @@ export class ManageContactsComponent implements OnInit {
         }
 
     loadContactLists( pagination: Pagination ) {
-        //this.pagination.isLoading = true;
         this.referenceService.loading(this.httpRequestLoader, true);
         this.pagination.maxResults = 12;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
                 this.logger.info( data );
-                //this.pagination.isLoading = false;
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
@@ -197,9 +182,6 @@ export class ManageContactsComponent implements OnInit {
                      this.isvideoThere = true;
                      this.pagedItems = null ;
                  }
-                /*for ( let i = 0; i < data.listOfUserLists.length; i++ ) {
-                  this.names.push(data.listOfUserLists[i].name.toLowerCase().trim());
-                }*/
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             error => {
@@ -219,8 +201,6 @@ export class ManageContactsComponent implements OnInit {
                 for(let i=0;i< data.names.length;i++){
                     this.names.push( data.names[i].replace(/\s/g, '') );
                     }
-                /*this.names.push(data.names);
-                  this.logger.log(this.names);*/
             },
             error => {
                 this.logger.error( error )
@@ -285,7 +265,6 @@ export class ManageContactsComponent implements OnInit {
         })
     }
 
-   // http://aravindu.com/xtremand-rest/admin/userlist/{{contactList.id}}/download?access_token={{access_token}}"
     downloadContactList( contactListId: number ) {
         this.contactService.downloadContactList( contactListId )
             .subscribe(
@@ -342,7 +321,6 @@ export class ManageContactsComponent implements OnInit {
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     console.log( "AddContactComponent googleContacts() Authentication Success" );
-                    //this.googleContactsSyncronize( contactListId );
                     this.syncronizeContactList( contactListId, socialNetwork);
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
@@ -377,7 +355,6 @@ export class ManageContactsComponent implements OnInit {
     }
 
     zohoContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string ) {
-        //$( "#myModal .close" ).click()
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
         for ( let i = 0; i < this.contactLists.length; i++ ) {
             if ( this.contactLists[i].id == contactListId ) {
@@ -390,9 +367,6 @@ export class ManageContactsComponent implements OnInit {
         .subscribe(
         ( data: any ) => {
             this.logger.info( data );
-            /*if(data.showLogin == true){
-                $( "#zohoShowLoginPopup" ).show();
-            }*/
             if(data.authSuccess == true){
                 this.syncronizeContactList( contactListId, socialNetwork );
             }
@@ -433,7 +407,6 @@ export class ManageContactsComponent implements OnInit {
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     console.log( "AddContactComponent salesforce() Authentication Success" );
-                    //this.salesforceContactsSyncronize( contactListId );
                     this.syncronizeContactList( contactListId, socialNetwork );
 
                 } else {
@@ -464,9 +437,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     update(user:User) {
-        //this.showAll = true;
-       // this.showEdit = false; 
-        this.backToManageContactPage();
+        this.navigateToManageContacts();
     }
     
     onChangeAllContactUsers( event: Event ) {
@@ -476,18 +447,6 @@ export class ManageContactsComponent implements OnInit {
         this.listContactsByType(this.contactsByType.selectedCategory);
     }
     
-    
-/*    all_ContactsUsersTotalRecords( pagination: Pagination ) {
-        this.pagination.maxResults = this.pagination.totalRecords;
-        this.contactService.loadAllContacts( pagination )
-            .subscribe(
-            ( data: any ) => {
-                this.tempAllContactUsers = data.listOfUsers;
-            },
-            error => console.log( error ),
-            () => console.log( "finished" )
-            );
-    }*/
     
     validateContactName(contactName:string){
         if(contactName.replace(/\s\s+/g, '').length == 0){ 
@@ -532,22 +491,21 @@ export class ManageContactsComponent implements OnInit {
                 console.log(self.selectedInvalidContactIds);
                 $('#campaignContactListTable_'+id).addClass('invalid-contacts-selected');
              });
-            for ( var i = 0; i < this.pagination.pagedItems.length; i++ ) {
+            for ( var i = 0; i < this.contactsByType.pagination.pagedItems.length; i++ ) {
                 var object = {
-                    "id": this.pagination.pagedItems[i].id,
+                    "id": this.contactsByType.pagination.pagedItems[i].id,
                     "userName": null,
-                    "emailId": this.pagination.pagedItems[i].emailId,
-                    "firstName": this.pagination.pagedItems[i].firstName,
-                    "lastName": this.pagination.pagedItems[i].lastName,
+                    "emailId": this.contactsByType.pagination.pagedItems[i].emailId,
+                    "firstName": this.contactsByType.pagination.pagedItems[i].firstName,
+                    "lastName": this.contactsByType.pagination.pagedItems[i].lastName,
                     "mobileNumber": null,
                     "interests": null,
                     "occupation": null,
                     "description": null,
                     "websiteUrl": null,
                     "profileImagePath": null,
-                    "userListIds": this.pagination.pagedItems[i].userListIds
+                    "userListIds": this.contactsByType.pagination.pagedItems[i].userListIds
                 }
-              // if(this.selectedInvalidContactIds != this.invalidRemovableContacts[i].id)
                 this.invalidRemovableContacts.push( object );
                 console.log( object );
         }
@@ -556,18 +514,18 @@ export class ManageContactsComponent implements OnInit {
         }else{
             $('[name="invalidContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("invalid-contacts-selected");
-            if(this.pagination.maxResults==this.pagination.totalRecords){
+            if(this.contactsByType.pagination.maxResults == this.contactsByType.pagination.totalRecords){
                 this.selectedInvalidContactIds = [];
                 this.invalidRemovableContacts = [];
             }else{
               let paginationIdsArray = new Array;
-                for(let j=0; j< this.pagination.pagedItems.length; j++){
-                    var paginationIds = this.pagination.pagedItems[j].id; 
+                for(let j=0; j< this.contactsByType.pagination.pagedItems.length; j++){
+                    var paginationIds = this.contactsByType.pagination.pagedItems[j].id; 
                     this.invalidRemovableContacts.splice(this.invalidRemovableContacts.indexOf(paginationIds), 1);
                 }
                console.log('removed objects form else part');
                console.log(this.invalidRemovableContacts);
-               let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+               let currentPageContactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedInvalidContactIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedInvalidContactIds, currentPageContactIds);
             }
             console.log(this.invalidRemovableContacts);
@@ -607,7 +565,7 @@ export class ManageContactsComponent implements OnInit {
             this.selectedInvalidContactIds.splice($.inArray(contactId,this.selectedInvalidContactIds),1);
             this.invalidRemovableContacts.splice($.inArray(contactId,this.invalidRemovableContacts),1);
         }
-        if(this.selectedInvalidContactIds.length == this.pagination.pagedItems.length ){
+        if(this.selectedInvalidContactIds.length == this.contactsByType.pagination.pagedItems.length ){
             this.isInvalidHeaderCheckBoxChecked = true;
         }else{
             this.isInvalidHeaderCheckBoxChecked = false;
@@ -625,11 +583,11 @@ export class ManageContactsComponent implements OnInit {
                 self.selectedContactListIds.push(parseInt(id));
                 console.log(self.selectedContactListIds);
                 $('#ContactListTable_'+id).addClass('contact-list-selected');
-                for ( var i = 0; i < self.pagination.pagedItems.length; i++ ) {
+                for ( var i = 0; i < self.contactsByType.pagination.pagedItems.length; i++ ) {
                     var object = {
-                        "emailId": self.pagination.pagedItems[i].emailId,
-                        "firstName": self.pagination.pagedItems[i].firstName,
-                        "lastName": self.pagination.pagedItems[i].lastName,
+                        "emailId": self.contactsByType.pagination.pagedItems[i].emailId,
+                        "firstName": self.contactsByType.pagination.pagedItems[i].firstName,
+                        "lastName": self.contactsByType.pagination.pagedItems[i].lastName,
                     }
                     console.log( object );
                     self.allselectedUsers.push( object );
@@ -640,16 +598,16 @@ export class ManageContactsComponent implements OnInit {
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("contact-list-selected");
-            if(this.pagination.maxResults==this.pagination.totalRecords){
+            if(this.contactsByType.pagination.maxResults == this.contactsByType.pagination.totalRecords){
                 this.selectedContactListIds = [];
                 this.allselectedUsers.length = 0;
             }else{
                 let paginationIdsArray = new Array;
-                for(let j=0; j< this.pagination.pagedItems.length; j++){
-                    var paginationEmail = this.pagination.pagedItems[j].emailId; 
+                for(let j=0; j< this.contactsByType.pagination.pagedItems.length; j++){
+                    var paginationEmail = this.contactsByType.pagination.pagedItems[j].emailId; 
                     this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
                 }
-                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                let currentPageContactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
             }
         }
@@ -675,7 +633,7 @@ export class ManageContactsComponent implements OnInit {
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
             this.allselectedUsers.splice($.inArray(contactId,this.allselectedUsers),1);
         }
-        if(this.selectedContactListIds.length == this.pagination.pagedItems.length ){
+        if(this.selectedContactListIds.length == this.contactsByType.pagination.pagedItems.length ){
             this.isHeaderCheckBoxChecked = true;
         }else{
             this.isHeaderCheckBoxChecked = false;
@@ -804,6 +762,32 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.contacts = data.listOfUsers;
                 this.contactsByType.pagination.totalRecords = data.totalRecords;
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
+           
+                var contactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.selectedContactListIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                this.logger.log("Contact Ids"+contactIds);
+                this.logger.log("Selected Contact Ids"+this.selectedContactListIds);
+                if(items.length == this.contactsByType.pagination.totalRecords || items.length == this.contactsByType.pagination.pagedItems.length){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }
+                
+                var contactIds1 = this.pagination.pagedItems.map(function(a) {return a.id;});
+                var items1 = $.grep(this.selectedInvalidContactIds, function(element) {
+                    return $.inArray(element, contactIds1 ) !== -1;
+                });
+                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds1);
+                this.logger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
+               
+                if(items1.length == this.contactsByType.pagination.totalRecords || items1.length == this.contactsByType.pagination.pagedItems.length){
+                    this.isInvalidHeaderCheckBoxChecked = true;
+                }else{
+                    this.isInvalidHeaderCheckBoxChecked = false;
+                }
+                
             },
             error => console.log( error ),
             () => console.log( "listContactsByType() Finished.")
