@@ -323,9 +323,6 @@
 									   <div class="form-group">
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-											  <!-- <ui-switch  color="lightgreen" [(ngModel)]="defaultSettingValue" [ngModelOptions]="{standalone: true}"
-											  (change)="defaultPlayerSettingsValues($event);">
-											</ui-switch>  -->
 											  <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" 
 												(statusChange)="defaultPlayerSettingsValues($event)">
@@ -344,9 +341,6 @@
 										<div class="form-group">
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Controller:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-												<!-- <ui-switch color="lightgreen"  [(ngModel)]="newEnableController" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="enableVideoControllers($event)">
-												</ui-switch> -->
 											  <switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableVideoControllers($event)">
@@ -358,8 +352,8 @@
 											<div class="col-xs-7 col-sm-7 col-md-7">
 												<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 													(colorPickerChange)="changeControllerColor($event)" formControlName="controllerColor"
-													 [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" 
-													  [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'"  />
+													[value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" 
+													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'"  />
 											</div>
 										</div>
 										 <div class="form-group">
@@ -375,11 +369,8 @@
 									  </div>
 									</div>
 								</div>
-								<!-- </form> -->
 							</div>
 						</div>
-						<!-- END SAMPLE FORM PORTLET-->
-						<!-- BEGIN Customize FORM PORTLET-->
 						<div class="portlet box red">
 							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}"
 							 (click)="controlPlayerChange();">
@@ -402,9 +393,6 @@
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="lightblue" [(ngModel)]="newAllowSharing" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="allowSharing($event)">
-												</ui-switch> -->
 											 <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowSharing($event)">
@@ -412,9 +400,6 @@
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="red"  [(ngModel)]="newEnableSetting" [ngModelOptions]="{standalone: true}" 
-												  [disabled] ="disablePlayerSettingnew" (change)="enableSettings($event)">
-												</ui-switch> -->
 												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableSettings($event)">
@@ -424,9 +409,6 @@
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="lightblue" [(ngModel)]="newFullScreen" [ngModelOptions]="{standalone: true}" 
-												 [disabled] ="disablePlayerSettingnew" (change)="changeFullscreen($event)">
-												</ui-switch> -->
 											<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="changeFullscreen($event)">
@@ -434,9 +416,6 @@
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="lightblue" [(ngModel)]="newComments" [ngModelOptions]="{standalone: true}"
-												 [disabled] ="disablePlayerSettingnew" (change)="allowComments($event)">
-												</ui-switch> -->
 											<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowComments($event)">
@@ -446,8 +425,6 @@
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="lightblue"  [(ngModel)]="newAllowLikes" [ngModelOptions]="{standalone: true}"
-												[disabled] ="disablePlayerSettingnew" (change)="allowLikes($event)"></ui-switch> -->
 										     <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowLikes($event)">
@@ -455,9 +432,6 @@
 											</div>
                                            	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<!-- <ui-switch color="orange"  [(ngModel)]="newEnableCasting" [ngModelOptions]="{standalone: true}"
-												[disabled] ="disablePlayerSettingnew" (change)="enableCastings($event)">
-											</ui-switch> -->
 												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onYellowColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="enableCastings($event)">
@@ -468,9 +442,6 @@
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-											 <!-- <ui-switch color="red" [(ngModel)]="newAllowEmbed" [ngModelOptions]="{standalone: true}"
-											   [disabled] ="disablePlayerSettingnew" (change)="allowEmbedVideo($event)">
-											</ui-switch> -->
 											<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="allowEmbedVideo($event)">
@@ -478,23 +449,16 @@
 											</div>
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-											 <!-- <ui-switch color="blue"   [(ngModel)]="newValue360" [ngModelOptions]="{standalone: true}"
-											  [disabled] ="disablePlayerSettingnew"
-											   (change)="is360VideoCheck($event)"></ui-switch> -->
 											<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												(statusChange)="is360VideoCheck($event)">
 											</switch>
-												  
 											</div>
 										</div>
 									</div>
 								</div>
-								<!-- </form> -->
 							</div>
 						</div>
-						<!-- END SAMPLE FORM PORTLET-->
-						<!-- BEGIN Customize FORM PORTLET-->
 						<div class="portlet box yellow" id="callaction">
 							<div class="portlet-title"  (click)="callToActionChange();" 
 							[ngClass]="{'activeDiv':!callaction , 'inactiveDiv' :callaction}">
@@ -527,38 +491,26 @@
 									<div class="form-group" style="padding: 1em">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Call To Action At:</label>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
-										<div >
-											<label > start Of the video</label>
-											<!-- <ui-switch  color="lightgreen"
-												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableStart == true"
-												(change)="startCallToactionOverlay($event)">
-											</ui-switch> -->
-										 <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
-											[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
-											[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
-											[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"
-											(onChangeState) = "startCallToactionOverlay($event.currentValue)">
-										 </bSwitch>
+										<div>
+									    	<label > start Of the video</label>
+											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
+												[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
+												[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"
+												(onChangeState) = "startCallToactionOverlay($event.currentValue)">
+											</bSwitch>
 									    </div>
 									</div>
 									<div class="col-xs-3 col-sm-3 col-md-1 col-lg-1" style="padding: 1em; left: -21px;">(Or)</div>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
-										<div >
+										<div>
 											<label > end Of the video</label>
-												<!-- <ui-switch  color="lightgreen"
-													[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}" [disabled]="disableEnd == true"
-													 (change)="endCallToactionOverlay($event)">
-												</ui-switch> -->
-											<!-- <switch [status]="endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												[onColor]="onColorValue" [offColor]="offColorValue" [size]="callActionSwitch.size"
-												[disabled]="disableEnd" (statusChange)="endCallToactionOverlay($event)">
-											</switch>		 -->
-										 <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
-											[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
-											[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
-											[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"
-											(onChangeState) = "endCallToactionOverlay($event.currentValue)">
-										 </bSwitch>
+											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
+												[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
+												[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+												[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"
+												(onChangeState) = "endCallToactionOverlay($event.currentValue)">
+											</bSwitch>
 									    </div>
 									</div>
 								</div>

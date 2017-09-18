@@ -80,6 +80,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     maxSizeOver = false;
     cloudStorageSelected = false;
     picker: any;
+    uploadeRecordVideo = false;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -175,6 +176,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.loading = false;
                 this.processing = false;
                 this.cloudStorageSelected = false;
+                this.uploadeRecordVideo = false;
                 if (this.processVideoResp != null && this.processVideoResp.error === null) {
                     console.log('process video data :' + JSON.stringify(this.processVideoResp));
                     this.videoFileService.saveVideoFile = this.processVideoResp;
@@ -281,6 +283,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.discardVideo = false;
         this.testSpeeddisabled = true;
         this.closeModalId = false;
+        this.uploadeRecordVideo = true;
         this.textAreaDisable = false; // not using ,need to check
         this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
         (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
@@ -803,7 +806,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             // this.player.recorder.stopDevice();
         }
         this.isChecked = false;
-        if (( this.cloudStorageSelected === true || this.processing === true) && this.errorIsThere === false) {
+        if (( this.uploadeRecordVideo === true || this.cloudStorageSelected === true || this.processing === true)
+             && this.errorIsThere === false) {
             this.redirectPge = true;
             swal('', 'Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }

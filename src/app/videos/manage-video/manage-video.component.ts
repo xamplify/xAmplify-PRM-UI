@@ -217,7 +217,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showUpdatevalue = false;
         this.isvideoThere = false;
         console.log(this.categoryNum);
-        //  this.pagination.filterBy = this.categoryNum;
         this.videoFileService.categoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
@@ -231,7 +230,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.searchDisable = true;
         }
     }
-    searchKeyValue(){
+    searchKeyValue() {
     	this.pagination.searchKey = this.searchKey;
     }
     searchVideoTitelName() {
@@ -333,8 +332,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.logger.error(this.errorPrepender + ' show video campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-                // this.referenceService.showServerError(this.httpRequestLoader);
-                // this.httpRequestLoader.statusCode = error.status;
             });
     }
     campaignRouter(video: SaveVideoFile) {
@@ -350,7 +347,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: string) => {
                 this.xtremandLogger.error(this.errorPrepender + ' show campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-                //  this.referenceService.showServerError(this.httpRequestLoader);
             });
     }
     videoTitleLength(title: string) {
@@ -384,7 +380,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
-                    //  swal( 'Campaign Video!', error, 'error' );
                     const message = error.replace('mobinar', 'video');
                     this.campaignVideoMesg = message;
                     this.campaignVideo = true;
@@ -394,8 +389,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 } else {
                     this.xtremandLogger.error(this.errorPrepender + ' delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
-                    // this.referenceService.showServerError(this.httpRequestLoader);
-                    // this.httpRequestLoader.statusCode = error.status;
                 }
                 console.log(error);
             },
@@ -404,7 +397,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.deletedVideo = false;
         this.campaignVideo = false;
     }
-
     deleteAlert(alias: string, position: number, videoName: string) {
         console.log('videoId in sweetAlert()');
         const self = this;
