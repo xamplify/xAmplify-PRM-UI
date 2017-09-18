@@ -17,10 +17,10 @@
 			<i class="fa fa-angle-right"></i>
 		</li>
 		<li>
-			<a (click)="showListOfContactList= true">Manage Contacts</a> 
-			<i class="fa fa-angle-right"></i>
+			<a (click)="navigateToManageContacts()">Manage Contacts</a> 
+			<i class="fa fa-angle-right" *ngIf="! showListOfContactList"></i>
 		</li>
-		<li>{{contactsByType.selectedCategory}} Contacts</li>
+		<li *ngIf="! showListOfContactList">{{contactsByType.selectedCategory}} contacts</li>
 	</ul>
 </div>
 
@@ -57,17 +57,19 @@
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px; width:50%">
-												<select class="form-control" [(ngModel)]="contactsSort"
-													(ngModelChange)="selectedSortByValue($event)">
-													<option *ngFor="let sort of sortContacts" [ngValue]="sort">
-														{{sort.name}}</option>
+												<select class="form-control" [(ngModel)]="sortOption"
+													(ngModelChange)="sortByOption($event, 'contactList')">
+													<ng-container *ngFor="let sort of sortOptions; let i = index">
+														<option *ngIf="i == 0"  [ngValue]="sort">{{sort.name}}</option>
+														<option *ngIf="sort.for == 'contactList'"  [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
 												</select>
 											</div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right">
 													<i class="icon-magnifier"
 														style="cursor: pointer; font-size: 18px;"
-														(click)="searchContactTitelName()"></i> <input type="text"
+														(click)="search('contactList')"></i> <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
 														class="form-control input-circle" placeholder="search...">
@@ -285,10 +287,6 @@
 
 
 <div *ngIf="! showListOfContactList">
-	<div class="page-bar">
-
-
-	</div>
 	<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage"
 		class="alert alert-success alert-dismissable">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -305,28 +303,24 @@
 				<div class="tab-content">
 					<!-- BEGIN PAGE HEADER-->
 					<div class="page-bar" style="margin-bottom: 6px">
-						<ul class="page-breadcrumb">
-							<li>{{contactsByType.selectedCategory}} Contacts</li>
-						</ul>
+						<h4>{{contactsByType.selectedCategory}} contacts</h4>
 						<div class="page-toolbar">
 							<div class="btn-group pull-right">
 								<div class="inputs" align="right" style="float: right">
 									<div style="float: left; margin-right: 10px">
-										<select class="form-control" [(ngModel)]="contactsUsersSort"
-											(ngModelChange)="userSelectedSortByValue($event)">
-											<option *ngFor="let sort of sortContactUsers"
-												[ngValue]="sort">{{sort.name}}</option>
+										<select class="form-control" [(ngModel)]="sortOption"
+											(ngModelChange)="sortByOption($event, 'contacts')">
+											<ng-container *ngFor="let sort of sortOptions; let i = index">
+												<option *ngIf="i == 0"  [ngValue]="sort">{{sort.name}}</option>
+												<option *ngIf="sort.for == 'contacts'"  [ngValue]="sort">{{sort.name}}</option>
+											</ng-container>
 										</select>
 									</div>
 									<div class="portlet-input input-inline input-small">
 										<div class="input-icon right">
-											<i class="icon-magnifier"
-												style="cursor: pointer; font-size: 18px;"
-												(click)="searchContactTitelName()"></i> <input type="text"
-												[(ngModel)]="searchKey"
-												[ngModelOptions]="{standalone: true}"
+											<i class="icon-magnifier" style="cursor: pointer; font-size: 18px;" (click)="search('contacts')"></i> 
+											<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
 												class="form-control input-circle" placeholder="search...">
-
 										</div>
 									</div>
 								</div>
@@ -388,7 +382,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="btn-group pull-left">
-						<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeAllContactUsers($event)">
+						<select class="opts form-control" (change)="onChangeAllContactUsers($event)">
 				    			<option selected value="page">10</option>
 				   	 			<option value="all"> All </option>
 	       				</select>
