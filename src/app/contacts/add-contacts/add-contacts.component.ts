@@ -30,8 +30,8 @@ declare var $: any;
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination]
 })
 export class AddContactsComponent implements OnInit {
-    settingSocialNetwork : string;
-    isUnLinkSocialNetwork : boolean = false;
+    settingSocialNetwork: string;
+    isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
@@ -39,7 +39,7 @@ export class AddContactsComponent implements OnInit {
     public clipboardUsers: Array<User>;
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
-    selectedZohoDropDown : string = 'DEFAULT';
+    selectedZohoDropDown: string = 'DEFAULT';
     googleCheckboxValue: boolean = false;
     salesforceCheckboxValue: boolean = false;
     zohoCheckboxValue: boolean = false;
@@ -48,9 +48,9 @@ export class AddContactsComponent implements OnInit {
     model: any = {};
     names: string[] = [];
     deleteErrorMessage: boolean;
-    Campaign : string;
+    Campaign: string;
     invalidPatternEmails: string[] = [];
-    isValidContactName: boolean;
+    isValidContactName: boolean = false;
     validCsvContacts: boolean;
     googleImageBlur: boolean = false;
     googleImageNormal: boolean = false;
@@ -59,9 +59,9 @@ export class AddContactsComponent implements OnInit {
     zohoImageBlur: boolean = false;
     zohoImageNormal: boolean = false;
     noOptionsClickError: boolean = false;
-    unlinkGoogleSuccessMessage : boolean = false;
-    unlinkSalesforceSuccessMessage : boolean = false;
-    unlinkZohoSuccessMessage : boolean = false;
+    unlinkGoogleSuccessMessage: boolean = false;
+    unlinkSalesforceSuccessMessage: boolean = false;
+    unlinkZohoSuccessMessage: boolean = false;
     inValidCsvContacts: boolean;
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
@@ -144,7 +144,7 @@ export class AddContactsComponent implements OnInit {
     validateContactName( contactName: string ) {
         this.noOptionsClickError = false;
         this.contactListNameError = false;
-        let lowerCaseContactName = contactName.toLowerCase().replace(/\s/g, '');
+        let lowerCaseContactName = contactName.toLowerCase().replace( /\s/g, '' );
         var list = this.names;
         console.log( list );
         if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
@@ -356,7 +356,7 @@ export class AddContactsComponent implements OnInit {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
         } else {
             this.validEmailPatternSuccess = false;
-            
+
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         }
     }
@@ -415,7 +415,7 @@ export class AddContactsComponent implements OnInit {
         });
         console.log( "emailDuplicate" + isDuplicate );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        
+
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.validEmailPatternSuccess == true ) {
             this.logger.info( this.newUsers[0].emailId.toLowerCase() );
             if ( this.newUsers[0].emailId != undefined ) {
@@ -427,25 +427,26 @@ export class AddContactsComponent implements OnInit {
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 }
             } else {
-                this.logger.error( "AddContactComponent saveContactList() ContactListName Error" ); }
-            
-        } else if(this.validEmailPatternSuccess === false){
+                this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
+            }
+
+        } else if ( this.validEmailPatternSuccess === false ) {
             this.emailNotValid = true;
             this.contactListNameError = false;
             this.noOptionsClickError = false;
         }
         else {
-            if(this.isValidContactName == false){
-            this.contactListNameError = true;
+            if ( this.isValidContactName == false ) {
+                this.contactListNameError = true;
             }
             this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
-           }
-         }
+        }
+    }
 
     saveValidEmails() {
         this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
-        for(var i=0; i< this.newUsers.length;i++){
-            this.newUsers[i].emailId = this.convertToLowerCase(this.newUsers[i].emailId);
+        for ( var i = 0; i < this.newUsers.length; i++ ) {
+            this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
         }
         this.contactService.saveContactList( this.model.contactListName, this.newUsers )
             .subscribe(
@@ -523,8 +524,8 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveClipboardValidEmails() {
-        for(var i=0; i< this.clipboardUsers.length;i++){
-            this.clipboardUsers[i].emailId = this.convertToLowerCase(this.clipboardUsers[i].emailId);
+        for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
+            this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
         }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != ' ' ) {
@@ -563,8 +564,8 @@ export class AddContactsComponent implements OnInit {
                     }
                 }
                 if ( this.validCsvContacts == true ) {
-                    for(var i=0; i< this.contacts.length;i++){
-                        this.contacts[i].emailId = this.convertToLowerCase(this.contacts[i].emailId);
+                    for ( var i = 0; i < this.contacts.length; i++ ) {
+                        this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
                     }
                     this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                     this.contactService.saveContactList( this.model.contactListName, this.contacts )
@@ -586,7 +587,9 @@ export class AddContactsComponent implements OnInit {
                 this.logger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
         }
         else {
-            this.contactListNameError = true;
+            if ( this.isValidContactName == false ) {
+                this.contactListNameError = true;
+            }
             this.logger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
         }
     }
@@ -614,19 +617,19 @@ export class AddContactsComponent implements OnInit {
                 this.saveSalesforceContacts( true );
             } else
                 this.saveSalesforceContactSelectedUsers( true );
-        } else if( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == false &&
-                this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ){  
-             this.noOptionsClickError = true;
+        } else if ( this.saveAddCotactsUsers == false && this.saveClipBoardUsers == false && this.saveCsvUsers == false && this.saveGoogleContactUsers == false &&
+            this.saveZohoContactUsers == false && this.saveSalesforceContactUsers == false ) {
+            this.noOptionsClickError = true;
         }
         else {
-           // this.noOptionsClickError = true;
+            // this.noOptionsClickError = true;
         }
     }
 
     cancelContacts() {
         this.contactListNameError = false;
         this.noOptionsClickError = false;
-        this.isValidContactName = false
+        this.isValidContactName = false;
         this.emailNotValid = false;
         this.gContacts.length = 0;
         this.zContacts.length = 0;
@@ -1032,7 +1035,7 @@ export class AddContactsComponent implements OnInit {
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1149,41 +1152,41 @@ export class AddContactsComponent implements OnInit {
         }
     }
 
-    hideZohoModal(){
+    hideZohoModal() {
         $( "#zohoShowLoginPopup" ).hide();
     }
-    
-    checkingZohoContactsAuthentication(){
+
+    checkingZohoContactsAuthentication() {
         this.contactService.checkingZohoAuthentication()
-        .subscribe(
-        ( data: any ) => {
-            this.logger.info( data );
-            if(data.showLogin == true){
-                $( "#zohoShowLoginPopup" ).show();
-            }
-            if(data.authSuccess == true){
-                $( "#zohoShowAuthorisedPopup" ).show();
-            }
-        },
-        (error:any)=>{
-            var body = error['_body'];
-            if ( body != "" ) {
-                var response = JSON.parse( body );
-                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                     setTimeout(()=> {
-                         this.zohoAuthStorageError = '';
-                     },5000)
+            .subscribe(
+            ( data: any ) => {
+                this.logger.info( data );
+                if ( data.showLogin == true ) {
+                    $( "#zohoShowLoginPopup" ).show();
                 }
-            }
-           console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-           
-       },
-        () => this.logger.info( "Add contact component loadContactListsName() finished" )
-        )
+                if ( data.authSuccess == true ) {
+                    $( "#zohoShowAuthorisedPopup" ).show();
+                }
+            },
+            ( error: any ) => {
+                var body = error['_body'];
+                if ( body != "" ) {
+                    var response = JSON.parse( body );
+                    if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                        this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                        setTimeout(() => {
+                            this.zohoAuthStorageError = '';
+                        }, 5000 )
+                    }
+                }
+                console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+
+            },
+            () => this.logger.info( "Add contact component loadContactListsName() finished" )
+            )
 
     }
-    
+
     getZohoContacts( contactType: any, username: string, password: string ) {
         /*$( "#zohoContact_button" ).hide();
         $( "#zohoContact_buttonNormal" ).show();*/
@@ -1205,7 +1208,7 @@ export class AddContactsComponent implements OnInit {
                 this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
-                   // this.hideZohoModal();
+                    // this.hideZohoModal();
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1216,7 +1219,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.logger.info( this.getZohoConatacts );
-                   // this.zohoImageNormal = true;
+                    // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1243,32 +1246,32 @@ export class AddContactsComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
             },
-            (error:any)=>{
+            ( error: any ) => {
                 var body = error['_body'];
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "Username or password is incorrect" ) {
                         this.zohoCredentialError = 'Username or password is incorrect';
-                         setTimeout(()=> {
-                             this.zohoCredentialError = '';
-                         },5000)
+                        setTimeout(() => {
+                            this.zohoCredentialError = '';
+                        }, 5000 )
                     }
                     if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
                         this.zohoCredentialError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                         setTimeout(()=> {
-                             this.zohoCredentialError = '';
-                         },5000)
+                        setTimeout(() => {
+                            this.zohoCredentialError = '';
+                        }, 5000 )
                     }
                 }
-               console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-               
-           },
+                console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+
+            },
             () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
         this.isContactsThere = false;
     }
-    
-    hideZohoAuthorisedPopup(){
+
+    hideZohoAuthorisedPopup() {
         $( "#zohoShowAuthorisedPopup" ).hide();
     }
     authorisedZohoContacts() {
@@ -1293,9 +1296,9 @@ export class AddContactsComponent implements OnInit {
                 self.contactType = self.selectedZohoDropDown;
                 self.logger.log( self.selectedZohoDropDown );
             }
-            
+
         }
-        
+
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactType = self.contactType;
         this.contactService.getZohoAutherizedContacts( this.socialContact )
@@ -1305,7 +1308,7 @@ export class AddContactsComponent implements OnInit {
                 this.hideZohoAuthorisedPopup();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
-                   // this.hideZohoModal();
+                    // this.hideZohoModal();
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1316,7 +1319,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.logger.info( this.getZohoConatacts );
-                   // this.zohoImageNormal = true;
+                    // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
                     $( "button#addContacts" ).prop( 'disabled', true );
@@ -1420,12 +1423,12 @@ export class AddContactsComponent implements OnInit {
         /*if(this.salesforceListViewName != 'DEFAULT'){
         $( "button#salesforce_save_button" ).prop( 'disabled', false );
         }*/
-        if(this.salesforceListViewName == "DEFAULT"){
-            $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
-        }else{
-            $( "button#salesforce_save_button" ).prop( 'disabled', false ); 
+        if ( this.salesforceListViewName == "DEFAULT" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#salesforce_save_button" ).prop( 'disabled', false );
         }
-        
+
         this.salesforceListViewId = item;
         for ( var i = 0; i < this.salesforceListViewsData.length; i++ ) {
             this.logger.log( this.salesforceListViewsData[i].listViewId );
@@ -1440,12 +1443,12 @@ export class AddContactsComponent implements OnInit {
         this.contactType = event.target["value"];
         this.socialNetwork = "salesforce";
         this.salesforceListViewsData = [];
-        if(this.contactType == "DEFAULT"){
-            $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
-        }else{
-            $( "button#salesforce_save_button" ).prop( 'disabled', false ); 
+        if ( this.contactType == "DEFAULT" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#salesforce_save_button" ).prop( 'disabled', false );
         }
-        
+
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
             $( "button#salesforce_save_button" ).prop( 'disabled', true );
             this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
@@ -1504,7 +1507,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     checkingPopupValues() {
-        $( "button#salesforce_save_button" ).prop( 'disabled', true ); 
+        $( "button#salesforce_save_button" ).prop( 'disabled', true );
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
             this.getSalesforceListViewContacts( this.contactType );
         } else {
@@ -1538,7 +1541,7 @@ export class AddContactsComponent implements OnInit {
             this.contactType = selectedDropDown;
             this.logger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
         }
-        
+
         this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
             .subscribe(
             data => {
@@ -1677,7 +1680,7 @@ export class AddContactsComponent implements OnInit {
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.logger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
@@ -1760,8 +1763,8 @@ export class AddContactsComponent implements OnInit {
             ( data: any ) => {
                 this.logger.info( data );
                 this.contactLists = data.listOfUserLists;
-                for(let i=0;i< data.names.length;i++){
-                this.names.push( data.names[i].replace(/\s/g, '') );
+                for ( let i = 0; i < data.names.length; i++ ) {
+                    this.names.push( data.names[i].replace( /\s/g, '' ) );
                 }
             },
             error => {
@@ -1771,68 +1774,68 @@ export class AddContactsComponent implements OnInit {
             )
     }
 
-    
-    unlinkSocailAccount(){
+
+    unlinkSocailAccount() {
         let socialNetwork = this.settingSocialNetwork.toUpperCase();
-        console.log("CheckBoXValueUNlink"+this.isUnLinkSocialNetwork);
-        this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
-        .subscribe(
-                ( data: any ) => {
-                    if(socialNetwork == 'SALESFORCE'){
-                        $( "#salesforceContact_buttonNormal" ).hide();
-                        $( "#salesforceGear" ).hide();
-                        this.sfImageBlur = true;
-                        this.unlinkSalesforceSuccessMessage = true;
-                        setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                        this.socialContactImage();
-                   }
-                    else if(socialNetwork == 'GOOGLE'){
-                        $( "#googleContact_buttonNormal" ).hide();
-                        $( "#GoogleGear" ).hide();
-                        this.googleImageBlur = true;
-                        this.unlinkGoogleSuccessMessage = true;
-                        setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
-                    }
-                    else if(socialNetwork == 'ZOHO'){
-                        $( "#zohoContact_buttonNormal" ).hide();
-                        $( "#zohoGear" ).hide();
-                        this.zohoImageBlur = true;
-                        this.unlinkZohoSuccessMessage = true;
-                        setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
-                    }
-                },
-                ( error: any ) => {
-                    if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                        this.Campaign = error;
-                        $( "#settingsSalesforce .close" ).click()
-                        this.deleteErrorMessage = true;
-                        setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                    }
-                    console.log( error );
-                },
-                () => {
-                    $( "#settingSocialNetwork .close" ).click();
-                    this.cancelContacts();
-                    this.logger.info( "deleted completed" );
+        console.log( "CheckBoXValueUNlink" + this.isUnLinkSocialNetwork );
+        this.contactService.unlinkSocailAccount( socialNetwork, this.isUnLinkSocialNetwork )
+            .subscribe(
+            ( data: any ) => {
+                if ( socialNetwork == 'SALESFORCE' ) {
+                    $( "#salesforceContact_buttonNormal" ).hide();
+                    $( "#salesforceGear" ).hide();
+                    this.sfImageBlur = true;
+                    this.unlinkSalesforceSuccessMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    this.socialContactImage();
                 }
-                );
-            this.unlinkSalesforceSuccessMessage = false;
-            this.unlinkGoogleSuccessMessage = false;
-            this.unlinkZohoSuccessMessage = false;
-            this.deleteErrorMessage = false;
+                else if ( socialNetwork == 'GOOGLE' ) {
+                    $( "#googleContact_buttonNormal" ).hide();
+                    $( "#GoogleGear" ).hide();
+                    this.googleImageBlur = true;
+                    this.unlinkGoogleSuccessMessage = true;
+                    setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                }
+                else if ( socialNetwork == 'ZOHO' ) {
+                    $( "#zohoContact_buttonNormal" ).hide();
+                    $( "#zohoGear" ).hide();
+                    this.zohoImageBlur = true;
+                    this.unlinkZohoSuccessMessage = true;
+                    setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                }
+            },
+            ( error: any ) => {
+                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                    this.Campaign = error;
+                    $( "#settingsSalesforce .close" ).click()
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }
+                console.log( error );
+            },
+            () => {
+                $( "#settingSocialNetwork .close" ).click();
+                this.cancelContacts();
+                this.logger.info( "deleted completed" );
+            }
+            );
+        this.unlinkSalesforceSuccessMessage = false;
+        this.unlinkGoogleSuccessMessage = false;
+        this.unlinkZohoSuccessMessage = false;
+        this.deleteErrorMessage = false;
     }
-    
-    convertToLowerCase(text : string){
+
+    convertToLowerCase( text: string ) {
         return text.toLowerCase();
     }
-    
-    settingSocialNetworkOpenModal(socialNetwork: string){
+
+    settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        $('#settingSocialNetwork').modal();
+        $( '#settingSocialNetwork' ).modal();
     }
 
     ngOnInit() {
-        
+
         this.socialContactImage();
         this.hideModal();
         this.gContactsValue = true;
