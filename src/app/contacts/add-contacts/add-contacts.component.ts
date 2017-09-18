@@ -1490,8 +1490,7 @@ export class AddContactsComponent implements OnInit {
                 this.storeLogin = data;
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                    //$( "#myModal1" ).show();
-                    this.showModal();
+                    $( "#salesforceModal" ).modal();
                     console.log( "AddContactComponent salesforce() Authentication Success" );
                     this.checkingPopupValues();
                 } else {
@@ -1843,7 +1842,7 @@ export class AddContactsComponent implements OnInit {
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
-            this.showModal();
+            $( "#salesforceModal").modal();
             this.contactService.salesforceContactCallBack = false;
         }
 

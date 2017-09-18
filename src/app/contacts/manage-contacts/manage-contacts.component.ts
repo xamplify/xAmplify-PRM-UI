@@ -31,38 +31,55 @@ export class ManageContactsComponent implements OnInit {
     public deleteUserSucessMessage: boolean = false;
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
-    allContacts: number;
-    invalidContacts: number;
-    unsubscribedContacts: number;
     public storeLogin: any;
-    activeUsersCount: number;
-    inActiveUsersCount: number;
-    invlidContactsCount: number;
+    
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
-    invalidRemovableContacts = [];
     paginationAllData = [];
     zohoAuthStorageError = '';
     selectedAllContactUsers = new Array<User>();
     isHeaderCheckBoxChecked:boolean = false;
-    isInvalidHeaderCheckBoxChecked:boolean = false;
     public contactLists: Array<ContactList>;
     selectedContactListId: number;
     showAll: boolean;
     showEdit: boolean;
+    
+    
+    
+    allContacts: number;
+    invalidContacts: number;
+    unsubscribedContacts: number;
+    activeUsersCount: number;
+    inActiveUsersCount: number;
+    invlidContactsCount: number;
+    
+    invalidRemovableContacts = [];
     allselectedUsers = [];
-   // allselectedUsers: User[];
-    showAllContactData: boolean = false;
-    showManageContactData: boolean = true;
-    deleteSucessMessage: boolean;
-    deleteErrorMessage: boolean;
+    isInvalidHeaderCheckBoxChecked:boolean = false;
     invalidDeleteSucessMessage: boolean;
-    synchronizationSucessMessage: boolean;
+    
     allContactData: boolean;
     activeContactsData: boolean;
     invalidContactData: boolean;
     unsubscribedContactsData: boolean;
     nonActiveContactsData: boolean;
+    
+    public invalidIds: Array<UserListIds>;
+    public allContactUsers: Array<ContactList>;
+    public activeContactUsers: Array<ContactList>;
+    public invalidContactUsers: Array<ContactList>;
+    public unsubscribedContactUsers: Array<ContactList>;
+    public nonActiveContactUsers: Array<ContactList>;
+    
+    
+    
+    
+    
+    showAllContactData: boolean = false;
+    showManageContactData: boolean = true;
+    deleteSucessMessage: boolean;
+    deleteErrorMessage: boolean;
+    synchronizationSucessMessage: boolean;
     contactListNameError: boolean;
     contactListUsersError: boolean;
     emptyContacts: boolean;
@@ -71,7 +88,6 @@ export class ManageContactsComponent implements OnInit {
     public contactListName: string;
     public model: any = {};
     public removeIds: number;
-    public invalidIds: Array<UserListIds>;
     public alias: any;
     public contactType: string;
     selectedDropDown : string;
@@ -79,11 +95,6 @@ export class ManageContactsComponent implements OnInit {
     public password: string;
     public getZohoConatacts: any;
     public zContacts: Set<SocialContact>;
-    public allContactUsers: Array<ContactList>;
-    public activeContactUsers: Array<ContactList>;
-    public invalidContactUsers: Array<ContactList>;
-    public unsubscribedContactUsers: Array<ContactList>;
-    public nonActiveContactUsers: Array<ContactList>;
     public userListIds: Array<UserListIds>;
     public searchKey: string;
     sortingName: string = null;
@@ -768,7 +779,7 @@ export class ManageContactsComponent implements OnInit {
         //this.pagination.maxResults = 12;
         this.loadContactListsNames();
         this.logger.log( pagination );
-        this.contactService.loadAllContacts( pagination )
+        this.contactService.listContactsByType('all', pagination )
             .subscribe(
             ( data: any ) => {
                 this.allContactUsers = data.listOfUsers;
@@ -893,7 +904,7 @@ export class ManageContactsComponent implements OnInit {
 
     active_Contacts( pagination: Pagination ) {
         //this.pagination.maxResults = 12;
-        this.contactService.loadActiveContacts( pagination )
+        this.contactService.listContactsByType('active', pagination )
             .subscribe(
             ( data: any ) => {
                 this.activeContactUsers = data.listOfUsers;
@@ -924,7 +935,7 @@ export class ManageContactsComponent implements OnInit {
 
     invalid_Contacts( pagination: Pagination ) {
        // this.pagination.maxResults = 12;
-        this.contactService.loadInvalidContacts( pagination )
+        this.contactService.listContactsByType('invalid', pagination )
             .subscribe(
             ( data: any ) => {
                 this.invalidContactUsers = data.listOfUsers;
@@ -979,7 +990,7 @@ export class ManageContactsComponent implements OnInit {
 
     unSubscribed_Contacts( pagination: Pagination ) {
         //this.pagination.maxResults = 12;
-        this.contactService.loadUnSubscribedContacts( pagination )
+        this.contactService.listContactsByType('unsubscribed', pagination )
             .subscribe(
             ( data: any ) => {
                 this.unsubscribedContactUsers = data.listOfUsers;
@@ -1008,7 +1019,7 @@ export class ManageContactsComponent implements OnInit {
 
     nonActive_Contacts( pagination: Pagination ) {
         //this.pagination.maxResults = 12;
-        this.contactService.loadNonActiveContacts( pagination )
+        this.contactService.listContactsByType('non-active', pagination )
             .subscribe(
             ( data: any ) => {
                 this.nonActiveContactUsers = data.listOfUsers;
@@ -1268,6 +1279,8 @@ export class ManageContactsComponent implements OnInit {
 
     cancelAllContactsCancel() {
         this.model.contactListName = null;
+        this.selectedContactListIds = [];
+        this.allselectedUsers.length = 0;
         this.all_Contacts( this.pagination );
         this.contactListUsersError = false;
         this.contactListNameError = false;

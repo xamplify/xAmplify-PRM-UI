@@ -609,7 +609,7 @@ color:blue;
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<button (click)="hideZohoModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         							<div><img src = "assets/images/zoho.png"
         								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
         							<h4 class="modal-title" id="myModalLabel" align="center"><b>Sign in</b></h4></div>
@@ -656,7 +656,7 @@ color:blue;
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<button (click)="hideZohoAuthorisedPopup()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         							<div><img src = "assets/images/zoho.png"
         								 alt = "Picture of a happy monkey" style="height:65px" width="90px" />
         							<h4 class="modal-title" id="myModalLabel" align="center"><b>Retrieve Zoho Contacts</b></h4></div>
@@ -799,7 +799,7 @@ color:blue;
   				</div>
 			</div>	 -->					
 <div id="salesforceId">
-			<div class="modal" id="salesforceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+			<div class="modal" id="salesforceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
@@ -838,7 +838,7 @@ color:blue;
   					        </form>
       					</div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideModal()">Close</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        						<button type="button" id="salesforce_save_button" class="btn btn-primary" (click)="checkingPopupValues()">Submit</button>
      		 			</div>
     				</div>

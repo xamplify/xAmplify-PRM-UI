@@ -72,13 +72,14 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-
-    loadAllContacts( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadAllContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=all" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
+    
+    listContactsByType(contactType: string, pagination: Pagination ): Observable<ContactList[]> {
+        this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
+        return this._http.post( this.url + "contacts?contactType="+ contactType + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
+ 
 
     loadContactsCount() {
         this.logger.info( "Service class loadContactCount() completed" );
@@ -94,35 +95,6 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    
-    loadActiveContacts( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadActiveContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=active" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadNonActiveContacts( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadNonActiveContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=non-active" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadInvalidContacts( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadInvalidContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=invalid" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadUnSubscribedContacts( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadUnSubscribedContact() completed" );
-        return this._http.post( this.url + "contacts?contactType=all" + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
     loadActiveContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadActiveContact() completed" );
         return this._http.post( this.url + "contacts/" + contactListId + "?contactType=active" + "&access_token=" + this.authenticationService.access_token, pagination )
