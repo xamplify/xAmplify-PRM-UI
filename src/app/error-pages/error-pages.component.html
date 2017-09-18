@@ -1,32 +1,42 @@
+<style>
+ .imageCss{   
+    max-width: 100%;
+    height: 359px;
+    position: relative;
+    top: -16px;
+    margin-right: 10px;
+}
+</style>
+
 <div class="page-content">
 <div class="portlet light" style="padding:5px 5px 150px 10px">
 <div class="portlet-body">
 <div class="ex-page-content bootstrap snippets">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6">   
+			<div class="col-sm-7">   
 				<img *ngIf= "Error500" alt="Image Not Found"
 					src="assets/images/error-pages/_error500.png"
-					style="max-width: 100%;padding: 0 7em; height: 359px;position: relative;top: -11px;">
+					class="imageCss" style="padding: 0 63px;">
 					<!-- https://cdn.dribbble.com/users/1373974/screenshots/3029413/500.gif 500 image  -->
 				<img *ngIf= "Error400" alt="Image Not Found"
 					src="assets/images/error-pages/400image.jpg"
-					style="max-width: 100%; padding: 0 8em;">
+					class="imageCss" style="padding: 0 74px;">
 				<img *ngIf= "Error403" alt="Image Not Found"
 					src="assets/images/error-pages/403image.png"
-					style="max-width: 100%; padding: 0 3em;">
+				    class="imageCss">
 				<img *ngIf= "Error406" alt="Image Not Found"
 					src="assets/images/error-pages/406image.jpg"
-					style="max-width: 100%; padding: 0 8em;">
+					class="imageCss" style="padding: 0 74px;">
 				<img *ngIf= "Error409" alt="Image Not Found"
 					src="assets/images/error-pages/409image.png"
-					style="max-width: 100%; padding: 0 7em;">
+					class="imageCss" style="padding: 0 74px;">
 			    <h1 *ngIf="ErrorUndefined" style="position: relative; top: -26px; font-size: 275px;">{{errorStatus}}</h1>		
 			    <h1 *ngIf="errorDifferent" style="position: relative; top: -3px; font-size: 75px;font-weight: 500;">{{errorMessage}}</h1>		
 			</div>
 
-			<div class="col-sm-6">
-				<div class="message-box" style="left: -22px; position: relative;">
+			<div class="col-sm-5" style="margin-left: -158px;">
+				<div class="message-box" >
 					<h2 *ngIf="Error500"><strong>500 : Internal Server Error</strong></h2>
 					<h2 *ngIf="Error400"><strong>400 : Bad url Server Request</strong></h2>
 				    <h2 *ngIf="Error403"><strong>403 : Access Forbidden Error! </strong></h2>

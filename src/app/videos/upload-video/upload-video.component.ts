@@ -79,6 +79,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     errorIsThere = false;
     maxSizeOver = false;
     cloudStorageSelected = false;
+    picker: any;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -130,7 +131,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.isFileDrop = true;
                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
             };
-           if(this.refService.uploadRetrivejsCalled === false) {
+           if (this.refService.uploadRetrivejsCalled === false) {
             $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
             $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
             $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
@@ -391,12 +392,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         );
     }
     cameraChange() {
-    //    if (this.refService.isEnabledCamera === false) {
-    //     this.checkCameraBlock();
-    //     this.refService.isEnabledCamera = true;
-    //    } 
         if (!this.refService.cameraIsthere) {
-           // alert('no permission to access the camera, please enable the camera');
            swal('Oops...',
            'No permission to access the camera, please enable the camera and refresh the page once you enable it!', 
            'error');
@@ -704,14 +700,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         const self = this;
         if (this.tempr) {
             const pickerBuilder = new google.picker.PickerBuilder();
-            const picker = pickerBuilder
+            self.picker = pickerBuilder
                 .enableFeature(google.picker.Feature.NAV_HIDDEN)
                 .setOAuthToken(this.tempr)
                 .addView(google.picker.ViewId.DOCS_VIDEOS)
                 .setDeveloperKey('AIzaSyA2md7KHqFuUp5U4tRa_MqySNrxzR6mGJQ')
                 .setCallback(self.pickerCallback.bind(this))
                 .build();
-            picker.setVisible(true);
+            self.picker.setVisible(true);
         }
     }
     pickerCallback(data: any) {
@@ -720,6 +716,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           //  google.script.host.close();
              self.cloudStorageSelected = true;
             const doc = data[google.picker.Response.DOCUMENTS][0];
+                 if(self.picker){
+                    self.picker.setVisible(false);
+                    self.picker.dispose();
+                    }
             swal({
                 text: 'Retriving video from Google Drive...! Please Wait...It`s processing',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
@@ -727,6 +727,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.downloadGDriveFile(doc.id, doc.name);
         } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
           //  google.script.host.close();
+            self.picker.setVisible(false);
+            self.picker.dispose();
         }
     }
     downloadGDriveFile(fileId: any, name: string) {
@@ -738,6 +740,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     console.log(result);
                     swal.close();
                     self.processing = true;
+                    if(self.picker){
+                    self.picker.setVisible(false);
+                    self.picker.dispose();
+                    }
                     self.googleDriveDisabled();
                     self.processVideo(result.path);
                 }, (error: any) => {
@@ -801,5 +807,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.redirectPge = true;
             swal('', 'Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }
+        if (this.picker) {
+          this.picker.setVisible(false);
+          this.picker.dispose();
+       }
     }
 }
