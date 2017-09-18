@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
+import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
 import { Router, NavigationExtras } from "@angular/router";
 import { Response } from '@angular/http';
@@ -72,8 +73,13 @@ export class ManageContactsComponent implements OnInit {
     public nonActiveContactUsers: Array<ContactList>;
     
     
+    contactsByType: ContactsByType = new ContactsByType();
     
-    
+    /*
+     * Display all the contactLists in manage contacts page by default.
+       If 'showListOfContactList' is set to false,display category wise contacts.
+    */
+    showListOfContactList: boolean = true; 
     
     showAllContactData: boolean = false;
     showManageContactData: boolean = true;
@@ -1346,11 +1352,11 @@ export class ManageContactsComponent implements OnInit {
         this.contactService.loadContactsCount()
             .subscribe(
             data => {
-                this.activeUsersCount = data.activecontacts;
-                this.inActiveUsersCount = data.nonactiveUsers;
-                this.allContacts = data.allcontacts;
-                this.invlidContactsCount = data.invalidUsers;
-                this.unsubscribedContacts = data.unsubscribedUsers;
+                this.contactsByType.allContactsCount = data.allContactsCount;
+                this.contactsByType.invalidContactsCount = data.invalidContactsCount;
+                this.contactsByType.unsubscribedContactsCount = data.unsubscribedContactsCount;
+                this.contactsByType.activeContactsCount = data.activeContactsCount;
+                this.contactsByType.inactiveContactsCount = data.inactiveContactsCount;
             },
             error => console.log( error ),
             () => console.log( "LoadContactsCount Finished" )
@@ -1372,6 +1378,31 @@ export class ManageContactsComponent implements OnInit {
         }
         doc.autoTable( col, rows );
         doc.save( 'Contacts.pdf' );
+    }
+    
+    listContactsByType(contactType: string){
+        this.resetListContacts();
+        this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
+        .subscribe(
+            data => {
+                this.contactsByType.selectedCategory = contactType;
+                this.contactsByType.contacts = data.listOfUsers;
+                this.contactsByType.pagination.totalRecords = data.totalRecords;
+                this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
+            },
+            error => console.log( error ),
+            () => console.log( "listContactsByType() Finished.")
+        );
+    }
+    
+    setPageForListContactsByType(pageNumber: number, contactType: string){
+        this.contactsByType.pagination.pageIndex = pageNumber;
+        this.listContactsByType(contactType);
+    }
+    
+    resetListContacts(){
+        this.showListOfContactList = false;
+        this.contactsByType.contacts = [];
     }
 
     ngOnInit() {

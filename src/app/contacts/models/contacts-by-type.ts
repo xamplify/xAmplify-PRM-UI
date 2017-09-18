@@ -1,21 +1,20 @@
 import { Contacts } from '../models/contacts';
-export class ContactsByType{
-    allContactsCount: number;
-    invalidContactsCount: number;
-    unsubscribedContactsCount: number;
-    activeContactsCount: number;
-    inActiveContactsCount: number;
+import { User } from '../../core/models/user';
+import { Pagination } from '../../core/models/pagination';
 
-    public contacts: Array<Contacts>;
+export class ContactsByType {
+    allContactsCount: number = 0;
+    invalidContactsCount: number = 0;
+    unsubscribedContactsCount: number = 0;
+    activeContactsCount: number = 0;
+    inactiveContactsCount: number = 0;
+
+    contacts: Array<User> = new Array<User>();
+    selectedCategory: string;
+    pagination: Pagination = new Pagination();
 
     invalidRemovableContacts = [];
     allselectedUsers = [];
     isInvalidHeaderCheckBoxChecked: boolean = false;
     invalidDeleteSucessMessage: boolean;
-
-    allContactData: boolean;
-    activeContactsData: boolean;
-    invalidContactData: boolean;
-    unsubscribedContactsData: boolean;
-    nonActiveContactsData: boolean;
 }

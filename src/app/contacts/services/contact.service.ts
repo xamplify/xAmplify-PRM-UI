@@ -73,7 +73,7 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    listContactsByType(contactType: string, pagination: Pagination ): Observable<ContactList[]> {
+    listContactsByType(contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
         return this._http.post( this.url + "contacts?contactType="+ contactType + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
