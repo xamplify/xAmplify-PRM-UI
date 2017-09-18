@@ -311,21 +311,23 @@ color:blue;
 				<div class="row" *ngIf="clipBoard">
 					<div class="col-sm-12">
 						<h3>Copy from text -- paste below</h3>
-						<div class="col-sm-12 form-group">
-					      <select class="col-sm-2 opts form-control"  style="width:15%">
-    					    <option selected value="DEFAULT">Delimeter Type</option>
-    					    <option value="CommaSeperated"> Comma Seperated </option>
-  						    <option value="TabSeperated"> Tab Seperated </option>
-  					       </select>  
-					      <button class=" col-sm-2 btn btn-default" type="button"
-						   style="background-color: #26a69a; color: white"
-						   (click)="clipboardShowPreview()">SHOW PREVIEW</button>
+						<div class="col-xs-12 col-sm-6 form-group">
+							<section style="display: flex;">
+								<select class="col-xs-6 opts form-control">
+									<option selected value="DEFAULT">Delimeter Type</option>
+									<option value="CommaSeperated">Comma Seperated</option>
+									<option value="TabSeperated">Tab Seperated</option>
+								</select>
+								<button class="col-xs-6 btn btn-default" type="button" style="background-color: #26a69a; color: white"
+					   				(click)="clipboardShowPreview()">SHOW PREVIEW
+					   			</button>
+							</section>
 						</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6">
 									<textarea id="copyFromclipTextArea" [(ngModel)]="clipboardTextareaText"
 										placeholder="EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName.."
 										[ngModelOptions]="{standalone: true}"
-										style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
+										style="height: 150px; font-size: 12px; line-height: 1.4;"
 										required="required">
 									</textarea>
 								</div>

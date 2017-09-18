@@ -39,7 +39,7 @@ sortContactUsers = [
 
   setPage( page: number ) {
       this.pagination.pageIndex = page;
-      this.followersData( this.pagination )
+      //this.followersData( this.pagination )
   }
   
   userSelectedSortByValue( event: any ) {
@@ -56,17 +56,17 @@ sortContactUsers = [
       this.pagination.pageIndex = 1;
       this.pagination.sortcolumn = this.sortcolumn;
       this.pagination.sortingOrder = this.sortingOrder;
-          this.followersData( this.pagination );
+         // this.followersData( this.pagination );
   }
   
   searchContactTitelName() {
       console.log( this.searchKey );
       this.pagination.searchKey = this.searchKey;
       this.pagination.pageIndex = 1;
-          this.followersData( this.pagination );
+         // this.followersData( this.pagination );
   }
   
-  followersData( pagination: Pagination ) {
+  /*followersData( pagination: Pagination ) {
       //this.pagination.maxResults = 12;
       this.logger.log( pagination );
       this.contactService.loadAllContacts( pagination )
@@ -82,7 +82,7 @@ sortContactUsers = [
                   pagination = this.pagerService.getPagedItems( pagination, this.allFollowers );
                   this.logger.log( data );
               }
-              /*if (this.allFollowers.length == 0) {
+              if (this.allFollowers.length == 0) {
                   this.emptyContactsUsers = true;
                   this.hidingContactUsers = false;
                }
@@ -90,15 +90,15 @@ sortContactUsers = [
                    this.emptyContactsUsers = false;
                    this.hidingContactUsers = true;
                    this.pagedItems = null ;
-               }*/
+               }
           },
           error => console.log( error ),
           () => console.log( "finished" )
           );
-  }
+  }*/
   
   ngOnInit() {
-      this.followersData(this.pagination);
+    //  this.followersData(this.pagination);
   }
 
 }

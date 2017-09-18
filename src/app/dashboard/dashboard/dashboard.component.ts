@@ -482,7 +482,7 @@ export class DashboardComponent implements OnInit {
 
     setEmailWatchedPage(page: number) {
         this.emailWatchedPagination.pageIndex = page;
-        this.totalEmailWatchedData(this.emailWatchedPagination);
+        //this.totalEmailWatchedData(this.emailWatchedPagination);
     }
     
     listOfEmailOpenLogs(actionId: number){
@@ -508,7 +508,7 @@ export class DashboardComponent implements OnInit {
     }
     
 
-    totalEmailWatchedData(pagination: Pagination) {
+/*    totalEmailWatchedData(pagination: Pagination) {
         //this.pagination = new Pagination();
         this.emailWatchedPagination.maxResults = 10;
         this.logger.log(this.pagination);
@@ -531,7 +531,7 @@ export class DashboardComponent implements OnInit {
             error => console.log(error),
             () => console.log("finished")
             );
-    }
+    }*/
     getCountriesTotalViewsData() {
         this._dashboardService.getCountryViewsDetails().
         subscribe(result => {

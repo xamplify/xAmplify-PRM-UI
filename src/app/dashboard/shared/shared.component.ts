@@ -69,7 +69,7 @@ searchContactTitelName() {
 sharedDetails( pagination: Pagination ) {
   //this.pagination.maxResults = 12;
   this.logger.log( pagination );
-  this.contactService.loadAllContacts( pagination )
+  this.contactService.listContactsByType('all', pagination )
       .subscribe(
       ( data: any ) => {
           this.allFollowers = data.listOfUsers;

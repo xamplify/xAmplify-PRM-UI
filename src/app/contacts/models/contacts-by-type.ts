@@ -18,7 +18,4 @@ export class ContactsByType{
     invalidContactData: boolean;
     unsubscribedContactsData: boolean;
     nonActiveContactsData: boolean;
-
-    public invalidIds: Array<UserListIds>;
-
 }

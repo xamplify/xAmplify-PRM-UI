@@ -156,7 +156,6 @@ export class ViewsReportComponent implements OnInit {
         if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
             this.loadVideos(this.pagination);
         } else if (this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "")) {
-            this.totalViewsForVideo(this.pagination);
         }
     }
     getCategoryNumber() {
@@ -173,7 +172,6 @@ export class ViewsReportComponent implements OnInit {
         if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
             this.loadVideos(this.pagination);
         } else if (this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "")) {
-            this.totalViewsForVideo(this.pagination);
         }
     }
     selectedSortByValue(event: any) {
@@ -209,7 +207,6 @@ export class ViewsReportComponent implements OnInit {
         this.pagination.pageIndex = 1;
         this.pagination.sortcolumn = this.sortcolumn;
         this.pagination.sortingOrder = this.sortingOrder;
-        this.totalViewsForVideo(this.pagination);
     }
 
     showPreview(videoFile: SaveVideoFile) {
@@ -334,29 +331,9 @@ export class ViewsReportComponent implements OnInit {
         this.showVideoData = false;
         this.pagination.sortcolumn = null;
         this.pagination.sortingOrder = null;
-        this.totalViewsForVideo(this.pagination);
         this.currentPageType = "views_page";
     }
-    totalViewsForVideo(pagination: Pagination) {
-        this.logger.log(pagination);
-        this.contactService.loadAllContacts(pagination)
-            .subscribe(
-            (data: any) => {
-                this.totalViewsForThisVideo = data.listOfUsers;
-                this.totalRecords = data.totalRecords;
-                if (data.totalRecords.length === 0) {
-                    this.emptyViewsRecord = true;
-                } else {
-                    pagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.totalViewsForThisVideo);
-                    pagination = this.pagerService.getPagedItems(pagination, this.totalViewsForThisVideo);
-                    this.logger.log(data);
-                }
-            },
-            error => console.log(error),
-            () => console.log('finished')
-            );
-    }
+
 
     ngOnInit() {
         try {
