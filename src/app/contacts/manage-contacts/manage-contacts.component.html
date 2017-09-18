@@ -410,7 +410,12 @@
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
-						<th>Select</th>
+						<td align="center" *ngIf="contactsByType.selectedCategory == 'all'">
+				            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
+				         </td>
+				         <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
+				             <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"  (change)="checkAllInvalidContacts($event)" class="" id="checkAllExistingInvalidContacts" />
+				         </td>
 						<th>EMAILID</th>
 						<th>FIRSTNAME</th>
 						<th>LASTNAME</th>
@@ -418,7 +423,18 @@
 				</thead>
 				<tbody>
 					<tr *ngFor="let contact of contactsByType.contacts; let i = index">
-						<td><input type="checkbox"></td>
+						 <td align="center" *ngIf="contactsByType.selectedCategory == 'all'">
+						         	     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk" 
+									  [class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
+						                 lang="{{contact.name}}"  name="campaignContact[]" value="{{contact.id}}" id="{{contact.id}}"
+						                 (click)="highlightRow(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)"/>
+					      </td>
+					      <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
+						         	     <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(contact.id)>-1" class="chk" 
+									  [class.contact-list-selected]="selectedInvalidContactIds.indexOf(contact.id)>-1"
+						                 lang="{{contact.name}}"  name="invalidContact[]" value="{{contact.id}}" id="{{contact.id}}"
+						                 (click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)"/>
+					       </td>
 						<td>{{contact.emailId}}</td>
 						<td>{{contact.firstName}}</td>
 						<td>{{contact.lastName}}</td>
