@@ -33,7 +33,7 @@
 					<i class="fa fa-play fa-3" aria-hidden="true"></i>
 				</div>
 				<div class="col-xs-6">
-					<h1 class="bold">2</h1>
+					<h1 class="bold">{{dashboardReport.totalUploadedvideos}}</h1>
 				</div>
 				<div class="col-xs-12">
 					<h3 class="pull-right">videos</h3>
@@ -46,7 +46,7 @@
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
 				</div>
 				<div class="col-xs-6">
-					<h1 class="bold">10</h1>
+					<h1 class="bold">{{dashboardReport.totalContacts}}</h1>
 				</div>
 				<div class="col-xs-12">
 					<h3 class="pull-right">contacts</h3>
@@ -54,12 +54,12 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div class="portlet light block rounded-0 center color3 padding-top-bottom-5">
+			<div [routerLink]="['/home/campaigns/managepublish']" class="portlet light block rounded-0 center color3 padding-top-bottom-5">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i>
 				</div>
 				<div class="col-xs-6">
-					<h1 class="bold">1</h1>
+					<h1 class="bold">{{dashboardReport.totalCreatedCampaigns}}</h1>
 				</div>
 				<div class="col-xs-12">
 					<h3 class="pull-right">campaign</h3>
@@ -67,12 +67,12 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div class="portlet light block rounded-0 center color4 padding-top-bottom-5">
+			<div [routerLink]="['/home/emailtemplate/manageTemplates']" class="portlet light block rounded-0 center color4 padding-top-bottom-5">
 				<div class="col-xs-6">
 					<i class="fa fa-envelope-o fa-3" aria-hidden="true"></i>
 				</div>
 				<div class="col-xs-6">
-					<h1 class="bold">4</h1>
+					<h1 class="bold">{{dashboardReport.toalEmailTemplates}}</h1>
 				</div>
 				<div class="col-xs-12">
 					<h3 class="pull-right">Template</h3>
@@ -85,7 +85,7 @@
 					<i class="fa fa-users fa-3" aria-hidden="true"></i>
 				</div>
 				<div class="col-xs-6">
-					<h1 class="bold">4</h1>
+					<h1 class="bold">{{dashboardReport.totalSocialAccounts}}</h1>
 				</div>
 				<div class="col-xs-12">
 					<h3 class="pull-right">Social Accounts</h3>
