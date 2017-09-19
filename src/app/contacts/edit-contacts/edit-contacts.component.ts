@@ -55,7 +55,6 @@ export class EditContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     pagedItems: any[];
     checkedUserList = [];
-    invalidRemovableContacts = [];
     selectedInvalidContactIds = [];
     selectedContactListIds = [];
     fileTypeError: boolean;
@@ -757,8 +756,6 @@ export class EditContactsComponent implements OnInit {
         )
     }
     
-    changEvent( event: any ) {
-    }
     setPage( page: number, ) {
         this.pagination.pageIndex = page;
         if ( this.currentContactType == "all_contacts" ) {
@@ -775,6 +772,8 @@ export class EditContactsComponent implements OnInit {
         this.pagination.maxResults = 10;
         this.showAllContactData = false;
         this.showEditContactData = true;
+        this.selectedInvalidContactIds = [];
+        this.selectedContactListIds = [];
         this.showSelectedCategoryUsers = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.successMessage = false;
@@ -787,17 +786,6 @@ export class EditContactsComponent implements OnInit {
         this.contactsByType.pagination = new Pagination();
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.contactsByType.selectedCategory = null;
-    }
-
-    invalidContactsChecked( event: boolean ) {
-        this.logger.info( "check value" + event )
-        this.invalidContactUsers.forEach(( invalidContacts ) => {
-            if ( event == true )
-                invalidContacts.isChecked = true;
-            else {
-                invalidContacts.isChecked = false;
-            }
-        })
     }
 
     checkAllInvalidContacts(ev:any){
@@ -816,10 +804,10 @@ export class EditContactsComponent implements OnInit {
            console.log("unceck");
             $('[name="invalidContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("invalid-contacts-selected");
-            if(this.pagination.maxResults==this.pagination.totalRecords){
+            if(this.pagination.maxResults==this.contactsByType.pagination.totalRecords){
                 this.selectedInvalidContactIds = [];
             }else{
-                let currentPageContactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                let currentPageContactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedInvalidContactIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedInvalidContactIds, currentPageContactIds);
             }
         }
@@ -835,7 +823,7 @@ export class EditContactsComponent implements OnInit {
             $('#row_'+contactId).removeClass('invalid-contacts-selected');
             this.selectedInvalidContactIds.splice($.inArray(contactId,this.selectedInvalidContactIds),1);
         }
-        if(this.selectedInvalidContactIds.length == this.pagination.pagedItems.length ){
+        if(this.selectedInvalidContactIds.length == this.contactsByType.pagination.pagedItems.length ){
             this.isInvalidHeaderCheckBoxChecked = true;
         }else{
             this.isInvalidHeaderCheckBoxChecked = false;
@@ -1006,23 +994,11 @@ export class EditContactsComponent implements OnInit {
                     this.userListIds = data.listOfUsers;
                 }
                 
-                var contactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
-                var items = $.grep(this.selectedContactListIds, function(element) {
+                var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                var items1 = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("Contact Ids"+contactIds);
-                this.logger.log("Selected Contact Ids"+this.selectedContactListIds);
-                if(items.length == this.contactsByType.pagination.totalRecords || items.length == this.contactsByType.pagination.pagedItems.length){
-                    this.isHeaderCheckBoxChecked = true;
-                }else{
-                    this.isHeaderCheckBoxChecked = false;
-                }
-                
-                var contactIds1 = this.pagination.pagedItems.map(function(a) {return a.id;});
-                var items1 = $.grep(this.selectedInvalidContactIds, function(element) {
-                    return $.inArray(element, contactIds1 ) !== -1;
-                });
-                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds1);
+                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds);
                 this.logger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
                
                 if(items1.length == this.contactsByType.pagination.totalRecords || items1.length == this.contactsByType.pagination.pagedItems.length){

@@ -186,7 +186,7 @@ a.disabled {
 													Save </a></li>
 											<li><a id="delete_button"
 												(click)="showAlert(selectedContactListId)"> Delete</a></li>
-											<li><a href="javascript:;"> Export to Excel </a></li>
+											<!-- <li><a href="javascript:;"> Export to Excel </a></li> -->
 										</ul>
 									</div>
 								</div>
@@ -526,16 +526,16 @@ a.disabled {
 				<div class="table-toolbar">
 					<div class="row">
 						<div class="col-md-12" style="align: right">
-							<div class="btn-group pull-right">
+							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid'">
 								<button class="btn dropdown-toggle" data-toggle="dropdown">
 									Tools <i class="fa fa-angle-down"></i>
 								</button>
 								<ul class="dropdown-menu pull-right">
-									<li *ngIf="invalidContactData==true"><a id="delete_button"
+									<li><a id="delete_button"
 										(click)="invalidContactsShowAlert()"> Delete </a></li>
-									<li><a href="javascript:;"> Print </a></li>
+									<!-- <li><a href="javascript:;"> Print </a></li>
 									<li><a (click)="convert()"> Save as PDF </a></li>
-									<li><a href="javascript:;"> Export to Excel </a></li>
+									<li><a href="javascript:;"> Export to Excel </a></li> -->
 								</ul>
 							</div>
 							<div class="btn-group pull-left">
@@ -556,7 +556,7 @@ a.disabled {
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<td align="center" *ngIf="invalidContactData==true"><input
+								<td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'"><input
 									type="checkbox" name="all"
 									[(ngModel)]="isInvalidHeaderCheckBoxChecked"
 									(change)="checkAllInvalidContacts($event)" class=""
@@ -569,7 +569,7 @@ a.disabled {
 						<tbody>
 							<tr
 								*ngFor="let allcontacts of contactsByType.contacts;let i = index">
-								<td *ngIf="invalidContactData==true" align="center"><input
+								<td *ngIf="contactsByType.selectedCategory == 'invalid'" align="center"><input
 									type="checkbox"
 									[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
 									class="chk"
