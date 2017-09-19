@@ -95,7 +95,14 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    loadActiveContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
+    listOfSelectedContactListByType(contactListId: number,contactType: string, pagination: Pagination ){
+        this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
+        return this._http.post( this.url + "contacts/" + contactListId + "?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+/*    loadActiveContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadActiveContact() completed" );
         return this._http.post( this.url + "contacts/" + contactListId + "?contactType=active" + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -121,7 +128,7 @@ export class ContactService {
         return this._http.post( this.url + "contacts/" + contactListId + "?contactType=all" + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
-    }
+    }*/
 
     deleteContactList( contactListId: number ) {
         return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )

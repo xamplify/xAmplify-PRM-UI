@@ -448,6 +448,7 @@ export class ManageContactsComponent implements OnInit {
         this.navigateToManageContacts();
         this.showAll = true;
         this.showEdit = false;
+        $( "#pagination" ).show();
     }
     
     onChangeAllContactUsers( event: Event ) {

@@ -1,31 +1,23 @@
 <!-- BEGIN PAGE CONTENT-->
 <style type="text/css">
-  a.disabled { pointer-events: none; cursor: not-allowed; }
-</style> 
+a.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}
+</style>
 <div class="page-bar">
-		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="['../../dashboard']">Home</a> <i
-				class="fa fa-angle-right"></i></li>
-			<li><a (click)="refresh()"> Manage contacts</a>
-			</li>
-			<li>
-			<a (click)="backToEditContacts()"><i class="fa fa-angle-right"> </i>Edit
-				contacts</a></li>
-			<li *ngIf="activeContactsData==true">
-			<i class="fa fa-angle-right"> </i>Active Contacts
-				contacts</li>
-			<li *ngIf="invalidContactData==true">
-			<i class="fa fa-angle-right"> </i>Invalid
-				Contacts</li>
-			<li *ngIf="unsubscribedContactsData==true">
-			<i class="fa fa-angle-right"> </i>Unsubscribed
-				Contacts</li>
-			<li *ngIf="nonActiveContactsData==true">
-			<i class="fa fa-angle-right"> </i>Non Active Contacts
-			</li>
-		</ul>
-	</div>
+	<ul class="page-breadcrumb">
+		<li><i class="fa fa-home"></i> <a
+			[routerLink]="['../../dashboard']">Home</a> <i
+			class="fa fa-angle-right"></i></li>
+		<li><a (click)="refresh()"> Manage contacts</a></li>
+		<li><a (click)="backToEditContacts()"><i
+				class="fa fa-angle-right"> </i>Edit contacts</a></li>
+		<li *ngIf="! showSelectedCategoryUsers"><i
+			class="fa fa-angle-right"> </i><span class="capitalize">{{contactsByType.selectedCategory}}
+				contacts</span></li>
+	</ul>
+</div>
 <div class="row" id="manageContacts" *ngIf="showEditContactData">
 	<div class="row">
 		<div class="col-md-12">
@@ -43,18 +35,20 @@
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
-										<div style="float: left; margin-right: 10px">
-											<select class="form-control" [(ngModel)]="contactsSort"
-												(ngModelChange)="selectedSortByValue($event)">
-												<option *ngFor="let sort of sortContacts" [ngValue]="sort">
-													{{sort.name}}</option>
+										<div style="float: left; margin-right: 10px; width: 50%">
+											<select class="form-control" [(ngModel)]="sortOption"
+												(ngModelChange)="sortByOption($event)">
+												<ng-container
+													*ngFor="let sort of sortOptions; let i = index">
+												<option [ngValue]="sort">{{sort.name}}</option>
+												</ng-container>
 											</select>
 										</div>
 										<div class="portlet-input input-inline input-small">
 											<div class="input-icon right">
 												<i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
-													(click)="searchContactsTitelName()"></i> <input type="text"
+													(click)="search('contactList')"></i> <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													class="form-control input-circle" placeholder="search...">
@@ -74,54 +68,59 @@
 										<i class="fa fa-users"></i>
 									</div>
 									<div class="details">
-										<div class="number">{{allContacts}}</div>
+										<div class="number">{{contactsByType.allContactsCount}}</div>
 										<div class="desc">All Contacts</div>
 									</div>
 								</button>
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat red-soft"
-									(click)="activeContactsDataShowing()" [disabled] = "activeUsersCount == 0">
+									(click)="listOfSelectedContactListByType('active')"
+									[disabled]="contactsByType.activeContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye"></i>
 									</div>
 									<div class="details">
-										<div class="number">{{activeUsersCount}}</div>
+										<div class="number">{{contactsByType.activeContactsCount}}</div>
 										<div class="desc">Active Contacts</div>
 									</div>
 								</button>
 							</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat blue-sharp"
-									(click)="nonActiveContactsDataShowing()" [disabled] = "inActiveUsersCount == 0">
+									(click)="listOfSelectedContactListByType('non-active')"
+									[disabled]="contactsByType.inactiveContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye-slash"></i>
 									</div>
 									<div class="details">
-										<div class="number">{{inActiveUsersCount}}</div>
+										<div class="number">{{contactsByType.inactiveContactsCount}}</div>
 										<div class="desc">Non-Active Contacts</div>
 									</div>
 								</button>
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat yellow-gold"
-									(click)="invalidContactsDataShowing()" [disabled] = "invlidContactsCount == 0">
+									(click)="listOfSelectedContactListByType('invalid')"
+									[disabled]="contactsByType.invalidContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-user-times"></i>
 									</div>
 									<div class="details">
-										<div class="number">{{invlidContactsCount}}</div>
+										<div class="number">{{contactsByType.invalidContactsCount}}</div>
 										<div class="desc">Invalid Contacts</div>
 									</div>
 								</button>
 							</div>
 							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat green-soft" [disabled] = "unsubscribedContacts == 0">
+								<button class="btn-block dashboard-stat green-soft"
+									(click)="listOfSelectedContactListByType('unsubscribe')"
+									[disabled]="contactsByType.unsubscribedContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-times"></i>
 									</div>
 									<div class="details">
-										<div class="number">{{unsubscribedContacts}}</div>
+										<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
 										<div class="desc">Unsubscribed Contacts</div>
 									</div>
 								</button>
@@ -143,12 +142,6 @@
 					<div class="caption">
 						<i class="fa fa-edit"></i>List of Contacts
 					</div>
-					<!-- <div class="tools">
-						<a href="javascript:;" class="collapse"> </a> <a
-							href="#portlet-config" data-toggle="modal" class="config"> </a> <a
-							href="javascript:;" class="reload"> </a> <a href="javascript:;"
-							class="remove"> </a>
-					</div> -->
 				</div>
 				<div class="portlet-body">
 					<div class="table-toolbar">
@@ -201,11 +194,13 @@
 						</div>
 					</div>
 					<div class="btn-group pull-left" *ngIf="noOfContactsDropdown">
-    								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeAllContactsUsers($event)">
-	    					    		<option selected value="page">10</option>
-	    					   	 		<option value="all"> All </option>
-  					       			</select>
-  					       			<br>
+						<select class="form-control" [(ngModel)]="sortOptionForPagination"
+							(ngModelChange)="onChangeAllContactUsers($event)">
+							<ng-container
+								*ngFor="let sort of sortOptionsForPagination; let i = index">
+							<option [ngValue]="sort">{{sort.value}}</option>
+							</ng-container>
+						</select> <br>
 					</div>
 					<div style="margin-bottom: 0px; padding-left: 1cm">
 						<table class="table" id="uploadCsvUsingFile">
@@ -229,11 +224,6 @@
 										*ngIf="item.isError"><i
 											class="glyphicon glyphicon-remove"></i></span></td>
 									<td nowrap>
-										<!-- <button type="button" class="btn btn-success btn-xs"
-														(click)="item.upload()"
-														[disabled]="uploadvalue || item.isReady || item.isUploading || item.isSuccess">
-														<span class="glyphicon glyphicon-upload"></span> Upload
-													</button> -->
 										<button type="button" class="btn btn-danger btn-xs"
 											(click)="item.remove()" (click)="removeCsv()">
 											<span class="glyphicon glyphicon-trash"></span> Remove
@@ -243,73 +233,67 @@
 							</tbody>
 						</table>
 						<div *ngIf="fileTypeError" id="csvFileTypeError"
-			class="alert alert-danger alert-dismissable" style="width:50%">
-			<b>File type not allowed please select the .csv file only..</b>
-		</div>	
-		<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
-			class="alert alert-danger alert-dismissable" style="width:80%">
-			<b>We found invalid emailIds please remove..<strong style="color:black;font-size:18px">{{invalidPatternEmails}}</strong> and Re Upload..</b>
-		</div>	
-		</div>
-						<!-- <div *ngIf="successMessage" id="saveContactsMessage" style="width:100%"
-							class="alert alert-success alert-dismissable">
-							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>Success!</strong> Contact list updated successfully.
-						</div> -->
-						<div *ngIf="successMessage" id="saveContactsMessage" class="col-md-6" class="col-md-9 alert alert-success alert-dismissable" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>Success!</strong> Contact list updated successfully.
-			                </div>
-						
-						<!-- <div *ngIf="deleteSucessMessage" id="showDeleteMessage" style="width:100%"
-							class="alert alert-success alert-dismissable">
-							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>Success!</strong>Contact list Users has been Deleted
-							successfully.
-						</div> -->
-							<div *ngIf="deleteSucessMessage" id="showDeleteMessage" class="col-md-6" class="col-md-9 alert alert-success alert-dismissable" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>Success!</strong>Contact list Users has been Deleted
-							successfully.
-			                </div>
-						
-						
-				<!-- 		<div *ngIf="deleteErrorMessage" id="campaignError"
-			class="alert alert-danger alert-dismissable">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Danger!</strong><strong style="color:black;font-size:18px">{{Campaign}}</strong>
-		</div> -->
-		<!-- <div *ngIf="dublicateEmailId" id="dublicateEmail"
-			class="alert alert-danger alert-dismissable" style="width:50%; margin-left:120px">
-			<b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
-		</div> -->
-		<div *ngIf="dublicateEmailId" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <b>Duplicate EmailId Exist Please Remove..<strong style="color:black;font-size:18px">{{duplicateEmailIds}}</strong></b>
-			                </div>
-					<div *ngIf="noContactsFound==true" class="col-md-6" class="col-md-9 alert alert-info alert-dismissable" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>No Contacts found.. !!!</strong>
-			                </div>
-			                <div *ngIf="deleteErrorMessage" id="campaignError"
-			class="alert alert-danger alert-dismissable">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Danger!</strong>{{Campaign}}
-		</div>
-	                <div *ngIf="showInvalidMaills==true" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable">
-						      <a class="close" (click)="closeShowValidMessage()" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>Invalid email pattern Contacts found.. !!!</strong>
-			                </div>
+							class="alert alert-danger alert-dismissable" style="width: 50%">
+							<b>File type not allowed please select the .csv file only..</b>
+						</div>
+						<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
+							class="alert alert-danger alert-dismissable" style="width: 80%">
+							<b>We found invalid emailIds please remove..<strong
+								style="color: black; font-size: 18px">{{invalidPatternEmails}}</strong>
+								and Re Upload..
+							</b>
+						</div>
+					</div>
+					<div *ngIf="successMessage" id="saveContactsMessage"
+						class="col-md-6"
+						class="col-md-9 alert alert-success alert-dismissable"
+						style="width: 100%">
+						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong> Contact list updated successfully.
+					</div>
+					<div *ngIf="deleteSucessMessage" id="showDeleteMessage"
+						class="col-md-6"
+						class="col-md-9 alert alert-success alert-dismissable"
+						style="width: 100%">
+						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Success!</strong>Contact list Users has been Deleted
+						successfully.
+					</div>
+
+					<div *ngIf="dublicateEmailId" class="col-md-6"
+						class="col-md-9 alert alert alert-danger alert-dismissable"
+						style="width: 100%">
+						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<b>Duplicate EmailId Exist Please Remove..<strong
+							style="color: black; font-size: 18px">{{duplicateEmailIds}}</strong></b>
+					</div>
+					<div *ngIf="noContactsFound==true" class="col-md-6"
+						class="col-md-9 alert alert-info alert-dismissable"
+						style="width: 100%">
+						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>No Contacts found.. !!!</strong>
+					</div>
+					<div *ngIf="deleteErrorMessage" id="campaignError"
+						class="alert alert-danger alert-dismissable">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Danger!</strong>{{Campaign}}
+					</div>
+					<div *ngIf="showInvalidMaills==true" class="col-md-6"
+						class="col-md-9 alert alert alert-danger alert-dismissable">
+						<a class="close" (click)="closeShowValidMessage()"
+							data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
+							email pattern Contacts found.. !!!</strong>
+					</div>
 					<div class="row" *ngIf="clickBoard">
 						<div class="col-sm-12">
 							<h3>Copy from text -- paste below</h3>
 							<div class="col-sm-12 form-group">
-							<div class="col-sm-3" style="padding-left: 0px;">
-								<select class="col-sm-2 options form-control">
-									<option selected value="DEFAULT">Delimeter Type</option>
-									<option value="CommaSeperated">Comma Seperated</option>
-									<option value="TabSeperated">Tab Seperated</option>
-								</select>
+								<div class="col-sm-3" style="padding-left: 0px;">
+									<select class="col-sm-2 options form-control">
+										<option selected value="DEFAULT">Delimeter Type</option>
+										<option value="CommaSeperated">Comma Seperated</option>
+										<option value="TabSeperated">Tab Seperated</option>
+									</select>
 								</div>
 								<button class=" col-sm-3 btn btn-default" type="button"
 									style="background-color: #26a69a; color: white"
@@ -337,12 +321,6 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>File Preview
 									</div>
-									<!-- <div class="tools">
-										<a href="javascript:;" class="collapse"> </a> <a
-											href="#portlet-config" data-toggle="modal" class="config">
-										</a> <a href="javascript:;" class="reload"> </a> <a
-											href="javascript:;" class="remove"> </a>
-									</div> -->
 								</div>
 								<div class="portlet-body">
 
@@ -371,81 +349,77 @@
 							<!-- END EXAMPLE TABLE PORTLET-->
 						</div>
 					</div>
-                 <div class="table-responsive">
-					<form #f="ngForm" style="background-color: white">
-					
-						<table class="table table-striped table-hover table-bordered"
-							id="sample_editable_1" *ngIf="contacts">
-							<thead>
-								<tr>
-									<!-- <th><input type="checkbox" [checked]="isAvailable"
+					<div class="table-responsive">
+						<form #f="ngForm" style="background-color: white">
+
+							<table class="table table-striped table-hover table-bordered"
+								id="sample_editable_1" *ngIf="contacts">
+								<thead>
+									<tr>
+										<!-- <th><input type="checkbox" [checked]="isAvailable"
 										(change)="checked($event.target.checked)"></th>
 									<th>USERNAME</th> -->
-									 <td align="center">
-				                    <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="checkAll($event)" class="" id="checkAllExistingContacts" />
-				                    </td>
-									<th>EMAILID</th>
-									<th>FIRSTNAME</th>
-									<th>LASTNAME</th>
-									<th>Delete</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let contact of pagination.pagedItems;let i = index"
-									id="row_{{contact.id}}">
-									<!-- <th><input type="checkbox" name="selectedUserIds"
-										id="selectedUserWithIds" value="{{contact.id}}"
-										[(ngModel)]="contact.isChecked" (click)="checkedUsers(contact.id)"></th> -->
-									<!-- <td>{{contact.userName}}</td> -->
-									
-									<td align="center" *ngIf="isAdd || !isCampaignDraftContactList ">
-						         	     <input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk" 
-									  [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
-						                 lang="{{contact.name}}"  name="campaignContact[]" value="{{contact.id}}" id="{{contact.id}}"
-						                 (click)="highlightRow(contact.id,$event)"/>
-					                </td>
-									
-									<td>{{contact.emailId}}</td>
-									<td>{{contact.firstName}}</td>
-									<td class="center">{{contact.lastName}}</td>
-									<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-									<td><a class="delete" (click)="showAlert1(contact.id)">
-											Delete </a></td>
+										<td align="center"><input type="checkbox" name="all"
+											[(ngModel)]="isHeaderCheckBoxChecked"
+											(change)="checkAll($event)" class=""
+											id="checkAllExistingContacts" /></td>
+										<th>EMAILID</th>
+										<th>FIRSTNAME</th>
+										<th>LASTNAME</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let contact of pagination.pagedItems;let i = index"
+										id="row_{{contact.id}}">
+										<td align="center"
+											*ngIf="isAdd || !isCampaignDraftContactList "><input
+											type="checkbox"
+											[checked]="selectedContactListIds.indexOf(contact.id)>-1"
+											class="chk"
+											[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+											lang="{{contact.name}}" name="campaignContact[]"
+											value="{{contact.id}}" id="{{contact.id}}"
+											(click)="highlightRow(contact.id,$event)" /></td>
 
-								</tr>
-								<tr *ngFor="let newContact of users; let i = index"
-									class="new_row">
-									<td><input type="checkbox" checked="newContact.checked"></td>
-										<td><!-- <input type=text [(ngModel)]="newContact.emailId"
-											class="form-control" [ngModelOptions]="{standalone: true}"
-											required
-											pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-											#emailId="ngModel"> -->
-											<input type=Text [(ngModel)]="newContact.emailId"
-											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32" required 
+										<td>{{contact.emailId}}</td>
+										<td>{{contact.firstName}}</td>
+										<td class="center">{{contact.lastName}}</td>
+										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
+										<td><a class="delete" (click)="showAlert1(contact.id)">
+												Delete </a></td>
+
+									</tr>
+									<tr *ngFor="let newContact of users; let i = index"
+										class="new_row">
+										<td><input type="checkbox" checked="newContact.checked"></td>
+										<td>
+										    <input type=Text
+											[(ngModel)]="newContact.emailId" class="form-control"
+											[ngModelOptions]="{standalone: true}" maxlength="32" required
 											pattern="^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,15})+$"
 											#emailId="ngModel">
-											<div [hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
-												class="custom-error-message">
-												Invalid EmailId.
-											</div></td>
-									<td><input type=Text [(ngModel)]="newContact.firstName"
-										class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
-										<!-- <div
+											<div
+												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
+												class="custom-error-message">Invalid EmailId.</div>
+										</td>
+										<td><input type=Text [(ngModel)]="newContact.firstName"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											maxlength="32"> <!-- <div
 										[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
 										class="alert alert-danger">firstName is required.</div> --></td>
-									<td><input type=Text [(ngModel)]="newContact.lastName"
-										class="form-control" [ngModelOptions]="{standalone: true}" maxlength="32">
-										<!-- <div
+										<td><input type=Text [(ngModel)]="newContact.lastName"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											maxlength="32"> <!-- <div
 										[hidden]="lastName.valid || (lastName.pristine && !f.submitted)"
 										class="alert alert-danger">lastName is required.</div> --></td>
-									<td><a class="delete" (click)="cancelRow(i)"> Cancel </a></td>
-								</tr>
-							</tbody>
-						</table>
-						
-					</form>
+										<td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</form>
 					</div>
 				</div>
 			</div>
@@ -453,21 +427,25 @@
 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
 				class="pagination">
 				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-					<a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+					<a (click)="setPage(1)"
+					[class.disabled]="pagination.pager.currentPage === 1">First</a>
 				</li>
 				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-					<a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+					<a (click)="setPage(pagination.pager.currentPage - 1)"
+					[class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 				</li>
 				<li *ngFor="let page of pagination.pager.pages"
 					[ngClass]="{active:pagination.pager.currentPage === page}"><a
 					(click)="setPage(page)">{{page}}</a></li>
 				<li
 					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+					<a (click)="setPage(pagination.pager.currentPage + 1)"
+					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
 				</li>
 				<li
 					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+					<a (click)="setPage(pagination.pager.totalPages)"
+					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 				</li>
 			</ul>
 
@@ -479,25 +457,23 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" *ngIf="showAllContactData">
 	<div class="page-toolbar">
-		<div class="btn-group pull-right"
-			style="float: left; margin-right: 16px">
-			<div class="inputs" align="right" style="float: right;">
-				<div style="float: left; margin-right: 15px">
-					<select class="form-control" [(ngModel)]="contactsSort"
-						(ngModelChange)="selectedSortByValue($event)">
-						<option *ngFor="let sort of sortContacts" [ngValue]="sort">
-							{{sort.name}}</option>
+		<div class="btn-group pull-right">
+			<div class="inputs" align="right" style="float: right">
+				<div style="float: left; margin-right: 10px; width: 50%">
+					<select class="form-control" [(ngModel)]="sortOption"
+						(ngModelChange)="sortByOption($event)">
+						<ng-container *ngFor="let sort of sortOptions; let i = index">
+						<option [ngValue]="sort">{{sort.name}}</option>
+						</ng-container>
 					</select>
 				</div>
 				<div class="portlet-input input-inline input-small">
 					<div class="input-icon right">
 						<i class="icon-magnifier"
 							style="cursor: pointer; font-size: 18px;"
-							(click)="searchContactsTitelName()"></i> <input type="text"
+							(click)="search('contactList')"></i> <input type="text"
 							[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-							class="form-control input-circle"
-							placeholder="search...">
-
+							class="form-control input-circle" placeholder="search...">
 					</div>
 				</div>
 			</div>
@@ -509,10 +485,12 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>Success!</strong> Contact List has been Deleted successfully.
 		</div>
-		<div *ngIf="noContactsFound1==true" class="col-md-6" class="col-md-9 alert alert-info alert-dismissable" style="width:100%">
-						      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						           <strong>No Contacts found.. !!!</strong>
-			                </div>
+		<div *ngIf="noContactsFound1==true" class="col-md-6"
+			class="col-md-9 alert alert-info alert-dismissable"
+			style="width: 100%">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>No Contacts found.. !!!</strong>
+		</div>
 		<div *ngIf="emptyActiveContactsUsers" class="alert alert-info">
 			<strong>Info!</strong> No Active Contacts found.
 		</div>
@@ -526,8 +504,8 @@
 			<strong>Info!</strong> No Non Active Contacts found.
 		</div>
 	</div>
-	<div *ngIf="hidingListUsersTable">
-	<div class="col-md-12" style="margin-top: 12px" *ngIf="hidingListUsersTable" id="hidingListOfUsersTable">
+	<div class="col-md-12" style="margin-top: 12px"
+		id="hidingListOfUsersTable">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box blue">
 			<div class="portlet-title">
@@ -543,12 +521,6 @@
 				<div class="caption" *ngIf="nonActiveContactsData==true">
 					<i class="fa fa-edit"></i>Non Active Contacts List
 				</div>
-				<!-- <div class="tools">
-					<a href="javascript:;" class="collapse"> </a> <a
-						href="#portlet-config" data-toggle="modal" class="config"> </a> <a
-						href="javascript:;" class="reload"> </a> <a href="javascript:;"
-						class="remove"> </a>
-				</div> -->
 			</div>
 			<div class="portlet-body">
 				<div class="table-toolbar">
@@ -567,76 +539,88 @@
 								</ul>
 							</div>
 							<div class="btn-group pull-left">
-    								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeAllContactsUsers($event)">
-	    					    		<option selected value="page">10</option>
-	    					   	 		<option value="all"> All </option>
-  					       			</select>
+								<select class="form-control"
+									[(ngModel)]="sortOptionForPagination"
+									(ngModelChange)="onChangeAllContactUsers($event)">
+									<ng-container
+										*ngFor="let sort of sortOptionsForPagination; let i = index">
+									<option [ngValue]="sort">{{sort.value}}</option>
+									</ng-container>
+								</select>
 							</div>
 						</div>
 					</div>
 				</div>
-				 <div class="table-responsive">
-				<table class="table table-striped table-hover table-bordered"
-					id="sample_editable_1" *ngIf="allContacts">
-					<thead>
-						<tr>
-							<!-- <th *ngIf="invalidContactData==true"><input type="checkbox"
-								[checked]="isAvailable"
-								(change)="invalidContactsChecked($event.target.checked)">
-							</th> -->
-							<td align="center" *ngIf="invalidContactData==true">
-				              <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"  (change)="checkAllInvalidContacts($event)" class="" id="checkAllExistingInvalidContacts" />
-				            </td>
-							<th>EMAILID</th>
-							<th>FIRSTNAME</th>
-							<th>LASTNAME</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
-							<!-- <th *ngIf="invalidContactData==true"><input type="checkbox"
-								name="selectedUserIds" id="selectedUserWithIds"
-								id="row_{{allcontacts.id}}" value="{{allcontacts.id}}"
-								[(ngModel)]="allcontacts.isChecked"></th> -->
-								<td *ngIf="invalidContactData==true" align="center">
-						         	 <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1" class="chk" 
-									 [class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-						             lang="{{allcontacts.name}}"  name="invalidContact[]" value="{{allcontacts.id}}" id="{{allcontacts.id}}"
-						              (click)="invalidContactsSelectedUserIds(allcontacts.id,$event)"/>
-					             </td>
-							<td>{{allcontacts.emailId}}</td>
-							<td>{{allcontacts.firstName}}</td>
-							<td class="center">{{allcontacts.lastName}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover table-bordered"
+						id="sample_editable_1">
+						<thead>
+							<tr>
+								<td align="center" *ngIf="invalidContactData==true"><input
+									type="checkbox" name="all"
+									[(ngModel)]="isInvalidHeaderCheckBoxChecked"
+									(change)="checkAllInvalidContacts($event)" class=""
+									id="checkAllExistingInvalidContacts" /></td>
+								<th>EMAILID</th>
+								<th>FIRSTNAME</th>
+								<th>LASTNAME</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let allcontacts of contactsByType.contacts;let i = index">
+								<td *ngIf="invalidContactData==true" align="center"><input
+									type="checkbox"
+									[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+									class="chk"
+									[class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+									lang="{{allcontacts.name}}" name="invalidContact[]"
+									value="{{allcontacts.id}}" id="{{allcontacts.id}}"
+									(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
+								</td>
+								<td>{{allcontacts.emailId}}</td>
+								<td>{{allcontacts.firstName}}</td>
+								<td class="center">{{allcontacts.lastName}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 		<!--pager here  -->
-		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
+		<ul
+			*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
 			class="pagination">
-			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
-				(click)="setPage(1,currentContactType)" [class.disabled]="pagination.pager.currentPage === 1">First</a></li>
-			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
-				(click)="setPage(pagination.pager.currentPage - 1,currentContactType)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-			</li>
-			<li *ngFor="let page of pagination.pager.pages"
-				[ngClass]="{active:pagination.pager.currentPage === page}"><a
-				(click)="setPage(page,currentContactType)">{{page}}</a></li>
 			<li
-				[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
 				<a
-				(click)="setPage(pagination.pager.currentPage + 1,currentContactType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+				(click)="setPageForListContactsByType(1,contactsByType.selectedCategory)"
+				[class.disabled]="contactsByType.pagination.pager.currentPage === 1">First</a>
 			</li>
 			<li
-				[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-				<a (click)="setPage(pagination.pager.totalPages,currentContactType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
+				<a
+				(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage - 1,contactsByType.selectedCategory)"
+				[class.disabled]="contactsByType.pagination.pager.currentPage === 1">Previous</a>
+			</li>
+			<li *ngFor="let page of contactsByType.pagination.pager.pages"
+				[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
+				<a
+				(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)">{{page}}</a>
+			</li>
+			<li
+				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
+				<a
+				(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage + 1,contactsByType.selectedCategory)"
+				[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Next</a>
+			</li>
+			<li
+				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
+				<a
+				(click)="setPageForListContactsByType(contactsByType.pagination.pager.totalPages,contactsByType.selectedCategory)"
+				[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
 			</li>
 		</ul>
-		<!-- pager end here -->
-		<!-- END EXAMPLE TABLE PORTLET-->
-	</div>
 	</div>
 </div>
 <!-- END PAGE CONTENT -->
