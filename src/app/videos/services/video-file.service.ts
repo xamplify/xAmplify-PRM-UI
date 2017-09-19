@@ -7,7 +7,7 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLog } from '../models/xtremand-log';
-import { ActionLog } from '../models/action';
+// import { ActionLog } from '../models/action';
 import { User } from '../../core/models/user';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class VideoFileService {
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
-    public actionLog: ActionLog;
+    // public actionLog: ActionLog;
     public Xtremandlog: XtremandLog;
     public viewBytemp: string;
     public logEnded: number;
@@ -73,7 +73,6 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
         const url = this.URL + 'listVideosNew/' + this.categoryNumber +
@@ -102,7 +101,6 @@ export class VideoFileService {
         this.viewBytemp = viewBy;
         console.log(alias);
         const url = this.URL + 'getMobinar?alias=' + alias + '&viewBy=' + viewBy;
-        // var url = this.URL + 'getMobinar?alias='+alias;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);
@@ -130,33 +128,31 @@ export class VideoFileService {
             return this.http.post(url, user)
                 .map(this.extractData)
                 .catch(this.handleError);
-        } catch (error) {
-            // this.refService.showError(error, "saveCalltoActionUser","VideoFileService ts file")
-        }
-    }
-    
+        } catch (error) { console.log(error); }
+    } 
     showCampaignVideo(typeValue: string, emailLog: any) {
         try {
             const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue;
             return this.http.post(url, emailLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
-        } catch (error) {
-        }
+        } catch (error) {  console.log(error); }
  }
-    logEmbedVideoActions(actionLog: ActionLog) {
+    logEmbedVideoActions(xtremandLog: XtremandLog) {
+        xtremandLog.campaignId = 0;
+        xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
-            if (actionLog.actionId === 2 || actionLog.actionId === 1) { this.campaignTimeValue = actionLog.startDuration; }
+            if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
-            if ((actionLog.actionId === 8 && this.replyVideo === true) || (actionLog.actionId === 1 && this.pause360Action === true)
-                || (actionLog.actionId === 2 && this.pause360Action === true)) {
+            if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
+                || (xtremandLog.actionId === 2 && this.pause360Action === true)) {
                 console.log('service called replyed and ended the video');
                 this.replyVideo = false;
             } else {
-                console.log(actionLog);
+                console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
-                return this.http.post(url, actionLog)
+                return this.http.post(url, xtremandLog)
                     .map(this.extractData)
                     .catch(this.handleErrorLogAction);
             }
@@ -195,7 +191,7 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleErrorLogAction);
     }
-    loadCampaignVideos(pagination: Pagination,categoryId:number){
+    loadCampaignVideos(pagination: Pagination, categoryId: number){
         console.log(pagination);
         const url = this.URL + 'listVideosNew/' + categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;

@@ -76,12 +76,12 @@
                      <video id="myVideo" class="col-xs-12 video-js vjs-default-skin"></video>
                   </div>
 					<div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
-						<p *ngIf="RecordSave" style="background-color:orange; text-align:left;" >
+						<!-- <p *ngIf="RecordSave" style="background-color:orange; text-align:left;" >
 							<img style="display:visible;color:#FFFFFF; background-color: orange;" src="assets/images/loading.gif">
 							<strong>Uploading your video & We are processing.Please wait and do not refresh the page...!!!</strong>
-						</p>
-						<div *ngIf="hideSaveDiscard">
-						<button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Save</button>
+						</p> -->
+						<div >
+						<button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()">Upload</button>
 						<button [disabled]="discardVideo==false" class="btn btn-danger"  role="button" (click)="removeRecordVideo()">Discard</button>	
 						</div>
 					</div>
