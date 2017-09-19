@@ -1,12 +1,12 @@
-table#add-team-member-table th, table#add-team-member-table td {
+table th, table td {
 	text-align: center;
 }
 
-table#add-team-member-table>tbody>tr>td {
+table>tbody>tr>td {
 	border-top: none;
 }
 
-table#add-team-member-table td:first-child, table#add-team-member-table th:first-child
+table td:first-child, table th:first-child
 	{
 	text-align: left
 }

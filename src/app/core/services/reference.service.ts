@@ -155,4 +155,8 @@ export class ReferenceService {
         return regex.test(emailId);
         
     }
+    
+    hideDiv(divId: string) {
+        $('#' + divId).hide(600);
+    }
 }

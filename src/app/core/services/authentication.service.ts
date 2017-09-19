@@ -26,7 +26,7 @@ export class AuthenticationService {
     constructor( private http: Http, private router: Router, private utilService: UtilService ) {
         this.APP_URL = 'https://xtremand.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
-        //this.REST_URL = "http://localhost:8080/xtremand-rest/";
+      //  this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = 'https://aravindu.com/vod/';
     }
 
@@ -97,6 +97,18 @@ export class AuthenticationService {
             userId = this.user.id;
         }
         return userId;
+    }
+    
+
+    getUserEmailId(): string {
+        let emailId;
+        if ( !this.user.emailId ) {
+            let currentUser = localStorage.getItem( 'currentUser' );
+            emailId = JSON.parse( currentUser )['emailId'];
+        } else {
+            emailId = this.user.emailId;
+        }
+        return emailId;
     }
 
     logout(): void {

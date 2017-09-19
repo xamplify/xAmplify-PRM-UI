@@ -12,4 +12,5 @@ export class TeamMember{
     all:boolean = false;
     status:string;
     teamMemberId:number;
+    allSelected:boolean =false;
 }
