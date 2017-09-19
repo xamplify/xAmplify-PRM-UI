@@ -127,6 +127,14 @@ export class ManageContactsComponent implements OnInit {
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
     ];
+    
+    sortOptionsForPagination = [
+                                { 'name': '10', 'value': '10'},
+                                { 'name': '25', 'value': '25'},
+                                { 'name': '50', 'value': '50'},
+                                { 'name': 'ALL', 'value': 'ALL'},
+                                ];
+    sortOptionForPagination = this.sortOptionsForPagination[0];
     public sortOption: any = this.sortOptions[0];
 
     constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
@@ -438,11 +446,14 @@ export class ManageContactsComponent implements OnInit {
     
     update(user:User) {
         this.navigateToManageContacts();
+        this.showAll = true;
+        this.showEdit = false;
     }
     
     onChangeAllContactUsers( event: Event ) {
-        this.selectedDropDown = event.target["value"];
-        this.contactsByType.pagination.maxResults = (this.selectedDropDown == 'all') ? this.contactsByType.pagination.totalRecords : 10;
+        this.sortOption = event;
+        this.selectedDropDown = this.sortOption.value;
+        this.contactsByType.pagination.maxResults = (this.selectedDropDown == 'ALL') ? this.contactsByType.pagination.totalRecords : parseInt(this.selectedDropDown);
         this.contactsByType.pagination.pageIndex = 1;
         this.listContactsByType(this.contactsByType.selectedCategory);
     }
@@ -654,7 +665,7 @@ export class ManageContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
-                        this.backToManageContactPage();
+                        this.navigateToManageContacts();
                         this.show = true;
                         this.allselectedUsers.length = 0;
                         setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );
@@ -754,6 +765,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     listContactsByType(contactType: string){
+        this.contactsByType.isLoading = true;
         this.resetListContacts();
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
@@ -763,6 +775,10 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.pagination.totalRecords = data.totalRecords;
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
            
+                if(this.contactsByType.selectedCategory == 'invalid'){
+                    this.userListIds = data.listOfUsers;
+                }
+                
                 var contactIds = this.contactsByType.pagination.pagedItems.map(function(a) {return a.id;});
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
@@ -790,7 +806,9 @@ export class ManageContactsComponent implements OnInit {
                 
             },
             error => console.log( error ),
-            () => console.log( "listContactsByType() Finished.")
+            () => {
+                this.contactsByType.isLoading = false;
+                }
         );
     }
     
@@ -843,8 +861,14 @@ export class ManageContactsComponent implements OnInit {
     }
     
     navigateToManageContacts(){
+        this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.showListOfContactList = true;
         this.contactsByType.selectedCategory = null;
+        this.loadContactLists(this.pagination);
+        this.selectedContactListIds = [];
+        this.allselectedUsers.length = 0;
+        this.selectedInvalidContactIds = [];
+        this.invalidRemovableContacts = [];
     }
 
     ngOnInit() {

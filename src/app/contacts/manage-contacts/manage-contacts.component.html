@@ -7,10 +7,45 @@
     margin: 5px 0;
     text-transform: capitalize;
 }
+.flex{display: flex;}
+.alert-info {
+    background-color: #00a6e8;
+    border-color: #00a6e8;
+    border-radius: 0;
+}
+.capitalize{
+text-transform: capitalize;
+}
+.alert h4 {
+    margin: 0;
+    color: inherit;
+    margin-left: 10px;
+    color: #ffffff;
+    font-size: 15px;
+}
+.loader {
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #00a6e8;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 <div class="page-content">
 <!-- page-breadcrumb -->
-<div class="page-bar">
+<div class="page-bar" *ngIf="!showEdit">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> 
 			<a [routerLink]="['../../dashboard']">Home</a> 
@@ -20,7 +55,7 @@
 			<a (click)="navigateToManageContacts()">Manage Contacts</a> 
 			<i class="fa fa-angle-right" *ngIf="! showListOfContactList"></i>
 		</li>
-		<li *ngIf="! showListOfContactList">{{contactsByType.selectedCategory}} contacts</li>
+		<li *ngIf="! showListOfContactList"><span class="capitalize">{{contactsByType.selectedCategory}} contacts</span></li>
 	</ul>
 </div>
 
@@ -303,7 +338,7 @@
 				<div class="tab-content">
 					<!-- BEGIN PAGE HEADER-->
 					<div class="page-bar" style="margin-bottom: 6px">
-						<h4>{{contactsByType.selectedCategory}} contacts</h4>
+						<h4><span class="capitalize">{{contactsByType.selectedCategory}} contacts</span></h4>
 						<div class="page-toolbar">
 							<div class="btn-group pull-right">
 								<div class="inputs" align="right" style="float: right">
@@ -368,13 +403,17 @@
 							</div>
 						</form>
 <div class="col-xs-12">
-	<div *ngIf="contactsByType.contacts?.length == 0" class="alert alert-info">
-		<h4>No Contacts found!</h4>
+	<div *ngIf="contactsByType.isLoading" class="alert alert-info flex">
+		<div class="loader"></div>
+		<h4>please wait while we process your request..!</h4>
+	</div>
+	<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+		<h4>No contacts found..!</h4>
 	</div>
 	<div class="portlet box blue" *ngIf="contactsByType.contacts?.length > 0">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-edit"></i>{{contactsByType.selectedCategory}} Contacts List
+				<i class="fa fa-edit"></i><span class="capitalize">{{contactsByType.selectedCategory}} Contacts List</span>
 			</div>
 		</div>
 		<div class="portlet-body">
@@ -382,11 +421,13 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="btn-group pull-left">
-						<select class="opts form-control" (change)="onChangeAllContactUsers($event)">
-				    			<option selected value="page">10</option>
-				   	 			<option value="all"> All </option>
-	       				</select>
-					</div>	
+	       				<select class="form-control" [(ngModel)]="sortOptionForPagination"
+															(ngModelChange)="onChangeAllContactUsers($event)">
+															<ng-container *ngFor="let sort of sortOptionsForPagination; let i = index">
+															<option [ngValue]="sort">{{sort.value}}</option>
+															</ng-container>
+														</select>
+													</div>	
 					<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid'">
 						<button class="btn dropdown-toggle" data-toggle="dropdown">
 							Tools <i class="fa fa-angle-down"></i>
