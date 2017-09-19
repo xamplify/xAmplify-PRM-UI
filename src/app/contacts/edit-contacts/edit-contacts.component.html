@@ -69,7 +69,7 @@
 
 						<div class="row">
 							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<a class="dashboard-stat dashboard-stat-light blue-soft">
+								<button class="btn-block dashboard-stat blue-soft">
 									<div class="visual">
 										<i class="fa fa-users"></i>
 									</div>
@@ -77,11 +77,11 @@
 										<div class="number">{{allContacts}}</div>
 										<div class="desc">All Contacts</div>
 									</div>
-								</a>
+								</button>
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<a class="dashboard-stat dashboard-stat-light red-soft"
-									(click)="activeContactsDataShowing()">
+								<button class="btn-block dashboard-stat red-soft"
+									(click)="activeContactsDataShowing()" [disabled] = "activeUsersCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye"></i>
 									</div>
@@ -89,34 +89,11 @@
 										<div class="number">{{activeUsersCount}}</div>
 										<div class="desc">Active Contacts</div>
 									</div>
-								</a>
+								</button>
 							</div>
-							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<a class="dashboard-stat dashboard-stat-light yellow-gold"
-									(click)="invalidContactsDataShowing()">
-									<div class="visual">
-										<i class="fa fa-user-times"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{invlidContactsCount}}</div>
-										<div class="desc">Invalid Contacts</div>
-									</div>
-								</a>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<a class="dashboard-stat dashboard-stat-light green-soft">
-									<div class="visual">
-										<i class="fa fa-times"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{unsubscribedContacts}}</div>
-										<div class="desc">Unsubscribed Contacts</div>
-									</div>
-								</a>
-							</div>
-							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<a class="dashboard-stat dashboard-stat-light blue-sharp"
-									(click)="nonActiveContactsDataShowing()">
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<button class="btn-block dashboard-stat blue-sharp"
+									(click)="nonActiveContactsDataShowing()" [disabled] = "inActiveUsersCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye-slash"></i>
 									</div>
@@ -124,7 +101,30 @@
 										<div class="number">{{inActiveUsersCount}}</div>
 										<div class="desc">Non-Active Contacts</div>
 									</div>
-								</a>
+								</button>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<button class="btn-block dashboard-stat yellow-gold"
+									(click)="invalidContactsDataShowing()" [disabled] = "invlidContactsCount == 0">
+									<div class="visual">
+										<i class="fa fa-user-times"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{invlidContactsCount}}</div>
+										<div class="desc">Invalid Contacts</div>
+									</div>
+								</button>
+							</div>
+							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+								<button class="btn-block dashboard-stat green-soft" [disabled] = "unsubscribedContacts == 0">
+									<div class="visual">
+										<i class="fa fa-times"></i>
+									</div>
+									<div class="details">
+										<div class="number">{{unsubscribedContacts}}</div>
+										<div class="desc">Unsubscribed Contacts</div>
+									</div>
+								</button>
 							</div>
 						</div>
 						<!-- END DASHBOARD STATS -->
