@@ -16,6 +16,9 @@
 .capitalize{
 text-transform: capitalize;
 }
+.dashboard-stat {
+	margin:8px;
+}
 .alert h4 {
     margin: 0;
     color: inherit;
@@ -119,50 +122,50 @@ text-transform: capitalize;
 
 							<div class="row">
 								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-									<a class="dashboard-stat dashboard-stat-light blue-soft" (click)="listContactsByType('all')">
+									<button class="btn-block dashboard-stat blue-soft" (click)="listContactsByType('all')" [disabled] = "contactsByType.allContactsCount == 0">
 										<div class="visual"><i class="fa fa-users"></i></div>
 										<div class="details">
 											<div class="number">{{contactsByType.allContactsCount}}</div>
 											<div class="desc">All Contacts</div>
 										</div>
-									</a>
+									</button>
 								</div>
 								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-									<a class="dashboard-stat dashboard-stat-light red-soft" (click)="listContactsByType('active')">
+									<button class="btn-block dashboard-stat red-soft" (click)="listContactsByType('active')" [disabled] = "contactsByType.activeContactsCount == 0">
 										<div class="visual"><i class="fa fa-eye"></i></div>
 										<div class="details">
 											<div class="number">{{contactsByType.activeContactsCount}}</div>
 											<div class="desc">Active Contacts</div>
 										</div>
-									</a>
+									</button>
 								</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-									<a class="dashboard-stat dashboard-stat-light yellow-gold" (click)="listContactsByType('invalid')">
-										<div class="visual"><i class="fa fa-user-times"></i></div>
-										<div class="details">
-											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc">Invalid Contacts</div>
-										</div>
-									</a>
-								</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-									<a class="dashboard-stat dashboard-stat-light green-soft" (click)="listContactsByType('unsubscribe')">
-										<div class="visual"><i class="fa fa-times"></i></div>
-										<div class="details">
-											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc">Unsubscribed Contacts</div>
-										</div>
-									</a>
-								</div>
-								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6" >
-									<a class="dashboard-stat dashboard-stat-light blue-sharp" (click)="listContactsByType('non-active')">
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6" >
+									<button class="btn-block dashboard-stat blue-sharp" (click)="listContactsByType('non-active')" [disabled] = "contactsByType.inactiveContactsCount == 0">
 										<div class="visual"><i class="fa fa-eye-slash"></i></div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
 											<div class="desc">Inactive Contacts</div>
 										</div>
-									</a>
+									</button>
 								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat yellow-gold" (click)="listContactsByType('invalid')" [disabled] = "contactsByType.invalidContactsCount == 0">
+										<div class="visual"><i class="fa fa-user-times"></i></div>
+										<div class="details">
+											<div class="number">{{contactsByType.invalidContactsCount}}</div>
+											<div class="desc">Invalid Contacts</div>
+										</div>
+									</button>
+								</div>
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat green-soft" (click)="listContactsByType('unsubscribe')" [disabled] = "contactsByType.unsubscribedContactsCount == 0">
+										<div class="visual"><i class="fa fa-times"></i></div>
+										<div class="details">
+											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
+											<div class="desc">Unsubscribed Contacts</div>
+										</div>
+									</button>
+							  </div>
 							</div>
 							<!-- END DASHBOARD STATS -->
 							<div class="clearfix"></div>

@@ -861,6 +861,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     navigateToManageContacts(){
+        this.contactsByType.pagination = new Pagination();
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.showListOfContactList = true;
         this.contactsByType.selectedCategory = null;
