@@ -221,12 +221,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
         Index.init();
-        Index.initDashboardDaterange();
-        Index.initJQVMAP();
-        Index.initCalendar();
+      //  Index.initDashboardDaterange();
         Index.initCharts();
         Index.initChat();
-        Tasks.initDashboardWidget();
+       // Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

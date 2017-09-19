@@ -1320,7 +1320,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         $('.p-video').remove();
         this.tempVideoFile = null;
-      //  $('#myModal').hide();
         $('#myModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();
