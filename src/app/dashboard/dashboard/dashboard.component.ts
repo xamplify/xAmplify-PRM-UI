@@ -558,7 +558,6 @@ export class DashboardComponent implements OnInit {
             QuickSidebar.init();
             Index.init();
             Index.initDashboardDaterange();
-            Index.initJQVMAP();
             Index.initCalendar();
             Index.initCharts();
             Index.initChat();
