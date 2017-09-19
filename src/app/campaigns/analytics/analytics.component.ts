@@ -24,6 +24,7 @@ export class AnalyticsComponent implements OnInit {
     countryWiseCampaignViews: any;
     emailLogs: any;
     campaignReport: CampaignReport = new CampaignReport;
+    userCampaignReport: CampaignReport = new CampaignReport;
 
     campaignViewsPagination: Pagination = new Pagination();
     emailActionListPagination: Pagination = new Pagination();
@@ -144,7 +145,7 @@ export class AnalyticsComponent implements OnInit {
             .subscribe(
             data => {
                 this.campaignReport.emailOpenCount = data["email_opened_count"];
-                this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+                this.campaignReport.emailClickedCount = data["email_url_clicked_count"] + data['email_gif_clicked_count'];
             },
             error => console.log( error ),
             () => console.log()
@@ -209,7 +210,7 @@ export class AnalyticsComponent implements OnInit {
         this.campaignService.emailActionList( campaignId, actionId, pageNumber )
         .subscribe(
         data => {
-            this.campaignReport.emailActionList = data.data;
+            this.campaignReport.emailActionList = data;
             this.campaignReport.emailActionId = actionId;
             $('#emailActionListModal').modal();
             
@@ -232,8 +233,23 @@ export class AnalyticsComponent implements OnInit {
                 this.emailLogs = data;
             },
             error => console.log( error ),
-            () => console.log()
+            () => {
+                this.count();
+            }
             )
+    }
+    
+    count(){
+        if(this.emailLogs !== undefined){
+            for(var i in this.emailLogs){
+                if(this.emailLogs[i].actionId == 13)
+                    this.userCampaignReport.emailOpenCount += 1;
+                else if(this.emailLogs[i].actionId == 14 || this.emailLogs[i].actionId == 15)
+                    this.userCampaignReport.emailClickedCount += 1;
+                else if(this.emailLogs[i].actionId == 1)
+                    this.userCampaignReport.totalUniqueWatchCount += 1;
+            }
+        }
     }
     
     userTimeline(campaignId: number, userId: number, emailId: string){
@@ -266,6 +282,11 @@ export class AnalyticsComponent implements OnInit {
 
     resetTopNavBarValue(){
         this.referenceService.isFromTopNavBar=false;
+        this.isTimeLineView = ! this.isTimeLineView;
+        this.emailLogs = [];
+        this.userCampaignReport.emailOpenCount = 0;
+        this.userCampaignReport.emailClickedCount = 0;
+        this.userCampaignReport.totalUniqueWatchCount = 0;
     }
     
     ngOnInit() {

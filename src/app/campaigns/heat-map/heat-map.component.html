@@ -5,7 +5,7 @@
 								  	<rect *ngFor="let log of heatMapData.logs;"
 				[ngStyle]="{'width': (log.stopDuration - log.startDuration)/heatMapData.videoLength*100+'%', 'x': log.startDuration/heatMapData.videoLength*100+'%', 'y': 0, 'height': 35}"
 				[ngClass]="{'play-rect': log.actionId === 1, 'skip-rect': log.actionId === 8}">
-								  		<title data-toggle="tooltip" data-placement="top"
+		  		<title data-toggle="tooltip" data-placement="top"
 				title="Tooltip on top">{{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>	
 							  		</rect>
 								</svg>

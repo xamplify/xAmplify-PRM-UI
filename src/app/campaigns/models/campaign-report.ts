@@ -11,6 +11,7 @@ export class CampaignReport {
     emailClickedCount: number = 0;
     emailSentCount: number = 0;
     usersWatchCount: number = 0;
+    totalUniqueWatchCount: number = 0;
 
     lifetimeViewsCount: number = 0;
     thisMonthViewsCount: number = 0;

@@ -91,9 +91,9 @@
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="12" />
+									stroke-width="10" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="12" stroke-dasharray="339.292006588"
+									stroke-width="10" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.lifetimeViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -106,9 +106,9 @@
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="12" />
+									stroke-width="10" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="12" stroke-dasharray="339.292006588"
+									stroke-width="10" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.thisMonthViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -122,9 +122,9 @@
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="12" />
+									stroke-width="10" />
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="12" stroke-dasharray="339.292006588"
+									stroke-width="10" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.todayViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -194,7 +194,7 @@
 
 <div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
 	<div class="page-bar">
-		<a (click)="isTimeLineView = !isTimeLineView;resetTopNavBarValue()" class="pull-right"
+		<a (click)="resetTopNavBarValue()" class="pull-right"
 			style="margin: 1em;"> <span class="glyphicon glyphicon-remove"
 			aria-hidden="true"></span>
 		</a>
@@ -205,9 +205,9 @@
 					data-animation="slideInUp">
 					<div class="frst-timeline-img abc">
 						<div class="frst-labels frst-start-label">
-							<span><img
-								src="https://cdn0.iconfinder.com/data/icons/user-collection-4/512/user-128.png"
-								alt="{{selectedRow.userEmail}}"></span>
+							<span>
+								<img src="https://cdn0.iconfinder.com/data/icons/user-collection-4/512/user-128.png" style="width: auto;" alt="{{selectedRow.userEmail}}">
+							</span>
 						</div>
 					</div>
 
@@ -218,54 +218,41 @@
 							</span> <span class="frst-date"></span>
 							<div class="row">
 								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+									<a class="dashboard-stat dashboard-stat-v2 blue">
 										<div class="visual">
 											<i class="fa fa-comments"></i>
 										</div>
 										<div class="details">
 											<div class="number">
-												<span data-counter="counterup" data-value="1349">1349</span>
+												<span data-counter="counterup">{{userCampaignReport.emailOpenCount}}</span>
 											</div>
 											<div class="desc">Open</div>
 										</div>
 									</a>
 								</div>
 								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 red" href="#">
+									<a class="dashboard-stat dashboard-stat-v2 red">
 										<div class="visual">
 											<i class="fa fa-bar-chart-o"></i>
 										</div>
 										<div class="details">
 											<div class="number">
-												<span data-counter="counterup" data-value="12,5">12,5</span>
+												<span data-counter="counterup">{{userCampaignReport.emailClickedCount}}</span>
 											</div>
 											<div class="desc">Clicked</div>
 										</div>
 									</a>
 								</div>
 								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 green" href="#">
-										<div class="visual">
-											<i class="fa fa-shopping-cart"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<span data-counter="counterup" data-value="549">549</span>
-											</div>
-											<div class="desc">Extra</div>
-										</div>
-									</a>
-								</div>
-								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+									<a class="dashboard-stat dashboard-stat-v2 purple">
 										<div class="visual">
 											<i class="fa fa-globe"></i>
 										</div>
 										<div class="details">
 											<div class="number">
-												+ <span data-counter="counterup" data-value="89">89</span>%
+												<span data-counter="counterup">{{userCampaignReport.totalUniqueWatchCount}}</span>
 											</div>
-											<div class="desc">Extra</div>
+											<div class="desc">watched</div>
 										</div>
 									</a>
 								</div>
@@ -279,7 +266,7 @@
 				<div class="frst-timeline-block frst-even-item"
 					data-animation="slideInUp">
 					<div class="frst-timeline-img">
-						<span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+						<span><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699016-icon-3-mail-envelope-closed-20.png"></span>
 					</div>
 
 					<div class="frst-timeline-content">
@@ -290,14 +277,15 @@
 							</span>
 							<h5>Email published out to <b>{{selectedRow.userEmail}}</b></h5>
 						</div>
-
 					</div>
-
 				</div>
 
 				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs">
 					<div class="frst-timeline-img">
-						<span><i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+						<span>
+							<img *ngIf="emailLog.actionId == 13" alt="opened" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698362-icon-2-mail-envelope-open-20.png">
+							<img *ngIf="emailLog.actionId == 14" alt="clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
+							<img *ngIf="emailLog.actionId == 1" alt="watched" src="https://cdn3.iconfinder.com/data/icons/social-circle/512/social_4-20.png">
 						</span>
 					</div>
 
@@ -310,6 +298,11 @@
 								<span *ngIf="emailLog.actionId == 1">Video Played</span>
 							 at {{emailLog.time | date: 'mediumTime'}}
 						 	</h4>
+						 	<span *ngIf="emailLog.countryCode">
+						 		<h6>{{emailLog.city}}, {{emailLog.country}}</h6>
+						 		<h6>{{emailLog.isp}}</h6>
+						 	</span>
+						 	<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg" width="24px">
 							<span class="frst-date">
 								<h6>{{emailLog.time | date: 'fullDate'}}</h6>
 							</span>

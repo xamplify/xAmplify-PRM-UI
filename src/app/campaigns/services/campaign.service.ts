@@ -130,7 +130,7 @@ export class CampaignService {
     }
     
     getEmailLogCountByCampaign( campaignId: number ) {
-        return this.http.get( this.URL + 'campaign/emaillog-count-by-campaign/' + campaignId + '?access_token=' + this.authenticationService.access_token )
+        return this.http.get( this.URL + 'campaign/emaillog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -148,7 +148,7 @@ export class CampaignService {
     }
     
     getCountryWiseCampaignViews( campaignId: number ) {
-        return this.http.get( this.URL + 'world-campaign-views?access_token=' + this.authenticationService.access_token + '&campaignId=' + campaignId )
+        return this.http.get( this.URL + 'campaign/world-map/'+campaignId +'?access_token=' + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -178,7 +178,7 @@ export class CampaignService {
     }
     
     listEmailLogsByCampaignAndUser( campaignId: number, userId: number ) {
-        return this.http.get( this.URL + 'campaign-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId )
+        return this.http.get( this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId )
             .map( this.extractData )
             .catch( this.handleError );
     }
