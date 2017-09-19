@@ -1,190 +1,184 @@
- <style type="text/css">
-  .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
-  a.disabled { pointer-events: none; cursor: not-allowed; }
-  .customeImagePath { height: 141px; width:100%;}
-  .page-bar{border-radius: 0}
-</style> 
+<style type="text/css">
+	.customDisableCss {
+		cursor: not-allowed !important;
+		opacity: 0.5;
+	}
+
+	a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.customeImagePath {
+		height: 141px;
+		width: 100%;
+	}
+
+	.page-bar {
+		border-radius: 0
+	}
+</style>
 <div class="page-content">
-				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-			<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-							<h4 class="modal-title">Modal title</h4>
-						</div>
-						<div class="modal-body">
-								Widget settings form goes here
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn blue">Save changes</button>
-							<button type="button" class="btn default" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-				<!-- /.modal-dialog -->
+	<!-- BEGIN PAGE HEADER-->
+	<div>
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li><i class="fa fa-home"></i>
+					<a [routerLink]="['../../dashboard']">Home</a><i class="fa fa-angle-right"></i></li>
+				<li><a (click)="backToManageVideos()">Manage Videos</a>
+				</li>
+				<li *ngIf="editVideo"><i class="fa fa-angle-right"></i><a>Edit Video</a>
+				</li>
+				<li *ngIf="playVideo"><i class="fa fa-angle-right"></i><a>Play Videos</a>
+				</li>
+				<li *ngIf="campaignReport"><i class="fa fa-angle-right"></i><a>Video Based Report</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- END PAGE HEADER-->
+	<!-- BEGIN PAGE CONTENT-->
+	<div>
+
+		<div class="row" *ngIf="manageVideos">
+			<div *ngIf="showMessage" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<p>{{showVideoName}} video Saved Successfully!</p>
 			</div>
-				<!-- END STYLE CUSTOMIZER -->
-				<!-- BEGIN PAGE HEADER-->
-			<div >	
-		  	<div class="page-bar">
-		        <ul class="page-breadcrumb">
-			        <li><i class="fa fa-home"></i>
-			         <a [routerLink]="['../../dashboard']">Home</a><i class="fa fa-angle-right"></i></li>
-			         <li><a (click)="goToManageVideos()">Manage Videos</a> 
-			        </li>
-					 <li *ngIf="editVideo"><i class="fa fa-angle-right"></i><a>Edit Video</a> 
-			        </li>
-					 <li *ngIf="playVideo"><i class="fa fa-angle-right"></i><a>Play Videos</a> 
-			        </li>
-					 <li *ngIf="campaignReport"><i class="fa fa-angle-right"></i><a>Video Based Report</a> 
-			        </li>
-		       </ul>
-		   </div>
-		   </div>
-				<!-- END PAGE HEADER-->
-				<!-- BEGIN PAGE CONTENT-->
-				<div>
-				
-				<div class="row" *ngIf="manageVideos" >
-				   <div *ngIf="showMessage"  style="width: 97.5%;"  class="col-md-6"  id="message"
-						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <p>{{showVideoName}} video Saved Successfully!</p> 
-			      </div> 
-			    <div *ngIf="showUpdatevalue"  style="width: 97.5%;"  class="col-md-6 " id="showUpdatevalue"
-						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<p>{{showVideoName}} video file Updated Successfully!</p>
-			    </div>
-			      <div *ngIf="deletedVideo"  style="width: 97.5%;"  class="col-md-6"  id="deleteMesg"
-						class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-						<a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					   <p> {{deleteVideoName}} video deleted Successfully!</p> 
-			      </div> 
-				  <div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
-						 <a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
-						<p>{{deleteVideoName}} {{campaignVideoMesg}}</p>
-			     </div>
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="tabbable tabbable-custom tabbable-noborder">
-							<div class="tab-content">
-								<div class="tab-pane active">
-									<!-- BEGIN FILTER -->	
-									   <div *ngIf="disableDropDowns" class="alert alert-info">
-										   <strong >No videos Found !!! Want to upload videos, Please visit
+			<div *ngIf="showUpdatevalue" style="width: 97.5%;" class="col-md-6 " id="showUpdatevalue" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<p>{{showVideoName}} video file Updated Successfully!</p>
+			</div>
+			<div *ngIf="deletedVideo" style="width: 97.5%;" class="col-md-6" id="deleteMesg" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<p> {{deleteVideoName}} video deleted Successfully!</p>
+			</div>
+			<div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
+				<a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
+				<p>{{deleteVideoName}} {{campaignVideoMesg}}</p>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="tabbable tabbable-custom tabbable-noborder">
+					<div class="tab-content">
+						<div class="tab-pane active">
+							<!-- BEGIN FILTER -->
+							<div *ngIf="disableDropDowns" class="alert alert-info">
+								<strong>No videos Found !!! Want to upload videos, Please visit
 											    <a style="color: #2a4c77; text-decoration: underline;" routerLink="../../videos" >Upload Video Page</a>
 										   </strong>
-									  </div>
-									<div class="page-toolbar">
-									<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
-										<div *ngIf="disableDropDowns == false" class="inputs" align="right">
-											<div  style="padding:0" class="col-xs-12 col-sm-6 col-md-6">
-											 <select class="form-control" style="cursor: pointer; width:50%; position: relative;float:left"
-											 [(ngModel)]="categoryNum"  (ngModelChange)="getCategoryNumber()">
+							</div>
+							<div class="page-toolbar">
+								<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
+									<div *ngIf="disableDropDowns == false" class="inputs" align="right">
+										<div style="padding:0" class="col-xs-12 col-sm-6 col-md-6">
+											<select class="form-control" style="cursor: pointer; width:50%; position: relative;float:left" [(ngModel)]="categoryNum"
+											 (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" >All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
                                             </select>
-									       </div>
-											<div class="col-xs-6 col-sm-3 col-md-3"style="padding:0">
-												<select class="form-control" style="cursor: pointer"
-												[(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
+										</div>
+										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
+											<select class="form-control" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
 													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											   </select>
-											</div>
-											<!--input-small  -->
-											<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
-												<div class="input-icon right" style="cursor:pointer">
-													<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-													<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" 
-													 (input)="searchKeyValue()"  class="form-control input-circle" placeholder="search..."> 
-													 <!-- (input)="searchDisableValue()" -->
-												</div>
+										</div>
+										<!--input-small  -->
+										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
+											<div class="input-icon right" style="cursor:pointer">
+												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
+												<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchKeyValue()" class="form-control input-circle"
+												 placeholder="search...">
+												<!-- (input)="searchDisableValue()" -->
 											</div>
 										</div>
 									</div>
 								</div>
-								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-								<div class="margin-top-10" >
-									 <div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;"
-									  class="col-md-9 alert alert-info alert-dismissable">
-									  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<p>Sorry, no videos found..!!</p>
-									</div>
-									<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
-									  <div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
-										    <div id="container"><h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3> </div>
+							</div>
+							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+							<div class="margin-top-10">
+								<div *ngIf="!httpRequestLoader.isLoading">
+								<div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+									<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+									<p>Sorry, no videos found..!!</p>
+								</div> 
+								</div>
+								<div class="row mix-grid" style="margin-top: 10px;" *ngIf="videos && !httpRequestLoader.isLoading">
+									<div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
+											<div id="container">
+												<h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3>
+											</div>
 											<div class="mix-inner" style="height: 173px;">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">
 													<h4>{{titleCheckLength(videoFile.title)}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
-													<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
+														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
 													</a>
-													<a class="mix-preview1"  style="left: 16%;" (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
+														<a class="mix-preview1" style="left: 16%;" (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
-													<a class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" 
-													title="Video Based Reports"  data-rel="">
+														<a class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports"
+														 data-rel="">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													</div>
 													<div style="top: 27%; position: relative;">
-													<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="" style="left:29%;margin-top :18px">
+														<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
+														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													</a>
-													<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'"  title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
+														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
 														<i class="fa fa-bullhorn"></i>
 													</a>
-													 <a class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'" 
-													 title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
+														<a class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'"
+														 title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>
 													</div>
 													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-												    <span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
+													<span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
 													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 												</div>
 											</div>
 											<div>
-										 </div>
+											</div>
 										</div>
-										</div>
 									</div>
-									</div>
-									</div>
-									<!-- END FILTER -->
 								</div>
-							<div *ngIf="!isvideoThere && disableDropDowns == false">   
-								<!--pager here  -->
-									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                                                <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-                                             </li>
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-                                                 <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-                                              </li>
-                                              <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page)">{{page}}</a>
-                                              </li>
-                                              <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-                                              </li>
-                                               <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-                                              </li>
-                                          </ul>
-										<!-- pager end here -->
-										</div>
 							</div>
 						</div>
+						<!-- END FILTER -->
 					</div>
+					<div *ngIf="!isvideoThere && disableDropDowns == false">
+						<!--pager here  -->
+						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+								<a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+							</li>
+							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+								<a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+							</li>
+							<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+								<a (click)="setPage(page)">{{page}}</a>
+							</li>
+							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+								<a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+							</li>
+							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+								<a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+							</li>
+						</ul>
+						<!-- pager end here -->
 					</div>
-				<!-- END PAGE CONTENT-->
-				<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
-				<app-play-video *ngIf="playVideo" [totalRecords] = "allRecords" [selectedVideo] = "selectedVideo"></app-play-video>
-				<app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo"></app-video-based-report>
+				</div>
 			</div>
-		<!-- END CONTENT -->
+		</div>
+	</div>
+	<!-- END PAGE CONTENT-->
+	<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
+	<app-play-video *ngIf="playVideo" [totalRecords]="allRecords" [selectedVideo]="selectedVideo"></app-play-video>
+	<app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo"></app-video-based-report>
+</div>
+<!-- END CONTENT -->

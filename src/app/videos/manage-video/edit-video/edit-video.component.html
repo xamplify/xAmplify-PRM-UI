@@ -102,18 +102,20 @@
 				<div *ngIf="likes" class="col-xs-12" style="padding: 0;">
 					<span class="pull-right">
 						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
-							<i class="fa fa-thumbs-up" aria-hidden="true"></i>
-							{{likesValues}}</button>
+							<a  style="color: #337ab7; background: #fff; text-decoration: none;" title="I like this">
+								<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+							{{likesValues}}</a></button>
 						<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
-							<i class="fa fa-thumbs-down" aria-hidden="true"></i>
-							{{disLikesValues}}</button>
+							<a  style="color: #f3565d; background: #fff;padding: 0; text-decoration: none" title="I dislike this">
+								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+							{{disLikesValues}}</a></button>
 					</span>
 				</div>	
 			</div>	
 				<!-- Modal Start-->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
 					<div class="modal-dialog" role="document">
-						<div class="modal-content">
+						<div class="modal-content" style="border-radius: 0">
 							<div class="modal-header">
 								<button type="button" class="closeModal" data-dismiss="modal"(click)="closeEmbedModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<h4 class="modal-title" id="myModalLabel"><strong>Get Embed Code</strong></h4>
@@ -126,7 +128,7 @@
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<div style="margin-top: 4px;">
-											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">video size:
+											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Video Size:
 											   <select class="videoSizeCss"[(ngModel)]="videosize" [ngModelOptions]="{standalone: true}"
 												 (change)="embedVideoSizes()">
 												<option style="font-size:12px" *ngFor="let size of videoSizes" [value]="size">{{size}}</option>
@@ -152,8 +154,7 @@
 			</div>
 			<!-- video ended  -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style=" top: -15px;">
-				<form class="form-horizontal" role="form" [formGroup]="videoForm"
-				 *ngIf="active" (ngSubmit)="saveVideo()" novalidate>
+				<form class="form-horizontal" [formGroup]="videoForm" (ngSubmit)="saveVideo()" novalidate>
 					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">

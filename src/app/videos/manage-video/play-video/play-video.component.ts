@@ -201,7 +201,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             $('.video-js .vjs-tech').css('height', '100%');
                             if (isValid === 'StartOftheVideo') {
                                 $('.vjs-big-play-button').css('display', 'none');
-                                //  $("#overlay-modal").css("display","block !important");
                                 self.showOverlayModal();
                                 player.pause();
                             } else if (isValid !== 'StartOftheVideo') {
@@ -258,7 +257,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             const time = player.currentTime();
                             console.log(time);
                             self.replyVideo = true;
-                            //    $('.vjs-big-play-button').css('display', 'block');
                             console.log('video ended attempts' + self.replyVideo);
                             self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
                             self.xtremandLog.startTime = new Date();
@@ -267,8 +265,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
                             self.videoLogAction(self.xtremandLog);
                             if (isValid === 'EndOftheVideo') {
-                                // $('#play_video_player_demo1').append( $('#overlay-modal').show());
-                                // self.showOverlayModal();
                                 const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                                 const event = state ? 'FullscreenOn' : 'FullscreenOff';
                                 if (event === 'FullscreenOn') {
@@ -286,8 +282,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                                 $('#overlay-modal').hide(); // player.pause();
                             } else {
                                 $('#overlay-modal').hide();
-                                // player.pause();
-                                //  $('.vjs-big-play-button').css('display', 'block');
                             }
                             $('#repeatPlay').click(function () {
                                 $('#overlay-modal').hide();
@@ -384,8 +378,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             (error: any) => {
                 console.log('Play video component : show play videos method ():' + error);
                 this.xtremandLogger.errorPage(error);
-               // this.router.navigate(['/home/error-occured-page/', error.status]);
-            }
+             }
             );
     }
     likesValuesDemo() {
@@ -423,7 +416,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         document.execCommand('copy');
     }
     closeEmbedModal() {
-        this.ClipboardName = 'Copy to ClipBoard';
+        this.ClipboardName = 'Copy to Clipboard';
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
@@ -1002,9 +998,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         $('.h-video').remove();
         $('.p-video').remove();
-        $('#myModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
+        this.closeEmbedModal();
     }
 
     // the below code is used for logging //////////////////////////////

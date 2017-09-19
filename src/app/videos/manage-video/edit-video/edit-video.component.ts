@@ -65,7 +65,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public gifthird: string;
     public newTags: string[] = [];
     submitted = false;
-    active = true;
     model: any = {};
     public titleOfVideo: string;
     public ownThumbnail = false;
@@ -423,6 +422,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     closeEmbedModal() {
         this.ClipboardName = 'Copy to Clipboard';
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
     // normal and 360 video methods
     play360Video() {
@@ -1320,8 +1322,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         $('.p-video').remove();
         this.tempVideoFile = null;
-        $('#myModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
+        this.closeEmbedModal();
     }
 }
