@@ -368,7 +368,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 1);
     }
     controlPlayerChange() {
-        $( 'html,body' ).animate( { scrollTop: 300 }, 'slow' );
+        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
         this.controlPlayers = true;
         this.colorControl = this.titleDiv = this.callaction = false;
         const disable = this;
@@ -380,7 +380,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 1);
     }
     callToActionChange() {
-        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        $( 'html,body' ).animate( { scrollTop: 275 }, 'slow' );
         this.callaction = true;
         this.controlPlayers = this.colorControl = this.titleDiv = false;
         const disable = this;

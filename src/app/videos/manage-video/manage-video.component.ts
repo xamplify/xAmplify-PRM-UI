@@ -88,6 +88,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.searchKey = null;
     }
     ngOnInit() {
+        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
         Metronic.init();
         Layout.init();
         Demo.init();

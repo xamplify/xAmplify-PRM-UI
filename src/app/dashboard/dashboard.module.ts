@@ -6,31 +6,27 @@ import { ViewsReportComponent } from './views-report/views-report.component';
 import { TableAdvanceComponent } from './table-advance/table-advance.component';
 import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
 
-import{DasboardRoutingModule} from './dashboard-routing.module';
-import {CoreModule} from '../core/core.module';
-import {SharedModule} from '../shared/shared.module';
+import { DasboardRoutingModule } from './dashboard-routing.module';
+import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
 
-import {DashboardService} from './dashboard.service';
+import { DashboardService } from './dashboard.service';
 import { ProfileLockComponent } from './user-profile/profile-lock/profile-lock.component';
 import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
 import { MyProfileComponent } from './user-profile/my-profile/my-profile.component';
 import { DefaultPageComponent } from './default-page/default-page.component';
 import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
-import {DragulaModule , DragulaService} from "ng2-dragula/ng2-dragula";
+import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
+import { AvarageChartComponent } from './views-report/average-chart/average-chart.component';
 
 @NgModule({
-    imports: [DasboardRoutingModule,SharedModule,CoreModule,CommonModule, DragulaModule],
-    declarations: [DashboardComponent,TableAdvanceComponent,ViewsReportComponent,ExtraFaqComponent,
-                   WelcomeComponent,
-                   MyProfileComponent,
-                   ProfileLockComponent,
-                   ProfileHelpComponent,
-                   DefaultPageComponent,
-                   FollowersComponent,
-                   SharedComponent
+    imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule],
+    declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
+        WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
+        FollowersComponent, SharedComponent,AvarageChartComponent
     ],
-   exports :[],
+    exports: [],
     providers: [DashboardService]
 })
 export class DashboardModule { }

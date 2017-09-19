@@ -154,7 +154,8 @@
 			</div>
 			<!-- video ended  -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style=" top: -15px;">
-				<form class="form-horizontal" [formGroup]="videoForm" (ngSubmit)="saveVideo()" novalidate>
+				<form class="form-horizontal"
+				 [formGroup]="videoForm" (ngSubmit)="saveVideo()" novalidate>
 					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
@@ -488,7 +489,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group"><hr style="margin: 0px 2px;"></div>
+								<div class="form-group" id="callActionDiv"><hr style="margin: 0px 2px;"></div>
 									<div class="form-group" style="padding: 1em">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Call To Action At:</label>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">

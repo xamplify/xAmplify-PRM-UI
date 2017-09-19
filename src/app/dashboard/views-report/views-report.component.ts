@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -23,7 +23,7 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
     styleUrls: ['./views-report.component.css'],
     providers: [Pagination, HttpRequestLoader, DashboardService]
 })
-export class ViewsReportComponent implements OnInit {
+export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     public totalRecords: number;
     videos: Array<SaveVideoFile>;
@@ -73,7 +73,7 @@ export class ViewsReportComponent implements OnInit {
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
         public logger: XtremandLogger, public pagination: Pagination, public authenticationService: AuthenticationService,
-       public videoUtilService: VideoUtilService) {
+        public videoUtilService: VideoUtilService) {
         this.categoryNum = 0;
         this.isCategoryThere = false;
     }
@@ -230,7 +230,8 @@ export class ViewsReportComponent implements OnInit {
                     clickToToggle: true,
                     callback: function () {
                         player.pause();
-                        $("#main_video").empty(); }
+                        $("#main_video").empty();
+                    }
                 });
             }
         }
@@ -268,7 +269,7 @@ export class ViewsReportComponent implements OnInit {
                 autoMobileOrientation: true,
                 clickAndDrag: true,
                 clickToToggle: true,
-                callback: function () {  player.ready(); }
+                callback: function () { player.ready(); }
             });
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
@@ -309,14 +310,6 @@ export class ViewsReportComponent implements OnInit {
         $("video").bind("contextmenu", function () {
             return false;
         });
-     this.defaultVideoSettings(videoFile);
-    }
-    defaultVideoSettings(videoFile: SaveVideoFile) {
-        console.log('default settings called');
-        $('.video-js').css('color', videoFile.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', videoFile.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', videoFile.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', videoFile.controllerColor);
     }
     backToReport() {
         this.showDatailedData = false;
@@ -333,8 +326,6 @@ export class ViewsReportComponent implements OnInit {
         this.pagination.sortingOrder = null;
         this.currentPageType = "views_page";
     }
-
-
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);
@@ -343,18 +334,21 @@ export class ViewsReportComponent implements OnInit {
             Layout.init();
             Demo.init();
             QuickSidebar.init();
-            Index.init();
-            Index.initDashboardDaterange();
-            Index.initJQVMAP();
-            Index.initCalendar();
-            Index.initCharts();
-            Index.initChat();
-            Index.initMiniCharts();
-            Tasks.initDashboardWidget();
-          //  this.viewsSparklineData();
-             this.minutesSparklineData();
+            // Index.init();
+            // Index.initDashboardDaterange();
+            // Index.initCharts();
+            // Index.initChat();
+            // Index.initMiniCharts();
+            // Tasks.initDashboardWidget();
+            //  this.viewsSparklineData();
+            this.minutesSparklineData();
             // this.averageSparklineData(videoFile);
         } catch (err) { }
+    }
+    ngOnDestroy() {
+        $('#show_preview').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
 
 }
