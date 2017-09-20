@@ -59,6 +59,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     public timeValue: any;
     public seekStart = null;
     public seekStart360 = null;
+    uploadedDate: any;
     LogAction: typeof LogAction = LogAction;
     public emailLog: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
@@ -146,6 +147,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.is360Value = this.campaignVideoFile.is360video;
                         this.title = this.campaignVideoFile.title;
                         this.description = this.campaignVideoFile.description;
+                        this.uploadedDate = this.campaignVideoFile.uploadedDate;
                         this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
                         console.log(this.videoLength);
                         if (this.campaignVideoFile.is360video === true) {
@@ -160,8 +162,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.defaultVideoSettings();
                         console.log(this.videoUrl);
                     }, (error: any) => {
-                        this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
+                        this.xtremandLogger.error('Edit video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
+                        this.router.navigate(['/undefined']); // need to change for the particular 500 eror
                     }
                 );
             },

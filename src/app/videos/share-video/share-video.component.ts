@@ -137,11 +137,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 if (this.embedVideoFile.is360video === true) {
                     try {
                       this.play360Video();
-                     } catch (err) { this.router.navigate(['/undefined']); }
+                     } catch (err) {  this.router.navigate([ 'embed-video/'+this.routerType+'/' +this.routerAlias+ '/video-not-found']); }
                  } else {
                    try {
                     this.playNormalVideo();
-                   } catch(err) { this.router.navigate(['/undefined']); }
+                   } catch(err) { this.router.navigate([ 'embed-video/'+this.routerType+'/' +this.routerAlias+ '/video-not-found']); }
                 }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);

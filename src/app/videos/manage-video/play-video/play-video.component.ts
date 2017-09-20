@@ -94,6 +94,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public fullScreenMode = false;
     showRelatedMessage: boolean;
     isThisDraftVideo  = false;
+    hasVideoRole = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(elementRef: ElementRef, public authenticationService: AuthenticationService, public router: Router,
         public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
@@ -105,6 +106,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.likesValues = 0;
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
+        this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
       }
     embedSourcePath(alias: string, viewBy: string) {
     this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
