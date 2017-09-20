@@ -61,6 +61,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     public locationJson: any;
     public allVideosCount: any;
     public disableDropDowns: boolean;
+    hasVideoRole = false;
+    hasStatsRole = false;
+    hasCampaignRole = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     public errorPrepender: 'Error In:';
     sortVideos = [
@@ -88,6 +91,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.searchKey = null;
     }
     ngOnInit() {
+        this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
+        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
         $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
         Metronic.init();
         Layout.init();

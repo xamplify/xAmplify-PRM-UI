@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit {
          this.logErrorEmpty()
         } else {
         this.loading = true;
+        this.model.username = this.model.username.toLowerCase();
         this.refService.userName = this.model.username;
         const authorization = 'Basic ' + btoa( 'my-trusted-client:');
         const body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
@@ -187,6 +188,7 @@ export class LoginComponent implements OnInit {
 
     signUp() {
         this.signUpUser = this.signUpForm.value;
+        this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.userService.signUp( this.signUpUser )
             .subscribe(
             data => {
