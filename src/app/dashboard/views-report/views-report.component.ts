@@ -102,9 +102,10 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         });
     }
 
-    averageSparklineData(videoFile: number) {
+    averageSparklineData(videos: any) {
         const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
-        $('#sparkline_line_' + videoFile).sparkline(myvalues, {
+        for(let i =0; i < videos.length; i++) {
+        $('#' + videos.id).sparkline(myvalues, {
             type: 'bar',
             width: '100',
             barWidth: 5,
@@ -112,6 +113,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             barColor: '#35aa47',
             negBarColor: '#e02222'
         });
+        }
     }
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 5;
@@ -121,6 +123,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     this.videos = result.listOfMobinars;
                     this.totalRecords = result.totalRecords;
+                    this.averageSparklineData(this.videos);
                     pagination.totalRecords = this.totalRecords;
                     if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
                         this.categories = result.categories;
