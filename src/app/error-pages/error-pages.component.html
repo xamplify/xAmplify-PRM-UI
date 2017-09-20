@@ -1,92 +1,26 @@
 <style>
- .imageCss{   
-    max-width: 100%;
-    height: 359px;
-    position: relative;
-    top: -16px;
-    margin-right: 10px;
+h1 {
+    font-weight: 900;
+    font-size: 10em;
+    color: #e03b60;
+    margin: 0;
+    margin: 1em 0 0 0;
+}
+h4{
+	color: #ea96a9;
+    margin-bottom: 4em;
+    font-size: 3em;
+    text-transform: lowercase;
 }
 </style>
 
 <div class="page-content">
-<div class="portlet light" style="padding:5px 5px 150px 10px">
-<div class="portlet-body">
-<div class="ex-page-content bootstrap snippets">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-7">   
-				<img *ngIf= "Error500" alt="Image Not Found"
-					src="assets/images/error-pages/_error500.png"
-					class="imageCss" style="padding: 0 63px;">
-					<!-- https://cdn.dribbble.com/users/1373974/screenshots/3029413/500.gif 500 image  -->
-				<img *ngIf= "Error400" alt="Image Not Found"
-					src="assets/images/error-pages/400image.jpg"
-					class="imageCss" style="padding: 0 74px;">
-				<img *ngIf= "Error403" alt="Image Not Found"
-					src="assets/images/error-pages/403image.png"
-				    class="imageCss">
-				<img *ngIf= "Error406" alt="Image Not Found"
-					src="assets/images/error-pages/406image.jpg"
-					class="imageCss" style="padding: 0 74px;">
-				<img *ngIf= "Error409" alt="Image Not Found"
-					src="assets/images/error-pages/409image.png"
-					class="imageCss" style="padding: 0 74px;">
-			    <h1 *ngIf="ErrorUndefined" style="position: relative; top: -26px; font-size: 275px;">{{errorStatus}}</h1>		
-			    <h1 *ngIf="errorDifferent" style="position: relative; top: -3px; font-size: 75px;font-weight: 500;">{{errorMessage}}</h1>		
-			</div>
-
-			<div class="col-sm-5" style="margin-left: -158px;">
-				<div class="message-box" >
-					<h2 *ngIf="Error500"><strong>500 : Internal Server Error</strong></h2>
-					<h2 *ngIf="Error400"><strong>400 : Bad url Server Request</strong></h2>
-				    <h2 *ngIf="Error403"><strong>403 : Access Forbidden Error! </strong></h2>
-					<h2 *ngIf="Error406"><strong>406 : Not Acceptable Request</strong></h2>
-					<h2 *ngIf="Error409"><strong>409 : Conflict server Error</strong></h2>
-					<h2 *ngIf="Error503"><strong>503: Service Unavailable</strong></h2>
-					<h2 *ngIf="ErrorUndefined"><strong> {{errorStatus}}: Error Occured !</strong></h2>
-					<h2 *ngIf="errorDifferent"><strong> Error Occured !</strong></h2>
-					<p *ngIf="Error500" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-							The server encountered an internal error or misconfiguration and was unable to complete
-							your <strong> {{errorMessage}} </strong> request.
-							Please contact the server administrator, <a>aravindu@xtremand.com</a> and inform them of the time
-							the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p>
-					<p *ngIf="Error400" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">	
-					    Your Browser (or proxy) sent a request that this server could not understand,
-						If you think this is a server error. please contact the server administrator,<a> aravindu@xtremand.com </a>and inform them of the time
-						the error occured.  Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-						</p>
-					<p *ngIf="Error403" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-							You don't have permission to access the requested Object. It is either
-							read-protected or not readable by the server.
-							Please contact the server administrator, <a>aravindu@xtremand.com</a> and inform them of the time
-							the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p>
-					<p *ngIf="Error406" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-						An appropriate representation of the requested resource could not be found on the server.
-						Please contact ther server administrator, <a>aravindu@xtremand.com</a> and inform them of the time
-						the error occured.Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p>	
-					<p  *ngIf="Error409" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-						There was a conflict when your request was processed, having invalid data or conflict between what your resource and 
-						and another one.Please contact ther server administrator, <a>aravindu@xtremand.com</a>  and inform them of the time
-						the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p>
-					<p  *ngIf="ErrorUndefined || errorDifferent" class="col-md-9" style="font-size: 15px;position: relative;left: -12px;">
-						Sorry, an error occurred on processing your request. The error has been logged.
-						Please contact ther server administrator, <a>aravindu@xtremand.com</a>  and inform them of the time
-						the error occured. Please go Back or click on <a (click)="homePage()"> DashBoard </a>
-					</p>
-					
-					<div class="buttons-con">
-						<div class="action-link-wrap">
-						</div>
-					</div>
-				</div>
+	<div class="portlet light">
+		<div class="portlet-body clearfix">
+			<div class="col-xs-12 text-center">
+				<h1>{{errorStatus}}</h1>
+				<h4>BAD REQUEST</h4>
 			</div>
 		</div>
 	</div>
-</div>
-</div>
-</div>
 </div>
