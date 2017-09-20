@@ -31,7 +31,6 @@ import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
-
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery,CKEDITOR:any;
 
 

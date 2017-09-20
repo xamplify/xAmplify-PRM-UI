@@ -102,16 +102,6 @@ export class AuthenticationService {
     }
     
 
-    getUserEmailId(): string {
-        let emailId;
-        if ( !this.user.emailId ) {
-            let currentUser = localStorage.getItem( 'currentUser' );
-            emailId = JSON.parse( currentUser )['userName'];
-        } else {
-            emailId = this.user.emailId;
-        }
-        return emailId;
-    }
 
    
     
@@ -121,7 +111,10 @@ export class AuthenticationService {
             let currentUser = localStorage.getItem( 'currentUser' );
             console.log(JSON.parse( currentUser ));
             let roles = JSON.parse( currentUser )['roles'];
-            roleNames = roles.map(function(a) {return a.roleName;});
+            if(roles.length>0){
+                roleNames = roles.map(function(a) {return a.roleName;});
+            }
+           
         } else {
             roleNames = this.user.roles.map(function(a) {return a.roleName;});;
         }

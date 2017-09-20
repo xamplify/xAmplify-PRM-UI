@@ -13,10 +13,10 @@ export class Campaign {
     selectedVideoId :number;
     userListIds: number[] = [];
     userId: number;
-    emailOpened: boolean;
-    videoPlayed: boolean;
+    emailOpened: boolean=false;
+    videoPlayed: boolean=false;
     socialSharingIcons:boolean;
-    replyVideo: boolean;
+    replyVideo: boolean=false;
     selectedEmailTemplateId :number;
     optionForSendingMials :string;
     launchTime:Date;

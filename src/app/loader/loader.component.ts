@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input,OnChanges } from '@angular/core';
 import { HttpRequestLoader } from '../core/models/http-request-loader';
 
 @Component({
@@ -7,13 +7,22 @@ import { HttpRequestLoader } from '../core/models/http-request-loader';
   styleUrls: ['./loader.component.css'],
   providers:[HttpRequestLoader],
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit  {
 
     @Input() model:boolean;
-    
+    //items:number[] = [];
    constructor() {
   }
   ngOnInit() {
   }
 
+  
+/*  ngOnChanges(changes: any){
+      for(var i=1;i<=this.model.listCount;i++){
+          console.log(this.model.listCount)
+          this.items.push(i);
+      }
+     }*/
+  
+  
 }

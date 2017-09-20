@@ -5,6 +5,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TeamMember } from '../models/team-member';
+import { TeamMemberUi } from '../models/team-member-ui';
 import { TeamMemberService } from '../services/team-member.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination} from '../../core/models/pagination';
@@ -18,22 +19,19 @@ declare var $,swal :any ;
 })
 export class AddTeamMembersComponent implements OnInit {
    
-    emptyTable: boolean = true;
-    validEmailId: boolean = false;
-    duplicateEmailId:boolean = false;
-    existingEmailId:boolean  = false;
-    emptyRolesLength:number;
-    existingEmailIds:string[]=[];
-    orgAdminsEmailIds:string[]=[];
-    isOrgAdmin:boolean = false;
-    successMessage:string = "";
+    successMessage: string = "";
+    deleteText:string = "This will remove team member";
+    deleteMessage:string = "";
+    orgAdminEmailIds:string[]=[];
+    existingEmailIds:string[] = [];
+    teamMemberUi:TeamMemberUi;
+    team:TeamMember;
+    teamMembers: Array<TeamMember> = new Array<TeamMember>();
+    teamMembersList: Array<TeamMember> = new Array<TeamMember>();
     /**********Pagination&Loading***********/
     userId:number;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     public pagination:Pagination = new Pagination();
-    team:TeamMember;
-    teamMembers: Array<TeamMember> = new Array<TeamMember>();
-    teamMembersList: Array<TeamMember> = new Array<TeamMember>();
     isProcessing:boolean = false;
     /*****Form Related**************/
     formGroupClass:string = "form-group";
@@ -64,23 +62,29 @@ export class AddTeamMembersComponent implements OnInit {
     
     /************List Members*****************/
     listTeamMembers(){
-        this.referenceService.loading(this.httpRequestLoader, true);
-        this.httpRequestLoader.isHorizontalCss = true;
-        this.emptyRolesLength = 0;
-        this.teamMemberService.list(this.pagination,this.userId)
-        .subscribe(
-            data => {
-                console.log(data);
-                this.teamMembersList = data.teamMembers;
-                this.pagination.totalRecords = data.totalRecords;
-                this.pagination = this.pagerService.getPagedItems(this.pagination,this.teamMembersList);
-                this.referenceService.loading(this.httpRequestLoader, false);
-            },
-            error => {
-                this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished listTeamMembers()")
-        );
+        try{
+            this.referenceService.loading(this.httpRequestLoader, true);
+            this.httpRequestLoader.isHorizontalCss = true;
+            this.teamMemberUi = new TeamMemberUi();
+            this.clearRows();
+            this.teamMemberService.list(this.pagination,this.userId)
+            .subscribe(
+                data => {
+                    this.teamMembersList = data.teamMembers;
+                    this.pagination.totalRecords = data.totalRecords;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination,this.teamMembersList);
+                    this.referenceService.loading(this.httpRequestLoader, false); 
+                   
+                },
+                error => {
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished listTeamMembers()")
+            );
+        }catch(error){
+            this.showUIError(error);
+        }
+       
     }
     
     /***********List TeamMember EmailIds****************/
@@ -101,8 +105,8 @@ export class AddTeamMembersComponent implements OnInit {
         this.teamMemberService.listAllOrgAdminsEmailIds()
         .subscribe(
             data => {
-                this.orgAdminsEmailIds = data;
-                console.log(this.orgAdminsEmailIds);
+                this.orgAdminEmailIds = data;
+                console.log(this.orgAdminEmailIds);
             },
             error => {
                 this.logger.errorPage(error);
@@ -113,8 +117,8 @@ export class AddTeamMembersComponent implements OnInit {
     
     save(){
         this.referenceService.goToTop();
-        this.emptyRolesLength = this.validateRoles('add-team-member-table','team-member-');
-        if(this.emptyRolesLength==0){
+        this.teamMemberUi.emptyRolesLength = this.validateRoles('add-team-member-table','team-member-');
+        if(this.teamMemberUi.emptyRolesLength==0){
             this.isProcessing = true;
             this.teamMemberService.save(this.teamMembers,this.userId)
             .subscribe(
@@ -138,8 +142,8 @@ export class AddTeamMembersComponent implements OnInit {
     
     update(){
         this.referenceService.goToTop();
-        this.emptyRolesLength = this.validateRoles('list-team-member-table','list-team-member-');
-        if(this.emptyRolesLength==0){
+        this.teamMemberUi.emptyRolesLength = this.validateRoles('list-team-member-table','list-team-member-');
+        if(this.teamMemberUi.emptyRolesLength==0){
             this.isProcessing = true;
             this.teamMemberService.update(this.teamMembersList)
             .subscribe(
@@ -147,7 +151,7 @@ export class AddTeamMembersComponent implements OnInit {
                this.isProcessing = false;
                this.successMessage = "Team Member(s) Updated Successfully";
                $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
+               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 2000 );
                this.listTeamMembers();
                this.listEmailIds();
                this.clearRows();
@@ -160,16 +164,13 @@ export class AddTeamMembersComponent implements OnInit {
         }
     }
     /*********************Delete*********************/
-    deleteText:string = "This will remove team member";
-    deleteMessage:string = "";
     delete(teamMember:TeamMember){
-       this.deleteMessage = teamMember.emailId+" Deleted Successfully";
-       this.sweetAlertWarning(teamMember);
+        this.deleteText = "This will remove team member.";
+        this.sweetAlertWarning(teamMember);
     }
     
     deleteAll(){
         this.deleteText = "This will remove all team members.";
-        this.deleteMessage ="All Team Members Deleted Successfully";
         let teamMember = new TeamMember();
         teamMember.teamMemberId = 0;
         this.sweetAlertWarning(teamMember);
@@ -180,7 +181,7 @@ export class AddTeamMembersComponent implements OnInit {
         let self = this;
         swal( {
             title: 'Are you sure?',
-            text: "This will remove team member",
+            text: self.deleteText,
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -192,10 +193,16 @@ export class AddTeamMembersComponent implements OnInit {
             self.teamMemberService.delete(teamMember)
             .subscribe(
             data => {
-                 $( "#team-member-delete-success" ).show();
-                setTimeout( function() { $( "#team-member-delete-success" ).slideUp( 500 ); }, 5000 );
+                if(teamMember.teamMemberId==0){
+                    self.successMessage ="All Team Members Deleted Successfully";
+                }else{
+                    self.successMessage = teamMember.emailId+" Deleted Successfully";
+                }
+                 $( "#team-member-success-div" ).show();
+                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
                 self.listTeamMembers();
                 self.listEmailIds();
+                self.clearRows();
             },
             error => {self.logger.errorPage(error)},
             () => console.log( "Team member Deleted Successfully" )
@@ -212,75 +219,54 @@ export class AddTeamMembersComponent implements OnInit {
         this.listTeamMembers();
     }
     
-    validateForm(emailId:string){
-        try{
-            if(this.validEmailId && !this.duplicateEmailId){
-                this.removeErrorClass();
-            }else{
-                this.addErrorClass();
-            }
-        
-        }catch(error){
-            this.showUIError(error);
-        }
-        
-    }
-    
   
     validateEmailId(emailId:string){
         try{
-            this.validEmailId = this.referenceService.validateEmailId(emailId);
-        }catch(error){
-            this.showUIError(error);
-        }
-    }
-    
-    checkDuplicateEmailIds(emailId:string){
-        try{
-            let addedEmailIds = this.teamMembers.map(function(a) {return a.emailId.toLowerCase();});
-            if(addedEmailIds.indexOf(emailId.toLowerCase())>-1){
-                this.duplicateEmailId = true;
-                this.addErrorClass();
+            this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
+            if(!this.teamMemberUi.validEmailId){
+                this.showErrorMessage("Invalid Email Id");
             }else{
-                this.duplicateEmailId = false;
-                this.removeErrorClass();
+                /**********Method To Check Whether Org Admin Or Not***********/
+                console.log(this.orgAdminEmailIds);
+                if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
+                    console.log(emailId.toLowerCase()+" is an org admin")
+                    this.showErrorMessage("Org Admin Cannot be added as a team member");
+                }else{
+                 /********************Check Duplicate Email Ids*******************/
+                    let addedEmailIds = this.teamMembers.map(function(a) {return a.emailId.toLowerCase();});
+                    if(addedEmailIds.indexOf(emailId.toLowerCase())>-1){
+                        this.showErrorMessage("Already Exists");
+                    }else{
+                  /*******************Check If Already Added As A Team Member***************************/
+                        if( this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
+                            this.showErrorMessage("Already Added ");
+                        }else{
+                            this.hideErrorMessage();
+                        }
+                        
+                    }
+                    
+                }
+                
             }
         }catch(error){
             this.showUIError(error);
         }
-        
-    
     }
     
     
-    checkExisitingEmailIds( emailId: string ) {
-        try {
-            if ( this.existingEmailIds.indexOf( emailId.toLowerCase() ) > -1 ) {
-                this.existingEmailId = true;
-                this.addErrorClass();
-            } else {
-                this.existingEmailId = false;
-                this.removeErrorClass();
-            }
-
-        } catch ( error ) {
-            this.showUIError( error );
-        }
+    showErrorMessage(message:string){
+        this.teamMemberUi.isValidForm = false;
+        this.teamMemberUi.errorMessage = message;
+        this.addErrorClass();
+    }
+    hideErrorMessage(){
+        this.teamMemberUi.isValidForm = true;
+        this.teamMemberUi.errorMessage = '';
+        $(".col-md-12 span").text('');
+        this.removeErrorClass();
     }
     
-    
-    checkIsLoggedInUserEmailId(emailId:string){
-        try{
-            if(this.authenticationService.getUserEmailId()==emailId.toLowerCase()){
-                this.isOrgAdmin = true;
-            }else{
-                this.isOrgAdmin = false;
-            }
-            
-        }catch(error){
-            this.showUIError(error);
-        }
-    }
     
     addErrorClass(){
         return this.emaillIdDivClass = this.errorClass;
@@ -291,10 +277,10 @@ export class AddTeamMembersComponent implements OnInit {
     
     addTeamMember(){
         try{
-            this.emptyTable = false;
+            this.teamMemberUi.emptyTable = false;
             this.teamMembers.push(this.team);
             this.team = new TeamMember();
-            this.validEmailId = false;
+            this.teamMemberUi.validEmailId = false;
             this.emaillIdDivClass = this.defaultClass;
         }catch(error){
             this.showUIError(error);
@@ -327,31 +313,17 @@ export class AddTeamMembersComponent implements OnInit {
     clearRows(){
         try{
             $('#add-team-member-table tbody').remove();
-            this.emptyTable = true;
             this.teamMembers = []; 
             this.team = new TeamMember();
             this.emaillIdDivClass = this.defaultClass;
             $(".col-md-12 span").text('');
-            this.emptyRolesLength = 0;
+            this.teamMemberUi = new TeamMemberUi();
         }catch(error){
           this.showUIError(error);
         }
        
     }
-    addAllAuthorities(e,team:TeamMember){
-        try{
-            var table= $(e.target).closest('tr');
-            $('td input:checkbox',table).prop('checked',e.target.checked);
-            if(e.target.checked){
-               this.setAllRoles(team);
-            }else{
-                this.removeAllRoles(team);
-            }
-        }catch(error){
-            this.showUIError(error);
-        }
-       
-      }
+    
     
     setAllRoles( team: TeamMember ) {
         team.video = true;
@@ -374,14 +346,31 @@ export class AddTeamMembersComponent implements OnInit {
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
            if(length==5){
                team.all = true;
+               $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
                team.all = false;
+               $('#'+tableId+' #role-checkbox-'+index).prop("disabled",false);
            }
        }catch(error){
            this.showUIError(error);
        }
     }
-    
+    addAllAuthorities(e,team:TeamMember,tableId:string,index:number){
+        try{
+            var table= $(e.target).closest('tr');
+            $('td input:checkbox',table).prop('checked',e.target.checked);
+            if(e.target.checked){
+               this.setAllRoles(team);
+               $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
+            }else{
+                this.removeAllRoles(team);
+                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
+            }
+        }catch(error){
+            this.showUIError(error);
+        }
+       
+      }
     
     
     validateRoles(tableId:string,trId:string){

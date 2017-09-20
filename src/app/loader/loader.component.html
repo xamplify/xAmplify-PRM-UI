@@ -1,4 +1,4 @@
-<ng-container *ngIf="model!=true">
+<ng-container *ngIf="!model">
  <div class="col-md-3 col-sm-4 col-xs-6 box"
 	*ngFor="let number of [0,1,2,3,4,5,6,7,8,9,10,11]">
 	<div class="timeline-wrapper">
@@ -22,8 +22,8 @@
 	</div>
 </div> 
 </ng-container>
-<ng-container *ngIf="model==true">
-<div class="col-xs-12 box"	*ngFor="let number of [0,1,2,3,4,5,6,7,8,9,10,11]" >
+<ng-container *ngIf="model">
+<div class="col-xs-12 box"	*ngFor="let number of [0,1,2,3,4,5,6,7,8,9,10,11]">
 	<div class="timeline-wrapper">
 		<div class="timeline-item-full-horizontal">
 			<div class="animated-background-full-horizontal">

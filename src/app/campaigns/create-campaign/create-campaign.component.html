@@ -139,18 +139,26 @@
 											<div class="email-options-checkbox-group email-options-notify">
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
-													<ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch>
+													<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
+													<switch [status]="campaign.emailOpened"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
+														   (statusChange)="setEmailOpened($event)">
+													</switch>
 													</div>
 													<div class="col-sm-11" style="padding: 0;">
-														<label style="margin-top: 10px;">Email is opened</label>
+														<label style="margin-top: 10px;margin-left: 35px;">Email is opened</label>
 													</div>
 												</div>
 												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
 												<div class="col-sm-1 ui-switch-custom-div">
-												<ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch>
+												<switch [status]="campaign.videoPlayed"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
+														   (statusChange)="setVideoPlayed($event)">
+													</switch>
+												<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch> -->
 												</div>
 												<div class="col-sm-11" style="padding: 0;">	
-														<label style="margin-top: 10px;">Video is played</label>
+														<label style="margin-top: 10px;margin-left: 35px;">Video is played</label>
 												</div>		
 												</div>
 											</div>
