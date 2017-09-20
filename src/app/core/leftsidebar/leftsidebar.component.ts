@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { RoleName } from '../../core/models/role-name';
 @Component({
   selector: 'app-leftsidebar',
   templateUrl: './leftsidebar.component.html',
@@ -10,7 +11,15 @@ export class LeftsidebarComponent implements OnInit {
 
     location: Location;
     baseRoute: string;
-    constructor(location: Location) {
+    isCampaign:boolean = false;
+    isContact:boolean = false;
+    isEmailTemplate:boolean = false;
+    isStats:boolean = false;
+    isVideo:boolean = false;
+    isTeamMember:boolean = false;
+    roleName:RoleName=new RoleName();
+
+    constructor(location: Location,private authService:AuthenticationService) {
         this.location = location;
         let url = this.location.path();
         if( url.indexOf('dashboard') >= 0)
@@ -28,9 +37,28 @@ export class LeftsidebarComponent implements OnInit {
         else if( url.indexOf('upgrade') >= 0)
             this.baseRoute = "upgrade";
         
-        console.log(url);
-        console.log(this.baseRoute);
+        let roles = this.authService.getRoles();
+        if(roles.indexOf(this.roleName.campaignRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+            this.isCampaign = true;
+        }
+        if(roles.indexOf(this.roleName.contactsRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+            this.isContact = true;
+        }
+        if(roles.indexOf(this.roleName.emailTemplateRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+           this.isEmailTemplate = true;
+       }
+        if(roles.indexOf(this.roleName.statsRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+            this.isStats = true;
+        }
+        if(roles.indexOf(this.roleName.videRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+            this.isVideo = true;
+        }
+        if(roles.indexOf(this.roleName.orgAdminRole)>-1){
+            this.isTeamMember = true;
+        }
+        
     }
+    
 
   ngOnInit() {
   }

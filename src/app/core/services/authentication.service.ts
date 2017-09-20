@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { User } from '../models/user';
+import { Role } from '../models/role';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
 
@@ -26,7 +27,7 @@ export class AuthenticationService {
     constructor( private http: Http, private router: Router, private utilService: UtilService ) {
         this.APP_URL = 'https://xtremand.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
-      //  this.REST_URL = "http://localhost:8080/xtremand-rest/";
+       // this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = 'https://aravindu.com/vod/';
     }
 
@@ -72,7 +73,8 @@ export class AuthenticationService {
                         'userId': res.json().id,
                         'accessToken': this.map.access_token,
                         'refreshToken': this.map.refresh_token,
-                        'expiresIn': this.map.expires_in
+                        'expiresIn': this.map.expires_in,
+                        'roles':res.json().roles
                     };
                     localStorage.setItem( 'currentUser', JSON.stringify( userToken ) );
                     this.access_token = this.map.access_token;
@@ -104,13 +106,28 @@ export class AuthenticationService {
         let emailId;
         if ( !this.user.emailId ) {
             let currentUser = localStorage.getItem( 'currentUser' );
-            emailId = JSON.parse( currentUser )['emailId'];
+            emailId = JSON.parse( currentUser )['userName'];
         } else {
             emailId = this.user.emailId;
         }
         return emailId;
     }
 
+   
+    
+    getRoles():any{
+       let roleNames:string[] = [];
+        if ( this.user.roles.length==0 ) {
+            let currentUser = localStorage.getItem( 'currentUser' );
+            console.log(JSON.parse( currentUser ));
+            let roles = JSON.parse( currentUser )['roles'];
+            roleNames = roles.map(function(a) {return a.roleName;});
+        } else {
+            roleNames = this.user.roles.map(function(a) {return a.roleName;});;
+        }
+        return roleNames;
+    }
+    
     logout(): void {
         console.log( 'logout()' );
         // clear token remove user from local storage to log user out

@@ -24,6 +24,7 @@ export class AddTeamMembersComponent implements OnInit {
     existingEmailId:boolean  = false;
     emptyRolesLength:number;
     existingEmailIds:string[]=[];
+    orgAdminsEmailIds:string[]=[];
     isOrgAdmin:boolean = false;
     successMessage:string = "";
     /**********Pagination&Loading***********/
@@ -46,6 +47,7 @@ export class AddTeamMembersComponent implements OnInit {
             public authenticationService:AuthenticationService,private pagerService:PagerService) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
+        
     }
     /**********On Init()**********/
     ngOnInit() {
@@ -53,7 +55,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.logger.debug( "Add Team Component ngOnInit() Loaded" );
             this.listTeamMembers();
             this.listEmailIds();
-            
+            this.listAllOrgAdminsEmailIds();
         }
         catch ( error ) {
             this.showUIError(error);
@@ -95,6 +97,19 @@ export class AddTeamMembersComponent implements OnInit {
         );
     }
     
+    listAllOrgAdminsEmailIds(){
+        this.teamMemberService.listAllOrgAdminsEmailIds()
+        .subscribe(
+            data => {
+                this.orgAdminsEmailIds = data;
+                console.log(this.orgAdminsEmailIds);
+            },
+            error => {
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished listAllOrgAdminsEmailIds()")
+        );
+    }
     
     save(){
         this.referenceService.goToTop();

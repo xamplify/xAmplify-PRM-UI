@@ -46,6 +46,12 @@ export class TeamMemberService{
             .catch(this.handleError);
     }
     
+    listAllOrgAdminsEmailIds() {
+        return this.http.get(this.URL + "admin/listAllOrgAdminEmailIds?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     
     delete(teamMember:TeamMember) {
         return this.http.post(this.URL + "admin/deleteTeamMember?access_token=" + this.authenticationService.access_token,teamMember)

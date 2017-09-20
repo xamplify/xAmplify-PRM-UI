@@ -44,7 +44,7 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li style="margin-top: 10px;margin-right: 50px;/* color: #ffffff; *//* background-color: #00a6e8; */">
+					<li *ngIf="hasVideoRole" style="margin-top: 10px;margin-right: 50px;/* color: #ffffff; *//* background-color: #00a6e8; */">
 					<a class="btn btn-warning2" routerLink="/home/videos" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Upload a Video
 					<i class="fa fa-upload" style="font-size:20px;" data-toggle="tooltip"></i>
 					</a>

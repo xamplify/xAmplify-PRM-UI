@@ -7,7 +7,8 @@ import { User } from '../models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Logger } from "angular2-logger/core";
-import { UtilService } from '../../core/services/util.service'
+import { UtilService } from '../../core/services/util.service';
+import { RoleName } from '../../core/models/role-name';
 declare var swal,$: any;
 @Component({
   selector: 'app-topnavbar',
@@ -23,6 +24,8 @@ export class TopnavbarComponent implements OnInit {
     campaignEmailNotificationCount:number = 0;
     campaignVideoWatchedNotifications:any;
     campaignVideoWatchedNotificationCount:number = 0;
+    hasVideoRole:boolean = false;
+    roleName:RoleName=new RoleName();
     @Input() model={ 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     constructor( public router: Router,public userService:UserService, public twitterService: TwitterService,public utilService: UtilService,
             public socialService: SocialService,public authenticationService:AuthenticationService,public refService:ReferenceService,public logger:Logger) {
@@ -54,6 +57,10 @@ export class TopnavbarComponent implements OnInit {
                     error => {this.logger.error(this.refService.errorPrepender+" Constructor():"+error)},
                     () => console.log("Finished")
                 );
+            }
+            let roles = this.authenticationService.getRoles();
+            if(roles.indexOf(this.roleName.videRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1 || roles.indexOf(this.roleName.allRole)>-1){
+                this.hasVideoRole = true;
             }
     }
    

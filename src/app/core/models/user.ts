@@ -1,3 +1,4 @@
+import { Role } from './role';
 export class User {
     username: string;
     password: string;
@@ -21,4 +22,5 @@ export class User {
     userListIds: number[];
     alias: string;
     userDefaultPage: string;
+    roles:Array<Role> = new Array<Role>();
 }
