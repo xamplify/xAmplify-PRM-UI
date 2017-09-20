@@ -118,7 +118,7 @@ rotate
 
 									<div class="page-bar">
 										<ul class="page-breadcrumb">
-											<li><i style="font-size: 16px;">List of Contacts</i></li>
+											<li style="font-size: 16px;color:#888888">List of Contacts</li>
 
 										</ul>
 										<div class="page-toolbar">
@@ -287,14 +287,14 @@ rotate
 											(click)="editContactList(contactList.id)" title="Edit List"
 											data-rel="fancybox-button"> <i
 											class="fa fa-pencil-square-o"></i>
-										</a> <a class="mix-preview6" (click)="showAlert(contactList.id)"
+										</a> <a class="mix-preview6"  *ngIf = "hasContactRole" (click)="showAlert(contactList.id)"
 											title="Delete List" data-rel="fancybox-button"
 											lang="{{contactList.id}}"> <i class="fa fa-trash"></i>
 										</a>
 									</div>
 									<div style="top: 38%; position: relative;"
 										*ngIf="contactList.synchronisedList == true">
-										<a class="mix-preview2" title="sychronizeContactList"
+										<a class="mix-preview2" title="sychronizeContactList"  *ngIf = "hasContactRole"
 											(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 											data-rel="fancybox-button" style="left: 38%;"> <i
 											class="fa fa-refresh" aria-hidden="true"></i>
@@ -365,8 +365,8 @@ rotate
 					<div class="tab-content">
 						<!-- BEGIN PAGE HEADER-->
 						<div class="page-bar" style="margin-bottom: 6px">
-							<h4>
-								<span class="capitalize">{{contactsByType.selectedCategory}}
+							<h4 class="btn-group pull-left">
+								<span class="capitalize" style="color:#888888">{{contactsByType.selectedCategory}}
 									contacts</span>
 							</h4>
 							<div class="page-toolbar">
@@ -399,7 +399,7 @@ rotate
 						<div class="tab-pane active"></div>
 						<div class="row">
 							<form #f="ngForm" class="form-inline"
-								*ngIf="contactsByType.selectedCategory == 'all'">
+								*ngIf="contactsByType.selectedCategory == 'all' && hasContactRole">
 								<div class="contact-list-form">
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
@@ -479,7 +479,7 @@ rotate
 														</select>
 													</div>
 													<div class="btn-group pull-right"
-														*ngIf="contactsByType.selectedCategory == 'invalid'">
+														*ngIf="contactsByType.selectedCategory == 'invalid' && hasContactRole">
 														<button class="btn dropdown-toggle" data-toggle="dropdown">
 															Tools <i class="fa fa-angle-down"></i>
 														</button>

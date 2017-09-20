@@ -33,7 +33,7 @@ export class ManageContactsComponent implements OnInit {
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
-    
+    hasContactRole:boolean = false;
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
     paginationAllData = [];
@@ -161,6 +161,9 @@ export class ManageContactsComponent implements OnInit {
             this.logger.info( " delete Success Message in manage contact pape" + this.show );
         }
         this.noSaveButtonDisable = true;
+        
+        this.hasContactRole = this.referenceService.hasRole(this.referenceService.roleName.contactsRole);
+        console.log("ContactRole"+this.hasContactRole);
     }
     
     contactListNameLength(title: string) {
@@ -863,6 +866,7 @@ export class ManageContactsComponent implements OnInit {
     
     navigateToManageContacts(){
         this.contactsByType.pagination = new Pagination();
+        this.searchKey = "";
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.showListOfContactList = true;
         this.contactsByType.selectedCategory = null;
