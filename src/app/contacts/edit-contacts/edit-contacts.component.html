@@ -4,6 +4,37 @@ a.disabled {
 	pointer-events: none;
 	cursor: not-allowed;
 }
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.alert-dismissible .close {
+	top: 5px;
+	right: 0;
+}
+
+.alert-success, .alert-danger, .alert-warning {
+	color: #ffffff;
+	border-radius: 0;
+	padding: 3px 10px;
+}
+
+.alert-success {
+	background-color: #77bf81;
+}
+
+.alert-danger {
+	background-color: #ec6262;
+}
+
+.alert-warning {
+	background-color: #f1d43b;
+}
+
+.alert-success, .alert-danger, .alert-warning>h5 {
+	font-size: 14px;
+}
 </style>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
@@ -144,26 +175,26 @@ a.disabled {
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="table-toolbar">
+					<div class="table-toolbar" *ngIf="hasContactRole">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="btn-group">
-									<button id="add_contact" class="btn green" (click)="addRow()">
+									<button id="add_contact" class="btn green" (click)="addContactsOption(AddContactsOption.ADDCONTACT);" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
 										Add a Contact <i class="fa fa-plus"></i>
 									</button>
 								</div>
 								<div class="btn-group">
-									<button id="copyFrom_clipboard" class="btn green"
-										(click)="copyFromClipboard()">
+									<button id="copyFrom_clipboard" class="btn green" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2"
+										(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
 										Copy From ClipBoard <i class="fa fa-plus"></i>
 									</button>
 								</div>
 								<div class="btn-group">
-									<button class="fileUpload btn btn-primary" id="upload_csv"
+									<button class="fileUpload btn btn-primary" id="upload_csv" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1"
 										style="background-color: #26a69a">
-										Upload a .CSV <i class="fa fa-plus"></i> <input type="file"
-											ng2FileSelect class="upload" [uploader]="uploader"
-											(change)="fileChange(input)" accept=".csv" #input />
+										Upload a .CSV <i class="fa fa-plus"></i> 
+										<input type="file" ng2FileSelect class="upload" [uploader]="uploader"
+											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1" />
 									</button>
 								</div>
 							</div>
@@ -193,6 +224,7 @@ a.disabled {
 							</div>
 						</div>
 					</div>
+					<div class="col-xs-12">
 					<div class="btn-group pull-left" *ngIf="noOfContactsDropdown">
 						<select class="form-control" [(ngModel)]="sortOptionForPagination"
 							(ngModelChange)="onChangeAllContactUsers($event)">
@@ -201,6 +233,7 @@ a.disabled {
 							<option [ngValue]="sort">{{sort.value}}</option>
 							</ng-container>
 						</select> <br>
+					</div>
 					</div>
 					<div style="margin-bottom: 0px; padding-left: 1cm">
 						<table class="table" id="uploadCsvUsingFile">
@@ -244,22 +277,22 @@ a.disabled {
 							</b>
 						</div>
 					</div>
-					<div *ngIf="successMessage" id="saveContactsMessage"
-						class="col-md-6"
-						class="col-md-9 alert alert-success alert-dismissable"
-						style="width: 100%">
-						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>Success!</strong> Contact list updated successfully.
+				<div *ngIf="responseType != null">
+					<div class="alert alert-dismissible" role="alert"
+						[ngClass]="{'alert-success': responseType == 'SUCCESS',
+  									'alert-danger': responseType == 'ERROR'}">
+						<button type="button" class="close" data-dismiss="alert"
+							aria-label="Close" (click)="responseType = null">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="flex" style="padding-top: 10px;">
+							<i class="fa"
+								[ngClass]="{'fa-check': responseType == 'SUCCESS',
+ 								 'fa-exclamation': responseType == 'ERROR'}"
+								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{responseMessage}}</span>
+						</h4>
 					</div>
-					<div *ngIf="deleteSucessMessage" id="showDeleteMessage"
-						class="col-md-6"
-						class="col-md-9 alert alert-success alert-dismissable"
-						style="width: 100%">
-						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>Success!</strong>Contact list Users has been Deleted
-						successfully.
-					</div>
-
+				</div>
 					<div *ngIf="dublicateEmailId" class="col-md-6"
 						class="col-md-9 alert alert alert-danger alert-dismissable"
 						style="width: 100%">
@@ -284,7 +317,7 @@ a.disabled {
 							data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
 							email pattern Contacts found.. !!!</strong>
 					</div>
-					<div class="row" *ngIf="clickBoard">
+					<div class="row" *ngIf="selectedAddContactsOption == 1">
 						<div class="col-sm-12">
 							<h3>Copy from text -- paste below</h3>
 							<div class="col-sm-12 form-group">
@@ -336,7 +369,7 @@ a.disabled {
 											</tr>
 										</thead>
 										<tbody>
-											<tr *ngFor="let user of csvFileUsers">
+											<tr *ngFor="let user of users">
 												<td>{{user.emailId}}</td>
 												<td>{{user.firstName}}</td>
 												<td>{{user.lastName}}</td>
@@ -349,11 +382,11 @@ a.disabled {
 							<!-- END EXAMPLE TABLE PORTLET-->
 						</div>
 					</div>
+					<div class="clearfix">
 					<div class="table-responsive">
 						<form #f="ngForm" style="background-color: white">
 
-							<table class="table table-striped table-hover table-bordered"
-								id="sample_editable_1" *ngIf="contacts">
+							<table class="table table-striped table-hover table-bordered" *ngIf="(contacts?.length > 0) && isShowUsers">
 								<thead>
 									<tr>
 										<!-- <th><input type="checkbox" [checked]="isAvailable"
@@ -366,7 +399,7 @@ a.disabled {
 										<th>EMAILID</th>
 										<th>FIRSTNAME</th>
 										<th>LASTNAME</th>
-										<th>Delete</th>
+										<th *ngIf="hasContactRole">DELETE</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -386,10 +419,11 @@ a.disabled {
 										<td>{{contact.firstName}}</td>
 										<td class="center">{{contact.lastName}}</td>
 										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-										<td><a class="delete" (click)="showAlert1(contact.id)">
+										<td *ngIf="hasContactRole"><a class="delete" (click)="showAlert1(contact.id)">
 												Delete </a></td>
 
 									</tr>
+									<ng-container *ngIf="selectedAddContactsOption == 0">
 									<tr *ngFor="let newContact of users; let i = index"
 										class="new_row">
 										<td><input type="checkbox" checked="newContact.checked"></td>
@@ -416,10 +450,12 @@ a.disabled {
 										<td><a class="delete" (click)="cancelRow(i)"> Cancel
 										</a></td>
 									</tr>
+									</ng-container>
 								</tbody>
 							</table>
 
 						</form>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -509,10 +545,10 @@ a.disabled {
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box blue">
 			<div class="portlet-title">
-				<div class="caption" *ngIf="activeContactsData==true">
-					<i class="fa fa-edit"></i>Active Contacts List
+				<div class="caption">
+					<span class="capitalize">{{contactsByType.selectedCategory}} contacts List</span>
 				</div>
-				<div class="caption" *ngIf="invalidContactData==true">
+				<!-- <div class="caption" *ngIf="invalidContactData==true">
 					<i class="fa fa-edit"></i>Invalid Contacts List
 				</div>
 				<div class="caption" *ngIf="unsubscribedContactsData==true">
@@ -520,13 +556,13 @@ a.disabled {
 				</div>
 				<div class="caption" *ngIf="nonActiveContactsData==true">
 					<i class="fa fa-edit"></i>Non Active Contacts List
-				</div>
+				</div> -->
 			</div>
 			<div class="portlet-body">
 				<div class="table-toolbar">
 					<div class="row">
 						<div class="col-md-12" style="align: right">
-							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid'">
+							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid' && hasContactRole">
 								<button class="btn dropdown-toggle" data-toggle="dropdown">
 									Tools <i class="fa fa-angle-down"></i>
 								</button>
