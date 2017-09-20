@@ -31,6 +31,8 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     public totalRecords :number=1;
     public searchKey :string="";
     isCampaignDeleted:boolean = false;
+    hasCampaignRole:boolean = false;
+    hasStatsRole:boolean = false;
     campaignSuccessMessage:string = "";
     isScheduledCampaignLaunched:boolean=false;
         sortByDropDown  = [
@@ -68,6 +70,8 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Launched Successfully";
         }
+        this.hasCampaignRole = this.refService.hasRole(this.refService.roleName.campaignRole);
+        this.hasStatsRole = this.refService.hasRole(this.refService.roleName.statsRole);
        
     }
     showMessageOnTop(){

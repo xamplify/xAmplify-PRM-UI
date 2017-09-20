@@ -12,14 +12,13 @@ import { EmailTemplateType } from '../../email-template/models/email-template-ty
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Logger } from 'angular2-logger/core';
-import { RoleName } from '../../core/models/role-name';
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader,RoleName]
+    providers: [Pagination,HttpRequestLoader]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
@@ -68,7 +67,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
-        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger,private roleName:RoleName) {
+        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
         if(refService.isCreated){
            this.message = "Template Created Successfully";
            this.showMessageOnTop();
@@ -76,11 +75,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.message = "Template Updated Successfully";
             this.showMessageOnTop();
         }
-        let roles = this.authenticationService.getRoles();
-        if(roles.indexOf(roleName.emailTemplateRole)>-1 || roles.indexOf(roleName.allRole)>-1 || roles.indexOf(roleName.orgAdminRole)>-1){
-            this.hasEmailTemplateRole = true;
-        }
-        
+        this.hasEmailTemplateRole = this.refService.hasRole(this.refService.roleName.emailTemplateRole);
     }
     showMessageOnTop(){
         $(window).scrollTop(0);

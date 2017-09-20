@@ -11,6 +11,7 @@ import { Logger } from 'angular2-logger/core';
 import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { RoleName } from '../../core/models/role-name';
 declare var $: any;
 
 @Injectable()
@@ -35,6 +36,7 @@ export class ReferenceService {
     isEnabledCamera = false;
     cameraIsthere: boolean;
     topNavBarNotificationDetails:any= new Object();
+    roleName:RoleName = new RoleName();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'welcome';
     public URL: string = this.authenticationService.REST_URL + 'admin/';
@@ -158,5 +160,14 @@ export class ReferenceService {
     
     hideDiv(divId: string) {
         $('#' + divId).hide(600);
+    }
+    
+    hasRole(roleName:string){
+        let roles = this.authenticationService.getRoles();
+        if(roles.indexOf(roleName)>-1 || roles.indexOf(this.roleName.allRole)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
