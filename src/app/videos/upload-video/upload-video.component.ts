@@ -72,6 +72,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     public videoUrlWMC: any;
     public codecSupport = false;
     public isSelectedVideo = false;
+    deviceNotSupported = false;
     deviceInfo = null;
     browserInfo: string;
     videoDisabled = false;
@@ -419,7 +420,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     cameraChange() {
         if (!this.refService.cameraIsthere) {
-           swal('Oops...',
+            this.deviceNotSupported = true;
+            swal('Oops...',
            'No permission to access the camera, please enable the camera and refresh the page once you enable it!', 
            'error');
         }
@@ -818,6 +820,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
       //  swal.close();
         $('r-video').remove();
+        if (this.deviceNotSupported) { swal.close(); }
         console.log('Deinit - Destroyed Component');
         if (this.camera === true) {
                $('#myModal').modal('hide');

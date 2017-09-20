@@ -79,6 +79,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     public fullScreenMode = false;
     public seekStart = null;
     public seekStart360 = null;
+    uploadedDate: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public logger: Logger, public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService) {
@@ -98,7 +99,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         return this.http.get(this.shareUrl)
             .map(this.extractData)
             .catch(this.handleError)
-            .subscribe((result: any) => { }, (error: any) => { this.xtremandLogger.errorPage(error); });
+            .subscribe((result: any) => { },
+            (error: any) => {
+               // this.errorPage = true;
+                this.xtremandLogger.error(error); 
+            });
     }
     getVideo(alias: string, viewby: string) {
         this.videoFileService.getVideo(alias, viewby)
@@ -112,6 +117,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.imgURL = this.embedVideoFile.gifImagePath;
                 this.title = this.embedVideoFile.title;
                 this.description = this.embedVideoFile.description;
+                this.uploadedDate = this.embedVideoFile.uploadedDate;
                 this.upperTextValue = this.embedVideoFile.upperText;
                 this.lowerTextValue = this.embedVideoFile.lowerText;
                 if (this.embedVideoFile.startOfVideo === true) {
@@ -129,9 +135,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 } else { this.overLayValue = 'removeCallAction'; }
 
                 if (this.embedVideoFile.is360video === true) {
-                    this.play360Video();
-                } else {
+                    try {
+                      this.play360Video();
+                     } catch (err) { this.router.navigate(['/undefined']); }
+                 } else {
+                   try {
                     this.playNormalVideo();
+                   } catch(err) { this.router.navigate(['/undefined']); }
                 }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);
@@ -145,7 +155,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.imgURL = this.embedVideoFile.gifImagePath;
                 console.log(this.shareUrl);
                 this.shareMetaTags();
-            }, (error: any) => { this.xtremandLogger.errorPage(error); });
+            }, (error: any) => {
+                this.xtremandLogger.error(error); });
     }
     ngOnInit() {
         //  this.setConfirmUnload(true);
@@ -712,7 +723,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 console.log(error);
-                this.xtremandLogger.errorPage(error);
+              //  this.errorPage = true;
+                this.xtremandLogger.error(error);
             });
     }
     createSessionId() {
@@ -749,7 +761,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             .subscribe((result: any) => {
                 this.logger.info('Save user Form call to acton is successfull' + result);
             },
-            (error: any) => { this.xtremandLogger.errorPage(error); });
+            (error: any) => {
+              //  this.errorPage = true;
+                this.xtremandLogger.error(error); });
     }
     sharedSuccess() {
         this.xtremandLog.actionId = 12;

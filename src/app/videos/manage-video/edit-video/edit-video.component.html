@@ -17,7 +17,7 @@
 	.isPlaySubmit{ padding:15px 58px !important;border-radius: 0px;}
 	.colorImg {  box-shadow: 2px 6px 6px #000; opacity: 1.0; filter: alpha(opacity=100); /* For IE8 and earlier */ }
 	.colorShade { opacity: 0.3; filter: alpha(opacity=50); /* For IE8 and earlier */ }
-	.sizeImg { height: 71px; width:98px ; }
+	.sizeImg { height: 71px; width:98px ; cursor: pointer; }
      img:hover {  opacity: 1.0;  filter: alpha(opacity=100); /* For IE8 and earlier */  } 
      #edit_video_player {width:auto;}
 	 #newPlayerVideo{width:auto;}
@@ -497,7 +497,7 @@
 									    	<label > start Of the video</label>
 											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
 												[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
-												[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+												[switch-size]="callActionSwitch.bsize" [switch-animate]="callActionSwitch.animate"
 												[(ngModel)]="startCalltoAction" [ngModelOptions]="{standalone: true}"
 												(onChangeState) = "startCallToactionOverlay($event.currentValue)">
 											</bSwitch>
@@ -509,7 +509,7 @@
 											<label > end Of the video</label>
 											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue"
 												[switch-on-color]="callActionSwitch.onColorBswitch" [switch-off-color]="callActionSwitch.offColorBswitch"
-												[switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
+												[switch-size]="callActionSwitch.bsize" [switch-animate]="callActionSwitch.animate"
 												[(ngModel)]="endCalltoAction" [ngModelOptions]="{standalone: true}"
 												(onChangeState) = "endCallToactionOverlay($event.currentValue)">
 											</bSwitch>

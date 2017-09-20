@@ -4,6 +4,7 @@ export class CallActionSwitch {
      onColorBswitch = 'success';
      offColorBswitch = 'warning';
      size = 'small';
+     bsize = 'mini';
      animate = true;
      onBlueColorSwitch = 'blue';
      onGrayColorSwitch = 'gray';

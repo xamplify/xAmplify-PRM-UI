@@ -60,7 +60,7 @@
 				  <source [src]=videoUrl type="video/mp4" />
 	       </video>
 	   </div>-->
-		<div class="col-md-6" style="padding:0">
+		<div  class="col-md-6" style="padding:0">
 			<div>
 				<div id="newPlayerVideo"></div>
 			</div>
@@ -100,12 +100,12 @@
 			</div>
 
 			<div class="col-xs-12" style="padding:0">
-				<h3 style="word-break: break-all;color:#777">{{embedVideoFile.title}}</h3>
+				<h3 style="word-break: break-all;color:#777">{{title}}</h3>
 			</div>
 
 			<div class="col-xs-12" style="padding:0">
-				<strong>Uploaded on :{{embedVideoFile.uploadedDate}}</strong>
-				<p align="justify" style="word-break: break-all;"> {{embedVideoFile.description}}</p>
+				<strong>Uploaded on :{{uploadedDate}}</strong>
+				<p align="justify" style="word-break: break-all;"> {{description}}</p>
 			</div>
 			<div class="col-xs-12" style="padding:0">
 				<share-buttons (popUpClosed)="sharedSuccess()" [reddit]="false" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
