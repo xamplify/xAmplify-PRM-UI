@@ -7,7 +7,6 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLog } from '../models/xtremand-log';
-// import { ActionLog } from '../models/action';
 import { User } from '../../core/models/user';
 
 @Injectable()
@@ -18,7 +17,6 @@ export class VideoFileService {
     public showSave: boolean;
     public showUpadte: boolean;
     public pagination: Pagination;
-    // public actionLog: ActionLog;
     public Xtremandlog: XtremandLog;
     public viewBytemp: string;
     public logEnded: number;
@@ -44,7 +42,7 @@ export class VideoFileService {
     }
     saveRecordedVideo(formData: any) {
         const url = this.URL + 'saveRecordedVideo?&userId=' + this.authenticationService.user.id +
-        '&access_token=' + this.authenticationService.access_token;
+            '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, formData)
             .map(this.extractData)
             .catch(this.handleError);
@@ -129,15 +127,15 @@ export class VideoFileService {
                 .map(this.extractData)
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
-    } 
+    }
     showCampaignVideo(typeValue: string, emailLog: any) {
         try {
             const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue;
             return this.http.post(url, emailLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
-        } catch (error) {  console.log(error); }
- }
+        } catch (error) { console.log(error); }
+    }
     logEmbedVideoActions(xtremandLog: XtremandLog) {
         xtremandLog.campaignId = 0;
         xtremandLog.userId = 0;
@@ -191,7 +189,7 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleErrorLogAction);
     }
-    loadCampaignVideos(pagination: Pagination, categoryId: number){
+    loadCampaignVideos(pagination: Pagination, categoryId: number) {
         console.log(pagination);
         const url = this.URL + 'listVideosNew/' + categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
@@ -213,7 +211,7 @@ export class VideoFileService {
     handleError(error: any) {
         const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-            return Observable.throw(error);
+        return Observable.throw(error);
     }
     handleErrorDelete(error: any) {
         const errMsg = (error.message) ? error.message :

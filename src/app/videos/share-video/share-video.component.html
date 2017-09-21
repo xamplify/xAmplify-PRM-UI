@@ -2,6 +2,7 @@
 	.paddingCss {
 		padding: 1em;
 	}
+
 	.upperText {
 		font-size: 17px;
 		color: white;
@@ -12,6 +13,7 @@
 		position: relative;
 		top: -13px;
 	}
+
 	.lowerText {
 		color: white;
 		word-break: break-all;
@@ -46,6 +48,7 @@
 	.is360video {
 		z-index: 900;
 	}
+
 	.bottomCss {
 		bottom: -183px;
 	}
@@ -53,14 +56,7 @@
 
 <div class="portlet light" style="padding:0px 5px 690px 17px">
 	<div class="portlet-body">
-		<!--<div *ngIf="is360Value==false">
-		  <video id="embed_video_player" class="video-js vjs-default-skin"
-				  controls  width="542" height="310" poster="{{posterImagePath}}"
-				  data-setup='{"example_option":true }' >
-				  <source [src]=videoUrl type="video/mp4" />
-	       </video>
-	   </div>-->
-		<div  class="col-md-6" style="padding:0">
+		<div class="col-md-6" style="padding:0">
 			<div>
 				<div id="newPlayerVideo"></div>
 			</div>
@@ -68,7 +64,6 @@
 			<div id="overlay-modal" class="video-js overlay is360video" style="height: 318px; width: -webkit-fill-available;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
-						<!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
 						<div class="flex" *ngIf="isFistNameChecked==true">
 							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
@@ -106,6 +101,9 @@
 			<div class="col-xs-12" style="padding:0">
 				<strong>Uploaded on :{{uploadedDate}}</strong>
 				<p align="justify" style="word-break: break-all;"> {{description}}</p>
+			</div>
+			<div class="col-xs-12" style="padding:0">
+				<p align="justify">Category : {{categoryName}}</p>
 			</div>
 			<div class="col-xs-12" style="padding:0">
 				<share-buttons (popUpClosed)="sharedSuccess()" [reddit]="false" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>

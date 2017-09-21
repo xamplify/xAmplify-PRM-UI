@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule} from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
-import { VideosRoutingModule} from './videos-routing.module';
+import { VideosRoutingModule } from './videos-routing.module';
 import { ManageVideoComponent } from './manage-video/manage-video.component';
 import { PlayStreamerComponent } from './play-streamer/play-streamer.component';
 import { UploadVideoComponent } from './upload-video/upload-video.component';
@@ -13,10 +13,10 @@ import { VideoBasedReportsComponent } from './manage-video/video-based-reports/v
 import { VideoBaseReportService } from './services/video-base-report.service';
 
 @NgModule({
-  imports: [ SharedModule, VideosRoutingModule ],
-  declarations: [ ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
-                 EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent ],
-  providers: [  VideoBaseReportService ]
+  imports: [SharedModule, VideosRoutingModule],
+  declarations: [ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
+    EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent],
+  providers: [VideoBaseReportService]
 
 })
 export class VideosModule { }

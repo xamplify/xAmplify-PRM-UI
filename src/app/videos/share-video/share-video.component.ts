@@ -80,6 +80,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     public seekStart = null;
     public seekStart360 = null;
     uploadedDate: any;
+    categoryName: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public logger: Logger, public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService) {
@@ -101,20 +102,20 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             .catch(this.handleError)
             .subscribe((result: any) => { },
             (error: any) => {
-               // this.errorPage = true;
-                this.xtremandLogger.error(error); 
+                // this.errorPage = true;
+                this.xtremandLogger.error(error);
             });
     }
     getVideo(alias: string, viewby: string) {
         this.videoFileService.getVideo(alias, viewby)
             .subscribe(
             (result: any) => {
-                let message : any = '';
+                let message: any = '';
                 this.embedVideoFile = result;
                 console.log(result);
-                if (result.message !== undefined && result.message =="NO MOBINARS FOUND FOR SPECIFIED ID") {
+                if (result.message !== undefined && result.message == "NO MOBINARS FOUND FOR SPECIFIED ID") {
                     message = "NO MOBINARS FOUND FOR SPECIFIED ID";
-                  //  this.router.navigate(['/undefined']);
+                    //  this.router.navigate(['/undefined']);
                 }
                 this.xtremandLogDefaultActions();
                 this.posterImagePath = this.embedVideoFile.imagePath;
@@ -123,6 +124,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.title = this.embedVideoFile.title;
                 this.description = this.embedVideoFile.description;
                 this.uploadedDate = this.embedVideoFile.uploadedDate;
+                this.categoryName = this.embedVideoFile.category.name;
                 this.upperTextValue = this.embedVideoFile.upperText;
                 this.lowerTextValue = this.embedVideoFile.lowerText;
                 if (this.embedVideoFile.startOfVideo === true) {
@@ -140,18 +142,18 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 } else { this.overLayValue = 'removeCallAction'; }
 
                 if (message === '') {
-                if (this.embedVideoFile.is360video === true) {
-                    try {
-                      this.play360Video();
-                     } catch (err) {  this.router.navigate(['/embed-video/'+this.routerType+'/' +this.routerAlias+ '/']); }
-                 } else {
-                   try {
-                    this.playNormalVideo();
-                   } catch (err) { this.router.navigate(['/embed-video/'+this.routerType+'/' +this.routerAlias+ '/']); }
+                    if (this.embedVideoFile.is360video === true) {
+                        try {
+                            this.play360Video();
+                        } catch (err) { this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); }
+                    } else {
+                        try {
+                            this.playNormalVideo();
+                        } catch (err) { this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); }
+                    }
+                } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID") {
+                    this.router.navigate(['/No-Videos-Found-For-Specified-Embed-Url']);
                 }
-               } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID"){
-                   this.router.navigate(['/No-Videos-Found-For-Specified-Embed-Url']);
-               }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);
                 if (this.embedVideoFile.enableVideoController === false) {
@@ -165,7 +167,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 console.log(this.shareUrl);
                 this.shareMetaTags();
             }, (error: any) => {
-                this.xtremandLogger.error(error); });
+                this.xtremandLogger.error(error);
+            });
     }
     ngOnInit() {
         //  this.setConfirmUnload(true);
@@ -732,7 +735,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 console.log(error);
-              //  this.errorPage = true;
+                //  this.errorPage = true;
                 this.xtremandLogger.error(error);
             });
     }
@@ -771,8 +774,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.logger.info('Save user Form call to acton is successfull' + result);
             },
             (error: any) => {
-              //  this.errorPage = true;
-                this.xtremandLogger.error(error); });
+                //  this.errorPage = true;
+                this.xtremandLogger.error(error);
+            });
     }
     sharedSuccess() {
         this.xtremandLog.actionId = 12;

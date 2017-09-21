@@ -2,18 +2,17 @@ import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, HostListener, 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { HashLocationStrategy, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
-import { Logger } from 'angular2-logger/core';
 import { XtremandLog } from '../models/xtremand-log';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
 import { UtilService } from '../../core/services/util.service';
+declare var $, videojs: any;
+
 enum LogAction {
     playVideo = 1,
     pauseVideo = 2,
@@ -60,10 +59,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     public seekStart = null;
     public seekStart360 = null;
     uploadedDate: any;
+    categoryName: any;
     LogAction: typeof LogAction = LogAction;
     public emailLog: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
-        public _logger: Logger, public http: Http, public authenticationService: AuthenticationService,
+        public http: Http, public authenticationService: AuthenticationService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService) {
         console.log('share component constructor called');
@@ -148,12 +148,13 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.title = this.campaignVideoFile.title;
                         this.description = this.campaignVideoFile.description;
                         this.uploadedDate = this.campaignVideoFile.uploadedDate;
+                        this.categoryName = this.campaignVideoFile.category.name;
                         this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
                         console.log(this.videoLength);
                         if (this.campaignVideoFile.is360video === true) {
                             try {
-                            this.play360Video();
-                            } catch (err) {this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);}
+                                this.play360Video();
+                            } catch (err) { this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']); }
                         } else {
                             try {
                                 this.playNormalVideo();
@@ -165,9 +166,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
                         this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
-                        // this.router.navigate(['/undefined']); // need to change for the particular 500 eror
                     }
-                );
+                    );
             },
             error => console.log(error));
     }
@@ -186,7 +186,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const y = seconds < 10 ? "0" + seconds : seconds;
         const timeValue = x + ":" + y;
         this.timeValue = timeValue;
-        //  this.videoFileService.campaignTimeValue = timeValue;
         console.log('enter int o get current time' + timeValue);
     }
     timeConversion(totalSeconds: number) {
@@ -257,16 +256,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 console.log('successfully skipped unused logged the actions' + xtremandLog.actionId);
             });
     }
-    /* videoSeekBarActions(xtremandLog: XtremandLog){
-         this.videoFileService.logSeekBarVideoActions(xtremandLog).subscribe(
-        (result: any) => {
-          console.log('successfully sider logged the actions' + xtremandLog.actionId);
-         },
-         (error: any) => {
-         console.log('successfully skipped sider logged the actions'  + xtremandLog.actionId);
-        }
-       );
-     } */
     logVideoViewsCount() {
         this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
             (result: any) => {

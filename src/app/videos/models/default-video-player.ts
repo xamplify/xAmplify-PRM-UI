@@ -1,5 +1,4 @@
 export class DefaultVideoPlayer {
-   // defaultSettings: boolean;
     playerColor: string;
     enableVideoController: boolean;
     controllerColor: string;
@@ -12,4 +11,4 @@ export class DefaultVideoPlayer {
     enableCasting: boolean;
     allowEmbed: boolean;
     is360video: boolean;
- }
+}

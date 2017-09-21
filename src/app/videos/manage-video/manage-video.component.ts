@@ -10,9 +10,8 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { VideoUtilService } from '../services/video-util.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HomeComponent } from '../../core/home/home.component';
-import { Logger } from 'angular2-logger/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var swal , QuickSidebar, Metronic, Demo, Layout, Index, $: any;
+declare var swal, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
 
 @Component({
     selector: 'app-manage-video',
@@ -78,7 +77,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     public videoSort: any = this.sortVideos[0];
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
-        public pagerService: PagerService, public logger: Logger, public pagination: Pagination,
+        public pagerService: PagerService, public pagination: Pagination,
         public router: Router, public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.showMessage = false;
@@ -94,7 +93,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
-        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+        $('html,body').animate({ scrollTop: 0 }, 'slow');
         Metronic.init();
         Layout.init();
         Demo.init();
@@ -107,11 +106,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
         console.log(this.referenceService.videoTitles);
         console.log('MangeVideosComponent ngOnInit()');
-        this.logger.log('This is a priority level 5 log message...');
+        this.xtremandLogger.log('This is a priority level 5 log message...');
         try {
             if (this.videoFileService.actionValue === 'Save') {
-            	this.referenceService.loading(this.httpRequestLoader, true);
-            	console.log('MangeVideosComponent : ngonit ');
+                this.referenceService.loading(this.httpRequestLoader, true);
+                console.log('MangeVideosComponent : ngonit ');
                 this.editVideo = true;
                 this.manageVideos = false;
                 this.playVideo = false;
@@ -135,7 +134,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.loadVideos(this.pagination);
             console.log('manage videos ngOnInit completed');
         } catch (error) {
-            this.logger.error('erro in ng oninit :' + error);
+            this.xtremandLogger.error('erro in ng oninit :' + error);
         }
     }
     loadVideosCount(userId: number) {
@@ -152,9 +151,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:')
-            );
+                );
         } catch (error) {
-            this.logger.error('erro in load videos :' + error);
+            this.xtremandLogger.error('erro in load videos :' + error);
         }
     }
     loadVideos(pagination: Pagination) {
@@ -202,9 +201,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:' + this.videos)
-            );
+                );
         } catch (error) {
-            this.logger.error('erro in load videos :' + error);
+            this.xtremandLogger.error('erro in load videos :' + error);
         }
     };
     titleCheckLength(title: string) {
@@ -228,27 +227,16 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
-    searchDisableValue() {
-        console.log(this.searchKey);
-        if (this.searchKey !== null || this.searchKey.length !== 0) {
-            this.searchDisable = false;
-        }
-        if (this.searchKey.length === 0 || this.searchKey === '') {
-            this.searchDisable = true;
-        }
-    }
     searchKeyValue() {
-    	this.pagination.searchKey = this.searchKey;
+        this.pagination.searchKey = this.searchKey;
     }
     searchVideoTitelName() {
-        // if ( this.searchKey !== null && this.searchDisable === false ){
         this.showMessage = false;
         this.showUpdatevalue = false;
         console.log(this.searchKey);
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
-        // }
     }
     selectedSortByValue(event: any) {
         this.showMessage = false;
@@ -269,8 +257,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
-    	this.referenceService.loading(this.httpRequestLoader, true);
-    	console.log('show edit video method in mange videos ' + JSON.stringify(video));
+        this.referenceService.loading(this.httpRequestLoader, true);
+        console.log('show edit video method in mange videos ' + JSON.stringify(video));
         console.log(video.alias);
         this.deletedVideo = false;
         this.selectedVideoFile = video;
@@ -296,12 +284,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
                 this.xtremandLogger.errorPage(error);
-             }
+            }
             );
     }
     showPlayVideo(video: SaveVideoFile) {
-    	this.referenceService.loading(this.httpRequestLoader, true);
-    	this.videoFileService.videoViewBy = video.viewBy;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.videoFileService.videoViewBy = video.viewBy;
         console.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
@@ -322,8 +310,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showCampaignVideoReport(video: SaveVideoFile) {
-    	this.referenceService.loading(this.httpRequestLoader, true);
-    	console.log('ManageVideoComponent campaign report:');
+        this.referenceService.loading(this.httpRequestLoader, true);
+        console.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((campaignVideoFile: SaveVideoFile) => {
                 console.log(video);
@@ -337,7 +325,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = false;
             },
             (error: any) => {
-                this.logger.error(this.errorPrepender + ' show video campaign videos ():' + error);
+                this.xtremandLogger.error(this.errorPrepender + ' show video campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
             });
     }
@@ -383,7 +371,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
-                    this.logger.error(this.errorPrepender + ' delete videos ():' + error);
+                    this.xtremandLogger.error(this.errorPrepender + ' delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
@@ -437,7 +425,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.editVideo = false;
         this.campaignReport = false;
         this.playVideo = false;
-        // this.videoFileService.actionValue = '';
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
         const timevalue = this;
