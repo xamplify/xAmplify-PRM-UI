@@ -59,9 +59,6 @@ export class SocialManageComponent implements OnInit {
         }
     }
 
-    cancel() {
-        this.router.navigate( [''] );
-    }
     ngOnInit() {
         try {
             let providerName = this.route.snapshot.params['social'];

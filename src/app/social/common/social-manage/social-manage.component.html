@@ -19,7 +19,7 @@
                 <div *ngIf="response === 'success'">
                 	<div class="alert alert-success rounded-0" role="alert"> 
                 		<h4><b>Success!</b> your settings have been saved successfully.</h4> 
-                		<h5><a class="btn btn btn-primary" [routerLink]="['/home/dashboard']">DASHBOARD</a></h5> 
+                		<h5><a class="btn btn btn-primary" [routerLink]="['/']">DASHBOARD</a></h5> 
                		</div>
                 </div>
                 <div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0">
@@ -37,6 +37,7 @@
 	                      <div class="col-xs-12">
 	                        <i class="fa fa-check" aria-hidden="true" *ngIf="socialConnection.active"></i>
 	                        <h5 class="caption-subject uppercase text-center">{{socialConnection.profileName}}</h5>
+	                        <h5 class="caption-subject uppercase text-center" *ngIf="socialConnection.source == 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
 	                        <i class="fa fa-social pull-right"
 	                          [ngClass]="{'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK', 
 	                          'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER'}"></i>
@@ -55,7 +56,7 @@
               <div class="col-xs-12" *ngIf="socialConnections?.length > 0">
                 <div class="pull-right">
                   <button type="button" class="btn btn-success" (click)="save()">Save</button>
-                  <a type="button" class="btn btn-default" (click)="cancel()">Cancel</a>
+                  <a type="button" class="btn btn-default" [routerLink]="['/']">Cancel</a>
                 </div>
               </div>
             </div>
