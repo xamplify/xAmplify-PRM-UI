@@ -65,27 +65,6 @@ export class DashboardComponent implements OnInit {
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
     }
-    dashboardStats() {
-        console.log('dashboardStats() : DashBoardComponent');
-        this.dashboardStates = {
-            'description': 'dashboard html file details',
-            'totalViews': 95924,
-            'uploadedVideos': 45334,
-            'totalContacts': 64362,
-            'followers': 549,
-            'leads': 89,
-            'shared': 89
-        };
-    }
-
-    getSocialMediaDetails() {
-        this.socialeMedia = {
-            'noOfTweets': '12,000',
-            'googleImpressions': '200K',
-            'facebookMentions': '34,555',
-            'linkedIn': '276'
-        };
-    }
 
     genderDemographics(userId: number) {
         this.socialService.genderDemographics(userId)
@@ -152,16 +131,6 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    googleplusSparklineData() {
-        $('#sparkline_bar_googleplus').sparkline([28, 25, 24, 26, 24, 22, 26], {
-            type: 'bar',
-            padding: '5px',
-            barWidth: '4',
-            height: '20',
-            barColor: '#dd4b39',
-            barSpacing: '3'
-        });
-    }
 
     facebookSparklineData() {
         $('.sparkline_bar_facebook').sparkline([28, 25, 24, 26, 24, 22, 26], {
@@ -173,16 +142,7 @@ export class DashboardComponent implements OnInit {
             barSpacing: '3'
         });
     }
-    linkdinSparklineData() {
-        $('#sparkline_bar_linkdin').sparkline([28, 25, 24, 26, 24, 22, 26], {
-            type: 'bar',
-            padding: '5px',
-            barWidth: '4',
-            height: '20',
-            barColor: '#007bb6',
-            barSpacing: '3'
-        });
-    }
+
     renderMap() {
         //   const countryData = this.countryWiseVideoViews;
        // const data = [["in", 1], ["us", 2]];
@@ -560,22 +520,15 @@ export class DashboardComponent implements OnInit {
             QuickSidebar.init();
             Index.init();
             Index.initDashboardDaterange();
-            Index.initCalendar();
             Index.initCharts();
             Index.initChat();
-            // Index.initMiniCharts();
             Tasks.initDashboardWidget();
 
-            this.dashboardStats();
             this.viewsSparklineData();
             this.minutesSparklineData();
             this.averageSparklineData();
-            this.getSocialMediaDetails();
 
-            // this.twitterSparklineData();
-            this.googleplusSparklineData();
             this.facebookSparklineData();
-            this.linkdinSparklineData();
             this.listSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);
