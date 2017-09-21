@@ -31,7 +31,6 @@ export class AddTeamMembersComponent implements OnInit {
     /**********Pagination&Loading***********/
     userId:number;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    public pagination:Pagination = new Pagination();
     isProcessing:boolean = false;
     /*****Form Related**************/
     formGroupClass:string = "form-group";
@@ -42,7 +41,7 @@ export class AddTeamMembersComponent implements OnInit {
     uiError:string = "";
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
-            public authenticationService:AuthenticationService,private pagerService:PagerService) {
+            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
         
@@ -51,7 +50,7 @@ export class AddTeamMembersComponent implements OnInit {
     ngOnInit() {
         try {
             this.logger.debug( "Add Team Component ngOnInit() Loaded" );
-            this.listTeamMembers();
+            this.listTeamMembers(this.pagination);
             this.listEmailIds();
             this.listAllOrgAdminsEmailIds();
         }
@@ -61,18 +60,18 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
     /************List Members*****************/
-    listTeamMembers(){
+    listTeamMembers(pagination:Pagination){
         try{
             this.referenceService.loading(this.httpRequestLoader, true);
             this.httpRequestLoader.isHorizontalCss = true;
             this.teamMemberUi = new TeamMemberUi();
             this.clearRows();
-            this.teamMemberService.list(this.pagination,this.userId)
+            this.teamMemberService.list(pagination,this.userId)
             .subscribe(
                 data => {
                     this.teamMembersList = data.teamMembers;
-                    this.pagination.totalRecords = data.totalRecords;
-                    this.pagination = this.pagerService.getPagedItems(this.pagination,this.teamMembersList);
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination,this.teamMembersList);
                     this.referenceService.loading(this.httpRequestLoader, false); 
                    
                 },
@@ -85,6 +84,12 @@ export class AddTeamMembersComponent implements OnInit {
             this.showUIError(error);
         }
        
+    }
+    
+    /**************Search TeamMembers***************/
+    searchTeamMembers(){
+    this.pagination.pageIndex =1;
+    this.listTeamMembers(this.pagination);
     }
     
     /***********List TeamMember EmailIds****************/
@@ -127,7 +132,8 @@ export class AddTeamMembersComponent implements OnInit {
                this.successMessage = "Team Member(s) Added Successfully";
                $( "#team-member-success-div" ).show();
                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
-               this.listTeamMembers();
+               this.pagination.pageIndex = 1;
+               this.listTeamMembers(this.pagination);
                this.listEmailIds();
                this.clearRows();
             },
@@ -152,7 +158,8 @@ export class AddTeamMembersComponent implements OnInit {
                this.successMessage = "Team Member(s) Updated Successfully";
                $( "#team-member-success-div" ).show();
                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 2000 );
-               this.listTeamMembers();
+               this.pagination.pageIndex = 1;
+               this.listTeamMembers(this.pagination);
                this.listEmailIds();
                this.clearRows();
             },
@@ -200,7 +207,8 @@ export class AddTeamMembersComponent implements OnInit {
                 }
                  $( "#team-member-success-div" ).show();
                 setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
-                self.listTeamMembers();
+                self.pagination.pageIndex = 1;
+                self.listTeamMembers(self.pagination);
                 self.listEmailIds();
                 self.clearRows();
             },
@@ -216,7 +224,7 @@ export class AddTeamMembersComponent implements OnInit {
     
     setPage(page: number) {
         this.pagination.pageIndex = page;
-        this.listTeamMembers();
+        this.listTeamMembers(this.pagination);
     }
     
   
@@ -396,4 +404,10 @@ export class AddTeamMembersComponent implements OnInit {
         this.logger.error( error );
     }
 
+    
+    refreshList(){
+        this.pagination.pageIndex =1;
+        this.pagination.searchKey = "";
+        this.listTeamMembers(this.pagination);
+    }
 }

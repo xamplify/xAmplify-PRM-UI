@@ -27,7 +27,7 @@ export class AuthenticationService {
     constructor( private http: Http, private router: Router, private utilService: UtilService ) {
         this.APP_URL = 'https://xtremand.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
-       //this.REST_URL = "http://localhost:8080/xtremand-rest/";
+      // this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = 'https://aravindu.com/vod/';
     }
 
@@ -101,23 +101,12 @@ export class AuthenticationService {
         return userId;
     }
     
-
-
-   
     
     getRoles():any{
        let roleNames:string[] = [];
-        if ( this.user.roles.length==0 ) {
-            let currentUser = localStorage.getItem( 'currentUser' );
-            console.log(JSON.parse( currentUser ));
-            let roles = JSON.parse( currentUser )['roles'];
-            if(roles.length>0){
-                roleNames = roles.map(function(a) {return a.roleName;});
-            }
-           
-        } else {
-            roleNames = this.user.roles.map(function(a) {return a.roleName;});;
-        }
+        let currentUser = localStorage.getItem( 'currentUser' );
+        let roles = JSON.parse( currentUser )['roles'];
+        roleNames = roles.map(function(a) {return a.roleName;});
         return roleNames;
     }
     

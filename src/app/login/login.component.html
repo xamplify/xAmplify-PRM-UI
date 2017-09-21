@@ -113,6 +113,9 @@
 		<!-- <form class="register-form" [formGroup]="myForm" novalidate (ngSubmit)="saveUser(myForm.value, myForm.valid)"> -->
 			<!-- <div class="content">
 	<div class="row"> -->
+	<div class="loader-container" *ngIf="isLoading">
+		<div class="loader"></div>
+	</div>
 		 <div  [hidden]="submitted">
 		<form class="register-form"  [formGroup]="signUpForm"  *ngIf="active"  (ngSubmit)="signUp()">
 			<h3>Sign Up</h3>

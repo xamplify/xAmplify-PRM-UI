@@ -24,10 +24,6 @@
 			<a (click)="referenceService.hideDiv('team-member-success-div')" class="close" aria-label="close">x</a>
 	  		<strong>{{successMessage}}</strong> 
 		</div>
-		<!-- <div class="alert alert-success" id="team-member-delete-success" style="display: none;">
-		<a (click)="referenceService.hideDiv('team-member-delete-success')" class="close" aria-label="close">x</a>
-	  		<strong>{{deleteMessage}}</strong> 
-		</div> -->
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
 		<div class="div-loader" *ngIf="isProcessing">
@@ -141,16 +137,24 @@
 				</div>
 			</div>
 			<!-- ---------------List Of Team Members -->
-			<div class="portlet box blue" *ngIf="pagination.totalRecords>0 && teamMemberUi.emptyTable">
+			<div class="portlet box blue">
 				<div class="portlet-title">
 					<div class="caption">Team Members List</div>
 						<div class="tools">
-							<a href="javascript:;" class="reload" (click)="listTeamMembers()"></a>
+							<a href="javascript:;" class="reload" (click)="refreshList()"></a>
 						</div>
 				</div>
 				<div class="portlet-body clearfix">
 					<div class="table-responsive">
 					<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+					<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+						<div class="portlet-input input-inline input-large">
+							<div class="input-icon right">
+								<i class="icon-magnifier" (click)="searchTeamMembers()" style="cursor: pointer;max-width: 80%"></i>
+								<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}">
+							</div>
+						</div>
+					</div>
 						<table class="table" id="list-team-member-table"  *ngIf="!httpRequestLoader.isLoading">
 							<thead>
 								<tr>
@@ -182,6 +186,7 @@
 									</th>
 								</tr>
 							</thead>
+							<ng-container *ngIf="pagination.totalRecords>0 && teamMemberUi.emptyTable">
 							<tbody>
 							<ng-container *ngFor="let teamMember of teamMembersList;let i=index">
 							<tr id="list-team-member-{{i}}">
@@ -196,6 +201,14 @@
 							</tr>
 							</ng-container>
 							</tbody>
+							</ng-container>
+							<ng-container>
+								<tr>
+								<td colspan="10">
+										<div  *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong>No Team Members Found</strong></div>
+									</td>
+								</tr>	
+							</ng-container>
 						</table>
 					</div>
 					<hr>

@@ -125,6 +125,7 @@ export class TopnavbarComponent implements OnInit {
             () => console.log("Finished")
         );
     }
+    
     markAsRead(id:number,type:string){
         this.refService.markNotificationsAsRead(id,type)
         .subscribe(
@@ -147,9 +148,9 @@ export class TopnavbarComponent implements OnInit {
        let liId = id+index;
        $('#'+liId).removeClass('unread-notification');
        $('#'+liId).addClass('read-notification');
-       if(id=="video-notification-"){
+       if(id=="video-notification-" && this.campaignVideoWatchedNotifications>0){
            this.campaignVideoWatchedNotificationCount= this.campaignVideoWatchedNotificationCount-1;
-       }else{
+       }else if(id=="email-notification-" && this.campaignEmailNotificationCount>0){
            this.campaignEmailNotificationCount = this.campaignEmailNotificationCount-1;
        }
     }

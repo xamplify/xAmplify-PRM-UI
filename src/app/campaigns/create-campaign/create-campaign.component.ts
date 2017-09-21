@@ -2,7 +2,7 @@ import { Component, OnInit,OnDestroy,ViewChild, ElementRef,HostListener} from '@
 import { ActivatedRoute,Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { validateCampaignSchedule } from '../../form-validator';
 import { VideoFileService} from '../../videos/services/video-file.service';
@@ -43,6 +43,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, fl
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
+    isLoading:boolean  = false;
     selectedRow:Number;
     categories: Category[];
     campaignVideos: Array<SaveVideoFile>;
@@ -161,7 +162,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     onClickScheduledDaysSum:number = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
-                private logger:Logger,private videoFileService:VideoFileService,
+                private logger:XtremandLogger,private videoFileService:VideoFileService,
                 private authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
@@ -172,7 +173,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
         if ( this.authenticationService.user != undefined ) {
-            this.loggedInUserId = this.authenticationService.user.id;
+            this.loggedInUserId = this.authenticationService.getUserId();
             this.campaign.userId = this.loggedInUserId;
             this.loadCampaignNames( this.loggedInUserId );
             }
@@ -1297,6 +1298,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
    
     launchCampaign(){
+        this.isLoading = true;
         var data = this.getCampaignData("");
         this.refService.campaignSuccessMessage = data.scheduleCampaign;
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -1315,7 +1317,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             },
             error => {
-                this.logger.error("error in launchCampaign()", error);
+                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished launchCampaign()")
         ); 
@@ -1392,6 +1394,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.names = [];
         this.name = "";
         this.refService.isCampaignFromVideoRouter = false;
+        this.isLoading = false;
     }
     /*************************************************************Form Errors**************************************************************************************/
     formErrors = {

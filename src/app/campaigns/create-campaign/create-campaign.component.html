@@ -1,5 +1,11 @@
 <div class="page-content">
-	<div class="page-bar">
+	<div *ngIf="isLoading">
+		<div class="div-loader">
+			<div id="process-loader"></div>
+		</div>
+	</div>
+	<div *ngIf="!isLoading">
+		<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home"></i> 
@@ -1010,4 +1016,5 @@
     				</div>
   				</div>
 			</div>
+	</div>
 </div><!-- End of Line 1 -->

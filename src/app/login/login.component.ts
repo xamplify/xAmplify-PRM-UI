@@ -9,7 +9,7 @@ import { UtilService } from '../core/services/util.service';
 import { UserService } from '../core/services/user.service';
 import {matchingPasswords,noWhiteSpaceValidator,validateCountryName} from '../form-validator';
 import { ReferenceService } from '../core/services/reference.service';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../error-pages/xtremand-logger.service';
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component({
@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
     active = true;
     userActive = false;
     passwordSuccess = false;
+    isLoading:boolean = false;
     countries = ["---Please Select Country---","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
                  
                  "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegowina","Botswana","Bouvet Island","Brazil",
@@ -66,7 +67,7 @@ export class LoginComponent implements OnInit {
                  
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User, 
-        private userService: UserService, private refService :ReferenceService, private utilService: UtilService,private logger:Logger ) {
+        private userService: UserService, private refService :ReferenceService, private utilService: UtilService,private logger:XtremandLogger ) {
         this.buildForm();
         this.validateForgotPasswordForm();
     }
@@ -175,9 +176,18 @@ export class LoginComponent implements OnInit {
         $( '.login-form' ).show();
         $( '.forget-form' ).hide();
         $( '.register-form' ).hide();
-        this.signUpForm.reset();
+      
     }
 
+    goToLogin(){
+        this.showLogin();
+        this.signUpForm.reset();
+        this.signUpForm.controls.country.setValue(this.countries[0]);
+        $('#user-created').show();
+        setTimeout( function() { $( "#user-created" ).hide( 500 );this.userActive = false; }, 5000 );
+        this.isLoading = false;
+    }
+    
     logout() {
         // reset login status
         this.authenticationService.logout();
@@ -187,6 +197,7 @@ export class LoginComponent implements OnInit {
 
 
     signUp() {
+        this.isLoading = true;
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.userService.signUp( this.signUpUser )
@@ -197,12 +208,8 @@ export class LoginComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "USER CREATED SUCCESSFULLY" ) {
-                        this.signUpForm.reset();
-                        this.signUpForm.controls.country.setValue(this.countries[0]);
                         this.userActive = true;
-                        this.showLogin();
-                        $('#user-created').show();
-                        setTimeout( function() { $( "#user-created" ).hide( 500 );this.userActive = false; }, 5000 );
+                        this.goToLogin();
                     }
                 } else {
                     this.logger.error(this.refService.errorPrepender+" signUp():"+data);
@@ -212,10 +219,12 @@ export class LoginComponent implements OnInit {
             error => {
                 if ( error == "USERNAME IS ALREADY EXISTING" ) {
                     this.formErrors['userName'] = error;
+                    this.isLoading = false;
                 } else if ( error == "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
                     this.formErrors['emailId'] = 'Email Id already exists';
+                    this.isLoading = false;
                 } else{
-                    this.logger.error(this.refService.errorPrepender+" signUp():"+error);
+                    this.logger.errorPage(error);
                 }
             },
             () => console.log( "Done" )
