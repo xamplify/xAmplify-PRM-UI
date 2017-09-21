@@ -38,7 +38,7 @@ export class XtremandLogger {
 	}
 	
 	errorPage(error: any) {
-		this.router.navigate(['/home/error-occured-page/', error.status]);
+		this.router.navigate(['/home/error/', error.status]);
 		this.error(JSON.parse(error['_body']).message);
 	}
 

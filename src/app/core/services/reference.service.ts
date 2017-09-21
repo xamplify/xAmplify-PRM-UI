@@ -83,7 +83,7 @@ export class ReferenceService {
     
     
     showErrorPage(error: any) {
-        this.router.navigate(['/home/error-occured-page/', error.status]);
+        this.router.navigate(['/home/error/', error.status]);
     }
     showError(cause: string, methodName: string, componentName: string) {
         let message = "Error In " + methodName + "() " + componentName;

@@ -38,7 +38,7 @@ export const routes: Routes = [
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
             { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
-            { path: 'error-occured-page/:errorStatusId', component: ErrorPagesComponent }
+            { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
     { path: 'userlock', component: ProfileLockComponent },
