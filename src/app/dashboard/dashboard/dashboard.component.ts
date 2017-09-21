@@ -267,8 +267,7 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
-                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"];
-               // this.dashboardReport.totalEmailGifClickedCount = data["email_gif_clicked_count"];
+                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"] + data["email_gif_clicked_count"];
             },
             error => console.log(error),
             () => console.log("emailOpenedCount completed")
@@ -279,8 +278,8 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalEmailWatchedCount = data.email_watched_count;
-                if(this.dashboardReport.totalEmailWatchedCount == undefined){
+                this.dashboardReport.totalEmailWatchedCount = data;
+                if(data.length == 0){
                     this.dashboardReport.totalEmailWatchedCount = 0;
                 }
             },

@@ -79,13 +79,13 @@ export class DashboardService {
     
     
     getEmailActionCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/emaillog-count-by-user/"+userId+ "?access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.authenticationService.REST_URL + "dashboard/emaillog-count-by-user/"+userId+ "?access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
     
     loadEmailWatchedCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "campaign/usersWatchedCount-by-user/" +userId+ "?access_token=" + this.authenticationService.access_token + "&actionId=1" )
+        return this.http.get( this.authenticationService.REST_URL + "dashboard/watched-users-count/" +userId+ "?access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
@@ -103,7 +103,7 @@ export class DashboardService {
     }
     
     loadDashboardReportsCount(userId: number){
-        return this.http.get( this.authenticationService.REST_URL + "dashboard_analytics_count?userId=" +userId+ "&access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.authenticationService.REST_URL + "dashboard/analytics_count?userId=" +userId+ "&access_token=" + this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }
