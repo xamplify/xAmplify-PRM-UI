@@ -153,18 +153,19 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (this.campaignVideoFile.is360video === true) {
                             try {
                             this.play360Video();
-                            } catch (err) {this.router.navigate(['/undefined']);}
+                            } catch (err) {this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);}
                         } else {
                             try {
                                 this.playNormalVideo();
-                            } catch (err) { this.router.navigate(['/undefined']); }
+                            } catch (err) { this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']); }
                         }
                         this.defaultVideoSettings();
                         console.log(this.videoUrl);
                     }, (error: any) => {
-                        this.xtremandLogger.error('Edit video Component : cmapaign video File method():' + error);
+                        this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
-                        this.router.navigate(['/undefined']); // need to change for the particular 500 eror
+                        this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                        // this.router.navigate(['/undefined']); // need to change for the particular 500 eror
                     }
                 );
             },

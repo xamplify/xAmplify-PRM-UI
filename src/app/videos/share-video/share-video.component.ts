@@ -108,9 +108,14 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     getVideo(alias: string, viewby: string) {
         this.videoFileService.getVideo(alias, viewby)
             .subscribe(
-            (result: SaveVideoFile) => {
+            (result: any) => {
+                let message : any = '';
                 this.embedVideoFile = result;
                 console.log(result);
+                if (result.message !== undefined && result.message =="NO MOBINARS FOUND FOR SPECIFIED ID") {
+                    message = "NO MOBINARS FOUND FOR SPECIFIED ID";
+                  //  this.router.navigate(['/undefined']);
+                }
                 this.xtremandLogDefaultActions();
                 this.posterImagePath = this.embedVideoFile.imagePath;
                 this.is360Value = this.embedVideoFile.is360video;
@@ -134,15 +139,19 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     this.videoOverlaySubmit = 'SUBMIT';
                 } else { this.overLayValue = 'removeCallAction'; }
 
+                if (message === '') {
                 if (this.embedVideoFile.is360video === true) {
                     try {
                       this.play360Video();
-                     } catch (err) {  this.router.navigate([ 'embed-video/'+this.routerType+'/' +this.routerAlias+ '/video-not-found']); }
+                     } catch (err) {  this.router.navigate(['/embed-video/'+this.routerType+'/' +this.routerAlias+ '/']); }
                  } else {
                    try {
                     this.playNormalVideo();
-                   } catch(err) { this.router.navigate([ 'embed-video/'+this.routerType+'/' +this.routerAlias+ '/video-not-found']); }
+                   } catch (err) { this.router.navigate(['/embed-video/'+this.routerType+'/' +this.routerAlias+ '/']); }
                 }
+               } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID"){
+                   this.router.navigate(['/No-Videos-Found-For-Specified-Embed-Url']);
+               }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);
                 if (this.embedVideoFile.enableVideoController === false) {
