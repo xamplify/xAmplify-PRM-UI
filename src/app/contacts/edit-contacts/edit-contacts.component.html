@@ -44,7 +44,7 @@ a.disabled {
 		<li><a (click)="refresh()"> Manage contacts</a></li>
 		<li><a (click)="backToEditContacts()"><i
 				class="fa fa-angle-right"> </i>Edit contacts</a></li>
-		<li *ngIf="! showSelectedCategoryUsers"><i
+		<li *ngIf="! showEditContactData"><i
 			class="fa fa-angle-right"> </i><span class="capitalize">{{contactsByType.selectedCategory}}
 				contacts</span></li>
 	</ul>
@@ -126,7 +126,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-										<div class="desc">Non-Active Contacts</div>
+										<div class="desc">Inactive Contacts</div>
 									</div>
 								</button>
 							</div>
@@ -165,6 +165,22 @@ a.disabled {
 			</div>
 		</div>
 	</div>
+		<div *ngIf="responseType != null">
+					<div class="alert alert-dismissible" role="alert"
+						[ngClass]="{'alert-success': responseType == 'SUCCESS',
+  									'alert-danger': responseType == 'ERROR'}">
+						<button type="button" class="close" data-dismiss="alert"
+							aria-label="Close" (click)="responseType = null">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="flex" style="padding-top: 10px;">
+							<i class="fa"
+								[ngClass]="{'fa-check': responseType == 'SUCCESS',
+ 								 'fa-exclamation': responseType == 'ERROR'}"
+								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{responseMessage}}</span>
+						</h4>
+					</div>
+				</div>
 	<div class="row">
 		<div class="col-md-12">
 			<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -277,22 +293,6 @@ a.disabled {
 							</b>
 						</div>
 					</div>
-				<div *ngIf="responseType != null">
-					<div class="alert alert-dismissible" role="alert"
-						[ngClass]="{'alert-success': responseType == 'SUCCESS',
-  									'alert-danger': responseType == 'ERROR'}">
-						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close" (click)="responseType = null">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="flex" style="padding-top: 10px;">
-							<i class="fa"
-								[ngClass]="{'fa-check': responseType == 'SUCCESS',
- 								 'fa-exclamation': responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{responseMessage}}</span>
-						</h4>
-					</div>
-				</div>
 					<div *ngIf="dublicateEmailId" class="col-md-6"
 						class="col-md-9 alert alert alert-danger alert-dismissable"
 						style="width: 100%">
@@ -305,11 +305,6 @@ a.disabled {
 						style="width: 100%">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>No Contacts found.. !!!</strong>
-					</div>
-					<div *ngIf="deleteErrorMessage" id="campaignError"
-						class="alert alert-danger alert-dismissable">
-						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<strong>Danger!</strong>{{Campaign}}
 					</div>
 					<div *ngIf="showInvalidMaills==true" class="col-md-6"
 						class="col-md-9 alert alert alert-danger alert-dismissable">
@@ -364,8 +359,6 @@ a.disabled {
 												<th>EMAIL</th>
 												<th>FIRST NAME</th>
 												<th>LAST NAME</th>
-												<!-- <th>Edit</th>
-												<th>Delete</th> -->
 											</tr>
 										</thead>
 										<tbody>
@@ -383,9 +376,9 @@ a.disabled {
 						</div>
 					</div>
 					<div class="clearfix">
+					<div class="col-xs-12">
 					<div class="table-responsive">
 						<form #f="ngForm" style="background-color: white">
-
 							<table class="table table-striped table-hover table-bordered" *ngIf="(contacts?.length > 0) && isShowUsers">
 								<thead>
 									<tr>
@@ -458,6 +451,7 @@ a.disabled {
 					</div>
 					</div>
 				</div>
+				</div>
 			</div>
 			<!-- END EXAMPLE TABLE PORTLET-->
 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
@@ -516,29 +510,18 @@ a.disabled {
 		</div>
 	</div>
 	<div class="col-md-12" style="margin-top: 15px">
-		<div *ngIf="invalidDeleteSucessMessage" id="showInvalidDeleteMessage"
-			class="alert alert-success alert-dismissable">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> Contact List has been Deleted successfully.
-		</div>
 		<div *ngIf="noContactsFound1==true" class="col-md-6"
 			class="col-md-9 alert alert-info alert-dismissable"
 			style="width: 100%">
 			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>No Contacts found.. !!!</strong>
 		</div>
-		<div *ngIf="emptyActiveContactsUsers" class="alert alert-info">
-			<strong>Info!</strong> No Active Contacts found.
-		</div>
-		<div *ngIf="emptyInvalidContactsUsers" class="alert alert-info">
-			<strong>Info!</strong> No Invalid Contacts found.
-		</div>
-		<div *ngIf="emptyUnsubscribedContactsUsers" class="alert alert-info">
-			<strong>Info!</strong> No Unsubscribed Contacts found.
-		</div>
-		<div *ngIf="emptyNonActiveContactsUsers" class="alert alert-info">
-			<strong>Info!</strong> No Non Active Contacts found.
-		</div>
+			<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteSuccessMessage">
+  				<strong>Success!</strong> your contacts hasbeen deleted successfully.
+			</div>
+			<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
+  				<strong>Danger!</strong>{{responseMessage}}
+			</div>
 	</div>
 	<div class="col-md-12" style="margin-top: 12px"
 		id="hidingListOfUsersTable">
@@ -548,15 +531,6 @@ a.disabled {
 				<div class="caption">
 					<span class="capitalize">{{contactsByType.selectedCategory}} contacts List</span>
 				</div>
-				<!-- <div class="caption" *ngIf="invalidContactData==true">
-					<i class="fa fa-edit"></i>Invalid Contacts List
-				</div>
-				<div class="caption" *ngIf="unsubscribedContactsData==true">
-					<i class="fa fa-edit"></i>Unsubscribed Contacts List
-				</div>
-				<div class="caption" *ngIf="nonActiveContactsData==true">
-					<i class="fa fa-edit"></i>Non Active Contacts List
-				</div> -->
 			</div>
 			<div class="portlet-body">
 				<div class="table-toolbar">

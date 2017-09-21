@@ -52,12 +52,6 @@ export class ManageContactsComponent implements OnInit {
     isInvalidHeaderCheckBoxChecked:boolean = false;
     invalidDeleteSucessMessage: boolean;
     
-    allContactData: boolean;
-    activeContactsData: boolean;
-    invalidContactData: boolean;
-    unsubscribedContactsData: boolean;
-    nonActiveContactsData: boolean;
-    
     public invalidIds: Array<UserListIds>;
     
     contactsByType: ContactsByType = new ContactsByType();
@@ -720,7 +714,7 @@ export class ManageContactsComponent implements OnInit {
                 });
                 this.invalidDeleteSucessMessage = true;
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
-                // this.invalid_Contacts( this.pagination );
+                this.listContactsByType( this.contactsByType.selectedCategory );
             },
             error => this.logger.error( error ),
             () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -767,7 +761,7 @@ export class ManageContactsComponent implements OnInit {
                 () => console.log( "LoadContactsCount Finished" )
             );
     }
-
+    
     listContactsByType(contactType: string){
         this.contactsByType.isLoading = true;
         this.resetListContacts();
@@ -864,9 +858,17 @@ export class ManageContactsComponent implements OnInit {
         } 
     }
     
+    resetPagination(){
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+    }
+    
     navigateToManageContacts(){
+        this.searchKey = null;
+        this.resetPagination();
+        
         this.contactsByType.pagination = new Pagination();
-        this.searchKey = "";
+        
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.showListOfContactList = true;
         this.contactsByType.selectedCategory = null;
@@ -875,6 +877,7 @@ export class ManageContactsComponent implements OnInit {
         this.allselectedUsers.length = 0;
         this.selectedInvalidContactIds = [];
         this.invalidRemovableContacts = [];
+        this.invalidDeleteSucessMessage = false;
     }
 
     ngOnInit() {

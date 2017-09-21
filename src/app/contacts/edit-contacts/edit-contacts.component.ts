@@ -43,6 +43,8 @@ export class EditContactsComponent implements OnInit {
     
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 3;
+    invalidDeleteSuccessMessage: boolean = false;
+    invalidDeleteErrorMessage: boolean = false;
     
     contactsByType: ContactsByType = new ContactsByType();
     showSelectedCategoryUsers: boolean = true;
@@ -64,9 +66,7 @@ export class EditContactsComponent implements OnInit {
     selectedInvalidContactIds = [];
     selectedContactListIds = [];
     fileTypeError: boolean;
-    Campaign: string;
     selectedDropDown: string;
-    deleteErrorMessage: boolean;
     public uploader: FileUploader;
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
@@ -82,21 +82,8 @@ export class EditContactsComponent implements OnInit {
 
     hasContactRole:boolean = false;
     
-    activeContactsData: boolean;
-    invalidContactData: boolean;
-    unsubscribedContactsData: boolean;
-    nonActiveContactsData: boolean;
     public currentContactType: string = "all_contacts";
-    public activeContactUsers: Array<ContactList>;
-    public invalidContactUsers: Array<ContactList>;
-    public unsubscribedContactUsers: Array<ContactList>;
-    public nonActiveContactUsers: Array<ContactList>;
     public userListIds: Array<UserListIds>;
-    invalidDeleteSucessMessage: boolean;
-    emptyActiveContactsUsers: boolean;
-    emptyInvalidContactsUsers: boolean;
-    emptyUnsubscribedContactsUsers: boolean;
-    emptyNonActiveContactsUsers: boolean;
     contactUsersId: number;
     contactIds = [];
     duplicateEmailIds: string[] = [];
@@ -159,7 +146,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     fileChange( input: any ) {
-        this.selectedAddContactsOption = 2;
         this.responseType = null;
         this.fileTypeError = false;
         this.noContactsFound = false;
@@ -175,6 +161,7 @@ export class EditContactsComponent implements OnInit {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" ) {
+            this.selectedAddContactsOption = 2;
             this.isShowUsers = false;
             this.fileTypeError = false;
             this.logger.info( "coontacts preview" );
@@ -366,18 +353,15 @@ export class EditContactsComponent implements OnInit {
                 });
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                this.selectedContactListIds.length = 0;
             },
             ( error: any ) => {
                 if ( error.includes( 'Please delete those campaigns first.' )) {
-                    this.Campaign = error;
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                    console.log( this.deleteErrorMessage );
+                    this.setResponseDetails('ERROR', error);
                 }
             },
             () => this.logger.info( "deleted completed" )
             );
-        this.deleteErrorMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -403,7 +387,7 @@ export class EditContactsComponent implements OnInit {
             if( this.totalRecords == 1 || this.totalRecords == this.selectedContactListIds.length){
                 swal( {
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this! If you delete all Users, your contact list aslo will delete.",
+                    text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -715,18 +699,15 @@ export class EditContactsComponent implements OnInit {
 
     backToEditContacts() {
         this.pagination.maxResults = 10;
+        this.invalidDeleteSuccessMessage = false;
+        this.invalidDeleteErrorMessage = false;
         this.showAllContactData = false;
         this.showEditContactData = true;
         this.selectedInvalidContactIds = [];
         this.selectedContactListIds = [];
         this.showSelectedCategoryUsers = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-        this.responseType = null;
-        this.activeContactsData = false;
-        this.invalidContactData = false;
-        this.unsubscribedContactsData = false;
-        this.nonActiveContactsData = false;
-        this.invalidDeleteSucessMessage = false;
+        this.resetResponse();
         this.contactsByType.pagination = new Pagination();
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.contactsByType.selectedCategory = null;
@@ -782,26 +763,27 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 data = data;
                 console.log( "update invalidContacts ListUsers:" + data );
-                this.invalidDeleteSucessMessage = true;
-                setTimeout( function() { $( "#showInvalidDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 $.each( this.selectedInvalidContactIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
                 });
+                //this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
+                this.invalidDeleteSuccessMessage = true;
                 this.listOfSelectedContactListByType(this.contactsByType.selectedCategory );
                 this.contactsByType.invalidContactsCount = data.invalidUsers;
+                this.selectedInvalidContactIds.length = 0;
             },
               ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                this.Campaign = error;
-                console.log( error );
-                this.deleteErrorMessage = true;
-                setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                this.setResponseDetails('ERROR',error);
+                this.responseMessage = error;
+                this.invalidDeleteErrorMessage = true;
                 }
                 },
                 () => this.logger.info( "deleted completed" )
             );
-        this.invalidDeleteSucessMessage = false;
+        this.invalidDeleteSuccessMessage = false;
+        this.invalidDeleteErrorMessage = false;
     }
     invalidContactsShowAlert() {
         if ( this.selectedInvalidContactIds.length != 0 ) {
@@ -842,15 +824,11 @@ export class EditContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.includes( 'Please delete those campaigns first.' )) {
-                    this.Campaign = error;
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
-                    console.log( this.deleteErrorMessage );
+                    this.setResponseDetails('ERROR', error);
                 }
             },
             () => this.logger.info( "deleted completed" )
             );
-        this.deleteErrorMessage = false;
     }
 
     deleteContactList() {
@@ -866,16 +844,12 @@ export class EditContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    //swal( 'Campaign contact!', error, 'error' );
-                    this.Campaign = error;
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    this.setResponseDetails('ERROR', error);
                 }
                 console.log( error );
             },
             () => this.logger.info( "deleted completed" )
             );
-        this.deleteErrorMessage = false;
     }
     
     showAlert1( contactId: number ) {
@@ -901,7 +875,7 @@ export class EditContactsComponent implements OnInit {
         if( this.totalRecords == 1){
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to revert this! If you delete all Users, your contact list aslo will delete.",
+                text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -921,6 +895,7 @@ export class EditContactsComponent implements OnInit {
         this.showEditContactData = false;
         this.contactsByType.isLoading = true;
         this.resetListContacts();
+        this.resetResponse();
         this.contactService.listOfSelectedContactListByType(this.selectedContactListId,contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -1003,13 +978,18 @@ export class EditContactsComponent implements OnInit {
     }
     
     addContactsOption(addContactsOption: number ){
-        this.responseType = null;
+        this.resetResponse();
         this.selectedAddContactsOption = addContactsOption;
         if(addContactsOption == 0)
             this.addRow();
         else if(addContactsOption == 1)
             this.copyFromClipboard();
     }
+    
+   resetResponse(){
+       this.responseType = null;
+       this.responseMessage = null;
+   }
       
     ngOnInit() {
         this.checkingLoadContactsCount = true;
