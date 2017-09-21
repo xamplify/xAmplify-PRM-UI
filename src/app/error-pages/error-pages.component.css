@@ -1,17 +1,22 @@
-
-body {
-    background: #f5f5f5;
-    font-family: 'Noto Sans', sans-serif;
+h1 {
+    font-weight: 900;
+    font-size: 8em;
+    color: #e21643;
     margin: 0;
-    color: #4c5667;
-    overflow-x: hidden !important;
-    padding-top:40px;
 }
-
-.message-box h1 {
-    color: #252932;
-    font-size: 98px;
-    font-weight: 700;
-    line-height: 98px;
-    text-shadow: rgba(61, 61, 61, 0.3) 1px 1px, rgba(61, 61, 61, 0.2) 2px 2px, rgba(61, 61, 61, 0.3) 3px 3px;
+h4{
+	color: rgba(236, 15, 65, 0.69);
+    margin-bottom: 1em;
+    font-size: 3em;
+}
+.loader-container {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20rem;
+    position: relative;
 }

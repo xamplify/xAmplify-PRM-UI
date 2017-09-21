@@ -1,26 +1,14 @@
-<style>
-h1 {
-    font-weight: 900;
-    font-size: 10em;
-    color: #e03b60;
-    margin: 0;
-    margin: 1em 0 0 0;
-}
-h4{
-	color: #ea96a9;
-    margin-bottom: 4em;
-    font-size: 3em;
-    text-transform: lowercase;
-}
-</style>
-
-<div class="page-content">
-	<div class="portlet light">
-		<div class="portlet-body clearfix">
-			<div class="col-xs-12 text-center">
-				<h1>{{errorStatus}}</h1>
-				<h4>BAD REQUEST</h4>
-			</div>
+<div class="clearfix">
+	<div class="page-content">
+		<div class="page-bar">
+			<ng-container *ngFor="let item of errorMap">
+				<div class="loader-container" *ngIf="item.code == errorCode">
+					<div class="text-center">
+						<h1>{{item.code}}</h1>
+						<h4>{{item.message}}</h4>
+					</div>
+				</div>
+			</ng-container>
 		</div>
 	</div>
 </div>

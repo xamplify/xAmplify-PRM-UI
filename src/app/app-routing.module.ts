@@ -26,7 +26,7 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: '', redirectTo: 'home/dashboard', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'home/dashboard/default', pathMatch: 'full', canActivate: [AuthGuard] },
     {
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
         children: [

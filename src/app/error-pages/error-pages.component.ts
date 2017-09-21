@@ -7,39 +7,31 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./error-pages.component.css']
 })
 export class ErrorPagesComponent implements OnInit, OnDestroy {
-  errorStatus: number;
-  private sub: any;
-  public ErrorUndefined = false;
-  public errorDifferent = false;
-  public errorMessage: string;
-  constructor(public router: Router, private route: ActivatedRoute) {
-    this.errorMessage = '';
-  }
-  homePage() { this.router.navigate(['./home/dashboard']); }
+  errorCode: number;
+  private subscribe: any;
+  errorMap = [
+                {code: '400', message: 'Bad Request'},
+                {code: '401', message: 'Unauthorized'},
+                {code: '403', message: 'Forbidden'},
+                {code: '404', message: 'Not Found'},
+                {code: '500', message: 'Internal Server Error'},
+                {code: '502', message: 'Bad Gateway'},
+                {code: '503', message: 'Service Unavailable'},
+                {code: '504', message: 'Gateway Timeout'}
+              ]
+  constructor(public router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.errorStatus = +params['errorStatusId']; // (+) converts string 'id' to a number
+    this.subscribe = this.route.params.subscribe(params => {
+      this.errorCode = +params['errorStatusId']; // (+) converts string 'id' to a number
     });
-    if (this.errorStatus === 503) {
-      this.router.navigate(['/serviceunavailable']);
-    } else if(this.errorStatus === 0) {
-       this.router.navigate(['/serviceunavailable']);
-    }else if (this.isNumber(this.errorStatus)) {
-      this.ErrorUndefined = true;
-      this.errorStatus = this.errorStatus;
-      console.log(this.errorStatus);
-    } else {
-      this.errorDifferent = true;
-      this.errorMessage = 'Oops ! An Error Occured !';
-      console.log(this.errorStatus);
-    }
+    
+    if(this.errorCode == 503)
+        this.router.navigate( ['/serviceunavailable'] );
   }
-isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
+
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.subscribe.unsubscribe();
   }
 
 }
