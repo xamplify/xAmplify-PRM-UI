@@ -119,7 +119,7 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getCountryViewsDetails() {
-         const url = this.authenticationService.REST_URL + 'countrywise_users_count?userId=' + this.authenticationService.user.id + 
+         const url = this.authenticationService.REST_URL + 'dashboard/countrywise_users_count?userId=' + this.authenticationService.user.id + 
          '&access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
