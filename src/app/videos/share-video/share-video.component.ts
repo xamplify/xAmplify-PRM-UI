@@ -47,7 +47,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     model: any = {};
     public isPlay = false;
     public isPlayButton: boolean;
-    public isOverlay: boolean;  // for disabled the play video button in the videojs overlay
+    public isOverlay = true;  // for disabled the play video button in the videojs overlay
     public email_id: string;
     public firstName: string;
     public lastName: string;

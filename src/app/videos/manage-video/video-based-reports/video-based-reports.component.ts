@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
@@ -24,7 +24,6 @@ declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, High
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
-    public _elementRef: ElementRef;
     public videoJSplayer: any;
     public videoUrl: string;
     public is360Value: boolean;
@@ -37,62 +36,49 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public videoOverlaySubmit: string;
     public isSkipChecked: boolean;
     public isPlay: boolean;
-    public countryWiseVideoViews: any;
     public categories: any;
-    public videoViewscount: number;
-    public videoViewscountbind: number;
     public watchedFully: number;
     chartsData = [57, [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8], 67];
     campaignViews: any;
-    constructor(elementRef: ElementRef, public authenticationService: AuthenticationService,
-         public videoBaseReportService: VideoBaseReportService, public videoUtilService: VideoUtilService, 
-         public xtremandLogger: XtremandLogger) {
-        this._elementRef = elementRef;
-       }
-      areaCharts(){
-         Highcharts.chart( 'area-chart', {
-          chart: {
+    constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) { }
+    areaCharts() {
+        Highcharts.chart('area-chart', {
+            chart: {
                 type: 'area',
                 plotBorderWidth: 1
             },
             credits: false,
             xAxis: {
-              categories: this.categories,
-               min: 0.5,
-                max: this.categories.length-1.5,
+                categories: this.categories,
+                min: 0.5,
+                max: this.categories.length - 1.5,
                 startOnTick: false,
                 endOnTick: false,
-                tickLength : 0,  // lines for x-axis
-               type: 'datetime',
+                tickLength: 0,  // lines for x-axis
+                type: 'datetime',
                 dateTimeLabelFormats: {
-                 //  month: '%Y' 
                 }
-               // gridLineWidth: 0.1
             },
             yAxis: {
                 startOnTick: false,
                 endOnTick: false,
-                min: 0 , 
+                min: 0,
                 title: {
                     text: ''
                 },
                 labels: {
-                    // align: 'right',
-                    // formatter: function() {
-                    //     return this.value;
-                    // }
-                formatter: function () {
-                    return Math.round(this.value);
-                }
+                    formatter: function () {
+                        return Math.round(this.value);
+                    }
                 }
             },
             title: {
                 text: ''
             },
             tooltip: {
-                formatter: function() {
+                formatter: function () {
                     return this.y + 'visits';
-                    //  return  '<span style="color:red"> +this.y+</span>' + 'M$';
                 },
                 backgroundColor: '#e0e0e0',
                 borderWidth: 0
@@ -123,12 +109,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
-     renderMap() {
-        const data = this.countryWiseVideoViews;
-        // Create the chart
-        Highcharts.mapChart( 'world-map', {
+    renderMap(countryWiseData: any) {
+        const data = countryWiseData;
+        Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
             },
@@ -174,57 +159,42 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             negBarColor: '#e02222'
         });
     }
-   getCampaignVideoCountriesAndViews(alias: any) {
-    try {
-        this.videoBaseReportService.getCampaignVideoCountriesAndViews(alias)
-            .subscribe((result: any) => { 
-                const viewsData = result.video_views_count_data;
-                this.categories = result.video_views_count_data.months;
-                this.campaignViews =  result.video_views_count_data.monthlyViews;
-                this.countryWiseVideoViews = result.video_views_count_data.countrywiseViews;
-                console.log(result);
-                this.areaCharts();
-                this.renderMap();
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            }  );
-    }catch (error) { console.log(error); }
-   }
-   getWatchedCountInfo(alias: any){
-     try {
-        this.videoBaseReportService.getWatchedFullyData(alias)
-            .subscribe((result: any) => {
-                console.log(result);
-                this.watchedFully = result.video_views_count_data.watchedfullypercentage;
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            } );
-    }catch (error) { console.log(error); }
-   }
-   getViewsCount(){
-        this.videoViewscount = this.selectedVideo.views;
-        this.videoViewscountbind = this.videoViewscount;
-        this.videoViewscountbind  = this.videoUtilService.nFormatter(this.videoViewscountbind);
-        const stringValue  = '0.' + this.videoViewscount.toString();
-        const value  = Number(stringValue);
-        this.videoViewscount =  value;
-   }
+    getCampaignVideoCountriesAndViews(alias: any) {
+        try {
+            this.videoBaseReportService.getCampaignVideoCountriesAndViews(alias)
+                .subscribe((result: any) => {
+                    const viewsData = result.video_views_count_data;
+                    this.categories = result.video_views_count_data.months;
+                    this.campaignViews = result.video_views_count_data.monthlyViews;
+                    console.log(result);
+                    this.areaCharts();
+                    this.renderMap(result.video_views_count_data.countrywiseViews);
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                });
+        } catch (error) { console.log(error); }
+    }
+    getWatchedCountInfo(alias: any) {
+        try {
+            this.videoBaseReportService.getWatchedFullyData(alias)
+                .subscribe((result: any) => {
+                    console.log(result);
+                    this.watchedFully = result.video_views_count_data.watchedfullypercentage;
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                });
+        } catch (error) { console.log(error); }
+    }
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
-        this.getViewsCount();
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.minutesSparklineData();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
-        Index.init();
-      //  Index.initDashboardDaterange();
-        Index.initCharts();
-        Index.initChat();
-       // Tasks.initDashboardWidget();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

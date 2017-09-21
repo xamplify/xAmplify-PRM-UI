@@ -1,23 +1,23 @@
 <!-- END CONTAINER -->
 <style type="text/css">
-#newPlayerVideo {
-	width: auto;
-}
+	#newPlayerVideo {
+		width: auto;
+	}
 
-.videoTitle {
-	word-break: break-all;
-	color: #5a5a5a;
-	font-weight: 500;
-}
+	.videoTitle {
+		word-break: break-all;
+		color: #5a5a5a;
+		font-weight: 500;
+	}
 
-.p5 {
-	padding: 5px;
-}
+	.p5 {
+		padding: 5px;
+	}
 
-.portlet {
-	border-radius: 0;
-	padding: 10px;
-}
+	.portlet {
+		border-radius: 0;
+		padding: 10px;
+	}
 </style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
@@ -41,7 +41,7 @@
 		<div class="portlet light">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="icon-equalizer font-purple-plum hide"></i> 
+					<i class="icon-equalizer font-purple-plum hide"></i>
 					<span class="caption-subject font-red-sunglo uppercase">Day Stats</span>
 					<span class="caption-helper">Video related</span>
 				</div>
@@ -51,9 +51,9 @@
 					<div class="col-xs-4 text-center">
 						<section class="percentage-circle" style="margin-top: 10px;">
 							<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
-						    	<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
-						    	<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"/>
+								<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
+								<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"
+								/>
 							</svg>
 							<h2 class="percentage-value">{{watchedFully}}%</h2>
 						</section>
@@ -67,21 +67,12 @@
 						</div>
 					</div>
 					<div class="col-xs-4 text-center">
-						<!-- <section class="percentage-circle">
-							<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
-						    	<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
-						    	<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoViewscount)}"/>
-							</svg>
-							<h2 class="percentage-value">{{videoViewscountbind}}</h2>
-								<h6 class="percentage-text">views</h6>
-						</section> -->
-						<h1 style="margin-top: 66px;">{{videoViewscountbind}}</h1>
-						<h5 style="text-align: center; color: #2f2f2f; margin: 2.3em;font-size: 17px;font-weight: 400;">Views</h5>
+						<h1 style="margin-top: 48px;">{{videoUtilService.nFormatter(selectedVideo.views)}}</h1>
+						<h5 style="text-align: center; color: #2f2f2f; margin-top: 3.4em;font-size: 17px;font-weight: 400;">Views</h5>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 </div>
 
@@ -91,7 +82,7 @@
 		<div class="portlet light">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="icon-bar-chart font-green-sharp hide"></i> 
+					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">video Views</span>
 					<span class="caption-helper">weekly stats...</span>
 				</div>
