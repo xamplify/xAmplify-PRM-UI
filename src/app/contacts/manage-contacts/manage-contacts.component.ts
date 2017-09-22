@@ -46,7 +46,7 @@ export class ManageContactsComponent implements OnInit {
     showAll: boolean;
     showEdit: boolean;
     
-    
+    listContactData: boolean = true;
     response: CustomeResponse = new CustomeResponse();
     invalidRemovableContacts = [];
     allselectedUsers = [];
@@ -775,6 +775,10 @@ export class ManageContactsComponent implements OnInit {
         this.response.responseType = null;
         this.response.responseMessage = null;
         this.resetListContacts();
+        if(this.listContactData == true){
+            this.searchKey = null;
+            this.listContactData = false;
+        }
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -829,6 +833,9 @@ export class ManageContactsComponent implements OnInit {
         this.sortOption = this.sortOptions[0];
         this.showListOfContactList = false;
         this.contactsByType.contacts = [];
+        if(this.showListOfContactList){
+            
+        }
     }
     
     sortByOption( event: any, selectedType: string){
@@ -877,7 +884,7 @@ export class ManageContactsComponent implements OnInit {
         this.searchKey = null;
         this.response.responseType = null;
         this.resetPagination();
-        
+        this.listContactData = true;
         this.contactsByType.pagination = new Pagination();
         
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
