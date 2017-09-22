@@ -710,7 +710,7 @@ input[type=radio] {
   					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						 <h4 align="center">People who opened Emails</h4>
      						 </div>
      					 <div class="modal-body">
@@ -763,7 +763,7 @@ input[type=radio] {
 		</ul>					
                         </div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>
   				</div>
@@ -773,7 +773,7 @@ input[type=radio] {
   					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						<h4 align="center">People who clicked Emails</h4>
      						 </div>
      					 <div class="modal-body">
@@ -826,7 +826,7 @@ input[type=radio] {
                                           </ul>  					
                         </div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>
   				</div>
@@ -836,10 +836,7 @@ input[type=radio] {
   					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<!-- <div><img src = "assets/images/google.jpg"
-        								 alt = "Picture of a happy monkey" style="height:55px" width="90px" />
-        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-7%"><b>Email Opened Data</b></h4></div> -->
+        						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						<h4 align="center">People who watched videos</h4>
      						 </div>
      					 <div class="modal-body">
@@ -889,7 +886,7 @@ input[type=radio] {
                                           </ul>					
                         </div>
       					<div class="modal-footer">
-        					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>
   				</div>
