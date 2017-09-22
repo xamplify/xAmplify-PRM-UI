@@ -57,7 +57,6 @@ export class DashboardComponent implements OnInit {
     public emailClickedPagination = new Pagination;
     public emailWatchedPagination = new Pagination;
     hasCampaignRole:boolean = false;
-    hasStatsRole:boolean = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public emailOpenedPagination: Pagination, public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -65,7 +64,6 @@ export class DashboardComponent implements OnInit {
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
-        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
     }
 
     genderDemographics(userId: number) {
@@ -281,7 +279,7 @@ export class DashboardComponent implements OnInit {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatchedCount = data;
-                if(data.length == 0){
+                if(data == null){
                     this.dashboardReport.totalEmailWatchedCount = 0;
                 }
             },
@@ -428,31 +426,26 @@ export class DashboardComponent implements OnInit {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
 
-    setPage(page: number) {
+    setPage(page: number, currentPage: string) {
         this.pagination.pageIndex = page;
-        // this.totalEmailOpenedData(this.pagination);
-        //}
-        /*if(this.currentPage == "emailOpened"){
-            this.totalEmailOpenedData(this.pagination);
+        if(currentPage == "emailOpened"){
+            this.listOfEmailOpenLogs(13);
         }
-        else if(this.currentPage == "emailClicked"){
-            this.totalEmailClickedData(this.pagination);
+        else if(currentPage == "emailClicked"){
+            this.listOfEmailClickedLogs();
         }
-        else if(this.currentPage == "emailWatched"){
-            this.totalEmailWatchedData(this.pagination);
-        }*/
+        else if(currentPage == "emailWatched"){
+            this.listOfWatchedLogs();
+        }
     }
 
-    setEmailWatchedPage(page: number) {
-        this.emailWatchedPagination.pageIndex = page;
-        //this.totalEmailWatchedData(this.emailWatchedPagination);
-    }
-    
     listOfEmailOpenLogs(actionId: number){
-        this._dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId)
+        this._dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
-            result => {
+            (result:any) => {
                     this.dashboardReport.emailOpenedList = result;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailOpenedList );
             },
             error => console.log(error),
             () => { }
@@ -460,41 +453,32 @@ export class DashboardComponent implements OnInit {
     }
     
     listOfEmailClickedLogs(){
-        this._dashboardService.listEmailClickedLogs(this.loggedInUserId)
+        this._dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
                     this.dashboardReport.emailClickedList = result;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
+                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailClickedList );
             },
             error => console.log(error),
             () => { }
             );
     }
     
-
-/*    totalEmailWatchedData(pagination: Pagination) {
-        //this.pagination = new Pagination();
-        this.emailWatchedPagination.maxResults = 10;
+    listOfWatchedLogs() {
         this.logger.log(this.pagination);
-        this.contactService.loadNonActiveContacts(this.emailWatchedPagination)
+        this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
-                this.dashboardReport.emailWatchedList = data.listOfUsers;
-                this.totalRecords = data.totalRecords;
-                if (this.dashboardReport.emailWatchedList.length == 0) {
-                }
-                if (data.totalRecords.length == 0) {
-                    //this.emptyViewsRecord = true;
-                } else {
-                    this.emailWatchedPagination.totalRecords = this.totalRecords;
-                    this.logger.info(this.dashboardReport.emailWatchedList);
-                    this.emailWatchedPagination = this.pagerService.getPagedItems(this.emailWatchedPagination, this.dashboardReport.emailWatchedList);
-                    this.logger.log(data);
-                }
+                this.dashboardReport.emailWatchedList = data;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
+                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailWatchedList );
             },
             error => console.log(error),
             () => console.log("finished")
             );
-    }*/
+    }
+    
     getCountriesTotalViewsData() {
         this._dashboardService.getCountryViewsDetails().
         subscribe(result => {
@@ -507,15 +491,10 @@ export class DashboardComponent implements OnInit {
         });
     }
     
-    
-    goToCampaignDetailedAnalytics(campaignId:number){
-        if(this.hasStatsRole){
-            this.router.navigateByUrl('/home/campaigns/'+campaignId+'/details');
-        }else{
-            
-        }
-        
+    cancelEmailStateModalPopUp(){
+      this.pagination = new Pagination();
     }
+    
     ngOnInit() {
         try {
             this.dashboardReportsCount();
@@ -547,6 +526,4 @@ export class DashboardComponent implements OnInit {
             console.log(err);
         }
     }
-    
-    
 }
