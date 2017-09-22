@@ -283,11 +283,17 @@ rotate
 											(click)="downloadContactList(contactList.id)"
 											title="Dowload List" data-rel="fancybox-button"> <i
 											class="fa fa-cloud-download"></i>
-										</a> <a class="mix-preview4"
+										</a> <a class="mix-preview4" *ngIf = "hasContactRole"
 											(click)="editContactList(contactList.id)" title="Edit List"
 											data-rel="fancybox-button"> <i
 											class="fa fa-pencil-square-o"></i>
-										</a> <a class="mix-preview6"  *ngIf = "hasContactRole" (click)="showAlert(contactList.id)"
+										</a>
+										<a class="mix-preview4" *ngIf = "!hasContactRole"
+											(click)="editContactList(contactList.id)" title="ContactList Info"
+											data-rel="fancybox-button"> <i
+											class="glyphicon glyphicon-info-sign"></i>
+										</a>
+										 <a class="mix-preview6"  *ngIf = "hasContactRole" (click)="showAlert(contactList.id)"
 											title="Delete List" data-rel="fancybox-button"
 											lang="{{contactList.id}}"> <i class="fa fa-trash"></i>
 										</a>

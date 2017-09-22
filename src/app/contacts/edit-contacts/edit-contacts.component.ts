@@ -705,6 +705,7 @@ export class EditContactsComponent implements OnInit {
         this.showEditContactData = true;
         this.selectedInvalidContactIds = [];
         this.selectedContactListIds = [];
+        $( "#uploadCsvUsingFile" ).hide();
         this.showSelectedCategoryUsers = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.resetResponse();
