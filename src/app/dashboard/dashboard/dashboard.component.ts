@@ -247,49 +247,6 @@ export class DashboardComponent implements OnInit {
 
     }
 
-    dashboardReportsCount() {
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.loadDashboardReportsCount(this.loggedInUserId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalViews = data.totalVideoViewsCount;
-                this.dashboardReport.totalContacts = data.totalcontactsCount;
-                this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
-                this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
-                this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
-                this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
-            },
-            error => console.log(error),
-            () => console.log("dashboard reports counts completed")
-            );
-    }
-
-    getEmailActionCount(userId: number) {
-        this._dashboardService.getEmailActionCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
-                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"] + data["email_gif_clicked_count"];
-            },
-            error => console.log(error),
-            () => console.log("emailOpenedCount completed")
-            );
-    }
-
-    emailWatchedCount(userId: number) {
-        this._dashboardService.loadEmailWatchedCount(userId)
-            .subscribe(
-            data => {
-                this.dashboardReport.totalEmailWatchedCount = data;
-                if(data == null){
-                    this.dashboardReport.totalEmailWatchedCount = 0;
-                }
-            },
-            error => console.log(error),
-            () => console.log("emailWatchedCount completed")
-            );
-    }
-
     getDefaultPage(userId: number) {
         this.userService.getUserDefaultPage( userId )
         .subscribe(
@@ -428,6 +385,47 @@ export class DashboardComponent implements OnInit {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
 
+
+    dashboardReportsCount() {
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this._dashboardService.loadDashboardReportsCount(this.loggedInUserId)
+            .subscribe(
+            data => {
+                this.dashboardReport.totalViews = data.totalVideoViewsCount;
+                this.dashboardReport.totalContacts = data.totalcontactsCount;
+                this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
+                this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
+                this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
+                this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+            },
+            error => console.log(error),
+            () => console.log("dashboard reports counts completed")
+            );
+    }
+
+    getEmailActionCount(userId: number) {
+        this._dashboardService.getEmailActionCount(userId)
+            .subscribe(
+            data => {
+                this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
+                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"] + data["email_gif_clicked_count"];
+            },
+            error => console.log(error),
+            () => console.log("emailOpenedCount completed")
+            );
+    }
+
+    emailWatchedCount(userId: number) {
+        this._dashboardService.loadEmailWatchedCount(userId)
+            .subscribe(
+            data => {
+                this.dashboardReport.totalEmailWatchedCount = data["watched-users-count"];
+            },
+            error => console.log(error),
+            () => console.log("emailWatchedCount completed")
+            );
+    }
+
     setPage(page: number, currentPage: string) {
         this.pagination.pageIndex = page;
         if(currentPage == "emailOpened"){
@@ -472,7 +470,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
-                this.dashboardReport.emailWatchedList = data;
+                this.dashboardReport.emailWatchedList = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailWatchedList );
             },
