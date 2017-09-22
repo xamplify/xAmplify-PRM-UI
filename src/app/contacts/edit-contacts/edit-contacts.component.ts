@@ -46,6 +46,7 @@ export class EditContactsComponent implements OnInit {
     selectedAddContactsOption: number = 3;
     invalidDeleteSuccessMessage: boolean = false;
     invalidDeleteErrorMessage: boolean = false;
+    editListContacts: boolean = true;
     
     uploadCsvUsingFile: boolean = false;
     contactsByType: ContactsByType = new ContactsByType();
@@ -701,9 +702,12 @@ export class EditContactsComponent implements OnInit {
     }
 
     backToEditContacts() {
+        this.searchKey = null;
+        this.pagination.searchKey = this.searchKey;
         this.pagination.maxResults = 10;
         this.invalidDeleteSuccessMessage = false;
         this.invalidDeleteErrorMessage = false;
+        this.editListContacts = true;
         this.showAllContactData = false;
         this.showEditContactData = true;
         this.selectedInvalidContactIds = [];
@@ -900,6 +904,10 @@ export class EditContactsComponent implements OnInit {
         this.contactsByType.isLoading = true;
         this.resetListContacts();
         this.resetResponse();
+        if(this.editListContacts == true){
+            this.searchKey = null;
+            this.editListContacts = false;
+        }
         this.contactService.listOfSelectedContactListByType(this.selectedContactListId,contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
