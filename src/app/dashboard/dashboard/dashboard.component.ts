@@ -53,13 +53,10 @@ export class DashboardComponent implements OnInit {
     countryViewsData: any;
     loggedInUserId: number;
     userCampaignReport: CampaignReport = new CampaignReport();
-    public newPagination: Pagination;
-    public emailClickedPagination = new Pagination;
-    public emailWatchedPagination = new Pagination;
     hasCampaignRole:boolean = false;
     hasStatsRole:boolean = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
-        public emailOpenedPagination: Pagination, public contactService: ContactService,
+        public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService,
         public socialService: SocialService, public authenticationService: AuthenticationService, public logger: Logger,
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
@@ -470,7 +467,7 @@ export class DashboardComponent implements OnInit {
         this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
-                this.dashboardReport.emailWatchedList = this.dashboardReport.totalEmailWatchedCount;
+                this.dashboardReport.emailWatchedList = data;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailWatchedList );
             },
