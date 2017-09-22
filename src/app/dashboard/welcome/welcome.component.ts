@@ -18,11 +18,20 @@ export class WelcomeComponent implements OnInit {
     userDefaultPage: UserDefaultPage;
     dashboardReport: DashboardReport;
     loggedInUserId: number;
-
+    hasVideoRole:boolean = false;
+    hasContactRole:boolean = false;
+    hasCampaignRole:boolean = false;
+    hasEmailTemplateRole:boolean = false;
+    hasStatsRole:boolean = false;
     constructor( private userService: UserService, private authenticationService: AuthenticationService, 
             private referenceService: ReferenceService, private dashboardService: DashboardService ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
+        this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
+        this.hasContactRole = this.referenceService.hasRole(this.referenceService.roleName.contactsRole);
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
+        this.hasEmailTemplateRole =  this.referenceService.hasRole(this.referenceService.roleName.emailTemplateRole);
+        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
     }
     
     getDefaultPage( userId: number ) {

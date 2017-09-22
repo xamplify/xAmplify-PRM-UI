@@ -1,3 +1,14 @@
+<style type="text/css">
+ a.disabled {
+   pointer-events: none;
+   cursor:not-allowed;
+}
+
+.disabled{
+pointer-events:none;
+cursor: not-allowed;
+}
+</style>
 <div class="page-content">
 	<div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
 		<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
@@ -28,7 +39,7 @@
 
 	<div class="page-bar">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/videos/manage_videos']" class="portlet light block rounded-0 center color1 padding-top-bottom-5">
+			<div [routerLink]="['/home/videos/manage_videos']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-play fa-3" aria-hidden="true"></i>
 				</div>
@@ -41,7 +52,7 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/contacts/manageContacts']" class="portlet light block rounded-0 center color2 padding-top-bottom-5">
+			<div [routerLink]="['/home/contacts/manageContacts']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
 				</div>
@@ -54,7 +65,7 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/campaigns/managepublish']" class="portlet light block rounded-0 center color3 padding-top-bottom-5">
+			<div [routerLink]="['/home/campaigns/managepublish']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i>
 				</div>
@@ -67,7 +78,7 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/emailtemplate/manageTemplates']" class="portlet light block rounded-0 center color4 padding-top-bottom-5">
+			<div [routerLink]="['/home/emailtemplate/manageTemplates']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-envelope-o fa-3" aria-hidden="true"></i>
 				</div>
@@ -93,7 +104,7 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5">
+			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-12">
 					<h1 class="bold"><i class="fa fa-line-chart" aria-hidden="true"></i></h1>
 				</div>
@@ -159,7 +170,7 @@
 							Pellentesque varius auctor felis, eu hendrerit libero sodales
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color1" [routerLink]="['/home/videos']">upload video</button>
+							<button class="btn btn-xs color1" [routerLink]="['/home/videos']" [class.disabled]="!hasVideoRole ? true : null">upload video</button>
 							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -174,7 +185,7 @@
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.
 							Pellentesque id consectetur elit. Etiam porttitor varius leo,</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/addContacts']">add contacts</button>
+							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/addContacts']" [class.disabled]="!hasContactRole ? true : null">add contacts</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -199,7 +210,7 @@
 							Pellentesque varius auctor felis, eu hendrerit libero sodales
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']">create campaign</button>
+							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!hasCampaignRole ? true : null">create campaign</button>
 							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -213,7 +224,7 @@
 							Pellentesque varius auctor felis, eu hendrerit libero sodales
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplate/selectTemplate']">create template</button>
+							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplate/selectTemplate']" [class.disabled]="!hasEmailTemplateRole ? true : null">create template</button>
 							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -251,7 +262,7 @@
 							Pellentesque varius auctor felis, eu hendrerit libero sodales
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']">analytics</button>
+							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!hasStatsRole ? true : null">analytics</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

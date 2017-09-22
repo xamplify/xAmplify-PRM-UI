@@ -349,7 +349,7 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
-				[routerLink]="['../../social/manage/all']" [class.disabled]="!hasStatsRole ? true : null">
+				[routerLink]="['../../social/manage/all']">
 				<div class="visual">
 					<i class="fa fa-share"></i>
 				</div>
@@ -367,7 +367,7 @@ input[type=radio] {
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
 				*ngIf="socialConnection.source === 'TWITTER'">
 				<a
-					[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null">
+					[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
 					<div class="dashboard-stat2">
 						<div class="display">
 							<div class="number">
