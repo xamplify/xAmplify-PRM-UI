@@ -765,7 +765,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             } else { this.videoJSplayer.pause(); }
         }
         this.logger.debug(this.model.email_id);
-        this.user.emailId = this.model.email_id;
+        this.user.emailId = this.toLowerString(this.model.email_id);
         this.user.firstName = this.firstName;
         this.user.lastName = this.lastName;
         this.logger.debug(this.user);
@@ -778,6 +778,10 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
             });
     }
+   toLowerString(mail: string) {
+      return mail.toLowerCase();
+   }
+
     sharedSuccess() {
         this.xtremandLog.actionId = 12;
         this.xtremandLog.startTime = new Date();

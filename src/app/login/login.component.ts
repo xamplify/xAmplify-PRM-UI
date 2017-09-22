@@ -86,11 +86,11 @@ export class LoginComponent implements OnInit {
          this.logErrorEmpty()
         } else {
         this.loading = true;
-        this.model.username = this.model.username.toLowerCase();
-        this.refService.userName = this.model.username;
+        const userName = this.model.username.toLowerCase();
+        this.refService.userName = userName;
         const authorization = 'Basic ' + btoa( 'my-trusted-client:');
-        const body = 'username=' + this.model.username + '&password=' + this.model.password + '&grant_type=password';
-        this.authenticationService.login(authorization, body, this.model.username).subscribe( result => {
+        const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
+        this.authenticationService.login(authorization, body, userName).subscribe( result => {
             if ( localStorage.getItem( 'currentUser' ) ) {
                 this.initializeTwitterNotification();
                 // if user is coming from login
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
                      },5000)
                  }
         	 }
-            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+            console.log("error:" + error)
             
         });
         return false;

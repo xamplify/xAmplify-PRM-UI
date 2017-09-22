@@ -227,7 +227,7 @@
 										</div>
 									</div>
 									<div class="form-group" style="margin-top: 30px;">
-										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;">Thumbnail : 
+										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer">Thumbnail : 
 											<input name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
 											 [(ngModel)]="options" [ngModelOptions]="{standalone: true}" [checked]='true'>
 										</label>
@@ -253,8 +253,9 @@
 										<div class="col-xs-12">
 										   <div class="col-xs-2 col-sm-2 col-md-2"></div> 
 											<div class="col-xs-10 col-sm-10 col-md-10">
-											<label class="radio-inline"> 
-											 <input name="options" (click)="selectedOwnThumnailOption()" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"> 
+											<label class="radio-inline" style="cursor:pointer"> 
+											 <input name="options" (click)="selectedOwnThumnailOption()" type="radio" 
+											  [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="cursor:pointer"> 
 											 <strong>Or: Upload your own Thumbnail</strong>
 											</label>
 										</div>
@@ -521,7 +522,7 @@
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>
-												<div style="float: left;margin-right: 10px;">
+												<div style="float: left;margin-right: 10px;cursor:pointer">
 													<span><input id ="names" type="checkbox" formControlName="name"
 													(change)="callToActionNames()"></span>
 												</div> Ask for First and Last name
@@ -534,7 +535,7 @@
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>
-												<div style="float: left;margin-right: 10px;"> 
+												<div style="float: left;margin-right: 10px; cursor:pointer"> 
 													<span><input id="isSkiped" type="checkbox" formControlName="skip" 
 													(change)="allowViewersToSkipped()" #isSkip></span>
 												</div> Allow viewers to skip

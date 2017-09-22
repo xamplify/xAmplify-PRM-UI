@@ -146,14 +146,21 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.refService.uploadRetrivejsCalled = true;
             }
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
-            if (this.refService.isEnabledCamera === false) {
+            if (this.refService.isEnabledCamera === false && !this.isIE()) {
                 this.checkCameraBlock();
                 this.refService.isEnabledCamera = true;
-            }
+            } else if (this.isIE()) { this.refService.cameraIsthere = true; }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
     }
+    isIE() {
+        const isInternetExplorar = navigator.userAgent;
+        /* MSIE used to detect old browsers and Trident used to newer ones*/
+        const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+        return is_ie;
+    }
+
     checkMimeTypes(isSupportfile: string) {
         if (isSupportfile === 'video/mp4') {
             this.videoDisabled = false;
@@ -414,7 +421,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 'No permission to access the camera, please enable the camera and refresh the page once you enable it!',
                 'error');
         }
-        if (this.refService.cameraIsthere && this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+        if ( this.refService.cameraIsthere && this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
             this.camera = true;
             this.isDisable = true;
