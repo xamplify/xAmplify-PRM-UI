@@ -495,6 +495,7 @@ export class DashboardComponent implements OnInit {
     
     cancelEmailStateModalPopUp(){
       this.pagination = new Pagination();
+      this.pagination.pageIndex = 1;
     }
     
     ngOnInit() {

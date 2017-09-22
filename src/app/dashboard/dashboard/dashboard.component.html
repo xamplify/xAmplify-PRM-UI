@@ -667,20 +667,7 @@ input[type=radio] {
 										</div>
 									</div>
 								</div>
-								<!-- <div class="col-xs-3 sparkline-chart" (click)="listEmailLogsByUserIdAndActionId(14)" title="view emailGifClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailGifClickedModal">
-									<div class="visual">
-										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
-									</div>
-									<div class="details">
-									 <div class="number" style="color: #b0dcc1; margin-top: 5px;">
-											<h4>
-											<b>{{dashboardReport.totalEmailGifClickedCount}}</b>
-											<br>
-											<span class="email-action-desscription">gif clicked</span></h4>
-										</div>
-									</div>
-								</div> -->
-								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailClickedLogs(newPagination)" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
+								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailClickedLogs()" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 									<div class="visual">
 										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
 									</div>
@@ -693,7 +680,7 @@ input[type=radio] {
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfWatchedLogs(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
+								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfWatchedLogs()" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
 									<div class="visual">
 										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
 									</div>
@@ -724,6 +711,7 @@ input[type=radio] {
     					<div class="modal-content">
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+     						 <h4 align="center">People who opened Emails</h4>
      						 </div>
      					 <div class="modal-body">
      					 	<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
@@ -786,10 +774,7 @@ input[type=radio] {
     					<div class="modal-content">
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        							<!-- <div><img src = "assets/images/google.jpg"
-        								 alt = "Picture of a happy monkey" style="height:55px" width="90px" />
-        							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-7%"><b>Email Opened Data</b></h4></div> -->
-     						<h4 align="center">Email Clicked Data</h4>
+     						<h4 align="center">People who clicked Emails</h4>
      						 </div>
      					 <div class="modal-body">
      					 <div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">
@@ -855,7 +840,7 @@ input[type=radio] {
         							<!-- <div><img src = "assets/images/google.jpg"
         								 alt = "Picture of a happy monkey" style="height:55px" width="90px" />
         							<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top:-7%"><b>Email Opened Data</b></h4></div> -->
-     						<h4 align="center">Email Watched Data</h4>
+     						<h4 align="center">People who watched videos</h4>
      						 </div>
      					 <div class="modal-body">
      					 <div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info" style="width:100%">

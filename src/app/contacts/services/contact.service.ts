@@ -101,35 +101,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
-/*    loadActiveContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadActiveContact() completed" );
-        return this._http.post( this.url + "contacts/" + contactListId + "?contactType=active" + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadNonActiveContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadNonActiveContact() completed" );
-        return this._http.post( this.url + "contacts/" + contactListId + "?contactType=non-active" + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadInvalidContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadInvalidContact() completed" );
-        return this._http.post( this.url + "contacts/" + contactListId + "?contactType=invalid" + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    loadUnSubscribedContactsUsers( contactListId: number, pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadUnSubscribedContact() completed" );
-        return this._http.post( this.url + "contacts/" + contactListId + "?contactType=all" + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }*/
-
+ 
     deleteContactList( contactListId: number ) {
         return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
             .map( this.extractData )
@@ -276,36 +248,6 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    /*zohoContactsSynchronize( contactListId: number, socialContact: SocialContact ): Observable<Response> {
-        var requestoptions = new RequestOptions( {
-            body: socialContact,
-        })
-        var headers = new Headers();
-        headers.append( 'Content-Type', 'application/json' );
-        var options = {
-            headers: headers
-        };
-        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id;
-        return this._http.post( url, options, requestoptions )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    salesforceContactsSynchronize( contactListId: number, socialContact: SocialContact ): Observable<Response> {
-        var requestoptions = new RequestOptions( {
-            body: socialContact,
-        })
-        var headers = new Headers();
-        headers.append( 'Content-Type', 'application/json' );
-        var options = {
-            headers: headers
-        };
-        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.user.id;
-        return this._http.post( url, options, requestoptions )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    */
     checkingZohoAuthentication() {
         this.logger.info( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token );
         return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.user.id)
