@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     userActive = false;
     passwordSuccess = false;
     isLoading:boolean = false;
+    emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     countries = ["---Please Select Country---","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
                  
                  "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegowina","Botswana","Bouvet Island","Brazil",
@@ -234,7 +235,6 @@ export class LoginComponent implements OnInit {
     }
 
     buildForm() {
-    	var emailRegex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
         var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';// 
         var addressRegex =  /^[a-zA-Z0-9-\/] ?([a-zA-Z0-9-\/]|[a-zA-Z0-9-\/] )*[a-zA-Z0-9-\/]$/;
        // var cityRegEx = /^[a-zA-z] ?([a-zA-z]|[a-zA-z] )*[a-zA-z]$/;
@@ -242,7 +242,7 @@ export class LoginComponent implements OnInit {
         //var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
         this.signUpForm = this.fb.group( {
             'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],//Validators.pattern(nameRegEx)
-            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( emailRegex )]],
+            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( this.emailRegEx )]],
             'address': [this.signUpUser.address,  Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),])],//Validators.pattern(nameRegEx)
             'city': [this.signUpUser.city, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 ),Validators.pattern(cityRegEx)])],
             'country': [this.countries[0],  Validators.compose([Validators.required,validateCountryName])],
@@ -261,9 +261,8 @@ export class LoginComponent implements OnInit {
     }
 
     validateForgotPasswordForm() {
-        var emailRegex = '^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$';
         this.forgotPasswordForm = this.fb.group( {
-            'forgotPasswordEmailId': [null, [Validators.required, Validators.pattern( emailRegex )]]
+            'forgotPasswordEmailId': [null, [Validators.required, Validators.pattern( this.emailRegEx )]]
         });
 
         this.forgotPasswordForm.valueChanges

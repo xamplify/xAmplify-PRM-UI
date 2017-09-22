@@ -204,6 +204,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     ngOnDestroy() {
         this.isCampaignDeleted = false;
         this.refService.campaignSuccessMessage = "";
+        swal.close();
         
     }
     

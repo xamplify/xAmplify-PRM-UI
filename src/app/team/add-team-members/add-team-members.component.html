@@ -58,7 +58,7 @@
 		<hr>
 		<br>
 
-		<div class="portlet light" *ngIf="teamMemberUi.emptyTable && pagination.totalRecords==0">
+	<!-- 	<div class="portlet light" *ngIf="teamMemberUi.emptyTable && pagination.totalRecords==0">
 			<div class="portlet-body">
 				<div class="empty-box"></div>
 				<div class="empty-box-content text-center">
@@ -69,11 +69,11 @@
 					<p>Fill in your team page by inviting or adding team members.</p>
 					<p>The invited team members will receive an email with a link
 						to create their profiles</p>
-					<!-- <button class="btn btn-primary">Add new</button> -->
+					<button class="btn btn-primary">Add new</button>
 				</div>
 				<div class="empty-box"></div>
 			</div>
-		</div>
+		</div> -->
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 			<div class="portlet box blue" *ngIf="!teamMemberUi.emptyTable">
 				<div class="portlet-title">
@@ -137,7 +137,7 @@
 				</div>
 			</div>
 			<!-- ---------------List Of Team Members -->
-			<div class="portlet box blue">
+			<div class="portlet box blue" *ngIf="teamMemberUi.emptyTable">
 				<div class="portlet-title">
 					<div class="caption">Team Members List</div>
 						<div class="tools">
@@ -181,7 +181,7 @@
 									<th>
 										<i class="fa fa-envelope" aria-hidden="true"></i><br>Email
 									</th>
-									<th (click)="deleteAll()">
+									<th *ngIf="pagination.totalRecords>0" (click)="deleteAll()">
 										<a style="color: black;"><i class="fa fa-trash" aria-hidden="true"></i><br>Delete</a>
 									</th>
 								</tr>

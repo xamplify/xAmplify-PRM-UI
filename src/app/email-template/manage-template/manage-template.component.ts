@@ -289,6 +289,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.refService.isCreated = false;
         this.refService.isUpdated = false;
         this.message = "";
+        swal.close();
         
     }
 }

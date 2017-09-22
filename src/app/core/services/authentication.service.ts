@@ -9,7 +9,7 @@ import { User } from '../models/user';
 import { Role } from '../models/role';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-
+declare var swal: any;
 @Injectable()
 export class AuthenticationService {
     public access_token: string;
@@ -27,7 +27,7 @@ export class AuthenticationService {
     constructor( private http: Http, private router: Router, private utilService: UtilService ) {
         this.APP_URL = 'https://xtremand.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
-      // this.REST_URL = "http://localhost:8080/xtremand-rest/";
+       //this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = 'https://aravindu.com/vod/';
     }
 
@@ -117,5 +117,6 @@ export class AuthenticationService {
         this.refresh_token = null;
         localStorage.removeItem( 'currentUser' );
         this.utilService.topnavBareLoading = false;
+        swal.close();
     }
 }

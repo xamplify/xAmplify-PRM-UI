@@ -372,7 +372,7 @@ export class AddTeamMembersComponent implements OnInit {
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
             }else{
                 this.removeAllRoles(team);
-                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
+                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",false);
             }
         }catch(error){
             this.showUIError(error);
