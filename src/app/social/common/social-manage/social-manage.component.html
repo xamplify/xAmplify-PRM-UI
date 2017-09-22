@@ -36,11 +36,15 @@
 	                    <div class="caption">
 	                      <div class="col-xs-12">
 	                        <i class="fa fa-check" aria-hidden="true" *ngIf="socialConnection.active"></i>
-	                        <h5 class="caption-subject uppercase text-center">{{socialConnection.profileName}}</h5>
-	                        <h5 class="caption-subject uppercase text-center" *ngIf="socialConnection.source == 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
+	                        <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
+
+                        	<ng-template class="caption-subject uppercase text-center" #profileName>{{socialConnection.profileName}}</ng-template>
+							<ng-template class="caption-subject uppercase text-center" #fullName>{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</ng-template>
+
 	                        <i class="fa fa-social pull-right"
 	                          [ngClass]="{'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK', 
-	                          'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER'}"></i>
+	                          'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER',
+	                          'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
 	                      </div>
 	                    </div>
 	                  </div>

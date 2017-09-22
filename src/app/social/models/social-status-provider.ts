@@ -8,6 +8,8 @@ export class SocialStatusProvider {
 
     profileImagePath: string;
     profileName: string;
+    firstName: string;
+    lastName: string;
     selected: boolean = false;
 
     createdTime: Date;

@@ -230,30 +230,46 @@ export class UpdateStatusComponent implements OnInit {
     initializeSocialStatus() {
         this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
         this.socialStatus.id = null;
-        this.socialStatus.statusMessage = "";
+        this.socialStatus.statusMessage = '';
         this.socialStatus.shareNow = true;
 
         this.listSocialStatusProviders();
+    }
+    
+    listSocialConnections() {
+        this.socialService.listAccounts( this.userId, 'ALL', 'ALL' )
+            .subscribe(
+            result => {
+                this.socialService.socialConnections = result;
+            },
+            error => console.log( error ),
+            () => {
+                this.initializeSocialStatus();
+            });
     }
 
     listSocialStatusProviders() {
         const socialConnections = this.socialService.socialConnections;
         this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
         for ( const i in socialConnections ) {
-            let socialStatusProvider = new SocialStatusProvider();
+            if(socialConnections[i].active){
+                let socialStatusProvider = new SocialStatusProvider();
 
-            socialStatusProvider.providerId = socialConnections[i].profileId;
-            socialStatusProvider.providerName = socialConnections[i].source;
-            socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
-            socialStatusProvider.profileName = socialConnections[i].profileName;
+                socialStatusProvider.providerId = socialConnections[i].profileId;
+                socialStatusProvider.providerName = socialConnections[i].source;
+                socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
+                socialStatusProvider.profileName = socialConnections[i].profileName;
+                socialStatusProvider.firstName = socialConnections[i].firstName;
+                socialStatusProvider.lastName = socialConnections[i].lastName;
 
-            if ( ( 'TWITTER' === socialConnections[i].source ) ) {
-                socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
-                socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
-            } else {
-                socialStatusProvider.accessToken = socialConnections[i].accessToken;
+                if ( ( 'TWITTER' === socialConnections[i].source ) ) {
+                    socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
+                    socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
+                } else {
+                    socialStatusProvider.accessToken = socialConnections[i].accessToken;
+                }
+                this.socialStatus.socialStatusProviders.push( socialStatusProvider );
             }
-            this.socialStatus.socialStatusProviders.push( socialStatusProvider );
         }
     }
     openListVideosModal() {
@@ -340,20 +356,6 @@ export class UpdateStatusComponent implements OnInit {
     showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
     hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
 
-    /*    getFacebookAccounts() {
-            this.facebookService.listAccounts( localStorage.getItem( 'facebook' ) )
-                .subscribe(
-                data => {
-                    for ( var i in data ) {
-                        this.socialStatus.socialStatusProviders.push(data[i]);
-                    }
-                },
-                error => console.log( error ),
-                () => console.log( 'getAccounts() Finished.' )
-                );
-    
-        }*/
-
     getUserProfileImage( userId: string ) {
         this.facebookService.getUserProfileImage( userId )
             .subscribe(
@@ -374,7 +376,9 @@ export class UpdateStatusComponent implements OnInit {
         this.userId = this.authenticationService.getUserId();
         this.listEvents();
         this.constructCalendar();
-        this.initializeSocialStatus();
+        
+        this.listSocialConnections();
+        
         $( "#schedule-later-div" ).hide();
     }
 

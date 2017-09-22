@@ -4,7 +4,7 @@ import {SocialStatusProvider} from './social-status-provider';
 export class SocialStatus{
     id: number;
     userId: number;
-    statusMessage: string;
+    statusMessage: string='';
     scheduledTimeServer: Date;
     scheduledTimeUser: Date;
     timeZone: string;

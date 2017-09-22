@@ -12,42 +12,6 @@
 	margin: 0.4em;
 }
 
-.btn-facebook {
-	background-color: #3b5998
-}
-
-.btn-twitter {
-	background-color: #1da1f2
-}
-
-.btn-google {
-	background-color: #d95535
-}
-
-.btn-linkedin {
-	background-color: #0077B5
-}
-
-.btn-facebook.active, .btn-facebook:active, .btn-facebook:focus,
-	.btn-facebook:hover {
-	background-color: #30487b
-}
-
-.btn-twitter.active, .btn-twitter:active, .btn-twitter:focus,
-	.btn-twitter:hover {
-	background-color: #259be4
-}
-
-.btn-google.active, .btn-google:active, .btn-google:focus, .btn-google:hover
-	{
-	background-color: #d54724
-}
-
-.btn-linkedin.active, .btn-linkedin:active, .btn-linkedin:focus,
-	.btn-linkedin:hover {
-	background-color: #17709e
-}
-
 .btn-social :first-child {
 	position: absolute;
 	left: 0;

@@ -35,7 +35,9 @@ export class SocialManageComponent implements OnInit {
                 this.response = 'success';
             },
             error => console.log( error ),
-            () => console.log( 'save() Complete' ) );
+            () => {
+                this.socialService.socialConnections = this.socialConnections;
+            } );
 
     }
     
