@@ -105,20 +105,20 @@ export class CampaignService {
         .catch( this.handleError );
     }
     
-    usersWatchList(campaignId: number, pageNumber: number ){
-        return this.http.get( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&pageNumber='+pageNumber)
+    usersWatchList(campaignId: number, pagination: Pagination ){
+        return this.http.post( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token, pagination)
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    emailActionList(campaignId: number, actionId: number, pageNumber: number ){
-        return this.http.get( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&actionId='+actionId+'&pageNumber='+pageNumber)
+    emailActionList(campaignId: number, actionType: string, pagination: Pagination ){
+        return this.http.post( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'/'+actionType+'?access_token=' + this.authenticationService.access_token, pagination)
         .map( this.extractData )
         .catch( this.handleError );
     }
     
-    listCampaignViews(campaignId: number, pageNumber: number ) {
-        return this.http.get( this.URL + 'campaignviews/'+campaignId+'?access_token=' + this.authenticationService.access_token+'&pageNumber='+pageNumber)
+    listCampaignViews(campaignId: number, pagination: Pagination ) {
+        return this.http.post( this.URL + 'campaign/views/'+campaignId+'?access_token=' + this.authenticationService.access_token, pagination)
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -44,8 +44,8 @@ export class AnalyticsComponent implements OnInit {
         this.isTimeLineView = !this.isTimeLineView;
     }
 
-    listCampaignViews( campaignId: number, pageNumber: number ) {
-        this.campaignService.listCampaignViews( campaignId, pageNumber )
+    listCampaignViews( campaignId: number, pagination: Pagination) {
+        this.campaignService.listCampaignViews( campaignId, pagination )
             .subscribe(
             data => {
                 this.campaignViews = data.campaignviews;
@@ -78,7 +78,7 @@ export class AnalyticsComponent implements OnInit {
             },
             error => console.log( error ),
             () => {
-                this.listCampaignViews( campaignId, 1 );
+                this.listCampaignViews( campaignId, this.campaignViewsPagination );
             }
             )
     }
@@ -172,8 +172,8 @@ export class AnalyticsComponent implements OnInit {
         )
     }
     
-    usersWatchList(campaignId: number, pageNumber: number){
-        this.campaignService.usersWatchList( campaignId, pageNumber )
+    usersWatchList(campaignId: number, pagination: Pagination ){
+        this.campaignService.usersWatchList( campaignId, pagination )
         .subscribe(
         data => {
             this.campaignReport.usersWatchList = data.data;
@@ -190,33 +190,33 @@ export class AnalyticsComponent implements OnInit {
         if(type === 'campaignViews'){
             if (page !== this.campaignViewsPagination.pageIndex) {
                 this.campaignViewsPagination.pageIndex = page;
-                this.listCampaignViews(this.campaign.campaignId, page);
+                this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
             }
         }else if(type === 'emailAction'){
             if (page !== this.emailActionListPagination.pageIndex) {
                 this.emailActionListPagination.pageIndex = page;
-                if(this.campaignReport.emailActionId == 13 || this.campaignReport.emailActionId == 15)
-                    this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionId, page);
+                if(this.campaignReport.emailActionType == 'open' || this.campaignReport.emailActionType == 'click')
+                    this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
             }
         }else if(type === 'usersWatch'){
             if (page !== this.usersWatchListPagination.pageIndex) {
                 this.usersWatchListPagination.pageIndex = page;
-                this.usersWatchList(this.campaign.campaignId, page);
+                this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
             }
         }
     }
     
-    emailActionList(campaignId: number, actionId: number, pageNumber: number){
-        this.campaignService.emailActionList( campaignId, actionId, pageNumber )
+    emailActionList(campaignId: number, actionType: string, pagination: Pagination ){
+        this.campaignService.emailActionList( campaignId, actionType, pagination )
         .subscribe(
         data => {
             this.campaignReport.emailActionList = data;
-            this.campaignReport.emailActionId = actionId;
+            this.campaignReport.emailActionType = actionType;
             $('#emailActionListModal').modal();
             
-            if(actionId == 13)
+            if(actionType == 'open')
                 this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
-            else if(actionId = 15)
+            else if(actionType == 'click')
                 this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
             
             this.emailActionListPagination = this.pagerService.getPagedItems( this.emailActionListPagination, this.campaignReport.emailActionList );

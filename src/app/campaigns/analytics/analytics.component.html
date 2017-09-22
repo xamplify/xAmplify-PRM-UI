@@ -47,7 +47,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaign.regularEmail, 'col-xs-6 col-sm-3': !campaign.regularEmail}">
-			<button class="portlet light border-radius-0 color2-invert crcb" (click)="emailActionList(campaign.campaignId, 13, 1)" [disabled]="campaignReport.emailOpenCount < 1">
+			<button class="portlet light border-radius-0 color2-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)" [disabled]="campaignReport.emailOpenCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailOpenCount}}</b>
@@ -57,7 +57,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaign.regularEmail, 'col-xs-6 col-sm-3': !campaign.regularEmail}">
-			<button class="portlet light border-radius-0 color3-invert crcb" (click)="emailActionList(campaign.campaignId, 15, 1)" [disabled]="campaignReport.emailClickedCount < 1">
+			<button class="portlet light border-radius-0 color3-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)" [disabled]="campaignReport.emailClickedCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailClickedCount}}</b>
@@ -67,7 +67,7 @@
 			</button>
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="! campaign.regularEmail">
-			<button class="portlet light border-radius-0 color2-invert crcb" (click)="usersWatchList(campaign.campaignId, 1)" [disabled]="campaignReport.usersWatchCount < 1">
+			<button class="portlet light border-radius-0 color2-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)" [disabled]="campaignReport.usersWatchCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.usersWatchCount}}</b>
@@ -391,8 +391,8 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionId === 13">Users who opened the email</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionId === 15">Users who clicked the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Users who opened the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Users who clicked the email</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">

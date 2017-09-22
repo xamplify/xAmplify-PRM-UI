@@ -20,6 +20,6 @@ export class CampaignReport {
     emailSentList: any;
     usersWatchList: any;
 
-    emailActionId: number;
+    emailActionType: string;
     emailActionList: any;
 }
