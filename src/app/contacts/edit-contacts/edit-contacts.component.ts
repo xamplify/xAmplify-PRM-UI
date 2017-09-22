@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
+import { CustomeResponse } from '../models/response';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
@@ -51,8 +52,7 @@ export class EditContactsComponent implements OnInit {
     showSelectedCategoryUsers: boolean = true;
     isShowUsers: boolean = true;
     public users: Array<User>;
-    public responseType: string;
-    public responseMessage: string;
+    response: CustomeResponse = new CustomeResponse();
  
     dublicateEmailId: boolean = false;
     noOfContactsDropdown : boolean = true;
@@ -148,7 +148,7 @@ export class EditContactsComponent implements OnInit {
 
     fileChange( input: any ) {
         this.uploadCsvUsingFile = true;
-        this.responseType = null;
+        this.response.responseType = null;
         this.fileTypeError = false;
         this.noContactsFound = false;
         this.readFiles( input.files );
@@ -334,8 +334,8 @@ export class EditContactsComponent implements OnInit {
     }
     
     setResponseDetails(responseType: string, responseMessage: string){
-        this.responseType = responseType;
-        this.responseMessage = responseMessage;
+        this.response.responseType = responseType;
+        this.response.responseMessage = responseMessage;
     }
     
     removeContactListUsers( contactListId: number ) {
@@ -780,7 +780,7 @@ export class EditContactsComponent implements OnInit {
               ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
                 this.setResponseDetails('ERROR',error);
-                this.responseMessage = error;
+                this.response.responseMessage = error;
                 this.invalidDeleteErrorMessage = true;
                 }
                 },
@@ -991,8 +991,8 @@ export class EditContactsComponent implements OnInit {
     }
     
    resetResponse(){
-       this.responseType = null;
-       this.responseMessage = null;
+       this.response.responseType = null;
+       this.response.responseMessage = null;
    }
       
     ngOnInit() {

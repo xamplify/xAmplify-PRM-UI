@@ -165,19 +165,19 @@ a.disabled {
 			</div>
 		</div>
 	</div>
-		<div *ngIf="responseType != null">
+		<div *ngIf="response.responseType != null">
 					<div class="alert alert-dismissible" role="alert"
-						[ngClass]="{'alert-success': responseType == 'SUCCESS',
-  									'alert-danger': responseType == 'ERROR'}">
+						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+  									'alert-danger': response.responseType == 'ERROR'}">
 						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close" (click)="responseType = null">
+							aria-label="Close" (click)="response.responseType = null">
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<h4 class="flex" style="padding-top: 10px;">
 							<i class="fa"
-								[ngClass]="{'fa-check': responseType == 'SUCCESS',
- 								 'fa-exclamation': responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{responseMessage}}</span>
+								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+ 								 'fa-exclamation': response.responseType == 'ERROR'}"
+								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
 						</h4>
 					</div>
 				</div>
@@ -520,7 +520,7 @@ a.disabled {
   				<strong>Success!</strong> your contacts hasbeen deleted successfully.
 			</div>
 			<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
-  				<strong>Danger!</strong>{{responseMessage}}
+  				<strong>Danger!</strong>{{response.responseMessage}}
 			</div>
 	</div>
 	<div class="col-md-12" style="margin-top: 12px"

@@ -3,6 +3,7 @@ import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
+import { CustomeResponse } from '../models/response';
 import { Router, NavigationExtras } from "@angular/router";
 import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -46,7 +47,7 @@ export class ManageContactsComponent implements OnInit {
     showEdit: boolean;
     
     
-    
+    response: CustomeResponse = new CustomeResponse();
     invalidRemovableContacts = [];
     allselectedUsers = [];
     isInvalidHeaderCheckBoxChecked:boolean = false;
@@ -145,13 +146,15 @@ export class ManageContactsComponent implements OnInit {
         this.access_token = this.authenticationService.access_token;
         this.logger.info( "successmessageLoad" + this.contactService.successMessage )
         if ( this.contactService.successMessage == true ) {
-            this.show = this.contactService.successMessage;
-            setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );
+            /*this.show = this.contactService.successMessage;
+            setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
+            this.setResponseDetails('SUCCESS', 'your contact List has been created successfully');
             this.logger.info( "Success Message in manage contact pape" + this.show );
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
-            this.deleteUserSucessMessage = this.contactService.deleteUserSucessMessage;
-            setTimeout( function() { $( "#showDeleteUserMessage" ).slideUp( 500 ); }, 2000 );
+            /*this.deleteUserSucessMessage = this.contactService.deleteUserSucessMessage;
+            setTimeout( function() { $( "#showDeleteUserMessage" ).slideUp( 500 ); }, 2000 );*/
+            this.setResponseDetails('ERROR', 'your contact List has been deleted successfully');
             this.logger.info( " delete Success Message in manage contact pape" + this.show );
         }
         this.noSaveButtonDisable = true;
@@ -229,8 +232,9 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsCount();
                 $( '#contactListDiv_' + contactListId ).remove();
                 this.loadContactLists( this.pagination );
-                this.deleteSucessMessage = true;
-                setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
+                /*this.deleteSucessMessage = true;
+                setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );*/
+                this.setResponseDetails('SUCCESS', 'your contact List has been deleted successfully');
                 if (this.pagination.pagedItems.length === 1) {
                     this.isvideoThere = true;
                     this.pagination.pageIndex  = 1;
@@ -240,9 +244,10 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    this.Campaign = error;
-                    this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    //this.Campaign = error;
+                    /*this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );*/
+                    this.setResponseDetails('ERROR', error);
                 }
                 console.log( error );
             },
@@ -348,8 +353,9 @@ export class ManageContactsComponent implements OnInit {
             data => {
                 data
                 swal.close();
-                this.synchronizationSucessMessage = true;
-                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );
+                /*this.synchronizationSucessMessage = true;
+                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );*/
+                this.setResponseDetails('SUCCESS', 'your contactList sychronized successfully');
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
@@ -665,9 +671,10 @@ export class ManageContactsComponent implements OnInit {
                     data => {
                         data = data;
                         this.navigateToManageContacts();
-                        this.show = true;
                         this.allselectedUsers.length = 0;
-                        setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );
+                        /*this.show = true;
+                        setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
+                        this.setResponseDetails('SUCCESS', 'your contact List created successfully');
                     },
 
                     error => this.logger.info( error ),
@@ -765,6 +772,8 @@ export class ManageContactsComponent implements OnInit {
     
     listContactsByType(contactType: string){
         this.contactsByType.isLoading = true;
+        this.response.responseType = null;
+        this.response.responseMessage = null;
         this.resetListContacts();
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
@@ -866,6 +875,7 @@ export class ManageContactsComponent implements OnInit {
     
     navigateToManageContacts(){
         this.searchKey = null;
+        this.response.responseType = null;
         this.resetPagination();
         
         this.contactsByType.pagination = new Pagination();
@@ -879,6 +889,11 @@ export class ManageContactsComponent implements OnInit {
         this.selectedInvalidContactIds = [];
         this.invalidRemovableContacts = [];
         this.invalidDeleteSucessMessage = false;
+    }
+    
+    setResponseDetails(responseType: string, responseMessage: string){
+        this.response.responseType = responseType;
+        this.response.responseMessage = responseMessage;
     }
 
     ngOnInit() {

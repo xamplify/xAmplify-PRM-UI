@@ -324,11 +324,12 @@ color:blue;
 					   				(click)="clipboardShowPreview()">SHOW PREVIEW
 					   			</button>
 						   </div>
-						   <div class="col-xs-12">
-						   <textarea id="copyFromclipTextArea" [(ngModel)]="clipboardTextareaText"
+						   <div class="col-xs-12 col-sm-6" style="width:100%;">
+						   <textarea id="copyFromclipTextArea" [(ngModel)]="clipboardTextareaText" 
 										placeholder="EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName.."
 										[ngModelOptions]="{standalone: true}"
-										style="height: 150px; font-size: 12px; line-height: 1.4;min-width:100%;max-width:100%;margin-top: 8px;"
+										style="resize:none;height: 150px; font-size: 12px; line-height: 1.4;min-width:100% !important;
+										max-width:100% !important;margin-top: 8px; width:450px!important;"
 										required="required">
 									</textarea>
 						   </div>
