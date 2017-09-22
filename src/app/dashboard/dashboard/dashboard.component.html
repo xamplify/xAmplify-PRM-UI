@@ -2,6 +2,16 @@
 b, strong {
     font-weight: 500;
 }
+ a.disabled {
+   pointer-events: none;
+   cursor:not-allowed;
+}
+
+.disabled{
+pointer-events:none;
+cursor: not-allowed;
+}
+
 .social-disable{
 	color: #e2e2e2 !important;
 }
@@ -228,14 +238,14 @@ input[type=radio] {
         </div>
         <div class="col-xs-6" style="padding: 5px 10px;" *ngIf="hasCampaignRole">
 		  <a><i style="font-size: 1.3em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
-          <a [routerLink]="['/home/campaigns/select-campaign']" class="btn btn-sm btn-primary color1 pull-right">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select-campaign']" class="btn btn-sm btn-primary color1 pull-right" >Create Campaign</a>
         </div>
 	</div>
 </div>
 <div class="portlet-body">
 	<section *ngFor="let campaign of campaigns; let i=index">
 		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-			<div class="portlet light border-radius-0 campaign-div" [routerLink]="['/home/campaigns/', campaign[0], 'details']">
+			<div class="portlet light border-radius-0 campaign-div" [routerLink]="['/home/campaigns/', campaign[0], 'details']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="portlet-title">
 					<div class="caption">
 						<h3 class="caption-subject" style="margin: 0;color: #909090 !important;">
@@ -278,7 +288,7 @@ input[type=radio] {
 	<div class="row">
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter blue-soft"
-				[routerLink]="['./views_report']">
+				[routerLink]="['./views_report']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-eye"></i>
 				</div>
@@ -290,7 +300,7 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter red-soft"
-				[routerLink]="['../../videos/manage_videos']">
+				[routerLink]="['../../videos/manage_videos']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-cloud-upload"></i>
 				</div>
@@ -303,7 +313,7 @@ input[type=radio] {
 
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter yellow-gold"
-				[routerLink]="['../../contacts/manageContacts']">
+				[routerLink]="['../../contacts/manageContacts']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
 				</div>
@@ -315,7 +325,7 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft"
-				[routerLink]="['../../emailtemplate']">
+				[routerLink]="['../../emailtemplate']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-smile-o"></i>
 				</div>
@@ -327,7 +337,7 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter blue-sharp"
-				[routerLink]="['../../campaigns/managepublish']">
+				[routerLink]="['../../campaigns/managepublish']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-user-secret"></i>
 				</div>
@@ -339,7 +349,7 @@ input[type=radio] {
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
-				[routerLink]="['../../social/manage/all']">
+				[routerLink]="['../../social/manage/all']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-share"></i>
 				</div>
@@ -357,7 +367,7 @@ input[type=radio] {
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
 				*ngIf="socialConnection.source === 'TWITTER'">
 				<a
-					[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
+					[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null">
 					<div class="dashboard-stat2">
 						<div class="display">
 							<div class="number">
@@ -411,7 +421,7 @@ input[type=radio] {
 				<div class="dashboard-stat2 ">
 					<div class="display">
 						<a
-							[routerLink]="['../../social/facebook-posts', socialConnection.profileId]">
+							[routerLink]="['../../social/facebook-posts', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null">
 							<div class="number">
 								<h3 class="font-blue-steel">
 									<span data-counter="counterup" data-value="567">
@@ -517,7 +527,7 @@ input[type=radio] {
 					<div class="clearfix" style="margin-top: 15px;">
 						<section *ngFor="let socialConnection of socialConnections">
 							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
-								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
+								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null"
 									style="text-decoration: none;">
 									<div class="twitter-color text-center">
 										<div class="visual ">
@@ -644,7 +654,7 @@ input[type=radio] {
 						</div>
 						<div class="portlet-body">
 							<div class="row">
-								<div class="col-xs-4 sparkline-chart" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
+								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
 									<div class="visual">
 										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png" title="view emailOpened data" >
 									</div>
@@ -670,7 +680,7 @@ input[type=radio] {
 										</div>
 									</div>
 								</div> -->
-								<div class="col-xs-4 sparkline-chart" (click)="listOfEmailClickedLogs(newPagination)" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
+								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailClickedLogs(newPagination)" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 									<div class="visual">
 										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
 									</div>
@@ -683,7 +693,7 @@ input[type=radio] {
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-4 sparkline-chart" (click)="listOfWatchedLogs(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
+								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfWatchedLogs(newPagination)" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
 									<div class="visual">
 										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
 									</div>

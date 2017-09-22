@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit {
     public emailClickedPagination = new Pagination;
     public emailWatchedPagination = new Pagination;
     hasCampaignRole:boolean = false;
+    hasStatsRole:boolean = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public emailOpenedPagination: Pagination, public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -64,6 +65,7 @@ export class DashboardComponent implements OnInit {
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
+        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
     }
 
     genderDemographics(userId: number) {
