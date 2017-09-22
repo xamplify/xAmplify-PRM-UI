@@ -443,6 +443,7 @@ export class ManageContactsComponent implements OnInit {
     
     update(user:User) {
         this.navigateToManageContacts();
+        this.contactsCount();
         this.showAll = true;
         this.showEdit = false;
         $( "#pagination" ).show();

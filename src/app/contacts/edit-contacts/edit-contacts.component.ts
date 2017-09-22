@@ -46,6 +46,7 @@ export class EditContactsComponent implements OnInit {
     invalidDeleteSuccessMessage: boolean = false;
     invalidDeleteErrorMessage: boolean = false;
     
+    uploadCsvUsingFile: boolean = false;
     contactsByType: ContactsByType = new ContactsByType();
     showSelectedCategoryUsers: boolean = true;
     isShowUsers: boolean = true;
@@ -146,6 +147,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     fileChange( input: any ) {
+        this.uploadCsvUsingFile = true;
         this.responseType = null;
         this.fileTypeError = false;
         this.noContactsFound = false;
@@ -314,7 +316,8 @@ export class EditContactsComponent implements OnInit {
                         this.setResponseDetails('SUCCESS', 'your contacts has been saved successfully');
                         
                         this.users = [];
-                        $( "#uploadCsvUsingFile" ).hide();
+                        this.uploadCsvUsingFile = false;
+                        this.uploader.queue.length = 0;
                         this.filePrevew = false;
                         this.isShowUsers = true;
                         this.removeCsv();
@@ -705,7 +708,7 @@ export class EditContactsComponent implements OnInit {
         this.showEditContactData = true;
         this.selectedInvalidContactIds = [];
         this.selectedContactListIds = [];
-        $( "#uploadCsvUsingFile" ).hide();
+        this.uploadCsvUsingFile = false;
         this.showSelectedCategoryUsers = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.resetResponse();
