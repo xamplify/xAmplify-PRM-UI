@@ -170,4 +170,16 @@ export class ReferenceService {
             return false;
         }
     }
+    returnDuplicates(names:string[]){
+        var uniq = names
+        .map((name) => {
+          return {count: 1, name: name}
+        })
+        .reduce((a, b) => {
+          a[b.name] = (a[b.name] || 0) + b.count
+          return a
+        }, {})
+
+       return Object.keys(uniq).filter((a) => uniq[a] > 1)
+    }
 }

@@ -17,9 +17,23 @@
 		<div class="alert alert-danger" *ngIf="uiError?.length>0" id="ui-error-div">
 	  		<strong>{{uiError}}</strong> 
 		</div>
-		<div class="alert alert-danger" *ngIf="teamMemberUi.emptyRolesLength>0" id="empty-roles-div">
-	  		<strong>Please assign atleast one role to team member</strong> 
+		<div class="alert alert-danger"  id="empty-roles-div" style="display: none;">
+			<a (click)="referenceService.hideDiv('empty-roles-div')" class="close" aria-label="close">x</a>
+	  		<strong>{{errorMessage}}</strong> 
 		</div>
+		<div class="alert alert-danger" *ngIf="csvErrors?.length>0" id="csv-error-div">
+			<div class="container">
+				<table class="table">
+				<ng-container *ngFor="let error of csvErrors">
+		  			<tr>
+						<td style="text-align: center;font-weight:bold">{{error}}</td>
+					</tr>
+					<hr>
+		  		</ng-container>
+				</table>
+	  		</div>	
+		</div>
+	
 		<div class="alert alert-success"  id="team-member-success-div" style="display: none;">
 			<a (click)="referenceService.hideDiv('team-member-success-div')" class="close" aria-label="close">x</a>
 	  		<strong>{{successMessage}}</strong> 
@@ -51,9 +65,10 @@
 				
 				<button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
 				<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
-				
+				<br><br><br>
 			</form>
 		</div>
+			<input type="file" *ngIf="teamMemberUi.emptyTable"    #fileImportInput      name="File Upload"  class="btn btn-primary"     id="txtFileUpload"   accept=".csv" (change)="fileChangeListener($event)" />
 		<br>
 		<hr>
 		<br>

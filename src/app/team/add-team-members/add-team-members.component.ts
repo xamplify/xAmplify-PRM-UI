@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild} from '@angular/core';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { FileUtil } from '../../core/models/file-util';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TeamMember } from '../models/team-member';
@@ -15,11 +16,12 @@ declare var $,swal :any ;
   selector: 'app-table-editable',
   templateUrl: './add-team-members.component.html',
   styleUrls: ['./add-team-members.component.css'],
-  providers:[Pagination,HttpRequestLoader]
+  providers:[Pagination,HttpRequestLoader,FileUtil]
 })
 export class AddTeamMembersComponent implements OnInit {
    
     successMessage: string = "";
+    errorMessage:string = "";
     deleteText:string = "This will remove team member";
     deleteMessage:string = "";
     orgAdminEmailIds:string[]=[];
@@ -28,6 +30,9 @@ export class AddTeamMembersComponent implements OnInit {
     team:TeamMember;
     teamMembers: Array<TeamMember> = new Array<TeamMember>();
     teamMembersList: Array<TeamMember> = new Array<TeamMember>();
+    @ViewChild('fileImportInput')
+    fileImportInput: any;
+    csvRecords = [];
     /**********Pagination&Loading***********/
     userId:number;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -41,7 +46,7 @@ export class AddTeamMembersComponent implements OnInit {
     uiError:string = "";
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
-            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination) {
+            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination,private fileUtil:FileUtil) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
         
@@ -121,9 +126,11 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
     save(){
+        $( "#empty-roles-div" ).hide();
         this.referenceService.goToTop();
         this.teamMemberUi.emptyRolesLength = this.validateRoles('add-team-member-table','team-member-');
         if(this.teamMemberUi.emptyRolesLength==0){
+            this.errorMessage = "";
             this.isProcessing = true;
             this.teamMemberService.save(this.teamMembers,this.userId)
             .subscribe(
@@ -142,14 +149,18 @@ export class AddTeamMembersComponent implements OnInit {
             },
             () => console.log(" Completed save()")
             );
+        }else{
+            this.showErrorMessageDiv("Please assign atleast one role to team member");
         }
        
     }
     
     update(){
+        $( "#empty-roles-div" ).hide();
         this.referenceService.goToTop();
         this.teamMemberUi.emptyRolesLength = this.validateRoles('list-team-member-table','list-team-member-');
         if(this.teamMemberUi.emptyRolesLength==0){
+            this.errorMessage = "";
             this.isProcessing = true;
             this.teamMemberService.update(this.teamMembersList)
             .subscribe(
@@ -157,7 +168,7 @@ export class AddTeamMembersComponent implements OnInit {
                this.isProcessing = false;
                this.successMessage = "Team Member(s) Updated Successfully";
                $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 2000 );
+               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
                this.pagination.pageIndex = 1;
                this.listTeamMembers(this.pagination);
                this.listEmailIds();
@@ -168,7 +179,15 @@ export class AddTeamMembersComponent implements OnInit {
             },
             () => console.log(" Completed save()")
             );
+        }else{
+            this.showErrorMessageDiv("Please assign atleast one role to team member");
         }
+    }
+    
+    showErrorMessageDiv(message:string){
+        this.errorMessage =message ;
+        $( "#empty-roles-div" ).show(600);
+        setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 5000 );
     }
     /*********************Delete*********************/
     delete(teamMember:TeamMember){
@@ -410,4 +429,116 @@ export class AddTeamMembersComponent implements OnInit {
         this.pagination.searchKey = "";
         this.listTeamMembers(this.pagination);
     }
+    csvErrors:string[] = [];
+    
+    fileChangeListener($event): void {
+        this.csvErrors = [];
+        var text = [];
+        var files = $event.srcElement.files;
+        var imgVal = $('#txtFileUpload').val(); 
+        if (this.fileUtil.isCSVFile(files[0])) {
+          var input = $event.target;
+          var reader = new FileReader();
+          reader.readAsText(input.files[0]);
+          reader.onload = (data) => {
+            let csvData = reader.result;
+            let csvRecordsArray = csvData.split(/\r\n|\n/);
+
+            let headersRow = this.fileUtil
+                .getHeaderArray(csvRecordsArray);
+            
+            this.csvRecords = this.fileUtil
+                .getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+            if(this.csvRecords.length>1){
+                this.validateCsvData();
+                if(this.csvErrors.length>0){
+                    this.fileReset();
+                }else{
+                    this.appendCsvDataToTable();
+                }
+            }else{
+                this.showErrorMessageDiv('You Cannot Upload Empty File');
+                this.fileReset();
+            }
+           
+          }
+          reader.onerror = function () {
+            alert('Unable to read ' + input.files[0]);
+          };
+
+        } else {
+          alert("Please import valid .csv file.");
+          this.fileReset();
+        }
+      };
+      
+      
+      validateCsvData(){
+          let names = this.csvRecords.map(function(a) {return a[0].split(',')[0]});
+          let duplicateEmailIds = this.referenceService.returnDuplicates(names);
+          this.teamMembers = [];
+          if(duplicateEmailIds.length==0){
+              for(var i=1;i<this.csvRecords.length;i++){
+                  let rows = this.csvRecords[i];
+                   let row = rows[0].split(',');
+                   let emailId = row[0];
+                   this.emaillIdDivClass = this.defaultClass;
+                   if(!this.referenceService.validateEmailId(emailId)){
+                       this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
+                   }else{
+                       console.log(duplicateEmailIds);
+                       /**********Method To Check Whether Org Admin Or Not***********/
+                       if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
+                           this.csvErrors.push(emailId+" at row "+(i+1)+" is an Org Admin.");
+                       }else{
+                           /*******************Check If Already Added As A Team Member***************************/
+                           if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
+                               this.csvErrors.push(emailId+" at row "+(i+1)+" is already added as team member.");
+                           }
+                       }
+                   }
+               }
+          }else{
+              for(var d=0;d<duplicateEmailIds.length;d++){
+                  this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
+              }
+              
+          }
+      }
+
+      fileReset(){
+        this.fileImportInput.nativeElement.value = "";
+        this.csvRecords = [];
+      }
+      
+      setDefaultValue(value:any){
+          if(value==1){
+              return true;
+          }else{
+              return false;
+          }
+      }
+      
+      appendCsvDataToTable(){
+          for(var i=1;i<this.csvRecords.length;i++){
+              let rows = this.csvRecords[i];
+              let row = rows[0].split(',');
+              this.teamMemberUi.emptyTable = false;
+              let teamMember = new TeamMember();
+              teamMember.emailId = row[0];
+              teamMember.all = this.setDefaultValue(row[1]);
+              if(teamMember.all){
+                  this.setAllRoles(teamMember);
+              }else{
+                  teamMember.video = this.setDefaultValue(row[2]);
+                  teamMember.contact = this.setDefaultValue(row[3]);
+                  teamMember.campaign   =this.setDefaultValue(row[4]);
+                  teamMember.stats = this.setDefaultValue(row[5]);
+                  teamMember.emailTemplate = this.setDefaultValue(row[6]);
+              }
+              this.teamMembers.push(teamMember);
+          }
+         
+      
+      }
 }
