@@ -303,7 +303,6 @@ a.disabled {
 					<div *ngIf="noContactsFound==true" class="col-md-6"
 						class="col-md-9 alert alert-info alert-dismissable"
 						style="width: 100%">
-						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>No Contacts found.. !!!</strong>
 					</div>
 					<div *ngIf="showInvalidMaills==true" class="col-md-6"
@@ -510,11 +509,14 @@ a.disabled {
 		</div>
 	</div>
 	<div class="col-md-12" style="margin-top: 15px">
-		<div *ngIf="noContactsFound1==true" class="col-md-6"
+		<!-- <div *ngIf="noContactsFound1==true" class="col-md-6"
 			class="col-md-9 alert alert-info alert-dismissable"
 			style="width: 100%">
 			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>No Contacts found.. !!!</strong>
+		</div> -->
+		<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+				<h4>No contacts found..!</h4>
 		</div>
 			<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteSuccessMessage">
   				<strong>Success!</strong> your contacts hasbeen deleted successfully.

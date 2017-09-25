@@ -6,13 +6,12 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, RouterModule } from '@angular/router';
-import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
 import { Contacts } from '../models/contacts';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
 import { Pagination } from '../../core/models/pagination';
-
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -111,7 +110,7 @@ export class AddContactsComponent implements OnInit {
     emailNotValid = false;
     constructor( private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
-        private router: Router, private logger: Logger, private pagination: Pagination ) {
+        private router: Router, public pagination: Pagination, public xtremandLogger:XtremandLogger ) {
         this.contacts = new Array<User>();
         this.newUsers = new Array<User>();
         this.googleUsers = new Array<User>();
@@ -129,13 +128,13 @@ export class AddContactsComponent implements OnInit {
         this.contactType = '';
         let self = this;
         this.uploader.onBuildItemForm = function( fileItem: any, form: FormData ) {
-            this.logger.info( "addContacts.component onBuildItemForm" + self.model.contactListName );
+            this.xtremandLogger.info( "addContacts.component onBuildItemForm" + self.model.contactListName );
             form.append( 'userListName', "" + self.model.contactListName );
             return { fileItem, form }
         };
         this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
             var responsePath = response;
-            this.logger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
+            this.xtremandLogger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
             $( "#uploadContactsMessage" ).show();
             router.navigateByUrl( '/home/contacts/manageContacts' )
         };
@@ -159,7 +158,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     checked( event: boolean ) {
-        this.logger.info( "selected check value" + event )
+        this.xtremandLogger.info( "selected check value" + event )
         this.newUsers.forEach(( contacts ) => {
             if ( event == true )
                 contacts.isChecked = true;
@@ -205,7 +204,7 @@ export class AddContactsComponent implements OnInit {
             this.saveZohoContactUsers = false;
             this.saveClipBoardUsers = false;
             this.saveSalesforceContactUsers = false;
-            this.logger.info( "coontacts preview" );
+            this.xtremandLogger.info( "coontacts preview" );
             //$( "#file_preview" ).show();
             $( "button#addContacts" ).prop( 'disabled', true );
             $( "button#copyFromClipBoard" ).prop( 'disabled', true );
@@ -230,7 +229,7 @@ export class AddContactsComponent implements OnInit {
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             let reader = new FileReader();
             reader.readAsText( files[0] );
-            this.logger.info( files[0] );
+            this.xtremandLogger.info( files[0] );
             var lines = new Array();
             var self = this;
             reader.onload = function( e: any ) {
@@ -284,14 +283,14 @@ export class AddContactsComponent implements OnInit {
             else if ( selectedDropDown == "TabSeperated" )
                 splitValue = "\t";
         }
-        this.logger.info( "selectedDropDown:" + selectedDropDown );
-        this.logger.info( splitValue );
+        this.xtremandLogger.info( "selectedDropDown:" + selectedDropDown );
+        this.xtremandLogger.info( splitValue );
         var startTime = new Date();
         $( "#clipBoardValidationMessage" ).html( '' );
         var self = this;
         var allTextLines = this.clipboardTextareaText.split( "\n" );
-        this.logger.info( "allTextLines: " + allTextLines );
-        this.logger.info( "allTextLines Length: " + allTextLines.length );
+        this.xtremandLogger.info( "allTextLines: " + allTextLines );
+        this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
@@ -321,7 +320,7 @@ export class AddContactsComponent implements OnInit {
                         user.lastName = data[2];
                         break;
                 }
-                this.logger.info( user );
+                this.xtremandLogger.info( user );
                 this.clipboardUsers.push( user );
                 self.contacts.push( user );
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -337,7 +336,7 @@ export class AddContactsComponent implements OnInit {
             $( "#clipBoardValidationMessage" ).show();
             $( "#file_preview" ).hide();
         }
-        this.logger.info( this.clipboardUsers );
+        this.xtremandLogger.info( this.clipboardUsers );
     }
 
     validateEmailAddress( emailId: string ) {
@@ -397,7 +396,7 @@ export class AddContactsComponent implements OnInit {
         this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.newUsers.length - 1; i++ ) {
-            testArray.push( this.newUsers[i].emailId.toLowerCase() );
+            testArray.push( this.newUsers[i].emailId );
         }
 
         var newArray = this.compressArray( testArray );
@@ -408,8 +407,8 @@ export class AddContactsComponent implements OnInit {
             console.log( newArray[w].value );
             console.log( newArray[w].count );
         }
-        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
-        var valueArr = this.newUsers.map( function( item ) { return item.emailId.toLowerCase() });
+        this.xtremandLogger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        var valueArr = this.newUsers.map( function( item ) { return item.emailId });
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
         });
@@ -417,7 +416,7 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
 
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.validEmailPatternSuccess == true ) {
-            this.logger.info( this.newUsers[0].emailId.toLowerCase() );
+            this.xtremandLogger.info( this.newUsers[0].emailId.toLowerCase() );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
                     this.saveValidEmails();
@@ -427,7 +426,7 @@ export class AddContactsComponent implements OnInit {
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 }
             } else {
-                this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
+                this.xtremandLogger.error( "AddContactComponent saveContactList() ContactListName Error" );
             }
 
         } else if ( this.validEmailPatternSuccess === false ) {
@@ -439,12 +438,12 @@ export class AddContactsComponent implements OnInit {
             if ( this.isValidContactName == false ) {
                 this.contactListNameError = true;
             }
-            this.logger.error( "AddContactComponent saveContactList() ContactListName Error" );
+            this.xtremandLogger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
     }
 
     saveValidEmails() {
-        this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
+        this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
         }
@@ -452,14 +451,17 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 data = data;
-                this.logger.info( "update Contacts ListUsers:" + data );
+                this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 $( "#uploadContactsMessage" ).show();
                 this.router.navigateByUrl( '/home/contacts/manageContacts' )
                 this.contactService.successMessage = true;
             },
 
-            error => this.logger.info( error ),
-            () => this.logger.info( "addcontactComponent saveacontact() finished" )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
             )
         this.dublicateEmailId = false;
     }
@@ -470,7 +472,7 @@ export class AddContactsComponent implements OnInit {
         this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.clipboardUsers.length - 1; i++ ) {
-            testArray.push( this.clipboardUsers[i].emailId.toLowerCase() );
+            testArray.push( this.clipboardUsers[i].emailId );
         }
         for ( var j = 0; j <= this.clipboardUsers.length - 1; j++ ) {
             if ( this.validateEmailAddress( this.clipboardUsers[j].emailId ) ) {
@@ -490,13 +492,13 @@ export class AddContactsComponent implements OnInit {
             console.log( newArray[w].value );
             console.log( newArray[w].count );
         }
-        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        this.xtremandLogger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         if ( this.model.contactListName.trim().length == 0 ) {
             $( "#clipBoardValidationMessage > h4" ).empty();
             $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>Please Enter the Contact List Name</h4>" );
         } else {
-            var valueArr = this.clipboardUsers.map( function( item ) { return item.emailId.toLowerCase() });
+            var valueArr = this.clipboardUsers.map( function( item ) { return item.emailId });
             var isDuplicate = valueArr.some( function( item, idx ) {
                 return valueArr.indexOf( item ) != idx
             });
@@ -529,18 +531,20 @@ export class AddContactsComponent implements OnInit {
         }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != ' ' ) {
-            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
             this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
                 .subscribe(
                 data => {
                     data = data;
-                    this.logger.info( "update Contacts ListUsers:" + data );
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     this.router.navigateByUrl( '/home/contacts/manageContacts' )
                 },
-
-                error => this.logger.error( error ),
-                () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                 )
             this.dublicateEmailId = false;
         }
@@ -551,7 +555,7 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.contacts.length > 0 ) {
-                this.logger.info( isValid );
+                this.xtremandLogger.info( isValid );
                 for ( let i = 0; i < this.contacts.length; i++ ) {
                     if ( !this.validateEmailAddress( this.contacts[i].emailId ) ) {
                         this.invalidPatternEmails.push( this.contacts[i].emailId )
@@ -567,30 +571,32 @@ export class AddContactsComponent implements OnInit {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
                     }
-                    this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
+                    this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                     this.contactService.saveContactList( this.model.contactListName, this.contacts )
                         .subscribe(
                         data => {
                             data = data;
-                            this.logger.info( "update Contacts ListUsers:" + data );
+                            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
                             this.router.navigateByUrl( '/home/contacts/manageContacts' )
                         },
-
-                        error => this.logger.error( error ),
-                        () => this.logger.info( "addcontactComponent saveCsvContactList() finished" )
+                        (error: any) => {
+                            this.xtremandLogger.error(error);
+                            this.xtremandLogger.errorPage(error);
+                        },
+                        () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                         )
                 } else {
                     this.inValidCsvContacts = true;
                 }
             } else
-                this.logger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
+                this.xtremandLogger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
         }
         else {
             if ( this.isValidContactName == false ) {
                 this.contactListNameError = true;
             }
-            this.logger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
+            this.xtremandLogger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
         }
     }
 
@@ -900,7 +906,7 @@ export class AddContactsComponent implements OnInit {
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
         this.noOptionsClickError = false;
-        this.logger.info( "addContactComponent googlecontacts() login:" );
+        this.xtremandLogger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
         this.socialContact.lastName = '';
         this.socialContact.emailId = '';
@@ -912,7 +918,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.alias = '';
         this.socialContact.socialNetwork = "GOOGLE";
         this.contactService.googleCallBack = true;
-        this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+        this.xtremandLogger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.googleLogin()
             .subscribe(
             data => {
@@ -921,7 +927,7 @@ export class AddContactsComponent implements OnInit {
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     console.log( "AddContactComponent googleContacts() Authentication Success" );
                     this.getGoogleContactsUsers();
-                    this.logger.info( "called getGoogle contacts method:" );
+                    this.xtremandLogger.info( "called getGoogle contacts method:" );
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
                     console.log( data.redirectUrl );
@@ -929,8 +935,11 @@ export class AddContactsComponent implements OnInit {
                     window.location.href = "" + data.redirectUrl;
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "AddContactsComponent googleContacts() finished." )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
             );
     }
 
@@ -959,7 +968,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.gContacts.push( socialContact );
-                    this.logger.info( this.getGoogleConatacts );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
                     //this.googleImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -986,8 +995,11 @@ export class AddContactsComponent implements OnInit {
                 }
                 this.socialContact.contacts = this.gContacts;
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
         this.isContactsThere = false;
     }
@@ -1000,24 +1012,27 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contacts = this.gContacts;
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.gContacts.length > 0 ) {
-                this.logger.info( isValid );
+                this.xtremandLogger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
-                        this.logger.info( "update Contacts ListUsers:" + data );
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     },
-                    error => this.logger.error( error ),
-                    () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                     )
             } else
-                this.logger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
+                this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveGoogleContacts() ContactListName Error" );
+            this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() ContactListName Error" );
         }
     }
 
@@ -1034,30 +1049,33 @@ export class AddContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        this.logger.info( "SelectedUserIDs:" + selectedUserIds );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
                 data => {
                     data = data;
-                    this.logger.info( "update Contacts ListUsers:" + data );
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.contactService.successMessage = true;
                 },
-                error => this.logger.info( error ),
-                () => this.logger.info( "addcontactComponent saveacontact() finished" )
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                 )
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
+            this.xtremandLogger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
         }
     }
 
     selectAllGoogleContacts( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         this.gContacts.forEach(( gContacts ) => {
             if ( event == true ) {
                 gContacts.checked = true;
@@ -1071,7 +1089,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     selectAllZohoContacts( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         this.zContacts.forEach(( zContacts ) => {
             if ( event == true ) {
                 zContacts.checked = true;
@@ -1085,7 +1103,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     selectAllSalesforceContacts( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         this.salesforceContactUsers.forEach(( salesforceContactUsers ) => {
             if ( event == true ) {
                 salesforceContactUsers.checked = true;
@@ -1099,7 +1117,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     selectGoogleContact( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         var all: any = document.getElementById( "select_all_google_contacts" );
         if ( event == false ) {
             all.checked = false;
@@ -1108,7 +1126,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     selectZohoContact( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         var all: any = document.getElementById( "select_all_google_contacts" );
         if ( event == false ) {
             all.checked = false;
@@ -1117,7 +1135,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     selectSalesforceContact( event: boolean ) {
-        this.logger.info( "check value:" + event )
+        this.xtremandLogger.info( "check value:" + event )
         var all: any = document.getElementById( "select_all_google_contacts" );
         if ( event == false ) {
             all.checked = false;
@@ -1140,14 +1158,14 @@ export class AddContactsComponent implements OnInit {
         else {
             if ( self.selectedZohoDropDown == "contact" ) {
                 self.contactType = self.selectedZohoDropDown;
-                self.logger.log( self.selectedZohoDropDown );
+                self.xtremandLogger.log( self.selectedZohoDropDown );
             }
             else if ( this.selectedZohoDropDown == "lead" ) {
                 self.contactType = self.selectedZohoDropDown;
-                self.logger.log( self.selectedZohoDropDown );
+                self.xtremandLogger.log( self.selectedZohoDropDown );
             }
-            this.logger.log( this.userName );
-            this.logger.log( this.password );
+            this.xtremandLogger.log( this.userName );
+            this.xtremandLogger.log( this.password );
             this.getZohoContacts( self.contactType, this.userName, this.password );
         }
     }
@@ -1160,7 +1178,7 @@ export class AddContactsComponent implements OnInit {
         this.contactService.checkingZohoAuthentication()
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
+                this.xtremandLogger.info( data );
                 if ( data.showLogin == true ) {
                     $( "#zohoShowLoginPopup" ).show();
                 }
@@ -1177,12 +1195,16 @@ export class AddContactsComponent implements OnInit {
                         setTimeout(() => {
                             this.zohoAuthStorageError = '';
                         }, 5000 )
+                    }else{
+                        this.xtremandLogger.errorPage(error);
                     }
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
                 console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
 
             },
-            () => this.logger.info( "Add contact component loadContactListsName() finished" )
+            () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
 
     }
@@ -1218,7 +1240,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
-                    this.logger.info( this.getZohoConatacts );
+                    this.xtremandLogger.info( this.getZohoConatacts );
                     // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
@@ -1261,12 +1283,16 @@ export class AddContactsComponent implements OnInit {
                         setTimeout(() => {
                             this.zohoCredentialError = '';
                         }, 5000 )
+                    }else{
+                        this.xtremandLogger.errorPage(error);
                     }
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
                 console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
 
             },
-            () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
         this.isContactsThere = false;
     }
@@ -1290,11 +1316,11 @@ export class AddContactsComponent implements OnInit {
         else {
             if ( self.selectedZohoDropDown == "contact" ) {
                 self.contactType = self.selectedZohoDropDown;
-                self.logger.log( self.selectedZohoDropDown );
+                self.xtremandLogger.log( self.selectedZohoDropDown );
             }
             else if ( this.selectedZohoDropDown == "lead" ) {
                 self.contactType = self.selectedZohoDropDown;
-                self.logger.log( self.selectedZohoDropDown );
+                self.xtremandLogger.log( self.selectedZohoDropDown );
             }
 
         }
@@ -1318,7 +1344,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
-                    this.logger.info( this.getZohoConatacts );
+                    this.xtremandLogger.info( this.getZohoConatacts );
                     // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
@@ -1346,8 +1372,11 @@ export class AddContactsComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
         this.isContactsThere = false;
     }
@@ -1360,25 +1389,28 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.zContacts.length > 0 ) {
-                this.logger.info( isValid );
+                this.xtremandLogger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
-                        this.logger.info( "update Contacts ListUsers:" + data );
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     },
 
-                    error => this.logger.error( error ),
-                    () => this.logger.info( "addcontactComponent saveZohoContact() finished" )
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
                     )
             } else
-                this.logger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
+                this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveZohoContacts() ContactList Name Error" );
+            this.xtremandLogger.error( "AddContactComponent saveZohoContacts() ContactList Name Error" );
         }
     }
 
@@ -1394,32 +1426,35 @@ export class AddContactsComponent implements OnInit {
             selectedUsers.push( user );
         });
         console.log( selectedUsers );
-        this.logger.info( "SelectedUserIDs:" + selectedUserIds );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
                 data => {
                     data = data;
-                    this.logger.info( "update Contacts ListUsers:" + data );
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.contactService.successMessage = true;
                 },
 
-                error => this.logger.info( error ),
-                () => this.logger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                 )
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
+            this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
         }
     }
 
     onChange( item: any ) {
-        this.logger.log( item );
+        this.xtremandLogger.log( item );
         /*if(this.salesforceListViewName != 'DEFAULT'){
         $( "button#salesforce_save_button" ).prop( 'disabled', false );
         }*/
@@ -1431,11 +1466,11 @@ export class AddContactsComponent implements OnInit {
 
         this.salesforceListViewId = item;
         for ( var i = 0; i < this.salesforceListViewsData.length; i++ ) {
-            this.logger.log( this.salesforceListViewsData[i].listViewId );
+            this.xtremandLogger.log( this.salesforceListViewsData[i].listViewId );
             if ( item == this.salesforceListViewsData[i].listViewId ) {
                 this.salesforceListViewName = this.salesforceListViewsData[i].listViewName;
             }
-            this.logger.log( "listviewNameDROPDOWN" + this.salesforceListViewName );
+            this.xtremandLogger.log( "listviewNameDROPDOWN" + this.salesforceListViewName );
         }
     }
 
@@ -1457,12 +1492,15 @@ export class AddContactsComponent implements OnInit {
                     if ( data.listViews.length > 0 ) {
                         for ( var i = 0; i < data.listViews.length; i++ ) {
                             this.salesforceListViewsData.push( data.listViews[i] );
-                            this.logger.log( data.listViews[i] );
+                            this.xtremandLogger.log( data.listViews[i] );
                         }
                     }
                 },
-                error => this.logger.error( error ),
-                () => this.logger.log( "onChangeSalesforceDropdown" )
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.log( "onChangeSalesforceDropdown" )
                 );
         }
     }
@@ -1486,7 +1524,7 @@ export class AddContactsComponent implements OnInit {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.socialContact.socialNetwork = "salesforce";
-        this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+        this.xtremandLogger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.salesforceLogin()
             .subscribe(
             data => {
@@ -1503,8 +1541,11 @@ export class AddContactsComponent implements OnInit {
                     window.location.href = "" + data.redirectUrl;
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "addContactComponent salesforceContacts() login finished." )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
     }
 
@@ -1541,7 +1582,7 @@ export class AddContactsComponent implements OnInit {
         }
         else {
             this.contactType = selectedDropDown;
-            this.logger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
+            this.xtremandLogger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
         }
 
         this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
@@ -1560,7 +1601,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
-                    this.logger.info( this.getSalesforceConatactList );
+                    this.xtremandLogger.info( this.getSalesforceConatactList );
                     //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
@@ -1587,8 +1628,11 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
         this.isContactsThere = false;
     }
@@ -1617,7 +1661,7 @@ export class AddContactsComponent implements OnInit {
         }
         else {
             this.contactType = selectedDropDown;
-            this.logger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
+            this.xtremandLogger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
         }
         this.contactService.getSalesforceListViewContacts( this.socialNetwork, this.contactType, this.salesforceListViewId, this.salesforceListViewName )
             .subscribe(
@@ -1635,7 +1679,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
-                    this.logger.info( this.getSalesforceConatactList );
+                    this.xtremandLogger.info( this.getSalesforceConatactList );
                     //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
@@ -1662,8 +1706,11 @@ export class AddContactsComponent implements OnInit {
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
         this.isContactsThere = false;
     }
@@ -1681,25 +1728,28 @@ export class AddContactsComponent implements OnInit {
         });
         console.log( selectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        this.logger.info( "SelectedUserIDs:" + selectedUserIds );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.logger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.contactService.saveContactList( this.model.contactListName, selectedUsers )
                 .subscribe(
                 data => {
                     data = data;
-                    this.logger.info( "update Contacts ListUsers:" + data );
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     this.contactService.successMessage = true;
                 },
-                error => this.logger.info( error ),
-                () => this.logger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                 )
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
+            this.xtremandLogger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
         }
     }
 
@@ -1712,24 +1762,27 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.salesforceContactUsers.length > 0 ) {
-                this.logger.info( isValid );
+                this.xtremandLogger.info( isValid );
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
-                        this.logger.info( "update Contacts ListUsers:" + data );
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         this.router.navigateByUrl( '/home/contacts/manageContacts' )
                     },
-                    error => this.logger.error( error ),
-                    () => this.logger.info( "addcontactComponent saveSalesforceContacts() finished" )
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
                     )
             } else
-                this.logger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
+                this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
         }
         else {
             this.contactListNameError = true;
-            this.logger.error( "AddContactComponent saveSalesforceContacts() ContactList Name Error" );
+            this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() ContactList Name Error" );
         }
     }
 
@@ -1754,8 +1807,11 @@ export class AddContactsComponent implements OnInit {
                     this.zohoImageBlur = true;
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "AddContactsComponent socialContactImage() finished." )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "AddContactsComponent socialContactImage() finished." )
             );
     }
 
@@ -1763,16 +1819,17 @@ export class AddContactsComponent implements OnInit {
         this.contactService.loadContactListsNames()
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
+                this.xtremandLogger.info( data );
                 this.contactLists = data.listOfUserLists;
                 for ( let i = 0; i < data.names.length; i++ ) {
                     this.names.push( data.names[i].replace( /\s/g, '' ) );
                 }
             },
-            error => {
-                this.logger.error( error )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
             },
-            () => this.logger.info( "Add contact component loadContactListsName() finished" )
+            () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
     }
 
@@ -1812,13 +1869,15 @@ export class AddContactsComponent implements OnInit {
                     $( "#settingsSalesforce .close" ).click()
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
                 console.log( error );
             },
             () => {
                 $( "#settingSocialNetwork .close" ).click();
                 this.cancelContacts();
-                this.logger.info( "deleted completed" );
+                this.xtremandLogger.info( "deleted completed" );
             }
             );
         this.unlinkSalesforceSuccessMessage = false;
@@ -1874,7 +1933,7 @@ export class AddContactsComponent implements OnInit {
             }
         }
         catch ( err ) {
-            this.logger.error( "addContacts.component error " + err );
+            this.xtremandLogger.error( "addContacts.component error " + err );
         }
     }
 
