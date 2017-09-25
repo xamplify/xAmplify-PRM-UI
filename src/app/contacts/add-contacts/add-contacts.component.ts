@@ -456,7 +456,6 @@ export class AddContactsComponent implements OnInit {
                 this.router.navigateByUrl( '/home/contacts/manageContacts' )
                 this.contactService.successMessage = true;
             },
-
             (error: any) => {
                 this.xtremandLogger.error(error);
                 this.xtremandLogger.errorPage(error);
@@ -1455,9 +1454,6 @@ export class AddContactsComponent implements OnInit {
 
     onChange( item: any ) {
         this.xtremandLogger.log( item );
-        /*if(this.salesforceListViewName != 'DEFAULT'){
-        $( "button#salesforce_save_button" ).prop( 'disabled', false );
-        }*/
         if ( this.salesforceListViewName == "DEFAULT" ) {
             $( "button#salesforce_save_button" ).prop( 'disabled', true );
         } else {
@@ -1520,7 +1516,6 @@ export class AddContactsComponent implements OnInit {
         this.contactType = "";
         this.isContactsThere = false;
         this.noOptionsClickError = false;
-        //this.removeCsv();
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.socialContact.socialNetwork = "salesforce";

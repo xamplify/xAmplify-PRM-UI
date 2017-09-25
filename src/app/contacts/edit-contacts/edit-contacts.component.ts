@@ -10,12 +10,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ManageContactsComponent } from '../manage-contacts/manage-contacts.component';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { Logger } from "angular2-logger/core";
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
 import { UserListIds } from '../models/user-listIds';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactsByType } from '../models/contacts-by-type';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 declare var Metronic: any;
 declare var Layout: any;
@@ -116,8 +116,8 @@ export class EditContactsComponent implements OnInit {
                public sortOption: any = this.sortOptions[0];
 
     constructor( public refService:ReferenceService,private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private logger: Logger, private router: Router,
-        private pagerService: PagerService, private pagination: Pagination ) {
+        private authenticationService: AuthenticationService, private router: Router,
+        private pagerService: PagerService, public pagination: Pagination, public xtremandLogger:XtremandLogger  ) {
         this.users = new Array<User>();
         this.notifyParent = new EventEmitter<User>();
         this.hasContactRole = this.refService.hasRole(this.refService.roleName.contactsRole);
@@ -138,7 +138,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     checked( event: boolean ) {
-        this.logger.info( "check value" + event )
+        this.xtremandLogger.info( "check value" + event )
         this.contacts.forEach(( contacts ) => {
             if ( event == true )
                 contacts.isChecked = true;
@@ -167,12 +167,12 @@ export class EditContactsComponent implements OnInit {
             this.selectedAddContactsOption = 2;
             this.isShowUsers = false;
             this.fileTypeError = false;
-            this.logger.info( "coontacts preview" );
+            this.xtremandLogger.info( "coontacts preview" );
             $( "#sample_editable_1" ).hide();
             this.filePrevew = true;
             let reader = new FileReader();
             reader.readAsText( files[0] );
-            this.logger.info( files[0] );
+            this.xtremandLogger.info( files[0] );
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
@@ -246,13 +246,13 @@ export class EditContactsComponent implements OnInit {
             console.log( newArray[w].value );
             console.log( newArray[w].count );
         }
-        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        this.xtremandLogger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
         var valueArr = this.users.map( function( item ) { return item.emailId.toLowerCase() });
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
         });
         console.log( isDuplicate );
-        this.logger.info( this.users[0].emailId );
+        this.xtremandLogger.info( this.users[0].emailId );
         if(this.invalidPattenMail === true){
             this.showInvalidMaills = true;
             testArray.length  = 0;
@@ -264,13 +264,13 @@ export class EditContactsComponent implements OnInit {
     }
 
     saveValidEmails() {
-        this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
+        this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
             ( data: any ) => {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
-                this.logger.info( "update Contacts ListUsers:" + data );
+                this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 this.manageContact.editContactList( this.contactListId );
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
@@ -282,8 +282,8 @@ export class EditContactsComponent implements OnInit {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                 this.cancelContacts();
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            error => this.xtremandLogger.error( error ),
+            () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.dublicateEmailId = false;
     }
@@ -303,12 +303,12 @@ export class EditContactsComponent implements OnInit {
             }
             if(this.validCsvContacts == true) {
                 $( "#sample_editable_1" ).show();
-                this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
+                this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
                 this.contactService.updateContactList( this.contactListId, this.users )
                     .subscribe(
                     data => {
                         data = data;
-                        this.logger.info( "update Contacts ListUsers:" + data );
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         this.manageContact.editContactList( this.contactListId );
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
@@ -325,8 +325,8 @@ export class EditContactsComponent implements OnInit {
                         this.checkingLoadContactsCount = true;
                         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                     },
-                    error => this.logger.error( error ),
-                    () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+                    error => this.xtremandLogger.error( error ),
+                    () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
                     )
             }else{
                 this.inValidCsvContacts = true;
@@ -341,7 +341,7 @@ export class EditContactsComponent implements OnInit {
     
     removeContactListUsers( contactListId: number ) {
         let self = this;
-        this.logger.info( this.selectedContactListIds );
+        this.xtremandLogger.info( this.selectedContactListIds );
         this.contactService.removeContactList( this.contactListId, this.selectedContactListIds )
             .subscribe(
             ( data: any ) => {
@@ -364,14 +364,14 @@ export class EditContactsComponent implements OnInit {
                     this.setResponseDetails('ERROR', error);
                 }
             },
-            () => this.logger.info( "deleted completed" )
+            () => this.xtremandLogger.info( "deleted completed" )
             );
     }
 
     showAlert( contactListId: number ) {
-        this.logger.info( "userIdForChecked" + this.selectedContactListIds );
+        this.xtremandLogger.info( "userIdForChecked" + this.selectedContactListIds );
         if ( this.selectedContactListIds.length != 0 ) {
-            this.logger.info( "contactListId in sweetAlert() " + this.contactListId );
+            this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactListId );
             let self = this;
             if( this.totalRecords != 1 || this.totalRecords != this.selectedContactListIds.length ){
             swal( {
@@ -452,14 +452,14 @@ export class EditContactsComponent implements OnInit {
             else if ( selectedDropDown == "TabSeperated" )
                 splitValue = "\t";
         }
-        this.logger.info( "selectedDropDown:" + selectedDropDown );
-        this.logger.info( splitValue );
+        this.xtremandLogger.info( "selectedDropDown:" + selectedDropDown );
+        this.xtremandLogger.info( splitValue );
         var startTime = new Date();
         $( "#clipBoardValidationMessage" ).html( '' );
         var self = this;
         var allTextLines = this.clipboardTextareaText.split( "\n" );
-        this.logger.info( "allTextLines: " + allTextLines );
-        this.logger.info( "allTextLines Length: " + allTextLines.length );
+        this.xtremandLogger.info( "allTextLines: " + allTextLines );
+        this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
@@ -489,7 +489,7 @@ export class EditContactsComponent implements OnInit {
                         user.lastName = data[2];
                         break;
                 }
-                this.logger.info( user );
+                this.xtremandLogger.info( user );
                 this.users.push( user );
                 self.pagination.pagedItems.push( user );
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -503,7 +503,7 @@ export class EditContactsComponent implements OnInit {
             $( "#clipBoardValidationMessage" ).show();
             this.filePrevew = false;
         }
-        this.logger.info( this.users );
+        this.xtremandLogger.info( this.users );
     }
 
     validateEmailAddress( emailId: string ) {
@@ -530,7 +530,7 @@ export class EditContactsComponent implements OnInit {
             console.log( newArray[w].value );
             console.log( newArray[w].count );
         }
-        this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
+        this.xtremandLogger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
         var valueArr = this.users.map( function( item ) { return item.emailId });
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
@@ -545,13 +545,13 @@ export class EditContactsComponent implements OnInit {
     }
 
     saveClipboardValidEmails() {
-        this.logger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
+        this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         if(this.users.length !=0 ){
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
             data => {
                 data = data;
-                this.logger.info( "update Contacts ListUsers:" + data );
+                this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 this.manageContact.editContactList( this.contactListId );
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
@@ -568,8 +568,8 @@ export class EditContactsComponent implements OnInit {
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            error => this.xtremandLogger.error( error ),
+            () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.dublicateEmailId = false;
         }
@@ -643,15 +643,15 @@ export class EditContactsComponent implements OnInit {
    
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
         this.showSelectedCategoryUsers = false;
-        this.logger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
+        this.xtremandLogger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;
         this.currentContactType = "all_contacts";
         this.contactService.loadUsersOfContactList( contactSelectedListId, pagination ).subscribe(
             ( data: any ) => {
-                this.logger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
+                this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                 this.contacts = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                this.logger.log( data );
+                this.xtremandLogger.log( data );
                 if ( this.checkingLoadContactsCount == true ) {
                     this.contactsByType.allContactsCount = data.allcontacts;
                     this.contactsByType.invalidContactsCount = data.invalidUsers;
@@ -672,14 +672,14 @@ export class EditContactsComponent implements OnInit {
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
                 this.checkingLoadContactsCount = false;
-                this.logger.log( this.allUsers );
+                this.xtremandLogger.log( this.allUsers );
                 
                 var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("paginationUserIDs"+contactIds);
-                this.logger.log("Selected UserIDs"+this.selectedContactListIds);
+                this.xtremandLogger.log("paginationUserIDs"+contactIds);
+                this.xtremandLogger.log("Selected UserIDs"+this.selectedContactListIds);
                 if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
@@ -687,8 +687,8 @@ export class EditContactsComponent implements OnInit {
                 }
                 
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+            error => this.xtremandLogger.error( error ),
+            () => this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
         )
     }
     
@@ -768,7 +768,7 @@ export class EditContactsComponent implements OnInit {
     }
     
     removeInvalidContactListUsers() {
-        this.logger.info( this.selectedInvalidContactIds );
+        this.xtremandLogger.info( this.selectedInvalidContactIds );
         this.contactService.removeContactList( this.contactListId, this.selectedInvalidContactIds )
             .subscribe(
             ( data: any ) => {
@@ -791,14 +791,14 @@ export class EditContactsComponent implements OnInit {
                 this.invalidDeleteErrorMessage = true;
                 }
                 },
-                () => this.logger.info( "deleted completed" )
+                () => this.xtremandLogger.info( "deleted completed" )
             );
         this.invalidDeleteSuccessMessage = false;
         this.invalidDeleteErrorMessage = false;
     }
     invalidContactsShowAlert() {
         if ( this.selectedInvalidContactIds.length != 0 ) {
-            this.logger.info( "contactListId in sweetAlert() " );
+            this.xtremandLogger.info( "contactListId in sweetAlert() " );
             let self = this;
             swal( {
                 title: 'Are you sure?',
@@ -838,12 +838,12 @@ export class EditContactsComponent implements OnInit {
                     this.setResponseDetails('ERROR', error);
                 }
             },
-            () => this.logger.info( "deleted completed" )
+            () => this.xtremandLogger.info( "deleted completed" )
             );
     }
 
     deleteContactList() {
-        this.logger.info( "MangeContacts deleteContactList : " + this.selectedContactListId );
+        this.xtremandLogger.info( "MangeContacts deleteContactList : " + this.selectedContactListId );
         this.contactService.deleteContactListFromEdit( this.selectedContactListId )
             .subscribe(
             data => {
@@ -859,13 +859,13 @@ export class EditContactsComponent implements OnInit {
                 }
                 console.log( error );
             },
-            () => this.logger.info( "deleted completed" )
+            () => this.xtremandLogger.info( "deleted completed" )
             );
     }
     
     showAlert1( contactId: number ) {
         this.contactIds.push( this.contactUsersId )
-        this.logger.info( "contactListId in sweetAlert() " + this.contactIds );
+        this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
         let self = this;
         if( this.totalRecords != 1){
         swal( {
@@ -930,8 +930,8 @@ export class EditContactsComponent implements OnInit {
                 var items1 = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds);
-                this.logger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
+                this.xtremandLogger.log("inavlid contacts page pagination Object Ids"+contactIds);
+                this.xtremandLogger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
                
                 if(items1.length == this.contactsByType.pagination.totalRecords || items1.length == this.contactsByType.pagination.pagedItems.length){
                     this.isInvalidHeaderCheckBoxChecked = true;
