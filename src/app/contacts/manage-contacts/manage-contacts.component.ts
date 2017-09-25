@@ -7,13 +7,13 @@ import { CustomeResponse } from '../models/response';
 import { Router, NavigationExtras } from "@angular/router";
 import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { Logger } from "angular2-logger/core";
 import { SocialContact } from '../models/social-contact';
 import { UserListIds } from '../models/user-listIds';
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 declare var swal: any;
 declare var $: any;
@@ -132,8 +132,8 @@ export class ManageContactsComponent implements OnInit {
     sortOptionForPagination = this.sortOptionsForPagination[0];
     public sortOption: any = this.sortOptions[0];
 
-    constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router, private logger: Logger,
-        private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, ) {
+    constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router,
+        private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, public xtremandLogger:XtremandLogger ) {
         this.show = false;
         this.showAll = true;
         this.showEdit = false;
@@ -142,20 +142,20 @@ export class ManageContactsComponent implements OnInit {
         this.googleSynchronizeButton = false;
         this.socialContact = new SocialContact();
         this.socialContact.socialNetwork = "";
-        this.logger.info( "socialContact" + this.socialContact.socialNetwork );
+        this.xtremandLogger.info( "socialContact" + this.socialContact.socialNetwork );
         this.access_token = this.authenticationService.access_token;
-        this.logger.info( "successmessageLoad" + this.contactService.successMessage )
+        this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
         if ( this.contactService.successMessage == true ) {
             /*this.show = this.contactService.successMessage;
             setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
             this.setResponseDetails('SUCCESS', 'your contact List has been created successfully');
-            this.logger.info( "Success Message in manage contact pape" + this.show );
+            this.xtremandLogger.info( "Success Message in manage contact pape" + this.show );
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
             /*this.deleteUserSucessMessage = this.contactService.deleteUserSucessMessage;
             setTimeout( function() { $( "#showDeleteUserMessage" ).slideUp( 500 ); }, 2000 );*/
             this.setResponseDetails('ERROR', 'your contact List has been deleted successfully');
-            this.logger.info( " delete Success Message in manage contact pape" + this.show );
+            this.xtremandLogger.info( " delete Success Message in manage contact pape" + this.show );
         }
         this.noSaveButtonDisable = true;
         
@@ -174,7 +174,7 @@ export class ManageContactsComponent implements OnInit {
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
+                this.xtremandLogger.info( data );
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
@@ -192,10 +192,11 @@ export class ManageContactsComponent implements OnInit {
                  }
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
-            error => {
-                this.logger.error( error )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
             },
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
     }
     
@@ -203,17 +204,18 @@ export class ManageContactsComponent implements OnInit {
         this.contactService.loadContactListsNames()
             .subscribe(
             ( data: any ) => {
-                this.logger.info( data );
+                this.xtremandLogger.info( data );
                 this.contactLists = data.listOfUserLists;
                 this.names.length = 0; 
                 for(let i=0;i< data.names.length;i++){
                     this.names.push( data.names[i].replace(/\s/g, '') );
                     }
             },
-            error => {
-                this.logger.error( error )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
             },
-            () => this.logger.info( "MangeContactsComponent loadContactListsName() finished" )
+            () => this.xtremandLogger.info( "MangeContactsComponent loadContactListsName() finished" )
             )
     }
     
@@ -224,7 +226,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     deleteContactList( contactListId: number ) {
-        this.logger.info( "MangeContacts deleteContactList : " + contactListId );
+        this.xtremandLogger.info( "MangeContacts deleteContactList : " + contactListId );
         this.contactService.deleteContactList( contactListId )
             .subscribe(
             data => {
@@ -248,17 +250,19 @@ export class ManageContactsComponent implements OnInit {
                     /*this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );*/
                     this.setResponseDetails('ERROR', error);
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
                 console.log( error );
             },
-            () => this.logger.info( "deleted completed" )
+            () => this.xtremandLogger.info( "deleted completed" )
             );
         this.deleteSucessMessage = false;
         this.deleteErrorMessage = false;
     }
 
     showAlert( contactListId: number ) {
-        this.logger.info( "contactListId in sweetAlert() " + contactListId );
+        this.xtremandLogger.info( "contactListId in sweetAlert() " + contactListId );
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -279,8 +283,11 @@ export class ManageContactsComponent implements OnInit {
         this.contactService.downloadContactList( contactListId )
             .subscribe(
             data => this.downloadFile( data ),
-            error => this.logger.error( error ),
-            () => this.logger.info( "download completed" )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info( "download completed" )
             );
     }
     
@@ -339,15 +346,18 @@ export class ManageContactsComponent implements OnInit {
                     window.location.href = "" + data.redirectUrl;
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "manageContacts googleContactsSynchronizationAuthentication() finished." )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "manageContacts googleContactsSynchronizationAuthentication() finished." )
             );
     }
 
     syncronizeContactList( contactListId: number, socialNetwork : string ) {
         this.socialContact.socialNetwork = socialNetwork;
-        this.logger.info( "contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
-        this.logger.info( "contactsSyncronize() ContactListId" + contactListId );
+        this.xtremandLogger.info( "contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork );
+        this.xtremandLogger.info( "contactsSyncronize() ContactListId" + contactListId );
         this.contactService.contactListSynchronization( contactListId, this.socialContact )
             .subscribe(
             data => {
@@ -359,8 +369,11 @@ export class ManageContactsComponent implements OnInit {
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "googleContactsSyncronize() completed" )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info( "googleContactsSyncronize() completed" )
             );
         this.synchronizationSucessMessage = false;
     }
@@ -377,7 +390,7 @@ export class ManageContactsComponent implements OnInit {
         this.contactService.checkingZohoAuthentication()
         .subscribe(
         ( data: any ) => {
-            this.logger.info( data );
+            this.xtremandLogger.info( data );
             if(data.authSuccess == true){
                 this.syncronizeContactList( contactListId, socialNetwork );
             }
@@ -391,18 +404,22 @@ export class ManageContactsComponent implements OnInit {
                      setTimeout(()=> {
                          this.zohoAuthStorageError = '';
                      },5000)
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
+            }else{
+                this.xtremandLogger.errorPage(error);
             }
            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
            
        },
-        () => this.logger.info( "Add contact component loadContactListsName() finished" )
+        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
         )
     }
 
     salesforceContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string) {
         swal( { title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-        this.logger.info( "socialContacts" + this.socialContact.socialNetwork );
+        this.xtremandLogger.info( "socialContacts" + this.socialContact.socialNetwork );
         for ( let i = 0; i < this.contactLists.length; i++ ) {
             if ( this.contactLists[i].id == contactListId ) {
                 this.alias = this.contactLists[i].alias;
@@ -427,8 +444,11 @@ export class ManageContactsComponent implements OnInit {
                     window.location.href = "" + data.redirectUrl;
                 }
             },
-            error => this.logger.error( error ),
-            () => this.logger.log( "addContactComponent salesforceContacts() login finished." )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
     }
 
@@ -661,7 +681,7 @@ export class ManageContactsComponent implements OnInit {
     saveSelectedUsers() {
         var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
-        this.logger.info( "SelectedUserIDs:" + this.selectedContactListIds );
+        this.xtremandLogger.info( "SelectedUserIDs:" + this.selectedContactListIds );
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
         if ( this.model.contactListName != "" && !this.isValidContactName && this.model.contactListName != " ") {
             if ( this.selectedContactListIds.length != 0 ) {
@@ -677,8 +697,11 @@ export class ManageContactsComponent implements OnInit {
                         this.setResponseDetails('SUCCESS', 'your contact List created successfully');
                     },
 
-                    error => this.logger.info( error ),
-                    () => this.logger.info( "allcontactComponent saveSelectedUsers() finished" )
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                     )
             } 
             }else {
@@ -689,7 +712,7 @@ export class ManageContactsComponent implements OnInit {
         else {
             this.contactListUsersError = false;
             this.contactListNameError = true;
-            this.logger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
+            this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
         }
     }
 
@@ -709,12 +732,12 @@ export class ManageContactsComponent implements OnInit {
             removeUserIds.push( this.invalidIds );
             this.invalidIds = this.removeUserIds;
         });
-        this.logger.info( this.invalidRemovableContacts );
+        this.xtremandLogger.info( this.invalidRemovableContacts );
         this.contactService.removeInvalidContactListUsers( this.invalidRemovableContacts )
             .subscribe(
             data => {
                 data = data;
-                this.logger.log( data );
+                this.xtremandLogger.log( data );
                 console.log( "update Contacts ListUsers:" + data );
                 $.each( removeUserIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
@@ -724,8 +747,11 @@ export class ManageContactsComponent implements OnInit {
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
-            error => this.logger.error( error ),
-            () => this.logger.info( "MangeContactsComponent loadContactLists() finished" )
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.invalidDeleteSucessMessage = false;
     }
@@ -737,7 +763,7 @@ export class ManageContactsComponent implements OnInit {
             removeUserIds.push( id );
         });
         if ( this.invalidRemovableContacts.length != 0 ) {
-            this.logger.info( "contactListId in sweetAlert() " );
+            this.xtremandLogger.info( "contactListId in sweetAlert() " );
             let self = this;
             swal( {
                 title: 'Are you sure?',
@@ -765,7 +791,10 @@ export class ManageContactsComponent implements OnInit {
                     this.contactsByType.activeContactsCount = data.activeContactsCount;
                     this.contactsByType.inactiveContactsCount = data.inactiveContactsCount;
                 },
-                error => console.log( error ),
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
                 () => console.log( "LoadContactsCount Finished" )
             );
     }
@@ -795,8 +824,8 @@ export class ManageContactsComponent implements OnInit {
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                this.logger.log("Contact Ids"+contactIds);
-                this.logger.log("Selected Contact Ids"+this.selectedContactListIds);
+                this.xtremandLogger.log("Contact Ids"+contactIds);
+                this.xtremandLogger.log("Selected Contact Ids"+this.selectedContactListIds);
                 if(items.length == this.contactsByType.pagination.totalRecords || items.length == this.contactsByType.pagination.pagedItems.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
@@ -807,8 +836,8 @@ export class ManageContactsComponent implements OnInit {
                 var items1 = $.grep(this.selectedInvalidContactIds, function(element) {
                     return $.inArray(element, contactIds1 ) !== -1;
                 });
-                this.logger.log("inavlid contacts page pagination Object Ids"+contactIds1);
-                this.logger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
+                this.xtremandLogger.log("inavlid contacts page pagination Object Ids"+contactIds1);
+                this.xtremandLogger.log("selected inavalid contacts Ids"+this.selectedInvalidContactIds);
                
                 if(items1.length == this.contactsByType.pagination.totalRecords || items1.length == this.contactsByType.pagination.pagedItems.length){
                     this.isInvalidHeaderCheckBoxChecked = true;
@@ -817,7 +846,10 @@ export class ManageContactsComponent implements OnInit {
                 }
                 
             },
-            error => console.log( error ),
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
             () => {
                 this.contactsByType.isLoading = false;
                 }
@@ -918,12 +950,12 @@ export class ManageContactsComponent implements OnInit {
             this.loadContactListsNames();
         }
         catch ( error ) {
-            this.logger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
+            this.xtremandLogger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
         }
     }
 
     ngOnDestroy() {
-        this.logger.info( 'Deinit - Destroyed Component' )
+        this.xtremandLogger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;
         this.contactService.deleteUserSucessMessage = false;
     }
