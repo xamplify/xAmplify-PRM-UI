@@ -692,12 +692,12 @@ export class ManageContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
+                        this.contactCountLoad = true;
                         this.navigateToManageContacts();
                         this.allselectedUsers.length = 0;
                         /*this.show = true;
                         setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
                         this.setResponseDetails('SUCCESS', 'your contact List created successfully');
-                        this.contactCountLoad = true;
                     },
 
                     (error: any) => {
