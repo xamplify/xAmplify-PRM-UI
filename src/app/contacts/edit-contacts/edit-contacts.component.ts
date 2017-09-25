@@ -227,7 +227,7 @@ export class EditContactsComponent implements OnInit {
         console.log(this.users);
         var testArray = [];
         for ( var i = 0; i <= this.users[0].emailId.length - 1; i++ ) {
-            testArray.push( this.users[0].emailId );
+            testArray.push( this.users[0].emailId.toLowerCase() );
         }
         for(var j = 0; j <= this.users.length-1; j++ ){
             if(this.validateEmailAddress(this.users[j].emailId) ){
@@ -247,7 +247,7 @@ export class EditContactsComponent implements OnInit {
             console.log( newArray[w].count );
         }
         this.logger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
-        var valueArr = this.users.map( function( item ) { return item.emailId });
+        var valueArr = this.users.map( function( item ) { return item.emailId.toLowerCase() });
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
         });
