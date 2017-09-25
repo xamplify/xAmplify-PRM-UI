@@ -770,7 +770,7 @@ input[type=radio] {
 			</div>	
 			
 			<div class="modal fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
+  					<div class="modal-dialog" role="document" style="width: 80%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
@@ -789,8 +789,8 @@ input[type=radio] {
 							<th>LAST NAME</th>
 							<th style="text-align:center">DATE & TIME</th>
 							<th>CAMPAIGN NAME</th>
-							<!-- <th>BROWSER</th>
-							<th>PLATFORM</th> -->
+							<th>LOCATION</th>
+							<th>PLATFORM</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -800,9 +800,8 @@ input[type=radio] {
 							<td>{{emailClicked.lastName}}</td>
 							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
 							<td>{{emailClicked.campaignName}}</td>
-							<!-- <td>Hyderabad</td>
-							<td>Google Chrome</td>
-							<td>Windowns 10</td> -->
+							<td>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</td>
+							<td>{{emailClicked.os}}</td>
 						</tr>
 					</tbody>
 				</table>  
@@ -833,7 +832,7 @@ input[type=radio] {
 			</div>
 			
 			<div class="modal fade" id="emailWatchedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  					<div class="modal-dialog" role="document" style="width: 66%;margin: 1em auto">
+  					<div class="modal-dialog" role="document" style="width: 80%;margin: 1em auto">
     					<div class="modal-content">
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
@@ -848,21 +847,23 @@ input[type=radio] {
 					    <thead>
 						<tr>
 							<th>EMAILID</th>
-							<th>NAME</th>
+							<th>FIRST NAME</th>
+							<th>LAST NAME</th>
 							<th style="text-align:center">DATE & TIME</th>
+							<th>CAMPAIGN NAME</th>
 							<th>LOCATION</th>
-							<th>BROWSER</th>
 							<th>PLATFORM</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let allcontacts of pagination.pagedItems;let i = index">
-							<td>{{allcontacts.emailId}}</td>
-							<td>{{allcontacts.firstName}} {{allcontacts.lastName}}</td>
-							<td class="center">20-07-1017 10.26 AM</td>
-							<td>Hyderabad</td>
-							<td>Google Chrome</td>
-							<td>Windowns 10</td>
+						<tr *ngFor="let watched of pagination.pagedItems;let i = index">
+							<td>{{watched.emailId}}</td>
+							<td>{{watched.firstName}}</td>
+							<td>{{watched.lastName}}</td>
+							<td class="center">{{watched.time |date:'MM/dd/yyyy @ h:mma'}}</td>
+							<td>{{watched.campaignName}}</td>
+							<td>{{watched.city}},{{watched.state}},{{watched.country}}</td>
+							<td>{{watched.os}}</td>
 						</tr>
 					</tbody>
 				</table> 

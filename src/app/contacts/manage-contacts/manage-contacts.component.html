@@ -167,9 +167,10 @@ rotate
 														<div class="input-icon right">
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
-																(click)="search('contactList')"></i> <input type="text"
+																(click)="search('contactList')"></i> 
+																<input type="text"
 																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}"
+																[ngModelOptions]="{standalone: true}" (input)="searchKeyValue('contactList')"
 																class="form-control input-circle"
 																placeholder="search...">
 														</div>
@@ -453,9 +454,9 @@ rotate
 											<div class="input-icon right">
 												<i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contacts')"></i> <input type="text"
-													[(ngModel)]="searchKey"
-													[ngModelOptions]="{standalone: true}"
+													(click)="search('contacts')"></i> 
+													<input type="text" [(ngModel)]="searchKey"
+													[ngModelOptions]="{standalone: true}" (input)="searchKeyValue('contacts')"
 													class="form-control input-circle" placeholder="search...">
 											</div>
 										</div>

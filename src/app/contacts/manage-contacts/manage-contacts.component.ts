@@ -863,6 +863,14 @@ export class ManageContactsComponent implements OnInit {
         }            
     }
     
+    searchKeyValue(searchType: string) {
+        if(searchType == 'contactList'){
+        this.pagination.searchKey = this.searchKey;
+        }else{
+            this.contactsByType.pagination.searchKey = this.searchKey;
+        } 
+    }
+    
     search(searchType: string){
         if(searchType == 'contactList'){
             this.pagination.searchKey = this.searchKey;
