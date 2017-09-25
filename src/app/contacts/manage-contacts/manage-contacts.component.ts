@@ -46,6 +46,8 @@ export class ManageContactsComponent implements OnInit {
     showAll: boolean;
     showEdit: boolean;
     
+    contactCountLoad: boolean = false;
+    
     listContactData: boolean = true;
     response: CustomeResponse = new CustomeResponse();
     invalidRemovableContacts = [];
@@ -695,6 +697,7 @@ export class ManageContactsComponent implements OnInit {
                         /*this.show = true;
                         setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
                         this.setResponseDetails('SUCCESS', 'your contact List created successfully');
+                        this.contactCountLoad = true;
                     },
 
                     (error: any) => {
@@ -744,6 +747,7 @@ export class ManageContactsComponent implements OnInit {
                     console.log( index + "value" + value );
                 });
                 this.invalidDeleteSucessMessage = true;
+                this.contactCountLoad = true;
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
@@ -930,12 +934,16 @@ export class ManageContactsComponent implements OnInit {
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.showListOfContactList = true;
         this.contactsByType.selectedCategory = null;
-        this.loadContactLists(this.pagination);
         this.selectedContactListIds = [];
         this.allselectedUsers.length = 0;
         this.selectedInvalidContactIds = [];
         this.invalidRemovableContacts = [];
         this.invalidDeleteSucessMessage = false;
+        if(this.contactCountLoad == true){
+            this.loadContactLists(this.pagination);
+            this.contactsCount();
+        }
+        this.contactCountLoad = false;
     }
     
     setResponseDetails(responseType: string, responseMessage: string){

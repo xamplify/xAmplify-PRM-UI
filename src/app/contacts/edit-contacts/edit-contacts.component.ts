@@ -724,6 +724,7 @@ export class EditContactsComponent implements OnInit {
         this.selectedContactListIds = [];
         this.uploadCsvUsingFile = false;
         this.showSelectedCategoryUsers = true;
+        this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.resetResponse();
         this.contactsByType.pagination = new Pagination();
