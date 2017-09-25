@@ -396,7 +396,7 @@ export class AddContactsComponent implements OnInit {
         this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.newUsers.length - 1; i++ ) {
-            testArray.push( this.newUsers[i].emailId );
+            testArray.push( this.newUsers[i].emailId.toLowerCase() );
         }
 
         var newArray = this.compressArray( testArray );
@@ -408,7 +408,7 @@ export class AddContactsComponent implements OnInit {
             console.log( newArray[w].count );
         }
         this.xtremandLogger.log( "DUPLICATE EMAILS" + this.duplicateEmailIds );
-        var valueArr = this.newUsers.map( function( item ) { return item.emailId });
+        var valueArr = this.newUsers.map( function( item ) { return item.emailId.toLowerCase() });
         var isDuplicate = valueArr.some( function( item, idx ) {
             return valueArr.indexOf( item ) != idx
         });
@@ -472,7 +472,7 @@ export class AddContactsComponent implements OnInit {
         this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.clipboardUsers.length - 1; i++ ) {
-            testArray.push( this.clipboardUsers[i].emailId );
+            testArray.push( this.clipboardUsers[i].emailId.toLowerCase() );
         }
         for ( var j = 0; j <= this.clipboardUsers.length - 1; j++ ) {
             if ( this.validateEmailAddress( this.clipboardUsers[j].emailId ) ) {
@@ -498,7 +498,7 @@ export class AddContactsComponent implements OnInit {
             $( "#clipBoardValidationMessage > h4" ).empty();
             $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>Please Enter the Contact List Name</h4>" );
         } else {
-            var valueArr = this.clipboardUsers.map( function( item ) { return item.emailId });
+            var valueArr = this.clipboardUsers.map( function( item ) { return item.emailId.toLowerCase() });
             var isDuplicate = valueArr.some( function( item, idx ) {
                 return valueArr.indexOf( item ) != idx
             });
