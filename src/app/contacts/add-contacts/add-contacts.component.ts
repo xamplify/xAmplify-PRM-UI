@@ -1538,7 +1538,7 @@ export class AddContactsComponent implements OnInit {
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+               // this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
@@ -1625,7 +1625,7 @@ export class AddContactsComponent implements OnInit {
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+                //this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
@@ -1703,7 +1703,7 @@ export class AddContactsComponent implements OnInit {
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+                //this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
