@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from 'angular2-logger/core';
 
@@ -31,7 +31,7 @@ declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcha
     styleUrls: ['./dashboard.component.css'],
     providers: [DashboardService, Pagination]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
     dashboardStates: any;
     socialeMedia: any;
@@ -523,5 +523,12 @@ export class DashboardComponent implements OnInit {
         } catch (err) {
             console.log(err);
         }
+    }
+    ngOnDestroy() {
+        $('#emailOpenedModal').modal('hide');
+        $('#emailClickedModal').modal('hide');
+        $('#emailWatchedModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
 }
