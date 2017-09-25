@@ -1472,7 +1472,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     hideModal() {
-        $( "#salesforceModal" ).hide();
+        $('#salesforceModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
+        
     }
 
     salesforceContacts() {
