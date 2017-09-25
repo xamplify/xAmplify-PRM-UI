@@ -590,6 +590,9 @@ export class EditContactsComponent implements OnInit {
     }
 
     cancelContacts() {
+        if(this.selectedAddContactsOption == 1){
+            this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+        }
         this.selectedAddContactsOption = 3;
         this.users = [];
         this.dublicateEmailId = false;
@@ -916,6 +919,9 @@ export class EditContactsComponent implements OnInit {
                 this.contactsByType.pagination.totalRecords = data.totalRecords;
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
            
+               /* if(this.contactsByType.pagination.totalRecords == 0){
+                this.setResponseDetails('ERROR', 'No contacts found');
+                }*/
                 if(this.contactsByType.selectedCategory == 'invalid'){
                     this.userListIds = data.listOfUsers;
                 }
