@@ -2,7 +2,7 @@
   a.disabled { pointer-events: none; cursor: not-allowed; }
 </style>
 <div class="page-content">
-<div class="page-bar">
+	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home"></i> 
@@ -21,7 +21,9 @@
 			<a (click)="referenceService.hideDiv('empty-roles-div')" class="close" aria-label="close">x</a>
 	  		<strong>{{errorMessage}}</strong> 
 		</div>
-		<div class="alert alert-danger" *ngIf="csvErrors?.length>0" id="csv-error-div">
+		
+		<div class="alert alert-danger"  id="csv-error-div" style="display: none;">
+		<a (click)="referenceService.hideDiv('csv-error-div')" class="close" aria-label="close">x</a>
 			<div class="container">
 				<table class="table">
 				<ng-container *ngFor="let error of csvErrors">
@@ -44,53 +46,56 @@
 			<div id="process-loader"></div>
 		</div>
 		<div *ngIf="!isProcessing">
-		<div class="col-md-12">
-			<form id="add-team-member-form">
-				<div class="col-sm-3 ">
-					<div  [class]="emaillIdDivClass">
-					 <input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId)">
-					 <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
+			<div class="clearfix">
+				<section class="clearfix">
+				<div class="col-xs-6 col-sm-3">
+						<button class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
+							<h6>Upload Csv</h6>
+							<input type="file"   class="file-upload"   #fileImportInput  name="File Upload"   id="txtFileUpload"   accept=".csv" (change)="fileChangeListener($event)" />
+						</button>
+						<button class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
+							<h6>Upload Csv</h6>
+						</button>
 					</div>
-				</div>
-				<div class="col-sm-3 ">
-					<div class="form-group">
-							<input type="text" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName"/>
+					<div class="col-xs-6 col-sm-3">
+						<button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
+							<h6>Add Team Member</h6>
+						</button>
+						<button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed" >
+							<h6>Add Team Member</h6>
+						</button>
 					</div>
-				</div>
-				<div class="col-sm-3 ">
-					<div class="form-group">
-						<input type="text"  name="last"  class="form-control" id="lastName" placeholder="Last Name"  [(ngModel)]="team.lastName" name="lastName">
-					</div>
-				</div>
-				
-				<button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
-				<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
-				<br><br><br>
-			</form>
-		</div>
-			<input type="file" *ngIf="teamMemberUi.emptyTable"    #fileImportInput      name="File Upload"  class="btn btn-primary"     id="txtFileUpload"   accept=".csv" (change)="fileChangeListener($event)" />
-		<br>
-		<hr>
-		<br>
-
-	<!-- 	<div class="portlet light" *ngIf="teamMemberUi.emptyTable && pagination.totalRecords==0">
-			<div class="portlet-body">
-				<div class="empty-box"></div>
-				<div class="empty-box-content text-center">
-					<h1>
-						<i class="fa fa-user-plus" aria-hidden="true"></i>
-					</h1>
-					<h3>Add members to your team</h3>
-					<p>Fill in your team page by inviting or adding team members.</p>
-					<p>The invited team members will receive an email with a link
-						to create their profiles</p>
-					<button class="btn btn-primary">Add new</button>
-				</div>
-				<div class="empty-box"></div>
+				</section>
 			</div>
-		</div> -->
+			
+			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 70px;">
+				<div class="portlet-body">
+					<form id="add-team-member-form">
+						<div class="col-sm-3 ">
+							<div  [class]="emaillIdDivClass">
+							 <input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId)">
+							 <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
+							</div>
+						</div>
+						<div class="col-sm-3 ">
+							<div class="form-group">
+									<input type="text" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName"/>
+							</div>
+						</div>
+						<div class="col-sm-3 ">
+							<div class="form-group">
+								<input type="text"  name="last"  class="form-control" id="lastName" placeholder="Last Name"  [(ngModel)]="team.lastName" name="lastName">
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
+						<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
+						<button  class="btn btn-info"   type="reset" (click)="clearForm()">Cancel</button>
+					</form>
+				</div>
+			</div>
+			
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
-			<div class="portlet box blue" *ngIf="!teamMemberUi.emptyTable">
+			<div class="portlet light" *ngIf="!teamMemberUi.emptyTable">
 				<div class="portlet-title">
 					<div class="caption">Added Team Members</div>
 				</div>
@@ -152,24 +157,24 @@
 				</div>
 			</div>
 			<!-- ---------------List Of Team Members -->
-			<div class="portlet box blue" *ngIf="teamMemberUi.emptyTable">
+			<div class="portlet light" *ngIf="teamMemberUi.emptyTable">
 				<div class="portlet-title">
 					<div class="caption">Team Members List</div>
-						<div class="tools">
-							<a href="javascript:;" class="reload" (click)="refreshList()"></a>
+						<div class="tools" style="padding: 0;margin: 0;">
+							<div class="inputs" align="right" style="padding:0;display: inline;">
+								<div class="portlet-input input-inline input-large">
+									<div class="input-icon right">
+										<i class="icon-magnifier" (click)="searchTeamMembers()" style="cursor: pointer;max-width: 80%"></i>
+										<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}">
+									</div>
+								</div>
+							</div>
+							<a class="reload" (click)="refreshList()" style="margin: -5px 15px;"></a>
 						</div>
 				</div>
 				<div class="portlet-body clearfix">
 					<div class="table-responsive">
 					<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-					<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-						<div class="portlet-input input-inline input-large">
-							<div class="input-icon right">
-								<i class="icon-magnifier" (click)="searchTeamMembers()" style="cursor: pointer;max-width: 80%"></i>
-								<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}">
-							</div>
-						</div>
-					</div>
 						<table class="table" id="list-team-member-table"  *ngIf="!httpRequestLoader.isLoading">
 							<thead>
 								<tr>
@@ -258,4 +263,3 @@
 	</div>
 	<!-- END PAGE CONTENT -->
 </div>
-

@@ -21,6 +21,8 @@ declare var $,swal :any ;
 export class AddTeamMembersComponent implements OnInit {
    
     successMessage: string = "";
+    isAddTeamMember:boolean = false;
+    isUploadCsv:boolean = false;
     errorMessage:string = "";
     deleteText:string = "This will remove team member";
     deleteMessage:string = "";
@@ -309,6 +311,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.team = new TeamMember();
             this.teamMemberUi.validEmailId = false;
             this.emaillIdDivClass = this.defaultClass;
+            this.teamMemberUi.isValidForm = false;
         }catch(error){
             this.showUIError(error);
         }
@@ -345,6 +348,8 @@ export class AddTeamMembersComponent implements OnInit {
             this.emaillIdDivClass = this.defaultClass;
             $(".col-md-12 span").text('');
             this.teamMemberUi = new TeamMemberUi();
+            this.isUploadCsv = false;
+            this.isAddTeamMember = false;
         }catch(error){
           this.showUIError(error);
         }
@@ -435,15 +440,15 @@ export class AddTeamMembersComponent implements OnInit {
         this.csvErrors = [];
         var text = [];
         var files = $event.srcElement.files;
-        var imgVal = $('#txtFileUpload').val(); 
         if (this.fileUtil.isCSVFile(files[0])) {
-          var input = $event.target;
+            var input = $event.target;
           var reader = new FileReader();
           reader.readAsText(input.files[0]);
           reader.onload = (data) => {
+              $( "#csv-error-div" ).hide();
+              this.isUploadCsv = true;
             let csvData = reader.result;
             let csvRecordsArray = csvData.split(/\r\n|\n/);
-
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             
@@ -452,22 +457,32 @@ export class AddTeamMembersComponent implements OnInit {
             if(this.csvRecords.length>1){
                 this.validateCsvData();
                 if(this.csvErrors.length>0){
+                    $( "#csv-error-div" ).show();
+                    setTimeout( function() { $( "#csv-error-div" ).slideUp( 500 ); }, 5000 );
                     this.fileReset();
+                    this.isUploadCsv = false;
+                    this.isAddTeamMember = false;
                 }else{
                     this.appendCsvDataToTable();
+                    this.fileReset();
                 }
             }else{
                 this.showErrorMessageDiv('You Cannot Upload Empty File');
                 this.fileReset();
+                this.isUploadCsv = false;
+                this.isAddTeamMember = false;
             }
            
           }
+          let self = this;
           reader.onerror = function () {
-            alert('Unable to read ' + input.files[0]);
+              self.showErrorMessageDiv('Unable to read the file');
+              self.isUploadCsv = false;
+              self.isAddTeamMember = false;
           };
 
         } else {
-          alert("Please import valid .csv file.");
+          this.showErrorMessageDiv('Please Import csv file only');
           this.fileReset();
         }
       };
@@ -501,6 +516,8 @@ export class AddTeamMembersComponent implements OnInit {
           }else{
               for(var d=0;d<duplicateEmailIds.length;d++){
                   this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
+                  this.isUploadCsv = false;
+                  this.isAddTeamMember = false;
               }
               
           }
@@ -538,7 +555,16 @@ export class AddTeamMembersComponent implements OnInit {
               }
               this.teamMembers.push(teamMember);
           }
-         
+      }
       
+      showAddTeamMember(){
+          this.isAddTeamMember = true;
+          $( "#csv-error-div" ).hide();
+      }
+      clearForm(){
+          this.emaillIdDivClass = this.defaultClass;
+          $(".text-danger").text('');
+          this.isAddTeamMember = false;
+          this.clearRows();
       }
 }
