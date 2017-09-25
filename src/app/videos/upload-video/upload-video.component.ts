@@ -423,7 +423,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 'No permission to access the camera, please enable the camera and refresh the page once you enable it!',
                 'error');
         }
-        if ( this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+        if (this.refService.cameraIsthere && this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
             this.camera = true;
             this.isDisable = true;
