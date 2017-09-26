@@ -31,13 +31,14 @@ a.disabled {
 }
 
 .alert h4 {
-	margin: 0;
+	margin: 5px;
 	color: inherit;
-	margin-left: 10px;
 	color: #ffffff;
 	font-size: 15px;
 }
-
+.alert{
+padding: 10px;
+}
 .loader {
 	border: 2px solid #f3f3f3;
 	border-radius: 50%;
@@ -52,10 +53,9 @@ top: 5px;
 right: 0;
 }
 
-.alert-success, .alert-danger, .alert-warning {
+.alert-success, .alert-danger, .alert-warning, .alert-info {
 color: #ffffff;
 border-radius: 0;
-padding: 3px 10px;
 margin: 0;
 }
 
@@ -121,16 +121,6 @@ rotate
 
 	<div id="manageContacts" *ngIf="showListOfContactList">
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-		<div *ngIf="show" id="showMessage"
-			class="alert alert-success alert-dismissable">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> Contact List has been created successfully.
-		</div>
-		<div *ngIf="deleteUserSucessMessage" id="showDeleteUserMessage"
-			class="alert alert-success alert-dismissable">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> Contact List has been Deleted successfully.
-		</div>
 		
 		<div *ngIf="showAll">
 			<!-- END PAGE HEADER-->
@@ -257,51 +247,21 @@ rotate
 						</div>
 					</div>
 				</div>
-				<div *ngIf="emptyContacts" class="alert alert-info">
-					<strong>Info!</strong> No Contact Lists found please add the
-					contact lists.
-				</div>
-				<div *ngIf="deleteSucessMessage" id="showDeleteMessage"
-					class="alert alert-success alert-dismissable">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<strong>Success!</strong> Contact List has been Deleted
-					successfully.
-				</div>
-				<div *ngIf="deleteErrorMessage" id="campaignError"
-					class="alert alert-danger alert-dismissable">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<strong>Danger!</strong>{{Campaign}}
-				</div>
-				<div *ngIf="synchronizationSucessMessage"
-					id="showSynchronizeMessage"
-					class="alert alert-success alert-dismissable">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<strong>Success!</strong> Contact List has been Synchronized
-					successfully.
-				</div>
-				<div *ngIf="zohoAuthStorageError"
-					class="col-xs-12 alert alert-danger">
-					<span>{{zohoAuthStorageError}}</span>
-				</div>
-				<div *ngIf="isvideoThere==true" class="col-md-6"
-					class="col-md-9 alert alert-info" style="width: 100%">
-					<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<strong>No Contact lists found.. !!!</strong>
-				</div>
 				<div *ngIf="response.responseType != null">
 					<div class="alert alert-dismissible" role="alert"
 						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
-  									'alert-danger': response.responseType == 'ERROR'}">
+  									'alert-danger': response.responseType == 'ERROR',
+  									'alert-info': response.responseType == 'INFO'}">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-label="Close" (click)="response.responseType = null">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h5 class="flex">
+						<h4 class="flex">
 							<i class="fa"
 								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
  								 'fa-exclamation': response.responseType == 'ERROR'}"
 								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
-						</h5>
+						</h4>
 					</div>
 				</div>
 				<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
@@ -424,7 +384,7 @@ rotate
 		<div *ngIf="noContactsFound==true" class="col-md-6"
 			class="col-md-9 alert alert alert-danger alert-dismissable">
 			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>No Contact found.. !!!</strong>
+			<h4>No Contact found.. !!!</h4>
 		</div>
 		<div class="row">
 			<div class="col-md-12">

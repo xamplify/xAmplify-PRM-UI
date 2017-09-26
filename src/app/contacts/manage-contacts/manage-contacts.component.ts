@@ -38,7 +38,6 @@ export class ManageContactsComponent implements OnInit {
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
     paginationAllData = [];
-    zohoAuthStorageError = '';
     selectedAllContactUsers = new Array<User>();
     isHeaderCheckBoxChecked:boolean = false;
     public contactLists: Array<ContactList>;
@@ -67,14 +66,6 @@ export class ManageContactsComponent implements OnInit {
     
     showAllContactData: boolean = false;
     showManageContactData: boolean = true;
-    deleteSucessMessage: boolean;
-    deleteErrorMessage: boolean;
-    synchronizationSucessMessage: boolean;
-    contactListNameError: boolean;
-    contactListUsersError: boolean;
-    emptyContacts: boolean;
-    emptyContactsUsers: boolean;
-    hidingContactUsers : boolean;
     public contactListName: string;
     public model: any = {};
     public removeIds: number;
@@ -90,7 +81,6 @@ export class ManageContactsComponent implements OnInit {
     sortingName: string = null;
     sortcolumn: string = null;
     sortingOrder: string = null;
-    isvideoThere: boolean;
     noContactsFound : boolean;
     public isCategoryThere: boolean;
     public searchDisable = true;
@@ -148,14 +138,10 @@ export class ManageContactsComponent implements OnInit {
         this.access_token = this.authenticationService.access_token;
         this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
         if ( this.contactService.successMessage == true ) {
-            /*this.show = this.contactService.successMessage;
-            setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
             this.setResponseDetails('SUCCESS', 'your contact List has been created successfully');
             this.xtremandLogger.info( "Success Message in manage contact pape" + this.show );
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
-            /*this.deleteUserSucessMessage = this.contactService.deleteUserSucessMessage;
-            setTimeout( function() { $( "#showDeleteUserMessage" ).slideUp( 500 ); }, 2000 );*/
             this.setResponseDetails('ERROR', 'your contact List has been deleted successfully');
             this.xtremandLogger.info( " delete Success Message in manage contact pape" + this.show );
         }
@@ -180,17 +166,14 @@ export class ManageContactsComponent implements OnInit {
                 this.contactLists = data.listOfUserLists;
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
-                    this.emptyContacts = true;
+                    this.setResponseDetails('INFO', 'No Contact Lists found. Please add the contact lists.')
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
                 }
-                if (this.contactLists.length !== 0) {
-                    this.isvideoThere = false;
-                 }
-                 else {
-                     this.isvideoThere = true;
-                     this.pagedItems = null ;
+                if (this.contactLists.length == 0) {
+                    this.setResponseDetails('INFO', 'No Contact lists found');
+                    this.pagedItems = null ;
                  }
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
@@ -236,11 +219,8 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsCount();
                 $( '#contactListDiv_' + contactListId ).remove();
                 this.loadContactLists( this.pagination );
-                /*this.deleteSucessMessage = true;
-                setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );*/
                 this.setResponseDetails('SUCCESS', 'your contact List has been deleted successfully');
                 if (this.pagination.pagedItems.length === 1) {
-                    this.isvideoThere = true;
                     this.pagination.pageIndex  = 1;
                     this.loadContactLists(this.pagination);
 
@@ -248,9 +228,6 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    //this.Campaign = error;
-                    /*this.deleteErrorMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );*/
                     this.setResponseDetails('ERROR', error);
                 }else{
                     this.xtremandLogger.errorPage(error);
@@ -259,8 +236,6 @@ export class ManageContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.info( "deleted completed" )
             );
-        this.deleteSucessMessage = false;
-        this.deleteErrorMessage = false;
     }
 
     showAlert( contactListId: number ) {
@@ -365,8 +340,6 @@ export class ManageContactsComponent implements OnInit {
             data => {
                 data
                 swal.close();
-                /*this.synchronizationSucessMessage = true;
-                setTimeout( function() { $( "#showSynchronizeMessage" ).slideUp( 500 ); }, 2000 );*/
                 this.setResponseDetails('SUCCESS', 'your contactList sychronized successfully');
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
@@ -377,7 +350,6 @@ export class ManageContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.info( "googleContactsSyncronize() completed" )
             );
-        this.synchronizationSucessMessage = false;
     }
 
     zohoContactsSynchronizationAuthentication( contactListId: number, socialNetwork : string ) {
@@ -402,10 +374,7 @@ export class ManageContactsComponent implements OnInit {
             if ( body != "" ) {
                 var response = JSON.parse( body );
                 if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                     setTimeout(()=> {
-                         this.zohoAuthStorageError = '';
-                     },5000)
+                    this.setResponseDetails('INFO', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!')
                 }else{
                     this.xtremandLogger.errorPage(error);
                 }
@@ -611,7 +580,6 @@ export class ManageContactsComponent implements OnInit {
     }
     
     checkAll(ev:any){
-        this.contactListUsersError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
@@ -653,7 +621,6 @@ export class ManageContactsComponent implements OnInit {
     }
     
     highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
-        this.contactListUsersError = false;
         let isChecked = $('#'+contactId).is(':checked');
         console.log(this.selectedContactListIds)
         if(isChecked){
@@ -679,7 +646,6 @@ export class ManageContactsComponent implements OnInit {
         event.stopPropagation();
     }
     
-    
     saveSelectedUsers() {
         var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
@@ -695,8 +661,6 @@ export class ManageContactsComponent implements OnInit {
                         this.contactCountLoad = true;
                         this.navigateToManageContacts();
                         this.allselectedUsers.length = 0;
-                        /*this.show = true;
-                        setTimeout( function() { $( "#showMessage" ).slideUp( 500 ); }, 2000 );*/
                         this.setResponseDetails('SUCCESS', 'your contact List created successfully');
                     },
 
@@ -707,14 +671,9 @@ export class ManageContactsComponent implements OnInit {
                     () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                     )
             } 
-            }else {
-                this.contactListUsersError = true;
-                this.contactListNameError = false;
             }
         }
         else {
-            this.contactListUsersError = false;
-            this.contactListNameError = true;
             this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
         }
     }
@@ -723,8 +682,6 @@ export class ManageContactsComponent implements OnInit {
         this.model.contactListName = null;
         this.selectedContactListIds = [];
         this.allselectedUsers.length = 0;
-        this.contactListUsersError = false;
-        this.contactListNameError = false;
     }
 
     removeInvalidContactListUsers() {
@@ -908,6 +865,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     search(searchType: string){
+        this.resetResponse();
         if(searchType == 'contactList'){
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
@@ -949,6 +907,11 @@ export class ManageContactsComponent implements OnInit {
     setResponseDetails(responseType: string, responseMessage: string){
         this.response.responseType = responseType;
         this.response.responseMessage = responseMessage;
+    }
+    
+    resetResponse(){
+        this.response.responseType = null;
+        this.response.responseMessage = null;
     }
 
     ngOnInit() {
