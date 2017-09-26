@@ -332,7 +332,14 @@ export class EditContactsComponent implements OnInit {
                         this.checkingLoadContactsCount = true;
                         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                     },
-                    error => this.xtremandLogger.error( error ),
+                    ( error: any ) => {
+                        var body = error['_body'];
+                        var message = JSON.parse( body );
+                       if ( message.includes( 'Please delete those campaigns first.' )) {
+                           console.log("entered.");
+                           this.setResponseDetails('ERROR', message);
+                       }
+                   },
                     () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
                     )
             }else{
@@ -575,7 +582,14 @@ export class EditContactsComponent implements OnInit {
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
-            error => this.xtremandLogger.error( error ),
+            ( error: any ) => {
+                var body = error['_body'];
+                var message = JSON.parse( body );
+               if ( message.includes( 'Please delete those campaigns first.' )) {
+                   console.log("entered.");
+                   this.setResponseDetails('ERROR', message);
+               }
+           },
             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.dublicateEmailId = false;
