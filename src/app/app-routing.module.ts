@@ -23,6 +23,7 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
+import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'user/logEmailURLClick', component: LogEmailClickComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },
+    { path: 'access-denied', component: AccessDeniedComponent },
     { path: '**', component: PageNotFoundComponent},
 ];
 

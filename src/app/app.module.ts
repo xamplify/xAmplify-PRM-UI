@@ -48,11 +48,12 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
+import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
         ShareVideoComponent, CampaignVideoComponent, ActivateAccountComponent,
-        LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent
+        LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],
