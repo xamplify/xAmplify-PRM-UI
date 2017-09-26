@@ -1001,6 +1001,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
+            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
+            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
             updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
