@@ -217,8 +217,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.processing = false;
                         this.defaultSettings();
                         this.maxSubscription = true;
+                        this.setTimoutMethod();
                     } else if (this.processVideoResp.error.includes('Codec is not supported')) {
                         this.codecSupport = true;
+                        this.setTimoutMethod();
                     } else {
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
@@ -257,7 +259,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.hasBaseDropZoneOver = false;
         }
     }
-
+    setTimoutMethod() {
+       const val = this;
+        setTimeout(function () {
+            val.maxSizeOver = false;
+            val.maxSubscription = false;
+            val.codecSupport = false;
+       }, 5000);
+    }
     public fileOverAnother(e: any): void {
         this.hasAnotherDropZoneOver = e;
     }
@@ -271,6 +280,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             file = null;
             console.log('drop file will not work in progress');
         }
+    }
+    closeBannerAlert() {
+        this.maxSizeOver = false;
+        this.maxSubscription = false;
+        this.codecSupport = false;
     }
     fileDropDisabled() {
         // this.isChecked =true;

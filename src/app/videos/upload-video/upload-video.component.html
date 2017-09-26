@@ -115,15 +115,15 @@
 						</div>
 						<div *ngIf="maxSubscription" class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
 							<strong>Contact Admin!</strong> Maximum Disk Space Reached for you subscription.!!
-							<a class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+							<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
 						</div>
 						<div *ngIf="codecSupport" class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
 							Codec is not supported for this video..We are unable to process your video file. Please upload another video file!!
-							<a class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+							<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
 						</div>
 						<div *ngIf="maxSizeOver" class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
 							Your video size is more than the maximum video file size, Please upload another video file within the limit!!
-							<a class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+							<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
 						</div>
 						<div class="col-xs-12" style="padding: 0; margin-bottom: 10px;">
 							<div *ngIf="isDisable==false">
