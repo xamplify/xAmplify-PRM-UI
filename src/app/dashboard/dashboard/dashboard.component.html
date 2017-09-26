@@ -126,6 +126,9 @@ input[type=radio] {
     letter-spacing: 0.5px;
     cursor: pointer;
 }
+td > h5{
+margin:2px;
+}
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -724,22 +727,17 @@ input[type=radio] {
 							<th>EMAILID</th>
 							<th>FIRST NAME</th>
 							<th>LAST NAME</th>
-							<th style="text-align:center">DATE & TIME</th>
+							<th class="text-center">DATE & TIME</th>
 							<th>CAMPAIGN NAME</th>
-							<!-- <th>BROWSER</th>
-							<th>PLATFORM</th> -->
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let emailOpened of pagination.pagedItems;let i = index">
-							<td>{{emailOpened.emailId}}</td>
-							<td>{{emailOpened.firstName}}</td>
-							<td>{{emailOpened.lastName}}</td>
-							<td class="center">{{emailOpened.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{emailOpened.campaignName}}</td>
-							<!-- <td>Hyderabad</td>
-							<td>Google Chrome</td>
-							<td>Windowns 10</td> -->
+							<td><h5>{{emailOpened.emailId}}</h5></td>
+							<td><h5>{{emailOpened.firstName}}</h5></td>
+							<td><h5>{{emailOpened.lastName}}</h5></td>
+							<td class="center"><h5>{{emailOpened.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+							<td><h5>{{emailOpened.campaignName}}</h5></td>
 						</tr>
 					</tbody>
 				</table>  
@@ -787,7 +785,7 @@ input[type=radio] {
 							<th>EMAILID</th>
 							<th>FIRST NAME</th>
 							<th>LAST NAME</th>
-							<th style="text-align:center">DATE & TIME</th>
+							<th class="text-center">DATE & TIME</th>
 							<th>CAMPAIGN NAME</th>
 							<th>LOCATION</th>
 							<th>PLATFORM</th>
@@ -795,13 +793,13 @@ input[type=radio] {
 					</thead>
 					<tbody>
 						<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
-							<td>{{emailClicked.emailId}}</td>
-							<td>{{emailClicked.firstName}}</td>
-							<td>{{emailClicked.lastName}}</td>
-							<td class="center">{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{emailClicked.campaignName}}</td>
-							<td>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</td>
-							<td>{{emailClicked.os}}</td>
+							<td><h5>{{emailClicked.emailId}}</h5></td>
+							<td><h5>{{emailClicked.firstName}}</h5></td>
+							<td><h5>{{emailClicked.lastName}}</h5></td>
+							<td class="center"><h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+							<td><h5>{{emailClicked.campaignName}}</h5></td>
+							<td><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
+							<td><h5>{{emailClicked.os}}</h5></td>
 						</tr>
 					</tbody>
 				</table>  
@@ -849,7 +847,7 @@ input[type=radio] {
 							<th>EMAILID</th>
 							<th>FIRST NAME</th>
 							<th>LAST NAME</th>
-							<th style="text-align:center">DATE & TIME</th>
+							<th class="text-center">DATE & TIME</th>
 							<th>CAMPAIGN NAME</th>
 							<th>LOCATION</th>
 							<th>PLATFORM</th>
@@ -857,13 +855,13 @@ input[type=radio] {
 					</thead>
 					<tbody>
 						<tr *ngFor="let watched of pagination.pagedItems;let i = index">
-							<td>{{watched.emailId}}</td>
-							<td>{{watched.firstName}}</td>
-							<td>{{watched.lastName}}</td>
-							<td class="center">{{watched.time |date:'MM/dd/yyyy @ h:mma'}}</td>
-							<td>{{watched.campaignName}}</td>
-							<td>{{watched.city}},{{watched.state}},{{watched.country}}</td>
-							<td>{{watched.os}}</td>
+							<td><h5>{{watched.emailId}}</h5></td>
+							<td><h5>{{watched.firstName}}</h5></td>
+							<td><h5>{{watched.lastName}}</h5></td>
+							<td class="center"><h5>{{watched.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+							<td><h5>{{watched.campaignName}}</h5></td>
+							<td><h5>{{watched.city}},{{watched.state}},{{watched.country}}</h5></td>
+							<td><h5>{{watched.os}}</h5></td>
 						</tr>
 					</tbody>
 				</table> 
@@ -891,4 +889,4 @@ input[type=radio] {
      		 			</div>
     				</div>
   				</div>
-			</div>		
+			</div>	
