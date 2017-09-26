@@ -416,7 +416,7 @@ a.disabled {
 									<ng-container *ngIf="selectedAddContactsOption == 0">
 									<tr *ngFor="let newContact of users; let i = index"
 										class="new_row">
-										<td><input type="checkbox" checked="newContact.checked"></td>
+										<td align="center"><input type="checkbox" checked="newContact.checked"></td>
 										<td>
 										    <input type=Text
 											[(ngModel)]="newContact.emailId" class="form-control"
