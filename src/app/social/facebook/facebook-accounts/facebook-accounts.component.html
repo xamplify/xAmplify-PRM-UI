@@ -1,15 +1,15 @@
-<div class="page-content">
-<div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let page of socialConnections">
-<div class="dashboard-stat2 square-box" style="box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);">
-		<a style="text-decoration: none; !important" [routerLink]="['../facebook-analytics', page.id]">
-			<span>
-				<div class="cover-photo-div">
-					<img class="cover-photo-image img-responsive" alt="{{page.name}}" src="{{page.cover.source}}">
-				</div>
-				<h3>{{page.name}}</h3>
-				<h5>{{page.category}}</h5>
-			</span>
-		</a>
-</div>		
-</div>
+<div class="page-content clearfix">
+	<div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let page of socialConnections">
+		<div class="dashboard-stat2 square-box" style="box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);">
+			<a style="text-decoration: none; !important" [routerLink]="['../facebook-analytics', page.id]">
+				<span>
+					<div class="cover-photo-div">
+						<img *ngIf="page.cover" class="cover-photo-image img-responsive" alt="{{page.name}}" src="{{page.cover.source}}">
+					</div>
+					<h3>{{page.name}}</h3>
+					<h5>{{page.category}}</h5>
+				</span>
+			</a>
+		</div>		
+	</div>
 </div>

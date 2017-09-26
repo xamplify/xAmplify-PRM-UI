@@ -17,7 +17,8 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
                 {code: '500', message: 'Internal Server Error'},
                 {code: '502', message: 'Bad Gateway'},
                 {code: '503', message: 'Service Unavailable'},
-                {code: '504', message: 'Gateway Timeout'}
+                {code: '504', message: 'Gateway Timeout'},
+                {code: '0', message: 'ERR_INTERNET_DISCONNECTED'}
               ]
   constructor(public router: Router, private route: ActivatedRoute) {}
 
@@ -26,7 +27,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
       this.errorCode = +params['errorStatusId']; // (+) converts string 'id' to a number
     });
     
-    if(this.errorCode == 503)
+    if(this.errorCode == 503 || this.errorCode == 0)
         this.router.navigate( ['/serviceunavailable'] );
   }
 
