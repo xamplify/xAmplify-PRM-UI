@@ -340,7 +340,7 @@ export class ManageContactsComponent implements OnInit {
             data => {
                 data
                 swal.close();
-                this.setResponseDetails('SUCCESS', 'your contactList sychronized successfully');
+                this.setResponseDetails('SUCCESS', 'Your Contact List has been sychronized successfully');
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
