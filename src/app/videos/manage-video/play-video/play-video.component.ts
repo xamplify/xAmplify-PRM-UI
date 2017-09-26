@@ -142,7 +142,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.is360Value = this.selectedVideo.is360video;
            if (this.selectedVideo.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
-        }
+            } else { this.isThisDraftVideo = false; }
         this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {
