@@ -160,7 +160,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
                this.isScheduledCampaignLaunched = true;
                setTimeout( function() { $( "#scheduleCompleted" ).slideUp( 1000 ); }, 5000 );
            }else{
-               this.router.navigate(["/home/campaigns/create-campaign"]);
+               this.router.navigate(["/home/campaigns/edit-campaign"]);
            }
            
         },

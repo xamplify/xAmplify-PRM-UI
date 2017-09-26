@@ -421,7 +421,7 @@ input[type=radio] {
 				<div class="dashboard-stat2 ">
 					<div class="display">
 						<a
-							[routerLink]="['../../social/facebook-posts', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null">
+							[routerLink]="['../../social/facebook-posts', socialConnection.profileId]">
 							<div class="number">
 								<h3 class="font-blue-steel">
 									<span data-counter="counterup" data-value="567">
@@ -527,7 +527,7 @@ input[type=radio] {
 					<div class="clearfix" style="margin-top: 15px;">
 						<section *ngFor="let socialConnection of socialConnections">
 							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
-								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]" [class.disabled]="!hasStatsRole ? true : null"
+								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
 									style="text-decoration: none;">
 									<div class="twitter-color text-center">
 										<div class="visual ">

@@ -18,14 +18,13 @@ declare var BeePlugin,swal,$,Promise:any;
 })
 export class CreateTemplateComponent implements OnInit {
 	
-    loggedInUserId:number;
     constructor(private emailTemplateService:EmailTemplateService,
                 private emailTemplate:EmailTemplate,private router:Router, private logger :Logger,
                 private authenticationService:AuthenticationService,private refService:ReferenceService) {
 		console.log(emailTemplateService.emailTemplate);
-		this.loggedInUserId = this.authenticationService.user.id;
+		let loggedInUserId = this.authenticationService.getUserId();
 	    var names:any = [];
-        emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+        emailTemplateService.getAvailableNames(loggedInUserId).subscribe(
             ( data: any ) => {
 	              names = data;
             },
@@ -64,10 +63,14 @@ export class CreateTemplateComponent implements OnInit {
 
 	      var title = "Add Template Name";
 	      var templateName = "";
-	      var isDefaultTemplate = emailTemplateService.emailTemplate.defaultTemplate;
-	      if(!isDefaultTemplate){
-	          templateName = emailTemplateService.emailTemplate.name;
-	          title = "Update Template Name";
+	      if(emailTemplateService.emailTemplate!=undefined){
+	          var isDefaultTemplate = emailTemplateService.emailTemplate.defaultTemplate;
+	          if(!isDefaultTemplate){
+	              templateName = emailTemplateService.emailTemplate.name;
+	              title = "Update Template Name";
+	          }
+	      }else{
+	          this.router.navigate(["/home/emailtemplate/selectTemplate"]);
 	      }
 	      
 	      
@@ -163,7 +166,7 @@ export class CreateTemplateComponent implements OnInit {
 	    
 	      function saveTemplate(){
               emailTemplate.user = new User();
-              emailTemplate.user.userId = authenticationService.user.id;
+              emailTemplate.user.userId = loggedInUserId;
               emailTemplate.userDefined = true;
               emailTemplate.name = $.trim($('#templateNameId').val());
               emailTemplate.beeRegularTemplate = emailTemplateService.emailTemplate.beeRegularTemplate;
@@ -227,7 +230,7 @@ export class CreateTemplateComponent implements OnInit {
 	        name: 'content 2',
 	        value: '[content1]'
 	      }];
-	      var beeUserId = "bee-"+authenticationService.user.id;
+	      var beeUserId = "bee-"+loggedInUserId;
 	      var beeConfig = {  
 	        uid: beeUserId,
 	        container: 'bee-plugin-container',
@@ -286,7 +289,8 @@ export class CreateTemplateComponent implements OnInit {
 	              });
 	          });
 	        });
-    	}
+	      
+    	}//End Of Constructor
 
   ngOnInit() {
   }

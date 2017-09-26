@@ -11,7 +11,8 @@ export const campaignRoutes: Routes = [
     { path: '', redirectTo: 'select-campaign', pathMatch: 'full' },
     { path:'select-campaign',component:SelectCampaignTypeComponent},
     { path:'create-campaign',component:CreateCampaignComponent},
-    { path: 'managepublish', component: ManagePublishComponent },
+    { path:'edit-campaign',component:CreateCampaignComponent},
+    { path: 'manage-campaigns', component: ManagePublishComponent },
     { path: ':campaignId/details', component: AnalyticsComponent },
 ];
 

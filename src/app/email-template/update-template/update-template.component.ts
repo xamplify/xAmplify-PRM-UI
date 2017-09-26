@@ -35,14 +35,17 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,
             private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
-        emailTemplateService.getAvailableNames(this.authenticationService.user.id).subscribe(
+        if(this.emailTemplateService.emailTemplate==undefined){
+            this.router.navigate(["/home/emailtemplate/selectTemplate"]);
+        }
+        emailTemplateService.getAvailableNames(this.authenticationService.getUserId()).subscribe(
             (data: any) => {
                 this.availableTemplateNames = data;
             },
             (error: any) => logger.error(error),
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
-        this.videoTag = "<a href='<xtremandURL>'>\n   <img src='<xtremandImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
+        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
         if (emailTemplateService.emailTemplate != undefined) {
             this.model.content = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;

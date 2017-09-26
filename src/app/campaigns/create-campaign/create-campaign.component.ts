@@ -1,5 +1,6 @@
 import { Component, OnInit,OnDestroy,ViewChild, ElementRef,HostListener} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
+import{ PlatformLocation} from '@angular/common';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -160,6 +161,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     emailNotOpenedReplyDaysSum:number = 0;
     emailOpenedReplyDaysSum:number = 0;
     onClickScheduledDaysSum:number = 0;
+    isReloaded:boolean = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -172,11 +174,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
+        if(this.isAdd){
+            this.campaignType = this.refService.selectedCampaignType;
+        }
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.campaign.userId = this.loggedInUserId;
             this.loadCampaignNames( this.loggedInUserId );
             }
+        if(this.campaignService.campaign==undefined){
+            if(this.router.url=="/home/campaigns/edit-campaign"){
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/manage-campaigns"]);
+            }else if(this.campaignType.length==0){
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/select-campaign"]);
+            }
+        }
         if(this.campaignService.campaign!=undefined){
             $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
             this.isAdd = false;
@@ -255,9 +269,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.logger.info("No Email Template Added For Campaign");
             }
         }//End Of Edit
-        if(this.isAdd){
-            this.campaignType = this.refService.selectedCampaignType;
-        }
         if(this.refService.campaignVideoFile!=undefined){
             /****************Creating Campaign From Manage VIdeos*******************************/
             var selectedVideoId  = this.refService.campaignVideoFile.id;
@@ -273,7 +284,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedRow = this.refService.campaignVideoFile.id;
             }
         }
+    
+    
     }
+    
     getCampaignReplies(campaign:Campaign){
        if(campaign.campaignReplies!=undefined){
            this.replies = campaign.campaignReplies;
@@ -985,9 +999,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#email-template-title").append(emailTemplate.name);
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<xtremandImgURL>",selectedVideoGifPath);
+            let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
             updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;xtremandImgURL&gt;",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
         }else{
           $("#htmlContent").append(emailTemplate.body);
@@ -1059,6 +1074,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            self.emailTemplateHrefLinks.push(href);
         });
         this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);
+        var index = $.inArray("<SocialUbuntuURL>", this.emailTemplateHrefLinks);
+        if (index>=0) {
+            this.emailTemplateHrefLinks.splice(index, 1);
+        }
         console.log(this.emailTemplateHrefLinks);
     }
     filterEmailTemplateForEditCampaign(){
@@ -1312,7 +1331,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(response.message=="success"){
                     this.isLaunched = true;
                     this.reInitialize();
-                    this.router.navigate(["/home/campaigns/managepublish"]);
+                    this.router.navigate(["/home/campaigns/manage-campaigns"]);
                 }else{
                 }
             },
@@ -1331,31 +1350,33 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
     /********************************************On Destory********************************************/
     ngOnDestroy() {
-        if(!this.isLaunched){
-           if(this.isAdd){
-               this.saveCampaignOnDestroy();
-           }else{
-               let self = this;
-               swal( {
-                   title: 'Are you sure?',
-                   text: "You have unchanged Campaign data",
-                   type: 'warning',
-                   showCancelButton: true,
-                   confirmButtonColor: '#3085d6',
-                   cancelButtonColor: '#d33',
-                   confirmButtonText: 'Yes, Save it!'
+        if(!this.isReloaded){
+            if(!this.isLaunched){
+                if(this.isAdd){
+                    this.saveCampaignOnDestroy();
+                }else{
+                    let self = this;
+                    swal( {
+                        title: 'Are you sure?',
+                        text: "You have unchanged Campaign data",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Save it!'
 
-               }).then(function() {
-                       self.saveCampaignOnDestroy();
-                       self.getRepliesData();
-                       self.getOnClickData();
-                   
-               },function (dismiss) {
-                   if (dismiss === 'cancel') {
-                       self.reInitialize();
-                   }
-               })
-           }
+                    }).then(function() {
+                            self.saveCampaignOnDestroy();
+                            self.getRepliesData();
+                            self.getOnClickData();
+                        
+                    },function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            self.reInitialize();
+                        }
+                    })
+                }
+             }
         }
          }
     

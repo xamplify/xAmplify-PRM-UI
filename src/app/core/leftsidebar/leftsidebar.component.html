@@ -5,7 +5,7 @@
 			<div class="page-sidebar navbar-collapse collapse">
 				<!-- BEGIN SIDEBAR MENU -->
 				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-					<li *ngIf="isStats" [ngClass]="{'active':  baseRoute === 'dashboard'}">
+					<li  [ngClass]="{'active':  baseRoute === 'dashboard'}">
 						<a [routerLink]="['/home/dashboard/default']" >
 						<i class="icon-home"></i>
 						<span class="title">Account Dashboard</span>
@@ -97,7 +97,7 @@
 								</a>
 							</li>
 							<li>
-								<a  [routerLink] ="['./campaigns/managepublish']">
+								<a  [routerLink] ="['./campaigns/manage-campaigns']">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Campaigns</span>
 								</a>

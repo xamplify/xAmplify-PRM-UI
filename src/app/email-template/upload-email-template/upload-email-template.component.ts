@@ -47,8 +47,12 @@ export class UploadEmailTemplateComponent implements OnInit {
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
             private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
-        this.videoTag = "<a href='<xtremandURL>'>\n   <img src='<xtremandImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
-        this.loggedInUserId = this.authenticationService.user.id;
+        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
+        this.loggedInUserId = this.authenticationService.getUserId();
+       
+        if(this.emailTemplateService.isRegularUpload==undefined){
+            this.router.navigate(["/home/emailtemplate/selectTemplate"]);
+        }
         emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
             (data: any) => {
                 this.availableTemplateNames = data;
