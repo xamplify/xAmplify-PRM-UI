@@ -25,7 +25,7 @@ export class AuthenticationService {
     public redirectUrl: string;
     map: any;
     constructor( private http: Http, private router: Router, private utilService: UtilService ) {
-        this.APP_URL = 'https://xtremand.com/';
+        this.APP_URL = 'https://socialubuntu.com/';
         this.REST_URL = 'https://aravindu.com/xtremand-rest/';
        //this.REST_URL = "http://localhost:8080/xtremand-rest/";
         this.MEDIA_URL = 'https://aravindu.com/vod/';
