@@ -170,6 +170,7 @@ export class LoginComponent implements OnInit {
         console.log( "showForgotPassword clicked" );
         $( '.login-form' ).hide();
         $( '.forget-form' ).show();
+        this.forgotPasswordForm.reset();
     }
 
     showLogin() {
