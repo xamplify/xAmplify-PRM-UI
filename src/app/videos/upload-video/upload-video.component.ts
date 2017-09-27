@@ -148,7 +148,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
                  !this.browserInfo.includes('edge')) {
-                this.checkCameraBlock();
+            //    this.checkCameraBlock();
                 this.refService.isEnabledCamera = true;
             } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) { 
                 this.refService.cameraIsthere = true; }
@@ -176,6 +176,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         } else { this.videoDisabled = true; this.previewDisabled = false; }
     }
     processVideo(responsePath: any) {
+        this.cloudStorageDisabled();
         const val = this;
         if (this.RecordSave !== true) {
             setTimeout(function () {
@@ -260,12 +261,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     setTimoutMethod() {
+       this.uploader.queue.length = 0;
        const val = this;
         setTimeout(function () {
             val.maxSizeOver = false;
             val.maxSubscription = false;
             val.codecSupport = false;
-       }, 5000);
+       }, 4000);
     }
     public fileOverAnother(e: any): void {
         this.hasAnotherDropZoneOver = e;
@@ -285,6 +287,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.maxSizeOver = false;
         this.maxSubscription = false;
         this.codecSupport = false;
+        this.defaultSettings();
     }
     fileDropDisabled() {
         // this.isChecked =true;
@@ -431,13 +434,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         );
     }
     cameraChange() {
-        if (!this.refService.cameraIsthere) {
-            this.deviceNotSupported = true;
-            swal('Oops...',
-                'No permission to access the camera, please enable the camera and refresh the page once you enable it!',
-                'error');
-        }
-        if (this.refService.cameraIsthere && this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
+        // if (!this.refService.cameraIsthere) {
+        //     this.deviceNotSupported = true;
+        //     swal('Oops...',
+        //         'No permission to access the camera, please enable the camera and refresh the page once you enable it!',
+        //         'error');
+        // }
+        if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
             this.camera = true;
             this.isDisable = true;
@@ -655,6 +658,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 swal.close();
                 console.log(result);
                 this.processing = true;
+
                 this.processVideo(result.path);
             },
             (error: any) => {
