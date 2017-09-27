@@ -140,7 +140,7 @@ export class AddTeamMembersComponent implements OnInit {
                this.isProcessing = false;
                this.successMessage = "Team Member(s) Added Successfully";
                $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
+               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                this.pagination.pageIndex = 1;
                this.listTeamMembers(this.pagination);
                this.listEmailIds();
@@ -170,7 +170,7 @@ export class AddTeamMembersComponent implements OnInit {
                this.isProcessing = false;
                this.successMessage = "Team Member(s) Updated Successfully";
                $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
+               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                this.pagination.pageIndex = 1;
                this.listTeamMembers(this.pagination);
                this.listEmailIds();
@@ -189,7 +189,7 @@ export class AddTeamMembersComponent implements OnInit {
     showErrorMessageDiv(message:string){
         this.errorMessage =message ;
         $( "#empty-roles-div" ).show(600);
-        setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 5000 );
+        setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
     }
     /*********************Delete*********************/
     delete(teamMember:TeamMember){
@@ -227,7 +227,7 @@ export class AddTeamMembersComponent implements OnInit {
                     self.successMessage = teamMember.emailId+" Deleted Successfully";
                 }
                  $( "#team-member-success-div" ).show();
-                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 5000 );
+                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                 self.pagination.pageIndex = 1;
                 self.listTeamMembers(self.pagination);
                 self.listEmailIds();
@@ -441,38 +441,27 @@ export class AddTeamMembersComponent implements OnInit {
         var text = [];
         var files = $event.srcElement.files;
         if (this.fileUtil.isCSVFile(files[0])) {
+            $( "#empty-roles-div" ).hide();
+            $( "#csv-error-div" ).hide();
             var input = $event.target;
           var reader = new FileReader();
           reader.readAsText(input.files[0]);
           reader.onload = (data) => {
-              $( "#csv-error-div" ).hide();
-              this.isUploadCsv = true;
+             this.isUploadCsv = true;
             let csvData = reader.result;
             let csvRecordsArray = csvData.split(/\r\n|\n/);
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
-            
-            this.csvRecords = this.fileUtil
-                .getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
-            if(this.csvRecords.length>1){
-                this.validateCsvData();
-                if(this.csvErrors.length>0){
-                    $( "#csv-error-div" ).show();
-                    setTimeout( function() { $( "#csv-error-div" ).slideUp( 500 ); }, 5000 );
-                    this.fileReset();
-                    this.isUploadCsv = false;
-                    this.isAddTeamMember = false;
+            let headers = headersRow[0].split(',');
+            if(headers.length==7){
+                if(this.validateHeaders(headers)){
+                    this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
-                    this.appendCsvDataToTable();
-                    this.fileReset();
+                    this.showCsvFileError('Invalid CSV');
                 }
             }else{
-                this.showErrorMessageDiv('You Cannot Upload Empty File');
-                this.fileReset();
-                this.isUploadCsv = false;
-                this.isAddTeamMember = false;
+                this.showCsvFileError('Invalid CSV');
             }
-           
           }
           let self = this;
           reader.onerror = function () {
@@ -487,6 +476,41 @@ export class AddTeamMembersComponent implements OnInit {
         }
       };
       
+         validateHeaders(headers){
+          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL");
+         }
+      
+      readCsvData(csvRecordsArray,rowLength){
+          this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray,rowLength);
+          if(this.csvRecords.length>1){
+              this.processCSVData();
+          }else{
+              this.showCsvFileError('You Cannot Upload Empty File');
+          }
+      }
+      
+      
+      processCSVData(){
+          this.validateCsvData();
+          if(this.csvErrors.length>0){
+              $( "#csv-error-div" ).show();
+              setTimeout( function() { $( "#csv-error-div" ).hide( 500 ); }, 7000 );
+              this.fileReset();
+              this.isUploadCsv = false;
+              this.isAddTeamMember = false;
+          }else{
+              this.appendCsvDataToTable();
+              this.fileReset();
+          }
+      }
+      
+      showCsvFileError(message:string){
+          this.showErrorMessageDiv(message);
+          this.fileReset();
+          this.isUploadCsv = false;
+          this.isAddTeamMember = false;
+      
+      }
       
       validateCsvData(){
           let names = this.csvRecords.map(function(a) {return a[0].split(',')[0]});
