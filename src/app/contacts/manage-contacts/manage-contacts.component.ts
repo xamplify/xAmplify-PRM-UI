@@ -54,6 +54,7 @@ export class ManageContactsComponent implements OnInit {
     allselectedUsers = [];
     isInvalidHeaderCheckBoxChecked:boolean = false;
     invalidDeleteSucessMessage: boolean;
+    invalidDeleteErrorMessage: boolean = false;
     
     public invalidIds: Array<UserListIds>;
     
@@ -691,6 +692,7 @@ export class ManageContactsComponent implements OnInit {
         this.selectedContactListIds = [];
         this.allselectedUsers.length = 0;
         this.isHeaderCheckBoxChecked = false;
+        this.contactsNotSelectedError = false;
     }
 
     removeInvalidContactListUsers() {
@@ -717,13 +719,21 @@ export class ManageContactsComponent implements OnInit {
                 setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+            ( error: any ) => {
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                    this.invalidDeleteErrorMessage = true;
+                }else{
+                    this.xtremandLogger.errorPage(error);
+                }
+                console.log( error );
             },
             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.invalidDeleteSucessMessage = false;
+        this.invalidDeleteErrorMessage = false;
     }
 
     invalidContactsShowAlert() {
