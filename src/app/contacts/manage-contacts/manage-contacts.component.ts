@@ -34,6 +34,7 @@ export class ManageContactsComponent implements OnInit {
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
+    contactsNotSelectedError: boolean = false;
     hasContactRole:boolean = false;
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
@@ -582,6 +583,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     checkAll(ev:any){
+        this.contactsNotSelectedError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
@@ -623,6 +625,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
+        this.contactsNotSelectedError = false;
         let isChecked = $('#'+contactId).is(':checked');
         console.log(this.selectedContactListIds)
         if(isChecked){
@@ -672,12 +675,15 @@ export class ManageContactsComponent implements OnInit {
                     },
                     () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                     )
-            } 
+             } 
+            }else{
+            this.contactsNotSelectedError = true;
             }
         }
         else {
-            this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() ContactList Name Error" );
+            this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
         }
+        //this.contactsNotSelectedError = false;
     }
 
     cancelAllContactsCancel() {
