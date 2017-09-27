@@ -1043,7 +1043,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplateHrefLinks = [];
         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
         this.setEmailTemplateData(emailTemplate);
-        this.urls = [];
+        if(this.emailTemplateHrefLinks.length==0){
+            this.urls = [];
+        }
        /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
