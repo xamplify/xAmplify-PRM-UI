@@ -659,6 +659,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
+        if(title.length>50){
+            title = title.substring(0, 50);
+        }
         var videoPath = videoFile.videoPath;
         var is360 = videoFile.is360video;
         $("#"+divId).empty();

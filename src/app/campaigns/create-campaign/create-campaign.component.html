@@ -327,10 +327,15 @@
 										<!-- --------------Title--------------------------- -->
 										<td style="text-align: center">
 										<div class="row">
-											<div class="col-md-12">
+											<div class="col-md-12" title="{{savedVideoFile.title}}">
 												<p style="margin: 0;">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;" class="shortenLength shortened">{{savedVideoFile.title}}</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">
+																	{{savedVideoFile.title|slice:0:50}}....
+														</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">
+																	{{savedVideoFile.title}}
+														</b>
 													</a>
 												</p>
 												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
@@ -374,9 +379,14 @@
 										<td style="text-align: center" *ngIf="videoFile.id!==videoId">
 										<div class="row">
 											<div class="col-md-12">
-												<p style="margin: 0;">
+												<p style="margin: 0;" title="{{videoFile.title}}">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;" class="shortenLength shortened">{{videoFile.title}}</b>
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length>50">
+																	{{videoFile.title|slice:0:50}}....
+														</b>
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length<=50">
+																	{{videoFile.title}}
+														</b>
 													</a>
 												</p>
 												<p>by <b>{{videoFile.uploadedBy}}</b> </p>
