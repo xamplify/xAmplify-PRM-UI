@@ -687,9 +687,10 @@ export class ManageContactsComponent implements OnInit {
     }
 
     cancelAllContactsCancel() {
-        this.model.contactListName = null;
+        this.model.contactListName = "";
         this.selectedContactListIds = [];
         this.allselectedUsers.length = 0;
+        this.isHeaderCheckBoxChecked = false;
     }
 
     removeInvalidContactListUsers() {
@@ -891,6 +892,8 @@ export class ManageContactsComponent implements OnInit {
     }
     
     navigateToManageContacts(){
+        this.contactsNotSelectedError = false;
+        this.model.contactListName = "";
         this.searchKey = null;
         this.response.responseType = null;
         this.resetPagination();
