@@ -88,7 +88,7 @@ export class CreateTemplateComponent implements OnInit {
 	          }
 	          if(!isDefaultTemplate){
 	              var buttons = $('<div>')
-                  .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
+                  .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
 	              .append(createButton('Save As', function() {
 	                 saveTemplate();
 	              })).append(createButton('Update', function() {
@@ -122,7 +122,7 @@ export class CreateTemplateComponent implements OnInit {
 	              });
 	          }else{
 	              var buttons = $('<div>')
-	              .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
+	              .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
 	              .append(createButton('Save', function() {
 	                  saveTemplate();
 	              })).append(createButton('Cancel', function() {
