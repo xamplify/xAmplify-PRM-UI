@@ -1,4 +1,7 @@
 		
 <div class="page-content" >
-			<div id="bee-plugin-container"></div>
+<div class="div-loader" *ngIf="isLoading">
+			<div id="process-loader"></div>
+		</div>
+			<div id="bee-plugin-container" *ngIf="!isLoading"></div>
 </div>			

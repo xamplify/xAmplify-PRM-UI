@@ -6,7 +6,7 @@ import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
-import { Logger } from "angular2-logger/core";
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -45,9 +45,9 @@ export class UploadEmailTemplateComponent implements OnInit {
     uploadFileErrorMessage:string = "";
     videoTag:string = "";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
-            private emailTemplate: EmailTemplate, private logger: Logger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
+            private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
-        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
+        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         this.loggedInUserId = this.authenticationService.getUserId();
        
         if(this.emailTemplateService.isRegularUpload==undefined){
@@ -88,6 +88,11 @@ export class UploadEmailTemplateComponent implements OnInit {
     /****************Reading Uploaded File********************/
     readFile(event: any ) {
         var self = this;
+        if(this.model.templateName=="undefined" || this.model.templateName==undefined){
+           this.isValidTemplateName = false;
+        }else{
+            this.isValidTemplateName = true;
+        }
         this.htmlText = "";
         let file: any;
         if (event.srcElement != undefined) {
@@ -175,13 +180,12 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     /************Save Html Template****************/
     saveHtmlTemplate() {
+        this.loading = true;
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = this.model.content;
         this.emailTemplate.userDefined = true;
         this.emailTemplate.type = EmailTemplateType.UPLOADED;
-        console.log(this.emailTemplate.body);
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;
             this.emailTemplate.desc = "Regular Template";
@@ -191,9 +195,14 @@ export class UploadEmailTemplateComponent implements OnInit {
             this.emailTemplate.desc = "Video Template";
             this.emailTemplate.subject = "assets/images/video-email-template.png";
         }
+        for(var instanceName in CKEDITOR.instances){
+            CKEDITOR.instances[instanceName].updateElement();
+            this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
+        }
         this.emailTemplateService.save(this.emailTemplate)
             .subscribe(
             data => {
+                this.loading = false;
                 if (data == "success") {
                 this.refService.isCreated = true;
                 this.router.navigate(["/home/emailtemplate/manageTemplates"]);
@@ -203,8 +212,8 @@ export class UploadEmailTemplateComponent implements OnInit {
                 }
             },
             error => {
-                this.logger.error(this.refService.errorPrepender+" saveHtmlTemplate():"+error);
-                this.refService.showServerError(this.httpRequestLoader);
+               this.loading = false;
+               this.logger.errorPage(error);
             },
             () => console.log(" Completed saveHtmlTemplate()")
             );

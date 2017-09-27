@@ -8,6 +8,7 @@ import { EmailTemplateType } from '../../email-template/models/email-template-ty
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var BeePlugin,swal,$,Promise:any;
 
 @Component({
@@ -18,18 +19,20 @@ declare var BeePlugin,swal,$,Promise:any;
 })
 export class CreateTemplateComponent implements OnInit {
 	
+    isLoading:boolean = false;
     constructor(private emailTemplateService:EmailTemplateService,
-                private emailTemplate:EmailTemplate,private router:Router, private logger :Logger,
+                private emailTemplate:EmailTemplate,private router:Router, private logger :XtremandLogger,
                 private authenticationService:AuthenticationService,private refService:ReferenceService) {
 		console.log(emailTemplateService.emailTemplate);
 		let loggedInUserId = this.authenticationService.getUserId();
 	    var names:any = [];
+		let self = this;
         emailTemplateService.getAvailableNames(loggedInUserId).subscribe(
             ( data: any ) => {
 	              names = data;
             },
             error => {
-                this.logger.error("error in listCampaign()", error);
+                this.logger.error("error in getAvailableNames("+loggedInUserId+")", error);
             },
             () =>  this.logger.info("Finished getAvailableNames()")
         );
@@ -73,7 +76,6 @@ export class CreateTemplateComponent implements OnInit {
 	          this.router.navigate(["/home/emailtemplate/selectTemplate"]);
 	      }
 	      
-	      
 	      var save = function(jsonContent:string, htmlContent:string) {
 	          emailTemplate = new EmailTemplate();
               emailTemplate.body = htmlContent;
@@ -88,20 +90,24 @@ export class CreateTemplateComponent implements OnInit {
 	              var buttons = $('<div>')
                   .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
 	              .append(createButton('Save As', function() {
-	                 console.log('Save As'); 
 	                 saveTemplate();
 	              })).append(createButton('Update', function() {
 	                 console.log('Update'); 
+	                 self.isLoading  = true;
+	                 swal.close();
 	                 emailTemplate.name = $.trim($('#templateNameId').val());
 	                 emailTemplate.id = emailTemplateService.emailTemplate.id;
                      emailTemplateService.update(emailTemplate) .subscribe(
                              data => {
+                                 self.isLoading = false;
                                  refService.isUpdated = true;
-                                 swal.close();
                                  router.navigate(["/home/emailtemplate/manageTemplates"]);
                                  
                              },
-                             error => console.log( error ),
+                             error => {
+                                 self.isLoading = false;
+                                 self.logger.errorPage(error)
+                                 },
                              () => console.log( "Email Template Updated" )
                              );
 	              })).append(createButton('Cancel', function() {
@@ -165,7 +171,9 @@ export class CreateTemplateComponent implements OnInit {
 	      };//End Of Save Method
 	    
 	      function saveTemplate(){
-              emailTemplate.user = new User();
+              self.isLoading = true;
+              swal.close();
+	          emailTemplate.user = new User();
               emailTemplate.user.userId = loggedInUserId;
               emailTemplate.userDefined = true;
               emailTemplate.name = $.trim($('#templateNameId').val());
@@ -180,14 +188,17 @@ export class CreateTemplateComponent implements OnInit {
               }else if(emailTemplateService.emailTemplate.subject.indexOf('Upload')>-1){
                   emailTemplate.type = EmailTemplateType.UPLOADED;
               }
-              console.log(emailTemplate);
+              console.log(emailTemplate.name);
               emailTemplateService.save(emailTemplate) .subscribe(
                       data => {
+                          self.isLoading = false;
                           refService.isCreated = true;
-                          swal.close();
                           router.navigate(["/home/emailtemplate/manageTemplates"]);
                       },
-                      error => console.log( error ),
+                      error => {
+                          self.isLoading = false;
+                          self.logger.errorPage(error)
+                          },
                       () => console.log( "Email Template Saved" )
                       );
              

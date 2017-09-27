@@ -1,8 +1,11 @@
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 	<div class="page-content">
+	<div class="div-loader"  *ngIf="loading">
+			<div id="process-loader"></div>
+		</div>
 		<!-- BEGIN PAGE HEADER-->
-		<div class="page-bar">
+		<div class="page-bar" *ngIf="!loading">
 			<ul class="page-breadcrumb">
 				<li><i class="fa fa-home"></i> <a
 					[routerLink]="['../../dashboard']">Home</a> <i
@@ -11,7 +14,7 @@
 			</ul>
 		</div>
 		<!-- BEGIN PAGE CONTENT-->
-		<div class="portlet light">
+		<div class="portlet light" *ngIf="!loading">
 			<div class="portlet-body">
 					<div class="col-xs-12 col-md-6">
    						<form>
@@ -42,7 +45,7 @@
 									*ngFor="let item of uploader.queue;let last = last;let index = index">
 									<td nowrap *ngIf="last">
 										<button type="button" class="btn btn-success"
-											(click)="saveHtmlTemplate()"
+											(click)="saveHtmlTemplate()" id="save"
 											[disabled]="!isValidTemplateName ||duplicateTemplateName ">
 											<span class="glyphicon glyphicon-upload"></span> Save
 										</button>

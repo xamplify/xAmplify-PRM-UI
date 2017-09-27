@@ -1,8 +1,11 @@
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 	<div class="page-content">
+	<div class="div-loader"  *ngIf="isLoading">
+			<div id="process-loader"></div>
+		</div>
 		<!-- BEGIN PAGE HEADER-->
-		<div class="page-bar">
+		<div class="page-bar" *ngIf="!isLoading">
 			<ul class="page-breadcrumb">
 				<li>
 					<i class="fa fa-home"></i><a [routerLink]="['../../dashboard']">Home</a><i class="fa fa-angle-right"></i>
@@ -14,7 +17,7 @@
 			</ul>
 		</div>
 		<!-- BEGIN PAGE CONTENT-->
-		<div class="portlet light">
+		<div class="portlet light" *ngIf="!isLoading">
 			<div class="portlet-body">
 				<div class="row">
 					<form>

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {  Router }   from '@angular/router';
-import { Logger } from "angular2-logger/core";
-
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -11,7 +10,7 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
+declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-update-template',
@@ -21,6 +20,7 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$:any;
 })
 export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
+    public isLoading:boolean = false;
     public duplicateTemplateName: boolean = false;
     public invalidTemplateName: boolean = false;
     public isTemplateName: boolean = false;
@@ -32,7 +32,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     videoTagsError:string = "";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
-            private router: Router, private emailTemplate: EmailTemplate, private logger: Logger,
+            private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
         if(this.emailTemplateService.emailTemplate==undefined){
@@ -45,7 +45,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             (error: any) => logger.error(error),
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
-        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n  <img src='<emailOpenImgURL>' class='backup_picture'>";
+        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         if (emailTemplateService.emailTemplate != undefined) {
             this.model.content = emailTemplateService.emailTemplate.body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
@@ -84,13 +84,17 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
     }
     updateHtmlTemplate() {
+       this.isLoading = true;
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
-        this.emailTemplate.body = this.model.content;
+        for(var instanceName in CKEDITOR.instances){
+            CKEDITOR.instances[instanceName].updateElement();
+            this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
+        }
         this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {
-                console.log(data);
+                this.isLoading = false;
                 if (data == "success") {
                     this.refService.isUpdated = true;
                     this.router.navigate(["/home/emailtemplate/manageTemplates"]);
@@ -100,8 +104,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                     }
             },
             (error: string) => {
-                this.logger.error(this.refService.errorPrepender+" listDefaultTemplates():"+error);
-                this.refService.showServerError(this.httpRequestLoader);
+                this.isLoading = false;
+                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished updateHtmlTemplate()")
             );
