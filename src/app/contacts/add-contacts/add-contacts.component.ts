@@ -1283,7 +1283,7 @@ export class AddContactsComponent implements OnInit {
                             this.zohoCredentialError = '';
                         }, 5000 )
                     }else{
-                        this.xtremandLogger.errorPage(error);
+                        //this.xtremandLogger.errorPage(error);
                     }
                 }else{
                     this.xtremandLogger.errorPage(error);
