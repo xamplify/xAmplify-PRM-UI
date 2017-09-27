@@ -44,7 +44,11 @@ a.disabled {
     color: rgb(255, 255, 255);
     background-color: rgba(25, 25, 25, 0.2);
 }
-
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .progress>.progress-completed {
     position: absolute;
     right: 0px;

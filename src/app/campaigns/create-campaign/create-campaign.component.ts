@@ -1007,7 +1007,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
         }else{
-          $("#htmlContent").append(emailTemplate.body);
+            let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
+            $("#htmlContent").append(updatedBody);
         }
         $('.modal .modal-body').css('overflow-y', 'auto'); 
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
@@ -1041,7 +1042,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('#emailTemplateContent').html('');
         this.emailTemplateHrefLinks = [];
         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
-        if(this.emailTemplateHrefLinks.length==0){
+        this.setEmailTemplateData(emailTemplate);
+        this.urls = [];
+       /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
                 title: 'Are you sure?',
@@ -1057,7 +1060,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             })
         }else{
             this.setEmailTemplateData(emailTemplate);
-        }
+        }*/
     }
     setEmailTemplateData(emailTemplate:EmailTemplate){
         this.selectedEmailTemplateRow = emailTemplate.id;

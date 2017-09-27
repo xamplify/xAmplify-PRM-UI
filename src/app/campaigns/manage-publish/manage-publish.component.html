@@ -72,7 +72,7 @@
 												<img *ngIf="campaign.regularEmail && campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;" alt="No Image Found">
 												<img *ngIf="campaign.regularEmail && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
 												<div class="mix-details" style="z-index: 700;padding: 7px;">
-													<h4 class="ellipsis">{{campaign.campaignName}}</h4>
+													<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
 													<div style="top: 30%; position: relative;" >
