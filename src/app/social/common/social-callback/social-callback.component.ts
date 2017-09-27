@@ -4,6 +4,7 @@ import { SocialConnection } from '../../../social/models/social-connection';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 
 @Component( {
     selector: 'app-social-callback',
@@ -13,7 +14,7 @@ import { ReferenceService } from '../../../core/services/reference.service';
 export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
-    constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
+    constructor( public logger: XtremandLogger, private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
         private refService: ReferenceService ) { }
 
@@ -62,7 +63,7 @@ export class SocialCallbackComponent implements OnInit {
                     return false;
                 }
             },
-            error => console.log( error ),
+            error => this.logger.errorPage(error),
             () => console.log( 'login() Complete' ) );
         return false;
     }

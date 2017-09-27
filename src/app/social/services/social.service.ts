@@ -46,6 +46,12 @@ export class SocialService {
             }
         }
     }
+    
+	getSocialConnectionByUserIdAndProfileId( profileId: string, userId: number ) {
+        return this.http.get( this.URL + 'social/account?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&profileId=' + profileId)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
     callback( socialProvider: string ): Observable<SocialConnection> {
         let queryParam: string;

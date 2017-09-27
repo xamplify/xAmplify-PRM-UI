@@ -16,11 +16,10 @@ import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 })
 export class FacebookPostsComponent implements OnInit {
     posts: any;
-    socialConnection: SocialConnection;
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-
+    httpRequestLoader = new HttpRequestLoader();
+    socialConnection = new SocialConnection();
     constructor( private route: ActivatedRoute, private facebookService: FacebookService,
-        private authenticationService: AuthenticationService, private socialService: SocialService, private referenceService: ReferenceService ) { }
+        private authenticationService: AuthenticationService, private socialService: SocialService, private referenceService: ReferenceService) { }
 
     getPosts( socialConnection: SocialConnection ) {
         this.referenceService.loading( this.httpRequestLoader, true );
@@ -37,14 +36,30 @@ export class FacebookPostsComponent implements OnInit {
             () => console.log( 'getPosts() Finished.' )
             );
     }
+    
+    getSocialConnection(profileId: string, userId: number){
+        this.socialService.getSocialConnectionByUserIdAndProfileId(profileId, userId)
+            .subscribe(
+            data => {
+                this.socialConnection = data;
+            },
+            error => {
+                console.log( error );
+                this.referenceService.showServerError( this.httpRequestLoader );
+            },
+            () => {
+                this.getPosts( this.socialConnection );
+                console.log( 'getPosts() Finished.' )
+            }
+            );
+    }
 
     ngOnInit() {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.getUserId();
-            this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
-
-            this.getPosts( this.socialConnection );
+            
+            this.getSocialConnection(profileId, userId);
         } catch ( err ) {
             console.log( err );
         }
