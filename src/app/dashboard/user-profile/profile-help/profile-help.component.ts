@@ -19,7 +19,7 @@ export class ProfileHelpComponent implements OnInit {
   parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
   constructor(public authenticationService: AuthenticationService, public router: Router) {
      this.userData = this.authenticationService.userProfile;
-     if (this.isEmpty(this.userData)) {
+     if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
           this.router.navigateByUrl('/home/dashboard');
         } else {
       if (this.userData.firstName !== null ) {

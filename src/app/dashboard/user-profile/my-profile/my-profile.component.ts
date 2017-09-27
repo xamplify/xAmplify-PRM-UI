@@ -51,7 +51,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
         this.callActionSwitch.size = 'normal';
-        if (this.isEmpty(this.userData)) {
+        if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
           this.router.navigateByUrl('/home/dashboard');
         } else {
         console.log(this.userData);
