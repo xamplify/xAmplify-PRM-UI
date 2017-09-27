@@ -227,9 +227,10 @@ export class ManageContactsComponent implements OnInit {
               }
             },
             ( error: any ) => {
-                var body = error['_body'];
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
                 if ( body.includes( 'Please delete those campaigns first.' )) {
-                    this.setResponseDetails('ERROR', 'Your Contact List has been using one or more Campaigns. please delete those Campaigns first.');
+                    this.setResponseDetails('ERROR', body);
                 }else{
                     this.xtremandLogger.errorPage(error);
                 }

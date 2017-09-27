@@ -176,7 +176,7 @@ a.disabled {
 							<i class="fa"
 								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
  								 'fa-exclamation': response.responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
+								aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
 						</h4>
 					</div>
 				</div>
@@ -215,12 +215,13 @@ a.disabled {
 							</div>
 							<div class="col-sm-6">
 								<div>
-									<button id="cancel_button" class="btn green dropdown-menu pull-right"
+								<div>
+									<button id="cancel_button" class="btn pull-right"
 										(click)="cancelContacts()"
-										style="margin-left: 5px; background-color: #cfd8dc">
+										style="margin-left: 5px;">
 										Cancel<i class="fa fa-cancel"></i>
 									</button>
-
+								</div>
 									<div class="btn-group pull-right">
 										<button class="btn dropdown-toggle" id="save&delete_button"
 											data-toggle="dropdown">
@@ -516,7 +517,7 @@ a.disabled {
   				<strong>Success!</strong> your contacts hasbeen deleted successfully.
 			</div>
 			<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
-  				<strong>Danger!</strong>{{response.responseMessage}}
+  				<span [innerHTML]="response.responseMessage"></span>
 			</div>
 	</div>
 	<div class="col-md-12" style="margin-top: 12px"

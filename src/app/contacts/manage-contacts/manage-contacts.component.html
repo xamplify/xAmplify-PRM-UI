@@ -260,7 +260,7 @@ rotate
 							<i class="fa"
 								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
  								 'fa-exclamation': response.responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
+								aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
 						</h4>
 					</div>
 				</div>

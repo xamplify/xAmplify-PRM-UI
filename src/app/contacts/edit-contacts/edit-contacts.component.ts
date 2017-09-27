@@ -283,12 +283,14 @@ export class EditContactsComponent implements OnInit {
                 this.cancelContacts();
             },
             ( error: any ) => {
-            	 var body = error['_body'];
-            	 var message = JSON.parse( body );
-                if ( message.includes( 'Please delete those campaigns first.' )) {
-                	console.log("entered.");
-                    this.setResponseDetails('ERROR', message);
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
+                console.log( error );
             },
             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
@@ -333,13 +335,15 @@ export class EditContactsComponent implements OnInit {
                         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                     },
                     ( error: any ) => {
-                        var body = error['_body'];
-                        var message = JSON.parse( body );
-                       if ( message.includes( 'Please delete those campaigns first.' )) {
-                           console.log("entered.");
-                           this.setResponseDetails('ERROR', message);
-                       }
-                   },
+                        let body: string = error['_body'];
+                        body = body.substring(1, body.length-1);
+                        if ( body.includes( 'Please delete those campaigns first.' )) {
+                            this.setResponseDetails('ERROR', body);
+                        }else{
+                            this.xtremandLogger.errorPage(error);
+                        }
+                        console.log( error );
+                    },
                     () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
                     )
             }else{
@@ -374,9 +378,14 @@ export class EditContactsComponent implements OnInit {
                 this.selectedContactListIds.length = 0;
             },
             ( error: any ) => {
-                if ( error.includes( 'Please delete those campaigns first.' )) {
-                    this.setResponseDetails('ERROR', error);
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
+                console.log( error );
             },
             () => this.xtremandLogger.info( "deleted completed" )
             );
@@ -583,13 +592,15 @@ export class EditContactsComponent implements OnInit {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             ( error: any ) => {
-                var body = error['_body'];
-                var message = JSON.parse( body );
-               if ( message.includes( 'Please delete those campaigns first.' )) {
-                   console.log("entered.");
-                   this.setResponseDetails('ERROR', message);
-               }
-           },
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                }else{
+                    this.xtremandLogger.errorPage(error);
+                }
+                console.log( error );
+            },
             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.dublicateEmailId = false;
@@ -807,10 +818,11 @@ export class EditContactsComponent implements OnInit {
                 this.selectedInvalidContactIds.length = 0;
             },
               ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                this.setResponseDetails('ERROR',error);
-                this.response.responseMessage = error;
-                this.invalidDeleteErrorMessage = true;
+                  let body: string = error['_body'];
+                  body = body.substring(1, body.length-1);
+                  if ( body.includes( 'Please delete those campaigns first.' )) {
+                      this.response.responseMessage = body;
+                      this.invalidDeleteErrorMessage = true;
                 }
                 },
                 () => this.xtremandLogger.info( "deleted completed" )
@@ -856,9 +868,14 @@ export class EditContactsComponent implements OnInit {
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             ( error: any ) => {
-                if ( error.includes( 'Please delete those campaigns first.' )) {
-                    this.setResponseDetails('ERROR', error);
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
+                console.log( error );
             },
             () => this.xtremandLogger.info( "deleted completed" )
             );
@@ -876,8 +893,12 @@ export class EditContactsComponent implements OnInit {
                 this.contactService.deleteUserSucessMessage = true;
             },
             ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
-                    this.setResponseDetails('ERROR', error);
+                let body: string = error['_body'];
+                body = body.substring(1, body.length-1);
+                if ( body.includes( 'Please delete those campaigns first.' )) {
+                    this.setResponseDetails('ERROR', body);
+                }else{
+                    this.xtremandLogger.errorPage(error);
                 }
                 console.log( error );
             },
