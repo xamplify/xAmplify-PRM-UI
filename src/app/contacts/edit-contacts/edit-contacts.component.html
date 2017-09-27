@@ -10,8 +10,8 @@ a.disabled {
 }
 
 .alert-dismissible .close {
-	top: 5px;
-	right: 0;
+	top: 13px;
+	right: 10px;
 }
 
 .alert-success, .alert-danger, .alert-warning {
@@ -31,6 +31,9 @@ a.disabled {
 	background-color: #f1d43b;
 }
 
+.alert {
+    padding: 6px;
+    }
 .alert-success, .alert-danger, .alert-warning>h5 {
 	font-size: 14px;
 }
@@ -48,7 +51,7 @@ a.disabled {
 				contacts</span></li>
 	</ul>
 </div>
-<div class="row" id="manageContacts" *ngIf="showEditContactData">
+<div class="clearfix" id="manageContacts" *ngIf="showEditContactData">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
