@@ -7,11 +7,11 @@
     </ul>
   </div>
   <div class="row" style="display: flex;">
-    <div class="col-xs-12 col-sm-12 col-md-8"
+    <div class="col-xs-12 col-sm-7"
       *ngIf="httpRequestLoader.isLoading">
       <app-social-loader></app-social-loader>
     </div>
-    <div class="col-md-8" *ngIf="tweets?.length > 0">
+    <div class="col-xs-12 col-sm-7" *ngIf="tweets?.length > 0">
       <div id="tweets" class="portlet-body">
         <div class="portlet light block rounded-0"
           *ngFor="let item of tweets">
@@ -21,7 +21,7 @@
                 <img class="profile-image" src="{{item.profileImageUrl}}"
                   alt="{{item.fromUser}}">
                 <div style="margin-left: 1em;">
-                  <h4 class="caption-subject text-left">{{item.user.name}}</h4>
+                  <h4 class="caption-subject text-left spn">{{item.user.name}}</h4>
                   <h5>{{item.createdAt | date: 'short'}}</h5>
                 </div>
               </div>
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-xs-12 col-sm-5">
       <div id="trends" class="portlet-body portlet light block rounded-0">
         <div class="portlet-title">
           <div class="caption">

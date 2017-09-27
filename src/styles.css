@@ -189,3 +189,20 @@ nav a.active {
 	.btn-linkedin:hover {
 	background-color: #17709e
 }
+
+/* social profile name */
+.spn{
+    font-weight: 600;
+    font-size: 14px;
+    color: #777777;
+}
+.m0{
+	margin: 0 !important;
+}
+.p0{
+	padding: 0 !important;
+}
+
+.portlet.light {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}

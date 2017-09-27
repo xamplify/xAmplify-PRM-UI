@@ -56,13 +56,13 @@ export class TwitterTweetsComponent implements OnInit {
                     data[i].unmodifiedText = updatedText;
                 }
                 this.tweets = data;
-                this.referenceService.loading( this.httpRequestLoader, false );
             },
             error => {
                 console.log( error );
+                this.referenceService.loading( this.httpRequestLoader, false );
                 this.referenceService.showServerError( this.httpRequestLoader );
             },
-            () => console.log( this.tweets.length )
+            () => this.referenceService.loading( this.httpRequestLoader, false )
             );
     }
 

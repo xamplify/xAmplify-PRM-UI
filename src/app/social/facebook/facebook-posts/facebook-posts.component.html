@@ -22,9 +22,9 @@
                 src="{{socialConnection.profileImage}}">
               <div style="margin-left: 1em;">
                 <h4 *ngIf="post.type == 'video' || post.type == 'photo'"
-                  class="caption-subject text-left">{{post.story}}</h4>
+                  class="caption-subject text-left m0">{{post.story}}</h4>
                 <h4 *ngIf="post.type == 'link'"
-                  class="caption-subject text-left">{{post.from.name}}</h4>
+                  class="caption-subject text-left m0">{{post.from.name}}</h4>
                 <h5>{{post.createdTime | date: 'short'}}</h5>
               </div>
             </div>

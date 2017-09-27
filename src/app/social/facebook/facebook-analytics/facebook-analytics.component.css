@@ -1,3 +1,8 @@
 .portlet{
 	border-radius: 0;
 }
+.warning-fa{
+	font-size: 3em;
+    margin-top: 15px;
+    margin-left: -15px;
+}

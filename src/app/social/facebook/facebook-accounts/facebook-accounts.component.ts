@@ -15,19 +15,21 @@ export class FacebookAccountsComponent implements OnInit {
 
     constructor( private facebookService: FacebookService, private authenticationService: AuthenticationService, private socialService: SocialService ) { }
 
-    listSocialAccounts( userId: number ) {
-        this.facebookService.listPages( userId )
+    listAccounts( userId: number, providerName: string ) {
+        this.socialService.listAccounts( userId, providerName, "ACTIVE" )
             .subscribe(
-            data => this.socialConnections = data,
+            result => {
+                this.socialConnections = result;
+                this.socialService.setDefaultAvatar(this.socialConnections);
+            },
             error => console.log( error ),
-            () => { }
-            );
-
+            () => {});
     }
+    
     ngOnInit() {
         try {
             const userId = this.authenticationService.getUserId();
-            this.listSocialAccounts( userId );
+            this.listAccounts( userId, 'FACEBOOK' );
         } catch ( err ) {
             console.log( err );
         }
