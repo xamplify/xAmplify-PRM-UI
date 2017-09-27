@@ -198,19 +198,19 @@ a.disabled {
 							<div class="col-sm-6">
 								<div class="btn-group">
 									<button id="add_contact" class="btn green" (click)="addContactsOption(AddContactsOption.ADDCONTACT);" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
-										Add Contact <i class="fa fa-plus"></i>
+										Add Contact <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
 								<div class="btn-group">
 									<button id="copyFrom_clipboard" class="btn green" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2"
 										(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
-										Copy From ClipBoard <i class="fa fa-plus"></i>
+										Copy From ClipBoard <i class="fa fa-clipboard" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
 								<div class="btn-group">
 									<button class="fileUpload btn btn-primary" id="upload_csv" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1"
 										style="background-color: #26a69a">
-										Upload CSV <i class="fa fa-plus"></i> 
+										Upload CSV <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
 										<input type="file" ng2FileSelect class="upload" [uploader]="uploader"
 											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1" />
 									</button>
