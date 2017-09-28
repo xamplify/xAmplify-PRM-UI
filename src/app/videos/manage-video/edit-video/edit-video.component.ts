@@ -1107,7 +1107,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoForm = this.fb.group({
             'title': [this.saveVideoFile.title, [
                 Validators.required,
-                Validators.minLength(4),
+                Validators.minLength(1),
                 Validators.maxLength(255)
             ]
             ],
@@ -1166,7 +1166,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     validationMessages = {
         'title': {
             'required': 'Title is required.',
-            'minlength': 'Title must be at least 4 characters long.',
+         //   'minlength': 'Title must be at least 4 characters long.',
             'maxlength': 'Title cannot be more than 256 characters long.',
         },
         'viewBy': { 'required': 'Publish is required' },
