@@ -200,7 +200,7 @@ color:blue;
 										(ngModelChange)="changEvent($event)" required
 										[(ngModel)]="model.contactListName" name="contactListName"
 										(input)="validateContactName(model.contactListName)"
-										minlength="1" placeholder="Contact List Name" #contactListName="ngModel">
+										minlength="1" maxlength="250" placeholder="Contact List Name" #contactListName="ngModel">
 								    
 								    <!-- Validation Messages -->
 								    <div *ngIf="isValidContactName">

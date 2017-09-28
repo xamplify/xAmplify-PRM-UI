@@ -282,7 +282,7 @@ rotate
 									*ngIf="contactList.socialNetwork=='MANUAL'"
 									src="{{normalImage}}" alt="">
 								<div class="mix-details-fill">
-									<h4 style="top: 10%; position: relative;">{{contactList.name}}</h4>
+									<h4 style="top: 10%; position: relative;" title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
 									<div style="top: 12%; position: relative;">
 										<a class="mix-preview5"
 											(click)="downloadContactList(contactList.id)"
@@ -439,7 +439,7 @@ rotate
 												<input type="text" autocomplete="off" class="form-control"
 													id="contactListName" required
 													[(ngModel)]="model.contactListName" name="contactListName"
-													minlength="1"
+													minlength="1" maxlength="250"
 													(input)="validateContactName(model.contactListName)"
 													placeholder="Contact List Name" #contactListName="ngModel">
 												<!-- Validation Messages -->
