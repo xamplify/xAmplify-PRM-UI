@@ -660,7 +660,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
         if(title.length>50){
-            title = title.substring(0, 50);
+            title = title.substring(0, 50)+"...";
         }
         var videoPath = videoFile.videoPath;
         var is360 = videoFile.is360video;
@@ -676,6 +676,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#"+titleId).append('Title:'+title);
+            $('#'+titleId).prop('title',videoFile.title);
             $("#"+divId).append(str);
             console.log("360 video path"+videoPath);
             videoPath = videoPath.replace(".m3u8",".mp4");
@@ -702,6 +703,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#"+titleId).append('Title:'+title);
+            $('#'+titleId).prop('title',videoFile.title);
             $("#"+divId).append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             console.log("Video Path:::"+videoPath);
@@ -996,10 +998,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
         let body = emailTemplate.body;
-        this.selectedEmailTemplateName = emailTemplate.name;
+        let emailTemplateName = emailTemplate.name;
+        if(emailTemplateName.length>50){
+            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+        }
+        this.selectedEmailTemplateName = emailTemplateName;
         $("#htmlContent").empty();
         $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplate.name);
+        $("#email-template-title").append(emailTemplateName);
+        $('#email-template-title').prop('title',emailTemplate.name);
         if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
