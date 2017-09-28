@@ -416,10 +416,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.campaignVideo = false;
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
         this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = null;
-        this.pagination.sortingOrder = null;
-        this.videoFileService.categoryNumber = 0;
-        this.searchKey = null;
+        this.videoSort = this.sortVideos[0];
+        this.sortcolumn = this.pagination.sortcolumn = null;
+        this.sortingOrder = this.pagination.sortingOrder = null;
+        this.categoryNum = this.videoFileService.categoryNumber = 0;
+        this.searchKey = this.pagination.searchKey = null;
         this.loadVideos(this.pagination);
         this.manageVideos = true;
         this.editVideo = false;
