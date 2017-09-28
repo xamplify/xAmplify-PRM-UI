@@ -515,7 +515,7 @@ margin:2px;
 					<div class="clearfix" style="margin-top: 15px;">
 						<section *ngFor="let socialConnection of socialConnections">
 							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'" style="padding: 5px;">
-								<a [routerLink]="['/home/social/social/twitter-followers', socialConnection.profileId]"
+								<a [routerLink]="['/home/social/twitter-followers', socialConnection.profileId]"
 									style="text-decoration: none;">
 									<div class="twitter-color text-center">
 										<div class="visual ">

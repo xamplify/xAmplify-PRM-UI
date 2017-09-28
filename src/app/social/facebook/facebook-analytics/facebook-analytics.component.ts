@@ -232,7 +232,7 @@ export class FacebookAnalyticsComponent implements OnInit {
                 name: 'New Fans',
                 type: 'column',
                 yAxis: 1,
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                data: [49, 71, 106, 129, 144, 176, 135, 148, 216, 194, 95, 54],
                 tooltip: {
                     valueSuffix: ''
                 }
@@ -240,7 +240,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             }, {
                 name: 'Unliked',
                 type: 'spline',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+                data: [7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9],
                 tooltip: {
                     valueSuffix: ''
                 }
@@ -256,9 +256,6 @@ export class FacebookAnalyticsComponent implements OnInit {
             title: {
                 text: 'Page Impressions'
             },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
-            },
             xAxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 crosshair: true
@@ -272,7 +269,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -285,7 +282,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             },
             series: [{
                 name: 'Value',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+                data: [49, 71, 106, 129, 144, 176, 135, 148, 216, 194, 95, 54]
 
             }]
         });
