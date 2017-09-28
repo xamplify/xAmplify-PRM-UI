@@ -815,7 +815,7 @@
 								<div class="col-xs-9">
 									<div *ngFor="let contactList of selectedContactLists;let i=index;">
 										<h5 class="h4-text">
-											<a	(click)="loadUsers(contactList.id,contactsUsersPagination)"	data-toggle="modal" data-target="#myModal">
+											<a	(click)="loadUsers(contactList.id,contactsUsersPagination)"	data-toggle="modal" data-target="#myModal" title="{{contactList.name}}">
 												<ng-container *ngIf="contactList.name?.length>50">
 													{{contactList.name | slice:0:50}}...
 												</ng-container>

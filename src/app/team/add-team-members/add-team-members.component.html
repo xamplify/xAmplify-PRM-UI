@@ -71,10 +71,10 @@
 				</section>
 			</div>
 			
-			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 70px;">
+			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 85px;">
 				<div class="portlet-body">
 					<form id="add-team-member-form">
-						<div class="col-sm-3 ">
+						<div class="col-sm-3 clearfix">
 							<div  [class]="emaillIdDivClass">
 							 <input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId)">
 							 <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
