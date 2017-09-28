@@ -58,7 +58,7 @@ export class SocialCallbackComponent implements OnInit {
                                 this.router.navigate( ['/logout'] );
                             }
                         },
-                        err => console.log(),
+                        error => this.logger.errorPage(error),
                         () => console.log( 'login() Complete' ) );
                     return false;
                 }
@@ -80,8 +80,8 @@ export class SocialCallbackComponent implements OnInit {
             this.providerName = this.route.snapshot.params['social'];
             this.callback( this.providerName );
         }
-        catch ( err ) {
-            console.log( err );
+        catch ( error ) {
+            this.logger.errorPage(error);
         }
     }
 

@@ -8,6 +8,7 @@ import { CampaignReport } from '../../campaigns/models/campaign-report';
 
 import { DashboardService } from '../dashboard.service';
 import { TwitterService } from '../../social/services/twitter.service';
+import { FacebookService } from '../../social/services/facebook.service';
 import { SocialService } from '../../social/services/social.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
@@ -38,8 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardReport: DashboardReport = new DashboardReport();
     userDefaultPage: UserDefaultPage = new UserDefaultPage();
     weeklyTweetsCount: number;
-    twitterTotalTweetsCount: number;
-    twitterTotalFollowersCount: any;
+
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
 
     public totalRecords: number;
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     hasStatsRole:boolean = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService,
-        public videoFileService: VideoFileService, public twitterService: TwitterService,
+        public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
         public socialService: SocialService, public authenticationService: AuthenticationService, public logger: Logger,
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
@@ -188,11 +188,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
             data => {
                 this.logger.log(data);
-                this.twitterTotalFollowersCount = data['followersCount'];
-                this.twitterTotalTweetsCount = data['tweetsCount'];
+                socialConnection.twitterTotalFollowersCount = data['followersCount'];
+                socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
             },
             error => console.log(error),
             () => console.log('getTotalCountOfTFFF() method invoke started finished.')
+            );
+    }
+    
+    getPage( socialConnection: SocialConnection, pageId: string ) {
+        this.facebookService.getPage( socialConnection, pageId )
+            .subscribe(
+            data => {
+                socialConnection.facebookFanCount = data.extraData.fan_count;
+            },
+            error => console.log( error ),
+            () => {}
             );
     }
 
@@ -235,6 +246,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             this.getTotalCountOfTFFF(this.socialConnections[i]);
                             this.getGenderDemographics(this.socialConnections[i]);
                             this.getWeeklyTweets(this.socialConnections[i]);
+                        }else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null){
+                            this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
                         }
                     }
                 }

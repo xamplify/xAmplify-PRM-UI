@@ -358,7 +358,7 @@ margin:2px;
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
-				[routerLink]="['../../social/manage/all']">
+				[routerLink]="['/home/social/manage/all']">
 				<div class="visual">
 					<i class="fa fa-share"></i>
 				</div>
@@ -387,7 +387,7 @@ margin:2px;
 									<div class="display">
 										<div class="number">
 											<span style="display: flex;">
-												<h3 class="font-blue">{{twitterTotalTweetsCount}}</h3>
+												<h3 class="font-blue">{{socialConnection.twitterTotalTweetsCount}}</h3>
 												<h5 style="margin-left: 1em;">Total Tweets</h5>
 											</span> <small>{{socialConnection.profileName}}</small>
 										</div>
@@ -514,8 +514,8 @@ margin:2px;
 				<div class="portlet-body">
 					<div class="clearfix" style="margin-top: 15px;">
 						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'">
-								<a [routerLink]="['../../social/twitter-followers', socialConnection.profileId]"
+							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'" style="padding: 5px;">
+								<a [routerLink]="['/home/social/social/twitter-followers', socialConnection.profileId]"
 									style="text-decoration: none;">
 									<div class="twitter-color text-center">
 										<div class="visual ">
@@ -523,15 +523,34 @@ margin:2px;
 										</div>
 										<div class="details">
 											<div class="number">
-												<h4><b>{{twitterTotalFollowersCount}}</b></h4>
-												<h5>Followers</h5>
+												<h6 class="spn">{{socialConnection.profileName}}</h6>
+												<h6><span class="spn bold">{{socialConnection.twitterTotalFollowersCount}}</span> Followers</h6>
 											</div>
 										</div>
 									</div>
 								</a>
 							</div>
 						</section>
-						<div class="col-xs-4 col-sm-3">
+						<section *ngFor="let socialConnection of socialConnections">
+							<div class="col-xs-4 col-sm-3" *ngIf="(socialConnection.source == 'FACEBOOK') && (socialConnection.emailId === null)" style="padding: 5px;">
+								<a [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]"
+									style="text-decoration: none;">
+									<div class="facebook-color text-center">
+										<div class="visual ">
+											<i class="fa fa-facebook fa1"></i>
+										</div>
+										<div class="details">
+											<div class="number">
+												<h6 class="spn">{{socialConnection.profileName}}</h6>
+												<h6><span class="spn bold">{{socialConnection.facebookFanCount}}</span> Fans</h6>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						</section>
+						<!-- 
+						<div class="col-xs-4 col-sm-3" style="padding: 5px;">
 							<div class="text-center google-color social-disable">
 								<div class="visual">
 									<i class="fa fa-google-plus fa1"></i>
@@ -545,20 +564,7 @@ margin:2px;
 							</div>
 						</div>
 
-						<div class="col-xs-4 col-sm-3">
-							<div class="text-center facebook-color social-disable">
-								<div class="visual">
-									<i class="fa fa-facebook fa1"></i>
-								</div>
-								<div class="details">
-									<div class="number">
-										<h4><b>2.3 M</b></h4>
-										<h5>Fans</h5>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-4 col-sm-3">
+						<div class="col-xs-4 col-sm-3" style="padding: 5px;">
 							<div class="text-center linkedin-color social-disable">
 								<div class="visual">
 									<i class="fa fa-linkedin fa1"></i>
@@ -571,6 +577,7 @@ margin:2px;
 								</div>
 							</div>
 						</div>
+						 -->
 					</div>
 				</div>
 			</div>

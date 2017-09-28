@@ -83,7 +83,6 @@ label img {
 }
 
 .fileContainer {
-	overflow: hidden;
 	position: relative;
 	float: left;
 	padding: .5em
