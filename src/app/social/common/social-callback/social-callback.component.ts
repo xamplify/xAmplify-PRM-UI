@@ -4,7 +4,6 @@ import { SocialConnection } from '../../../social/models/social-connection';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
-import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 
 @Component( {
     selector: 'app-social-callback',
@@ -14,7 +13,8 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
-    constructor( public logger: XtremandLogger, private router: Router, private route: ActivatedRoute, private socialService: SocialService,
+    error: string;
+    constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
         private refService: ReferenceService ) { }
 
@@ -58,12 +58,16 @@ export class SocialCallbackComponent implements OnInit {
                                 this.router.navigate( ['/logout'] );
                             }
                         },
-                        error => this.logger.errorPage(error),
+                        error => {
+                            this.error = error;
+                        },
                         () => console.log( 'login() Complete' ) );
                     return false;
                 }
             },
-            error => this.logger.errorPage(error),
+            error => {
+                this.error = error;   
+            },
             () => console.log( 'login() Complete' ) );
         return false;
     }
@@ -77,11 +81,12 @@ export class SocialCallbackComponent implements OnInit {
 
     ngOnInit() {
         try {
+            this.error = null;
             this.providerName = this.route.snapshot.params['social'];
             this.callback( this.providerName );
         }
         catch ( error ) {
-            this.logger.errorPage(error);
+            this.error = error;
         }
     }
 

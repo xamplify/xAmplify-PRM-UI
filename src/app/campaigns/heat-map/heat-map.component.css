@@ -11,11 +11,11 @@ rect:hover {
 }
 
 .play-rect {
-	fill: #00a6e8
+	fill: #00a6e8;
 }
 
 .skip-rect {
-	fill: #FFF
+	fill: #fff;
 }
 
 rect:hover {
