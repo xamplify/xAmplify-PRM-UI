@@ -214,9 +214,7 @@ export class UpdateStatusComponent implements OnInit {
                 element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9" style="padding: 0;float: right;"></div>' );
                 element.find( ".fc-time" ).css( { "display": "block" });
                 element.find( ".fc-right-block" )
-                    .after( $( "<div class='fc-left-block col-xs-3' style='padding: 0;'></div>" ).html( "<img alt='Twitter @manassahoo9173' src='https://instagram.fhyd2-1.fna.fbcdn.net/t51.2885-19/s150x150/13397667_966003090179916_1274276788_a.jpg' style='width:20px;display:block;'>" +
-                        "<img src='https://cdn3.iconfinder.com/data/icons/inficons/128/twitter.png' style='width:20px;display:block;'>" +
-                        "<span style='background-color: #55acee;width: 20px;display: block;color: #FFF;'><i class='fa fa-check' style='margin-left:2px;' aria-hidden='true'></i></span>" ) );
+                    .after( $( "<div class='fc-left-block col-xs-3' style='padding: 0;'></div>" ).html() );
 
             },
             eventClick: function( event: any, element: any ) {
