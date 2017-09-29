@@ -1344,7 +1344,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaignService.saveCampaign( data )
             .subscribe(
             response => {
-                console.log(response);
                 if(response.message=="success"){
                     this.isLaunched = true;
                     this.reInitialize();
@@ -1357,8 +1356,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             },
             () => this.logger.info("Finished launchCampaign()")
         ); 
-        
         }else{
+            this.refService.goToDiv("email-template-preview-div");
+            this.isLoading = false;
             this.dataError = true;
         }
     return false;
@@ -1384,9 +1384,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                     }).then(function() {
                             self.saveCampaignOnDestroy();
-                            self.getRepliesData();
-                            self.getOnClickData();
-                        
+                            /*self.getRepliesData();
+                            self.getOnClickData();*/
                     },function (dismiss) {
                         if (dismiss === 'cancel') {
                             self.reInitialize();
@@ -1399,10 +1398,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        data['scheduleCampaign'] = "SAVE";
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
+            data['scheduleCampaign'] = "SAVE";
             this.campaignService.saveCampaign( data )
             .subscribe(
             data => {
@@ -1699,6 +1698,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          let index = divId.split('-')[1];
          let editorName = 'editor'+index;
          console.log("Removing"+editorName);
+         let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+         if(errorLength==0){
+             this.dataError = false;
+         }
          //CKEDITOR.instances[editorName].destroy();
      }
      

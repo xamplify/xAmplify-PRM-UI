@@ -182,4 +182,10 @@ export class ReferenceService {
 
        return Object.keys(uniq).filter((a) => uniq[a] > 1)
     }
+    
+    goToDiv(divId:string){
+        $('html,body').animate({
+            scrollTop: $("#"+divId).offset().top},
+            'slow');
+    }
 }
