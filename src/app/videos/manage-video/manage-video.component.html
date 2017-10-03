@@ -34,15 +34,15 @@
 		<div class="row" *ngIf="manageVideos">
 			<div *ngIf="showMessage" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<p>{{showVideoName}} video Saved Successfully!</p>
+				<p>{{showVideoFileName}} video Saved Successfully!</p>
 			</div>
 			<div *ngIf="showUpdatevalue" style="width: 97.5%;" class="col-md-6 " id="showUpdatevalue" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<p>{{showVideoName}} video file Updated Successfully!</p>
+				<p>{{showVideoFileName}} video file Updated Successfully!</p>
 			</div>
 			<div *ngIf="deletedVideo" style="width: 97.5%;" class="col-md-6" id="deleteMesg" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<p> {{deleteVideoName}} video deleted Successfully!</p>
+				<p> {{showVideoFileName}} video deleted Successfully!</p>
 			</div>
 			<div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
@@ -75,7 +75,7 @@
 										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
 											<div class="input-icon right" style="cursor:pointer">
 												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-												<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (input)="searchKeyValue()" class="form-control input-circle"
+												<input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control input-circle"
 												 placeholder="search...">
 											</div>
 										</div>

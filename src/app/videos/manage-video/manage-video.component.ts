@@ -30,19 +30,15 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     categories: Category[];
     showUpdatevalue = false;
     showMessage = false;
-    showVideoName: string;
+    showVideoFileName: string;
     totalRecords: number;
     categoryNum: number;
     isCategoryUpdated: boolean;
-    searchKey: string;
-    sortcolumn: string = null;
-    sortingOrder: string = null;
     isVideoThere: boolean;
     isCategoryThere: boolean;
     checkTotalRecords: boolean;
     allRecords: number;
     deletedVideo = false;
-    deleteVideoName: string;
     campaignVideo = false;
     campaignVideoMesg: string;
     disableDropDowns: boolean;
@@ -50,26 +46,18 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     hasStatsRole = false;
     hasCampaignRole = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    errorPrepender: 'Error In:';
-    sortVideos = [
-        { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
-        { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
-        { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
-        { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
-    ];
-    videoSort: any = this.sortVideos[0];
+    sortVideos: any;
+    videoSort: any;
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
         public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.defaultBannerMessageValues();
+        this.sortVideos = this.videoUtilService.sortVideos;
+        this.videoSort = this.sortVideos[0];
         this.isVideoThere = this.isCategoryThere = false;
         this.categoryNum = this.videoFileService.categoryNumber = 0;
-        this.searchKey = null;
     }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue =  false;
@@ -89,9 +77,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.homeComponent.getCategorisService();
             this.referenceService.homeMethodsCalled = true;
         }
-        console.log(this.referenceService.videoTitles);
-        console.log('MangeVideosComponent ngOnInit()');
-        this.xtremandLogger.log('This is a priority level 5 log message...');
+        this.xtremandLogger.log(this.referenceService.videoTitles);
+        this.xtremandLogger.log('MangeVideosComponent ngOnInit()');
         try {
             if (this.videoFileService.actionValue === 'Save') {
                 this.referenceService.loading(this.httpRequestLoader, true);
@@ -108,7 +95,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.checkTotalRecords = true;
             this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
-            console.log('manage videos ngOnInit completed');
         } catch (error) {
             this.xtremandLogger.error('erro in ng oninit :' + error);
         }
@@ -190,13 +176,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
-    searchKeyValue() {
-        this.pagination.searchKey = this.searchKey;
-    }
     searchVideoTitelName() {
         this.defaultBannerMessageValues();
-        console.log(this.searchKey);
-        this.pagination.searchKey = this.searchKey;
+        this.xtremandLogger.info(this.pagination.searchKey);
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
@@ -204,17 +186,17 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.defaultBannerMessageValues();
         this.videoSort = event;
         const sortedValue = this.videoSort.value;
+        let sortcolumn, sortingOrder: any;
         if (sortedValue !== '') {
             const options: string[] = sortedValue.split('-');
-            this.sortcolumn = options[0];
-            this.sortingOrder = options[1];
+            sortcolumn = options[0];
+            sortingOrder = options[1];
         } else {
-            this.sortcolumn = null;
-            this.sortingOrder = null;
+            sortcolumn = sortingOrder = null;
         }
         this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = this.sortcolumn;
-        this.pagination.sortingOrder = this.sortingOrder;
+        this.pagination.sortcolumn = sortcolumn;
+        this.pagination.sortingOrder = sortingOrder;
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
@@ -236,7 +218,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.manageVideos = this.playVideo = this.campaignReport = false;
             },
             (error: any) => {
-                this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
+                this.xtremandLogger.error('Error In: show edit videos ():' + error);
                 this.xtremandLogger.errorPage(error);
             }
             );
@@ -255,7 +237,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = false;
             },
             (error: any) => {
-                this.xtremandLogger.error(this.errorPrepender + ' show play videos ():' + error);
+                this.xtremandLogger.error('Error In: show play videos ():' + error);
                 this.xtremandLogger.errorPage(error);
             }
             );
@@ -273,7 +255,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = false;
             },
             (error: any) => {
-                this.xtremandLogger.error(this.errorPrepender + ' show video campaign videos ():' + error);
+                this.xtremandLogger.error(' Error In :show video campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
             });
     }
@@ -288,7 +270,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl('/home/campaigns/create-campaign');
             },
             (error: string) => {
-                this.xtremandLogger.error(this.errorPrepender + ' show campaign videos ():' + error);
+                this.xtremandLogger.error('Error In: show campaign videos ():' + error);
                 this.xtremandLogger.errorPage(error);
             });
     }
@@ -306,7 +288,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.deletedVideo = true;
-                this.deleteVideoName = this.videoTitleLength(videoName);
+                this.showVideoFileName = this.videoTitleLength(videoName);
                 this.loadVideosCount(this.authenticationService.user.id);
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
@@ -320,7 +302,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
-                    this.xtremandLogger.error(this.errorPrepender + ' delete videos ():' + error);
+                    this.xtremandLogger.error('Error In : delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
@@ -332,7 +314,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                         $('#campaignVideo').slideUp(500);
                     }, 5000);
                 } else {
-                    this.xtremandLogger.error(this.errorPrepender + ' delete videos ():' + error);
+                    this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
                 }
                 console.log(error);
@@ -367,10 +349,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
         this.pagination.pageIndex = 1;
         this.videoSort = this.sortVideos[0];
-        this.sortcolumn = this.pagination.sortcolumn = null;
-        this.sortingOrder = this.pagination.sortingOrder = null;
+        this.pagination.sortcolumn = null;
+        this.pagination.sortingOrder = null;
         this.categoryNum = this.videoFileService.categoryNumber = 0;
-        this.searchKey = this.pagination.searchKey = null;
+        this.pagination.searchKey = null;
         this.loadVideos(this.pagination);
         this.showManageVideos();
         this.showMessage = this.videoFileService.showSave; // boolean
@@ -381,9 +363,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 $('#showUpdatevalue').slideUp(500);
             } else { $('#message').slideUp(500); };
          }, 5000);
-        if (videoFile == null) {  this.showVideoName = '';
-         } else { this.showVideoName = this.videoTitleLength(videoFile.title); }
-        this.xtremandLogger.info('update method called ' + this.showVideoName);
+        if (videoFile == null) {  this.showVideoFileName = '';
+         } else { this.showVideoFileName = this.videoTitleLength(videoFile.title); }
+        this.xtremandLogger.info('update method called ' + this.showVideoFileName);
     }
     showManageVideos() {
         this.manageVideos = true;
@@ -398,8 +380,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoFileService.actionValue = '';
     }
     ngOnDestroy() {
-        this.videoFileService.actionValue = '';
+        this.videoFileService.actionValue = this.videoFileService.videoViewBy = '';
         this.isVideoThere = this.deletedVideo = false;
-        this.videoFileService.videoViewBy = '';
     }
 }

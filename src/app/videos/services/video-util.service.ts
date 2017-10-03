@@ -8,7 +8,15 @@ export class VideoUtilService {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
         'description': '', 'upperText': '', 'lowerText': '',
     };
-
+    public sortVideos = [
+        { 'name': 'Sort By', 'value': '' },
+        { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
+        { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
+        { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
+        { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
+    ];
     constructor() { }
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
