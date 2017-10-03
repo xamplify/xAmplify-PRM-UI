@@ -76,7 +76,7 @@ export class VideoFileService {
         const url = this.URL + this.categoryNumber +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
-        return this.http.get(url, pagination)
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

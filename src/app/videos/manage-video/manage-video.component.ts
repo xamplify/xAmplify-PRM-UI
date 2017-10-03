@@ -20,51 +20,37 @@ declare var swal, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
     providers: [Pagination, HttpRequestLoader, HomeComponent]
 })
 export class ManageVideoComponent implements OnInit, OnDestroy {
-    deviceInfo = null;
     manageVideos = true;
     editVideo = false;
     playVideo = false;
     campaignReport = false;
     videos: Array<SaveVideoFile>;
-    cancel = false;
-    editDetails: SaveVideoFile;
     selectedVideo: SaveVideoFile;
     dropdownTogglevalue = false;
     categories: Category[];
-    filteredCatergories: Array<Category>;
     showUpdatevalue = false;
     showMessage = false;
-    imagepath: string;
-    pagedItems: any[];
-    isvideosLength: boolean;
-    selectedVideoFile: SaveVideoFile;
-    pageBar: boolean;
     showVideoName: string;
-    public totalRecords: number;
+    totalRecords: number;
     categoryNum: number;
-    public isCategoryUpdated: boolean;
-    categoryAnother = 'All Categories';
-    public searchKey: string;
-    sortingName: string = null;
+    isCategoryUpdated: boolean;
+    searchKey: string;
     sortcolumn: string = null;
     sortingOrder: string = null;
-    isvideoThere: boolean;
-    public isCategoryThere: boolean;
-    public checkTotalRecords: boolean;
-    public allRecords: number;
-    public searchDisable = true;
-    public deletedVideo = false;
-    public deleteVideoName: string;
-    public campaignVideo = false;
-    public campaignVideoMesg: string;
-    public locationJson: any;
-    public allVideosCount: any;
-    public disableDropDowns: boolean;
+    isVideoThere: boolean;
+    isCategoryThere: boolean;
+    checkTotalRecords: boolean;
+    allRecords: number;
+    deletedVideo = false;
+    deleteVideoName: string;
+    campaignVideo = false;
+    campaignVideoMesg: string;
+    disableDropDowns: boolean;
     hasVideoRole = false;
     hasStatsRole = false;
     hasCampaignRole = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    public errorPrepender: 'Error In:';
+    errorPrepender: 'Error In:';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
@@ -74,20 +60,19 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
-    public videoSort: any = this.sortVideos[0];
+    videoSort: any = this.sortVideos[0];
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
-        public pagerService: PagerService, public pagination: Pagination,
-        public router: Router, public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
+        public pagerService: PagerService, public pagination: Pagination, public router: Router,
+        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
-        this.showMessage = false;
-        this.showUpdatevalue = false;
-        this.isvideosLength = false;
-        this.pageBar = false;
-        this.isvideoThere = false;
+        this.defaultBannerMessageValues();
+        this.isVideoThere = this.isCategoryThere = false;
         this.categoryNum = this.videoFileService.categoryNumber = 0;
-        this.isCategoryThere = false;
         this.searchKey = null;
+    }
+    defaultBannerMessageValues() {
+        this.showMessage = this.showUpdatevalue =  false;
     }
     ngOnInit() {
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
@@ -110,24 +95,15 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         try {
             if (this.videoFileService.actionValue === 'Save') {
                 this.referenceService.loading(this.httpRequestLoader, true);
-                console.log('MangeVideosComponent : ngonit ');
                 this.editVideo = true;
-                this.manageVideos = false;
-                this.playVideo = false;
-                this.campaignReport = false;
-                console.log('opening edit video');
+                this.manageVideos = this.playVideo = this.campaignReport = false;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.showMessage = this.videoFileService.showSave; // true
                 this.showUpdatevalue = this.videoFileService.showUpadte; // false
             }
-            console.log('manage videos js started');
             if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
-                this.manageVideos = true;
-                this.editVideo = false;
-                this.playVideo = false;
-                this.campaignReport = false;
-                this.showMessage = false;
-                this.showUpdatevalue = false;
+                this.showManageVideos();
+                this.defaultBannerMessageValues();
             }
             this.checkTotalRecords = true;
             this.loadVideosCount(this.authenticationService.user.id);
@@ -141,8 +117,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         try {
             this.videoFileService.loadVideosCount(userId)
                 .subscribe((result: any) => {
-                    this.allVideosCount = result.videos_count;
-                    if (this.allVideosCount === 0) {
+                    if (result.videos_count === 0) {
                         this.disableDropDowns = true;
                     } else { this.disableDropDowns = false; }
                 },
@@ -174,22 +149,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                         this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
                     }
                     this.referenceService.loading(this.httpRequestLoader, false);
-                    console.log(this.categories);
                     console.log(this.videos);
-                    if (this.videos.length !== 0) {
-                        this.isvideoThere = false;
-                    } else {
-                        this.isvideoThere = true;
-                        this.pagedItems = null;
-                    }
-                    if (this.videos.length === 0) {
-                        this.isvideosLength = true;
-                    } else {
-                        this.isvideosLength = false;
+                    if (this.videos.length !== 0) { this.isVideoThere = false;
+                    } else { this.isVideoThere = true;
+                        this.pagination.pagedItems = null;
                     }
                     for (let i = 0; i < this.videos.length; i++) {
-                        this.imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
-                        this.videos[i].imagePath = this.imagepath;
+                        const imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
+                        this.videos[i].imagePath = imagepath;
                     }
                     this.isCategoryThere = true;
                     this.isCategoryUpdated = false;
@@ -211,17 +178,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         return title;
     }
     setPage(page: number) {
-        if (page !== this.pagination.pageIndex) {
             this.pagination.pageIndex = page;
             this.loadVideos(this.pagination);
-            this.showUpdatevalue = false;
-            this.showMessage = false;
-        }
+            this.defaultBannerMessageValues();
     }
     getCategoryNumber() {
-        this.showMessage = false;
-        this.showUpdatevalue = false;
-        this.isvideoThere = false;
+        this.defaultBannerMessageValues();
+        this.isVideoThere = false;
         console.log(this.categoryNum);
         this.videoFileService.categoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
@@ -231,16 +194,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.searchKey = this.searchKey;
     }
     searchVideoTitelName() {
-        this.showMessage = false;
-        this.showUpdatevalue = false;
+        this.defaultBannerMessageValues();
         console.log(this.searchKey);
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
     selectedSortByValue(event: any) {
-        this.showMessage = false;
-        this.showUpdatevalue = false;
+        this.defaultBannerMessageValues();
         this.videoSort = event;
         const sortedValue = this.videoSort.value;
         if (sortedValue !== '') {
@@ -259,27 +220,20 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     showEditVideo(video: SaveVideoFile) {
         this.referenceService.loading(this.httpRequestLoader, true);
         console.log('show edit video method in mange videos ' + JSON.stringify(video));
-        console.log(video.alias);
         this.deletedVideo = false;
-        this.selectedVideoFile = video;
         this.videoFileService.videoViewBy = video.viewBy;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((editVideoFile: SaveVideoFile) => {
                 console.log('enter the show edit vidoe method');
-                this.editDetails = editVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
-                if (editVideoFile.imageFiles == null) {
-                    editVideoFile.imageFiles = [];
-                }
-                if (editVideoFile.gifFiles == null) { editVideoFile.gifFiles = []; }
-                this.videoFileService.saveVideoFile = this.editDetails;
+                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                     editVideoFile.gifFiles = [];  editVideoFile.imageFiles = []; }
+                this.videoFileService.saveVideoFile = editVideoFile;
                 console.log('show edit vidoe object :');
                 console.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
                 this.editVideo = true;
-                this.manageVideos = false;
-                this.playVideo = false;
-                this.campaignReport = false;
+                this.manageVideos = this.playVideo = this.campaignReport = false;
             },
             (error: any) => {
                 this.xtremandLogger.error(this.errorPrepender + 'show edit videos ():' + error);
@@ -296,11 +250,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
-                this.manageVideos = false;
-                this.editVideo = false;
                 this.playVideo = true;
-                this.campaignReport = false;
-                this.pageBar = true;
+                this.manageVideos = this.editVideo = this.campaignReport = false;
                 this.deletedVideo = false;
             },
             (error: any) => {
@@ -318,10 +269,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.selectedVideo = campaignVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.campaignReport = true;
-                this.manageVideos = false;
-                this.editVideo = false;
-                this.playVideo = false;
-                this.pageBar = true;
+                this.manageVideos = this.editVideo = this.playVideo = false;
                 this.deletedVideo = false;
             },
             (error: any) => {
@@ -356,12 +304,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log(data);
                 console.log('MangeVideoComponent deleteVideoFile success : ' + data);
                 this.pagination.pagedItems.splice(position, 1);
+                this.defaultBannerMessageValues();
                 this.deletedVideo = true;
                 this.deleteVideoName = this.videoTitleLength(videoName);
                 this.loadVideosCount(this.authenticationService.user.id);
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
-                    this.isvideoThere = true;
+                    this.isVideoThere = true;
                     this.pagination.pageIndex = 1;
                     this.loadVideos(this.pagination);
                 }
@@ -377,6 +326,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     const message = error.replace('mobinar', 'video');
                     this.campaignVideoMesg = message;
+                    this.defaultBannerMessageValues();
                     this.campaignVideo = true;
                     setTimeout(function () {
                         $('#campaignVideo').slideUp(500);
@@ -413,7 +363,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
-        this.campaignVideo = false;
+        this.deletedVideo = this.campaignVideo = false;
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
         this.pagination.pageIndex = 1;
         this.videoSort = this.sortVideos[0];
@@ -422,10 +372,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.searchKey = this.pagination.searchKey = null;
         this.loadVideos(this.pagination);
-        this.manageVideos = true;
-        this.editVideo = false;
-        this.campaignReport = false;
-        this.playVideo = false;
+        this.showManageVideos();
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
         const timevalue = this;
@@ -433,35 +380,26 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             if (timevalue.showUpdatevalue === true) {
                 $('#showUpdatevalue').slideUp(500);
             } else { $('#message').slideUp(500); };
-        }, 5000);
-
-        if (videoFile == null) {
-            this.showVideoName = '';
-        } else {
-            this.showVideoName = this.videoTitleLength(videoFile.title);
-        }
+         }, 5000);
+        if (videoFile == null) {  this.showVideoName = '';
+         } else { this.showVideoName = this.videoTitleLength(videoFile.title); }
         this.xtremandLogger.info('update method called ' + this.showVideoName);
+    }
+    showManageVideos() {
+        this.manageVideos = true;
+        this.editVideo = this.playVideo = this.campaignReport =  false;
     }
     backToManageVideos() {
         console.log('come to goto manage videos :');
         if (!this.manageVideos) { this.loadVideos(this.pagination); }
-        this.manageVideos = true;
-        this.editVideo = false;
-        this.campaignReport = false;
-        this.playVideo = false;
-        this.pageBar = false;
-        this.showMessage = false;
-        this.showUpdatevalue = false;
-        this.deletedVideo = false;
-        this.campaignVideo = false;
+        this.showManageVideos();
+        this.defaultBannerMessageValues();
+        this.deletedVideo = this.campaignVideo = false;
         this.videoFileService.actionValue = '';
     }
     ngOnDestroy() {
         this.videoFileService.actionValue = '';
-        this.isvideoThere = false;
-        this.deletedVideo = false;
+        this.isVideoThere = this.deletedVideo = false;
         this.videoFileService.videoViewBy = '';
-        swal.close();
     }
-
 }

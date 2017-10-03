@@ -19,27 +19,18 @@
 	}
 </style>
 <div class="page-content">
-	<!-- BEGIN PAGE HEADER-->
 	<div>
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
-				<li><i class="fa fa-home"></i>
-					<a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
-				<li><a (click)="backToManageVideos()">Manage Videos</a>
-				</li>
-				<li *ngIf="editVideo"><i class="fa fa-angle-right"></i><a>Edit Video</a>
-				</li>
-				<li *ngIf="playVideo"><i class="fa fa-angle-right"></i><a>Play Videos</a>
-				</li>
-				<li *ngIf="campaignReport"><i class="fa fa-angle-right"></i><a>Video Based Report</a>
-				</li>
+				<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
+				<li><a (click)="backToManageVideos()">Manage Videos</a> </li>
+				<li *ngIf="editVideo"><i class="fa fa-angle-right"></i>Edit Video </li>
+				<li *ngIf="playVideo"><i class="fa fa-angle-right"></i>Play Videos </li>
+				<li *ngIf="campaignReport"><i class="fa fa-angle-right"></i>Video Based Report </li>
 			</ul>
 		</div>
 	</div>
-	<!-- END PAGE HEADER-->
-	<!-- BEGIN PAGE CONTENT-->
 	<div>
-
 		<div class="row" *ngIf="manageVideos">
 			<div *ngIf="showMessage" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -61,11 +52,10 @@
 				<div class="tabbable tabbable-custom tabbable-noborder">
 					<div class="tab-content">
 						<div class="tab-pane active">
-							<!-- BEGIN FILTER -->
 							<div *ngIf="disableDropDowns" class="alert alert-info">
-								<strong>No videos Found !!! Want to upload videos, Please visit
-											    <a style="color: #2a4c77; text-decoration: underline;" routerLink="../../videos" >Upload Video Page</a>
-										   </strong>
+							   <strong>No videos Found !!! Want to upload videos, Please visit
+								    <a style="color: #2a4c77; text-decoration: underline;" routerLink="../../videos" >Upload Video Page</a>
+							   </strong>
 							</div>
 							<div class="page-toolbar">
 								<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
@@ -79,10 +69,9 @@
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
 											<select class="form-control" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
-													  <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
-											   </select>
+												<option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+											</select>
 										</div>
-										<!--input-small  -->
 										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
 											<div class="input-icon right" style="cursor:pointer">
 												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
@@ -96,7 +85,7 @@
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<div class="margin-top-10">
 								<div *ngIf="!httpRequestLoader.isLoading">
-								<div *ngIf="isvideoThere==true && disableDropDowns == false" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+								<div *ngIf="isVideoThere && !disableDropDowns" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
 									<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 									<p>Sorry, no videos found..!!</p>
 								</div> 
@@ -150,9 +139,8 @@
 								</div>
 							</div>
 						</div>
-						<!-- END FILTER -->
 					</div>
-					<div *ngIf="!isvideoThere && disableDropDowns == false">
+					<div *ngIf="!isVideoThere && !disableDropDowns">
 						<!--pager here  -->
 						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
@@ -162,7 +150,7 @@
 								<a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 							</li>
 							<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-								<a (click)="setPage(page)">{{page}}</a>
+								<a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
 							</li>
 							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
 								<a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
@@ -177,9 +165,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- END PAGE CONTENT-->
 	<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
 	<app-play-video *ngIf="playVideo" [totalRecords]="allRecords" [selectedVideo]="selectedVideo"></app-play-video>
 	<app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo"></app-video-based-report>
 </div>
-<!-- END CONTENT -->
