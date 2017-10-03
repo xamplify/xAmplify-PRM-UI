@@ -561,8 +561,9 @@ a.disabled {
 					</div>
 				</div>
 				<div class="table-responsive">
+				<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
 					<table class="table table-striped table-hover table-bordered"
-						id="sample_editable_1">
+						id="sample_editable_1" *ngIf="!httpRequestLoader.isLoading">
 						<thead>
 							<tr>
 								<td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'"><input

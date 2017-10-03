@@ -518,7 +518,8 @@ rotate
 											</div>
 										</div>
 										<div class="table-responsive">
-											<table class="table table-striped table-hover table-bordered">
+										<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+											<table class="table table-striped table-hover table-bordered" *ngIf="!httpRequestLoader.isLoading">
 												<thead>
 													<tr>
 														<td align="center"

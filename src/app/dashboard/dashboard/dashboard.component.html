@@ -716,20 +716,20 @@ margin:2px;
   					   <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 					    <thead>
 						<tr>
-							<th>EMAILID</th>
-							<th>FIRST NAME</th>
-							<th>LAST NAME</th>
+							<th class="center" >EMAILID</th>
+							<th class="center" >FIRST NAME</th>
+							<th class="center" >LAST NAME</th>
 							<th class="text-center">DATE & TIME</th>
-							<th>CAMPAIGN NAME</th>
+							<th class="center" >CAMPAIGN NAME</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let emailOpened of pagination.pagedItems;let i = index">
-							<td><h5>{{emailOpened.emailId}}</h5></td>
-							<td><h5>{{emailOpened.firstName}}</h5></td>
-							<td><h5>{{emailOpened.lastName}}</h5></td>
+							<td class="center" ><h5>{{emailOpened.emailId}}</h5></td>
+							<td class="center" ><h5>{{emailOpened.firstName}}</h5></td>
+							<td class="center" ><h5>{{emailOpened.lastName}}</h5></td>
 							<td class="center"><h5>{{emailOpened.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-							<td><h5>{{emailOpened.campaignName}}</h5></td>
+							<td class="center" ><h5>{{emailOpened.campaignName}}</h5></td>
 						</tr>
 					</tbody>
 				</table>  
@@ -774,24 +774,27 @@ margin:2px;
   					   <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 					    <thead>
 						<tr>
-							<th>EMAILID</th>
-							<th>FIRST NAME</th>
-							<th>LAST NAME</th>
+							<th class="center" >EMAILID</th>
+							<th class="center" >FIRST NAME</th>
+							<th class="center" >LAST NAME</th>
 							<th class="text-center">DATE & TIME</th>
-							<th>CAMPAIGN NAME</th>
-							<th>LOCATION</th>
-							<th>PLATFORM</th>
+							<th class="center" >CAMPAIGN NAME</th>
+							<th class="center" >LOCATION</th>
+							<th class="center" >PLATFORM</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
-							<td><h5>{{emailClicked.emailId}}</h5></td>
-							<td><h5>{{emailClicked.firstName}}</h5></td>
-							<td><h5>{{emailClicked.lastName}}</h5></td>
+							<td class="center" ><h5>{{emailClicked.emailId}}</h5></td>
+							<td class="center" ><h5>{{emailClicked.firstName}}</h5></td>
+							<td class="center" ><h5>{{emailClicked.lastName}}</h5></td>
 							<td class="center"><h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-							<td><h5>{{emailClicked.campaignName}}</h5></td>
-							<td><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
-							<td><h5>{{emailClicked.os}}</h5></td>
+							<td class="center" ><h5>{{emailClicked.campaignName}}</h5></td>
+							<td class="center"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
+							<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
+							<td class="center" *ngIf="emailClicked.os == 'windows'"><i class="fa fa-windows" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'apple'"><i class="fa fa fa-apple" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true"></i></td>
 						</tr>
 					</tbody>
 				</table>  
@@ -836,24 +839,27 @@ margin:2px;
   					   <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
 					    <thead>
 						<tr>
-							<th>EMAILID</th>
-							<th>FIRST NAME</th>
-							<th>LAST NAME</th>
+							<th class="center" >EMAILID</th>
+							<th class="center" >FIRST NAME</th>
+							<th class="center" >LAST NAME</th>
 							<th class="text-center">DATE & TIME</th>
-							<th>CAMPAIGN NAME</th>
-							<th>LOCATION</th>
-							<th>PLATFORM</th>
+							<th class="center" >CAMPAIGN NAME</th>
+							<th class="center" >LOCATION</th>
+							<th class="center" >PLATFORM</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let watched of pagination.pagedItems;let i = index">
-							<td><h5>{{watched.emailId}}</h5></td>
-							<td><h5>{{watched.firstName}}</h5></td>
-							<td><h5>{{watched.lastName}}</h5></td>
+							<td class="center" ><h5>{{watched.emailId}}</h5></td>
+							<td class="center" ><h5>{{watched.firstName}}</h5></td>
+							<td class="center" ><h5>{{watched.lastName}}</h5></td>
 							<td class="center"><h5>{{watched.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-							<td><h5>{{watched.campaignName}}</h5></td>
-							<td><h5>{{watched.city}},{{watched.state}},{{watched.country}}</h5></td>
-							<td><h5>{{watched.os}}</h5></td>
+							<td class="center" ><h5>{{watched.campaignName}}</h5></td>
+							<td class="center" ><h5>{{watched.city}},{{watched.state}},{{watched.country}}</h5></td>
+							<!-- <td><h5>{{watched.os}}</h5></td> -->
+							<td class="center" *ngIf="watched.os == 'windows'"><i class="fa fa-windows" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="watched.os == 'apple'"><i class="fa fa fa-apple" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="watched.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true"></i></td>
 						</tr>
 					</tbody>
 				</table> 

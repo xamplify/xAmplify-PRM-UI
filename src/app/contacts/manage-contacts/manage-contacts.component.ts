@@ -45,6 +45,7 @@ export class ManageContactsComponent implements OnInit {
     selectedContactListId: number;
     showAll: boolean;
     showEdit: boolean;
+    public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     contactCountLoad: boolean = false;
     
@@ -100,7 +101,7 @@ export class ManageContactsComponent implements OnInit {
     public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
     public currentContactType: string = null;
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '', 'for': '' },
@@ -788,6 +789,8 @@ export class ManageContactsComponent implements OnInit {
             this.searchKey = null;
             this.listContactData = false;
         }
+        this.referenceService.loading(this.httpRequestLoader, true); 
+        this.httpRequestLoader.isHorizontalCss = true;
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -824,6 +827,7 @@ export class ManageContactsComponent implements OnInit {
                 }else{
                     this.isInvalidHeaderCheckBoxChecked = false;
                 }
+                this.referenceService.loading(this.httpRequestLoader, false); 
                 
             },
             (error: any) => {

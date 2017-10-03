@@ -16,6 +16,7 @@ import { UserListIds } from '../models/user-listIds';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactsByType } from '../models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 declare var Metronic: any;
 declare var Layout: any;
@@ -30,7 +31,7 @@ declare var swal: any;
     templateUrl: './edit-contacts.component.html',
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css'],
-    providers: [Pagination]
+    providers: [Pagination,HttpRequestLoader]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -41,7 +42,7 @@ export class EditContactsComponent implements OnInit {
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
     
-    
+    public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 3;
     invalidDeleteSuccessMessage: boolean = false;
@@ -674,6 +675,8 @@ export class EditContactsComponent implements OnInit {
     }
    
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
+        this.refService.loading(this.httpRequestLoader, true); 
+        this.httpRequestLoader.isHorizontalCss = true;
         this.showSelectedCategoryUsers = false;
         this.xtremandLogger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;
@@ -701,6 +704,7 @@ export class EditContactsComponent implements OnInit {
                     this.noOfContactsDropdown = false;
                     this.pagedItems = null;
                 }
+                this.refService.loading(this.httpRequestLoader, false); 
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
                 this.checkingLoadContactsCount = false;
@@ -954,6 +958,8 @@ export class EditContactsComponent implements OnInit {
             this.searchKey = null;
             this.editListContacts = false;
         }
+        this.refService.loading(this.httpRequestLoader, true); 
+        this.httpRequestLoader.isHorizontalCss = true;
         this.contactService.listOfSelectedContactListByType(this.selectedContactListId,contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -981,6 +987,7 @@ export class EditContactsComponent implements OnInit {
                 }else{
                     this.isInvalidHeaderCheckBoxChecked = false;
                 }
+                this.refService.loading(this.httpRequestLoader, false); 
                 
             },
             error => console.log( error ),
