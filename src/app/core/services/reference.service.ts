@@ -4,8 +4,6 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-import 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 import { Category } from '../../videos/models/category';
 import { Logger } from 'angular2-logger/core';
 import { User } from '../models/user';
@@ -20,7 +18,7 @@ export class ReferenceService {
     public refcategories: Category[];
     public userName: any;
     public selectedCampaignType: string = "";
-    public isCampaignFromVideoRouter:boolean = false;
+    public isCampaignFromVideoRouter: boolean = false;
     campaignSuccessMessage: string = "";
     isCreated: boolean = false;
     isUpdated: boolean = false;
@@ -32,11 +30,11 @@ export class ReferenceService {
     defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
     topNavbarUserService = false;
-    isFromTopNavBar:boolean = false;
+    isFromTopNavBar: boolean = false;
     isEnabledCamera = false;
     cameraIsthere: boolean;
-    topNavBarNotificationDetails:any= new Object();
-    roleName:RoleName = new RoleName();
+    topNavBarNotificationDetails: any = new Object();
+    roleName: RoleName = new RoleName();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'welcome';
     public URL: string = this.authenticationService.REST_URL + 'admin/';
@@ -52,36 +50,31 @@ export class ReferenceService {
             .catch(this.handleError);
     }
     getVideoTitles(): Observable<String[]> {
-        const url = this.URL + 'getVideoTitles?access_token=' + this.authenticationService.access_token + '&userId=' +
+        const url = this.URL + 'video-titles?access_token=' + this.authenticationService.access_token + '&userId=' +
             this.authenticationService.user.id;
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
-    listCampaignEmailNotifications(userId:number){
-        return this.http.get(this.URL+"get-campaign-email-notifications/"+userId+"?access_token="+this.authenticationService.access_token,"")
-        .map(this.extractData)
-        .catch(this.handleError);
+    listCampaignEmailNotifications(userId: number) {
+        return this.http.get(this.URL + "get-campaign-email-notifications/" + userId + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    
-    listCampaignVideoNotifications(userId:number){
-        return this.http.get(this.URL+"get-campaign-video-notifications/"+userId+"?access_token="+this.authenticationService.access_token,"")
-        .map(this.extractData)
-        .catch(this.handleError);
+    listCampaignVideoNotifications(userId: number) {
+        return this.http.get(this.URL + "get-campaign-video-notifications/" + userId + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    
-    markNotificationsAsRead(id:number,type:string){
+    markNotificationsAsRead(id: number, type: string) {
         let url = "update-campaign-email-notification/";
-        if(type=="video"){
+        if (type == "video") {
             url = "update-campaign-video-notification/"
         }
-        return this.http.get(this.URL+url+id+"?access_token="+this.authenticationService.access_token,"")
-        .map(this.extractData)
-        .catch(this.handleError);
+        return this.http.get(this.URL + url + id + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    
-    
-    
     showErrorPage(error: any) {
         this.router.navigate(['/home/error/', error.status]);
     }
@@ -134,58 +127,52 @@ export class ReferenceService {
         }//for close
         return array1;
     }
-    replaceMultipleSpacesWithSingleSpace(text:string){
-        if(text!=undefined){
-            return  text.replace(/ +(?= )/g,'').trim();
-        }else{
+    replaceMultipleSpacesWithSingleSpace(text: string) {
+        if (text != undefined) {
+            return text.replace(/ +(?= )/g, '').trim();
+        } else {
             return "";
         }
-        
-     }
-    
-    validateEmailId(emailId:string){
-    /*    if(emailId.length>0){
-            emailId = emailId.trim();
-            var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-            return regex.test(emailId);
-        }else{
-            return false;
-        }
-        
-        emailId = emailId.trim();*/
+    }
+    validateEmailId(emailId: string) {
+        /*    if(emailId.length>0){
+                emailId = emailId.trim();
+                var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
+                return regex.test(emailId);
+            }else{
+                return false;
+            }
+            emailId = emailId.trim();*/
         var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
         return regex.test(emailId);
-        
     }
-    
     hideDiv(divId: string) {
         $('#' + divId).hide(600);
     }
-    
-    hasRole(roleName:string){
+    hasRole(roleName: string) {
         let roles = this.authenticationService.getRoles();
-        if(roles.indexOf(roleName)>-1 || roles.indexOf(this.roleName.orgAdminRole)>-1){
+        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roleName.orgAdminRole) > -1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    returnDuplicates(names:string[]){
+    returnDuplicates(names: string[]) {
         var uniq = names
-        .map((name) => {
-          return {count: 1, name: name}
-        })
-        .reduce((a, b) => {
-          a[b.name] = (a[b.name] || 0) + b.count
-          return a
-        }, {})
+            .map((name) => {
+                return { count: 1, name: name }
+            })
+            .reduce((a, b) => {
+                a[b.name] = (a[b.name] || 0) + b.count
+                return a
+            }, {})
 
-       return Object.keys(uniq).filter((a) => uniq[a] > 1)
+        return Object.keys(uniq).filter((a) => uniq[a] > 1)
     }
-    
-    goToDiv(divId:string){
+    goToDiv(divId: string) {
         $('html,body').animate({
-            scrollTop: $("#"+divId).offset().top},
+            scrollTop: $("#" + divId).offset().top
+        },
             'slow');
     }
 }

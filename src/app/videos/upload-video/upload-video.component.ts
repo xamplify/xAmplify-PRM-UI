@@ -25,7 +25,7 @@ declare var $, videojs: any;
 export class UploadVideoComponent implements OnInit, OnDestroy {
 
     public processVideoResp: SaveVideoFile;
-    public URL = this.authenticationService.REST_URL + 'admin/uploadVideo?userId=' + this.authenticationService.user.id + '&access_token=';
+    public URL = this.authenticationService.REST_URL + 'videos/upload-video?userId='+ this.authenticationService.user.id + '&access_token=';
     public uploader: FileUploader;
     public hasBaseDropZoneOver = false;
     public hasAnotherDropZoneOver = false;

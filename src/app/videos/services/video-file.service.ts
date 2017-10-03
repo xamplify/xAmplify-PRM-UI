@@ -28,20 +28,20 @@ export class VideoFileService {
     public pause360Action: boolean;
     public categoryNumber = 0;
     viewsCategoryNumber = 0;
-    public URL: string = this.authenticationService.REST_URL + 'admin/';
+    public URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
     }
     processVideoFile(responsePath: any): Observable<any> {
         console.log('response path in service ' + responsePath);
-        const url = this.URL + 'process_video?path=' + responsePath + '&userId=' +
+        const url = this.URL + 'process-video?path=' + responsePath + '&userId=' +
             this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
     saveRecordedVideo(formData: any) {
-        const url = this.URL + 'saveRecordedVideo?&userId=' + this.authenticationService.user.id +
+        const url = this.URL + 'save-recorded-video?&userId=' + this.authenticationService.user.id +
             '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, formData)
             .map(this.extractData)
@@ -55,7 +55,7 @@ export class VideoFileService {
         headers.append('Accept', 'application/json');
         console.log(formData);
         const options = new RequestOptions({ headers: headers });
-        const url = this.URL + 'uploadOwnThumbnail?access_token=' + this.authenticationService.access_token +
+        const url = this.URL + 'upload-own-thumbnail?access_token=' + this.authenticationService.access_token +
             '&userId=' + this.authenticationService.user.id;
         return this.http.post(url, formData)
             .map(this.extractData)
@@ -73,16 +73,17 @@ export class VideoFileService {
     }
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
-        const url = this.URL + 'listVideosNew/' + this.categoryNumber +
+        const url = this.URL + this.categoryNumber +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
-        return this.http.post(url, pagination, '')
+        return this.http.get(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
     loadVideoForViewsReport(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
-        const url = this.URL + 'video_report/' + this.viewsCategoryNumber +
+        const constURL = this.authenticationService.REST_URL + 'admin/';
+        const url = constURL + 'video_report/' + this.viewsCategoryNumber +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
         return this.http.post(url, pagination, '')
@@ -90,7 +91,8 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     loadVideosCount(userId: number) {
-        const url = this.URL + 'videos_count?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
+        const constURL = this.authenticationService.REST_URL + 'admin/';
+        const url = constURL + 'videos_count?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -98,26 +100,18 @@ export class VideoFileService {
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);
-        const url = this.URL + 'getMobinar?alias=' + alias + '&viewBy=' + viewBy;
+        const url = this.URL + 'video-by-alias/' + alias + '?viewBy=' + viewBy;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
         console.log('deleted video alias is ' + alias);
-        const url = this.URL + 'videoStatusChange/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'video-status-change/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;
         console.log('delete url is ' + url);
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleErrorDelete);
-    }
-    searchVideos(searchKey: string) {
-        console.log('search videos ' + searchKey);
-        const url = this.URL + 'searchVideos?searchKey=' + searchKey + '&access_token=' + this.authenticationService.access_token;
-        console.log('url is  ' + url);
-        return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
     }
     saveCalltoActionUser(user: User) {
         console.log(user);
@@ -191,10 +185,10 @@ export class VideoFileService {
     }
     loadCampaignVideos(pagination: Pagination, categoryId: number) {
         console.log(pagination);
-        const url = this.URL + 'listVideosNew/' + categoryId +
+        const url = this.URL + categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
-        return this.http.post(url, pagination, '')
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

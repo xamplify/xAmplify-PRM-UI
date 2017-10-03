@@ -1,5 +1,4 @@
-import {
-    Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
     style, state, animate, transition, trigger
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -89,7 +88,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public disLikesValues: number;
     public isPlay = false;
     public isThumb: boolean;
-    public isPlayButton: boolean;
     embedWidth = '640';
     embedHeight = '360';
     videoSizes: string[];
@@ -105,7 +103,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public isSkipChecked: boolean; // isSkiped means to hide the videojs overlay for users
     public showOverLay: boolean; // for show the videojs overlay modal at the start or end of the video
     public isFistNameChecked: boolean;
-    public lastNameValid = false;
     public videoOverlaySubmit: string;
     public overLayValue: string; // videojs value overlay
     public startCalltoAction: boolean;   // nod for start of the video
@@ -212,7 +209,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.saveVideoFile.lowerText == null) {
             this.lowerCharacterleft = this.maxlengthvalueLowerText;
         } else { this.lowerCharacterleft = this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length; }
-        this.isPlayButton = this.saveVideoFile.name;
         this.openStartingDivs();
         this.fileChangeM3U8(this.saveVideoFile.videoPath);
         this.likesValues = 0;
@@ -829,7 +825,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     callToActionNames() {
         console.log(this.saveVideoFile.name + 'after changed value');
         const event = (<HTMLInputElement>document.getElementById('names')).checked;
-        this.isPlayButton = this.isFistNameChecked = this.saveVideoFile.name = event;
+        this.isFistNameChecked = this.saveVideoFile.name = event;
     }
     allowViewersToSkipped() {
         console.log(this.saveVideoFile.skip + 'after changed value');

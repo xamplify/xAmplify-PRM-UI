@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -31,12 +31,12 @@ export class UserService {
     }
 
     getVideoDefaultSettings() {
-        return this.http.get( this.URL + 'admin/video_default_settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token )
+        return this.http.get( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
     updatePlayerSettings( defaultVideoSettings: DefaultVideoPlayer ) {
-        return this.http.post( this.URL + 'admin/video_default_settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
+        return this.http.post( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
             , defaultVideoSettings )
             .map( this.extractData )
             .catch( this.handleError );
