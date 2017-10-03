@@ -37,10 +37,13 @@ export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
     @Input() totalRecords: number;
     @Input() contactListId: number;
+    @Input() contactListName: string;
     @Input() selectedContactListId: number;
     @Input( 'value' ) value: number;
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
+    
+    selectedContactListName: string;
     
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -272,7 +275,7 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.manageContact.editContactList( this.contactListId );
+                this.manageContact.editContactList( this.contactListId, this.contactListName);
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
@@ -319,7 +322,7 @@ export class EditContactsComponent implements OnInit {
                     data => {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        this.manageContact.editContactList( this.contactListId );
+                        this.manageContact.editContactList( this.contactListId, this.contactListName );
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
@@ -576,7 +579,7 @@ export class EditContactsComponent implements OnInit {
             data => {
                 data = data;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.manageContact.editContactList( this.contactListId );
+                this.manageContact.editContactList( this.contactListId, this.contactListName );
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
 
@@ -1060,6 +1063,7 @@ export class EditContactsComponent implements OnInit {
    }
       
     ngOnInit() {
+        this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         let self = this;

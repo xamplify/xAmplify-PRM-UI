@@ -43,6 +43,7 @@ export class ManageContactsComponent implements OnInit {
     isHeaderCheckBoxChecked:boolean = false;
     public contactLists: Array<ContactList>;
     selectedContactListId: number;
+    selectedContactListName: string;
     showAll: boolean;
     showEdit: boolean;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -428,8 +429,9 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
-    editContactList( contactSelectedListId: number ) {
+    editContactList( contactSelectedListId: number, contactListName: string ) {
         this.selectedContactListId = contactSelectedListId;
+        this.selectedContactListName = contactListName;
         this.showAll = false;
         this.showEdit = true;
         this.show = false;
