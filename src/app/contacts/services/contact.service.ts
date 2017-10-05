@@ -32,6 +32,7 @@ export class ContactService {
 
     log: Logger;
     url = this.authenticationService.REST_URL + "admin/";
+    contactsUrl = this.authenticationService.REST_URL + "userlists/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
@@ -40,14 +41,14 @@ export class ContactService {
     }
 
     loadUsersOfContactList( contactListId: number, pagination: Pagination ): Observable<User[]> {
-        return this._http.post( this.url + "userlist/" + contactListId + "?access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.url + "userlist?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + '?userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -61,7 +62,7 @@ export class ContactService {
     
     loadContactListsNames(): Observable<ContactList[]> {
         this.logger.info( "Service class loadContactsNames() completed" );
-        return this._http.get( this.url + "getUserlistNames?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.contactsUrl + "names?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -75,7 +76,7 @@ export class ContactService {
     
     listContactsByType(contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.url + "contacts?contactType="+ contactType + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -97,13 +98,13 @@ export class ContactService {
     
     listOfSelectedContactListByType(contactListId: number,contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.url + "contacts/" + contactListId + "?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl  + contactListId + "/contacts?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
  
     deleteContactList( contactListId: number ) {
-        return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
+        return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }
@@ -126,7 +127,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.url + "save_user_list?userListName=" + contactListName + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/save-userlist?userListName=" + contactListName + '&userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -142,7 +143,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.url + "userlist/" + contactListId + "/update?"+ 'userId='+this.authenticationService.user.id +"&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + contactListId + "/update?"+ 'userId='+this.authenticationService.user.id +"&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -151,7 +152,7 @@ export class ContactService {
 
     removeContactList( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( contactListId + "--" + removeUserIds );
-        var newUrl = this.url + "userlist/" + contactListId + "/removeUsers?"+ 'userId='+this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + contactListId + "/removeUsers?"+ 'userId='+this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() )
            .catch( this.handleErrorDeleteUsers);
@@ -166,7 +167,7 @@ export class ContactService {
 
     downloadContactList( contactListId: number ): Observable<Response> {
         this.logger.info( contactListId );
-        return this._http.get( this.url + "userlist/" + contactListId + "/download?access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.contactsUrl +  contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
     
