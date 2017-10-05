@@ -1,10 +1,10 @@
 <div class="page-content">
-	<div *ngIf="isLoading">
+	<div [hidden]="!isLoading">
 		<div class="div-loader">
 			<div id="process-loader"></div>
 		</div>
 	</div>
-	<div  *ngIf="!isLoading">
+	<div  [hidden]="isLoading" >
 		<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>

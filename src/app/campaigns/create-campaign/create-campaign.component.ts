@@ -32,9 +32,7 @@ import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
-declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise, flatpickr: any,jQuery,CKEDITOR:any;
-
-
+declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
 
 @Component({
   selector: 'app-create-campaign',
@@ -329,6 +327,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             minDate: new Date(),
             dateFormat: 'd/m/Y H:i',
             time_24hr: true
+          /*  onChange : function(dateObj) {
+                if(dateObj[0]<=new Date()){
+                    console.log("invalid date");
+                }else{
+                    console.log("validate");
+                }
+            }*/
         } );
         //this.validatecampaignForm();
         this.validateLaunchForm();
@@ -1398,10 +1403,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
+        if(data.scheduleCampaign=="NOW"){
+            data['scheduleCampaign'] = "SAVE";
+        }
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
-            data['scheduleCampaign'] = "SAVE";
             this.campaignService.saveCampaign( data )
             .subscribe(
             data => {
