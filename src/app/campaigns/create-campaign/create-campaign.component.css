@@ -44,11 +44,6 @@ a.disabled {
     color: rgb(255, 255, 255);
     background-color: rgba(25, 25, 25, 0.2);
 }
-.ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
 .progress>.progress-completed {
     position: absolute;
     right: 0px;
@@ -361,12 +356,6 @@ a.disabled {
     border-color: #a94442;
 }
 
-.ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 .flex {
     display: flex;
 }
@@ -462,14 +451,6 @@ a.disabled {
     opacity: .5;
     border: 1px solid #FFF
 }
-
-/* .ellipsis {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    float: left !important
-} */
 
 .profile-image {
     z-index: 1;

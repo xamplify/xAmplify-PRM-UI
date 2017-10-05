@@ -34,12 +34,16 @@
 	                   (click)="confirmDialog(socialConnection)">
 	                  <div class="portlet-title">
 	                    <div class="caption">
-	                      <div class="col-xs-12">
+	                      <div class="col-xs-12" style="display: flex;">
 	                        <i class="fa fa-check" aria-hidden="true" *ngIf="socialConnection.active"></i>
 	                        <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
 
-                        	<ng-template class="caption-subject uppercase text-center" #profileName>{{socialConnection.profileName}}</ng-template>
-							<ng-template class="caption-subject uppercase text-center" #fullName>{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</ng-template>
+                        	<ng-template #profileName>
+                        		<h5 class="caption-subject ellipsis uppercase text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
+                       		</ng-template>
+							<ng-template #fullName>
+								<h5 class="caption-subject ellipsis uppercase text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
+							</ng-template>
 
 	                        <i class="fa fa-social pull-right"
 	                          [ngClass]="{'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK', 

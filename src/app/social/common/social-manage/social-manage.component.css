@@ -61,13 +61,6 @@ h5 {
 	border: 2px solid #FFF;
 }
 
-.ellipsis {
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
 .alert-success {
 	background-color: #77bf81;
 	color: #ffffff;

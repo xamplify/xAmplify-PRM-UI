@@ -206,3 +206,11 @@ nav a.active {
 .portlet.light {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
+
+.ellipsis {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	float: left !important;
+}

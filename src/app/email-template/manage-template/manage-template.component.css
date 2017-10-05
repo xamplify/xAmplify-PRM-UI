@@ -74,10 +74,3 @@ h6 {
 
 .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
   a.disabled { pointer-events: none; cursor: not-allowed; }
-  
-.ellipsis {
-     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-  

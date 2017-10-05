@@ -19,14 +19,6 @@ textarea{
 	border: 1px solid #FFF;
 }
 
-.ellipsis {
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	float: left !important;
-}
-
 .profile-image {
 	z-index: 1;
 	width: auto;

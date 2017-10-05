@@ -211,11 +211,19 @@ export class UpdateStatusComponent implements OnInit {
             eventRender: function( event: any, element: any ) {
                 element.find( ".fc-time" ).addClass( 'fc-time-title' );
                 element.find( ".fc-title" ).addClass( 'fc-time-title' );
-                element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9" style="padding: 0;float: right;"></div>' );
+                element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9 pull-right p0"></div>' );
                 element.find( ".fc-time" ).css( { "display": "block" });
+                
+                let socialStatusProviders = event.data.socialStatusProviders;
+                let str='';
+                for(var i in socialStatusProviders){
+                    if('FACEBOOK' == socialStatusProviders[i].providerName)
+                        str +='<i class="fa fa-facebook" aria-hidden="true"></i>';
+                    else if('TWITTER' == socialStatusProviders[i].providerName)
+                        str +='<i class="fa fa-twitter" aria-hidden="true"></i>';
+                }
                 element.find( ".fc-right-block" )
-                    .after( $( "<div class='fc-left-block col-xs-3' style='padding: 0;'></div>" ).html() );
-
+                    .after( $( "<div id='"+event.id+"' class='fc-left-block col-xs-3 p0'>"+str+"</div>"));
             },
             eventClick: function( event: any, element: any ) {
                 $( '#full-calendar-modal-event-' + event.id ).modal( 'show' );
@@ -223,7 +231,33 @@ export class UpdateStatusComponent implements OnInit {
         });
     }
 
+    listEvents() {
+        let self = this;
+        this.socialService.listEvents( this.userId )
+            .subscribe(
+            data => {
+                this.socialStatusList = data;
+                for ( var i in this.socialStatusList ) {
 
+                    var event = {
+                        title: this.socialStatusList[i].statusMessage,
+                        start: this.socialStatusList[i].scheduledTimeUser,
+                        id: this.socialStatusList[i].id,
+                        data: this.socialStatusList[i],
+                    };
+                    $( '#full-calendar' ).fullCalendar( 'renderEvent', event, true );
+                }
+            },
+            error => console.log( error ),
+            () => {
+                flatpickr( '.flatpickr', {
+                    enableTime: true,
+                    minDate: new Date()
+                });
+                console.log( "listEvents() finished" )
+            }
+            );
+    }
 
     initializeSocialStatus() {
         this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
@@ -303,46 +337,6 @@ export class UpdateStatusComponent implements OnInit {
         }
     }
 
-    hmsToSecondsOnly( hms: any ) {
-        var a = hms.split( ':' );
-        var seconds = ( +a[0] ) * 60 * 60 + ( +a[1] ) * 60 + ( +a[2] );
-        return seconds;
-    }
-
-    setvideoLengthInSeconds() {/*
-        for ( var i = 0; i < this.videos.length; i++ ) {
-            this.videos[i].videoLengthInSeconds = this.hmsToSecondsOnly( this.videos[i].videoLength );
-        }
-    */}
-
-
-    listEvents() {
-        let self = this;
-        this.socialService.listEvents( this.userId )
-            .subscribe(
-            data => {
-                this.socialStatusList = data;
-                for ( var i in this.socialStatusList ) {
-
-                    var event = {
-                        title: this.socialStatusList[i].statusMessage,
-                        start: this.socialStatusList[i].scheduledTimeUser,
-                        id: this.socialStatusList[i].id,
-                        data: this.socialStatusList[i],
-                    };
-                    $( '#full-calendar' ).fullCalendar( 'renderEvent', event, true );
-                }
-            },
-            error => console.log( error ),
-            () => {
-                flatpickr( '.flatpickr', {
-                    enableTime: true,
-                    minDate: new Date()
-                });
-                console.log( "listEvents() finished" )
-            }
-            );
-    }
     editSocialStatus( socialStatus: SocialStatus ) {
         $( '#full-calendar-modal-event-' + socialStatus.id ).modal( 'hide' );
         $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );

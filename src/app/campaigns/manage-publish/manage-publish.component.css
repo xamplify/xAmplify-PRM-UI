@@ -178,9 +178,3 @@
      left: 0;
      position: absolute;
 }
-
-.ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
