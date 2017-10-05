@@ -1,108 +1,104 @@
 <style type="text/css">
-	.isPlayButtonCss{ margin-top: -66px !important;} .emailCustomCss { margin-top: 92px; }
-	.isLowerTextCss {margin-top: 43px !important;}  .isOffirstname {  margin-top: -43px !important ;}
-	.upperText{
-		font-size: 17px;color: white; word-break: break-all;
-       line-height: 1.3em;font-weight: 600;text-align: center; position: relative;top: -13px;
+	#overlay-modal {
+		width: auto;
 	}
-	.lowerText{
-      color: white; word-break: break-all; font-size: 15px;
-      line-height: 1.0em;position: relative; text-align: center;
-      top: 9px;
+	.clipboard {
+		padding: 6px 44px;
 	}
-	.isPlaySubmit{ padding:15px 58px !important;border-radius: 0px;}
-	 .paddingCss{ padding: 1em;}
-     #overlay-modal{width:auto;}
-	 .showVideoDiv{margin-top: -317px}
-	 .clipboard{ padding: 6px 44px;}
-	 a.disabled { pointer-events: none; cursor: not-allowed; }
-	 a.disabledShare { pointer-events: none; cursor: not-allowed; opacity: 0.5 }
-	 .is360video{z-index: 900;}
-	 .overlaySet{margin-top:-331px;}
-	 .bottomCss{bottom: -183px; }
-	 .imagePath{ height: 111px; width: 100%;}
-	 textarea { resize:none; max-height: 100%; 	max-width: 100%;
-			min-height: 100%; min-width: 100%; padding: 10px;
-      }
+
+	a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.is360video {
+		z-index: 900;
+	}
+
+	.overlaySet {
+		margin-top: -331px;
+	}
+
+	.bottomCss {
+		bottom: -183px;
+	}
+
+	.imagePath {
+		height: 111px;
+		width: 100%;
+	}
+
+	textarea {
+		resize: none;
+		max-height: 100%;
+		max-width: 100%;
+		min-height: 100%;
+		min-width: 100%;
+		padding: 10px;
+	}
 </style>
 <div class="portlet light">
-<div class="portlet-body">
-	<div class="row margin-bottom-30">
-		<div class="col-md-7">
-		    <div style="margin-bottom: 1em;">
-			<div id="newPlayerVideo"></div>
-			</div>
-			<div id="modalDialog"></div>
-			<!-- <div *ngIf="is360Value==false">
-			<video id="play_video_player_{{idValue}}" class="video-js vjs-default-skin"
-				controls preload="auto" height="318" poster="{{posterImg}}"
-			    data-setup='{"example_option":true}'>
-                <source [src] = videoUrl  type="application/x-mpegURL" />
-				 <source [src] = videoUrl  type="video/mp4" />>
-			</video>	
-			</div>
-		    	<!-- video overlay modal popup -->
-		
-             <div id="overlay-modal" class="video-js overlay is360video"  [class.overlaySet]="overLaySet==false"
-              style="height: 318px; width: 100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
-					<!--<div><h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2></div>-->
-					<form #f="ngForm" novalidate>
-					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}"> <!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
-						<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
-						<div class="flex" *ngIf="isFistNameChecked==true" >
-							<input type="text" name="firstName" style="margin-right: 0;"  [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
-								class="form-control text-box m21" placeholder="First Name">
-							<input type="text" name="lastName"  [(ngModel)]="lastName" (ngModelChange)="checkingCallToActionValues()"
-							   class="form-control text-box m21" placeholder="Last Name">
-						</div>
-						<div class="flex m02">
-							<div class="w-8">
-								<input type="text" name="email_id"  [(ngModel)]="model.email_id" (ngModelChange)="checkingCallToActionValues()"
-								 class="form-control text-box" placeholder="Email Address"
-								 pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
-				                 #email_id="ngModel">
-							</div>
-							<div class="w-4">
-								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="isOverlay==true"
-								 (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button>
-							</div>
-						</div>
-                         <h4 class="upper-text-heading lowerText">{{selectedVideo.lowerText}}</h4>
-					 </div>
-				   </form>
-				     <div>
-					 <div *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
-						 <i class="fa fa-repeat" aria-hidden="true"></i>
-					</div>
-                      <div  *ngIf="isSkipChecked==true"  id="skipOverlay" style="cursor: pointer">
-                      	<i class="fa fa-forward" aria-hidden="true"></i>
-                      	<b style="font-size: 13px; color:white;" >skip</b>
-					  </div>
-					 </div>
+	<div class="portlet-body">
+		<div class="row margin-bottom-30">
+			<div class="col-md-7">
+				<div style="margin-bottom: 1em;">
+					<div id="newPlayerVideo"></div>
 				</div>
-			<!-- modal popup end-->
-            <div>
-				<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
-			</div>
-			<div class="col-xs-12 col-sm-6" style="padding: 0;">
-				<div *ngIf="hasVideoRole">
-				<button  *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton"
-				 (click)="shareClick()" [disabled]="isThisDraftVideo==true">
+				<div id="modalDialog"></div>
+				<!-- modal popup  -->
+				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 318px; width: 100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+					<form #f="ngForm" novalidate>
+						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+							<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
+							<div class="flex" *ngIf="callAction.isFistNameChecked==true">
+								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
+								 class="form-control text-box m21" placeholder="First Name">
+								<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
+								 placeholder="Last Name">
+							</div>
+							<div class="flex m02">
+								<div class="w-8">
+									<input type="text" name="email_id" [(ngModel)]="callAction.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
+									 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel">
+								</div>
+								<div class="w-4">
+									<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay==true" (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
+								</div>
+							</div>
+							<h4 class="upper-text-heading lowerText">{{selectedVideo.lowerText}}</h4>
+						</div>
+					</form>
+					<div>
+						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+							<i class="fa fa-repeat" aria-hidden="true"></i>
+						</div>
+						<div *ngIf="callAction.isSkipChecked==true" id="skipOverlay" style="cursor: pointer">
+							<i class="fa fa-forward" aria-hidden="true"></i>
+							<b style="font-size: 13px; color:white;">skip</b>
+						</div>
+					</div>
+				</div>
+				<!-- modal popup end-->
+				<div>
+					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
+				</div>
+				<div class="col-xs-12 col-sm-6" style="padding: 0;">
+					<div *ngIf="hasVideoRole">
+						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-				</button> 
-				<button  *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" 
-					data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo">
+				</button>
+						<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 				</button>
+					</div>
 				</div>
-			</div>
-			<div class="col-xs-12 col-sm-6" style="padding: 0;">
-				<div class="col-xs-12" style="padding: 0;">
-					<span class="pull-right videoViews">
+				<div class="col-xs-12 col-sm-6" style="padding: 0;">
+					<div class="col-xs-12" style="padding: 0;">
+						<span class="pull-right videoViews">
 	           <h4 class="viewsh4">{{selectedVideo.views}} views</h4></span>
-				</div>
-				<div class="col-xs-12" style="padding: 0;">
-					<span class="pull-right">
+					</div>
+					<div class="col-xs-12" style="padding: 0;">
+						<span class="pull-right">
 						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
 							<a style="text-decoration:none;" title="I like this" ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
 							{{likesValues}}</a></button>
@@ -111,11 +107,11 @@
 								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
 							{{disLikesValues}}</a></button>
 					</span>
-				</div>	
-			</div>
-				
+					</div>
+				</div>
+
 				<!-- emebd src Modal Start-->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"data-backdrop="static">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content" style="border-radius: 0">
 							<div class="modal-header">
@@ -125,24 +121,23 @@
 							<div class="modal-body">
 								<form>
 									<div class="input-group" style="width: 100%;">
-										<textarea class="form-control" rows="4" id="embed_code"name="embed_code" spellcheck="false"
-											data-event="share_video_with_embed_code" style="height: 150px;  min-height: 140px; max-height:160px"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{selectedVideo.title}}</a></textarea>
+										<textarea class="form-control" rows="4" id="embed_code" name="embed_code" spellcheck="false" data-event="share_video_with_embed_code"
+										 style="height: 150px;  min-height: 140px; max-height:160px"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{selectedVideo.title}}</a></textarea>
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<div style="margin-top: 4px;">
 											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Video Size:
-											   <select class="videoSizeCss"[(ngModel)]="videosize" [ngModelOptions]="{standalone: true}"
-												 (change)="embedVideoSizes()">
+												<select class="videoSizeCss" [(ngModel)]="videosize" [ngModelOptions]="{standalone: true}" (change)="embedVideoSizes()">
 												<option style="font-size:12px" *ngFor="let size of videoSizes" [value]="size">{{size}}</option>
-											</select>  
+											</select>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Allow Full Screen :
-											 <input type="checkbox"  [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()" checked="checked">
+												<input type="checkbox" [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()"
+												 checked="checked">
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 0">
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"
-											  style="width:100%; background: #00a6e8; color: #FFF;border-radius: 1px;"
-												(click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
+												<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="width:100%; background: #00a6e8; color: #FFF;border-radius: 1px;"
+												 (click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
 											</button>
 											</div>
 										</div>
@@ -153,212 +148,194 @@
 					</div>
 				</div>
 				<!-- Modal End-->
-			
-			<div>
-				<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
-				<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
-			</div>
-			<div>
-				<p>Category : {{selectedVideo.category.name}}</p>
-			</div>
-			<div>
-				<div class="slimScrollDiv"
-					style="position: relative; overflow: hidden; width: auto;">
-					<div class="scroller"
-						style="max-height: 800px; overflow: hidden; width: auto;"
-						data-always-visible="0" data-rail-visible="0"
-						data-handle-color="#dae3e7" data-initialized="1">
-						<form action="#" class="form-horizontal">
-							<div class="tabbable-line">
-								<ul class="nav nav-tabs ">
-									<li class="active"><a href="#tab_1" data-toggle="tab"
-										aria-expanded="true"> Comments </a></li>
-								</ul>
-								<div *ngIf="comments==false" >
-			                     <h2><pre>Comments are disabled for this video.!! <br/> please select allow comments to get comments in edit video page !!!</pre></h2>
-			                    </div>
-								<div class="tab-content" *ngIf="comments ===true">
-									<div class="tab-pane active" id="tab_1">
-										<!-- TASK COMMENTS -->
-										<div class="form-group">
-											<div class="col-md-12">
-												<ul class="media-list">
-													<li class="media"><a class="pull-left"
-														href="javascript:;"> <img class="todo-userpic"
+
+				<div>
+					<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
+					<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
+				</div>
+				<div>
+					<p>Category : {{selectedVideo.category.name}}</p>
+				</div>
+				<div>
+					<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;">
+						<div class="scroller" style="max-height: 800px; overflow: hidden; width: auto;" data-always-visible="0" data-rail-visible="0"
+						 data-handle-color="#dae3e7" data-initialized="1">
+							<form action="#" class="form-horizontal">
+								<div class="tabbable-line">
+									<ul class="nav nav-tabs ">
+										<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"> Comments </a></li>
+									</ul>
+									<div *ngIf="comments==false">
+										<h2>
+											<pre>Comments are disabled for this video.!! <br/> please select allow comments to get comments in edit video page !!!</pre>
+										</h2>
+									</div>
+									<div class="tab-content" *ngIf="comments ===true">
+										<div class="tab-pane active" id="tab_1">
+											<!-- TASK COMMENTS -->
+											<div class="form-group">
+												<div class="col-md-12">
+													<ul class="media-list">
+														<li class="media"><a class="pull-left" href="javascript:;"> <img class="todo-userpic"
 															src="assets/admin/layout2/img/avatar8.jpg"
 															width="27px" height="27px">
 													</a>
-														<div class="media-body todo-comment">
-															<button type="button"
-																class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+															<div class="media-body todo-comment">
+																<button type="button" class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
 																Reply &nbsp;</button>
-															<p class="todo-comment-head">
-																<span class="todo-comment-username">Christina
+																<p class="todo-comment-head">
+																	<span class="todo-comment-username">Christina
 																	Aguilera</span> &nbsp; <span class="todo-comment-date">17
 																	Sep 2014 at 2:05pm</span>
-															</p>
-															<p class="todo-text-color">
-																Cras sit amet nibh libero, in gravida nulla. Nulla vel
-																metus scelerisque ante sollicitudin commodo. Cras purus
-																odio, vestibulum in vulputate at, tempus viverra turpis.
-																<br>
-															</p>
-															<!-- Nested media object -->
-															<div class="media">
-																<a class="pull-left" href="javascript:;"> <img
+																</p>
+																<p class="todo-text-color">
+																	Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum
+																	in vulputate at, tempus viverra turpis.
+																	<br>
+																</p>
+																<!-- Nested media object -->
+																<div class="media">
+																	<a class="pull-left" href="javascript:;"> <img
 																	class="todo-userpic"
 																	src="assets/admin/layout2/img/avatar4.jpg"
 																	width="27px" height="27px">
 																</a>
-																<div class="media-body">
-																	<p class="todo-comment-head">
-																		<span class="todo-comment-username">Carles
+																	<div class="media-body">
+																		<p class="todo-comment-head">
+																			<span class="todo-comment-username">Carles
 																			Puyol</span> &nbsp; <span class="todo-comment-date">17
 																			Sep 2014 at 4:30pm</span>
-																	</p>
-																	<p class="todo-text-color">Thanks so much my dear!
-																	</p>
+																		</p>
+																		<p class="todo-text-color">Thanks so much my dear!
+																		</p>
+																	</div>
 																</div>
 															</div>
-														</div></li>
-													<li class="media"><a class="pull-left"
-														href="javascript:;"> <img class="todo-userpic"
+														</li>
+														<li class="media"><a class="pull-left" href="javascript:;"> <img class="todo-userpic"
 															src="assets/admin/layout2/img/avatar5.jpg"
 															width="27px" height="27px">
 													</a>
-														<div class="media-body todo-comment">
-															<button type="button"
-																class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+															<div class="media-body todo-comment">
+																<button type="button" class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
 																Reply &nbsp;</button>
-															<p class="todo-comment-head">
-																<span class="todo-comment-username">Andres
+																<p class="todo-comment-head">
+																	<span class="todo-comment-username">Andres
 																	Iniesta</span> &nbsp; <span class="todo-comment-date">18
 																	Sep 2014 at 9:22am</span>
-															</p>
-															<p class="todo-text-color">
-																Cras sit amet nibh libero, in gravida nulla. Scelerisque
-																ante sollicitudin commodo Nulla vel metus scelerisque
-																ante sollicitudin commodo. Cras purus odio, vestibulum
-																in vulputate at, tempus viverra turpis. <br>
-															</p>
-														</div></li>
-													<li class="media"><a class="pull-left"
-														href="javascript:;"> <img class="todo-userpic"
+																</p>
+																<p class="todo-text-color">
+																	Cras sit amet nibh libero, in gravida nulla. Scelerisque ante sollicitudin commodo Nulla vel metus scelerisque ante sollicitudin
+																	commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. <br>
+																</p>
+															</div>
+														</li>
+														<li class="media"><a class="pull-left" href="javascript:;"> <img class="todo-userpic"
 															src="assets/admin/layout2/img/avatar6.jpg"
 															width="27px" height="27px">
 													</a>
-														<div class="media-body todo-comment">
-															<button type="button"
-																class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+															<div class="media-body todo-comment">
+																<button type="button" class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
 																Reply &nbsp;</button>
-															<p class="todo-comment-head">
-																<span class="todo-comment-username">Olivia Wilde</span>
-																&nbsp; <span class="todo-comment-date">18 Sep
+																<p class="todo-comment-head">
+																	<span class="todo-comment-username">Olivia Wilde</span> &nbsp; <span class="todo-comment-date">18 Sep
 																	2014 at 11:50am</span>
-															</p>
-															<p class="todo-text-color">
-																Cras sit amet nibh libero, in gravida nulla. Scelerisque
-																ante sollicitudin commodo Nulla vel metus scelerisque
-																ante sollicitudin commodo. Cras purus odio, vestibulum
-																in vulputate at, tempus viverra turpis. <br>
-															</p>
-														</div></li>
-												</ul>
+																</p>
+																<p class="todo-text-color">
+																	Cras sit amet nibh libero, in gravida nulla. Scelerisque ante sollicitudin commodo Nulla vel metus scelerisque ante sollicitudin
+																	commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. <br>
+																</p>
+															</div>
+														</li>
+													</ul>
+												</div>
 											</div>
-										</div>
-										<!-- END TASK COMMENTS -->
-										<!-- TASK COMMENT FORM -->
-										<div class="form-group">
-											<div class="col-md-12">
-												<ul class="media-list">
-													<li class="media"><img class="todo-userpic pull-left"
-														src="assets/admin/layout2/img/avatar4.jpg"
-														width="27px" height="27px">
-														<div class="media-body">
-															<textarea class="form-control todo-taskbody-taskdesc"
-																rows="4" placeholder="Type comment..."></textarea>
-														</div></li>
-												</ul>
-												<button type="button"
-													class="pull-right btn btn-sm btn-circle green-haze">
+											<!-- END TASK COMMENTS -->
+											<!-- TASK COMMENT FORM -->
+											<div class="form-group">
+												<div class="col-md-12">
+													<ul class="media-list">
+														<li class="media"><img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar4.jpg" width="27px" height="27px">
+															<div class="media-body">
+																<textarea class="form-control todo-taskbody-taskdesc" rows="4" placeholder="Type comment..."></textarea>
+															</div>
+														</li>
+													</ul>
+													<button type="button" class="pull-right btn btn-sm btn-circle green-haze">
 													&nbsp; Submit &nbsp;</button>
+												</div>
 											</div>
+											<!-- END TASK COMMENT FORM -->
 										</div>
-										<!-- END TASK COMMENT FORM -->
 									</div>
 								</div>
-							</div>
-						</form>
-					</div>
-					<div class="slimScrollBar"
-						style="width: 7px; position: absolute; top: 102px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 583.941605839416px; background: rgb(218, 227, 231);">
-					</div>
-					<div class="slimScrollRail"
-						style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);">
+							</form>
+						</div>
+						<div class="slimScrollBar" style="width: 7px; position: absolute; top: 102px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 583.941605839416px; background: rgb(218, 227, 231);">
+						</div>
+						<div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);">
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-5" style="margin-top: -10px;">
-			<div class="tabbable tabbable-custom tabbable-noborder">
+			<div class="col-md-5" style="margin-top: -10px;">
+				<div class="tabbable tabbable-custom tabbable-noborder">
 
-				<div class="tab-content">
-					<div class="tab-pane active" style="margin-top: -13px;">
-						<!-- BEGIN FILTER -->
-						<div class="margin-top-10">
-							<div style="display: inline">
-								<h4>Related Videos:</h4>
-								<div >
-									<div class="row mix-grid" style="margin-top: 10px">
+					<div class="tab-content">
+						<div class="tab-pane active" style="margin-top: -13px;">
+							<!-- BEGIN FILTER -->
+							<div class="margin-top-10">
+								<div style="display: inline">
+									<h4>Related Videos:</h4>
+									<div>
+										<div class="row mix-grid" style="margin-top: 10px">
 											<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-										<div *ngIf="allVideos && !httpRequestLoader.isLoading">
-											<div class="col-md-6 col-sm-8 mix category_1 mix_all"
-											style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
-											<div class="mix-inner">
-												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
-												<div class="mix-details">
-													<h4>{{titleCheckLength(videoFile.title)}}</h4>
-													<a class="mix-preview" (click)="showVideo(videoFile, i)"
-														title="play video" data-rel=""> <i class="fa fa-play" style="margin-right:0px"></i>
+											<div *ngIf="allVideos && !httpRequestLoader.isLoading">
+												<div class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
+													<div class="mix-inner">
+														<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
+														<div class="mix-details">
+															<h4>{{titleCheckLength(videoFile.title)}}</h4>
+															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel=""> <i class="fa fa-play" style="margin-right:0px"></i>
 													</a>
-													<span align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-													<span align="left" style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
-													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">by customer</span>
+															<span align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+															<span align="left" style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
+															<span align="left" style="bottom: 10px; left: 10px; position: absolute;">by customer</span>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
+										<!-- END FILTER -->
 									</div>
 								</div>
-								<!-- END FILTER -->
+								<!--pager here  -->
+								<div *ngIf="showRelatedMessage == false">
+									<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+										<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+											<a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+										</li>
+										<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+											<a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+										</li>
+										<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+											<a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
+										</li>
+										<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+											<a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+										</li>
+										<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+											<a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+										</li>
+									</ul>
+								</div>
+								<p *ngIf="showRelatedMessage" class="notFoundCss">No Related videos Found</p>
+								<!-- pager end here -->
 							</div>
 						</div>
-						<!--pager here  -->
-									<div *ngIf="showRelatedMessage == false">
-									 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                                                <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-                                             </li>
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-                                                 <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-                                              </li>
-                                              <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page)">{{page}}</a>
-                                              </li>
-                                              <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-                                              </li>
-                                               <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                  <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-                                              </li>
-                                          </ul>
-									</div>
-										<p *ngIf="showRelatedMessage" class="notFoundCss" >No Related videos Found</p>
-						<!-- pager end here -->
 					</div>
 				</div>
 			</div>
+			<!--/row-->
 		</div>
 	</div>
-	<!--/row-->
-</div>
-</div>

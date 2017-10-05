@@ -24,9 +24,9 @@
 			<ul class="page-breadcrumb">
 				<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
 				<li><a (click)="backToManageVideos()">Manage Videos</a> </li>
-				<li *ngIf="editVideo"><i class="fa fa-angle-right"></i>Edit Video </li>
-				<li *ngIf="playVideo"><i class="fa fa-angle-right"></i>Play Videos </li>
-				<li *ngIf="campaignReport"><i class="fa fa-angle-right"></i>Video Based Report </li>
+				<li *ngIf="editVideo" style="color: #888;"><i class="fa fa-angle-right"></i>Edit Video </li>
+				<li *ngIf="playVideo"  style="color: #888;"><i class="fa fa-angle-right"></i>Play Videos </li>
+				<li *ngIf="campaignReport"  style="color: #888;"><i class="fa fa-angle-right"></i>Video Based Report </li>
 			</ul>
 		</div>
 	</div>

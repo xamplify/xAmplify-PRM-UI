@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -9,7 +9,7 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
-
+import { CallAction } from '../../models/call-action';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
@@ -46,93 +46,75 @@ enum LogAction {
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
     @Input() selectedVideo: SaveVideoFile;
-    public allVideos: Array<SaveVideoFile>;
-    public _elementRef: ElementRef;
-    public user: User = new User();
-    model: any = {};
+    allVideos: Array<SaveVideoFile>;
+    user: User = new User();
+    callAction: CallAction = new CallAction();
     selectedPosition: number;
-    public embedSrcPath: string;
+    embedSrcPath: string;
     embedWidth = '640';
     embedHeight = '360';
     videoSizes: string[];
     videosize = '640 × 360';
-    public embedFullScreen = 'allowfullscreen';
+    embedFullScreen = 'allowfullscreen';
     isFullscreen: boolean;
-    public videoUrl: string;
-    public videoJSplayer: any;
-    public posterImg: string;
-    public likes: boolean;
-    public comments: boolean;
-    public shareVideo: boolean;
-    public embedVideo: boolean;
-    public isPlayButton: boolean;
-    public isSkipChecked: boolean;
-    public isOverlay: boolean;
-    public videoOverlaySubmit: string;
-    public isPlay: boolean;
-    public email_id: string;
-    public firstName: string;
-    public lastName: string;
-    public overLayValue: string;
-    public isFistNameChecked: boolean;
-    public videoStartTime: number;
-    public durationTime: number;
-    public likesValues: number;
-    public disLikesValues: number;
-    public shareValues: boolean;
-    public is360Value: boolean;
-    public embedUrl: string;
-    public ClipboardName: string;
-    public imagepath: string;
+    videoUrl: string;
+    videoJSplayer: any;
+    posterImg: string;
+    likes: boolean;
+    comments: boolean;
+    shareVideo: boolean;
+    embedVideo: boolean;
+    durationTime: number;
+    likesValues: number;
+    disLikesValues: number;
+    shareValues: boolean;
+    is360Value: boolean;
+    embedUrl: string;
+    ClipboardName: string;
     // logging info details
-    public sessionId: string;
-    public deviceInfo: any;
+    sessionId: string;
+    deviceInfo: any;
     LogAction: typeof LogAction = LogAction;
-    public persons;
-    public replyVideo: boolean;
-    public overLaySet = false;
-    public fullScreenMode = false;
+    replyVideo: boolean;
+    overLaySet = false;
+    fullScreenMode = false;
     showRelatedMessage: boolean;
-    isThisDraftVideo  = false;
+    isThisDraftVideo = false;
     hasVideoRole = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    constructor(elementRef: ElementRef, public authenticationService: AuthenticationService, public router: Router,
+    constructor(public authenticationService: AuthenticationService, public router: Router,
         public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
-        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger:XtremandLogger,
+        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
         public pagerService: PagerService, public referenceService: ReferenceService) {
-        this._elementRef = elementRef;
         this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
         this.likesValues = 0;
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
-      }
+    }
     embedSourcePath(alias: string, viewBy: string) {
-    this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
-    console.log(this.embedSrcPath);
+        this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' +
+        this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
+        console.log(this.embedSrcPath);
     }
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true) {
-            this.overLayValue = 'StartOftheVideo';
-            this.videoOverlaySubmit = 'PLAY';
-            this.isPlay = true;
+            this.callAction.overLayValue = 'StartOftheVideo';
+            this.callAction.videoOverlaySubmit = 'PLAY';
         } else if (this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
-            this.overLayValue = 'EndOftheVideo';
-            this.isPlay = false;
-            this.videoOverlaySubmit = 'SUBMIT';
+            this.callAction.overLayValue = 'EndOftheVideo';
+            this.callAction.videoOverlaySubmit = 'SUBMIT';
         } else {
-            this.overLayValue = 'removeCallAction';
+            this.callAction.overLayValue = 'removeCallAction';
         }
     }
-
     playVideoInfo(selectedVideo: SaveVideoFile) {
         this.posterImg = this.selectedVideo.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.videoUrl = this.selectedVideo.videoPath;
         // call to action values
-        this.isFistNameChecked = this.selectedVideo.name; // need  the value from server
-        this.isPlayButton = this.selectedVideo.name;  // need to get the value from server
-        this.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
+        this.callAction.isFistNameChecked = this.selectedVideo.name; // need  the value from server
+        this.callAction.isSkipChecked = this.selectedVideo.skip; // need to get the value from server
         // video controlls
         this.likes = this.selectedVideo.allowLikes;
         this.comments = this.selectedVideo.allowComments;
@@ -140,9 +122,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedVideo = this.selectedVideo.allowEmbed;
         console.log(this.selectedVideo);
         this.is360Value = this.selectedVideo.is360video;
-           if (this.selectedVideo.viewBy === 'DRAFT') {
+        if (this.selectedVideo.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
-            } else { this.isThisDraftVideo = false; }
+        } else { this.isThisDraftVideo = false; }
         this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {
@@ -197,7 +179,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         let startDuration;
                         self.replyVideo = false;
                         let isCallActionthere = false;
-                        const isValid = self.overLayValue;
+                        const isValid = self.callAction.overLayValue;
                         this.ready(function () {
                             $('.video-js .vjs-tech').css('width', '100%');
                             $('.video-js .vjs-tech').css('height', '100%');
@@ -380,7 +362,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             (error: any) => {
                 console.log('Play video component : show play videos method ():' + error);
                 this.xtremandLogger.errorPage(error);
-             }
+            }
             );
     }
     likesValuesDemo() {
@@ -404,13 +386,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { this.embedWidth = '640'; this.embedHeight = '360'; }
     }
     checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
-            && this.firstName.length !== 0 && this.lastName.length !== 0) {
-            this.isOverlay = false;
-            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last name ' + this.lastName);
-        } else if (this.isFistNameChecked === false && this.videoUtilService.validateEmail(this.model.email_id)) {
-            this.isOverlay = false;
-        } else { this.isOverlay = true; }
+        if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
+            && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
+            this.callAction.isOverlay = false;
+            console.log(this.callAction.email_id + 'mail ' + this.callAction.firstName + ' and last name ' + this.callAction.lastName);
+        } else if (this.callAction.isFistNameChecked === false && this.videoUtilService.validateEmail(this.callAction.email_id)) {
+            this.callAction.isOverlay = false;
+        } else { this.callAction.isOverlay = true; }
     }
     embedCode() {
         this.ClipboardName = 'Copied !';
@@ -429,19 +411,19 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
-            if (this.videoOverlaySubmit === 'PLAY') {
+            if (this.callAction.videoOverlaySubmit === 'PLAY') {
                 this.videoJSplayer.play();
             } else { this.videoJSplayer.pause(); }
         }
-        console.log(this.model.email_id);
-        if (this.authenticationService.user.emailId === this.model.email_id) {
-            this.user.emailId = this.model.email_id;
+        console.log(this.callAction.email_id);
+        if (this.authenticationService.user.emailId === this.callAction.email_id) {
+            this.user.emailId = this.callAction.email_id;
             this.user.firstName = this.authenticationService.user.firstName;
             this.user.lastName = this.authenticationService.user.lastName;
         } else {
-            this.user.emailId = this.model.email_id;
-            this.user.firstName = this.firstName;
-            this.user.lastName = this.lastName;
+            this.user.emailId = this.callAction.email_id;
+            this.user.firstName = this.callAction.firstName;
+            this.user.lastName = this.callAction.lastName;
         }
         console.log(this.user);
         // this.videoFileService.saveCalltoActionUser(this.user)
@@ -472,20 +454,19 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.xtremandLogDefaultActions();
         this.loadAllVideos(this.pagination);
         $('#overlay-modal').hide();
-        this.model.email_id = this.authenticationService.user.emailId;
-        this.firstName = this.authenticationService.user.firstName;
-        this.lastName = this.authenticationService.user.lastName;
+        this.callAction.email_id = this.authenticationService.user.emailId;
+        this.callAction.firstName = this.authenticationService.user.firstName;
+        this.callAction.lastName = this.authenticationService.user.lastName;
 
-        if (this.videoUtilService.validateEmail(this.model.email_id)) {
-            this.isOverlay = false;
-        } else { this.isOverlay = true; }
+        if (this.videoUtilService.validateEmail(this.callAction.email_id)) {
+            this.callAction.isOverlay = false;
+        } else { this.callAction.isOverlay = true; }
 
         this.playVideoInfo(this.selectedVideo);
         this.checkCallToActionAvailable();
     }
     loadAllVideos(pagination: Pagination) {
         this.pagination.maxResults = 13;
-        // this.pagination.maxResults = this.totalRecords;
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoFiles(pagination)
@@ -494,8 +475,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.totalRecords = result.totalRecords;
                     pagination.totalRecords = this.totalRecords;
                     for (let i = 0; i < this.allVideos.length; i++) {
-                        this.imagepath = this.allVideos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
-                        this.allVideos[i].imagePath = this.imagepath;  // this piece code need to remove
+                        const imagepath = this.allVideos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
+                        this.allVideos[i].imagePath = imagepath;  // this piece code need to remove
                     }
                     for (let i = 0; i < this.allVideos.length; i++) {
                         if (this.selectedVideo.id === this.allVideos[i].id) {
@@ -504,7 +485,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                     if (this.allVideos.length === 0) {
-                    this.showRelatedMessage = true;
+                        this.showRelatedMessage = true;
                     } else { this.showRelatedMessage = false; }
                     pagination = this.pagerService.getPagedItems(pagination, this.allVideos);
                     this.referenceService.loading(this.httpRequestLoader, false);
@@ -516,14 +497,12 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 () => console.log('load All videos completed:' + this.allVideos),
             );
         } catch (error) {
-            //   this.logger.error('erro in load All videos :' + error);
+              this.xtremandLogger.error('erro in load All videos :' + error);
         }
     }
     setPage(page: number) {
-        if (page !== this.pagination.pageIndex) {
             this.pagination.pageIndex = page;
             this.loadAllVideos(this.pagination);
-        }
     }
     defaultVideoOptions() {
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -531,14 +510,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
         $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
         $('.vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
-        if (this.selectedVideo.allowFullscreen === false) {
+        if (!this.selectedVideo.allowFullscreen) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
             $('.video-js .vjs-fullscreen-control').show();
         }
     }
     defaultVideoControllers() {
-        if (this.selectedVideo.enableVideoController === false) {
+        if (!this.selectedVideo.enableVideoController) {
             $('.video-js .vjs-control-bar').hide();
         } else {
             $('.video-js .vjs-control-bar').show();
@@ -546,8 +525,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     transperancyControllBar(value: any) {
         const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
-       // $('.video-js .vjs-control-bar').css('background-color', rgba);
-       $('.video-js .vjs-control-bar').css('cssText', 'background-color:'+rgba+'!important');
+        // $('.video-js .vjs-control-bar').css('background-color', rgba);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     titleCheckLength(title: string) {
         if (title.length > 20) { title = title.substring(0, 19) + '...'; }
@@ -567,7 +546,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; /// need to comment
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '318px');
         $('#videoId').css('width', 'auto');
@@ -622,7 +600,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             clickAndDrag: true,
             clickToToggle: true,
             callback: function () {
-                const isValid = self.overLayValue;
+                const isValid = self.callAction.overLayValue;
                 self.replyVideo = false;
                 let startDuration;
                 let isCallActionthere = false;
@@ -705,8 +683,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     self.videoLogAction(self.xtremandLog);
                     $('.vjs-big-play-button').css('display', 'none');
                     if (isValid === 'EndOftheVideo') {
-                        // self.showOverlayModal();
-                        //   $('.video-js .vjs-control-bar').hide();
                         const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                         const event = state ? 'FullscreenOn' : 'FullscreenOff';
                         if (event === 'FullscreenOn') {
@@ -733,15 +709,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
                         player.pause();
-                        // $('.video-js .vjs-control-bar').hide();
-                        //   $('.vjs-big-play-button').css('display', 'block');
                     });
                     $('#playorsubmit').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
                         player.pause();
-                        //    $('.video-js .vjs-control-bar').hide();
-                        //    $('.vjs-big-play-button').css('display', 'block');
                     });
                 });
                 player.on('fullscreenchange', function () {
@@ -795,7 +767,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             $('.video-js .vjs-tech').css('width', '100%');
             $('.video-js .vjs-tech').css('height', '100%');
             const aspectRatio = 320 / 640;
-            const isValid = self.overLayValue;
+            const isValid = self.callAction.overLayValue;
             let isCallActionthere = false;
             this.ready(function () {
                 if (isValid === 'StartOftheVideo') {
@@ -828,8 +800,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.on('timeupdate', function () {
                 startDuration = self.trimCurrentTime(player.currentTime());
-                // var  startDuration = player.currentTime();
-                // console.log(this.currentTime());
             });
             this.on('play', function () {
                 const seekigTime = self.trimCurrentTime(player.currentTime());
@@ -1045,7 +1015,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.xtremandLogger.log(error);
                 this.xtremandLogger.errorPage(error);
             }
-        );
+            );
     }
     createSessionId() {
         this.sessionId = UUID.UUID();
@@ -1058,5 +1028,4 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         //         console.log(this.xtremandLog.actionId);
         //     });
     }
-
 }

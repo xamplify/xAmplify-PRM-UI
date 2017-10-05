@@ -79,4 +79,23 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
 }
 .inactiveDiv { pointer-events: none; cursor: not-allowed; }
 
-.ng2-tags-container > *{ margin-right: 5px; }
+.upperText {
+    font-size: 16px;
+    color: white;
+    word-break: break-all;
+    line-height: 1.3em;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    top: -13px;
+}
+
+.lowerText {
+    color: white;
+    word-break: break-all;
+    font-size: 15px;
+    line-height: 1.0em;
+    position: relative;
+    text-align: center;
+    top: 9px;
+}
