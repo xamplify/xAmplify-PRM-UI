@@ -11,6 +11,7 @@ import { User } from '../../core/models/user';
 import { ShareButton, ShareProvider } from 'ngx-sharebuttons';
 import { Subscription } from 'rxjs/Subscription';
 import { XtremandLog } from '../models/xtremand-log';
+import { CallAction } from '../models/call-action';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
@@ -40,45 +41,32 @@ enum LogAction {
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
     embedVideoFile: SaveVideoFile;
-    public user: User = new User();
-    public videoJSplayer: any;
-    public imgURL: string;
-    public videoUrl: string;
-    model: any = {};
-    public isPlay = false;
-    public isPlayButton: boolean;
-    public isOverlay = true;  // for disabled the play video button in the videojs overlay
-    public email_id: string;
-    public firstName: string;
-    public lastName: string;
-    public isSkipChecked: boolean; // isSkiped means to hide the videojs overlay for users
-    public showOverLay: boolean; // for show the videojs overlay modal at the start or end of the video
-    public isFistNameChecked: boolean;
-    public videoOverlaySubmit: string;
-    public overLayValue: string;
-    public posterImagePath: string;
-    public is360Value: boolean;
-    public embedUrl: string;
-    public routerAlias: string;
-    public routerType: string;
-    public sub: Subscription;
-    public title: string;
-    public upperTextValue: string;
-    public lowerTextValue: string;
-    public description: string;
-    public shareUrl: string;
+    user: User = new User();
+    callAction: CallAction = new CallAction();
+    videoJSplayer: any;
+    imgURL: string;
+    videoUrl: string;
+    posterImagePath: string;
+    is360Value: boolean;
+    embedUrl: string;
+    routerAlias: string;
+    routerType: string;
+    sub: Subscription;
+    title: string;
+    upperTextValue: string;
+    lowerTextValue: string;
+    description: string;
+    shareUrl: string;
     // logging info details
-    public sessionId: string;
-    public deviceInfo: any;
+    sessionId: string;
+    deviceInfo: any;
     LogAction: typeof LogAction = LogAction;
-    public persons;
-    public replyVideo: boolean;
-    public timeValue: any;
-    public logVideoViewValue: boolean;
-    public overLaySet = false;
-    public fullScreenMode = false;
-    public seekStart = null;
-    public seekStart360 = null;
+    replyVideo: boolean;
+    logVideoViewValue: boolean;
+    overLaySet = false;
+    fullScreenMode = false;
+    seekStart = null;
+    seekStart360 = null;
     uploadedDate: any;
     categoryName: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
@@ -128,18 +116,16 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.upperTextValue = this.embedVideoFile.upperText;
                 this.lowerTextValue = this.embedVideoFile.lowerText;
                 if (this.embedVideoFile.startOfVideo === true) {
-                    this.videoOverlaySubmit = 'PLAY';
-                } else { this.videoOverlaySubmit = 'SUBMIT'; }
+                    this.callAction.videoOverlaySubmit = 'PLAY';
+                } else { this.callAction.videoOverlaySubmit = 'SUBMIT'; }
 
                 if (this.embedVideoFile.startOfVideo === true && this.embedVideoFile.callACtion === true) {
-                    this.overLayValue = 'StartOftheVideo';
-                    this.videoOverlaySubmit = 'PLAY';
-                    this.isPlay = true;
+                    this.callAction.overLayValue = 'StartOftheVideo';
+                    this.callAction.videoOverlaySubmit = 'PLAY';
                 } else if (this.embedVideoFile.endOfVideo === true && this.embedVideoFile.callACtion === true) {
-                    this.overLayValue = 'EndOftheVideo';
-                    this.isPlay = false;
-                    this.videoOverlaySubmit = 'SUBMIT';
-                } else { this.overLayValue = 'removeCallAction'; }
+                    this.callAction.overLayValue = 'EndOftheVideo';
+                    this.callAction.videoOverlaySubmit = 'SUBMIT';
+                } else { this.callAction.overLayValue = 'removeCallAction'; }
 
                 if (message === '') {
                     if (this.embedVideoFile.is360video === true) {
@@ -163,7 +149,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 console.log(this.videoUrl);
                 this.shareUrl = 'http://aravindu.com/xtremand-share/video?viewBy=' + this.embedVideoFile.viewBy
                     + '&alias=' + this.embedVideoFile.alias;
-                this.imgURL = this.embedVideoFile.gifImagePath;
                 console.log(this.shareUrl);
                 this.shareMetaTags();
             }, (error: any) => {
@@ -184,8 +169,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         console.log(this.embedVideoFile);
     }
     defaultCallToActionValues() {
-        this.isFistNameChecked = this.embedVideoFile.name;
-        this.isSkipChecked = this.embedVideoFile.skip;
+        this.callAction.isFistNameChecked = this.embedVideoFile.name;
+        this.callAction.isSkipChecked = this.embedVideoFile.skip;
     }
     defaultVideoSettings() {
         console.log('default settings called');
@@ -200,13 +185,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         }
     }
     checkingCallToActionValues() {
-        if (this.isFistNameChecked === true && this.videoUtilService.validateEmail(this.model.email_id)
-            && this.firstName.length !== 0 && this.lastName.length !== 0) {
-            this.isOverlay = false;
-            console.log(this.model.email_id + 'mail ' + this.firstName + ' and last property ' + this.lastName);
-        } else if (this.isFistNameChecked === false && this.videoUtilService.validateEmail(this.model.email_id)) {
-            this.isOverlay = false;
-        } else { this.isOverlay = true; }
+        if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
+            && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
+            this.callAction.isOverlay = false;
+            console.log(this.callAction.email_id + 'mail ' + this.callAction.firstName + ' and last property ' + this.callAction.lastName);
+        } else if (this.callAction.isFistNameChecked === false && this.videoUtilService.validateEmail(this.callAction.email_id)) {
+            this.callAction.isOverlay = false;
+        } else { this.callAction.isOverlay = true; }
     }
     play360Video() {
         this.is360Value = true;
@@ -272,7 +257,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             clickAndDrag: true,
             clickToToggle: true,
             callback: function () {
-                const isValid = player360.overLayValue;
+                const isValid = player360.callAction.overLayValue;
                 let startDuration;
                 let isCallActionthere = false;
                 const document: any = window.document;
@@ -457,7 +442,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             self.replyVideo = false;
             let isCallActionthere = false;
             const document: any = window.document;
-            const isValid = self.overLayValue;
+            const isValid = self.callAction.overLayValue;
             this.ready(function () {
                 self.videoFileService.pauseAction = false;
                 self.xtremandLog.startDuration = 0;
@@ -669,7 +654,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const x = minutes < 10 ? "0" + minutes : minutes;
         const y = seconds < 10 ? "0" + seconds : seconds;
         const timeValue = x + ":" + y;
-        console.log(this.timeValue);
+        console.log(timeValue);
         this.videoFileService.timeValue = timeValue;
     }
     trimCurrentTime(currentTime) {
@@ -760,14 +745,14 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
-            if (this.videoOverlaySubmit === 'PLAY') {
+            if (this.callAction.videoOverlaySubmit === 'PLAY') {
                 this.videoJSplayer.play();
             } else { this.videoJSplayer.pause(); }
         }
-        this.logger.debug(this.model.email_id);
-        this.user.emailId = this.toLowerString(this.model.email_id);
-        this.user.firstName = this.firstName;
-        this.user.lastName = this.lastName;
+        this.logger.debug(this.callAction.email_id);
+        this.user.emailId = this.toLowerString(this.callAction.email_id);
+        this.user.firstName = this.callAction.firstName;
+        this.user.lastName = this.callAction.lastName;
         this.logger.debug(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe((result: any) => {
@@ -778,9 +763,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
             });
     }
-   toLowerString(mail: string) {
-      return mail.toLowerCase();
-   }
+    toLowerString(mail: string) {
+        return mail.toLowerCase();
+    }
 
     sharedSuccess() {
         this.xtremandLog.actionId = 12;

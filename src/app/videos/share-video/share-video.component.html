@@ -28,29 +28,30 @@
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
-						<div class="flex" *ngIf="isFistNameChecked==true">
-							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="firstName" (ngModelChange)="checkingCallToActionValues()"
+						<div class="flex" *ngIf="callAction.isFistNameChecked==true">
+							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
 							 class="form-control text-box m21" placeholder="First Name">
-							<input type="text" name="lastName" [(ngModel)]="lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
+							<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
 							 placeholder="Last Name">
 						</div>
 						<div class="flex m02">
 							<div class="w-8">
-								<input type="text" name="email_id" [(ngModel)]="model.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
+								<input type="text" name="email_id" [(ngModel)]="callAction.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
 								 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel">
 							</div>
 							<div class="w-4">
-								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="isOverlay==true" (click)="saveCallToActionUserForm()">{{videoOverlaySubmit}}</button>
+								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay==true"
+								 (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
 							</div>
 						</div>
 						<h4 class="upper-text-heading lowerText">{{lowerTextValue}}</h4>
 					</div>
 				</form>
 				<div>
-					<div *ngIf="videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+					<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
 						<i class="fa fa-repeat" aria-hidden="true"></i>
 					</div>
-					<div *ngIf="isSkipChecked==true" id="skipOverlay" style="cursor: pointer">
+					<div *ngIf="callAction.isSkipChecked==true" id="skipOverlay" style="cursor: pointer">
 						<i class="fa fa-forward" aria-hidden="true"></i>
 						<b style="font-size: 13px; color:white;">skip</b>
 					</div>

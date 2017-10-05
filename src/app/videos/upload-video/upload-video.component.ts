@@ -24,54 +24,50 @@ declare var $, videojs: any;
 })
 export class UploadVideoComponent implements OnInit, OnDestroy {
 
-    public processVideoResp: SaveVideoFile;
-    public URL = this.authenticationService.REST_URL + 'videos/upload-video?userId='+ this.authenticationService.user.id + '&access_token=';
-    public uploader: FileUploader;
-    public hasBaseDropZoneOver = false;
-    public hasAnotherDropZoneOver = false;
-    public videoPreviewPath: SafeUrl;
+    processVideoResp: SaveVideoFile;
+    URL = this.authenticationService.REST_URL + 'videos/upload-video?userId=' + this.authenticationService.user.id + '&access_token=';
+    uploader: FileUploader;
+    hasBaseDropZoneOver = false;
+    videoPreviewPath: SafeUrl;
     loading: boolean;
     processing: boolean;
     isChecked: boolean;
     isFileDrop: boolean;
     isFileProgress: boolean;
-    public tempr: any;
-    public pickerApiLoaded = false;
-    public cloudDropbox: boolean;
-    public cloudBox: boolean;
-    public cloudDrive: boolean;
-    public camera: boolean;
-    public cloudOneDrive: boolean;
-    public isDisable: boolean;
-    public isOndrive = true;
-    public checkSpeedValue = false;
-    public maxSubscription = false;
-    public redirectPge = false;
-    public player: any;
-    public playerInit = false;
-    public recordedVideo: any;
-    public responsePath: string;
-    public RecordSave = false;
-    public rageDisabled = false;
-    public saveVideo: boolean;
-    public discardVideo: boolean;
-    public closeModalId: boolean;
-    public testSpeeddisabled: boolean;
-    public testSpeedshow: boolean;
-    public stopButtonDisabled: boolean;
-    public stopButtonShow: boolean;
-    public textAreaValue = '';
-    public changeVolume = 1;
-    public textAreaDisable: boolean;
-    public hideSaveDiscard: boolean;
-    public maxTimeDuration: number;
-    public sweetAlertDisabled: boolean;
-    public sweetAlertMesg: string;
-    public MultipleVideo = false;
-    public maxVideoSize: number;
-    public videoUrlWMC: any;
-    public codecSupport = false;
-    public isSelectedVideo = false;
+    tempr: any;
+    pickerApiLoaded = false;
+    cloudDropbox: boolean;
+    cloudBox: boolean;
+    cloudDrive: boolean;
+    camera: boolean;
+    cloudOneDrive: boolean;
+    isDisable: boolean;
+    checkSpeedValue = false;
+    maxSubscription = false;
+    redirectPge = false;
+    player: any;
+    playerInit = false;
+    recordedVideo: any;
+    RecordSave = false;
+    rageDisabled = false;
+    saveVideo: boolean;
+    discardVideo: boolean;
+    closeModalId: boolean;
+    testSpeeddisabled: boolean;
+    testSpeedshow: boolean;
+    stopButtonDisabled: boolean;
+    stopButtonShow: boolean;
+    textAreaValue = '';
+    changeVolume = 1;
+    textAreaDisable: boolean;
+    hideSaveDiscard: boolean;
+    maxTimeDuration: number;
+    sweetAlertDisabled: boolean;
+    sweetAlertMesg: string;
+    MultipleVideo = false;
+    maxVideoSize: number;
+    codecSupport = false;
+    isSelectedVideo = false;
     deviceNotSupported = false;
     deviceInfo = null;
     browserInfo: string;
@@ -103,7 +99,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.testSpeeddisabled = true;
             this.hideSaveDiscard = true;
             this.isFileProgress = false;
-            // this.stopButtonShow = false;
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
             this.maxVideoSize = 800; // upload video size in MB's
@@ -124,7 +119,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log(fileItem._file.size);
             };
             this.uploader.onProgressItem = (fileItem: FileItem, progress: any) => {
-                //   this.changeDetectorRef.detectChanges();
                 this.loading = true;
                 this.isFileProgress = true;
                 this.isFileDrop = true;
@@ -147,11 +141,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
             $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
             if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
-                 !this.browserInfo.includes('edge')) {
-            //    this.checkCameraBlock();
+                !this.browserInfo.includes('edge')) {
+                //    this.checkCameraBlock();
                 this.refService.isEnabledCamera = true;
-            } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) { 
-                this.refService.cameraIsthere = true; }
+            } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
+                this.refService.cameraIsthere = true;
+            }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
@@ -261,16 +256,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     setTimoutMethod() {
-       this.uploader.queue.length = 0;
-       const val = this;
+        this.uploader.queue.length = 0;
+        const val = this;
         setTimeout(function () {
             val.maxSizeOver = false;
             val.maxSubscription = false;
             val.codecSupport = false;
-       }, 4000);
-    }
-    public fileOverAnother(e: any): void {
-        this.hasAnotherDropZoneOver = e;
+        }, 4000);
     }
     fileDropPreview(file: File): void {
         if (this.isFileDrop === false) {
@@ -341,7 +333,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         return this.videoFileService.saveRecordedVideo(formData)
             .subscribe(
             (result: any) => {
-                this.responsePath = result;
                 this.processVideo(result.path);
             }, (error: any) => {
                 this.errorIsThere = true;

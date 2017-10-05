@@ -66,4 +66,10 @@ h3 {
     top: 8px;
     border: aliceblue;
   }
-  
+  .customeImagePath {
+		height: 141px;
+		width: 100%;
+	}
+	.page-bar {
+		border-radius: 0
+	}

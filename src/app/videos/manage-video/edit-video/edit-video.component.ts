@@ -586,6 +586,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.newAllowLikes = event;
         console.log('allow comments after event' + this.likes);
     }
+    defaultPlayerSettingsCondition(playerSettings: any) {
+            this.newEnableController = playerSettings.enableVideoController;
+            this.newComments = playerSettings.allowComments;
+            this.newFullScreen = playerSettings.allowFullscreen;
+            this.newAllowLikes = playerSettings.allowLikes;
+            this.newAllowEmbed = playerSettings.allowEmbed;
+            this.newEnableCasting = playerSettings.enableCasting;
+            this.newEnableSetting = playerSettings.enableSettings;
+            this.newAllowSharing = playerSettings.allowSharing;
+            this.newValue360 = playerSettings.is360video;
+    }
+
     defaultPlayerSettingsValues(event: boolean) {
         if (event === true) {
             this.defaultSettingValue = true;
@@ -610,6 +622,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.newEnableSetting = this.defaultPlayerValues.enableSettings;
             this.newAllowSharing = this.defaultPlayerValues.allowSharing;
             this.newValue360 = this.defaultPlayerValues.is360video;
+            // this.defaultPlayerSettings(this.defaultPlayerValues);
         } else {
             this.defaultSettingValue = false;
             if (this.loadRangeDisable !== true) {
@@ -732,6 +745,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.videoJSplayer) { this.videoJSplayer.pause(); }
         }
     }
+
+
+    setCallToActionText(isUpperTextValid: boolean, isLowerTextValid: boolean){
+        this.upperTextValid = isUpperTextValid;
+        this.lowerTextValid = isLowerTextValid;
+    }
+
     disableCalltoAction(event: boolean) {
         (<HTMLInputElement>document.getElementById('names')).disabled = event;
         (<HTMLInputElement>document.getElementById('isSkiped')).disabled = event;
@@ -739,27 +759,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         (<HTMLInputElement>document.getElementById('lowerValue')).disabled = event;
         this.disableStart = event;
         this.disableEnd = event;
-        if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null) && event === false) {
-            this.upperTextValid = false;
-            this.lowerTextValid = false;
-        } else if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null) && event === true) {
-            this.upperTextValid = true;
-            this.lowerTextValid = true;
-        } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0) && event === false) {
-            this.upperTextValid = false;
-            this.lowerTextValid = false;
-        } else if (this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0 && event === true) {
-            this.upperTextValid = true;
-            this.lowerTextValid = true;
-        } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length !== 0) && event === false) {
-            this.upperTextValid = false;
-            this.lowerTextValid = true;
-        } else if (this.saveVideoFile.lowerText.length === 0 && this.saveVideoFile.upperText.length !== 0 && event === false) {
-            this.lowerTextValid = false;
-            this.upperTextValid = true;
+        if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null)) {
+            this.setCallToActionText(event, event);
+        } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0)) {
+            this.setCallToActionText(event, event);
+        } else if (!event) {
+            this.setCallToActionText(!(this.saveVideoFile.upperText.length === 0), !(this.saveVideoFile.lowerText.length === 0));
         } else {
-            this.upperTextValid = true;
-            this.lowerTextValid = true;
+            this.setCallToActionText(true, true);
         }
     }
     checkingCallToActionValues() {
