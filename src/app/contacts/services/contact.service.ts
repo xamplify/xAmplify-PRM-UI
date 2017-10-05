@@ -55,7 +55,7 @@ export class ContactService {
     
     unlinkSocailAccount(socialNetwork: string, isDeleteContactList:boolean): Observable<ContactList[]> {
         this.logger.info( "unlinkSocailAccount() method invoked" );
-        return this._http.get( this.url + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
+        return this._http.get( this.authenticationService.REST_URL + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.authenticationService.user.id + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }
