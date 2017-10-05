@@ -364,7 +364,7 @@ export class EditContactsComponent implements OnInit {
     removeContactListUsers( contactListId: number ) {
         let self = this;
         this.xtremandLogger.info( this.selectedContactListIds );
-        this.contactService.removeContactList( this.contactListId, this.selectedContactListIds )
+        this.contactService.removeContactListUsers( this.contactListId, this.selectedContactListIds )
             .subscribe(
             ( data: any ) => {
                 data = data;
@@ -809,7 +809,7 @@ export class EditContactsComponent implements OnInit {
     
     removeInvalidContactListUsers() {
         this.xtremandLogger.info( this.selectedInvalidContactIds );
-        this.contactService.removeContactList( this.contactListId, this.selectedInvalidContactIds )
+        this.contactService.removeContactListUsers( this.contactListId, this.selectedInvalidContactIds )
             .subscribe(
             ( data: any ) => {
                 data = data;
@@ -860,7 +860,7 @@ export class EditContactsComponent implements OnInit {
     removeContactListUsers1( contactId: number ) {
         this.contactUsersId = contactId;
         this.contactIds[0] = this.contactUsersId;
-        this.contactService.removeContactList( this.contactListId, this.contactIds )
+        this.contactService.removeContactListUsers( this.contactListId, this.contactIds )
             .subscribe(
             ( data: any ) => {
                 data = data;

@@ -150,7 +150,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    removeContactList( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
+    removeContactListUsers( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( contactListId + "--" + removeUserIds );
         var newUrl = this.contactsUrl + contactListId + "/removeUsers?"+ 'userId='+this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
