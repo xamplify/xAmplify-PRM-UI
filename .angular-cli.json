@@ -45,14 +45,13 @@
 				"./assets/css/facebook.css",
 				"./assets/css/form.errors.css",
 				"./assets/css/bootstrap-switch.css",
-				"./assets/global/plugins/select2/select2.css",
 				"./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css",
 				"./assets/css/google-fonts.css",
 				"./assets/css/material_green.css",
 				"./assets/css/circle.css"
 			],
 			"scripts": [
-				"./assets/global/plugins/jquery.min.js",
+				"./assets/js/indexjscss/jquery3.1.min.js",
 				"./assets/global/plugins/jquery-migrate.min.js",
 				"./assets/global/plugins/jquery-ui/jquery-ui.min.js",
 				"./assets/global/plugins/respond.min.js",
@@ -86,7 +85,6 @@
 				"./assets/global/plugins/jquery-mixitup/jquery.mixitup.min.js",
 				"./assets/global/plugins/fancybox/source/jquery.fancybox.pack.js",
 				"./assets/admin/pages/scripts/portfolio.js",
-				"./assets/global/plugins/select2/select2.min.js",
 				"./assets/global/plugins/datatables/media/js/jquery.dataTables.min.js",
 				"./assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js",
 				"./assets/admin/pages/scripts/table-managed.js",
