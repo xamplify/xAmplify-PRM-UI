@@ -1,147 +1,177 @@
 /* You can add global styles to this file, and also import other style files */
 h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
+	color: #369;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 250%;
 }
+
 h2, h3 {
-  color: #444;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: lighter;
+	color: #444;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: lighter;
 }
+
 body {
-  margin: 2em;
+	margin: 2em;
 }
+
 body, input[text], button {
-  color: #888;
-  font-family: Cambria, Georgia;
+	color: #888;
+	font-family: Cambria, Georgia;
 }
+
 a {
-  cursor: pointer;
-  cursor: hand;
+	cursor: pointer;
+	cursor: hand;
 }
+
 button {
-  font-family: Arial;
-  background-color: #eee;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  cursor: hand;
+	font-family: Arial;
+	background-color: #eee;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	cursor: hand;
 }
+
 button:hover {
-  background-color: #cfd8dc;
+	background-color: #cfd8dc;
 }
+
 button:disabled {
-  background-color: #eee;
-  color: #aaa;
-  cursor: auto;
+	background-color: #eee;
+	color: #aaa;
+	cursor: auto;
 }
 
 nav a {
-  padding: 5px 10px;
-  text-decoration: none;
-  margin-top: 10px;
-  display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
+	padding: 5px 10px;
+	text-decoration: none;
+	margin-top: 10px;
+	display: inline-block;
+	background-color: #eee;
+	border-radius: 4px;
 }
+
 nav a:visited, a:link {
-  color: #607D8B;
+	color: #607D8B;
 }
+
 nav a:hover {
-  color: #039be5;
-  background-color: #CFD8DC;
+	color: #039be5;
+	background-color: #CFD8DC;
 }
+
 nav a.active {
-  color: #039be5;
+	color: #039be5;
 }
 
 .items {
-  margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 24em;
+	margin: 0 0 2em 0;
+	list-style-type: none;
+	padding: 0;
+	width: 24em;
 }
+
 .items li {
-  cursor: pointer;
-  position: relative;
-  left: 0;
-  background-color: #EEE;
-  margin: .5em;
-  padding: .3em 0;
-  height: 1.6em;
-  border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	left: 0;
+	background-color: #EEE;
+	margin: .5em;
+	padding: .3em 0;
+	height: 1.6em;
+	border-radius: 4px;
 }
+
 .items li:hover {
-  color: #607D8B;
-  background-color: #DDD;
-  left: .1em;
+	color: #607D8B;
+	background-color: #DDD;
+	left: .1em;
 }
+
 .items li.selected:hover {
-  background-color: #BBD8DC;
-  color: white;
+	background-color: #BBD8DC;
+	color: white;
 }
+
 .items .text {
-  position: relative;
-  top: -3px;
+	position: relative;
+	top: -3px;
 }
+
 .items {
-  margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 24em;
+	margin: 0 0 2em 0;
+	list-style-type: none;
+	padding: 0;
+	width: 24em;
 }
+
 .items li {
-  cursor: pointer;
-  position: relative;
-  left: 0;
-  background-color: #EEE;
-  margin: .5em;
-  padding: .3em 0;
-  height: 1.6em;
-  border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	left: 0;
+	background-color: #EEE;
+	margin: .5em;
+	padding: .3em 0;
+	height: 1.6em;
+	border-radius: 4px;
 }
+
 .items li:hover {
-  color: #607D8B;
-  background-color: #DDD;
-  left: .1em;
+	color: #607D8B;
+	background-color: #DDD;
+	left: .1em;
 }
+
 .items li.selected {
-  background-color: #CFD8DC;
-  color: white;
+	background-color: #CFD8DC;
+	color: white;
 }
 
 .items li.selected:hover {
-  background-color: #BBD8DC;
+	background-color: #BBD8DC;
 }
+
 .items .text {
-  position: relative;
-  top: -3px;
+	position: relative;
+	top: -3px;
 }
+
 .items .badge {
-  display: inline-block;
-  font-size: small;
-  color: white;
-  padding: 0.8em 0.7em 0 0.7em;
-  background-color: #607D8B;
-  line-height: 1em;
-  position: relative;
-  left: -1px;
-  top: -4px;
-  height: 1.8em;
-  margin-right: .8em;
-  border-radius: 4px 0 0 4px;
+	display: inline-block;
+	font-size: small;
+	color: white;
+	padding: 0.8em 0.7em 0 0.7em;
+	background-color: #607D8B;
+	line-height: 1em;
+	position: relative;
+	left: -1px;
+	top: -4px;
+	height: 1.8em;
+	margin-right: .8em;
+	border-radius: 4px 0 0 4px;
 }
 
 * {
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-.rounded-0{border-radius: 0 !important;}
+.rounded-0 {
+	border-radius: 0 !important;
+}
 
-.percentage-circle > .percentage-value{margin: -3em 0 0 0;font-weight: 600;color: #00b3b3;}
-.percentage-circle > .percentage-text{margin: 0;color: #00b3b3;}
+.percentage-circle>.percentage-value {
+	margin: -3em 0 0 0;
+	font-weight: 600;
+	color: #00b3b3;
+}
+
+.percentage-circle>.percentage-text {
+	margin: 0;
+	color: #00b3b3;
+}
 
 .fa-facebook-color {
 	color: #3b5998;
@@ -154,6 +184,7 @@ nav a.active {
 .fa-google-color {
 	color: #dd4b39;
 }
+
 .btn-facebook {
 	background-color: #3b5998
 }
@@ -191,20 +222,22 @@ nav a.active {
 }
 
 /* social profile name */
-.spn{
-    font-weight: 600;
-    font-size: 14px;
-    color: #777777;
+.spn {
+	font-weight: 600;
+	font-size: 14px;
+	color: #777777;
 }
-.m0{
+
+.m0 {
 	margin: 0 !important;
 }
-.p0{
+
+.p0 {
 	padding: 0 !important;
 }
 
 .portlet.light {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 .ellipsis {
