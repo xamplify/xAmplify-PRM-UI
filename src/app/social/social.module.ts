@@ -16,7 +16,6 @@ import { PieChartGeoDistributionComponent } from './twitter/pie-chart-geo-distri
 import { TwitterAreaChartComponent } from './twitter/twitter-area-chart/twitter-area-chart.component';
 import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
-import { UpdateStatusComponent } from './common/update-status/update-status.component';
 import { SocialManageComponent } from './common/social-manage/social-manage.component';
 
 import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebook-analytics.component';
@@ -25,14 +24,13 @@ import { FacebookInsightFansCountryComponent } from './facebook/facebook-insight
 import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebook-reactions.component';
 import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
 import { SocialLoaderComponent } from './common/social-loader/social-loader.component';
-import { ConnectAccountsComponent } from './common/connect-accounts/connect-accounts.component';
 
 @NgModule( {
     imports: [CommonModule, SharedModule, SocialRoutingModule, FormsModule],
-    declarations: [SocialManageComponent,TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
+    declarations: [SocialManageComponent, TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
         TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
-        TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, UpdateStatusComponent, FacebookAnalyticsComponent,
-        FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent, SocialLoaderComponent, ConnectAccountsComponent],
+        TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, FacebookAnalyticsComponent,
+        FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent, SocialLoaderComponent],
     providers: []
 })
 export class SocialModule { }

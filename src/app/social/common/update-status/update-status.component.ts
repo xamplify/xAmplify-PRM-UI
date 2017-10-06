@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { Logger } from 'angular2-logger/core';
 
-import { SaveVideoFile } from "../.././../videos/models/save-video-file";
+import { SaveVideoFile } from "../../../videos/models/save-video-file";
 import { SocialStatus } from "../../models/social-status";
 import { SocialStatusContent } from "../../models/social-status-content";
 import { SocialStatusProvider } from "../../models/social-status-provider";
+import { ContactList } from '../../../contacts/models/contact-list';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { PagerService } from '../../../core/services/pager.service';
@@ -12,22 +14,24 @@ import { SocialService } from "../../services/social.service";
 import { TwitterService } from "../../services/twitter.service";
 import { FacebookService } from "../../services/facebook.service";
 import { VideoFileService } from "../.././../videos/services/video-file.service";
+import { ContactService } from "../.././../contacts/services/contact.service";
 
 import { Pagination } from '../../../core/models/pagination';
 
 declare var swal, $, flatpickr, videojs: any;
-@Component( {
+@Component({
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
     styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
     providers: [PagerService, Pagination]
 })
 export class UpdateStatusComponent implements OnInit {
+    @Input('isSocialCampaign') isSocialCampaign: boolean = false;
+
     errorMessage: string;
     successMessage: string;
     errorDetails: Array<string> = [];
-    videos: Array<SaveVideoFile> = [];
-    totalRecords: number;
+
     pager: any = {};
 
     videoUrl: string;
@@ -35,7 +39,6 @@ export class UpdateStatusComponent implements OnInit {
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
 
-    socialStatusList: Array<SocialStatus> = new Array<SocialStatus>();
     socialStatus: SocialStatus = new SocialStatus();
 
     MEDIA_URL = this.authenticationService.MEDIA_URL;
@@ -43,30 +46,33 @@ export class UpdateStatusComponent implements OnInit {
     profileImage: string;
     userId: number;
 
-    constructor( private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
+    contactListsPagination: Pagination = new Pagination();
+    videosPagination: Pagination = new Pagination();
+
+    constructor(private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
         private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
-        private pagerService: PagerService, private pagination: Pagination, private router: Router ) {
+        private contactService: ContactService,
+        private pagerService: PagerService, private router: Router, private logger: Logger) {
     }
 
-    previewVideo( videoFile: SaveVideoFile ) {
+    previewVideo(videoFile: SaveVideoFile) {
         this.selectedVideo = videoFile;
         this.posterImage = this.selectedVideo.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring( 0, this.videoUrl.lastIndexOf( "." ) );
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
 
         this.videoJSplayer.play();
-        
-        $('tr').click(function() {
-                $('input[type=radio]',this).attr('checked','checked');
-            }
+        $('tr').click(function () {
+            $('input[type=radio]', this).attr('checked', 'checked');
+        }
         );
     }
 
     addVideo() {
-        console.log( this.socialStatus );
+        console.log(this.socialStatus);
         this.errorMessage = "";
-        if ( this.socialStatus.socialStatusContents.length > 0 && ( Array.from( this.socialStatus.socialStatusContents )[0].fileType != "video" ) ) {
+        if (this.socialStatus.socialStatusContents.length > 0 && (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")) {
             this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
         } else {
             this.socialStatus.statusMessage = this.selectedVideo.title;
@@ -75,76 +81,76 @@ export class UpdateStatusComponent implements OnInit {
             socialStatusContent.fileName = this.selectedVideo.title;
             socialStatusContent.fileType = "video";
             socialStatusContent.filePath = this.videoUrl;
-            this.socialStatus.socialStatusContents.push( socialStatusContent );
+            this.socialStatus.socialStatusContents.push(socialStatusContent);
         }
-        $( '#listVideosModal' ).modal( 'hide' );
+        $('#listVideosModal').modal('hide');
     }
 
-    removeItem( i: number, socialStatusContent: SocialStatusContent ) {
-        console.log( socialStatusContent + "" + i );
-        this.socialService.removeMedia( socialStatusContent.fileName )
+    removeItem(i: number, socialStatusContent: SocialStatusContent) {
+        console.log(socialStatusContent + "" + i);
+        this.socialService.removeMedia(socialStatusContent.fileName)
             .subscribe(
             data => {
-                $( "#preview-" + i ).remove( 'slow' );
-                this.socialStatus.socialStatusContents.splice( i );
-                this.errorMessage = "";
+                $("#preview-" + i).remove('slow');
+                this.socialStatus.socialStatusContents.splice(i);
+                this.errorMessage = '';
             },
-            error => console.log( error ),
-            () => console.log( "Finished" )
+            error => console.log(error),
+            () => console.log('Finished')
             );
     }
-    validateImageUpload( files: any ) {
-        this.errorMessage = "";
+    validateImageUpload(files: any) {
+        this.errorMessage = '';
         this.errorDetails = [];
-        var uploadedFilesCount = files.length;
-        var existingFilesCount = this.socialStatus.socialStatusContents.length;
-        if ( ( uploadedFilesCount + existingFilesCount ) > 4 ) {
-            this.errorMessage = "You can upload maximum 4 images.";
+        const uploadedFilesCount = files.length;
+        const existingFilesCount = this.socialStatus.socialStatusContents.length;
+        if ((uploadedFilesCount + existingFilesCount) > 4) {
+            this.errorMessage = 'You can upload maximum 4 images.';
             return false;
-        } else if ( ( this.socialStatus.socialStatusContents.length == 1 ) && ( Array.from( this.socialStatus.socialStatusContents )[0].fileType == "video" ) ) {
-            this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
+        } else if ((this.socialStatus.socialStatusContents.length === 1) && 
+                    (Array.from(this.socialStatus.socialStatusContents)[0].fileType === 'video')) {
+            this.errorMessage = 'You can include up to 4 photos or 1 video in a Tweet.';
             return false;
-        }
-        else {
-            for ( let file of files ) {
-                if ( file.size > 3145728 ) {
+        } else {
+            for (let file of files) {
+                if (file.size > 3145728) {
                     // File size should not be more than 3 MB
-                    this.errorMessage = "Accepted Image Size <= 3MB";
-                    this.errorDetails.push( "The Uploaded Image: " + file.name + " size is " + Math.round( file.size / 1024 / 1024 * 100 ) / 100 + " MB" );
+                    this.errorMessage = 'Accepted Image Size <= 3MB';
+                    this.errorDetails.push("The Uploaded Image: " + file.name + " size is " + Math.round(file.size / 1024 / 1024 * 100) / 100 + " MB");
                     return false;
                 }
-                console.log( file.name + ": " + file.size );
+                console.log(file.name + ': ' + file.size);
             }
             return true;
         }
     }
-    fileChange( event: any ) {
-        let files = event.target.files;
-        if ( this.validateImageUpload( files ) ) {
-            if ( files.length > 0 ) {
-                let formData: FormData = new FormData();
-                for ( let file of files ) {
-                    formData.append( 'files', file, file.name );
+    fileChange(event: any) {
+        const files = event.target.files;
+        if (this.validateImageUpload(files)) {
+            if (files.length > 0) {
+                const formData: FormData = new FormData();
+                for (let file of files) {
+                    formData.append('files', file, file.name);
                 }
 
-                this.socialService.uploadMedia( formData )
+                this.socialService.uploadMedia(formData)
                     .subscribe(
                     data => {
-                        for ( var i in data ) {
+                        for (let i in data) {
                             const socialStatusContent = data[i];
-                            this.socialStatus.socialStatusContents.push( socialStatusContent );
+                            this.socialStatus.socialStatusContents.push(socialStatusContent);
                         }
-                        console.log( this.socialStatus );
+                        console.log(this.socialStatus);
                     },
-                    error => console.log( error ),
-                    () => console.log( "Finished" )
+                    error => console.log(error),
+                    () => console.log('Finished')
                     );
             }
         }
 
     }
 
-    updateAgain( socialStatus: SocialStatus ) {
+    updateAgain(socialStatus: SocialStatus) {
         this.initializeSocialStatus();
         this.socialStatus.statusMessage = socialStatus.statusMessage;
         this.socialStatus.shareNow = true;
@@ -154,25 +160,25 @@ export class UpdateStatusComponent implements OnInit {
 
     updateStatus() {
         let socialStatusProviders = this.socialStatus.socialStatusProviders;
-        socialStatusProviders = socialStatusProviders.filter( function( obj ) {
+        socialStatusProviders = socialStatusProviders.filter(function (obj) {
             return obj.selected === true;
         });
         this.socialStatus.socialStatusProviders = socialStatusProviders;
-        console.log( this.socialStatus );
-        swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
-        this.socialService.updateStatus( this.userId, this.socialStatus )
+        console.log(this.socialStatus);
+        swal({ title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
+        this.socialService.updateStatus(this.userId, this.socialStatus)
             .subscribe(
             data => {
                 this.initializeSocialStatus();
-                $( '#full-calendar' ).fullCalendar( 'removeEvents' );
-                this.listEvents();
-                swal( "Status posted Successfully", "", "success" );
+                $('#full-calendar').fullCalendar('removeEvents');
+                // this.listEvents();
+                swal("Status posted Successfully", "", "success");
             },
             error => {
-                console.log( error );
-                swal( "Error while posting the update.", "", "error" );
+                console.log(error);
+                swal("Error while posting the update.", "", "error");
             },
-            () => console.log( "Finished" )
+            () => console.log('Finished')
             );
     }
 
@@ -181,81 +187,16 @@ export class UpdateStatusComponent implements OnInit {
         this.updateStatus();
     }
 
-    deleteStatus( socialStatus: SocialStatus ) {
-        console.log( this.socialStatus );
-        this.socialService.deleteStatus( socialStatus )
+    deleteStatus(socialStatus: SocialStatus) {
+        console.log(this.socialStatus);
+        this.socialService.deleteStatus(socialStatus)
             .subscribe(
             data => {
-                $( '#full-calendar' ).fullCalendar( 'removeEvents' );
-                this.listEvents();
+                $('#full-calendar').fullCalendar('removeEvents');
+                // this.listEvents();
             },
-            error => console.log( error ),
-            () => console.log( "Finished" )
-            );
-    }
-
-    constructCalendar() {
-        let self = this;
-        $( '#full-calendar' ).fullCalendar( {
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            views: {
-                listDay: { buttonText: 'list day' },
-                listWeek: { buttonText: 'list week' }
-            },
-            defaultView: 'month',
-            timeFormat: 'h:mm',
-            eventRender: function( event: any, element: any ) {
-                element.find( ".fc-time" ).addClass( 'fc-time-title' );
-                element.find( ".fc-title" ).addClass( 'fc-time-title' );
-                element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9 pull-right p0"></div>' );
-                element.find( ".fc-time" ).css( { "display": "block" });
-                
-                let socialStatusProviders = event.data.socialStatusProviders;
-                let str='';
-                for(var i in socialStatusProviders){
-                    if('FACEBOOK' == socialStatusProviders[i].providerName)
-                        str +='<i class="fa fa-facebook" aria-hidden="true"></i>';
-                    else if('TWITTER' == socialStatusProviders[i].providerName)
-                        str +='<i class="fa fa-twitter" aria-hidden="true"></i>';
-                }
-                element.find( ".fc-right-block" )
-                    .after( $( "<div id='"+event.id+"' class='fc-left-block col-xs-3 p0'>"+str+"</div>"));
-            },
-            eventClick: function( event: any, element: any ) {
-                $( '#full-calendar-modal-event-' + event.id ).modal( 'show' );
-            },
-        });
-    }
-
-    listEvents() {
-        let self = this;
-        this.socialService.listEvents( this.userId )
-            .subscribe(
-            data => {
-                this.socialStatusList = data;
-                for ( var i in this.socialStatusList ) {
-
-                    var event = {
-                        title: this.socialStatusList[i].statusMessage,
-                        start: this.socialStatusList[i].scheduledTimeUser,
-                        id: this.socialStatusList[i].id,
-                        data: this.socialStatusList[i],
-                    };
-                    $( '#full-calendar' ).fullCalendar( 'renderEvent', event, true );
-                }
-            },
-            error => console.log( error ),
-            () => {
-                flatpickr( '.flatpickr', {
-                    enableTime: true,
-                    minDate: new Date()
-                });
-                console.log( "listEvents() finished" )
-            }
+            error => console.log(error),
+            () => console.log('Finished')
             );
     }
 
@@ -267,14 +208,14 @@ export class UpdateStatusComponent implements OnInit {
 
         this.listSocialStatusProviders();
     }
-    
+
     listSocialConnections() {
-        this.socialService.listAccounts( this.userId, 'ALL', 'ALL' )
+        this.socialService.listAccounts(this.userId, 'ALL', 'ALL')
             .subscribe(
             result => {
                 this.socialService.socialConnections = result;
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => {
                 this.initializeSocialStatus();
             });
@@ -283,99 +224,96 @@ export class UpdateStatusComponent implements OnInit {
     listSocialStatusProviders() {
         const socialConnections = this.socialService.socialConnections;
         this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
-        for ( const i in socialConnections ) {
-            if(socialConnections[i].active){
-                let socialStatusProvider = new SocialStatusProvider();
-
-                socialStatusProvider.providerId = socialConnections[i].profileId;
-                socialStatusProvider.providerName = socialConnections[i].source;
-                socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
-                socialStatusProvider.profileName = socialConnections[i].profileName;
-                socialStatusProvider.firstName = socialConnections[i].firstName;
-                socialStatusProvider.lastName = socialConnections[i].lastName;
-
-                if ( ( 'TWITTER' === socialConnections[i].source ) ) {
-                    socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
-                    socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
-                } else {
-                    socialStatusProvider.accessToken = socialConnections[i].accessToken;
-                }
-                this.socialStatus.socialStatusProviders.push( socialStatusProvider );
+        for (const i in socialConnections) {
+            if (socialConnections[i].active) {
+                const socialStatusProvider = new SocialStatusProvider();
+                socialStatusProvider.socialConnection = socialConnections[i];
+                this.socialStatus.socialStatusProviders.push(socialStatusProvider);
             }
         }
     }
     openListVideosModal() {
-        $( '#listVideosModal' ).modal( 'show' );
-        if ( this.videos.length == 0 ) {
-            $( "#preview-section" ).hide();
-            this.listVideos( this.pagination );
+        $('#listVideosModal').modal('show');
+        if (this.videosPagination.pagedItems.length == 0) {
+            $("#preview-section").hide();
+            this.listVideos(this.videosPagination);
         }
     }
-    listVideos( pagination: Pagination ) {
-        this.videoFileService.loadVideoFiles( pagination )
-            .subscribe(( result: any ) => {
-                if ( result.totalRecords > 0 ) {
-                    $( "#preview-section" ).show();
-                    this.videos = result.listOfMobinars;
-                    this.totalRecords = result.totalRecords;
-                    pagination.totalRecords = this.totalRecords;
-                    pagination = this.pagerService.getPagedItems( pagination, this.videos );
-                    
-                    
+    listVideos(videosPagination: Pagination) {
+        this.videoFileService.loadVideoFiles(videosPagination)
+            .subscribe((result: any) => {
+                if (result.totalRecords > 0) {
+                    $("#preview-section").show();
+                    videosPagination.totalRecords = result.totalRecords;
+                    videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
+
+
                     $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript"  class="profile-video"/>');
-                    this.videoJSplayer = videojs( "videojs-video" );
-                    this.previewVideo( this.videos[0] );
+                    this.videoJSplayer = videojs("videojs-video");
+                    this.previewVideo(videosPagination.pagedItems[0]);
                 }
             }),
-            () => console.log( "load videos completed:" + this.videos );
+            () => console.log('listVideos() completed:');
     }
 
-    setPage( page: number ) {
-        if (page !== this.pagination.pageIndex) {
-            this.pagination.pageIndex = page;
-            this.listVideos(this.pagination);
+    setPageVideos(page: number) {
+        if (page !== this.videosPagination.pageIndex) {
+            this.videosPagination.pageIndex = page;
+            this.listVideos(this.videosPagination);
+        }
+    }
+    
+    setPageContacts(page: number){
+        if (page !== this.contactListsPagination.pageIndex) {
+            this.contactListsPagination.pageIndex = page;
+            this.loadContactLists(this.contactListsPagination);
         }
     }
 
-    editSocialStatus( socialStatus: SocialStatus ) {
-        $( '#full-calendar-modal-event-' + socialStatus.id ).modal( 'hide' );
-        $( 'html,body' ).animate( { scrollTop: 0 }, 'slow' );
+    editSocialStatus(socialStatus: SocialStatus) {
+        $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
+        $('html,body').animate({ scrollTop: 0 }, 'slow');
         //this.initializeSocialStatus();
         this.socialStatus = socialStatus;
         this.listSocialStatusProviders();
 
     }
-    showScheduleOption( divId: string ) { $( '#' + divId ).removeClass( 'hidden' ); }
-    hideScheduleOption( divId: string ) { $( '#' + divId ).addClass( 'hidden' ); }
 
-    getUserProfileImage( userId: string ) {
-        this.facebookService.getUserProfileImage( userId )
-            .subscribe(
-            data => this.profileImage = data,
-            error => console.log( error ),
-            () => console.log( 'getUserProfileImage() Finished.' )
-            );
+    showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); }
+    hideScheduleOption(divId: string) { $('#' + divId).addClass('hidden'); }
 
-    }
-
-    videoPlayListSource( videoUrl: string ) {
+    videoPlayListSource(videoUrl: string) {
         this.videoUrl = videoUrl;
         const self = this;
-        this.videoJSplayer.playlist( [{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }] );
+        this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
+    }
+
+    loadContactLists(contactListsPagination: Pagination) {
+        this.contactService.loadContactLists(contactListsPagination)
+            .subscribe(
+                (data: any) => {
+                    contactListsPagination.totalRecords = data.totalRecords;
+                    contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+                },
+                (error: any) => {
+                    this.logger.error(error);
+                },
+                () => this.logger.info("MangeContactsComponent loadContactLists() finished")
+            )
     }
 
     ngOnInit() {
         this.userId = this.authenticationService.getUserId();
-        this.listEvents();
-        this.constructCalendar();
-        
         this.listSocialConnections();
-        
-        $( "#schedule-later-div" ).hide();
+
+        $("#schedule-later-div").hide();
+
+        if (this.isSocialCampaign)
+            this.loadContactLists(this.contactListsPagination);
     }
 
     ngOnDestroy() {
-        if ( this.videoJSplayer != undefined )
+        if (this.videoJSplayer != undefined)
             this.videoJSplayer.dispose();
         $('.profile-video').remove();
     }

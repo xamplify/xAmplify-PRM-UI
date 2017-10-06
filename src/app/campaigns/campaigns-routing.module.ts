@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {ManagePublishComponent} from './manage-publish/manage-publish.component';
 import {SelectCampaignTypeComponent} from './select-campaign-type/select-campaign-type.component';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
+import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 
 export const campaignRoutes: Routes = [
@@ -11,6 +12,7 @@ export const campaignRoutes: Routes = [
     { path: '', redirectTo: 'select-campaign', pathMatch: 'full' },
     { path:'select-campaign',component:SelectCampaignTypeComponent},
     { path:'create-campaign',component:CreateCampaignComponent},
+    { path:'social-campaign',component:SocialCampaignComponent},
     { path:'edit-campaign',component:CreateCampaignComponent},
     { path: 'manage-campaigns', component: ManagePublishComponent },
     { path: ':campaignId/details', component: AnalyticsComponent },

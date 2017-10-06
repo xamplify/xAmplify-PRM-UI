@@ -1625,18 +1625,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
             for ( const i in socialConnections ) {
                 let socialStatusProvider = new SocialStatusProvider();
-
-                socialStatusProvider.providerId = socialConnections[i].profileId;
-                socialStatusProvider.providerName = socialConnections[i].source;
-                socialStatusProvider.profileImagePath = socialConnections[i].profileImage;
-                socialStatusProvider.profileName = socialConnections[i].profileName;
-
-                if ( ( 'TWITTER' === socialConnections[i].source ) ) {
-                    socialStatusProvider.oAuthTokenValue = socialConnections[i].oAuthTokenValue;
-                    socialStatusProvider.oAuthTokenSecret = socialConnections[i].oAuthTokenSecret;
-                } else {
-                    socialStatusProvider.accessToken = socialConnections[i].accessToken;
-                }
+                socialStatusProvider.socialConnection = socialConnections[i];
                 this.socialStatus.socialStatusProviders.push( socialStatusProvider );
             }
         }

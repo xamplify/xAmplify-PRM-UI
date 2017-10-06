@@ -158,8 +158,10 @@ nav a.active {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
-.rounded-0 {
+.rounded-0, 
+.fc-event {
 	border-radius: 0 !important;
+	webkit-border-radius: 0 !important
 }
 
 .percentage-circle>.percentage-value {
@@ -236,8 +238,9 @@ nav a.active {
 	padding: 0 !important;
 }
 
-.portlet.light {
-	box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) !important;
+.portlet.light, 
+.dashboard-stat2 {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important;
 }
 
 .ellipsis {
@@ -246,4 +249,10 @@ nav a.active {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	float: left !important;
+}
+
+/* full calendar */
+.fc-event {
+    border: 1px solid rgba(58, 135, 173, 0);
+    background-color: rgba(58, 135, 173, 0.7);
 }

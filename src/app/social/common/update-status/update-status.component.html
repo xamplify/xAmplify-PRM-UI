@@ -2,7 +2,7 @@
   a.disabled { pointer-events: none; cursor: not-allowed; }
 </style> 
 <div class="page-content">
-    <div class="page-bar square-box margin-bottom-10px">
+    <div class="page-bar rounded-0 margin-bottom-10px">
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
             <li>Update Status</li>
@@ -11,7 +11,7 @@
     <div class="row">
 
         <div class="col-md-3 col-sm-12">
-            <div class="col-md-12 dashboard-stat2 square-box text-center">
+            <div class="col-md-12 dashboard-stat2 rounded-0 text-center">
                 <h3 style="margin-bottom: 1em;margin-top: 0.4em;">Social Account</h3>
 
 				<div class="row">
@@ -20,24 +20,24 @@
 						(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
 							<div class="portlet-title col-xs-12">
 
-								<h6 *ngIf="socialStatusProvider.profileName"
-									title="{{socialStatusProvider.profileName}}"
+								<h6 *ngIf="socialStatusProvider.socialConnection.profileName"
+									title="{{socialStatusProvider.socialConnection.profileName}}"
 									class="ellipsis pull-left">
-									<b>{{socialStatusProvider.profileName}}</b>
+									<b>{{socialStatusProvider.socialConnection.profileName}}</b>
 								</h6>
-								<h6 *ngIf="!socialStatusProvider.profileName"
-									title="{{socialStatusProvider.firstName}}&nbsp;{{socialStatusProvider.lastName}}"
+								<h6 *ngIf="!socialStatusProvider.socialConnection.profileName"
+									title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
 									class="ellipsis pull-left">
-									<b>{{socialStatusProvider.firstName}}&nbsp;{{socialStatusProvider.lastName}}</b>
+									<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
 								</h6>
 
 								<i class="fa fa-social pull-right"
-									[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.providerName ==='FACEBOOK', 
-									'fa-twitter fa-twitter-color': socialStatusProvider.providerName ==='TWITTER',
-									'fa-google fa-google-color': socialStatusProvider.providerName ==='GOOGLE'}"></i>
+									[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'fa-twitter fa-twitter-color': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'fa-google fa-google-color': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
 							</div>
 							<div class="portlet-body">
-								<img class="img-responsive profile-image" src="{{socialStatusProvider.profileImagePath}}">
+								<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
 							</div>
 						</div>
 					</div>
@@ -47,7 +47,7 @@
 		        	<div class="col-xs-12"><a class="btn btn-update-status" [routerLink]="['/home/social/manage/all']" style="border: 1px solid;">Manage Accounts</a></div>
 		        </div>
             </div>
-            <div class="col-md-12 alert alert-info square-box">
+            <div class="col-md-12 alert alert-info rounded-0">
                 <h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
                 <h5><strong>Image specifications:</strong></h5>
                 <ul>
@@ -64,39 +64,39 @@
         </div>
 
         <div class="col-md-9 col-sm-12">
-            <div class="col-sm-12 dashboard-stat2 square-box clearfix">
+            <div class="col-sm-12 dashboard-stat2 rounded-0 clearfix">
                 <div class="col-sm-12 alert alert-success" *ngIf="successMessage">
                     <strong>Status has been posted successfully.</strong>
                 </div>
                 <div class="col-sm-12">
                     <h3 class="m0">Selected Account(s)</h3><br>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
-						<div class="btn btn-xs square-box" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
+						<div class="btn btn-xs rounded-0" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
 							[ngClass]="{
-									'btn-facebook': socialStatusProvider.providerName ==='FACEBOOK', 
-									'btn-twitter': socialStatusProvider.providerName ==='TWITTER',
-									'btn-google': socialStatusProvider.providerName ==='GOOGLE'}">
+									'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
 							<div class="col-xs-12" style="display: inline-flex;">
 								<i class="fa fa-social pull-right" 
 										[ngClass]="{
-											'fa-facebook': socialStatusProvider.providerName ==='FACEBOOK', 
-											'fa-twitter': socialStatusProvider.providerName ==='TWITTER',
-											'fa-google': socialStatusProvider.providerName ==='GOOGLE'}"></i>
-								<h6 *ngIf="socialStatusProvider.profileName">{{socialStatusProvider.profileName}}</h6>
-								<h6 *ngIf="!socialStatusProvider.profileName">{{socialStatusProvider.firstName}}&nbsp;{{socialStatusProvider.lastName}}</h6>
+											'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+											'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+											'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+								<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
+								<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
 							</div>
 						</div>
 					</span>
                 </div>
                 <div class="col-sm-12 padding-10px">
 					<textarea placeholder="What's happening?" rows="4"
-						class="form-control form-group status-message-textarea square-box margin-bottom-10px"
+						class="form-control form-group status-message-textarea rounded-0 margin-bottom-10px"
 						[(ngModel)]="socialStatus.statusMessage"
 						maxlength="140"></textarea>
 					<p class="pull-right"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</p>
                 </div>
                 <div class="col-sm-12 padding-10px">
-                    <div class="img-wrap img-responsive img-thumbnail square-box" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
+                    <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
                         <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
                         <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 120px; width: auto;">
                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 padding-10px" *ngIf="errorMessage">
-                    <div class="col-md-12 alert alert-danger square-box">
+                    <div class="col-md-12 alert alert-danger rounded-0">
                         <strong>Oops! An error occurred while adding media file(s)</strong>
                         <h5>{{errorMessage}}</h5>
                         <h5 *ngFor="let item of errorDetails">{{item}}</h5>
@@ -113,10 +113,10 @@
                 </div>
                 <div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div">
                     <div class="form-group">
-                        <input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." [(ngModel)]="socialStatus.scheduledTimeUser" />
+                        <input type="text" class="form-control flatpickr rounded-0" placeholder="Select Date.." [(ngModel)]="socialStatus.scheduledTimeUser" />
                     </div>
                     <div class="form-group">
-                        <select name="timezone" class="form-control square-box">
+                        <select name="timezone" class="form-control rounded-0">
 			  		 <option value="-12" >(GMT -12:00)</option>
 			         <option value="-11" >(GMT -11:00)</option>
 			         <option value="-10" >(GMT -10:00)</option>
@@ -152,8 +152,8 @@
 			         <option value="12"  >(GMT +12:00)</option>
 				</select>
                     </div>
-                    <button type="button" class="btn btn-success square-box" (click)="schedule()">Schedule</button>
-                    <button type="button" class="btn btn-default square-box" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
+                    <button type="button" class="btn btn-success rounded-0" (click)="schedule()">Schedule</button>
+                    <button type="button" class="btn btn-default rounded-0" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
                 </div>
                 <div class="col-xs-12 margin-bottom-10px">
                     <div class="col-xs-6">
@@ -161,13 +161,13 @@
 		    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i>Add photos
 		    				<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
 						</label>
-                        <button class="btn btn-default square-box" (click)="openListVideosModal()">Import Videos</button>
+                        <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Import Videos</button>
                     </div>
                     <div class="col-xs-6">
 						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-success square-box" [disabled]="socialStatus.statusMessage?.length === 0"
+							<button type="button" class="btn btn-success rounded-0" [disabled]="socialStatus.statusMessage?.length === 0"
 								(click)="showScheduleOption('schedule-option-div')">Schedule</button>
-							<button type="button" style="min-width: 32px;" class="btn btn-success dropdown-toggle square-box" [disabled]="socialStatus.statusMessage?.length === 0"
+							<button type="button" style="min-width: 32px;" class="btn btn-success dropdown-toggle rounded-0" [disabled]="socialStatus.statusMessage?.length === 0"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="caret"></span>
 							</button>
@@ -176,16 +176,63 @@
 							</ul>
 						</div>
 						<span *ngIf="socialStatus.id != null">
-							<button type="button" class="btn btn-success square-box pull-right margin-right-10px" (click)="initializeSocialStatus()">Cancel</button>				
-							<button type="button" class="btn btn-danger square-box pull-right margin-right-10px" (click)="deleteStatus(socialStatus)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+							<button type="button" class="btn btn-success rounded-0 pull-right margin-right-10px" (click)="initializeSocialStatus()">Cancel</button>				
+							<button type="button" class="btn btn-danger rounded-0 pull-right margin-right-10px" (click)="deleteStatus(socialStatus)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
 						</span>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-12 dashboard-stat2 square-box padding-30px">
-                <div id='full-calendar'></div>
+			
+			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
+				<div class="portlet-body clearfix" style="padding: 15px;">
+					<h6 class="caption-subject font-red-sunglo uppercase bold">Contact Lists</h6>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Select</th>
+									<th>Contact list name</th>
+									<th>Created by</th>
+									<th>Created time</th>
+									<th>No of Contacts</th>
+									<th>Preview</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let contactList of contactListsPagination.pagedItems">
+									<td><input type="checkbox"></td>
+									<td><h6>{{contactList.name}}</h6></td>
+									<td><h6>{{contactList.uploadedBy}}</h6></td>
+									<td><h6>{{contactList.createdDate}}</h6></td>
+									<td><h6>{{contactList.noOfContacts}}</h6></td>
+									<td class="text-center"><i class="fa fa-eye" aria-hidden="true"></i></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
+                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
+                           <a (click)="setPageContacts(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
+                        </li>
+                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
+                            <a (click)="setPageContacts(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
+                         </li>
+                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
+                            <a (click)="setPageContacts(page)">{{page}}</a>
+                         </li>
+                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+                             <a (click)="setPageContacts(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
+                         </li>
+                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+                             <a (click)="setPageContacts(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
+                         </li>
+                     </ul>
+				</div>
+			</div>
+            <div [hidden]="isSocialCampaign">
+            	<app-calendar></app-calendar>
             </div>
+            
         </div>
     </div>
 
@@ -205,7 +252,7 @@
 								<source [src] = videoUrl  type="video/mp4"/>
 							</video>
 						</div>
-						<div *ngIf="totalRecords > 0" class="col-md-6 col-sm-6 col-xs-12">
+						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-md-6 col-sm-6 col-xs-12">
                             <div class="table-responsive">
 	                            <table class="table table-hover" id="list-videos-table">
 	                                <thead>
@@ -216,7 +263,7 @@
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
-	                                    <tr style="cursor: pointer;" *ngFor="let video of pagination.pagedItems; let i = index">
+	                                    <tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index">
 	                                        <td (click)="previewVideo(video)">
 	                                        	<input type="radio" name="videoPath" [checked]="i === 0">
 	                                        	<img alt="{{video.title}}" src="{{video.imagePath}}" height="24px" width="auto">
@@ -234,21 +281,21 @@
 	                            </table>
                             </div>
                             <!--pager here  -->
-							 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-                                           <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                                              <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+							 <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
+                                           <li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
+                                              <a (click)="setPageVideos(1)" [class.disabled]="videosPagination.pager.currentPage === 1">First</a>
                                            </li>
-                                           <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-                                               <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+                                           <li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}" >
+                                               <a (click)="setPageVideos(videosPagination.pager.currentPage - 1)"  [class.disabled]="videosPagination.pager.currentPage === 1">Previous</a>
                                             </li>
-                                            <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-                                               <a (click)="setPage(page)">{{page}}</a>
+                                            <li *ngFor="let page of videosPagination.pager.pages" [ngClass]="{active:videosPagination.pager.currentPage === page}">
+                                               <a (click)="setPageVideos(page)">{{page}}</a>
                                             </li>
-                                            <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+                                            <li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
+                                                <a (click)="setPageVideos(videosPagination.pager.currentPage + 1)"  [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Next</a>
                                             </li>
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                                                <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+                                             <li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
+                                                <a (click)="setPageVideos(videosPagination.pager.totalPages)"  [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Last</a>
                                             </li>
                                         </ul>
 								<!-- pager end here -->
@@ -264,44 +311,7 @@
     </div>
 
 
-    <div class="modal fade" id="full-calendar-modal-event-{{socialStatus.id}}" tabindex="-1" role="dialog" *ngFor="let socialStatus of socialStatusList">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-                    <h4 id="full-calendar-modal-title" class="modal-title" style="word-break: break-all;">Edit Post</h4>
-                </div>
-
-                <div id="full-calendar-modal-body" class="modal-body">
-                    <h4>{{socialStatus.statusMessage}}</h4>
-                    <!-- <div class="col-sm-12 padding-10px">
-						<div class="img-wrap img-responsive img-thumbnail square-box" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index"	id="preview-{{i}}">
-							<img async *ngIf="socialStatusContent.fileType != 'video'" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 120px; width: auto;">
-							<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
-								<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-							</video>
-						</div>		
-					</div> -->
-                    <div *ngIf="socialStatus.socialStatusContents?.length > 0">
-                        <span *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-		        			<img *ngIf="socialStatusContent.fileType  == 'image'" alt="{{socialStatusContent.fileType}}" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: auto;width: auto;max-width: 175px;max-height: 175px;">
-		        			<video *ngIf="socialStatusContent.fileType  == 'video'" width="100%" height="240" controls>
-		        				<source src="{{MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{accessToken}}" type="video/mp4">
-		        			</video>	
-		        		</span>
-
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-xs" (click)="editSocialStatus(socialStatus)">Edit</button>
-                    <button type="button" class="btn btn-dialog btn-xs" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            <!-- modal-content -->
-        </div>
-        <!-- modal-dialog -->
-    </div>
+    
     <!-- modal -->
 </div>
 <app-connect-accounts></app-connect-accounts>

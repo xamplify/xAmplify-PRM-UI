@@ -8,18 +8,19 @@ import { ManagePublishComponent } from './manage-publish/manage-publish.componen
 import { SelectCampaignTypeComponent } from './select-campaign-type/select-campaign-type.component';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
 
-import { ContactService }  from '../contacts/services/contact.service';
+import { ContactService } from '../contacts/services/contact.service';
 import { VideoFileService } from '../videos/services/video-file.service';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { HeatMapComponent } from './heat-map/heat-map.component';
+import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 //import {CkEditor} from "../campaigns/ck-editor.directive";
-@NgModule({
-	
-  imports: [ CommonModule,SharedModule,CampaignsRoutingModule,CKEditorModule ],
-  declarations: [ManagePublishComponent,SelectCampaignTypeComponent,CreateCampaignComponent, AnalyticsComponent, HeatMapComponent/*,CkEditor*/],
-  providers :[ContactService,VideoFileService,EmailTemplateService]
+@NgModule( {
+
+    imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule],
+    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent/*,CkEditor*/],
+    providers: [ContactService, VideoFileService, EmailTemplateService]
 
 })
 export class CampaignsModule { }

@@ -55,6 +55,7 @@ export class SocialService {
 
     callback( socialProvider: string ): Observable<SocialConnection> {
         let queryParam: string;
+        let isDenied: boolean = false;
 
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
@@ -65,13 +66,11 @@ export class SocialService {
                 const error_code = param['error_code'];
                 const error_message = param['error_message'];
                 const error_description = param['error_description'];
-
+                
                 if ( oauth_token != null && oauth_verifier != null ) {
                     queryParam = '?oauth_token=' + oauth_token + '&oauth_verifier=' + oauth_verifier;
-                } else if ( denied != null ) {
-                    queryParam = '?denied=' + denied;
-                } else if ( error_code != null && ( error_message != null || error_description != null ) ) {
-                    queryParam = '?error_code=' + error_code + '&error_message=' + error_message;
+                } else if ( denied != null || ( error_code != null && ( error_message != null || error_description != null ) ) ) {
+                    isDenied = true;
                 } else {
                     queryParam = '?code=' + code;
                 }
@@ -81,9 +80,15 @@ export class SocialService {
             const userId = JSON.parse( currentUser )['userId'];
             queryParam += '&userId='+userId;
         }
-        return this.http.get( this.URL + socialProvider + '/callback' + queryParam )
+        
+        if(isDenied){
+            // User has denied the permission to login through social account.
+            this.router.navigate( ['/'] );
+        }else{
+            return this.http.get( this.URL + socialProvider + '/callback' + queryParam )
             .map( this.extractData )
             .catch( this.handleError );
+        }
     }
 
     listAccounts( userId: number, source: string , type: string) {
