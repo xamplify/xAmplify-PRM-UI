@@ -109,14 +109,6 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    deleteContactListFromEdit( contactListId: number ) {
-        this.deleteUserSucessMessage = true;
-        return this._http.post( this.url + "userlist/" + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
-             .map( this.extractData )
-             .catch( this.handleErrorDelete );
-     }
-    
-    
     saveContactList( contactListName: string, users: Array<User> ): Observable<User[]> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
@@ -160,7 +152,7 @@ export class ContactService {
 
     removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( removeUserIds );
-        var newUrl = this.url + "removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + "removeInvalidUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }

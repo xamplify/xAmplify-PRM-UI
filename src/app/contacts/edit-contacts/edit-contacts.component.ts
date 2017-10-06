@@ -890,7 +890,7 @@ export class EditContactsComponent implements OnInit {
 
     deleteContactList() {
         this.xtremandLogger.info( "MangeContacts deleteContactList : " + this.selectedContactListId );
-        this.contactService.deleteContactListFromEdit( this.selectedContactListId )
+        this.contactService.deleteContactList( this.selectedContactListId )
             .subscribe(
             data => {
                 console.log( "MangeContacts deleteContactList success : " + data );
