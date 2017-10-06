@@ -37,6 +37,7 @@
     "ng2-filter-pipe": "^0.1.7",
     "ng2-highcharts": "^1.0.0",
     "ng2-slim-loading-bar": "^4.0.0",
+    "ng2-timezone-selector": "^0.1.4",
     "ngx-bootstrap": "^2.0.0-beta.4",
     "ngx-chips": "^1.5.3",
     "ngx-color-picker": "^4.0.3",

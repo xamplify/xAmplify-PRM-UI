@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class VideoUtilService {
-    public videoSizes = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
-    public publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
-    public formErrors = {
+    videoSizes = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
+    publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
+    formErrors = {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
         'description': '', 'upperText': '', 'lowerText': '',
     };
-    public sortVideos = [
+    sortVideos = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
         { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
@@ -17,6 +17,25 @@ export class VideoUtilService {
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
+     validationMessages = {
+        'title': {
+            'required': 'Title is required.',
+            //   'minlength': 'Title must be at least 4 characters long.',
+            'maxlength': 'Title cannot be more than 256 characters long.',
+        },
+        'viewBy': { 'required': 'Publish is required' },
+        'category': { 'required': 'Category is required' },
+        'tags': { 'required': 'Tag is required' },
+        'imageFile': { 'required': 'Image file is required' },
+        'gifImagePath': { 'required': 'Gif is required' },
+        'description': {
+            'required': 'Description is required',
+            'minlength': 'Title must be at least 5 characters long.'
+        },
+        'upperText': { 'required': 'upper text is required', },
+        'lowerText': { 'required': 'lower text is required', },
+    };
+    clipboardName: string;
     constructor() { }
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

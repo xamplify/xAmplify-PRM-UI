@@ -16,15 +16,16 @@ import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { BusyModule } from 'tixif-ngx-busy';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
+import { TimezonePickerModule } from 'ng2-timezone-selector';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                 TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, BusyModule, TimepickerModule.forRoot()
-                , JWBootstrapSwitchModule,  BootstrapSwitchModule.forRoot()],
+                , JWBootstrapSwitchModule,  BootstrapSwitchModule.forRoot(), TimezonePickerModule],
         declarations: [LoaderComponent, ErrorPagesComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                 HttpModule, Ng2FilterPipeModule, LoaderComponent, ErrorPagesComponent, BusyModule, TimepickerModule,
-                JWBootstrapSwitchModule, BootstrapSwitchModule],
+                JWBootstrapSwitchModule, BootstrapSwitchModule, TimezonePickerModule],
         providers: [],
 })
 
