@@ -913,7 +913,7 @@ export class EditContactsComponent implements OnInit {
             );
     }
     
-    showAlert1( contactId: number ) {
+    deleteUserShowAlert( contactId: number ) {
         this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
         let self = this;

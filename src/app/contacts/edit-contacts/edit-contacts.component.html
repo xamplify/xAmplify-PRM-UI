@@ -408,7 +408,7 @@ a.disabled {
 										<td>{{contact.firstName}}</td>
 										<td class="center">{{contact.lastName}}</td>
 										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-										<td *ngIf="hasContactRole"><a class="delete" (click)="showAlert1(contact.id)">
+										<td *ngIf="hasContactRole"><a class="delete" (click)="deleteUserShowAlert(contact.id)">
 												Delete </a></td>
 
 									</tr>

@@ -66,13 +66,6 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-
-    loadContactLists1( pagination: Pagination ): Observable<ContactList[]> {
-        this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.url + "userlist?" +"access_token=" + this.authenticationService.access_token, pagination+'&userId='+this.authenticationService.user.id)
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
     
     listContactsByType(contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
@@ -81,17 +74,9 @@ export class ContactService {
             .catch( this.handleError );
     }
  
-
     loadContactsCount() {
         this.logger.info( "Service class loadContactCount() completed" );
         return this._http.get( this.url + "contacts_count?" + 'userId='+this.authenticationService.user.id+ "&access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    loadContactsCountInDashboard(userId: number) {
-        this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.url + "contacts_count?userId=" + userId + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
