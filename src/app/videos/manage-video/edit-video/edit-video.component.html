@@ -89,29 +89,28 @@
 		padding: 10px;
 	}
 </style>
-
 <div class="portlet light">
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
 			<!-- video started -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
-				<div *ngIf="is360Value==false">
+				<div *ngIf="!is360Value">
 					<video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="299" poster="" data-setup='{"example_option":true }'>
 						<source [src]=v ideoUrl type: 'application/x-mpegURL' />
 					</video>
 				</div>
-				<div *ngIf="is360Value==true">
+				<div *ngIf="is360Value">
 					<div id="newPlayerVideo"></div>
 				</div>
 				<div id="overLayDialog"></div>
 				<!-- video overlay modal popup -->
 
-				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 299px; width:100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet" style="height: 299px; width:100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<form #f="ngForm" novalidate>
-						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
 							<!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
 							<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
-							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked==true">
+							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked">
 								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
 								 class="form-control text-box m21" placeholder="First Name">
 								<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
@@ -123,7 +122,7 @@
 									 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel">
 								</div>
 								<div class="w-4">
-									<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay==true" (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
+									<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay" (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
 								</div>
 							</div>
 							<h4 class="upper-text-heading lowerText">{{saveVideoFile.lowerText}}</h4>
@@ -133,17 +132,17 @@
 						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
 							<i class="fa fa-repeat" aria-hidden="true"></i>
 						</div>
-						<div *ngIf="callAction.isSkipChecked==true" id="skipOverlay" style="cursor: pointer">
+						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer">
 							<i class="fa fa-forward" aria-hidden="true"></i>
 							<b style="font-size: 13px; color:white;">skip</b>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;margin-top: 10px;">
-					<button *ngIf="shareValues==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
+					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 				</button>
-					<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
+					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
 					 [disabled]="isThisDraftVideo">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 				</button>

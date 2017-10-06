@@ -49,6 +49,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     public videoAlias: string;
     public campaignAlias: string;
     public userAlias: string;
+    public templateId: number;
     public locationJson: any;
     public deviceInfo: any;
     public sessionId: string = null;
@@ -62,6 +63,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     categoryName: any;
     LogAction: typeof LogAction = LogAction;
     public emailLog: any;
+    templatehtml: string;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
@@ -120,6 +122,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 this.emailLog = {
                     'userAlias': this.userAlias,
                     'campaignAlias': this.campaignAlias,
+                    'templateId' : this.templateId,
                     'time': new Date(),
                     'deviceType': this.deviceInfo.device,
                     'os': this.deviceInfo.os,
@@ -135,13 +138,36 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     'videoAlias': this.videoAlias,
                     'actionId': 14
                 };
-
                 console.log("emailLog" + this.emailLog);
-
                 this.videoFileService.showCampaignVideo(this.typeValue, this.emailLog)
                     .subscribe(
-                    (result: SaveVideoFile) => {
-                        this.campaignVideoFile = result;
+                    (result: any) => {
+                        this.campaignVideoFile = result.videofile;
+                        this.templatehtml = result.templatehtml;
+                          let updatedBody = this.templatehtml;
+                            updatedBody = updatedBody.replace("<html>", '<div>');
+                            updatedBody = updatedBody.replace("</html>", '</div>');
+                            updatedBody = updatedBody.replace('<meta charset="utf-8" />','');
+                            updatedBody = updatedBody.replace("<body", '<div');
+                            updatedBody = updatedBody.replace("</body>", '</div>');
+                            updatedBody = updatedBody.replace("<head>", '<div>');
+                            updatedBody = updatedBody.replace("</head>", '</div>');
+                            updatedBody = updatedBody.replace("<!DOCTYPE html>", '');
+                            updatedBody = updatedBody.replace("<title>SoicalUbuntu E-mail</title>", '');
+                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>",'');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
+                            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",'');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
+                            updatedBody = updatedBody.replace("<emailOpenImgURL>", 'No Image');
+                            updatedBody = updatedBody.replace("<Company_name>",'');
+                            updatedBody = updatedBody.replace("<Company_Logo>",'');
+                            updatedBody = updatedBody.replace("<Title_here>",'');
+                            updatedBody = updatedBody.replace("video-tag", 'newPlayerVideo');
+                            this.templatehtml = updatedBody;
+                       document.getElementById('para').innerHTML = this.templatehtml;
+                        console.log(this.templatehtml);
                         console.log(result);
                         this.posterImagePath = this.campaignVideoFile.imagePath;
                         this.is360Value = this.campaignVideoFile.is360video;
@@ -227,6 +253,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 this.videoAlias = param['videoAlias'];
                 this.campaignAlias = param['campaignAlias'];
                 this.userAlias = param['userAlias'];
+                this.templateId = param['templateId'];
             },
             (error: any) => {
                 this.xtremandLogger.log(error);
@@ -278,7 +305,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.videoUrl + '.mp4';
         //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '413px');
         $('#videoId').css('width', 'auto');
         const selfPanorama = this;
         const player = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }).ready(function () {
@@ -426,7 +453,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         $(".vjs-tech").css("height", "100%");
                     } else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "auto");
-                        $("#videoId").css("height", "318px");
+                        $("#videoId").css("height", "413px");
                     }
                 });
                 player.on('click', function () {
@@ -435,7 +462,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             }
         });
         $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '413px');
     }
     playNormalVideo() {
         $('.p-video').remove();
@@ -453,7 +480,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         //  this.videoUrl =  'http://vjs.zencdn.net/v/oceans.mp4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         //     $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '413px');
         $('#videoId').css('width', 'auto');
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
@@ -576,7 +603,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     $(".vjs-tech").css("height", "100%");
                 } else if (event === "FullscreenOff") {
                     $("#videoId").css("width", "auto");
-                    $("#videoId").css("height", "318px");
+                    $("#videoId").css("height", "413px");
                 }
             });
             player.on('click', function () {

@@ -45,7 +45,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveVideoFile: SaveVideoFile;
     tempVideoFile: SaveVideoFile;
     categories: Category[];
-    timezone: any;
     uploader: FileUploader;
     user: User = new User();
     defaultPlayerValues: DefaultVideoPlayer;
@@ -155,10 +154,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
-        if (this.saveVideoFile.viewBy === 'DRAFT') {
-            this.isThisDraftVideo = true;
-            this.saveVideoFile.viewBy = 'PRIVATE';
-        }
+        if (this.saveVideoFile.viewBy === 'DRAFT') { this.isThisDraftVideo = true;
+            this.saveVideoFile.viewBy = 'PRIVATE'; }
         this.formErrors = this.videoUtilService.formErrors;
         this.videoUtilService.clipboardName = 'Copy to Clipboard';
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -200,7 +197,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.saveVideoFile.lowerText == null) {
             this.lowerCharacterleft = this.maxlengthvalueLowerText;
         } else { this.lowerCharacterleft = this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length; }
-        this.openStartingDivs();
+        this.titleDivChange();
         this.likesValues = 0;
         this.disLikesValues = 0;
         this.xtremandLogger.log('video path is ' + this.videoFileService.saveVideoFile.videoPath);
@@ -217,12 +214,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
         this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
-        // need to modify this code for embed video modal popup
     }  // closed constructor
-    openStartingDivs() {
-        this.titleDiv = true;
-        this.colorControl = this.controlPlayers = this.callaction = false;
-    }
     public startsWithAt(control: FormControl) {
         let checkTag: string;
         if (control.value.charAt(0) === ' ' && checkTag.length === 0) {
@@ -327,51 +319,45 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultGifImagePath = this.saveVideoFile.gifImagePath;
     }
     // div hide and show methods
+    divChanageValues(titleDiv: boolean, colorControl: boolean, controlPlayers: boolean, callaction: boolean){
+     this.titleDiv = titleDiv;
+     this.colorControl = colorControl;
+     this.controlPlayers = controlPlayers;
+     this.callaction = callaction;
+    }
     titleDivChange() {
-        this.titleDiv = true;
-        this.colorControl = this.controlPlayers = this.callaction = false;
+        this.divChanageValues(true, false, false, false);
     }
     colorControlChange() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
-        this.colorControl = true;
-        this.titleDiv = this.controlPlayers = this.callaction = false;
+        this.divChanageValues(false, true, false, false);
         const disable = this;
         this.loadRangeDisable = false;
         setTimeout(function () {
-            if (disable.defaultSettingValue === true) {
-                disable.disableRange(true);
+            if (disable.defaultSettingValue) {  disable.disableTransperancy(true);
                 disable.disablePlayerSettingnew = true;
-            } else {
-                disable.disableRange(false);
-                disable.disablePlayerSettingnew = false;
-            }
+            } else { disable.disableTransperancy(false);
+                disable.disablePlayerSettingnew = false; }
         }, 1);
     }
     controlPlayerChange() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
-        this.controlPlayers = true;
-        this.colorControl = this.titleDiv = this.callaction = false;
+        this.divChanageValues(false, false, true, false);
         const disable = this;
         this.loadRangeDisable = false;
         setTimeout(function () {
-            if (disable.defaultSettingValue === true) {
-                disable.disablePlayerSettingnew = true;
+            if (disable.defaultSettingValue === true) { disable.disablePlayerSettingnew = true;
             } else { disable.disablePlayerSettingnew = false; }
         }, 1);
     }
     callToActionChange() {
         $('html,body').animate({ scrollTop: 275 }, 'slow');
-        this.callaction = true;
-        this.controlPlayers = this.colorControl = this.titleDiv = false;
+        this.divChanageValues(false, false, false, true);
         const disable = this;
         setTimeout(function () {
-            if (disable.saveVideoFile.callACtion === true) {
-                disable.disableCalltoAction(false);
+            if (disable.saveVideoFile.callACtion) { disable.disableCalltoAction(false);
             } else { disable.disableCalltoAction(true); }
         }, 1);
-    }
-    disableRange(event: boolean) {
-        (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
     }
     // like and dis like methods
     likesValuesDemo() {
@@ -385,14 +371,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isFullscreen) { this.embedFullScreen = 'allowfullscreen';
         } else { this.embedFullScreen = ''; }
     }
+    embedVideoHeightWidth(width: string, height: string){
+      this.embedWidth = width; this.embedHeight = height;
+    }
     embedVideoSizes() {
-        if (this.videosize === this.videoSizes[0]) {
-            this.embedWidth = '1280'; this.embedHeight = '720';
-        } else if (this.videosize === this.videoSizes[1]) {
-            this.embedWidth = '560'; this.embedHeight = '315';
-        } else if (this.videosize === this.videoSizes[2]) {
-            this.embedWidth = '853'; this.embedHeight = '480';
-        } else { this.embedWidth = '640'; this.embedHeight = '360'; }
+        if (this.videosize === this.videoSizes[0]) { this.embedVideoHeightWidth('1280', '720');
+        } else if (this.videosize === this.videoSizes[1]) {  this.embedVideoHeightWidth('560', '315');
+        } else if (this.videosize === this.videoSizes[2]) {  this.embedVideoHeightWidth('853', '480');
+        } else {  this.embedVideoHeightWidth('640', '360'); }
     }
     embedCode() {
         this.videoUtilService.clipboardName = 'Copied !';
@@ -576,22 +562,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             color = '#cccddd';
         }
         const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        // $('.video-js .vjs-control-bar').css('background-color', rgba);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
         this.valueRange = value;
         this.xtremandLogger.log(this.valueRange);
     }
     allowComments(event: boolean) {
-        this.comments = event;
-        this.saveVideoFile.allowComments = this.comments;
-        this.newComments = event;
-        console.log('allow comments after event' + this.comments);
+        this.saveVideoFile.allowComments = this.comments = this.newComments = event;
     }
     allowLikes(event: boolean) {
-        this.likes = event;
-        this.saveVideoFile.allowLikes = this.likes;
-        this.newAllowLikes = event;
-        console.log('allow comments after event' + this.likes);
+        this.saveVideoFile.allowLikes = this.newAllowLikes  = this.likes = event;
     }
     defaultPlayerSettingsCondition(playerSettings: any) {
             this.valueRange = playerSettings.transparency;
@@ -605,35 +584,28 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.newAllowSharing = playerSettings.allowSharing;
             this.newValue360 = playerSettings.is360video;
     }
-    defaultSettingValuesBoolean(event: boolean) {
-        this.defaultSettingValue = this.disablePlayerSettingnew = event;
-    }
-    disableTransperancy(event: boolean) {
-          (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
+    defaultSettingValuesBoolean(event: boolean) {  this.defaultSettingValue = this.disablePlayerSettingnew = event; }
+    disableTransperancy(event: boolean) { (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event; }
+    playerColorsChange(playercolor: string, controlcolor: string) {
+        this.compPlayerColor = playercolor; this.compControllerColor = controlcolor;
     }
     defaultPlayerSettingsValues(event: boolean) {
         if (event) {
             this.defaultSettingValuesBoolean(event);
-            if (this.loadRangeDisable !== true) { this.disableTransperancy(event);}
-            this.compPlayerColor = this.defaultPlayerValues.playerColor;
-            this.compControllerColor = this.defaultPlayerValues.controllerColor;
+            if (!this.loadRangeDisable) { this.disableTransperancy(event); }
+            this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
             this.changePlayerColor(this.compPlayerColor);
             this.changeControllerColor(this.compControllerColor);
-            if (this.loadNgOninit === false) {
-                this.enableVideoControllers(this.defaultPlayerValues.enableVideoController);
-            }
-             this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
+            if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
+            this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
         } else {
             this.defaultSettingValuesBoolean(event);
-            if (this.loadRangeDisable !== true) { this.disableTransperancy(event); }
-            this.compPlayerColor = this.tempPlayerColor;
-            this.compControllerColor = this.tempControllerColor;
+            if (!this.loadRangeDisable) { this.disableTransperancy(event); }
+            this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
             this.changeControllerColor(this.compControllerColor);
             this.changePlayerColor(this.compPlayerColor);
-            if (this.loadNgOninit === false) {
-                this.enableVideoControllers(this.tempVideoFile.enableVideoController);
-            }
-             this.defaultPlayerSettingsCondition(this.tempVideoFile);
+            if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
+            this.defaultPlayerSettingsCondition(this.tempVideoFile);
         }
         this.loadNgOninit = false;
     }
@@ -644,7 +616,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
     }
     changeControllerColor(event: any) {
-        this.compControllerColor= this.saveVideoFile.controllerColor = event;
+        this.compControllerColor = this.saveVideoFile.controllerColor = event;
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.saveVideoFile.controllerColor + '!important');
     }
     changeFullscreen(event: any) {
@@ -670,8 +642,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-control-bar').show(); }
     }
     defaultVideoControllers() {
-        if (this.newEnableController === false) {
-            $('.video-js .vjs-control-bar').hide();
+        if (!this.newEnableController) {   $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
     is360VideoCondition(event: boolean) {
@@ -718,8 +689,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.videoJSplayer) { this.videoJSplayer.pause(); }
         }
     }
-
-
     setCallToActionText(isUpperTextValid: boolean, isLowerTextValid: boolean){
         this.upperTextValid = isUpperTextValid;
         this.lowerTextValid = isLowerTextValid;
@@ -746,7 +715,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
             && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
             this.callAction.isOverlay = false;
-            console.log(this.callAction.email_id + 'mail ' + this.callAction.firstName + ' and last name ' + 
+            console.log(this.callAction.email_id + 'mail ' + this.callAction.firstName + ' and last name ' +
             this.callAction.lastName);
         } else if (this.callAction.isFistNameChecked === false
             && this.videoUtilService.validateEmail(this.callAction.email_id)) {
@@ -763,22 +732,30 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const event = (<HTMLInputElement>document.getElementById('isSkiped')).checked;
         this.callAction.isSkipChecked = this.saveVideoFile.skip = event;
     }
+    callActionOverlayboolean(startValue: boolean, endValue: boolean) {
+         this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = startValue;
+         this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = endValue;
+    }
     startCallToactionOverlay(event: boolean) {
         if (event) {
-            this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = true;
-            this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+            // this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = true;
+            // this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+            this.callActionOverlayboolean(true, false);
         } else {
-            this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = true;
-            this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+            // this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = true;
+            // this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+            this.callActionOverlayboolean(false, true);
         }
     }
     endCallToactionOverlay(event: boolean) {
         if (event) {
-            this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = false;
-            this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = true;
+            // this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = false;
+            // this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = true;
+            this.callActionOverlayboolean(false, true);
         } else {
-            this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = true;
-            this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+            // this.callAction.startCalltoAction = this.saveVideoFile.startOfVideo = true;
+            // this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = false;
+            this.callActionOverlayboolean(true, false);
         }
     }
     // video source chage methods
@@ -1159,7 +1136,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.xtremandLogger.errorPage(error);
                 }),
                 () => this.xtremandLogger.log(this.saveVideoFile);
-        } else { if (this.titleDiv !== true) { this.openStartingDivs(); } }
+        } else { if (this.titleDiv !== true) { this.titleDivChange(); } }
     }
     validVideoTitle(videoTitle: string) {
         this.saveVideoFile.title = videoTitle;
