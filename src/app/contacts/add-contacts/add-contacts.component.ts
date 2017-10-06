@@ -41,8 +41,6 @@ export class AddContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     selectedZohoDropDown: string = 'DEFAULT';
     googleCheckboxValue: boolean = false;
-    salesforceCheckboxValue: boolean = false;
-    zohoCheckboxValue: boolean = false;
     zohoCredentialError = '';
     zohoAuthStorageError = '';
     model: any = {};
@@ -67,9 +65,6 @@ export class AddContactsComponent implements OnInit {
     public gContactsValue: boolean;
     public zohoContactsValue: boolean;
     public salesforceContactsValue: boolean;
-    public zohoImage: string;
-    public googleImage: string;
-    public salesforceImage: string;
     public contactListNameError = false;
     public invalidPattenMail: boolean;
     public valilClipboardUsers: boolean = false;
@@ -195,24 +190,11 @@ export class AddContactsComponent implements OnInit {
             this.model.contactListName = outputstring;
             this.validateContactName( this.model.contactListName );
             this.removeCsvName = true;
-            $( "#file_preview" ).show();
-            $( "button#uploadCSV" ).prop( 'disabled', true );
-            $( "input[type='file']" ).attr( "disabled", true );
-            this.xtremandLogger.info( "coontacts preview" );
-            $( "button#addContacts" ).prop( 'disabled', true );
-            $( "button#copyFromClipBoard" ).prop( 'disabled', true );
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            $( "#file_preview" ).show();
             $( "button#cancel_button" ).prop( 'disabled', true );
-            $( "button#googleContact_button" ).prop( 'disabled', true );
-            $( "button#salesforceContact_button" ).prop( 'disabled', true );
-            $( "button#zohoContact_button" ).prop( 'disabled', true );
-            $( "button#microsoftContact_button" ).prop( 'disabled', true );
-            $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-            $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-            $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -243,20 +225,10 @@ export class AddContactsComponent implements OnInit {
         } else {
             this.fileTypeError = true;
             $( "#file_preview" ).hide();
-            $( "button#copyFromClipBoard" ).prop( 'disabled', false );
-            $( "button#addContacts" ).prop( 'disabled', false );
-            $( "button#googleContact_button" ).prop( 'disabled', false );
-            $( "button#salesforceContact_button" ).prop( 'disabled', false );
-            $( "button#zohoContact_button" ).prop( 'disabled', false );
-            $( "button#microsoftContact_button" ).prop( 'disabled', false );
-            $( "button#uploadCSV" ).prop( 'disabled', false );
-            $( "input[type='file']" ).attr( "disabled", false );
-            $( "button#googleContact_buttonNormal" ).prop( 'disabled', false );
-            $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', false );
-            $( "button#zohoContact_buttonNormal" ).prop( 'disabled', false );
             this.model.contactListName = null;
             this.removeCsvName = false;
             this.uploader.queue.length = 0;
+            this.selectedAddContactsOption = 8;
         }
     }
 
@@ -644,18 +616,6 @@ export class AddContactsComponent implements OnInit {
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "button#cancel_button" ).prop( 'disabled', true );
-        $( "button#addContacts" ).prop( 'disabled', false );
-        $( "button#uploadCSV" ).prop( 'disabled', false );
-        $( "input[type='file']" ).attr( "disabled", false );
-        $( "button#copyFromClipBoard" ).prop( 'disabled', false );
-        $( "button#googleContact_button" ).prop( 'disabled', false );
-        $( "button#salesforceContact_button" ).prop( 'disabled', false );
-        $( "button#zohoContact_button" ).prop( 'disabled', false );
-        $( "button#microsoftContact_button" ).prop( 'disabled', false );
-        $( "button#zohoContact_button" ).prop( 'disabled', false );
-        $( "button#googleContact_buttonNormal" ).prop( 'disabled', false );
-        $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', false );
-        $( "button#zohoContact_buttonNormal" ).prop( 'disabled', false );
         this.model.contactListName = "";
         $( "#Sfile_preview" ).hide();
         $( "#sample_editable_1" ).hide();
@@ -683,17 +643,6 @@ export class AddContactsComponent implements OnInit {
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "#file_preview" ).hide();
-        $( "button#copyFromClipBoard" ).prop( 'disabled', false );
-        $( "button#addContacts" ).prop( 'disabled', false );
-        $( "button#googleContact_button" ).prop( 'disabled', false );
-        $( "button#salesforceContact_button" ).prop( 'disabled', false );
-        $( "button#zohoContact_button" ).prop( 'disabled', false );
-        $( "button#microsoftContact_button" ).prop( 'disabled', false );
-        $( "button#uploadCSV" ).prop( 'disabled', false );
-        $( "input[type='file']" ).attr( "disabled", false );
-        $( "button#googleContact_buttonNormal" ).prop( 'disabled', false );
-        $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', false );
-        $( "button#zohoContact_buttonNormal" ).prop( 'disabled', false );
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -710,18 +659,7 @@ export class AddContactsComponent implements OnInit {
         this.isContactsThere = false;
         $( "#sample_editable_1" ).show();
         this.newUsers.push( new User() );
-        $( "button#copyFromClipBoard" ).prop( 'disabled', true );
-        $( "button#uploadCSV" ).prop( 'disabled', true );
-        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-        $( "input[type='file']" ).attr( "disabled", true );
         $( "button#cancel_button" ).prop( 'disabled', false );
-        $( "button#googleContact_button" ).prop( 'disabled', true );
-        $( "button#salesforceContact_button" ).prop( 'disabled', true );
-        $( "button#zohoContact_button" ).prop( 'disabled', true );
-        $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-        $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-        $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
-        $( "button#microsoftContact_button" ).prop( 'disabled', true );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -746,19 +684,9 @@ export class AddContactsComponent implements OnInit {
         this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
         this.isContactsThere = false;
+        $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-        $( "button#addContacts" ).prop( 'disabled', true );
-        $( "button#uploadCSV" ).prop( 'disabled', true );
-        $( "input[type='file']" ).attr( "disabled", true );
-        $( "button#cancel_button" ).prop( 'disabled', false );
-        $( "button#googleContact_button" ).prop( 'disabled', true );
-        $( "button#salesforceContact_button" ).prop( 'disabled', true );
-        $( "button#zohoContact_button" ).prop( 'disabled', true );
-        $( "button#microsoftContact_button" ).prop( 'disabled', true );
-        $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-        $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-        $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         this.clipBoard = true;
@@ -835,19 +763,8 @@ export class AddContactsComponent implements OnInit {
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     //this.googleImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Gfile_preview" ).show();
-                    $( "button#addContacts" ).prop( 'disabled', true );
-                    $( "button#uploadCSV" ).prop( 'disabled', true );
-                    $( "input[type='file']" ).attr( "disabled", true );
-                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
                     $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( "button#zohoContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_button" ).prop( 'disabled', true );
-                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
+                    $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1100,21 +1017,9 @@ export class AddContactsComponent implements OnInit {
                     // this.zohoImageNormal = true;
                     this.selectedAddContactsOption = 5;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Zfile_preview" ).show();
-                    $( "button#addContacts" ).prop( 'disabled', true );
-                    $( "button#uploadCSV" ).prop( 'disabled', true );
-                    $( "input[type='file']" ).attr( "disabled", true );
-                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
                     $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_button" ).prop( 'disabled', true );
-                    $( "button#zohoContact_button" ).prop( 'disabled', true );
-                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
+                    $( "#Zfile_preview" ).show();
                     $( "#myModal .close" ).click()
-                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
-
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1200,20 +1105,8 @@ export class AddContactsComponent implements OnInit {
                     // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
-                    $( "button#addContacts" ).prop( 'disabled', true );
-                    $( "button#uploadCSV" ).prop( 'disabled', true );
-                    $( "input[type='file']" ).attr( "disabled", true );
-                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
-                    $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_button" ).prop( 'disabled', true );
-                    $( "button#zohoContact_button" ).prop( 'disabled', true );
-                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
                     $( "#myModal .close" ).click()
-                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
-
+                    $( "button#cancel_button" ).prop( 'disabled', false );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1446,18 +1339,7 @@ export class AddContactsComponent implements OnInit {
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
-                    $( "button#addContacts" ).prop( 'disabled', true );
-                    $( "button#uploadCSV" ).prop( 'disabled', true );
-                    $( "input[type='file']" ).attr( "disabled", true );
-                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
                     $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "button#zohoContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_button" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
                     this.hideModal();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1518,18 +1400,7 @@ export class AddContactsComponent implements OnInit {
                     //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Sfile_preview" ).show();
-                    $( "button#addContacts" ).prop( 'disabled', true );
-                    $( "button#uploadCSV" ).prop( 'disabled', true );
-                    $( "input[type='file']" ).attr( "disabled", true );
-                    $( "button#copyFromClipBoard" ).prop( 'disabled', true );
                     $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "button#zohoContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_button" ).prop( 'disabled', true );
-                    $( "button#microsoftContact_button" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_button" ).prop( 'disabled', true );
-                    $( "button#googleContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#salesforceContact_buttonNormal" ).prop( 'disabled', true );
-                    $( "button#zohoContact_buttonNormal" ).prop( 'disabled', true );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1761,7 +1632,6 @@ export class AddContactsComponent implements OnInit {
             $( "#clipBoardValidationMessage" ).hide();
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( "button#cancel_button" ).prop( 'disabled', true );
-
             if ( this.socialContactType == "google" ) {
                 this.getGoogleContactsUsers();
             }
