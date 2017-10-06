@@ -47,7 +47,7 @@ export class EditContactsComponent implements OnInit {
     
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
-    selectedAddContactsOption: number = 3;
+    selectedAddContactsOption: number = 8;
     invalidDeleteSuccessMessage: boolean = false;
     invalidDeleteErrorMessage: boolean = false;
     editListContacts: boolean = true;
@@ -449,7 +449,7 @@ export class EditContactsComponent implements OnInit {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.invalidPatternEmails.length = 0;
-        this.selectedAddContactsOption = 3;
+        this.selectedAddContactsOption = 8;
         this.users = [];
         this.filePrevew = false;
         this.isShowUsers = true;
@@ -629,7 +629,7 @@ export class EditContactsComponent implements OnInit {
         if(this.selectedAddContactsOption == 1){
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         }
-        this.selectedAddContactsOption = 3;
+        this.selectedAddContactsOption = 8;
         this.users = [];
         this.dublicateEmailId = false;
     }
