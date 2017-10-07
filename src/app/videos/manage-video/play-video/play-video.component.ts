@@ -300,6 +300,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                                     self.fullScreenMode = false;
                                     $('#videoId').append($('#overlay-modal').hide());
                                     self.showOverlayModal();
+                                    $('#overlay-modal').css('width', '100%');
+                                    $('#overlay-modal').css('height', '318px');
                                 }
                             }
                         });
@@ -411,8 +413,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
-            if (this.callAction.videoOverlaySubmit === 'PLAY') {
-                this.videoJSplayer.play();
+            if (this.callAction.videoOverlaySubmit === 'PLAY') { this.videoJSplayer.play();
             } else { this.videoJSplayer.pause(); }
         }
         console.log(this.callAction.email_id);
@@ -430,18 +431,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         //     .subscribe((result: any) => {
         //         console.log('Save user Form call to acton is successfull' + result);
         //     });
-    }
-    repeatPlayVideo() {
-        $('#overlay-modal').hide();
-        if (this.videoJSplayer) {
-            this.videoJSplayer.play();
-        }
-    }
-    skipOverlay() {
-        $('#overlay-modal').hide();
-        if (this.videoJSplayer) {
-            this.videoJSplayer.play();
-        }
     }
     ngOnInit() {
         Metronic.init();
@@ -732,6 +721,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             $('#overlay-modal').css('height', '318px');
                             $('#videoId').append($('#overlay-modal').hide());
                             self.showOverlayModal();
+                            $('#overlay-modal').css('width', '100%');
+                            $('#overlay-modal').css('height', '318px');
                         }
                     }
                 });
@@ -898,6 +889,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('#overlay-modal').css('height', '318px');
                         $('#videoId').append($('#overlay-modal').hide());
                         self.showOverlayModal();
+                        $('#overlay-modal').css('width', '100%');
+                        $('#overlay-modal').css('height', '318px');
                     }
                 }
             });

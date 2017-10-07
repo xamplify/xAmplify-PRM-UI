@@ -378,7 +378,7 @@
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
 												<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" (statusChange)="defaultPlayerSettingsValues($event)">
+												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="defaultPlayerSettingsValues($event)">
 												</switch>
 											</div>
 										</div>
@@ -395,7 +395,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Controller:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 													 (statusChange)="enableVideoControllers($event)">
 													</switch>
 												</div>
@@ -444,13 +444,13 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowSharing($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowSharing($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableSettings($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableSettings($event)">
 												</switch>
 											</div>
 										</div>
@@ -458,13 +458,13 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="changeFullscreen($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="changeFullscreen($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowComments($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowComments($event)">
 												</switch>
 											</div>
 										</div>
@@ -472,13 +472,13 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowLikes($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowLikes($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableCastings($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableCastings($event)">
 												</switch>
 											</div>
 
@@ -487,13 +487,13 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowEmbedVideo($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowEmbedVideo($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												 [offColor]="offColorValue" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="is360VideoCheck($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="is360VideoCheck($event)">
 												</switch>
 											</div>
 										</div>
