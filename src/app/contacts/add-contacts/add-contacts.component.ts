@@ -13,6 +13,7 @@ import { SalesforceContact } from '../models/salesforce-contact';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../models/contact-option';
+import { SocialPagerService } from '../services/social-pager.service';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -94,6 +95,8 @@ export class AddContactsComponent implements OnInit {
     public salesforceContactUsers: SocialContact[] = new Array();
     public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
+    pager: any = {};
+    pagedItems: any[];
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -102,7 +105,7 @@ export class AddContactsComponent implements OnInit {
     contacts: User[];
     private socialContactType: string;
     emailNotValid = false;
-    constructor( private authenticationService: AuthenticationService, private contactService: ContactService,
+    constructor( public socialPagerService: SocialPagerService, private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
         this.contacts = new Array<User>();
@@ -130,7 +133,7 @@ export class AddContactsComponent implements OnInit {
             var responsePath = response;
             this.xtremandLogger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
             $( "#uploadContactsMessage" ).show();
-            router.navigateByUrl( '/home/contacts/manageContacts' )
+            router.navigateByUrl( '/home/contacts/manage' )
         };
     }
 
@@ -418,7 +421,7 @@ export class AddContactsComponent implements OnInit {
                 data = data;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 $( "#uploadContactsMessage" ).show();
-                this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                this.router.navigateByUrl( '/home/contacts/manage' )
                 this.contactService.successMessage = true;
             },
             ( error: any ) => {
@@ -496,7 +499,7 @@ export class AddContactsComponent implements OnInit {
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.router.navigateByUrl( '/home/contacts/manage' )
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -535,7 +538,7 @@ export class AddContactsComponent implements OnInit {
                             data = data;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
-                            this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                            this.router.navigateByUrl( '/home/contacts/manage' )
                         },
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
@@ -604,6 +607,7 @@ export class AddContactsComponent implements OnInit {
         this.gContacts.length = 0;
         this.zContacts.length = 0;
         this.salesforceContactUsers.length = 0;
+        this.contactService.successMessage = false;
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -774,6 +778,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
+                this.setPage(1);
                 this.selectedAddContactsOption = 4;
                 this.socialContact.contacts = this.gContacts;
             },
@@ -784,6 +789,14 @@ export class AddContactsComponent implements OnInit {
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
         this.isContactsThere = false;
+    }
+    
+    setPage(page: number) {
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+        this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
+        this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
     saveGoogleContacts() {
@@ -800,7 +813,7 @@ export class AddContactsComponent implements OnInit {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                        this.router.navigateByUrl( '/home/contacts/manage' )
                     },
                     ( error: any ) => {
                         this.xtremandLogger.error( error );
@@ -839,7 +852,7 @@ export class AddContactsComponent implements OnInit {
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.router.navigateByUrl( '/home/contacts/manage' )
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
@@ -1140,7 +1153,7 @@ export class AddContactsComponent implements OnInit {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                        this.router.navigateByUrl( '/home/contacts/manage' )
                     },
 
                     ( error: any ) => {
@@ -1180,7 +1193,7 @@ export class AddContactsComponent implements OnInit {
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.router.navigateByUrl( '/home/contacts/manage' )
                     this.contactService.successMessage = true;
                 },
 
@@ -1443,7 +1456,7 @@ export class AddContactsComponent implements OnInit {
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                    this.router.navigateByUrl( '/home/contacts/manage' )
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
@@ -1474,7 +1487,7 @@ export class AddContactsComponent implements OnInit {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manageContacts' )
+                        this.router.navigateByUrl( '/home/contacts/manage' )
                     },
                     ( error: any ) => {
                         this.xtremandLogger.error( error );
@@ -1642,6 +1655,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     ngDestroy() {
+        this.contactService.successMessage = false;
         this.contactService.googleCallBack = false;
         this.contactService.salesforceContactCallBack = false;
         this.hideModal();

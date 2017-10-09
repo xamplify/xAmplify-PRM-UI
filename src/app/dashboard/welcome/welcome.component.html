@@ -52,7 +52,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/contacts/manageContacts']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
 				</div>
@@ -185,7 +185,7 @@ cursor: not-allowed;
 							eget. Nulla facilisi. Sed non aliquet lectus, ut feugiat leo.
 							Pellentesque id consectetur elit. Etiam porttitor varius leo,</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/addContacts']" [class.disabled]="!hasContactRole ? true : null">add contacts</button>
+							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" [class.disabled]="!hasContactRole ? true : null">add contacts</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

@@ -18,7 +18,7 @@ export class SalesforceCallBackComponent implements OnInit {
                 localStorage.removeItem("userAlias");
                 console.log("result: "+result);
                 this.contactService.salesforceContactCallBack = true;
-                this.router.navigate(['/home/contacts/addContacts']);
+                this.router.navigate(['/home/contacts/add']);
                 
             },
         error => {                

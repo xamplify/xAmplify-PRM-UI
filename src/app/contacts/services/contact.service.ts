@@ -20,7 +20,7 @@ declare var swal: any;
 @Injectable()
 export class ContactService {
 
-    public successMessage: boolean;
+    public successMessage: boolean = false;
     public deleteUserSucessMessage: boolean;
     public socialContact: SocialContact[];
     public zohoContact: ZohoContact;

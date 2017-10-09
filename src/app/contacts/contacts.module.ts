@@ -8,11 +8,14 @@ import {SharedModule} from '../shared/shared.module';
 import {ContactRoutingModule} from './contact-routing.module';
 import { GoogleCallBackComponent } from './google-call-back/google-call-back.component';
 import { SalesforceCallBackComponent } from './salesforce-call-back/salesforce-call-back.component';
+import { SocialPagerService } from './services/social-pager.service';
 
 @NgModule({
   imports: [
     CommonModule,DashboardModule,SharedModule,ContactRoutingModule
   ],
+  providers:[SocialPagerService]
+      , 
   declarations: [AddContactsComponent, ManageContactsComponent, EditContactsComponent,
                  GoogleCallBackComponent,
                  SalesforceCallBackComponent]

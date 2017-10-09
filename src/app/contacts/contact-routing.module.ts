@@ -12,9 +12,9 @@ import {ManageContactsComponent} from  './manage-contacts/manage-contacts.compon
 
 
 const routes: Routes =  [ 
-                          { path:'',redirectTo:'addContacts' ,pathMatch:'full'},                             
-                          { path: 'addContacts', component: AddContactsComponent },
-                          { path: 'manageContacts',component:ManageContactsComponent},
+                          { path: '',redirectTo:'add' ,pathMatch:'full'},                             
+                          { path: 'add', component: AddContactsComponent },
+                          { path: 'manage',component:ManageContactsComponent},
                           //{ path: 'manageContacts/table_advance', component: TableAdvanceComponent },
                           //{ path: 'manageContacts/views_report', component: viewsReportComponent },
                          // { path: 'manageContacts/all_contacts/views_report', component: viewsReportComponent },

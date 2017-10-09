@@ -21,7 +21,7 @@ export class GoogleCallBackComponent implements OnInit {
                 localStorage.removeItem("userAlias");
                 console.log("result: "+result);
                 this.contactService.googleCallBack = true;
-                this.router.navigate(['/home/contacts/addContacts']);
+                this.router.navigate(['/home/contacts/add']);
                 
             },
         error => {                
