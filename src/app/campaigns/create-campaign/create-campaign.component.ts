@@ -160,6 +160,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     emailOpenedReplyDaysSum:number = 0;
     onClickScheduledDaysSum:number = 0;
     isReloaded:boolean = false;
+    timeZones=[];
+    invalidScheduleTime:boolean = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -172,8 +174,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
+        this.timeZones = this.refService.getAllTimeZones();
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
+            this.campaign.timeZoneId = this.timeZones[0];
         }
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -266,6 +270,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }else{
                 this.logger.info("No Email Template Added For Campaign");
             }
+            if(this.campaign.timeZoneId==undefined){
+                this.campaign.timeZoneId = this.timeZones[0];
+            }
         }//End Of Edit
         if(this.refService.campaignVideoFile!=undefined){
             /****************Creating Campaign From Manage VIdeos*******************************/
@@ -324,16 +331,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
-            minDate: new Date(),
             dateFormat: 'd/m/Y H:i',
             time_24hr: true
-          /*  onChange : function(dateObj) {
-                if(dateObj[0]<=new Date()){
-                    console.log("invalid date");
-                }else{
-                    console.log("validate");
-                }
-            }*/
         } );
         //this.validatecampaignForm();
         this.validateLaunchForm();
@@ -1123,6 +1122,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaignLaunchForm = this.fb.group( {
             'scheduleCampaign': [this.campaign.scheduleCampaign,Validators.required],
             'launchTime': [this.campaign.scheduleTime],
+            'timeZoneId':[ this.campaign.timeZoneId]
         },{
             validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
         }
@@ -1193,6 +1193,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.getRepliesData();
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+        let timeZoneId = "";
+        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW"){
+            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }else{
+            timeZoneId = this.campaignLaunchForm.value.timeZoneId;
+        }
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -1210,6 +1216,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
             'scheduleTime': this.campaignLaunchForm.value.launchTime,
+            'timeZoneId':timeZoneId,
             'campaignId': this.campaign.campaignId,
             'selectedEmailTemplateId': this.selectedEmailTemplateRow,
             'regularEmail': this.campaign.regularEmail,
@@ -1354,6 +1361,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.reInitialize();
                     this.router.navigate(["/home/campaigns/manage-campaigns"]);
                 }else{
+                    this.isLoading = false;
+                    this.invalidScheduleTime = true;
                 }
             },
             error => {

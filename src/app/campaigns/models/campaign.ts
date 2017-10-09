@@ -32,4 +32,5 @@ export class Campaign {
     launchedOn:string = "";
     campaignReplies:Array<Reply>;
     campaignUrls:Array<Url>;
+    timeZoneId:any;
 }
