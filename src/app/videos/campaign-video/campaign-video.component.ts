@@ -65,7 +65,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     public emailLog: any;
     templatehtml: string;
     defaultTemplate: boolean;
-    templTitle : string;
     campaignVideoTemplate: string = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3><div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
     '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
@@ -158,15 +157,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
                             this.defaultTemplate = true;
-                            // updatedBody = updatedBody.replace("<html>", '<div>');
-                            // updatedBody = updatedBody.replace("</html>", '</div>');
-                            // updatedBody = updatedBody.replace('<meta charset="utf-8" />','');
-                            // updatedBody = updatedBody.replace("<body", '<div');
-                            // updatedBody = updatedBody.replace("</body>", '</div>');
-                            // updatedBody = updatedBody.replace("<head>", '<div>');
-                            // updatedBody = updatedBody.replace("</head>", '</div>');
-                            // updatedBody = updatedBody.replace("<!DOCTYPE html>", '');
-                            //   updatedBody = updatedBody.replace("<title>SoicalUbuntu E-mail</title>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
@@ -180,12 +170,31 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
                             document.getElementById('para').innerHTML = this.templatehtml;
-                        } else {
+                        } else if(updatedBody.includes('class="img-container center fullwidth"')){
+                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", '');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
+                            updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
+                            updatedBody = updatedBody.replace("<Company_name>", '');
+                            updatedBody = updatedBody.replace("<Company_Logo>", '');
+                            updatedBody = updatedBody.replace("<Title_here>", '');
+                            updatedBody = updatedBody.replace("Image", '');
+                            updatedBody = updatedBody.replace('class="img-container center fullwidth"', 'id="newPlayerVideo"'); 
+                            this.templatehtml = updatedBody;
                             this.defaultTemplate = false;
-                              document.getElementById('para').innerHTML = this.campaignVideoTemplate;
-                              var data = this.title;
-                              $("#title").append(data);
-                              $(this.title).appendTo($("#title"));
+                            document.getElementById('para').innerHTML = this.templatehtml;
+                        } else {
+                            console.log(this.templatehtml);
+                            updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
+                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("bottomDiv", "newPlayerVideo");
+                            this.templatehtml = updatedBody;
+                            console.log(this.templatehtml);
+                            document.getElementById('para').innerHTML = this.templatehtml;
                               console.log(this.campaignVideoTemplate);
                         }
                         console.log(this.templatehtml);
@@ -201,18 +210,22 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (this.campaignVideoFile.is360video === true) {
                             try {
                                 this.play360Video();
-                            } catch (err) { this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']); }
+                            } catch (err) { 
+                               // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                            }
                         } else {
                             try {
                                 this.playNormalVideo();
-                            } catch (err) { this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']); }
+                            } catch (err) {
+                              //   this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                                }
                         }
                         this.defaultVideoSettings();
                         console.log(this.videoUrl);
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
-                        this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                      //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                     }
                     );
             },
