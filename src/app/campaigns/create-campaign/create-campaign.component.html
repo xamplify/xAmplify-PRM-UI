@@ -738,15 +738,15 @@
 									<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}"
 										(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
 										<div class="portlet-title col-xs-12 inline-flex">
-											<h6 title="{{socialStatusProvider.profileName}}" class="ellipsis pull-left">
-												<b>{{socialStatusProvider.profileName}}</b>
+											<h6 title="{{socialStatusProvider.socialConnection.profileName}}" class="ellipsis pull-left">
+												<b>{{socialStatusProvider.socialConnection.profileName}}</b>
 											</h6>
-											<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.providerName ==='FACEBOOK', 
-												'fa-twitter fa-twitter-color': socialStatusProvider.providerName ==='TWITTER'}"></i>
+											<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+												'fa-twitter fa-twitter-color': socialStatusProvider.socialConnection.source ==='TWITTER'}"></i>
 										</div>
 										<div class="portlet-body">
 											<div class="row inline-block">
-												<img class="img-responsive profile-image" src="{{socialStatusProvider.profileImagePath}}">
+												<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
 											</div>
 										</div>
 									</div>
@@ -759,11 +759,13 @@
 								<section style="padding: 10px 0; text-align: left;">
 									<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
 										<div class="btn btn-xs square-box" style="color: #FFF; margin-top: 1em;" *ngIf="socialStatusProvider.selected" 
-										[ngClass]="{'btn-facebook': socialStatusProvider.providerName ==='FACEBOOK', 'btn-twitter': socialStatusProvider.providerName ==='TWITTER'}">
+										[ngClass]="{'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+													'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}">
 											<div class="col-xs-12" style="display: inline-flex;">
 												<i class="fa fa-social pull-right" 
-														[ngClass]="{'fa-facebook': socialStatusProvider.providerName ==='FACEBOOK', 'fa-twitter': socialStatusProvider.providerName ==='TWITTER'}"></i>
-												<h5>{{socialStatusProvider.profileName}}</h5>
+														[ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+																	'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}"></i>
+												<h5>{{socialStatusProvider.socialConnection.profileName}}</h5>
 											</div>
 										</div>
 									</span>

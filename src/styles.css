@@ -159,7 +159,11 @@ nav a.active {
 }
 
 .rounded-0, 
-.fc-event {
+.fc-event,
+.alert,
+.btn,
+.portlet.light,
+.form-control {
 	border-radius: 0 !important;
 	webkit-border-radius: 0 !important
 }

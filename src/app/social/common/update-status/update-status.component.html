@@ -65,11 +65,19 @@
 
         <div class="col-md-9 col-sm-12">
             <div class="col-sm-12 dashboard-stat2 rounded-0 clearfix">
-                <div class="col-sm-12 alert alert-success" *ngIf="successMessage">
-                    <strong>Status has been posted successfully.</strong>
-                </div>
+                <section *ngIf="customResponse.statusText !== null">
+	                <div class="col-sm-12 alert alert-dismissible" role="alert"
+	                	[ngClass]="{'alert-info': customResponse.type === 0,
+	                				'alert-success': customResponse.type === 1,
+	                				'alert-warning': customResponse.type === 2,
+	                				'alert-danger': customResponse.type === 3}">
+	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.statusText = null"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="m0">{{customResponse.statusText}}</h4>
+	                    <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+	                </div>
+                </section>
                 <div class="col-sm-12">
-                    <h3 class="m0">Selected Account(s)</h3><br>
+                    <h3 style="margin: 0 0 15px 0;">Selected Account(s)</h3>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
 						<div class="btn btn-xs rounded-0" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
 							[ngClass]="{
@@ -93,22 +101,15 @@
 						class="form-control form-group status-message-textarea rounded-0 margin-bottom-10px"
 						[(ngModel)]="socialStatus.statusMessage"
 						maxlength="140"></textarea>
-					<p class="pull-right"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</p>
+					<h6 class="pull-right"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
                 </div>
                 <div class="col-sm-12 padding-10px">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
                         <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
-                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}" style="height: 120px; width: auto;">
+                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
 							<source src="{{socialStatusContent.filePath}}" type="video/mp4">
 						</video>
-                    </div>
-                </div>
-                <div class="col-sm-12 padding-10px" *ngIf="errorMessage">
-                    <div class="col-md-12 alert alert-danger rounded-0">
-                        <strong>Oops! An error occurred while adding media file(s)</strong>
-                        <h5>{{errorMessage}}</h5>
-                        <h5 *ngFor="let item of errorDetails">{{item}}</h5>
                     </div>
                 </div>
                 <div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div">
@@ -186,47 +187,59 @@
 			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix" style="padding: 15px;">
 					<h6 class="caption-subject font-red-sunglo uppercase bold">Contact Lists</h6>
-					<div class="table-responsive">
-						<table class="table table-bordered table-striped table-hover">
-							<thead>
-								<tr>
-									<th>Select</th>
-									<th>Contact list name</th>
-									<th>Created by</th>
-									<th>Created time</th>
-									<th>No of Contacts</th>
-									<th>Preview</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let contactList of contactListsPagination.pagedItems">
-									<td><input type="checkbox"></td>
-									<td><h6>{{contactList.name}}</h6></td>
-									<td><h6>{{contactList.uploadedBy}}</h6></td>
-									<td><h6>{{contactList.createdDate}}</h6></td>
-									<td><h6>{{contactList.noOfContacts}}</h6></td>
-									<td class="text-center"><i class="fa fa-eye" aria-hidden="true"></i></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
-                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
-                           <a (click)="setPageContacts(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
-                        </li>
-                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
-                            <a (click)="setPageContacts(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
-                         </li>
-                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
-                            <a (click)="setPageContacts(page)">{{page}}</a>
-                         </li>
-                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-                             <a (click)="setPageContacts(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
-                         </li>
-                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-                             <a (click)="setPageContacts(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
-                         </li>
-                     </ul>
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
+						<div class='alert alert-info' role='alert'>
+							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
+						</div>
+						<a class='btn btn-info' [routerLink]="['/home/contacts/add']">Add Contacts</a>
+					</section>
+					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Select</th>
+										<th>Contact list name</th>
+										<th>Created by</th>
+										<th>Created time</th>
+										<th>No of Contacts</th>
+										<th>Preview</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="cursor: pointer;" *ngFor="let contactList of contactListsPagination.pagedItems">
+										<td><input type="checkbox" class='text-center m0'></td>
+										<td><h5 class='m0'>{{contactList.name}}</h5></td>
+										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
+										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
+										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
+										<td class='text-center m0'>
+											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContacts(contactList, contactsPagination)"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
+	                           <a (click)="setPageContactLists(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
+	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
+	                         </li>
+	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
+	                            <a (click)="setPageContactLists(page)">{{page}}</a>
+	                         </li>
+	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
+	                         </li>
+	                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
+	                         </li>
+	                     </ul>
+					</section>					
+					
+					
 				</div>
 			</div>
             <div [hidden]="isSocialCampaign">
@@ -240,7 +253,7 @@
         <div class="modal-dialog" role="document" style="width: 90%; margin: 1em auto">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" (click)="closeListVideosModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
                 </div>
                 <div class="modal-body clearfix">
@@ -303,7 +316,7 @@
 					</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
                     <button type="button" class="btn btn-primary" (click)="addVideo()">Select</button>
                 </div>
             </div>
@@ -315,3 +328,55 @@
     <!-- modal -->
 </div>
 <app-connect-accounts></app-connect-accounts>
+
+<div class="modal fade" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="contactsModalLabel">
+        	<span *ngIf='contactsPagination.totalRecords === 1'>{{contactsPagination.totalRecords}}&nbsp;Contact</span>
+        	<span *ngIf='contactsPagination.totalRecords > 1'>{{contactsPagination.totalRecords}}&nbsp;Contacts</span>
+       	</h4>
+      </div>
+      <div class="modal-body">
+		<div class="table-responsive">
+			<h5 class="caption-subject font-red-sunglo bold">{{previewContactList.name}}</h5>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Email Address</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let contact of contactsPagination.pagedItems">
+						<td><h6 class='m0'>{{contact.emailId}}</h6></td>
+						<td><h6 class='m0'>{{contact.firstName}}</h6></td>
+						<td><h6 class='m0'>{{contact.lastName}}</h6></td>
+					</tr>
+				</tbody>
+			</table>
+			<ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination m0 p0">
+                <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
+                   <a (click)="setPageContacts(1)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
+                </li>
+                <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}" >
+                    <a (click)="setPageContacts(contactsPagination.pager.currentPage - 1)"  [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
+                 </li>
+                 <li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{active:contactsPagination.pager.currentPage === page}">
+                    <a (click)="setPageContacts(page)">{{page}}</a>
+                 </li>
+                 <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
+                     <a (click)="setPageContacts(contactsPagination.pager.currentPage + 1)"  [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Next</a>
+                 </li>
+                  <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
+                     <a (click)="setPageContacts(contactsPagination.pager.totalPages)"  [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Last</a>
+                 </li>
+             </ul>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
 .ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948 !important; /* green */
+  border-left: 2px solid #42A948 !important; /* green */
 }
 
 .ng-invalid:not(form)  {
-  border-left: 5px solid #a94442 !important; /* red */
+  border-left: 2px solid #a94442 !important; /* red */
 }
 
 .portlet.light[_ngcontent-c5] {

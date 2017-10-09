@@ -8,6 +8,9 @@ import { SocialStatusContent } from "../../models/social-status-content";
 import { SocialStatusProvider } from "../../models/social-status-provider";
 import { ContactList } from '../../../contacts/models/contact-list';
 
+import { CustomResponse } from '../../../core/models/custom-response';
+import { ResponseType } from '../../../core/models/response-type';
+
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { SocialService } from "../../services/social.service";
@@ -17,42 +20,53 @@ import { VideoFileService } from "../.././../videos/services/video-file.service"
 import { ContactService } from "../.././../contacts/services/contact.service";
 
 import { Pagination } from '../../../core/models/pagination';
+import {CalendarComponent} from '../calendar/calendar.component';
 
-declare var swal, $, flatpickr, videojs: any;
+declare var $, flatpickr, videojs: any;
 @Component({
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
     styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [PagerService, Pagination]
+    providers: [PagerService, Pagination, CalendarComponent]
 })
 export class UpdateStatusComponent implements OnInit {
     @Input('isSocialCampaign') isSocialCampaign: boolean = false;
 
-    errorMessage: string;
-    successMessage: string;
-    errorDetails: Array<string> = [];
-
-    pager: any = {};
+    customResponse = new CustomResponse();
 
     videoUrl: string;
     posterImage: string;
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
 
-    socialStatus: SocialStatus = new SocialStatus();
+    socialStatus = new SocialStatus();
 
-    MEDIA_URL = this.authenticationService.MEDIA_URL;
-    accessToken = this.authenticationService.access_token;
     profileImage: string;
     userId: number;
 
     contactListsPagination: Pagination = new Pagination();
+    contactsPagination: Pagination = new Pagination();
     videosPagination: Pagination = new Pagination();
+    
+    previewContactList = new ContactList();
 
-    constructor(private socialService: SocialService, private twitterService: TwitterService, private facebookService: FacebookService,
-        private videoFileService: VideoFileService, private authenticationService: AuthenticationService,
-        private contactService: ContactService,
-        private pagerService: PagerService, private router: Router, private logger: Logger) {
+    constructor(private socialService: SocialService, private twitterService: TwitterService, 
+            private facebookService: FacebookService, private videoFileService: VideoFileService, 
+            private authenticationService: AuthenticationService, private contactService: ContactService,
+            private pagerService: PagerService, private router: Router, private logger: Logger,
+            private calendarComponent: CalendarComponent) {
+        
+        this.resetCustomResponse();
+    }
+    
+    resetCustomResponse(){
+        this.customResponse.type = null;
+        this.customResponse.statusText = null;
+    }
+    
+    setCustomResponse(type: ResponseType, statusText: string){
+        this.customResponse.type = type;
+        this.customResponse.statusText = statusText;
     }
 
     previewVideo(videoFile: SaveVideoFile) {
@@ -70,10 +84,11 @@ export class UpdateStatusComponent implements OnInit {
     }
 
     addVideo() {
-        console.log(this.socialStatus);
-        this.errorMessage = "";
+        console.log(this.socialStatus.socialStatusContents.length);
         if (this.socialStatus.socialStatusContents.length > 0 && (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")) {
-            this.errorMessage = "You can include up to 4 photos or 1 video in a Tweet.";
+            
+            this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
+        
         } else {
             this.socialStatus.statusMessage = this.selectedVideo.title;
             let socialStatusContent: SocialStatusContent = new SocialStatusContent();
@@ -93,30 +108,30 @@ export class UpdateStatusComponent implements OnInit {
             data => {
                 $("#preview-" + i).remove('slow');
                 this.socialStatus.socialStatusContents.splice(i);
-                this.errorMessage = '';
+                this.resetCustomResponse();
             },
             error => console.log(error),
             () => console.log('Finished')
             );
     }
+    
     validateImageUpload(files: any) {
-        this.errorMessage = '';
-        this.errorDetails = [];
+        this.customResponse.statusArray = [];
         const uploadedFilesCount = files.length;
         const existingFilesCount = this.socialStatus.socialStatusContents.length;
         if ((uploadedFilesCount + existingFilesCount) > 4) {
-            this.errorMessage = 'You can upload maximum 4 images.';
+            this.setCustomResponse(ResponseType.Warning, 'You can upload maximum 4 images.');
             return false;
         } else if ((this.socialStatus.socialStatusContents.length === 1) && 
                     (Array.from(this.socialStatus.socialStatusContents)[0].fileType === 'video')) {
-            this.errorMessage = 'You can include up to 4 photos or 1 video in a Tweet.';
+            this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a Tweet.');
             return false;
         } else {
             for (let file of files) {
                 if (file.size > 3145728) {
                     // File size should not be more than 3 MB
-                    this.errorMessage = 'Accepted Image Size <= 3MB';
-                    this.errorDetails.push("The Uploaded Image: " + file.name + " size is " + Math.round(file.size / 1024 / 1024 * 100) / 100 + " MB");
+                    this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
+                    this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
                     return false;
                 }
                 console.log(file.name + ': ' + file.size);
@@ -146,6 +161,8 @@ export class UpdateStatusComponent implements OnInit {
                     () => console.log('Finished')
                     );
             }
+        }else{
+            // alert('error');
         }
 
     }
@@ -165,18 +182,18 @@ export class UpdateStatusComponent implements OnInit {
         });
         this.socialStatus.socialStatusProviders = socialStatusProviders;
         console.log(this.socialStatus);
-        swal({ title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
+        this.setCustomResponse(ResponseType.Loading, 'Updating Status');
         this.socialService.updateStatus(this.userId, this.socialStatus)
             .subscribe(
             data => {
                 this.initializeSocialStatus();
                 $('#full-calendar').fullCalendar('removeEvents');
-                // this.listEvents();
-                swal("Status posted Successfully", "", "success");
+                this.calendarComponent.listEvents();
+                this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
             },
             error => {
                 console.log(error);
-                swal("Error while posting the update.", "", "error");
+                this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
             },
             () => console.log('Finished')
             );
@@ -193,7 +210,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 $('#full-calendar').fullCalendar('removeEvents');
-                // this.listEvents();
+                this.calendarComponent.listEvents();
             },
             error => console.log(error),
             () => console.log('Finished')
@@ -235,10 +252,37 @@ export class UpdateStatusComponent implements OnInit {
     openListVideosModal() {
         $('#listVideosModal').modal('show');
         if (this.videosPagination.pagedItems.length == 0) {
-            $("#preview-section").hide();
+            $('#preview-section').hide();
             this.listVideos(this.videosPagination);
         }
     }
+    
+    closeListVideosModal(){
+        $('#listVideosModal').modal('hide');
+        this.videoJSplayer.pause();
+        this.videoJSplayer.currentTime(0);
+    }
+    
+    editSocialStatus(socialStatus: SocialStatus) {
+        $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
+        $('html,body').animate({ scrollTop: 0 }, 'slow');
+        //this.initializeSocialStatus();
+        this.socialStatus = socialStatus;
+        this.listSocialStatusProviders();
+
+    }
+
+    showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); }
+    hideScheduleOption(divId: string) { $('#' + divId).addClass('hidden'); }
+
+    videoPlayListSource(videoUrl: string) {
+        this.videoUrl = videoUrl;
+        const self = this;
+        this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
+    }
+    
+    /*****************LOAD VIDEOS WITH PAGINATION START *****************/
+    
     listVideos(videosPagination: Pagination) {
         this.videoFileService.loadVideoFiles(videosPagination)
             .subscribe((result: any) => {
@@ -263,31 +307,11 @@ export class UpdateStatusComponent implements OnInit {
         }
     }
     
-    setPageContacts(page: number){
-        if (page !== this.contactListsPagination.pageIndex) {
-            this.contactListsPagination.pageIndex = page;
-            this.loadContactLists(this.contactListsPagination);
-        }
-    }
-
-    editSocialStatus(socialStatus: SocialStatus) {
-        $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
-        $('html,body').animate({ scrollTop: 0 }, 'slow');
-        //this.initializeSocialStatus();
-        this.socialStatus = socialStatus;
-        this.listSocialStatusProviders();
-
-    }
-
-    showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); }
-    hideScheduleOption(divId: string) { $('#' + divId).addClass('hidden'); }
-
-    videoPlayListSource(videoUrl: string) {
-        this.videoUrl = videoUrl;
-        const self = this;
-        this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
-    }
-
+    /*****************LOAD VIDEOS WITH PAGINATION END *****************/
+    
+    
+    /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
+    
     loadContactLists(contactListsPagination: Pagination) {
         this.contactService.loadContactLists(contactListsPagination)
             .subscribe(
@@ -301,6 +325,38 @@ export class UpdateStatusComponent implements OnInit {
                 () => this.logger.info("MangeContactsComponent loadContactLists() finished")
             )
     }
+    
+    setPageContactLists(page: number){
+        if (page !== this.contactListsPagination.pageIndex) {
+            this.contactListsPagination.pageIndex = page;
+            this.loadContactLists(this.contactListsPagination);
+        }
+    }
+    /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
+    
+    
+    /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION START *****************/
+    loadContacts( contactList: ContactList, pagination: Pagination ) {
+        this.previewContactList = contactList;
+        this.contactService.loadUsersOfContactList( this.previewContactList.id, pagination ).subscribe(
+            ( data: any ) => {
+                pagination.totalRecords = data.totalRecords;
+                this.contactsPagination = this.pagerService.getPagedItems( pagination, data.listOfUsers );
+                $( '#contactsModal' ).modal('show');
+            },
+            error =>
+                () => console.log( "loadContacts() finished" )
+        )
+   }
+    
+    setPageContacts(page: number){
+        if (page !== this.contactsPagination.pageIndex) {
+            this.contactsPagination.pageIndex = page;
+            this.loadContacts(this.previewContactList, this.contactsPagination);
+        }
+    }
+    
+    /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
 
     ngOnInit() {
         this.userId = this.authenticationService.getUserId();

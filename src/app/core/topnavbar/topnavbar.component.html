@@ -44,16 +44,15 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li *ngIf="hasVideoRole" style="margin-top: 10px;margin-right: 50px;/* color: #ffffff; *//* background-color: #00a6e8; */">
-					<a class="btn btn-warning2" routerLink="/home/videos" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Upload a Video
-					<i class="fa fa-upload" style="font-size:20px;" data-toggle="tooltip"></i>
+					<li *ngIf="hasVideoRole" style="margin-top: 10px;margin-right: 25px;">
+					<a class="btn btn-warning2" routerLink="/home/videos" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">Upload Video
+					<i class="fa fa-upload" data-toggle="tooltip"></i>
 					</a>
 					</li>
 					<li style="margin-top: 10px;margin-right: 50px;">
 				        <a class="btn btn-warning2" routerLink="/home/social/update-status"
-						style="padding: 10px 10px; margin-right: -15px; position: relative; border-radius: 6px; box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4); background-color: #00a6e8; color: white;">Update
-							Status <i class="fa fa-share" style="font-size: 20px;"
-							data-toggle="tooltip"></i>
+						style="padding: 10px 10px; margin-right: -15px; position: relative; border-radius: 6px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.4); background-color: #00a6e8; color: white;">Update
+							Status <i class="fa fa-share" data-toggle="tooltip"></i>
 						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
@@ -68,7 +67,7 @@
 								<a *ngIf="notificationsCount > 0" (click)="markAllAsRead()">Mark All as Read</a>
 							</li>
 							<li>
-								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283" >
+								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
 									<li *ngFor="let item of notifications">
 										<a [routerLink]="['social/twitter-user', item.targetUrl]">
 										<span class="time">{{item.createdTime | date: 'shortTime'}}</span>
