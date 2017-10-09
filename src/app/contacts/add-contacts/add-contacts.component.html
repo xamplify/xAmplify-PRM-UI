@@ -4,9 +4,8 @@ textarea {`
 	background-attachment: local;
 	background-repeat: no-repeat;
 	padding-left: 35px;
-	padding-top: 12px;
-	border-color: #ccc;
-	font-size: 14px;
+	padding-top: 10px;
+    border-color:#ccc;
 }
 
 .imageblur {
@@ -576,7 +575,7 @@ img:hover {
 											</thead>
 											<tbody>
 												<tr
-													*ngFor="let user of salesforceContactUsers;let i = index">
+													*ngFor="let user of pagedItems;let i = index">
 													<th><input type="checkbox" name="selectedUserIds"
 														id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
@@ -588,7 +587,23 @@ img:hover {
 												</tr>
 											</tbody>
 										</table>
-
+									<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+             								<li [ngClass]="{disabled:pager.currentPage === 1}">
+                							   <a (click)="setPage(1)">First</a>
+             								</li>
+            								<li [ngClass]="{disabled:pager.currentPage === 1}">
+                 							   <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+             								</li>
+             								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                 							   <a (click)="setPage(page)">{{page}}</a>
+             								</li>
+             								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                 							   <a (click)="setPage(pager.currentPage + 1)">Next</a>
+             								</li>
+								            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								               <a (click)="setPage(pager.totalPages)">Last</a>
+								            </li>
+         								</ul>
 									</div>
 								</div>
 								<!-- END EXAMPLE TABLE PORTLET-->

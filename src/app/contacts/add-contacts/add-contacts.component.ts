@@ -93,7 +93,7 @@ export class AddContactsComponent implements OnInit {
     public gContacts: SocialContact[] = new Array();
     public zContacts: SocialContact[] = new Array();
     public salesforceContactUsers: SocialContact[] = new Array();
-    public salesforceContactslist: SocialContact[] = new Array();
+    //public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     pager: any = {};
     pagedItems: any[];
@@ -115,7 +115,7 @@ export class AddContactsComponent implements OnInit {
         this.googleContactUser = new Array<User>();
         this.socialContact = new SocialContact();
         this.zohoContact = new ZohoContact();
-        this.socialContact.socialNetwork = "GOOGLE";
+        this.socialContact.socialNetwork = "";
         this.uploader.onAfterAddingFile = ( file ) => {
             file.withCredentials = false;
         };
@@ -778,8 +778,8 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
-                this.setPage(1);
                 this.selectedAddContactsOption = 4;
+                this.setPage(1);
                 this.socialContact.contacts = this.gContacts;
             },
             ( error: any ) => {
@@ -795,8 +795,14 @@ export class AddContactsComponent implements OnInit {
         if (page < 1 || page > this.pager.totalPages) {
             return;
         }
+        if(this.selectedAddContactsOption == 4){
         this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
         this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        }
+        if(this.selectedAddContactsOption == 3){
+            this.pager = this.socialPagerService.getPager(this.salesforceContactUsers.length, page);
+            this.pagedItems = this.salesforceContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            }
     }
 
     saveGoogleContacts() {
@@ -1363,6 +1369,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.setPage(1);
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
