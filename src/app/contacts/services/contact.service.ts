@@ -40,8 +40,6 @@ export class ContactService {
         console.log( logger );
     }
     
-    loggedInUserId = this.authenticationService.getUserId();
-    
     loadUsersOfContactList( contactListId: number, pagination: Pagination ): Observable<User[]> {
         return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -50,35 +48,35 @@ export class ContactService {
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.contactsUrl + '?userId='+this.loggedInUserId+ "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + '?userId='+this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
     
     unlinkSocailAccount(socialNetwork: string, isDeleteContactList:boolean): Observable<ContactList[]> {
         this.logger.info( "unlinkSocailAccount() method invoked" );
-        return this._http.get( this.authenticationService.REST_URL + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+this.loggedInUserId + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
+        return this._http.get( this.authenticationService.REST_URL + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId() + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }
     
     loadContactListsNames(): Observable<ContactList[]> {
         this.logger.info( "Service class loadContactsNames() completed" );
-        return this._http.get( this.contactsUrl + "names?" + 'userId='+this.loggedInUserId+ "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.contactsUrl + "names?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
     
     listContactsByType(contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+this.loggedInUserId+ "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
  
     loadContactsCount() {
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.url + "contacts_count?" + 'userId='+this.loggedInUserId+ "&access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.url + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -106,7 +104,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "/save-userlist?userListName=" + contactListName + '&userId='+this.loggedInUserId+ "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/save-userlist?userListName=" + contactListName + '&userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -122,7 +120,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + contactListId + "/update?"+ 'userId='+this.loggedInUserId +"&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + contactListId + "/update?"+ 'userId='+ this.authenticationService.getUserId() +"&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -131,7 +129,7 @@ export class ContactService {
 
     removeContactListUsers( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( contactListId + "--" + removeUserIds );
-        var newUrl = this.contactsUrl + contactListId + "/removeUsers?"+ 'userId='+this.loggedInUserId + "&access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + contactListId + "/removeUsers?"+ 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() )
            .catch( this.handleErrorDeleteUsers);
@@ -151,15 +149,15 @@ export class ContactService {
     }
     
     socialContactImages() {
-        this.logger.info(this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId);
-        return this._http.get( this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId)
+        this.logger.info(this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId());
+        return this._http.get( this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     googleLogin() {
         this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId, "")
+        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId(), "")
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -188,7 +186,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         this.logger.info( "testURlpost" + url, options, requestoptions );
         this.logger.info( "contactService getGoogleContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, socialContact )
@@ -206,7 +204,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "saveContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "saveContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
             .catch( this.handleError );
@@ -221,7 +219,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "synchronizeContacts/" + contactListId + "?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
 
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
@@ -230,7 +228,7 @@ export class ContactService {
 
     checkingZohoAuthentication() {
         this.logger.info( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId)
+        return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -245,7 +243,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.zohoContactsUrl + "?userId=" + this.loggedInUserId + "&access_token=" + this.authenticationService.access_token;
+        var url = this.zohoContactsUrl + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( url, this.zohoContact )
             .map( this.extractData )
             .catch( this.handleError );
@@ -262,7 +260,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         this.logger.info( "contactService getzohoAuthorizedContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, socialContact )
             .map( this.extractData )
@@ -270,8 +268,8 @@ export class ContactService {
     }
 
     salesforceLogin() {
-        this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.loggedInUserId );
-        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.loggedInUserId)
+        this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
+        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId())
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -300,7 +298,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "getContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "getContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         this.logger.info( "contactService salesforceContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, this.salesforceContact )
             .map( this.extractData )
@@ -318,7 +316,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "getContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.loggedInUserId;
+        var url = this.authenticationService.REST_URL + "getContacts?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         this.logger.info( "contactService salesforceContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, this.salesforceListViewContact )
             .map( this.extractData )
