@@ -363,6 +363,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.emailTemplate = true;
         team.stats = true;
         team.contact = true;
+        team.socialShare = true;
 
     }
     removeAllRoles(team:TeamMember){
@@ -371,12 +372,13 @@ export class AddTeamMembersComponent implements OnInit {
         team.emailTemplate = false;
         team.stats = false;
         team.contact = false;
+        team.socialShare = false;
     }
     
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if(length==5){
+           if(length==6){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -477,7 +479,7 @@ export class AddTeamMembersComponent implements OnInit {
       };
       
          validateHeaders(headers){
-          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL");
+          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE");
          }
       
       readCsvData(csvRecordsArray,rowLength){
@@ -576,6 +578,7 @@ export class AddTeamMembersComponent implements OnInit {
                   teamMember.campaign   =this.setDefaultValue(row[4]);
                   teamMember.stats = this.setDefaultValue(row[5]);
                   teamMember.emailTemplate = this.setDefaultValue(row[6]);
+                  teamMember.socialShare = this.setDefaultValue(row[7]);
               }
               this.teamMembers.push(teamMember);
           }

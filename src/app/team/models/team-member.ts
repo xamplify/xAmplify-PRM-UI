@@ -9,6 +9,7 @@ export class TeamMember{
     campaign:boolean = false;
     video:boolean = false;
     stats:boolean = false;
+    socialShare:boolean = false;
     all:boolean = false;
     status:string;
     teamMemberId:number;

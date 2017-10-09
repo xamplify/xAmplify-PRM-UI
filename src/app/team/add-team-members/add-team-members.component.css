@@ -149,4 +149,9 @@ hr {
     direction: ltr;
     cursor: pointer;
 }
-
+#first-header{
+	width: 20%
+}
+.rest-header{
+	width: 10%
+}
