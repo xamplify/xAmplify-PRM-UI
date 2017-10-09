@@ -107,8 +107,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     validationMessages: any;
     value360: boolean;
     embedUrl: string;
-    disableStart: boolean;
-    disableEnd: boolean;
     upperTextValid: boolean;
     lowerTextValid: boolean;
     isValidTitle = false;
@@ -702,8 +700,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         (<HTMLInputElement>document.getElementById('isSkiped')).disabled = event;
         (<HTMLInputElement>document.getElementById('upperValue')).disabled = event;
         (<HTMLInputElement>document.getElementById('lowerValue')).disabled = event;
-        this.disableStart = event;
-        this.disableEnd = event;
         if ((this.saveVideoFile.upperText == null && this.saveVideoFile.lowerText === null)) {
             this.setCallToActionText(event, event);
         } else if ((this.saveVideoFile.upperText.length === 0 && this.saveVideoFile.lowerText.length === 0)) {
@@ -923,7 +919,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         callactionValue.setVideoIdHeightWidth();
                         callactionValue.fullScreenMode = false;
                         callactionValue.overLaySet = false;
-                        if (isCallActionthere === true) {
+                        if (isCallActionthere) {
                             callactionValue.overLaySet = false;
                             callactionValue.fullScreenMode = false;
                             callactionValue.setOverlayModalHeightWidth();
@@ -990,7 +986,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
         this.defaultVideoSettings();
         this.transperancyControllBar(this.valueRange);
-        if (this.newEnableController === false) {
+        if (!this.newEnableController) {
             this.defaultVideoControllers();
         }
     }

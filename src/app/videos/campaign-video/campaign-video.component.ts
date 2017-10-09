@@ -64,6 +64,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     LogAction: typeof LogAction = LogAction;
     public emailLog: any;
     templatehtml: string;
+    defaultTemplate: boolean;
+    templTitle : string;
+    campaignVideoTemplate: string = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3><div class="portlet light" style="padding:5px 5px 690px 17px">' +
+    ' <div class="portlet-body">' +
+    '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
+    '<div id="newPlayerVideo"></div>' +
+    '<div id="title" class="col-xs-12" style="padding:0"></div>' +
+    '<div class="col-xs-12 col-sm-12 col-md-12">' +
+    '</div></div>';
+
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
@@ -122,7 +132,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 this.emailLog = {
                     'userAlias': this.userAlias,
                     'campaignAlias': this.campaignAlias,
-                    'templateId' : this.templateId,
+                    'templateId': this.templateId,
                     'time': new Date(),
                     'deviceType': this.deviceInfo.device,
                     'os': this.deviceInfo.os,
@@ -144,29 +154,40 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     (result: any) => {
                         this.campaignVideoFile = result.videofile;
                         this.templatehtml = result.templatehtml;
-                          let updatedBody = this.templatehtml;
-                            updatedBody = updatedBody.replace("<html>", '<div>');
-                            updatedBody = updatedBody.replace("</html>", '</div>');
-                            updatedBody = updatedBody.replace('<meta charset="utf-8" />','');
-                            updatedBody = updatedBody.replace("<body", '<div');
-                            updatedBody = updatedBody.replace("</body>", '</div>');
-                            updatedBody = updatedBody.replace("<head>", '<div>');
-                            updatedBody = updatedBody.replace("</head>", '</div>');
-                            updatedBody = updatedBody.replace("<!DOCTYPE html>", '');
-                            updatedBody = updatedBody.replace("<title>SoicalUbuntu E-mail</title>", '');
-                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>",'');
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
-                            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",'');
+                        console.log(this.templatehtml);
+                        let updatedBody = this.templatehtml;
+                        if (updatedBody.includes("video-tag")) {
+                            this.defaultTemplate = true;
+                            // updatedBody = updatedBody.replace("<html>", '<div>');
+                            // updatedBody = updatedBody.replace("</html>", '</div>');
+                            // updatedBody = updatedBody.replace('<meta charset="utf-8" />','');
+                            // updatedBody = updatedBody.replace("<body", '<div');
+                            // updatedBody = updatedBody.replace("</body>", '</div>');
+                            // updatedBody = updatedBody.replace("<head>", '<div>');
+                            // updatedBody = updatedBody.replace("</head>", '</div>');
+                            // updatedBody = updatedBody.replace("<!DOCTYPE html>", '');
+                            //   updatedBody = updatedBody.replace("<title>SoicalUbuntu E-mail</title>", '');
+                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
-                            updatedBody = updatedBody.replace("<emailOpenImgURL>", 'No Image');
-                            updatedBody = updatedBody.replace("<Company_name>",'');
-                            updatedBody = updatedBody.replace("<Company_Logo>",'');
-                            updatedBody = updatedBody.replace("<Title_here>",'');
-                            updatedBody = updatedBody.replace("video-tag", 'newPlayerVideo');
+                            updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
+                            updatedBody = updatedBody.replace("<Company_name>", '');
+                            updatedBody = updatedBody.replace("<Company_Logo>", '');
+                            updatedBody = updatedBody.replace("<Title_here>", '');
+                            updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
-                       document.getElementById('para').innerHTML = this.templatehtml;
+                            document.getElementById('para').innerHTML = this.templatehtml;
+                        } else {
+                            this.defaultTemplate = false;
+                              document.getElementById('para').innerHTML = this.campaignVideoTemplate;
+                              var data = this.title;
+                              $("#title").append(data);
+                              $(this.title).appendTo($("#title"));
+                              console.log(this.campaignVideoTemplate);
+                        }
                         console.log(this.templatehtml);
                         console.log(result);
                         this.posterImagePath = this.campaignVideoFile.imagePath;
