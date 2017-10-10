@@ -79,6 +79,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     picker: any;
     uploadeRecordVideo = false;
     isProgressBar = false;
+    noSpaceOnDevice = false;
     constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -128,7 +129,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
                 this.isProgressBar = false;
-                this.processVideo(JSON.parse(response).path);
+                if (response.includes('No space left on device')) {
+                    this.noSpaceOnDevice = true;
+                    this.setTimoutMethod();
+                } else { this.processVideo(JSON.parse(response).path); }
             };
             if (this.refService.uploadRetrivejsCalled === false) {
                 $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
@@ -198,9 +202,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     }
                     this.videoFileService.actionValue = 'Save';
                     console.log(this.videoFileService.actionValue);
-                    // if (this.playerInit === true) {
-                    //     this.closeRecordPopup();
-                    // }
                     if (this.redirectPge === false) {
                         this.router.navigateByUrl('/home/videos/manage_videos');
                     } else if (this.playerInit === false) {
@@ -217,24 +218,30 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     } else if (this.processVideoResp.error.includes('Codec is not supported')) {
                         this.codecSupport = true;
                         this.setTimoutMethod();
+                    } else if (this.processVideoResp.error.includes('No space left on device')){
+                        this.noSpaceOnDevice = true;
+                        this.setTimoutMethod();
                     } else {
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
                             this.player.recorder.reset();
-                            $('#myModal').modal('hide');
-                            $('body').removeClass('modal-open');
-                            $('.modal-backdrop fade in').remove();
+                            this.modalPopupClosed();
                         }
                         console.log(this.processVideoResp.error);
                     }
                 }
             },
             (error: any) => {
-                $('#myModal').modal('hide');
+                this.modalPopupClosed();
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
             }),
             () => console.log('process video is:' + this.processVideoResp);
+    }
+    modalPopupClosed() {
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
     fileSizeCheck(event: any) {
         const fileList: FileList = event.target.files;
@@ -262,7 +269,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             val.maxSizeOver = false;
             val.maxSubscription = false;
             val.codecSupport = false;
-        }, 4000);
+            val.noSpaceOnDevice = false;
+            val.router.navigate(['./home/videos']);
+        }, 5000);
     }
     fileDropPreview(file: File): void {
         if (this.isFileDrop === false) {
@@ -279,7 +288,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.maxSizeOver = false;
         this.maxSubscription = false;
         this.codecSupport = false;
-        this.defaultSettings();
+        this.noSpaceOnDevice = false;
+        this.router.navigate(['./home/videos']);
     }
     fileDropDisabled() {
         // this.isChecked =true;
@@ -301,9 +311,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('#myModal').modal('show');
     }
     recordModalPopupAfterUpload() {
-        $('#myModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
+        this.modalPopupClosed();
         this.closeRecordPopup();
         this.cloudStorageDisabled();
         this.processing = true;
@@ -594,6 +602,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.defaultDesabled();
     }
     defaultSettings() {
+        this.uploader.queue.length = 0;
         this.cloudDropbox = false;
         this.cloudBox = false;
         this.cloudDrive = false;
@@ -827,9 +836,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         if (this.deviceNotSupported) { swal.close(); }
         console.log('Deinit - Destroyed Component');
         if (this.camera === true) {
-            $('#myModal').modal('hide');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop fade in').remove();
+            this.modalPopupClosed();
             this.videoFileService.actionValue = '';
         }
         if (this.playerInit === true) {
@@ -837,6 +844,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.playerInit = false;
         }
         this.isChecked = false;
+        this.noSpaceOnDevice = false;
         if ((this.isProgressBar === true || this.uploadeRecordVideo === true || this.cloudStorageSelected === true
             || this.processing === true) && this.errorIsThere === false) {
             this.redirectPge = true;

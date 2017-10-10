@@ -65,13 +65,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     public emailLog: any;
     templatehtml: string;
     defaultTemplate: boolean;
-    campaignVideoTemplate: string = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3><div class="portlet light" style="padding:5px 5px 690px 17px">' +
+    campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
+    '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
     '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
     '<div id="newPlayerVideo"></div>' +
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
+    errorHtml = '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
+    '<h3 style="color:blue;text-align: center;margin-top:120px;" >Sorry!!!. This campaign has been removed</h3></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService,
@@ -188,9 +191,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
                             console.log(this.templatehtml);
-                            updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
+                            if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')){
+                                updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
+                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")){
+                                  updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
+                             } else {
+                                   updatedBody = this.campaignVideoTemplate;
+                             }
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+                            updatedBody = updatedBody.replace("SocialUbuntuImgURL", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
@@ -212,12 +222,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                                 this.play360Video();
                             } catch (err) { 
                                // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                              //   document.getElementById('para').innerHTML = this.errorHtml;
                             }
                         } else {
                             try {
                                 this.playNormalVideo();
                             } catch (err) {
-                              //   this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                              //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                            //    document.getElementById('para').innerHTML = this.errorHtml;
                                 }
                         }
                         this.defaultVideoSettings();
@@ -225,6 +237,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
+                      //  document.getElementById('para').innerHTML = this.errorHtml;
                       //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                     }
                     );
