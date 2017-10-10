@@ -30,7 +30,6 @@ button {
 	background-color: #eee;
 	border: none;
 	padding: 5px 10px;
-	border-radius: 4px;
 	cursor: pointer;
 	cursor: hand;
 }
@@ -158,16 +157,6 @@ nav a.active {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
-.rounded-0, 
-.fc-event,
-.alert,
-.btn,
-.portlet.light,
-.form-control {
-	border-radius: 0 !important;
-	webkit-border-radius: 0 !important
-}
-
 .percentage-circle>.percentage-value {
 	margin: -3em 0 0 0;
 	font-weight: 600;
@@ -207,23 +196,31 @@ nav a.active {
 	background-color: #0077B5
 }
 
-.btn-facebook.active, .btn-facebook:active, .btn-facebook:focus,
-	.btn-facebook:hover {
+.btn-facebook.active, 
+.btn-facebook:active, 
+.btn-facebook:focus,
+.btn-facebook:hover {
 	background-color: #30487b
 }
 
-.btn-twitter.active, .btn-twitter:active, .btn-twitter:focus,
-	.btn-twitter:hover {
+.btn-twitter.active, 
+.btn-twitter:active, 
+.btn-twitter:focus,
+.btn-twitter:hover {
 	background-color: #259be4
 }
 
-.btn-google.active, .btn-google:active, .btn-google:focus, .btn-google:hover
-	{
+.btn-google.active, 
+.btn-google:active, 
+.btn-google:focus, 
+.btn-google:hover {
 	background-color: #d54724
 }
 
-.btn-linkedin.active, .btn-linkedin:active, .btn-linkedin:focus,
-	.btn-linkedin:hover {
+.btn-linkedin.active,
+.btn-linkedin:active, 
+.btn-linkedin:focus,
+.btn-linkedin:hover {
 	background-color: #17709e
 }
 
@@ -259,4 +256,20 @@ nav a.active {
 .fc-event {
     border: 1px solid rgba(58, 135, 173, 0);
     background-color: rgba(58, 135, 173, 0.7);
+}
+
+/* table */
+.table thead > tr > th {
+    color: rgba(132, 132, 132, 0.7);
+}
+
+.rounded-0, 
+.fc-event,
+.alert,
+.btn,
+.portlet.light,
+.form-control,
+button {
+	border-radius: 0 !important;
+	webkit-border-radius: 0 !important;
 }

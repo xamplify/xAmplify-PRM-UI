@@ -76,6 +76,13 @@
 	                    <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
 	                </div>
                 </section>
+                <section *ngIf='isSocialCampaign'>
+                	  <div class="form-group">
+					    <label for="campaignName">Campaign Name</label>
+					    <input type="text" class="form-control" id="campaignName" placeholder="Campaign Name">
+					  </div>
+  
+                </section>
                 <div class="col-sm-12">
                     <h3 style="margin: 0 0 15px 0;">Selected Account(s)</h3>
                     <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
@@ -191,7 +198,7 @@
 						<div class='alert alert-info' role='alert'>
 							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
 						</div>
-						<a class='btn btn-info' [routerLink]="['/home/contacts/add']">Add Contacts</a>
+						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
@@ -208,13 +215,13 @@
 								</thead>
 								<tbody>
 									<tr style="cursor: pointer;" *ngFor="let contactList of contactListsPagination.pagedItems">
-										<td><input type="checkbox" class='text-center m0'></td>
+										<td class='text-center m0'><input type='checkbox'></td>
 										<td><h5 class='m0'>{{contactList.name}}</h5></td>
 										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
 										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
 										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
 										<td class='text-center m0'>
-											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContacts(contactList, contactsPagination)"></i></a>
+											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContactsOnPreview(contactList, contactsPagination)"></i></a>
 										</td>
 									</tr>
 								</tbody>
@@ -243,7 +250,9 @@
 				</div>
 			</div>
             <div [hidden]="isSocialCampaign">
-            	<app-calendar></app-calendar>
+            	<div class="col-sm-12 dashboard-stat2 rounded-0" style="padding: 25px;">
+					<div id='full-calendar'></div>
+				</div>
             </div>
             
         </div>
@@ -334,14 +343,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="contactsModalLabel">
-        	<span *ngIf='contactsPagination.totalRecords === 1'>{{contactsPagination.totalRecords}}&nbsp;Contact</span>
-        	<span *ngIf='contactsPagination.totalRecords > 1'>{{contactsPagination.totalRecords}}&nbsp;Contacts</span>
-       	</h4>
+       	<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name}}</h4>
       </div>
       <div class="modal-body">
 		<div class="table-responsive">
-			<h5 class="caption-subject font-red-sunglo bold">{{previewContactList.name}}</h5>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
@@ -352,9 +357,9 @@
 				</thead>
 				<tbody>
 					<tr *ngFor="let contact of contactsPagination.pagedItems">
-						<td><h6 class='m0'>{{contact.emailId}}</h6></td>
-						<td><h6 class='m0'>{{contact.firstName}}</h6></td>
-						<td><h6 class='m0'>{{contact.lastName}}</h6></td>
+						<td>{{contact.emailId}}</td>
+						<td>{{contact.firstName}}</td>
+						<td>{{contact.lastName}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -379,4 +384,40 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="full-calendar-modal-event-{{socialStatus.id}}" tabindex="-1"
+	role="dialog" *ngFor="let socialStatus of socialStatusList">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">x</span> <span class="sr-only">close</span>
+				</button>
+				<h4 id="full-calendar-modal-title" class="modal-title">Edit Post</h4>
+			</div>
+			<div id="full-calendar-modal-body" class="modal-body">
+				<h4>{{socialStatus.statusMessage}}</h4>
+				<div *ngIf="socialStatus.socialStatusContents?.length > 0">
+					<span *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+						<img *ngIf="socialStatusContent.fileType  == 'image'"
+							alt="{{socialStatusContent.fileType}}"
+							src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}"
+							style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
+						<video *ngIf="socialStatusContent.fileType  == 'video'"
+							width="100%" height="240" controls>
+							<source
+								src="{{MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{accessToken}}"
+								type="video/mp4">
+						</video>
+					</span>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm uppercase rounded-0" (click)="editSocialStatus(socialStatus)">Edit</button>
+				<button type="button" class="btn btn-dialog btn-sm uppercase rounded-0" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
 </div>

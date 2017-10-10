@@ -20,14 +20,13 @@ import { VideoFileService } from "../.././../videos/services/video-file.service"
 import { ContactService } from "../.././../contacts/services/contact.service";
 
 import { Pagination } from '../../../core/models/pagination';
-import {CalendarComponent} from '../calendar/calendar.component';
 
 declare var $, flatpickr, videojs: any;
 @Component({
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
     styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [PagerService, Pagination, CalendarComponent]
+    providers: [PagerService, Pagination]
 })
 export class UpdateStatusComponent implements OnInit {
     @Input('isSocialCampaign') isSocialCampaign: boolean = false;
@@ -43,6 +42,7 @@ export class UpdateStatusComponent implements OnInit {
 
     profileImage: string;
     userId: number;
+    socialStatusList: Array<SocialStatus> = new Array<SocialStatus>();
 
     contactListsPagination: Pagination = new Pagination();
     contactsPagination: Pagination = new Pagination();
@@ -53,8 +53,7 @@ export class UpdateStatusComponent implements OnInit {
     constructor(private socialService: SocialService, private twitterService: TwitterService, 
             private facebookService: FacebookService, private videoFileService: VideoFileService, 
             private authenticationService: AuthenticationService, private contactService: ContactService,
-            private pagerService: PagerService, private router: Router, private logger: Logger,
-            private calendarComponent: CalendarComponent) {
+            private pagerService: PagerService, private router: Router, private logger: Logger) {
         
         this.resetCustomResponse();
     }
@@ -188,7 +187,7 @@ export class UpdateStatusComponent implements OnInit {
             data => {
                 this.initializeSocialStatus();
                 $('#full-calendar').fullCalendar('removeEvents');
-                this.calendarComponent.listEvents();
+                this.listEvents();
                 this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
             },
             error => {
@@ -210,7 +209,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 $('#full-calendar').fullCalendar('removeEvents');
-                this.calendarComponent.listEvents();
+                this.listEvents();
             },
             error => console.log(error),
             () => console.log('Finished')
@@ -336,7 +335,12 @@ export class UpdateStatusComponent implements OnInit {
     
     
     /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION START *****************/
-    loadContacts( contactList: ContactList, pagination: Pagination ) {
+    loadContactsOnPreview( contactList: ContactList, pagination: Pagination){
+        pagination.pageIndex = 1;
+        this.loadContacts(contactList, pagination);
+    }
+    
+    loadContacts( contactList: ContactList, pagination: Pagination) {
         this.previewContactList = contactList;
         this.contactService.loadUsersOfContactList( this.previewContactList.id, pagination ).subscribe(
             ( data: any ) => {
@@ -358,12 +362,84 @@ export class UpdateStatusComponent implements OnInit {
     
     /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
 
+    constructCalendar() {
+        let self = this;
+        $( '#full-calendar' ).fullCalendar( {
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            views: {
+                listDay: { buttonText: 'list day' },
+                listWeek: { buttonText: 'list week' }
+            },
+            defaultView: 'month',
+            timeFormat: 'h:mm',
+            eventRender: function( event: any, element: any ) {
+                element.find( ".fc-time" ).addClass( 'fc-time-title' );
+                element.find( ".fc-title" ).addClass( 'fc-time-title' );
+                element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9 pull-right p0"></div>' );
+                element.find( ".fc-time" ).css( { "display": "block" });
+
+                let socialStatusProviders = event.data.socialStatusProviders;
+                let str = '';
+                for ( var i in socialStatusProviders ) {
+                    
+                    str += `<img class="img-responsive img-circle" style="height: auto; width: 100%;" src="${socialStatusProviders[i].socialConnection.profileImage}">`;
+                    
+                    if('FACEBOOK' === socialStatusProviders[i].socialConnection.source)
+                        str += '<i class="fa fa-social pull-right fa-facebook fa-facebook-color"></i>';
+                    else if ('TWITTER' === socialStatusProviders[i].socialConnection.source)
+                        str += '<i class="fa fa-social pull-right fa-twitter fa-twitter-color"></i>';
+                    else if ('GOOGLE' === socialStatusProviders[i].socialConnection.source)
+                        str += '<i class="fa fa-social pull-right fa-google fa-google-color"></i>';
+                }
+                element.find( ".fc-right-block" )
+                    .after( $( "<div id='" + event.id + "' class='fc-left-block col-xs-3 p0'>" + str + "</div>" ) );
+            },
+            eventClick: function( event: any, element: any ) {
+                $( '#full-calendar-modal-event-' + event.id ).modal( 'show' );
+            },
+        });
+    }
+
+    listEvents() {
+        let self = this;
+        this.socialService.listEvents( this.userId )
+            .subscribe(
+            data => {
+                this.socialStatusList = data;
+                for ( var i in this.socialStatusList ) {
+
+                    var event = {
+                        title: this.socialStatusList[i].statusMessage,
+                        start: this.socialStatusList[i].scheduledTimeUser,
+                        id: this.socialStatusList[i].id,
+                        data: this.socialStatusList[i],
+                    };
+                    $( '#full-calendar' ).fullCalendar( 'renderEvent', event, true );
+                }
+            },
+            error => console.log( error ),
+            () => {
+                flatpickr( '.flatpickr', {
+                    enableTime: true,
+                    minDate: new Date()
+                });
+                console.log( "listEvents() finished" )
+            }
+            );
+    }
+    
+    
     ngOnInit() {
         this.userId = this.authenticationService.getUserId();
         this.listSocialConnections();
-
+        this.listEvents();
+        this.constructCalendar();
         $("#schedule-later-div").hide();
-
+        
         if (this.isSocialCampaign)
             this.loadContactLists(this.contactListsPagination);
     }
