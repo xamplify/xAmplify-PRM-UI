@@ -607,6 +607,10 @@ export class AddContactsComponent implements OnInit {
         this.gContacts.length = 0;
         this.zContacts.length = 0;
         this.salesforceContactUsers.length = 0;
+        
+        this.pager = [];
+        this.pagedItems =[];
+        
         this.contactService.successMessage = false;
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -796,13 +800,17 @@ export class AddContactsComponent implements OnInit {
             return;
         }
         if(this.selectedAddContactsOption == 4){
-        this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
-        this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
+            this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
         }
         if(this.selectedAddContactsOption == 3){
             this.pager = this.socialPagerService.getPager(this.salesforceContactUsers.length, page);
             this.pagedItems = this.salesforceContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
-            }
+        }
+        if(this.selectedAddContactsOption == 5){
+            this.pager = this.socialPagerService.getPager(this.zContacts.length, page);
+            this.pagedItems = this.zContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        }
     }
 
     saveGoogleContacts() {
@@ -1034,7 +1042,6 @@ export class AddContactsComponent implements OnInit {
                     this.zContacts.push( socialContact );
                     this.xtremandLogger.info( this.getZohoConatacts );
                     // this.zohoImageNormal = true;
-                    this.selectedAddContactsOption = 5;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
@@ -1048,6 +1055,8 @@ export class AddContactsComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.selectedAddContactsOption = 5;
+                this.setPage(1);
             },
             ( error: any ) => {
                 var body = error['_body'];
@@ -1135,6 +1144,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.setPage(1);
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -1404,6 +1414,7 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getSalesforceConatactList = data;
+                this.selectedAddContactsOption = 3;
                 if ( this.getSalesforceConatactList.contacts.length == 0 ) {
                     this.isContactsThere = true;
                     this.hideModal();
@@ -1431,6 +1442,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
+                this.setPage(1);
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );

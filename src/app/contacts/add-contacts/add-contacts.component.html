@@ -68,8 +68,7 @@ img:hover {
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li>Add Contacts</li>
-			<!-- <li><a>Dropzone File Upload</a></li> -->
+			<li style="color:#888">Add Contacts</li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a type="button" class="btn"
@@ -88,7 +87,7 @@ img:hover {
 						<div class="fileupload-buttonbar">
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6"
 								style="position: auto; border-right: 1px solid #999999; height: 150px;">
-								<h4 class="col-xs-12">Add your contacts with given options</h4>
+								<h4 class="col-xs-12" style="right:6px">Add your contacts with given options</h4>
 								<section>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
 										<button class="btn-primary btn-block" id="addContacts"
@@ -126,7 +125,7 @@ img:hover {
 								<span class="fileupload-process"> </span>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-								<h4 class="col-xs-12">Import from available cloud service</h4>
+								<h4 class="col-xs-12" style="left:9px">Import from available cloud service</h4>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<button *ngIf="sfImageNormal"
 										id="salesforceContact_buttonNormal"
@@ -452,10 +451,10 @@ img:hover {
 											id="google-contacts-table" *ngIf="gContacts">
 											<thead>
 												<tr>
-													<th><input type="checkbox"
+													<td align="center"><input type="checkbox"
 														id="select_all_google_contacts"
 														(change)="selectAllGoogleContacts($event.target.checked)"
-														checked=true></th>
+														checked=true></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -465,11 +464,11 @@ img:hover {
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index">
-													<th><input type="checkbox" name="selectedUserIds"
+													<td align="center"><input type="checkbox" name="selectedUserIds"
 														id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
-														(change)="selectGoogleContact($event.target.checked)"></th>
+														(change)="selectGoogleContact($event.target.checked)"></td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
@@ -516,10 +515,10 @@ img:hover {
 											id="google-contacts-table" *ngIf="zContacts">
 											<thead>
 												<tr>
-													<th><input type="checkbox"
+													<td align="center"><input type="checkbox"
 														id="select_all_google_contacts"
 														(change)="selectAllZohoContacts($event.target.checked)"
-														checked=true></th>
+														checked=true></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -528,19 +527,35 @@ img:hover {
 												</tr>
 											</thead>
 											<tbody>
-												<tr *ngFor="let user of zContacts;let i = index">
-													<th><input type="checkbox" name="selectedUserIds"
+												<tr *ngFor="let user of pagedItems;let i = index">
+													<td align="center"><input type="checkbox" name="selectedUserIds"
 														id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
-														(change)="selectZohoContact($event.target.checked)"></th>
+														(change)="selectZohoContact($event.target.checked)"></td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
 												</tr>
 											</tbody>
 										</table>
-
+										<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+             								<li [ngClass]="{disabled:pager.currentPage === 1}">
+                							   <a (click)="setPage(1)">First</a>
+             								</li>
+            								<li [ngClass]="{disabled:pager.currentPage === 1}">
+                 							   <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+             								</li>
+             								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                 							   <a (click)="setPage(page)">{{page}}</a>
+             								</li>
+             								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                 							   <a (click)="setPage(pager.currentPage + 1)">Next</a>
+             								</li>
+								            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								               <a (click)="setPage(pager.totalPages)">Last</a>
+								            </li>
+         								</ul>
 									</div>
 								</div>
 								<!-- END EXAMPLE TABLE PORTLET-->
@@ -562,10 +577,10 @@ img:hover {
 											id="google-contacts-table" *ngIf="salesforceContactUsers">
 											<thead>
 												<tr>
-													<th><input type="checkbox"
+													<td align="center"><input type="checkbox"
 														id="select_all_google_contacts"
 														(change)="selectAllSalesforceContacts($event.target.checked)"
-														checked=true></th>
+														checked=true></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -576,11 +591,11 @@ img:hover {
 											<tbody>
 												<tr
 													*ngFor="let user of pagedItems;let i = index">
-													<th><input type="checkbox" name="selectedUserIds"
+													<td align="center"><input type="checkbox" name="selectedUserIds"
 														id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
-														(change)="selectSalesforceContact($event.target.checked)"></th>
+														(change)="selectSalesforceContact($event.target.checked)"></td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
