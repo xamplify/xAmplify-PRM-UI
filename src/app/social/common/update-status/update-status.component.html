@@ -11,10 +11,9 @@
     <div class="row">
 
         <div class="col-md-3 col-sm-12">
-            <div class="col-md-12 dashboard-stat2 rounded-0 text-center">
-                <h3 style="margin-bottom: 1em;margin-top: 0.4em;">Social Account</h3>
-
-				<div class="row">
+            <div class="col-sm-12 portlet light">
+				<h6 class="caption-subject font-red-sunglo uppercase bold text-center">Social Account</h6>
+				<div class="clearfix">
 					<div class="col-md-6 col-sm-4 col-xs-4 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
 						<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}" 
 						(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
@@ -42,7 +41,7 @@
 						</div>
 					</div>
 				</div>
-                <div class="text-center row" style="margin: 2em 0.5em;">
+                <div class="text-center clearfix pb10">
 		        	<div class="col-xs-12"><a class="btn btn-primary btn-update-status" data-toggle="modal" data-target="#connectAccountsModal">Connect Accounts</a></div>
 		        	<div class="col-xs-12"><a class="btn btn-update-status" [routerLink]="['/home/social/manage/all']" style="border: 1px solid;">Manage Accounts</a></div>
 		        </div>
@@ -62,11 +61,87 @@
             </div>
 
         </div>
-
-        <div class="col-md-9 col-sm-12">
-            <div class="col-sm-12 dashboard-stat2 rounded-0 clearfix">
-                <section *ngIf="customResponse.statusText !== null">
-	                <div class="col-sm-12 alert alert-dismissible" role="alert"
+		
+		<div class="col-md-9 col-sm-12" *ngIf='socialStatus.socialStatusProviders?.length === 0'>
+			<div class='alert alert-info'>
+				<h4 class='m0 bold'>You have not added any social accounts.</h4>
+			</div>
+		</div>
+        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}">
+			<section *ngIf="isSocialCampaign">
+			<div class="col-sm-12 portlet light">
+				<div class="portlet-body clearfix" style="padding: 15px;">
+					<div class="form-group m0">
+					    <label for="campaignName"><h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6></label>
+					    <input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name">
+				  	</div>
+				</div>
+			</div>
+			<div class="col-sm-12 portlet light">
+				<div class="portlet-body clearfix" style="padding: 15px;">
+					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
+						<div class='alert alert-info' role='alert'>
+							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
+						</div>
+						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
+					</section>
+					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Select</th>
+										<th>Contact list name</th>
+										<th>Created by</th>
+										<th>Created time</th>
+										<th>No of Contacts</th>
+										<th>Preview</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="cursor: pointer;" *ngFor="let contactList of contactListsPagination.pagedItems" 
+										[ngClass]="{'highlight': selectedContactListIds.indexOf(contactList.id)>-1}"
+										(click)="highlightRow(contactList.id)">
+										<td class='text-center m0'>
+											<input type='checkbox' id='{{contactList.id}}' 
+												(click)="toggleContactListCheckbox(contactList.id)">
+										</td>
+										<td><h5 class='m0'>{{contactList.name}}</h5></td>
+										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
+										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
+										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
+										<td class='text-center m0'>
+											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContactsOnPreview(contactList, contactsPagination)"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
+	                           <a (click)="setPageContactLists(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
+	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
+	                         </li>
+	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
+	                            <a (click)="setPageContactLists(page)">{{page}}</a>
+	                         </li>
+	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
+	                         </li>
+	                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
+	                         </li>
+	                     </ul>
+					</section>					
+				</div>
+			</div>
+			</section>
+			<div class="col-sm-12 portlet light clearfix">
+                <section class='col-sm-12 pt10 pb10' *ngIf="customResponse.statusText !== null">
+	                <div class="alert alert-dismissible m0" role="alert"
 	                	[ngClass]="{'alert-info': customResponse.type === 0,
 	                				'alert-success': customResponse.type === 1,
 	                				'alert-warning': customResponse.type === 2,
@@ -76,45 +151,42 @@
 	                    <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
 	                </div>
                 </section>
-                <section *ngIf='isSocialCampaign'>
-                	  <div class="form-group">
-					    <label for="campaignName">Campaign Name</label>
-					    <input type="text" class="form-control" id="campaignName" placeholder="Campaign Name">
-					  </div>
-  
-                </section>
                 <div class="col-sm-12">
-                    <h3 style="margin: 0 0 15px 0;">Selected Account(s)</h3>
-                    <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
-						<div class="btn btn-xs rounded-0" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
-							[ngClass]="{
-									'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
-									'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-									'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-							<div class="col-xs-12" style="display: inline-flex;">
-								<i class="fa fa-social pull-right" 
-										[ngClass]="{
-											'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
-											'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-											'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
-								<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
-								<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
+                    <h6 class="caption-subject font-red-sunglo uppercase bold">Selected Account(s)</h6>
+                    <section>
+	                    <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px" 
+	                    	[ngClass]="{'inline-grid': socialStatusProvider.selected,
+										'hidden': !socialStatusProvider.selected}">
+							<div class="btn btn-xs rounded-0" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
+								[ngClass]="{
+										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+								<div class="col-xs-12" style="display: inline-flex;">
+									<i class="fa fa-social pull-right" 
+											[ngClass]="{
+												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+									<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
+									<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
+								</div>
 							</div>
-						</div>
-					</span>
+						</span>
+					</section>
                 </div>
-                <div class="col-sm-12 padding-10px">
+                <div class="col-sm-12">
 					<textarea placeholder="What's happening?" rows="4"
-						class="form-control form-group status-message-textarea rounded-0 margin-bottom-10px"
+						class="form-control form-group rounded-0 margin-bottom-10px"
 						[(ngModel)]="socialStatus.statusMessage"
 						maxlength="140"></textarea>
-					<h6 class="pull-right"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+					<h6 class="pull-right mt0"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
                 </div>
-                <div class="col-sm-12 padding-10px">
+                <div class="col-sm-12">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
                         <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
                         <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
-                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80" controls>
+                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
 							<source src="{{socialStatusContent.filePath}}" type="video/mp4">
 						</video>
                     </div>
@@ -164,14 +236,14 @@
                     <button type="button" class="btn btn-default rounded-0" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
                 </div>
                 <div class="col-xs-12 margin-bottom-10px">
-                    <div class="col-xs-6">
+                    <div class="col-xs-6 p0">
                         <label class="fileContainer padding-right-10px">
-		    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i>Add photos
+		    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i><span class='hidden-xs'>Add photos</span>
 		    				<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
 						</label>
                         <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Import Videos</button>
                     </div>
-                    <div class="col-xs-6">
+                    <div class="col-xs-6 p0">
 						<div class="btn-group pull-right">
 							<button type="button" class="btn btn-success rounded-0" [disabled]="socialStatus.statusMessage?.length === 0"
 								(click)="showScheduleOption('schedule-option-div')">Schedule</button>
@@ -191,64 +263,6 @@
                 </div>
             </div>
 			
-			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
-				<div class="portlet-body clearfix" style="padding: 15px;">
-					<h6 class="caption-subject font-red-sunglo uppercase bold">Contact Lists</h6>
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
-						<div class='alert alert-info' role='alert'>
-							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
-						</div>
-						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
-					</section>
-					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
-						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr>
-										<th>Select</th>
-										<th>Contact list name</th>
-										<th>Created by</th>
-										<th>Created time</th>
-										<th>No of Contacts</th>
-										<th>Preview</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="cursor: pointer;" *ngFor="let contactList of contactListsPagination.pagedItems">
-										<td class='text-center m0'><input type='checkbox'></td>
-										<td><h5 class='m0'>{{contactList.name}}</h5></td>
-										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
-										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
-										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
-										<td class='text-center m0'>
-											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContactsOnPreview(contactList, contactsPagination)"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
-	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
-	                           <a (click)="setPageContactLists(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
-	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
-	                         </li>
-	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
-	                            <a (click)="setPageContactLists(page)">{{page}}</a>
-	                         </li>
-	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-	                             <a (click)="setPageContactLists(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
-	                         </li>
-	                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-	                             <a (click)="setPageContactLists(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
-	                         </li>
-	                     </ul>
-					</section>					
-					
-					
-				</div>
-			</div>
             <div [hidden]="isSocialCampaign">
             	<div class="col-sm-12 dashboard-stat2 rounded-0" style="padding: 25px;">
 					<div id='full-calendar'></div>

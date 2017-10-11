@@ -31,24 +31,21 @@ declare var $, flatpickr, videojs: any;
 export class UpdateStatusComponent implements OnInit {
     @Input('isSocialCampaign') isSocialCampaign: boolean = false;
 
-    customResponse = new CustomResponse();
-
     videoUrl: string;
     posterImage: string;
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
-
-    socialStatus = new SocialStatus();
-
-    profileImage: string;
     userId: number;
-    socialStatusList: Array<SocialStatus> = new Array<SocialStatus>();
+    selectedContactListIds = [];
+    
+    socialStatus = new SocialStatus();
+    previewContactList = new ContactList();
+    socialStatusList = new Array<SocialStatus>();
+    customResponse = new CustomResponse();
 
     contactListsPagination: Pagination = new Pagination();
     contactsPagination: Pagination = new Pagination();
     videosPagination: Pagination = new Pagination();
-    
-    previewContactList = new ContactList();
 
     constructor(private socialService: SocialService, private twitterService: TwitterService, 
             private facebookService: FacebookService, private videoFileService: VideoFileService, 
@@ -70,13 +67,13 @@ export class UpdateStatusComponent implements OnInit {
 
     previewVideo(videoFile: SaveVideoFile) {
         this.selectedVideo = videoFile;
-        this.posterImage = this.selectedVideo.imagePath;
+        this.posterImage = videoFile.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
 
         this.videoJSplayer.play();
-        $('tr').click(function () {
+        $('#list-videos-table > tbody > tr').click(function () {
             $('input[type=radio]', this).attr('checked', 'checked');
         }
         );
@@ -172,6 +169,10 @@ export class UpdateStatusComponent implements OnInit {
         this.socialStatus.shareNow = true;
 
         this.updateStatus();
+    }
+    
+    validateUpdateStatus(){
+        
     }
 
     updateStatus() {
@@ -432,6 +433,24 @@ export class UpdateStatusComponent implements OnInit {
             );
     }
     
+    highlightRow( contactListId:number ){
+        let isChecked = $('#'+contactListId).is(':checked');
+        if(!isChecked){
+            this.selectedContactListIds.push(contactListId);
+            $('#'+contactListId).prop('checked', true);
+            $('#'+contactListId).parent().closest('tr').addClass('highlight');
+        }else{
+            this.selectedContactListIds.splice($.inArray(contactListId, this.selectedContactListIds),1);
+            $('#'+contactListId).prop('checked', false);
+            $('#'+contactListId).parent().closest('tr').removeClass('highlight');
+        }
+    }
+    
+    toggleContactListCheckbox( contactListId:number ){
+        let isChecked = $('#'+contactListId).is(':checked');
+        $('#'+contactListId).prop('checked', isChecked);
+        this.highlightRow(contactListId);
+    }
     
     ngOnInit() {
         this.userId = this.authenticationService.getUserId();
