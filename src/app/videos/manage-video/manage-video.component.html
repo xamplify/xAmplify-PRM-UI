@@ -27,7 +27,7 @@
 				<p>{{showVideoFileName}} video file Updated Successfully!</p>
 			</div>
 			<div *ngIf="deletedVideo" style="width: 97.5%;" class="col-md-6" id="deleteMesg" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
 				<p> {{showVideoFileName}} video deleted Successfully!</p>
 			</div>
 			<div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">

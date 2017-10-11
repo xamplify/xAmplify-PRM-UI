@@ -222,14 +222,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                                 this.play360Video();
                             } catch (err) { 
                                // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
-                              //   document.getElementById('para').innerHTML = this.errorHtml;
+                                 document.getElementById('para').innerHTML = this.errorHtml;
                             }
                         } else {
                             try {
                                 this.playNormalVideo();
                             } catch (err) {
                               //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
-                            //    document.getElementById('para').innerHTML = this.errorHtml;
+                                document.getElementById('para').innerHTML = this.errorHtml;
                                 }
                         }
                         this.defaultVideoSettings();
@@ -237,7 +237,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
-                      //  document.getElementById('para').innerHTML = this.errorHtml;
+                        document.getElementById('para').innerHTML = this.errorHtml;
                       //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                     }
                     );

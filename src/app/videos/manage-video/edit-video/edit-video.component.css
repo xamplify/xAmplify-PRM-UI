@@ -1,8 +1,5 @@
-/deep/ .default tag:not(.tag--editing) {
-        color:#fff !important ;
-        background: blue !important;  
-        }
- /deep/ .video-js .vjs-progress-holder .vjs-load-progress {
+
+ :host /deep/ .video-js .vjs-progress-holder .vjs-load-progress {
     position: absolute;
     display: block;
     height: 2.3em; }         
@@ -99,3 +96,29 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
     text-align: center;
     top: 9px;
 }
+
+ :host /deep/ .bootstrap-switch { 
+border-radius: 0;
+}
+:host /deep/ .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on,
+.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, 
+.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label {
+    border-radius: 0;
+}
+:host /deep/.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
+  border-radius: 0;
+}
+:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info{
+ border-radius: 0;
+}
+:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger {
+ border-radius: 0;
+}
+:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary{
+    border-radius: 0;
+}
+:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning {
+    border-radius: 0;
+} 

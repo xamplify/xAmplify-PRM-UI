@@ -28,6 +28,7 @@ export class VideoFileService {
     public pause360Action: boolean;
     public categoryNumber = 0;
     viewsCategoryNumber = 0;
+    isProgressBar = false;
     public URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');

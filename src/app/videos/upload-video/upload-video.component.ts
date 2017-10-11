@@ -103,6 +103,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
             this.maxVideoSize = 800; // upload video size in MB's
+            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
@@ -124,7 +125,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.isFileProgress = true;
                 this.isFileDrop = true;
                 this.isProgressBar = true;
-                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+              //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
@@ -132,7 +133,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 if (response.includes('No space left on device')) {
                     this.noSpaceOnDevice = true;
                     this.setTimoutMethod();
-                } else { this.processVideo(JSON.parse(response).path); }
+                } else {
+                     this.processVideo(JSON.parse(response).path); }
             };
             if (this.refService.uploadRetrivejsCalled === false) {
                 $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
@@ -175,7 +177,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         } else { this.videoDisabled = true; this.previewDisabled = false; }
     }
     processVideo(responsePath: any) {
-        this.cloudStorageDisabled();
+        if (!this.videoFileService.isProgressBar) { this.cloudStorageDisabled(); }
         const val = this;
         if (this.RecordSave !== true) {
             setTimeout(function () {
@@ -206,8 +208,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.router.navigateByUrl('/home/videos/manage_videos');
                     } else if (this.playerInit === false) {
                         this.videoFileService.actionValue = '';
+                        this.videoFileService.isProgressBar = false;
+                        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
                     } else {
                         this.videoFileService.actionValue = '';
+                        this.videoFileService.isProgressBar = false;
+                        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
                     }
                 } else {   // Maximum Disk Space Reached for you subscription
                     if (this.processVideoResp.error.includes('maximum upload')) {
@@ -649,7 +655,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     dropbox(files: any) {
         swal({
-            text: 'Retriving video from dropbox...! Please Wait...It`s processing',
+            text: 'Retrieving video from dropbox...! Please Wait...It\'s processing',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
         });
         console.log('files ' + files);
@@ -683,7 +689,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             if (self.isVideo(files[0].name)) {
                 self.cloudStorageSelected = true;
                 swal({
-                    text: 'Retriving video from box...! Please Wait...It`s processing',
+                    text: 'Retrieving video from box...! Please Wait...It\'s processing',
                     allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                 });
                 console.log(files);
@@ -763,7 +769,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.picker.dispose();
             }
             swal({
-                text: 'Retriving video from Google Drive...! Please Wait...It`s processing',
+                text: 'Retrieving video from Google Drive...! Please Wait...It\'s processing',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
             });
             self.downloadGDriveFile(doc.id, doc.name);
@@ -831,7 +837,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy() {
-        //  swal.close();
         $('r-video').remove();
         if (this.deviceNotSupported) { swal.close(); }
         console.log('Deinit - Destroyed Component');
@@ -848,6 +853,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         if ((this.isProgressBar === true || this.uploadeRecordVideo === true || this.cloudStorageSelected === true
             || this.processing === true) && this.errorIsThere === false) {
             this.redirectPge = true;
+            this.videoFileService.isProgressBar = true;
+            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             swal('', 'Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }
         if (this.picker) {

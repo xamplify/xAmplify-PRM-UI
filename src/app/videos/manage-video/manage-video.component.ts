@@ -95,7 +95,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
         } catch (error) {
-            this.xtremandLogger.error('erro in ng oninit :' + error);
+            this.xtremandLogger.error('error in ng oninit :' + error);
         }
     }
     loadVideosCount(userId: number) {
@@ -106,7 +106,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     } else { this.disableDropDowns = false; }
                 },
                 (error: any) => {
-                    this.xtremandLogger.error(' manage Videos Component : Loading Videos method():' + error);
+                    this.xtremandLogger.error(' manage Videos Component : Loading Videos count method():' + error);
                     this.xtremandLogger.errorPage(error);
                 },
                 () => console.log('load videos completed:')
@@ -200,7 +200,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     showEditVideo(video: SaveVideoFile) {
         this.referenceService.loading(this.httpRequestLoader, true);
         console.log('show edit video method in mange videos ' + JSON.stringify(video));
-        this.deletedVideo = false;
+        this.closeBannerPopup();
         this.videoFileService.videoViewBy = video.viewBy;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((editVideoFile: SaveVideoFile) => {
@@ -221,6 +221,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showPlayVideo(video: SaveVideoFile) {
+        this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.videoFileService.videoViewBy = video.viewBy;
         console.log('MangeVideoComponent playVideo:');
@@ -229,7 +230,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
-                this.deletedVideo = false;
                 this.showVideosPage(false, false, true, false);
             },
             (error: any) => {
@@ -239,6 +239,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showCampaignVideoReport(video: SaveVideoFile) {
+        this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
         console.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
@@ -246,7 +247,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 console.log(video);
                 this.selectedVideo = campaignVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
-                this.deletedVideo = false;
                 this.showVideosPage(false, false, false, true);
             },
             (error: any) => {
@@ -316,8 +316,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             },
             () => console.log('deleted functionality done')
             );
-        this.deletedVideo = false;
-        this.campaignVideo = false;
+      this.closeBannerPopup();
     }
     deleteAlert(alias: string, position: number, videoName: string) {
         console.log('videoId in sweetAlert()');
@@ -336,7 +335,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         });
     }
     closeBannerPopup() {
-        this.campaignVideo = false;
+        this.campaignVideo = this.deletedVideo = false;
     }
     update(videoFile: SaveVideoFile) {
         this.isCategoryUpdated = true;
