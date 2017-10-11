@@ -792,9 +792,10 @@ margin:2px;
 							<td class="center" ><h5>{{emailClicked.campaignName}}</h5></td>
 							<td class="center"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
 							<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
-							<td class="center" *ngIf="emailClicked.os == 'windows'" style = "color:#0085d5;font-size:17px"><i class="fa fa-windows" aria-hidden="true"></i></td>
-							<td class="center" *ngIf="emailClicked.os == 'mac'" style = "color:green;font-size:17px"><i class="fa fa fa-apple" aria-hidden="true"></i></td>
-							<td class="center" *ngIf="emailClicked.os == 'linux'" style = "color:#2b247d;font-size:17px"><i class="fa fa fa-linux" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style = "color:#0085d5;font-size:18px !important"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'mac'"><i class="fa fa fa-apple" aria-hidden="true"  style = "color:green;font-size:22px !important"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style = "color:#2b247d;font-size:22px !important"></i></td>
+							<td class="center" *ngIf="emailClicked.os == 'android'"><i class="fa fa-android" aria-hidden="true" style = "color:#a4ca39;font-size:22px !important"></i></td>
 							<td class="center" *ngIf="emailClicked.os == null"> - </td>
 						</tr>
 					</tbody>
@@ -804,7 +805,7 @@ margin:2px;
                                              <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1,'emailClicked')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
                                              </li>
-                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+                                             <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
                                                  <a (click)="setPage(pagination.pager.currentPage - 1,'emailClicked')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
                                               </li>
                                               <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
@@ -858,9 +859,10 @@ margin:2px;
 							<td class="center" ><h5>{{watched.campaignName}}</h5></td>
 							<td class="center" ><h5>{{watched.city}},{{watched.state}},{{watched.country}}</h5></td>
 							<!-- <td><h5>{{watched.os}}</h5></td> -->
-							<td class="center" *ngIf="watched.os == 'windows'" style = "color:#0085d5;font-size:17px"><i class="fa fa-windows" aria-hidden="true"></i></td>
-							<td class="center" *ngIf="watched.os == 'mac'" style = "color:green;font-size:17px"><i class="fa fa fa-apple" aria-hidden="true"></i></td>
-							<td class="center" *ngIf="watched.os == 'linux'" style = "color:#2b247d;font-size:17px"><i class="fa fa fa-linux" aria-hidden="true"></i></td>
+							<td class="center" *ngIf="watched.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style = "color:#0085d5;font-size:18px !important"></i></td>
+							<td class="center" *ngIf="watched.os == 'mac'"><i class="fa fa fa-apple" aria-hidden="true" style = "color:green;font-size:22px !important"></i></td>
+							<td class="center" *ngIf="watched.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style = "color:#2b247d;font-size:22px !important"></i></td>
+							<td class="center" *ngIf="watched.os == 'android'"><i class="fa fa-android" aria-hidden="true" style = "color:#a4ca39;font-size:22px !important"></i></td>
 							<td class="center" *ngIf="watched.os == null"> - </td>
 						</tr>
 					</tbody>
