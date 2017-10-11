@@ -10,7 +10,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign} from '../models/campaign';
 import { SaveVideoFile} from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -57,7 +57,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         public isError:boolean = false;
         httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                                 
-    constructor(private campaignService:CampaignService,private router:Router,private logger:Logger,
+    constructor(private campaignService:CampaignService,private router:Router,private logger:XtremandLogger,
             private pagination:Pagination,private pagerService: PagerService,
             private refService:ReferenceService,private userService:UserService,private authenticationService:AuthenticationService) {
         if(this.refService.campaignSuccessMessage=="SCHEDULE"){
@@ -91,8 +91,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
                 this.refService.loading(this.httpRequestLoader, false);
             },
             error => {
-                this.logger.error(this.refService.errorPrepender+" listCampaign():"+error);
-                this.refService.showServerError(this.httpRequestLoader);
+                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
         );

@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.username = userName;
             this.authenticationService.user.emailId = userName;
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
+            this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
             // if ( !this.authenticationService.user.id ) {
             //     this.getUserByUserName( userName );

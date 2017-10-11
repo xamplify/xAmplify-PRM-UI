@@ -95,7 +95,13 @@ export class LoginComponent implements OnInit {
                 this.initializeTwitterNotification();
                 // if user is coming from login
              //   this.getLoggedInUserDetails();
-                this.router.navigate( ['/home/dashboard/default'] );
+                let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                if(currentUser.hasCompany){
+                    this.router.navigate( ['/home/dashboard/default'] );
+                }else{
+                    this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                }
+                
                 // if user is coming from any link
 
             } else {

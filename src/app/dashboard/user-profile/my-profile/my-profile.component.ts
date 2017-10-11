@@ -46,10 +46,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     active = false;
     defaultPlayerSuccess = false;
     isPlayed = false;
+    loggedInUserId:number = 0;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
+        this.loggedInUserId = this.authenticationService.getUserId();
         this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
           this.router.navigateByUrl('/home/dashboard');
@@ -68,7 +70,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 100 * 1024 * 1024, // 100 MB
-            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" +this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
         });
 
 
@@ -220,7 +222,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
-            'userId': this.authenticationService.user.id
+            'userId':this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword == this.updatePasswordForm.value.newPassword) {
             $('#update-password-error-div').show(600);
@@ -268,7 +270,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     checkPassword(event: any) {
         var password = event.target.value;
         if (password != "") {
-            var user = { 'oldPassword': password, 'userId': this.authenticationService.user.id };
+            var user = { 'oldPassword': password, 'userId':this.loggedInUserId };
             this.userService.comparePassword(user)
                 .subscribe(
                 data => {
@@ -450,7 +452,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.updateUserProfileForm.value);
         this.refService.goToTop();
         $("#update-profile-div-id").hide();
-        this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.user.id)
+        this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
             data => {
                 var body = data['_body'];

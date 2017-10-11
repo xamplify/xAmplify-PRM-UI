@@ -1,0 +1,37 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Observable }     from 'rxjs/Rx';
+import{CompanyProfile} from '../models/company-profile';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+
+@Injectable()
+export class CompanyProfileService {
+
+
+    URL = this.authenticationService.REST_URL+"admin/";
+    constructor( private authenticationService: AuthenticationService, private http: Http ) { }
+
+
+    getByUserId( userId: number ) {
+        return this.http.get(this.URL+"company-profile/get/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
+    
+    
+    saveOrUpdate(companyProfile:CompanyProfile,userId:number){
+        return this.http.post(this.URL+"company-profile/saveOrUpdate/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    private extractData( res: Response ) {
+        let body = res.json();
+        console.log( body );
+        return body || {};
+    }
+
+    private handleError( error: any ) {
+        return Observable.throw( error );
+    }
+}

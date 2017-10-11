@@ -74,6 +74,7 @@ export class AuthenticationService {
                         'accessToken': this.map.access_token,
                         'refreshToken': this.map.refresh_token,
                         'expiresIn': this.map.expires_in,
+                        'hasCompany':res.json().hasCompany,
                         'roles':res.json().roles
                     };
                     localStorage.setItem( 'currentUser', JSON.stringify( userToken ) );
@@ -100,6 +101,16 @@ export class AuthenticationService {
         }
         return userId;
     }
+    
+    hasCompany():boolean{
+        let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+        if(currentUser!=null){
+            return currentUser.hasCompany;
+        }
+        
+        
+    }
+    
     
     
     getRoles():any{

@@ -138,6 +138,15 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label class="control-label col-md-3">Channel Campaign<font style="color: red"><b>*</b></font></label>
+										<div class="col-md-9">
+											<switch [status]="campaign.channelCampaign"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
+														   (statusChange)="setChannelCampaign($event)">
+											</switch>
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="control-label col-md-3">Notify Me When</label>
 										<div class="col-md-9">
 											<div class="email-options-checkbox-group email-options-notify">

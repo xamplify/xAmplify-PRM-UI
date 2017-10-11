@@ -19,14 +19,16 @@ import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
 import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 import { AvarageChartComponent } from './views-report/average-chart/average-chart.component';
+import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
+import { CompanyProfileService } from './company-profile/services/company-profile.service';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
-        FollowersComponent, SharedComponent,AvarageChartComponent
+        FollowersComponent, SharedComponent,AvarageChartComponent,EditCompanyProfileComponent
     ],
     exports: [],
-    providers: [DashboardService]
+    providers: [DashboardService,CompanyProfileService]
 })
 export class DashboardModule { }

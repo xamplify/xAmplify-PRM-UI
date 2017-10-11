@@ -23,4 +23,5 @@ export class User {
     alias: string;
     userDefaultPage: string;
     roles:Array<Role> = new Array<Role>();
+    hasCompany:boolean = false;
 }

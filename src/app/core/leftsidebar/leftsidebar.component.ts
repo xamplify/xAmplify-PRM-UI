@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { RoleName } from '../../core/models/role-name';
+import { ReferenceService } from '../../core/services/reference.service';
 @Component({
   selector: 'app-leftsidebar',
   templateUrl: './leftsidebar.component.html',
@@ -18,8 +19,7 @@ export class LeftsidebarComponent implements OnInit {
     isVideo:boolean = false;
     isTeamMember:boolean = false;
     roleName:RoleName=new RoleName();
-
-    constructor(location: Location,private authService:AuthenticationService) {
+    constructor(location: Location,private authService:AuthenticationService,private refService:ReferenceService) {
         this.location = location;
         let url = this.location.path();
         if( url.indexOf('dashboard') >= 0)

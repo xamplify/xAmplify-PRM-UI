@@ -1,0 +1,45 @@
+<div class="page-content">
+
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<!-- <li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
+				<i class="fa fa-angle-right"></i></li> -->
+			<li>Add Company Profile</li>
+		</ul>
+	</div>
+
+	<div class="portlet light">
+		<div class="portlet-title">
+			<div class="caption">Company Profile Info</div>
+		</div>
+		<div class="alert alert-info" id="info">Please Provide Company Details To Access The Platform</div>
+		<div class="portlet-body clearfix">
+		<div class="alert alert-success"  id="edit-sucess" style="display: none;">
+			<a (click)="referenceService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
+	  		<strong>{{message}}.Please Wait...</strong> 
+		</div>
+		<form role="form" [formGroup]="companyProfileForm" (ngSubmit)="saveOrUpdate()">
+				<div class="form-group">
+					<label class="control-label">Company Name</label>
+					 <input type="text" placeholder="Company Name" class="form-control"  formControlName="companyName"  required />
+					 <div *ngIf="formErrors.companyName" class="alert alert-danger">{{ formErrors.companyName }}</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Company Profile Name</label>
+					 <input type="text" placeholder="Company Profile Name" class="form-control" formControlName="companyProfileName" required />
+					 <div *ngIf="formErrors.companyProfileName" class="alert alert-danger">{{ formErrors.companyProfileName}}</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">About Us</label>
+					<textarea class="form-control" rows="5" cols="5" placeholder="About Us" style="resize: none"  formControlName="aboutUs"></textarea>
+					<div *ngIf="formErrors.aboutUs" class="alert alert-danger">{{ formErrors.aboutUs}}</div>
+				</div>
+				<div class="pull-right">
+						<button type="submit" id="saveCompanyButtonId"   [disabled]="!companyProfileForm.valid" class="btn green-haze">Save</button>
+					</div>
+			</form>
+		
+		
+		</div>
+	</div>
+</div>

@@ -11,7 +11,7 @@ import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
 import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.component';
 import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
-
+import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
                         { path: 'table_advance', component: TableAdvanceComponent},
@@ -22,7 +22,9 @@ const routes: Routes = [
                         { path: 'default', component: DefaultPageComponent },
                         { path: 'profilehelp', component: ProfileHelpComponent },
                         { path: 'followers', component: FollowersComponent },
-                        { path: 'shared', component: SharedComponent }
+                        { path: 'shared', component: SharedComponent },
+                        {path:'add-company-profile',component:EditCompanyProfileComponent},
+                        {path:'edit-company-profile',component:EditCompanyProfileComponent}
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

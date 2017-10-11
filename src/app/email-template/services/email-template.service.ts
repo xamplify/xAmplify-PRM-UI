@@ -85,70 +85,15 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+ 
     
-    highLightHtml(htmlText:string){
-        var code = htmlText;
-        var HtmlRegex = /(\&lt;[a-zA-Z1-6]+(\s*[a-zA-Z1-6\-_\.]+(?:=\".*\")?)*\s*\/?\s*\&gt;)/g;
-        var HtmlRegex2 = /\&lt;[a-zA-Z1-6]+(\s*[a-zA-Z1-6\-_\.]+(?:=\".*\")?)*\s*\/?\s*\&gt;/g;
-        var HtmlEndRegex = /(\&lt;\/[a-zA-Z1-6]*\&gt;)/g;
-        var attributeRegex = /([a-zA-Z0-9\-\_]*)=(\"[a-zA-Z0-9\-\_\s\{\}\(\)\[\]\.\/\,\=\+\#]*\")/g;
-        var commentRegex1 = /(&lt;!--[\s\S]*?--&gt;)/g;
-        var commentRegex2 = /(\/\/.*)/g;
-        var result = code;
-        if(result!=undefined){
-            result = result.replace(/</g, '&lt;');
-            result = result.replace(/>/g, '&gt;');
-            result = result.replace(HtmlRegex, '<span class="htmlTag">$1</span>');
-            var htmlAttrMatches = result.match(HtmlRegex2);
-            for(var i = 0; i < htmlAttrMatches.length; i++) {
-                var attrs = htmlAttrMatches[i];
-                attrs = attrs.replace(attributeRegex, '<span class="htmlAttr">$1</span>=<span class="htmlValue">$2</span>');
-                result = result.replace(htmlAttrMatches[i], attrs);
-            }
-            result = result.replace(HtmlEndRegex, '<span class="htmlTag" >$1</span>');
-            result = result.replace(commentRegex1, '<span class="comment" >$1</span>');
-            result = result.replace(commentRegex2, '<span class="comment">$1</span>');
-            
-            result = result.replace(/\n/g, '<br />');
-            result = result.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
-            return result;
-        }
-    }
-
-    
-    private extractData(res: Response) {
+    private extractData( res: Response ) {
         let body = res.json();
+        console.log( body );
         return body || {};
     }
 
-    private handleError(error: any) {
-        if (error.status === 500) {
-            var response =  JSON.parse(error['_body']);
-            return Observable.throw(new Error(response.message));
-        }
-        else if (error.status === 400) {
-            return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 409) {
-            return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 406) {
-            return Observable.throw(new Error(error.status));
-        }
-       /* var body = error['_body'];
-        if(body!=""){
-            var response = JSON.parse(body);
-            if(response.message!=undefined){
-                return Observable.throw(response.message);
-            }else{
-                return Observable.throw(response.error);
-            }
-            
-        }else{
-            let errMsg = (error.message) ? error.message :
-                error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-            return Observable.throw(error);
-        }
-       */
-    }  
+    private handleError( error: any ) {
+        return Observable.throw( error );
+    } 
 }

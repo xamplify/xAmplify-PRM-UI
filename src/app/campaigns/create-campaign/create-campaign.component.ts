@@ -488,6 +488,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailOpened(event:any){
         this.campaign.emailOpened = event;
     }
+    setChannelCampaign(event:any){
+        this.campaign.channelCampaign = event;
+    }
     setVideoPlayed(event:any){
         this.campaign.videoPlayed = event;
     }
@@ -1209,6 +1212,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
+            'channelCampaign':this.campaign.channelCampaign,
             'socialSharingIcons': true,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
