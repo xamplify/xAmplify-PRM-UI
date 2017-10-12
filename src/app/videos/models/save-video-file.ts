@@ -1,6 +1,7 @@
 import {Category} from '../models/category';
 export class SaveVideoFile {
     id: number;
+    uploadedUserId: number;
     title: string;
     categoryId: number;
     category: Category;

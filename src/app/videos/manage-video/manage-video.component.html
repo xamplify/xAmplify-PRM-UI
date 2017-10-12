@@ -90,25 +90,25 @@
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
 													    </a>
-														<a *ngIf="hasVideoRole" class="mix-preview1" style="left: 16%;" (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)" class="mix-preview1" style="left: 16%;" (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
 														<i class="fa fa-pencil-square-o"></i>
 													    </a>
-														<a  *ngIf="hasStatsRole" class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)"
+														<a class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)"
 														 title="Video Based Reports" data-rel="">
 														<i class="fa fa-line-chart"></i>
 													    </a>
 													</div>
 													<div style="top: 27%; position: relative;">
-													 <span *ngIf="hasCampaignRole">
+													 <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
 														<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
 														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													   </a>
-														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
+														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" (click)="campaignRouter(videoFile)" title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
 														<i class="fa fa-bullhorn"></i>
 													   </a>
 													</span>
-														<a *ngIf="hasVideoRole" class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)" onMouseOver="this.style.color='#fff'"
 														 title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>

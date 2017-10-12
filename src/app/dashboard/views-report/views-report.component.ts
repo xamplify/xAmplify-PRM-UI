@@ -47,16 +47,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     public totalViewsForThisVideo: Array<ContactList>;
 
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
-    sortVideos = [
-        { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
-        { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
-        { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
-        { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
-    ];
-    public videoSort: any = this.sortVideos[0];
+    sortVideos: any;
+    public videoSort: any;
 
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
@@ -68,12 +60,12 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
     ];
     public contactsUsersSort: any = this.sortContactUsers[0];
-
-
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
         public logger: XtremandLogger, public pagination: Pagination, public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService) {
+        this.sortVideos = this.videoUtilService.sortVideos;
+        this.videoSort = this.sortVideos[0];
         this.categoryNum = 0;
         this.isCategoryThere = false;
     }
@@ -104,15 +96,15 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
 
     averageSparklineData(videos: any) {
         const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
-        for(let i =0; i < videos.length; i++) {
-        $('#' + videos.id).sparkline(myvalues, {
-            type: 'bar',
-            width: '100',
-            barWidth: 5,
-            height: '55',
-            barColor: '#35aa47',
-            negBarColor: '#e02222'
-        });
+        for (let i = 0; i < videos.length; i++) {
+            $('#' + videos.id).sparkline(myvalues, {
+                type: 'bar',
+                width: '100',
+                barWidth: 5,
+                height: '55',
+                barColor: '#35aa47',
+                negBarColor: '#e02222'
+            });
         }
     }
     loadVideos(pagination: Pagination) {

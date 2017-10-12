@@ -2,6 +2,7 @@
 	#overlay-modal {
 		width: auto;
 	}
+
 	.clipboard {
 		padding: 6px 44px;
 	}
@@ -83,13 +84,13 @@
 					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
-					<div *ngIf="hasVideoRole">
+					<div *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId )">
 						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
-					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-				</button>
+					       <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+				        </button>
 						<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo">
-						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
-				</button>
+						   <i class="fa fa-external-link" aria-hidden="true"></i> Embed
+			        	</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">

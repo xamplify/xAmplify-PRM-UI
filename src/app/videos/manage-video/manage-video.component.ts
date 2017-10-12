@@ -45,6 +45,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     hasVideoRole = false;
     hasStatsRole = false;
     hasCampaignRole = false;
+    loggedInUserId = 0;
+    hasAllAccess = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sortVideos: any;
     videoSort: any;
@@ -53,6 +55,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
         public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
+        this.loggedInUserId = this.authenticationService.getUserId();
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
@@ -66,6 +69,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
+        this.hasAllAccess = this.referenceService.hasAllAccess();
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         Metronic.init();
         Layout.init();

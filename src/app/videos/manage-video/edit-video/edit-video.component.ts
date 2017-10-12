@@ -1000,6 +1000,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             ]
             ],
             'id': [this.saveVideoFile.id],
+            'uploadedUserId' : [this.saveVideoFile.uploadedUserId],
             'viewBy': [this.saveVideoFile.viewBy, Validators.required],
             'categoryId': [this.saveVideoFile.categoryId, Validators.required],
             'tags': [this.saveVideoFile.tags, Validators.required],
