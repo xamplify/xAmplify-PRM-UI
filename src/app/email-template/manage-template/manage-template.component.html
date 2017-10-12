@@ -16,7 +16,7 @@
 			<li>Manage Templates
 			</li>
 		</ul>
-		<a class="btn btn-info" id="emailtemplate-help" [routerLink]="['/home/emailtemplate/help']">Customize Email Template</a>
+		<a class="btn btn-info" id="emailtemplate-help" [routerLink]="['/home/emailtemplate/help']">Custom Template Delivers</a>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
@@ -66,7 +66,7 @@
 									<div class="portlet-body">
 										<div class="row email-template-container">
 											<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" style="width: 117px;height: 134px;">
-											<div class="email-template-i-container" *ngIf="hasEmailTemplateRole">
+											<div class="email-template-i-container" *ngIf="hasEmailTemplateRole && emailTemplate.userId==loggedInUserId">
 										       <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true" (click)="edit(emailTemplate.id)"></i>
 										       <i class="fa fa-trash fa-3x" aria-hidden="true" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete Template"></i>
 										    </div>

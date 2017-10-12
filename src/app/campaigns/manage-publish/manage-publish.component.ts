@@ -35,6 +35,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     hasStatsRole:boolean = false;
     campaignSuccessMessage:string = "";
     isScheduledCampaignLaunched:boolean=false;
+    loggedInUserId:number = 0;
         sortByDropDown  = [
                    {'name':'Sort By','value':''},
                    {'name':'Name(A-Z)','value':'campaign-ASC'},
@@ -60,6 +61,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     constructor(private campaignService:CampaignService,private router:Router,private logger:XtremandLogger,
             private pagination:Pagination,private pagerService: PagerService,
             private refService:ReferenceService,private userService:UserService,private authenticationService:AuthenticationService) {
+        this.loggedInUserId = this.authenticationService.getUserId();
         if(this.refService.campaignSuccessMessage=="SCHEDULE"){
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Scheduled Successfully";
@@ -81,7 +83,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     
     listCampaign(pagination:Pagination){
         this.refService.loading(this.httpRequestLoader, true);
-        this.campaignService.listCampaign(pagination,this.authenticationService.user.id)
+        this.campaignService.listCampaign(pagination,this.loggedInUserId)
         .subscribe(
             data => {
                 this.campaigns = data.campaigns;

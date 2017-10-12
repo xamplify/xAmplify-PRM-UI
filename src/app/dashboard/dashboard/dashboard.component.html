@@ -245,7 +245,7 @@ margin:2px;
           <h4 *ngIf="totalCampaignsCount < 4 && totalCampaignsCount > 1">Top {{totalCampaignsCount}} Campaigns</h4>
           <h4 *ngIf="totalCampaignsCount === 1">Top {{totalCampaignsCount}} Campaign</h4>
         </div>
-        <div class="col-xs-6" style="padding: 5px 10px;" *ngIf="hasCampaignRole && referenceService.hasCompany">
+        <div class="col-xs-6" style="padding: 5px 10px;" *ngIf="hasCampaignRole "><!-- && referenceService.hasCompany -->
 		  <a><i style="font-size: 1.3em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
           <a [routerLink]="['/home/campaigns/select-campaign']" class="btn btn-sm btn-primary color1 pull-right" >Create Campaign</a>
         </div>
@@ -278,7 +278,7 @@ margin:2px;
 		</div>
 	</section>
 	<section>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && hasCampaignRole && referenceService.hasCompany">
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && hasCampaignRole"><!-- referenceService.hasCompany -->
 			<div class="portlet light border-radius-0 campaign-div" >
 				<div class="portlet-body">
 			        <div class="text-center" style="margin: 3.7em 0.5em;">

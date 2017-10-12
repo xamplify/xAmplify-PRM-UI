@@ -7,5 +7,6 @@ export class RoleName{
     videRole:string = "ROLE_VIDEO_UPLOAD";
     allRole:string = "ROLE_ALL";
     orgAdminRole:string = "ROLE_ORG_ADMIN";
+    socialShare:string = "ROLE_SOCIAL_SHARE";
     
 }

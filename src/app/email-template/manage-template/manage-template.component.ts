@@ -63,11 +63,13 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public message:string;   
+    loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
         public pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
+        this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
            this.message = "Template Created Successfully";
            this.showMessageOnTop();
@@ -86,7 +88,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     listEmailTemplates( pagination: Pagination ) {
             this.refService.loading(this.httpRequestLoader, true);
             this.pagination.maxResults = 12;
-            this.emailTemplateService.listTemplates( pagination, this.authenticationService.user.id)
+            this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
                     this.emailTemplates = data.emailTemplates;

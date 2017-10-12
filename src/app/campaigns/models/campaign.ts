@@ -33,5 +33,5 @@ export class Campaign {
     campaignReplies:Array<Reply>;
     campaignUrls:Array<Url>;
     timeZoneId:any;
-    channelCampaign:boolean;
+    channelCampaign:boolean=false;
 }
