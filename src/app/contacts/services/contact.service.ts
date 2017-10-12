@@ -76,7 +76,7 @@ export class ContactService {
  
     loadContactsCount() {
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.url + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
