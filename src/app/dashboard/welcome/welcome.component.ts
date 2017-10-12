@@ -23,6 +23,7 @@ export class WelcomeComponent implements OnInit {
     hasCampaignRole:boolean = false;
     hasEmailTemplateRole:boolean = false;
     hasStatsRole:boolean = false;
+    hasSocialStatusRole:boolean = false;
     constructor( private userService: UserService, private authenticationService: AuthenticationService, 
             private referenceService: ReferenceService, private dashboardService: DashboardService ) {
         this.dashboardReport = new DashboardReport();
@@ -32,6 +33,8 @@ export class WelcomeComponent implements OnInit {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
         this.hasEmailTemplateRole =  this.referenceService.hasRole(this.referenceService.roleName.emailTemplateRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
+        this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roleName.socialShare);
+        
     }
     
     getDefaultPage( userId: number ) {

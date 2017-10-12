@@ -238,8 +238,9 @@
 							<li><a [routerLink]="['/home/dashboard/edit-company-profile']"> <i
 									class="fa fa-building-o"></i>Company Profile
 							</a></li>
-							<li><a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts
-							</a></li>
+							<li *ngIf="hasSocialStatusRole">
+								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
+							</li>
 							<li *ngIf="refService.userDefaultPage == 'DASHBOARD'"><a [routerLink]="['/home/dashboard/welcome']"> 
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a></li>
 							<li *ngIf="refService.userDefaultPage == 'WELCOME'"><a [routerLink]="['/home/dashboard']"> 

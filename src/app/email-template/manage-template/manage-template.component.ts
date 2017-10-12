@@ -26,6 +26,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     emailPreview: string;
     emailTemplates: any[];
     hasEmailTemplateRole:boolean = false;
+    hasAllAccess:boolean = false;
     pager: any = {};
     pagedItems: any[];
     public searchKey: string = "";
@@ -77,7 +78,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.message = "Template Updated Successfully";
             this.showMessageOnTop();
         }
-        this.hasEmailTemplateRole = this.refService.hasRole(this.refService.roleName.emailTemplateRole);
+        this.hasAllAccess = this.refService.hasAllAccess();
+        this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roleName.emailTemplateRole);
     }
     showMessageOnTop(){
         $(window).scrollTop(0);

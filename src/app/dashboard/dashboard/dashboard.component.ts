@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     userCampaignReport: CampaignReport = new CampaignReport();
     hasCampaignRole:boolean = false;
     hasStatsRole:boolean = false;
+    hasSocialStatusRole:boolean = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
@@ -63,6 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
+        this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roleName.socialShare);
     }
 
     genderDemographics(userId: number) {

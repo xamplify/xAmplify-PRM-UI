@@ -158,12 +158,31 @@ export class ReferenceService {
     }
     hasRole(roleName: string) {
         let roles = this.authenticationService.getRoles();
-        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roleName.orgAdminRole) > -1) {
+        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roleName.orgAdminRole) > -1 || roles.indexOf(this.roleName.allRole)>-1) {
             return true;
         } else {
             return false;
         }
     }
+    
+    hasSelectedRole(roleName:string){
+        let roles = this.authenticationService.getRoles();
+        if (roles.indexOf(roleName) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    hasAllAccess(){
+        let roles = this.authenticationService.getRoles();
+        if(roles.indexOf(this.roleName.allRole)>-1 ||roles.indexOf(this.roleName.orgAdminRole)>-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     returnDuplicates(names: string[]) {
         var uniq = names
             .map((name) => {

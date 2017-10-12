@@ -36,6 +36,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     campaignSuccessMessage:string = "";
     isScheduledCampaignLaunched:boolean=false;
     loggedInUserId:number = 0;
+    hasAllAccess:boolean = false;
         sortByDropDown  = [
                    {'name':'Sort By','value':''},
                    {'name':'Name(A-Z)','value':'campaign-ASC'},
@@ -72,8 +73,9 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Launched Successfully";
         }
-        this.hasCampaignRole = this.refService.hasRole(this.refService.roleName.campaignRole);
-        this.hasStatsRole = this.refService.hasRole(this.refService.roleName.statsRole);
+        this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roleName.campaignRole);
+        this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roleName.statsRole);
+        this.hasAllAccess = this.refService.hasAllAccess();
        
     }
     showMessageOnTop(){

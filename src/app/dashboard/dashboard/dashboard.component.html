@@ -356,7 +356,7 @@ margin:2px;
 				</div>
 			</a>
 		</div>
-		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6" [class.disabled]="!hasSocialStatusRole?true:null">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
 				[routerLink]="['/home/social/manage/all']">
 				<div class="visual">
@@ -381,8 +381,7 @@ margin:2px;
 					<section *ngFor="let socialConnection of socialConnections">
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="padding: 5px !important;"
 							*ngIf="socialConnection.source === 'TWITTER'">
-							<a
-								[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
+							<a	[routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]" [class.disabled]="!hasSocialStatusRole?true:null">
 								<div class="dashboard-stat2 m0">
 									<div class="display">
 										<div class="number">
@@ -432,7 +431,7 @@ margin:2px;
 					<section *ngFor="let socialConnection of socialConnections">
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 m0" *ngIf="socialConnection.source == 'FACEBOOK'" style="padding: 5px !important;">
 							<div class="dashboard-stat2 m0">
-								<a [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+								<a [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]" [class.disabled]="!hasSocialStatusRole?true:null">
 			          				<div class="display">
 										<div class="number col-xs-9 text-left"
 											style="padding-left: 5px; padding-right: 0px;">
