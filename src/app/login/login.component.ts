@@ -104,7 +104,11 @@ export class LoginComponent implements OnInit {
                 }*/
                 
                 // if user is coming from any link
-
+                if (this.authenticationService.redirectUrl) {
+                    this.router.navigate([this.authenticationService.redirectUrl]);
+                    this.authenticationService.redirectUrl = null;
+                }
+                
             } else {
                 this.logError();
             }
