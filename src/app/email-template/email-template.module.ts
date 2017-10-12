@@ -11,10 +11,11 @@ import { UploadEmailTemplateComponent } from './upload-email-template/upload-ema
 
 import {EmailTemplateRoutingModule} from './email-template-routing.module';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { HelpComponent } from './help/help.component';
 
 @NgModule({
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
-                 UpdateTemplateComponent, UploadEmailTemplateComponent]
+                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent]
 })
 export class EmailTemplateModule { }

@@ -44,6 +44,8 @@ export class ReferenceService {
         console.log('reference service constructor');
         if(this.authenticationService.hasCompany()!=undefined){
             this.hasCompany = this.authenticationService.hasCompany();
+        }else{
+            this.hasCompany = false;
         }
     }
 

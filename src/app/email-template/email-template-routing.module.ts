@@ -8,7 +8,7 @@ import { ManageTemplateComponent } from './manage-template/manage-template.compo
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
-
+import {HelpComponent} from './help/help.component';
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manageTemplates', pathMatch: 'full' },
@@ -19,6 +19,7 @@ export const emailRoutes: Routes = [
 { path: 'updateTemplate', component: UpdateTemplateComponent },
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
+{ path: 'help', component: HelpComponent },
 ];
 
 @NgModule({

@@ -17,7 +17,7 @@ export class LeftsidebarComponent implements OnInit {
     isEmailTemplate:boolean = false;
     isStats:boolean = false;
     isVideo:boolean = false;
-    isTeamMember:boolean = false;
+    isOrgAdmin:boolean = false;
     roleName:RoleName=new RoleName();
     constructor(location: Location,private authService:AuthenticationService,private refService:ReferenceService) {
         this.location = location;
@@ -54,9 +54,8 @@ export class LeftsidebarComponent implements OnInit {
             this.isVideo = true;
         }
         if(roles.indexOf(this.roleName.orgAdminRole)>-1){
-            this.isTeamMember = true;
+            this.isOrgAdmin = true;
         }
-        
     }
     
 
