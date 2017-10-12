@@ -68,77 +68,15 @@
 			</div>
 		</div>
         <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}">
-			<section *ngIf="isSocialCampaign">
-			<div class="col-sm-12 portlet light">
+			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix" style="padding: 15px;">
 					<div class="form-group m0">
 					    <label for="campaignName"><h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6></label>
-					    <input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name">
+					    <input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="campaign.campaignName">
 				  	</div>
 				</div>
 			</div>
-			<div class="col-sm-12 portlet light">
-				<div class="portlet-body clearfix" style="padding: 15px;">
-					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
-						<div class='alert alert-info' role='alert'>
-							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
-						</div>
-						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
-					</section>
-					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
-						<div class="table-responsive">
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th>Select</th>
-										<th>Contact list name</th>
-										<th>Created by</th>
-										<th>Created time</th>
-										<th>No of Contacts</th>
-										<th>Preview</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr style="cursor: pointer;" *ngFor="let contactList of contactListsPagination.pagedItems" 
-										[ngClass]="{'highlight': selectedContactListIds.indexOf(contactList.id)>-1}"
-										(click)="highlightRow(contactList.id)">
-										<td class='text-center m0'>
-											<input type='checkbox' id='{{contactList.id}}' 
-												(click)="toggleContactListCheckbox(contactList.id)">
-										</td>
-										<td><h5 class='m0'>{{contactList.name}}</h5></td>
-										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
-										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
-										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
-										<td class='text-center m0'>
-											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContactsOnPreview(contactList, contactsPagination)"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
-	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
-	                           <a (click)="setPageContactLists(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
-	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
-	                         </li>
-	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
-	                            <a (click)="setPageContactLists(page)">{{page}}</a>
-	                         </li>
-	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-	                             <a (click)="setPageContactLists(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
-	                         </li>
-	                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
-	                             <a (click)="setPageContactLists(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
-	                         </li>
-	                     </ul>
-					</section>					
-				</div>
-			</div>
-			</section>
+			
 			<div class="col-sm-12 portlet light clearfix">
                 <section class='col-sm-12 pt10 pb10' *ngIf="customResponse.statusText !== null">
 	                <div class="alert alert-dismissible m0" role="alert"
@@ -252,7 +190,8 @@
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu pull-right">
-								<li><a (click)="updateStatus()">Post Now</a></li>
+								<li *ngIf="!isSocialCampaign"><a (click)="updateStatus()">Post Now</a></li>
+								<li *ngIf="isSocialCampaign"><a (click)="createSocialCampaign()">Post Now</a></li>
 							</ul>
 						</div>
 						<span *ngIf="socialStatus.id != null">
@@ -262,7 +201,64 @@
                     </div>
                 </div>
             </div>
-			
+			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
+				<div class="portlet-body clearfix" style="padding: 15px;">
+					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
+						<div class='alert alert-info' role='alert'>
+							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
+						</div>
+						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
+					</section>
+					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Select</th>
+										<th>Contact list name</th>
+										<th>Created by</th>
+										<th>Created time</th>
+										<th>No of Contacts</th>
+										<th>Preview</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let contactList of contactListsPagination.pagedItems">
+										<td class='text-center m0'>
+											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)">
+										</td>
+										<td><h5 class='m0'>{{contactList.name}}</h5></td>
+										<td><h6 class='m0'>{{contactList.uploadedBy}}</h6></td>
+										<td><h6 class='m0'>{{contactList.createdDate}}</h6></td>
+										<td><h6 class='m0'>{{contactList.noOfContacts}}</h6></td>
+										<td class='text-center m0'>
+											<a><i class="fa fa-eye" aria-hidden="true" (mouseover)="loadContactsOnPreview(contactList, contactsPagination)"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<ul *ngIf="contactListsPagination.pager.pages && contactListsPagination.pager.pages.length" class="pagination m0 p0">
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}">
+	                           <a (click)="setPageContactLists(1)" [class.disabled]="contactListsPagination.pager.currentPage === 1">First</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
+	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
+	                         </li>
+	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
+	                            <a (click)="setPageContactLists(page)">{{page}}</a>
+	                         </li>
+	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.currentPage + 1)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Next</a>
+	                         </li>
+	                          <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">
+	                             <a (click)="setPageContactLists(contactListsPagination.pager.totalPages)"  [class.disabled]="contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages">Last</a>
+	                         </li>
+	                     </ul>
+					</section>					
+				</div>
+			</div>
             <div [hidden]="isSocialCampaign">
             	<div class="col-sm-12 dashboard-stat2 rounded-0" style="padding: 25px;">
 					<div id='full-calendar'></div>

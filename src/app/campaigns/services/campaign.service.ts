@@ -182,6 +182,12 @@ export class CampaignService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    createSocialCampaign( campaign: Campaign ) {
+        return this.http.post( this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, campaign )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     private handleError(error: any) {
         if (error.status === 500) {

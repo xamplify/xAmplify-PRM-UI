@@ -301,6 +301,7 @@ textarea {
 
 .alert > h4 {
 	font-size: 14px !important;
+	font-weight: 600 !important;
 }
 
 .disabled-div{
@@ -311,4 +312,8 @@ textarea {
 
 tr.highlight {
 	background-color: #ffc !important;
+}
+
+.bold {
+	font-weight: 600 !important;	
 }

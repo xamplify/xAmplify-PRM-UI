@@ -7,6 +7,7 @@ import { SocialStatus } from "../../models/social-status";
 import { SocialStatusContent } from "../../models/social-status-content";
 import { SocialStatusProvider } from "../../models/social-status-provider";
 import { ContactList } from '../../../contacts/models/contact-list';
+import { Campaign } from '../../../campaigns/models/campaign';
 
 import { CustomResponse } from '../../../core/models/custom-response';
 import { ResponseType } from '../../../core/models/response-type';
@@ -18,6 +19,7 @@ import { TwitterService } from "../../services/twitter.service";
 import { FacebookService } from "../../services/facebook.service";
 import { VideoFileService } from "../.././../videos/services/video-file.service";
 import { ContactService } from "../.././../contacts/services/contact.service";
+import { CampaignService } from "../.././../campaigns/services/campaign.service";
 
 import { Pagination } from '../../../core/models/pagination';
 
@@ -36,8 +38,8 @@ export class UpdateStatusComponent implements OnInit {
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
     userId: number;
-    selectedContactListIds = [];
     
+    campaign = new Campaign();
     socialStatus = new SocialStatus();
     previewContactList = new ContactList();
     socialStatusList = new Array<SocialStatus>();
@@ -50,6 +52,7 @@ export class UpdateStatusComponent implements OnInit {
     constructor(private socialService: SocialService, private twitterService: TwitterService, 
             private facebookService: FacebookService, private videoFileService: VideoFileService, 
             private authenticationService: AuthenticationService, private contactService: ContactService,
+            private campaignService: CampaignService, 
             private pagerService: PagerService, private router: Router, private logger: Logger) {
         
         this.resetCustomResponse();
@@ -171,24 +174,50 @@ export class UpdateStatusComponent implements OnInit {
         this.updateStatus();
     }
     
-    validateUpdateStatus(){
+    validate() {
+        return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
+    }
+    
+    countSelectedSocialAccounts(){
+        return this.socialStatus.socialStatusProviders.filter((x,i) => { return x.selected; }).length;
+    }
+    
+    isSocialAccountsSelected(){
+        if(this.countSelectedSocialAccounts() < 1){
+            this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
+            return false;
+        }else
+            return true;
+    }
+    
+    isValidSocialCampaign(){
+        let isValid: boolean = true;
+        isValid = this.isSocialAccountsSelected();
         
+        if(! this.campaign.campaignName){
+            isValid = false;
+            this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
+        }
+        return isValid;
+    }
+    
+    isValidUpdateStatus(){
+        return this.isSocialAccountsSelected();
     }
 
-    updateStatus() {
-        let socialStatusProviders = this.socialStatus.socialStatusProviders;
-        socialStatusProviders = socialStatusProviders.filter(function (obj) {
-            return obj.selected === true;
-        });
-        this.socialStatus.socialStatusProviders = socialStatusProviders;
-        console.log(this.socialStatus);
-        this.setCustomResponse(ResponseType.Loading, 'Updating Status');
-        this.socialService.updateStatus(this.userId, this.socialStatus)
+    createSocialCampaign(){
+        this.resetCustomResponse();
+        
+        if(this.validate()){
+            this.campaign.socialStatus = this.socialStatus;
+            console.log(this.campaign);
+            
+            this.campaign.userId = this.userId;
+            
+            this.campaignService.createSocialCampaign(this.campaign)
             .subscribe(
             data => {
                 this.initializeSocialStatus();
-                $('#full-calendar').fullCalendar('removeEvents');
-                this.listEvents();
                 this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
             },
             error => {
@@ -196,7 +225,35 @@ export class UpdateStatusComponent implements OnInit {
                 this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
             },
             () => console.log('Finished')
-            );
+            ); 
+        }
+    }
+    
+    updateStatus() {
+        
+        if(this.validate()){
+            let socialStatusProviders = this.socialStatus.socialStatusProviders;
+            socialStatusProviders = socialStatusProviders.filter(function (obj) {
+                return obj.selected === true;
+            });
+            this.socialStatus.socialStatusProviders = socialStatusProviders;
+            console.log(this.socialStatus);
+            this.setCustomResponse(ResponseType.Loading, 'Updating Status');
+            this.socialService.updateStatus(this.userId, this.socialStatus)
+                .subscribe(
+                data => {
+                    this.initializeSocialStatus();
+                    $('#full-calendar').fullCalendar('removeEvents');
+                    this.listEvents();
+                    this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
+                },
+                error => {
+                    console.log(error);
+                    this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
+                },
+                () => console.log('Finished')
+                );            
+        }
     }
 
     schedule() {
@@ -435,13 +492,12 @@ export class UpdateStatusComponent implements OnInit {
     
     highlightRow( contactListId:number ){
         let isChecked = $('#'+contactListId).is(':checked');
-        if(!isChecked){
-            this.selectedContactListIds.push(contactListId);
-            $('#'+contactListId).prop('checked', true);
+        if(isChecked){
+            if(!this.campaign.userListIds.includes(contactListId))
+                this.campaign.userListIds.push(contactListId);
             $('#'+contactListId).parent().closest('tr').addClass('highlight');
         }else{
-            this.selectedContactListIds.splice($.inArray(contactListId, this.selectedContactListIds),1);
-            $('#'+contactListId).prop('checked', false);
+            this.campaign.userListIds.splice($.inArray(contactListId, this.campaign.userListIds),1);
             $('#'+contactListId).parent().closest('tr').removeClass('highlight');
         }
     }
