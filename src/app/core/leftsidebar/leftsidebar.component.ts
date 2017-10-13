@@ -19,7 +19,7 @@ export class LeftsidebarComponent implements OnInit {
     isVideo:boolean = false;
     isOrgAdmin:boolean = false;
     roleName:RoleName=new RoleName();
-    constructor(location: Location,private authService:AuthenticationService,private refService:ReferenceService) {
+    constructor(location: Location, public authService:AuthenticationService,private refService:ReferenceService) {
         this.location = location;
         let url = this.location.path();
         if( url.indexOf('dashboard') >= 0)

@@ -160,6 +160,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
                             this.defaultTemplate = true;
+                            updatedBody = updatedBody.replace("view in browser", '');
+                            updatedBody = updatedBody.replace("SocialUbuntuURL",'');
+                            updatedBody = updatedBody.replace("Loading socialubuntu URL...",'');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
@@ -190,10 +193,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             this.defaultTemplate = false;
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
+                            updatedBody = updatedBody.replace("view in browser", '');
+                            updatedBody = updatedBody.replace("SocialUbuntuURL",'');
                             console.log(this.templatehtml);
                             if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')){
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
-                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")){
+                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>") && !updatedBody.includes("newPlayerVideo")){
                                   updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
                              } else {
                                    updatedBody = this.campaignVideoTemplate;

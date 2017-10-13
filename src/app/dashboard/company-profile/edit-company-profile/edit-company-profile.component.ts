@@ -28,7 +28,7 @@ export class EditCompanyProfileComponent implements OnInit {
     companyProfileNameErrorMessage:string = "";
     existingCompanyName:string = "";
     constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private companyProfileService: CompanyProfileService,
-        private fb: FormBuilder,private refService:ReferenceService,private router:Router) {
+        private fb: FormBuilder,public refService:ReferenceService,private router:Router) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;

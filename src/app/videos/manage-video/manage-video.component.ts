@@ -233,6 +233,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             .subscribe((playVideoFile: SaveVideoFile) => {
                 console.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
+                this.selectedVideo.uploadedUserId = video.uploadedUserId;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.showVideosPage(false, false, true, false);
             },
