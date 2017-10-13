@@ -100,6 +100,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     public salesforceListViewsData: Array<any> = [];
     pager: any = {};
     pagedItems: any[];
+    checkingForEmail:boolean;
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -270,7 +271,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         var isValidData: boolean = true;
         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
-            if ( !this.validateEmailAddress( data[0] ) ) {
+            if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[0] + "</h4>" );
                 isValidData = false;
             }
@@ -284,16 +285,56 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 let user = new User();
                 switch ( data.length ) {
                     case 1:
-                        user.emailId = data[0];
+                        user.firstName = data[0];
                         break;
                     case 2:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
+                        user.firstName = data[0];
+                        user.lastName = data[1];
                         break;
                     case 3:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        user.lastName = data[2];
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        break;
+                    case 4:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        break;
+                    case 5:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.emailId = data[4];
+                        break;
+                    case 6:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        break;
+                    case 7:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.mobileNumber = data[6];
+                        break;
+                    case 8:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.mobileNumber = data[6];
+                        user.description = data[7];
                         break;
                 }
                 this.xtremandLogger.info( user );
@@ -322,7 +363,16 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     validateName( name: string ) {
         return ( name.trim().length > 0 );
     }
-
+    validateEmail(emailId: string){
+        if(this.validateEmailAddress( emailId )){
+            this.checkingForEmail = true;
+            this.validEmailPatternSuccess = true;
+        }
+        else{
+            this.checkingForEmail = false;
+        }
+    }
+    
     checkingEmailPattern( emailId: string ) {
         this.validEmailPatternSuccess = false;
         if ( this.validateEmailAddress( emailId ) ) {

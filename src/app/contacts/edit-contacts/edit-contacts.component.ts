@@ -46,6 +46,7 @@ export class EditContactsComponent implements OnInit {
     selectedContactListName: string;
     public validEmailPatternSuccess: boolean = true;
     emailNotValid: boolean;
+    checkingForEmail: boolean;
     addContactuser: User = new User();
     
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -1082,7 +1083,15 @@ export class EditContactsComponent implements OnInit {
        $( "#addContactModal .close" ).click()
        //$( '#addContactModal' ).modal( 'hide' );
    }
-   
+   validateEmail(emailId: string){
+       if(this.validateEmailAddress( emailId )){
+           this.checkingForEmail = true;
+           this.validEmailPatternSuccess = true;
+       }
+       else{
+           this.checkingForEmail = false;
+       }
+   }
    checkingEmailPattern( emailId: string ) {
        this.validEmailPatternSuccess = false;
        if ( this.validateEmailAddress( emailId ) ) {
