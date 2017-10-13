@@ -289,7 +289,7 @@ rotate
 											title="Dowload List" data-rel="fancybox-button"> <i
 											class="fa fa-cloud-download"></i>
 										</a> 
-										<a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+										<a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
 											(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)" title="Edit List"
 											data-rel="fancybox-button"> 
 											<i class="fa fa-pencil-square-o"></i>
@@ -431,7 +431,7 @@ rotate
 						<div class="tab-pane active"></div>
 						<div class="row">
 							<form #f="ngForm" class="form-inline"
-								*ngIf="contactsByType.selectedCategory == 'all' && hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
+								*ngIf="contactsByType.selectedCategory == 'all' && (hasAllAccess || hasContactRole)">
 								<div class="contact-list-form">
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
@@ -507,7 +507,7 @@ rotate
 														</select>
 													</div>
 													<div class="btn-group pull-right"
-														*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
+														*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
 														<button class="btn dropdown-toggle" data-toggle="dropdown">
 															Tools <i class="fa fa-angle-down"></i>
 														</button>

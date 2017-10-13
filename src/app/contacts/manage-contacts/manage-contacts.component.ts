@@ -160,6 +160,7 @@ export class ManageContactsComponent implements OnInit {
         console.log("ContactRole"+this.hasContactRole);
         
         this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.loggedInUserId = this.authenticationService.getUserId();
 
     }
     

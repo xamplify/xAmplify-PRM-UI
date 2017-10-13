@@ -134,6 +134,7 @@ export class EditContactsComponent implements OnInit {
         this.hasContactRole = this.refService.hasRole(this.refService.roleName.contactsRole);
         
         this.hasAllAccess = this.refService.hasAllAccess();
+        this.loggedInUserId = this.authenticationService.getUserId();
     }
 
     onChangeAllContactUsers( event: Event ) {
