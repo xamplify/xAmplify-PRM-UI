@@ -44,6 +44,9 @@ export class EditContactsComponent implements OnInit {
     @Output() notifyParent: EventEmitter<User>;
     
     selectedContactListName: string;
+    public validEmailPatternSuccess: boolean = true;
+    emailNotValid: boolean;
+    addContactuser: User = new User();
     
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -434,8 +437,11 @@ export class EditContactsComponent implements OnInit {
     }
 
     addRow() {
+        if(this.emailNotValid == true ){
+            $( "#addContactModal .close" ).click()
+            this.users.push( this.addContactuser );
+           }
         this.fileTypeError = false;
-        this.users.push( new User() );
         this.noContactsFound = false;
     }
 
@@ -1060,6 +1066,27 @@ export class EditContactsComponent implements OnInit {
    resetResponse(){
        this.response.responseType = null;
        this.response.responseMessage = null;
+   }
+   
+   addContactModalOpen(){
+       $( "#addContactModal" ).show();
+   }
+   
+   addContactModalClose(){
+       $('#addContactModal').modal('toggle');
+       $( "#addContactModal .close" ).click()
+       //$( '#addContactModal' ).modal( 'hide' );
+   }
+   
+   checkingEmailPattern( emailId: string ) {
+       this.validEmailPatternSuccess = false;
+       if ( this.validateEmailAddress( emailId ) ) {
+           this.validEmailPatternSuccess = true;
+           this.emailNotValid = true;
+       } else {
+           this.validEmailPatternSuccess = false;
+           this.emailNotValid = false;
+       }
    }
       
     ngOnInit() {

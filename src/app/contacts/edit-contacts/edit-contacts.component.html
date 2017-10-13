@@ -5,6 +5,17 @@ a.disabled {
 	cursor: not-allowed;
 }
 
+.textCss {
+	background-color: rgba(0,0,0,0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 13;
+    margin: 0;
+    padding: 0;
+   /*  position: absolute; */
+    width: 91%;
+}
+
 .capitalize {
 	text-transform: capitalize;
 }
@@ -196,7 +207,7 @@ a.disabled {
 						<div class="clearfix">
 							<div class="col-sm-6">
 								<div class="btn-group">
-									<button id="add_contact" class="btn green" (click)="addContactsOption(AddContactsOption.ADDCONTACT);" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
+									<button id="add_contact" class="btn green" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
 										Add Contact <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
@@ -479,6 +490,88 @@ a.disabled {
 
 	</div>
 </div>
+
+<!-- modals -->
+
+<div id="addContactModal" class="modal" id="addContactModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
+        <h4 class="modal-title">Add Contact</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal">
+		   <div class="form-inline">
+		   <label class="control-label col-sm-2" for="name"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
+		   <div class="form-group col-sm-5">
+			      <input type="name" style="border:none" class="form-control" id="name" [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
+			    <div class="textCss"></div>
+		  </div> 
+		   <div class="form-group col-sm-5">
+			      <input type="name" style="border:none" class="form-control" id="name" [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
+			    <div class="textCss"></div>
+		  </div>
+		  </div>
+		  <div class="form-inline">
+		   <label class="control-label col-sm-2" for="company" style="right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
+		   <div class="form-group col-sm-5">
+		      <input type="company" style="border:none" class="form-control" id="company" [(ngModel)]="addContactuser.company" [ngModelOptions]="{standalone: true}" placeholder="Enter Company">
+		    <div class="textCss"></div>
+		  </div>
+		   <div class="form-group col-sm-5">
+		      <input type="title" style="border:none"  class="form-control" id="title" [(ngModel)]="addContactuser.title" [ngModelOptions]="{standalone: true}" placeholder="Enter JobTitle">
+		    <div class="textCss"></div>
+		  </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="email"><i class="fa fa-envelope-o" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email">
+		    <div class="textCss"></div>
+		    <div style="color:red" *ngIf="!validEmailPatternSuccess">invalid emailId</div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="address"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address">
+		    <div class="textCss"></div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="address"><i class="fa fa-phone" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		    <!-- <ngx-intl-tel-input [(value)]="users.mobileNumber"></ngx-intl-tel-input> -->
+		     <!-- <input type="tel" id="phone"> -->
+		      <input type="number" style="border:none" class="form-control" id="email" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
+		    <div class="textCss"></div>
+		    
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="note"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+		    <div class="col-sm-10"> 
+		      <textarea name="note" style="border:none" class="form-control" id="note" [(ngModel)]="addContactuser.description" [ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
+		      </textarea>
+		      <div class="textCss"></div>
+		    </div>
+		  </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" [disabled]="!emailNotValid" (click)="addContactsOption(AddContactsOption.ADDCONTACT);">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="addContactModalClose()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- closing modals -->
 
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" *ngIf="showAllContactData">
