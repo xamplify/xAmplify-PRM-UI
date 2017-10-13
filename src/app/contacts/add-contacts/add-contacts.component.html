@@ -737,7 +737,7 @@ img:hover {
       <div class="modal-body">
       <form class="form-horizontal">
 		   <div class="form-inline">
-		   <label class="control-label col-sm-2" for="name"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
+		   <label class="control-label col-sm-2" for="name" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
 		   <div class="form-group col-sm-5">
 			      <input type="name" style="border:none" class="form-control" id="name" [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
 			    <div class="textCss"></div>
@@ -748,7 +748,7 @@ img:hover {
 		  </div>
 		  </div>
 		  <div class="form-inline">
-		   <label class="control-label col-sm-2" for="company" style="right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
+		   <label class="control-label col-sm-2" for="company" style="color:#00bcd4;right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
 		   <div class="form-group col-sm-5">
 		      <input type="company" style="border:none" class="form-control" id="company" [(ngModel)]="addContactuser.company" [ngModelOptions]="{standalone: true}" placeholder="Enter Company">
 		    <div class="textCss"></div>
@@ -759,7 +759,7 @@ img:hover {
 		  </div>
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="email" style="left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"> *</i></label>
+		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"><span style="color:red;"> *</span></i></label>
 		    <div class="col-sm-10">
 		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email *">
 		    <div class="textCss"></div>
@@ -767,14 +767,14 @@ img:hover {
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="address"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+		    <label class="control-label col-sm-2" for="address" style="color:#53affe"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
 		    <div class="col-sm-10">
 		      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address">
 		    <div class="textCss"></div>
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="address"><i class="fa fa-phone" aria-hidden="true"></i></label>
+		    <label class="control-label col-sm-2" for="phone" style="color:green"><i class="fa fa-phone" aria-hidden="true"></i></label>
 		    <div class="col-sm-10">
 		    <!-- <ngx-intl-tel-input [(value)]="addContactuser.mobileNumber"></ngx-intl-tel-input> -->
 		     <!-- <input type="tel" id="phone"> -->
@@ -784,7 +784,7 @@ img:hover {
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="note"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+		    <label class="control-label col-sm-2" for="note" style="color:#c3c308"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
 		    <div class="col-sm-10"> 
 		      <textarea name="note" style="border:none" class="form-control" id="note" [(ngModel)]="addContactuser.description" [ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
 		      </textarea>
