@@ -220,9 +220,14 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     var data = allTextLines[i].split( ',' );
                     if ( data[0].trim().length > 0 ) {
                         let user = new User();
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        user.lastName = data[2];
+                        user.emailId = data[4];
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.address = data[5];
+                        user.mobileNumber = data[6];
+                        user.description = data[7];
                         self.contacts.push( user );
                     }
                 }

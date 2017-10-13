@@ -188,9 +188,14 @@ export class EditContactsComponent implements OnInit {
                     var data = allTextLines[i].split( ',' );
                     if ( data[0].trim().length > 0 ) {
                         let user = new User();
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        user.lastName = data[2];
+                        user.emailId = data[4];
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.company = data[2];
+                        user.title = data[3];
+                        user.address = data[5];
+                        user.mobileNumber = data[6];
+                        user.description = data[7];
                         self.users.push( user );
                         self.contacts.push( user );
                     }

@@ -363,16 +363,26 @@ a.disabled {
 										id="sample_editable_2">
 										<thead>
 											<tr>
-												<th>EMAIL</th>
 												<th>FIRST NAME</th>
-												<th>LAST NAME</th>
+													<th>LAST NAME</th>
+													<th>COMPANY</th>
+													<th>JOB TITLE</th>
+													<th>EMAILID</th>
+													<th>ADDRESS</th>
+													<th>MOBILENUMBER</th>
+													<th>NOTES</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr *ngFor="let user of users">
-												<td>{{user.emailId}}</td>
-												<td>{{user.firstName}}</td>
-												<td>{{user.lastName}}</td>
+												   <td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+													<td>{{user.company}}</td>
+													<td>{{user.title}}</td>
+													<td>{{user.emailId}}</td>
+													<td>{{user.address}}</td>
+													<td>{{user.mobileNumber}}</td>
+													<td>{{user.description}}</td>
 											</tr>
 										</tbody>
 									</table>
