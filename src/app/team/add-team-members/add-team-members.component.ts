@@ -80,7 +80,6 @@ export class AddTeamMembersComponent implements OnInit {
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination,this.teamMembersList);
                     this.referenceService.loading(this.httpRequestLoader, false); 
-                   
                 },
                 error => {
                     this.logger.errorPage(error);

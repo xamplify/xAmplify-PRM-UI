@@ -17,106 +17,78 @@ export class EditCompanyProfileComponent implements OnInit {
     loggedInUserId: number = 0;
     companyProfile:CompanyProfile = new CompanyProfile();
     message:string = "";
+    companyNames:string[]=[];
+    companyProfileNames:string[] = [];
+    isProcessing:boolean = false;
+    companyNameDivClass:string;
+    companyProfileNameDivClass:string;
+    companyNameError:boolean=false;
+    companyProfileNameError:boolean=false;
+    companyNameErrorMessage:string = "";
+    companyProfileNameErrorMessage:string = "";
+    existingCompanyName:string = "";
     constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private companyProfileService: CompanyProfileService,
         private fb: FormBuilder,private refService:ReferenceService,private router:Router) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.companyNameDivClass = this.refService.formGroupClass;
+        this.companyProfileNameDivClass = this.refService.formGroupClass;
 
     }
-
     ngOnInit() {
-        if(this.authenticationService.hasCompany()){
-            this.getCompanyProfileByUserId();
+        this.getCompanyProfileByUserId();
+        if(this.authenticationService.user.hasCompany){
+            this.companyProfile.isAdd = false;
         }
-        this.validateCompanyProfileForm();
+        this.getAllCompanyNames();
+        this.getAllCompanyProfileNames();
+        
     }
   
-    
-    /*****Company Profile Form Validation******************/
-    companyProfileForm:FormGroup;
-    validateCompanyProfileForm(){
-        var regexp = /^\S+$/;
-        this.companyProfileForm = this.fb.group({
-            'companyName': [this.companyProfile.companyName.trim(),Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],//Validators.pattern(nameRegEx)
-            'companyProfileName': [this.companyProfile.companyProfileName.trim(), Validators.compose([Validators.required,Validators.maxLength( 50 ),Validators.pattern(regexp)])],//Validators.pattern(nameRegEx)
-            'aboutUs': [this.companyProfile.aboutUs.trim(), Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 500 )])],
-
-        });
-
-        this.companyProfileForm.valueChanges
-            .subscribe(data => this.onUpdateCompanyProfileFormValueChanged(data));
-        this.onUpdateCompanyProfileFormValueChanged(); // (re)set validation messages now
-    
-    }
-    
-    onUpdateCompanyProfileFormValueChanged(data?: any) {
-        if (!this.companyProfileForm) { return; }
-        const form = this.companyProfileForm;
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
-
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
-    
-    formErrors = {
-        'companyName': '',
-        'companyProfileName': '',
-        'aboutUs': '',
-        };
-    
-    validationMessages = {
-            'companyName': {
-                'required': 'Company Name required.',
-                'whitespace':'Invalid Data',
-                'minlength': 'Company Name must be at least 3 characters long.',
-                'maxlength': 'Company Name cannot be more than 50 characters long.',
-                'pattern':'Invalid Name'
-            },
-            'companyProfileName': {
-                'required': 'CompanyProfileName required.',
-                'minlength': 'CompanyProfileName must be at least 3 characters long.',
-                'maxlength': 'CompanyProfileName cannot be more than 50 characters long.',
-                'pattern':'Spaces Not Allowed'
-            },
-        
-            'aboutUs': {
-                'required': 'About required.',
-                'whitespace':'Invalid Data',
-                'maxlength': 'description cannot be more than 500 characters long.'
-            },
-           
-
-
-        };
-    
-    
-    saveOrUpdate() {
-        this.companyProfile = this.companyProfileForm.value;
-        console.log( this.companyProfile );
-        this.companyProfileService.saveOrUpdate(this.companyProfile,this.loggedInUserId)
+   
+    save() {
+        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        this.validateNames(this.companyProfile.companyName);
+        this.validateProfileNames(this.companyProfile.companyProfileName);
+        let errorLength = $('div.form-group has-error has-feedback').length;
+        if(errorLength==0){
+             this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
             .subscribe(
             data => {
                 this.message = data.message;
-                $('#saveCompanyButtonId').prop('disabled',true);
                 $('#info').hide();
-                $( '#edit-sucess' ).show( 600 );
-                this.refService.hasCompany  = true;
+                $('#edit-sucess' ).show( 600 );
                 let self = this;
                 setTimeout(function(){
+                    $('#saveOrUpdateCompanyButton').prop('disabled',false);
+                    self.authenticationService.user.hasCompany = true;
                     self.router.navigate(["/home/dashboard/welcome"]);
-                  }, 2000);
+                  }, 3000);
                
             },
             error => { this.logger.errorPage( error ) },
             () => { this.logger.info( "Completed saveOrUpdate()" ) }
-            );
+            ); 
+        }
+       
+    }
+    
+    update(){
+        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        this.validateNames(this.companyProfile.companyName);
+        let errorLength = $('div.form-group has-error has-feedback').length;
+        if(errorLength==0){
+             this.companyProfileService.update(this.companyProfile,this.loggedInUserId)
+            .subscribe(
+            data => {
+                this.message = data.message;
+                $('#info').hide();
+                $('#edit-sucess').show( 600 );
+            },
+            error => { this.logger.errorPage( error ) },
+            () => { this.logger.info( "Completed saveOrUpdate()" ) }
+            ); 
+        }
+       
     }
     
     
@@ -124,7 +96,11 @@ export class EditCompanyProfileComponent implements OnInit {
         this.companyProfileService.getByUserId( this.loggedInUserId )
             .subscribe(
             data => {
-                this.companyProfile = data.data;
+               if(data.data!=undefined){
+                   this.companyProfile = data.data;
+                   this.existingCompanyName = data.data.companyName;
+               }
+                
             },
             error => { this.logger.errorPage( error ) },
             () => { this.logger.info( "Completed getCompanyProfileByUserId()" ) }
@@ -132,8 +108,113 @@ export class EditCompanyProfileComponent implements OnInit {
 
     }
     
+    getAllCompanyNames(){
+        this.companyProfileService.getAllCompanyNames()
+        .subscribe(
+        response => {
+            this.companyNames = response.data;
+        },
+        error => { this.logger.errorPage( error ) },
+        () => { this.logger.info( "Completed getAllCompanyNames()" ) }
+        );
+    }
     
-    /*****List All Company/Company Profile Names******************/
+    getAllCompanyProfileNames(){
+        this.companyProfileService.getAllCompanyProfileNames()
+        .subscribe(
+        response => {
+            this.companyProfileNames = response.data;
+        },
+        error => { this.logger.errorPage( error ) },
+        () => { this.logger.info( "Completed getAllCompanyProfileNames()" ) }
+        );
+    }
+    
+    validateNames(value:any){
+        if(value.trim().length>0){
+            value = value.trim().toLowerCase().replace(/\s/g,'');
+            if(this.companyNames.indexOf(value)>-1){
+                if(this.companyProfile.isAdd){
+                  this.setCompanyNameError();
+                }else{
+                    if(this.existingCompanyName.trim().toLowerCase().replace(/\s/g,'')!=value){
+                        this.setCompanyNameError();
+                    }else{
+                        this.removeCompanyNameError();
+                    }
+                }
+                
+            }else{
+                this.removeCompanyNameError();
+            }
+        }
+       
+    }
+    
+    setCompanyNameError(){
+        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        this.companyNameError = true;
+        this.companyNameErrorMessage = "Company Name Already Exists";
+        this.companyNameDivClass = this.refService.errorClass;
+    }
+    
+    removeCompanyNameError(){
+        $('#saveOrUpdateCompanyButton').prop('disabled',false);
+        this.companyNameError = false;
+        this.companyNameDivClass = this.refService.successClass;
+    }
+    
+    
+    validateProfileNames(value:any){
+        if(value.trim().length>0){
+            let valueWithSpace = value.trim().toLowerCase();
+            let valueWithOutSpaces = value.trim().toLowerCase().replace(/\s/g,'');
+            if (/\s/.test(value)) {
+                this.setCompanyProfileNameError("Spaces are not allowed");
+            }else if(valueWithOutSpaces.length<3){
+                this.setCompanyProfileNameError("Minimum 3 letters required");
+            }
+            else if(this.companyProfileNames.indexOf(valueWithOutSpaces)>-1){
+                this.setCompanyProfileNameError("Company Profile Name Already Exists");
+            }else{
+                $('#saveOrUpdateCompanyButton').prop('disabled',false);
+                this.companyProfileNameError = false;
+                this.companyProfileNameDivClass = this.refService.successClass;
+            }
+        }
+       
+    }
+    setCompanyProfileNameError(errorMessage:string){
+        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        this.companyProfileNameError = true;
+        this.companyProfileNameErrorMessage = errorMessage;
+        this.companyProfileNameDivClass = this.refService.errorClass;
+    }
+    
+    
+    validateEmptySpace(columnName:string){
+        let value = $('#'+columnName).val().trim();
+        if(value.length==0){
+            $('#saveOrUpdateCompanyButton').prop('disabled',true);
+           if(columnName=="companyName"){
+               this.companyNameError = true;
+               this.companyNameDivClass = this.refService.errorClass;
+           }else if(columnName=="companyProfileName"){
+               this.companyProfileNameError = true;
+               this.companyProfileNameDivClass = this.refService.errorClass;
+           }
+        }else if(value.length>0){
+            $('#saveOrUpdateCompanyButton').prop('disabled',false);
+            if(columnName=="companyName"){
+                this.companyNameError = false;
+                this.companyNameDivClass = this.refService.successClass;
+            }else if(columnName=="companyProfileName"){
+                this.companyProfileNameError = false;
+                this.companyProfileNameDivClass = this.refService.successClass;
+            }
+        }
+        
+    }
     
 
 }

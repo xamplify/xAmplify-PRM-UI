@@ -19,15 +19,33 @@ export class CompanyProfileService {
    }
     
     
-    saveOrUpdate(companyProfile:CompanyProfile,userId:number){
-        return this.http.post(this.URL+"company-profile/saveOrUpdate/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
+    save(companyProfile:CompanyProfile,userId:number){
+        return this.http.post(this.URL+"company-profile/save/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    update(companyProfile:CompanyProfile,userId:number){
+        return this.http.post(this.URL+"company-profile/update/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    
+    getAllCompanyNames(){
+        return this.http.post(this.URL+"company-profile/company-names?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    getAllCompanyProfileNames(){
+        return this.http.post(this.URL+"company-profile/company-profile-names?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
 
     private extractData( res: Response ) {
         let body = res.json();
-        console.log( body );
         return body || {};
     }
 

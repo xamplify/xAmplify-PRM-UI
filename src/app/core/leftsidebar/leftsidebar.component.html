@@ -6,7 +6,7 @@
 				<!-- BEGIN SIDEBAR MENU -->
 				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
 					<li  [ngClass]="{'active':  baseRoute === 'dashboard'}" >
-						<a [routerLink]="['/home/dashboard/default']"><!-- [class.disabled]="(!refService.hasCompany? true : null && isOrgAdmin)" -->
+						<a [routerLink]="['/home/dashboard/default']" [class.disabled]="!authService.user.hasCompany ?true:null"><!-- [class.disabled]="(!refService.hasCompany? true : null && isOrgAdmin)" -->
 						<i class="icon-home"></i>
 						<span class="title">Account Dashboard</span>
 						<span class="selected"></span>
@@ -23,13 +23,13 @@
 						</a>
 						<ul class="sub-menu" >
 						<li>
-						      <a  [routerLink]="['./videos']">
+						      <a  [routerLink]="['./videos']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-file-video-o"></i>
 								<span class="title">Upload videos</span>
 								</a>
 							</li>
 							<li>
-					       <a  [routerLink]="['./videos/manage_videos']" >
+					       <a  [routerLink]="['./videos/manage_videos']" [class.disabled]="!authService.user.hasCompany ?true:null" >
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Videos</span>
 								</a>
@@ -45,13 +45,13 @@
 						</a>
 						<ul class="sub-menu" >
 						<li>
-								<a  [routerLink] ="['./contacts/add']" >
+								<a  [routerLink] ="['./contacts/add']" [class.disabled]="!authService.user.hasCompany ?true:null" >
 								<i class="fa fa-users"></i>
 								<span class="title">Add Contacts</span>
 								</a>
 							</li>
 							<li>
-								<a  [routerLink]="['./contacts/manage']" >
+								<a  [routerLink]="['./contacts/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Contacts</span>
 								</a>
@@ -68,14 +68,14 @@
 						
 						<ul class="sub-menu" style="width: 105%" >
 						<li>
-							<a  [routerLink]="['./emailtemplate/selectTemplate']" >
+							<a  [routerLink]="['./emailtemplate/selectTemplate']" [class.disabled]="!authService.user.hasCompany ?true:null" >
 
 								<i class="fa fa-envelope"></i>
 								<span class="title">Create Email Template</span>
 								</a>
 							</li>
 						<li>
-				              <a  [routerLink]="['./emailtemplate']" >
+				              <a  [routerLink]="['./emailtemplate']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Email Templates</span>
 								</a>
@@ -91,13 +91,13 @@
 						</a>
 						<ul class="sub-menu">
 						<li>
-								<a  [routerLink] ="['./campaigns']" >
+								<a  [routerLink] ="['./campaigns']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-bullhorn"></i>
 								<span class="title">Create Campaign</span>
 								</a>
 							</li>
 							<li>
-								<a  [routerLink] ="['./campaigns/manage-campaigns']" >
+								<a  [routerLink] ="['./campaigns/manage-campaigns']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Campaigns</span>
 								</a>
@@ -105,7 +105,7 @@
 						</ul>
 					</li>
 					
-					<li *ngIf="isOrgAdmin" [ngClass]="{'active':  baseRoute === 'team'}">
+					<li *ngIf="isOrgAdmin && authService.user.hasCompany" [ngClass]="{'active':  baseRoute === 'team'}">
 						<a  [routerLink]="['./team/add-team']" >
 						<i class="fa fa-users"></i>
 						<span class="title">Team</span>
@@ -113,7 +113,7 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<li [ngClass]="{'active':  baseRoute === 'upgrade'}">
+					<li *ngIf="isOrgAdmin" [ngClass]="{'active':  baseRoute === 'upgrade'}">
 						<a  [routerLink]="['./upgrade']">
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>

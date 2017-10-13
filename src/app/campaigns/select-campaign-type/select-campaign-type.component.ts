@@ -5,11 +5,9 @@ import { Pagination } from '../../core/models/pagination';
 import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
-
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { RoleName } from '../../core/models/role-name';
 declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
-
-
-
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -19,9 +17,18 @@ declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
 export class SelectCampaignTypeComponent implements OnInit{
    
     public emailTypes = ['Video Campaign','Regular Campaign'];
-    
-    constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:Logger,private router:Router,private refService:ReferenceService){
+    roleName:RoleName=new RoleName();
+    hasSocialStatusRole:boolean = false;
+    isOrgAdmin:boolean = false;
+    constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:Logger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
         this.logger.info("select-campaign-type constructor loaded");
+        let roles = this.authenticationService.getRoles();
+        if(roles.indexOf(this.roleName.socialShare)>-1|| roles.indexOf(this.roleName.allRole)>-1){
+            this.hasSocialStatusRole = true;
+        }
+        if(roles.indexOf(this.roleName.orgAdminRole)>-1){
+            this.isOrgAdmin = true;
+        }
     }
    
     ngOnInit() {

@@ -198,6 +198,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            if(this.timeZones.indexOf(this.campaign.timeZoneId)<0){
+                this.campaign.timeZoneId = this.timeZones[0];
+            }
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
@@ -1352,7 +1355,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     launchCampaign(){
         this.isLoading = true;
         var data = this.getCampaignData("");
-        this.refService.campaignSuccessMessage = data.scheduleCampaign;
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength==0){
             this.dataError = false;
@@ -1361,6 +1363,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             .subscribe(
             response => {
                 if(response.message=="success"){
+                    this.refService.campaignSuccessMessage = data.scheduleCampaign;
                     this.isLaunched = true;
                     this.reInitialize();
                     this.router.navigate(["/home/campaigns/manage-campaigns"]);

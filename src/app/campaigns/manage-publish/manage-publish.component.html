@@ -76,17 +76,17 @@
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
 													<div style="top: 30%; position: relative;" >
-														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 25%;margin-top: -5%;margin-left: 7%"> 
+														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 25%;margin-top: -1%;margin-left: 7%"> 
 															<i class="fa fa-pencil-square-o" ></i><!-- class="mix-preview4 fancybox-button" -->
 														</a> 
 														<ng-container *ngIf="campaign.launched">
 														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) " class="mix-preview4" data-rel="fancybox-button"
-														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="" style="left: 25%;margin-top: -5%;margin-left: 7%">
+														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="" style="left: 25%;margin-top: -1%;margin-left: 7%">
 																<i class="fa fa-line-chart" ></i>
 														</a>
 														</ng-container>
 														
-														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId)" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -5%;margin-left: -6%"> 
+														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId)" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -1%;margin-left: -6%"> 
 															<i class="fa fa-trash" ></i>
 														</a>
 													</div>
