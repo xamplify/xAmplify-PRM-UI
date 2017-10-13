@@ -1,11 +1,22 @@
 <style>
-textarea {`
+/* textarea {`
 	background: url(http://i.imgur.com/2cOaJ.png);
 	background-attachment: local;
 	background-repeat: no-repeat;
 	padding-left: 35px;
 	padding-top: 10px;
     border-color:#ccc;
+}
+ */
+.textCss {
+	background-color: rgba(0,0,0,0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 13;
+    margin: 0;
+    padding: 0;
+   /*  position: absolute; */
+    width: 91%;
 }
 
 .imageblur {
@@ -71,11 +82,11 @@ img:hover {
 			<li style="color:#888">Add Contacts</li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
-			<a type="button" class="btn"
+			<button type="button" class="btn green"
 				href="https://aravindu.com/vod/UPLOAD_USER_LIST .csv" download
-				style="color: #aaaaaa;">Download Csv File<i
+				style="color: #ffffff;">Download Csv File<i
 				class="fa fa-cloud-download" aria-hidden="true"
-				style="margin-left: 5px"></i></a>
+				style="margin-left: 5px"></i></button>
 		</div>
 	</div>
 	<!-- BEGIN PAGE CONTENT-->
@@ -90,8 +101,8 @@ img:hover {
 								<h4 class="col-xs-12" style="right:6px">Add your contacts with given options</h4>
 								<section>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
-										<button class="btn-primary btn-block" id="addContacts"
-											(click)="addRow()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5" >
+										<button class="btn-primary btn-block" id="addContacts" (click)="addContactModalOpen()"
+											 [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5" >
 											<i class="fa fa-user-plus"
 												style="font-size: 30px; padding-top: 15px;"></i>
 											<h6 class="uppercase" style="font-size: 11px">Add
@@ -374,7 +385,7 @@ img:hover {
 											(click)="clipboardShowPreview()">SHOW PREVIEW</button>
 									</div>
 									<div class="col-xs-12">
-										<textarea id="copyFromclipTextArea"
+										<textarea id="copyFromclipTextArea" class="textareaNumber"
 											[(ngModel)]="clipboardTextareaText"
 											placeholder="EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName..&#10;EmailId..,FirstName..,LastName.."
 											[ngModelOptions]="{standalone: true}"
@@ -401,37 +412,48 @@ img:hover {
 								id="sample_editable_1">
 								<thead>
 									<tr>
-										<th>EMAIL</th>
-										<th>FIRST NAME</th>
+										<th>FIRSTNAME</th>
 										<th>LAST NAME</th>
-										<th>CANCEL</th>
+										<th>COMPANY</th>
+										<th>TITLE</th>
+										<th>EMAIL</th>
+										<th>ADDRESS</th>
+										<th>MOBILENUMBER</th>
+										<th>NOTES</th>
+										<!-- <th>CANCEL</th> -->
 									</tr>
 								</thead>
 								<tbody>
 									<tr *ngFor="let newContact of newUsers; let i = index"
 										id="row_{{newContact.id}}">
-										<td><input type=Text [(ngModel)]="newContact.emailId"
+										<td>{{newContact.firstName}}
+										<!-- <input type=Text [(ngModel)]="newContact.emailId"
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											required
 											pattern="^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,15})+$"
 											#emailId="ngModel"
 											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
-
 											<div
 												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
-												class="custom-error-message">Invalid EmailId.</div></td>
-
-										<td><input type=Text [(ngModel)]="newContact.firstName"
+												class="custom-error-message">Invalid EmailId.</div> -->
+												</td>
+										<td>{{newContact.lastName}}
+										<!-- <input type=Text [(ngModel)]="newContact.firstName"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"> <!-- <div
-												[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
-												class="alert alert-danger">firstName is required.</div> -->
+											maxlength="32"> -->
 										</td>
-										<td><input type=Text [(ngModel)]="newContact.lastName"
+										<td>{{newContact.company}}
+										<!-- <input type=Text [(ngModel)]="newContact.lastName"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"></td>
-										<td><a class="delete" (click)="cancelRow(i)"> Cancel
-										</a></td>
+											maxlength="32"> -->
+											</td>
+											<td>{{newContact.title}}</td>
+											<td>{{newContact.emailId}}</td>
+											<td>{{newContact.address}}</td>
+											<td>{{newContact.mobileNumber}}
+											<td>{{newContact.description}}</td>
+										<!-- <td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td> -->
 									</tr>
 								</tbody>
 							</table>
@@ -691,6 +713,86 @@ img:hover {
 </div>
 
 <!-- MODALS -->
+
+<div id="addContactModal" class="modal" id="addContactModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
+        <h4 class="modal-title">Add Contact</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal">
+		   <div class="form-inline">
+		   <label class="control-label col-sm-2" for="name"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
+		   <div class="form-group col-sm-5">
+			      <input type="name" style="border:none" class="form-control" id="name" [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
+			    <div class="textCss"></div>
+		  </div> 
+		   <div class="form-group col-sm-5">
+			      <input type="name" style="border:none" class="form-control" id="name" [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
+			    <div class="textCss"></div>
+		  </div>
+		  </div>
+		  <div class="form-inline">
+		   <label class="control-label col-sm-2" for="company" style="right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
+		   <div class="form-group col-sm-5">
+		      <input type="company" style="border:none" class="form-control" id="company" [(ngModel)]="addContactuser.company" [ngModelOptions]="{standalone: true}" placeholder="Enter Company">
+		    <div class="textCss"></div>
+		  </div>
+		   <div class="form-group col-sm-5">
+		      <input type="title" style="border:none"  class="form-control" id="title" [(ngModel)]="addContactuser.title" [ngModelOptions]="{standalone: true}" placeholder="Enter JobTitle">
+		    <div class="textCss"></div>
+		  </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="email"><i class="fa fa-envelope-o" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email">
+		    <div class="textCss"></div>
+		    <div style="color:red" *ngIf="!validEmailPatternSuccess">invalid emailId</div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="address"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address">
+		    <div class="textCss"></div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="address"><i class="fa fa-phone" aria-hidden="true"></i></label>
+		    <div class="col-sm-10">
+		    <!-- <ngx-intl-tel-input [(value)]="addContactuser.mobileNumber"></ngx-intl-tel-input> -->
+		     <!-- <input type="tel" id="phone"> -->
+		      <input type="number" style="border:none" class="form-control" id="email" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
+		    <div class="textCss"></div>
+		    
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="note"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+		    <div class="col-sm-10"> 
+		      <textarea name="note" style="border:none" class="form-control" id="note" [(ngModel)]="addContactuser.description" [ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
+		      </textarea>
+		      <div class="textCss"></div>
+		    </div>
+		  </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" [disabled]="!validEmailPatternSuccess" (click)="addRow()">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="addContactModalClose()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div id="zohoId">
 	<div class="modal" id="zohoShowLoginPopup" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" data-keyboard="false"

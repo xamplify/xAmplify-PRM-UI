@@ -32,10 +32,13 @@ declare var $: any;
 })
 export class AddContactsComponent implements OnInit {
     settingSocialNetwork: string;
+addContactForm: FormGroup;
+emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
+    addContactuser: User = new User();
     public googleUsers: Array<User>;
     public clipboardUsers: Array<User>;
     public googleContactUser: Array<User>;
@@ -69,7 +72,7 @@ export class AddContactsComponent implements OnInit {
     public contactListNameError = false;
     public invalidPattenMail: boolean;
     public valilClipboardUsers: boolean = false;
-    public validEmailPatternSuccess: boolean = false;
+    public validEmailPatternSuccess: boolean = true;
     public listViewName: string;
     public uploadvalue = true;
     public contactListName: string;
@@ -104,7 +107,7 @@ export class AddContactsComponent implements OnInit {
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
     contacts: User[];
     private socialContactType: string;
-    emailNotValid = false;
+    emailNotValid: boolean;
     constructor( public socialPagerService: SocialPagerService, private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
@@ -319,11 +322,11 @@ export class AddContactsComponent implements OnInit {
         this.validEmailPatternSuccess = false;
         if ( this.validateEmailAddress( emailId ) ) {
             this.validEmailPatternSuccess = true;
-            this.emailNotValid = false;
+            this.emailNotValid = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
         } else {
             this.validEmailPatternSuccess = false;
-
+            this.emailNotValid = false;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         }
     }
@@ -383,7 +386,7 @@ export class AddContactsComponent implements OnInit {
         console.log( "emailDuplicate" + isDuplicate );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
 
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.validEmailPatternSuccess == true ) {
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             this.xtremandLogger.info( this.newUsers[0].emailId.toLowerCase() );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
@@ -658,15 +661,18 @@ export class AddContactsComponent implements OnInit {
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;' );
     }
-
+    
     addRow() {
+       if(this.emailNotValid == true ){
+        $( "#addContactModal .close" ).click()
+        this.newUsers.push( this.addContactuser );
+       }
         this.selectedAddContactsOption = 0;
         this.fileTypeError = false;
         this.noOptionsClickError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
         $( "#sample_editable_1" ).show();
-        this.newUsers.push( new User() );
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -677,6 +683,8 @@ export class AddContactsComponent implements OnInit {
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px;left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        this.addContactuser = new User();
+        this.emailNotValid = false;
     }
 
     cancelRow( rowId: number ) {
@@ -1631,9 +1639,19 @@ export class AddContactsComponent implements OnInit {
         this.settingSocialNetwork = socialNetwork;
         $( '#settingSocialNetwork' ).modal();
     }
+    
+    addContactModalOpen(){
+        $( "#addContactModal" ).show();
+    }
+    
+    addContactModalClose(){
+        $('#addContactModal').modal('toggle');
+        $( "#addContactModal .close" ).click()
+        //$( '#addContactModal' ).modal( 'hide' );
+    }
 
     ngOnInit() {
-
+       // this.validateAddContactForm();
         this.socialContactImage();
         this.hideModal();
         this.gContactsValue = true;
@@ -1673,6 +1691,63 @@ export class AddContactsComponent implements OnInit {
         }
     }
 
+    /*validateAddContactForm() {
+       // var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';
+        this.addContactForm = this.fb.group({
+            'firstName': [null,this.addContactuser.firstName],
+            'lastName': [null,this.addContactuser.lastName],
+            'company': [null,this.addContactuser.company],
+            'title': [null,this.addContactuser.title],
+            'emailId': [null,this.addContactuser.emailId, [Validators.required, Validators.pattern( this.emailRegEx )]],
+            'address': [null,this.addContactuser.address],
+            'mobileNumber': [null,this.addContactuser.mobileNumber],
+            'description': [null,this.addContactuser.description],
+        }
+        );
+
+        this.addContactForm.valueChanges
+            .subscribe(data => this.onUpdatePasswordFormValueChanged(data));
+
+        this.onUpdatePasswordFormValueChanged(); // (re)set validation messages now
+    }
+
+
+    onUpdatePasswordFormValueChanged(data?: any) {
+        if (!this.addContactForm) { return; }
+        const form = this.addContactForm;
+
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = form.get(field);
+
+            if (control && control.dirty && !control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+    }
+
+
+    formErrors = {
+        'firstName': '',
+        'lastName': '',
+        'company': '',
+        'title': '',
+        'emailId': '',
+        'address': '',
+        'mobileNumber': '',
+        'description': ''
+    };
+
+    validationMessages = {
+        'emailId': {
+            'required': 'emailId is required.'
+        }
+    };
+    */
     ngDestroy() {
         this.contactService.successMessage = false;
         this.contactService.googleCallBack = false;
