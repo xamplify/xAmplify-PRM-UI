@@ -48,6 +48,7 @@ export class ManageContactsComponent implements OnInit {
     public contactLists: Array<ContactList>;
     selectedContactListId: number;
     selectedContactListName: string;
+    uploadedUserId: number;
     showAll: boolean;
     showEdit: boolean;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -436,7 +437,8 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
-    editContactList( contactSelectedListId: number, contactListName: string ) {
+    editContactList( contactSelectedListId: number, contactListName: string,uploadUserId: number ) {
+        this.uploadedUserId = uploadUserId;
         this.selectedContactListId = contactSelectedListId;
         this.selectedContactListName = contactListName;
         this.showAll = false;

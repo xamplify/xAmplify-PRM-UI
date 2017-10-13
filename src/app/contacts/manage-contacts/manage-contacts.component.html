@@ -288,13 +288,14 @@ rotate
 											(click)="downloadContactList(contactList.id)"
 											title="Dowload List" data-rel="fancybox-button"> <i
 											class="fa fa-cloud-download"></i>
-										</a> <a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
-											(click)="editContactList(contactList.id,contactList.name)" title="Edit List"
-											data-rel="fancybox-button"> <i
-											class="fa fa-pencil-square-o"></i>
+										</a> 
+										<a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+											(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)" title="Edit List"
+											data-rel="fancybox-button"> 
+											<i class="fa fa-pencil-square-o"></i>
 										</a>
-										<a class="mix-preview4" *ngIf = "!hasContactRole || (!hasContactRole && loggedInUserId != contactList.uploadedUserId) "
-											(click)="editContactList(contactList.id,contactList.name)" title="ContactList Info"
+										<a class="mix-preview4" *ngIf = "!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
+											(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)" title="ContactList Info"
 											data-rel="fancybox-button"> <i
 											class="glyphicon glyphicon-info-sign"></i>
 										</a>
@@ -354,6 +355,7 @@ rotate
 		<app-edit-contacts *ngIf="showEdit" [contacts]="users"
 			(notifyParent)="update($event)"
 			[selectedContactListId]="selectedContactListId"
+			[uploadedUserId]="uploadedUserId"
 			[contactListId]="selectedContactListId" [contactListName]="selectedContactListName"></app-edit-contacts>
 	</div>
 

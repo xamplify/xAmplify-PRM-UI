@@ -39,6 +39,7 @@ export class EditContactsComponent implements OnInit {
     @Input() contactListId: number;
     @Input() contactListName: string;
     @Input() selectedContactListId: number;
+    @Input() uploadedUserId: number;
     @Input( 'value' ) value: number;
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
@@ -288,7 +289,7 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.manageContact.editContactList( this.contactListId, this.contactListName);
+                this.manageContact.editContactList( this.contactListId, this.contactListName,this.uploadedUserId);
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
@@ -335,7 +336,7 @@ export class EditContactsComponent implements OnInit {
                     data => {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        this.manageContact.editContactList( this.contactListId, this.contactListName );
+                        this.manageContact.editContactList( this.contactListId, this.contactListName,this.uploadedUserId );
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
@@ -635,7 +636,7 @@ export class EditContactsComponent implements OnInit {
             data => {
                 data = data;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.manageContact.editContactList( this.contactListId, this.contactListName );
+                this.manageContact.editContactList( this.contactListId, this.contactListName,this.uploadedUserId);
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
 
