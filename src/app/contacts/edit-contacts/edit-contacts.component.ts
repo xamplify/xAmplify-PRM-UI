@@ -502,8 +502,8 @@ export class EditContactsComponent implements OnInit {
         var isValidData: boolean = true;
         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
-            if ( !this.validateEmailAddress( data[0] ) ) {
-                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[0] + "</h4>" );
+            if ( !this.validateEmailAddress( data[4] ) ) {
+                $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
                 isValidData = false;
             }
             this.users.length = 0;
@@ -515,18 +515,58 @@ export class EditContactsComponent implements OnInit {
                 var data = allTextLines[i].split( splitValue );
                 let user = new User();
                 switch ( data.length ) {
-                    case 1:
-                        user.emailId = data[0];
-                        break;
-                    case 2:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        break;
-                    case 3:
-                        user.emailId = data[0];
-                        user.firstName = data[1];
-                        user.lastName = data[2];
-                        break;
+                case 1:
+                    user.firstName = data[0];
+                    break;
+                case 2:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    break;
+                case 3:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    break;
+                case 4:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    user.title = data[3];
+                    break;
+                case 5:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    user.title = data[3];
+                    user.emailId = data[4];
+                    break;
+                case 6:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    user.title = data[3];
+                    user.emailId = data[4];
+                    user.address = data[5];
+                    break;
+                case 7:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    user.title = data[3];
+                    user.emailId = data[4];
+                    user.address = data[5];
+                    user.mobileNumber = data[6];
+                    break;
+                case 8:
+                    user.firstName = data[0];
+                    user.lastName = data[1];
+                    user.company = data[2];
+                    user.title = data[3];
+                    user.emailId = data[4];
+                    user.address = data[5];
+                    user.mobileNumber = data[6];
+                    user.description = data[7];
+                    break;
                 }
                 this.xtremandLogger.info( user );
                 this.users.push( user );
