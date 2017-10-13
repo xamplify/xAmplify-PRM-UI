@@ -157,6 +157,13 @@ export class SocialService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    
+    getSocialCampaign(socialCampaignId: number){
+        return this.http.get( this.URL + 'social/campaign/'+socialCampaignId+'?access_token='+ this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
     private extractData( res: Response ) {
         const body = res.json();

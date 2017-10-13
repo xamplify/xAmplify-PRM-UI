@@ -22,17 +22,19 @@ import { ContactService } from "../.././../contacts/services/contact.service";
 import { CampaignService } from "../.././../campaigns/services/campaign.service";
 
 import { Pagination } from '../../../core/models/pagination';
+import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 
 declare var $, flatpickr, videojs: any;
 @Component({
     selector: 'app-update-status',
     templateUrl: './update-status.component.html',
     styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [PagerService, Pagination]
+    providers: [PagerService, Pagination, CallActionSwitch]
 })
 export class UpdateStatusComponent implements OnInit {
     @Input('isSocialCampaign') isSocialCampaign: boolean = false;
-
+    @Input('socialCampaignId') socialCampaignId: number;
+ 
     videoUrl: string;
     posterImage: string;
     videoJSplayer: any;
@@ -52,8 +54,8 @@ export class UpdateStatusComponent implements OnInit {
     constructor(private socialService: SocialService, private twitterService: TwitterService, 
             private facebookService: FacebookService, private videoFileService: VideoFileService, 
             private authenticationService: AuthenticationService, private contactService: ContactService,
-            private campaignService: CampaignService, 
-            private pagerService: PagerService, private router: Router, private logger: Logger) {
+            private campaignService: CampaignService, private pagerService: PagerService, private router: Router, 
+            private logger: Logger, public callActionSwitch: CallActionSwitch) {
         
         this.resetCustomResponse();
     }
@@ -207,8 +209,11 @@ export class UpdateStatusComponent implements OnInit {
 
     createSocialCampaign(){
         this.resetCustomResponse();
-        
+        $('html, body').animate({
+            scrollTop: $("#us-right").offset().top
+        }, 500);
         if(this.validate()){
+            this.setCustomResponse(ResponseType.Loading, 'Creating Social Campaign');
             this.campaign.socialStatus = this.socialStatus;
             console.log(this.campaign);
             
@@ -217,14 +222,18 @@ export class UpdateStatusComponent implements OnInit {
             this.campaignService.createSocialCampaign(this.campaign)
             .subscribe(
             data => {
-                this.initializeSocialStatus();
                 this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
             },
             error => {
-                console.log(error);
-                this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
+                this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+                this.customResponse.statusArray = [];
+                this.customResponse.statusArray.push(error);
             },
-            () => console.log('Finished')
+            () => {
+                this.initializeSocialStatus();
+                this.campaign = new Campaign();
+                this.campaign.userListIds = [];
+            }
             ); 
         }
     }
@@ -508,6 +517,19 @@ export class UpdateStatusComponent implements OnInit {
         this.highlightRow(contactListId);
     }
     
+    getSocialCampaign(socialCampaignId: number){
+
+        this.socialService.getSocialCampaign(socialCampaignId)
+            .subscribe(
+            data => {
+                console.log(data);
+            },
+            error => console.log( error ),
+            () => {}
+            );
+    
+    }
+    
     ngOnInit() {
         this.userId = this.authenticationService.getUserId();
         this.listSocialConnections();
@@ -517,6 +539,9 @@ export class UpdateStatusComponent implements OnInit {
         
         if (this.isSocialCampaign)
             this.loadContactLists(this.contactListsPagination);
+        
+        /*if(this.isSocialCampaign && this.socialCampaignId)
+            this.getSocialCampaign(this.socialCampaignId);*/
     }
 
     ngOnDestroy() {

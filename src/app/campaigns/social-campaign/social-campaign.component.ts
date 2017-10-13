@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-social-campaign',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./social-campaign.component.css']
 })
 export class SocialCampaignComponent implements OnInit {
+    socialCampaignId: number;
+    constructor( public activatedRoute: ActivatedRoute ) { }
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.socialCampaignId = this.activatedRoute.snapshot.params['id'];
+    }
 
 }

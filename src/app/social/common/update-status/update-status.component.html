@@ -46,7 +46,7 @@
 		        	<div class="col-xs-12"><a class="btn btn-update-status" [routerLink]="['/home/social/manage/all']" style="border: 1px solid;">Manage Accounts</a></div>
 		        </div>
             </div>
-            <div class="col-md-12 alert alert-info rounded-0">
+            <div class="col-sm-12 alert alert-info rounded-0">
                 <h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
                 <h5><strong>Image specifications:</strong></h5>
                 <ul>
@@ -64,16 +64,23 @@
 		
 		<div class="col-md-9 col-sm-12" *ngIf='socialStatus.socialStatusProviders?.length === 0'>
 			<div class='alert alert-info'>
-				<h4 class='m0 bold'>You have not added any social accounts.</h4>
+				<h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
 			</div>
 		</div>
-        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}">
+        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}" id="us-right">
 			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix" style="padding: 15px;">
+				    <div class="form-group m0 pull-right">
+						<h5 class="control-label font-purple-intense pr10">Notify Me When Email is opened</h5>
+						<switch [status]="campaign.emailOpened"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+							   (statusChange)="campaign.emailOpened = !campaign.emailOpened">
+						</switch>
+			  		</div>
 					<div class="form-group m0">
-					    <label for="campaignName"><h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6></label>
-					    <input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="campaign.campaignName">
-				  	</div>
+				    	<label for="campaignName"><h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6></label>
+				    	<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="campaign.campaignName">
+				    </div>
 				</div>
 			</div>
 			
@@ -212,7 +219,7 @@
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
-							<table class="table table-bordered">
+							<table class="table table-condensed table-hover table-bordered table-striped">
 								<thead>
 									<tr>
 										<th>Select</th>
@@ -246,7 +253,7 @@
 	                        <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === 1}" >
 	                            <a (click)="setPageContactLists(contactListsPagination.pager.currentPage - 1)"  [class.disabled]="contactListsPagination.pager.currentPage === 1">Previous</a>
 	                         </li>
-	                         <li *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
+	                         <li class='hidden-xs' *ngFor="let page of contactListsPagination.pager.pages" [ngClass]="{active:contactListsPagination.pager.currentPage === page}">
 	                            <a (click)="setPageContactLists(page)">{{page}}</a>
 	                         </li>
 	                         <li [ngClass]="{disabled:contactListsPagination.pager.currentPage === contactListsPagination.pager.totalPages}">

@@ -285,6 +285,7 @@ nav a.active {
 .btn,
 .portlet.light,
 .form-control,
+.bootstrap-switch, .bootstrap-switch-handle-on, .bootstrap-switch-handle-off
 button {
 	border-radius: 0 !important;
 	webkit-border-radius: 0 !important;
@@ -301,7 +302,7 @@ textarea {
 
 .alert > h4 {
 	font-size: 14px !important;
-	font-weight: 600 !important;
+	font-weight: 500;
 }
 
 .disabled-div{
