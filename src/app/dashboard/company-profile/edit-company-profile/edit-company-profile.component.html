@@ -17,7 +17,7 @@
 		<div class="alert alert-info" id="info" *ngIf="companyProfile.isAdd">Please Provide Company Details To Access The Platform</div>
 		<div class="portlet-body clearfix">
 		<div class="alert alert-success"  id="edit-sucess" style="display: none;">
-			<a (click)="referenceService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
+			<a (click)="refService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
 				<ng-container *ngIf="companyProfile.isAdd">
 					<strong>{{message}}.Please Wait...</strong> 
 				</ng-container>
