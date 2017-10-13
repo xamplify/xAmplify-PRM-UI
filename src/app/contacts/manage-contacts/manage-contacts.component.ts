@@ -35,7 +35,11 @@ export class ManageContactsComponent implements OnInit {
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
     contactsNotSelectedError: boolean = false;
+    
     hasContactRole:boolean = false;
+    loggedInUserId = 0;
+    hasAllAccess = false;
+    
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
     paginationAllData = [];
@@ -153,6 +157,9 @@ export class ManageContactsComponent implements OnInit {
         
         this.hasContactRole = this.referenceService.hasRole(this.referenceService.roleName.contactsRole);
         console.log("ContactRole"+this.hasContactRole);
+        
+        this.hasAllAccess = this.referenceService.hasAllAccess();
+
     }
     
     contactListNameLength(title: string) {

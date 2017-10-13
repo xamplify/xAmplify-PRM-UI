@@ -288,24 +288,24 @@ rotate
 											(click)="downloadContactList(contactList.id)"
 											title="Dowload List" data-rel="fancybox-button"> <i
 											class="fa fa-cloud-download"></i>
-										</a> <a class="mix-preview4" *ngIf = "hasContactRole"
+										</a> <a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 											(click)="editContactList(contactList.id,contactList.name)" title="Edit List"
 											data-rel="fancybox-button"> <i
 											class="fa fa-pencil-square-o"></i>
 										</a>
-										<a class="mix-preview4" *ngIf = "!hasContactRole"
+										<a class="mix-preview4" *ngIf = "!hasContactRole || (!hasContactRole && loggedInUserId != contactList.uploadedUserId) "
 											(click)="editContactList(contactList.id,contactList.name)" title="ContactList Info"
 											data-rel="fancybox-button"> <i
 											class="glyphicon glyphicon-info-sign"></i>
 										</a>
-										 <a class="mix-preview6"  *ngIf = "hasContactRole" (click)="showAlert(contactList.id)"
+										 <a class="mix-preview6"   *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)" (click)="showAlert(contactList.id)"
 											title="Delete List" data-rel="fancybox-button"
 											lang="{{contactList.id}}"> <i class="fa fa-trash"></i>
 										</a>
 									</div>
 									<div style="top: 38%; position: relative;"
 										*ngIf="contactList.synchronisedList == true">
-										<a class="mix-preview2" title="sychronizeContactList"  *ngIf = "hasContactRole"
+										<a class="mix-preview2" title="sychronizeContactList"  *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 											(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 											data-rel="fancybox-button" style="left: 38%;"> <i
 											class="fa fa-refresh" aria-hidden="true"></i>
@@ -429,7 +429,7 @@ rotate
 						<div class="tab-pane active"></div>
 						<div class="row">
 							<form #f="ngForm" class="form-inline"
-								*ngIf="contactsByType.selectedCategory == 'all' && hasContactRole">
+								*ngIf="contactsByType.selectedCategory == 'all' && hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
 								<div class="contact-list-form">
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
@@ -505,7 +505,7 @@ rotate
 														</select>
 													</div>
 													<div class="btn-group pull-right"
-														*ngIf="contactsByType.selectedCategory == 'invalid' && hasContactRole">
+														*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
 														<button class="btn dropdown-toggle" data-toggle="dropdown">
 															Tools <i class="fa fa-angle-down"></i>
 														</button>

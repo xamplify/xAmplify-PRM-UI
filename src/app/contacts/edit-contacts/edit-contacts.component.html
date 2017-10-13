@@ -203,7 +203,7 @@ a.disabled {
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="table-toolbar" *ngIf="hasContactRole">
+					<div class="table-toolbar" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
 						<div class="clearfix">
 							<div class="col-sm-6">
 								<div class="btn-group">
@@ -409,7 +409,7 @@ a.disabled {
 										<th>EMAILID</th>
 										<th>FIRSTNAME</th>
 										<th>LASTNAME</th>
-										<th *ngIf="hasContactRole">DELETE</th>
+										<th *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">DELETE</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -429,7 +429,7 @@ a.disabled {
 										<td>{{contact.firstName}}</td>
 										<td class="center">{{contact.lastName}}</td>
 										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
-										<td *ngIf="hasContactRole"><a class="delete" (click)="deleteUserShowAlert(contact.id)">
+										<td *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"><a class="delete" (click)="deleteUserShowAlert(contact.id)">
 												Delete </a></td>
 
 									</tr>
@@ -638,7 +638,7 @@ a.disabled {
 				<div class="table-toolbar">
 					<div class="row">
 						<div class="col-md-12" style="align: right">
-							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid' && hasContactRole">
+							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)">
 								<button class="btn dropdown-toggle" data-toggle="dropdown">
 									Tools <i class="fa fa-angle-down"></i>
 								</button>

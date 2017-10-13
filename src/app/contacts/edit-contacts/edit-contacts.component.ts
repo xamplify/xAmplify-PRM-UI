@@ -91,6 +91,8 @@ export class EditContactsComponent implements OnInit {
     showEditContactData: boolean = true;
 
     hasContactRole:boolean = false;
+    loggedInUserId = 0;
+    hasAllAccess = false;
     
     public currentContactType: string = "all_contacts";
     public userListIds: Array<UserListIds>;
@@ -129,6 +131,8 @@ export class EditContactsComponent implements OnInit {
         this.users = new Array<User>();
         this.notifyParent = new EventEmitter<User>();
         this.hasContactRole = this.refService.hasRole(this.refService.roleName.contactsRole);
+        
+        this.hasAllAccess = this.refService.hasAllAccess();
     }
 
     onChangeAllContactUsers( event: Event ) {
