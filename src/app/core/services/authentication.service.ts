@@ -15,6 +15,7 @@ export class AuthenticationService {
     refresh_token: string;
     expires_in: number;
     logged_in_time: Date;
+    SERVER_URL: string;
     REST_URL: string;
     MEDIA_URL: string;
     APP_URL: string;
@@ -25,10 +26,11 @@ export class AuthenticationService {
     redirectUrl: string;
     map: any;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
+        this.SERVER_URL = 'https://aravindu.com/';
         this.APP_URL = 'https://socialubuntu.com/';
-        this.REST_URL = 'https://aravindu.com/xtremand-rest/';
-        this.MEDIA_URL = 'https://aravindu.com/vod/';
-        this.SHARE_URL = 'https://aravindu.com/xtremand-share/';
+        this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+        this.MEDIA_URL = this.SERVER_URL + 'vod/';
+        this.SHARE_URL = this.SERVER_URL + 'xtremand-share/';
     }
 
     getOptions(): RequestOptions {

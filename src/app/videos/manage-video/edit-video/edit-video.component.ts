@@ -2,11 +2,10 @@ import {
     Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
     style, state, animate, transition, trigger
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { FileDropDirective, FileItem } from 'ng2-file-upload';
+import { FileItem } from 'ng2-file-upload';
 import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
@@ -134,9 +133,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isThisDraftVideo = false;
     selectedImagePath: string;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
-        public videoFileService: VideoFileService, public router: Router, public route: ActivatedRoute,
-        public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef, public authenticationService: AuthenticationService,
-        public xtremandLogger: XtremandLogger, public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
+        public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
+        public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
+        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.tempControllerColor = this.tempVideoFile.controllerColor;
@@ -806,6 +805,20 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     showEditModalDialog() {
         $('#overLayDialog').append($('#overlay-modal').show());
     }
+   settingImagePaths(i: number) {
+      return this.saveVideoFile.imageFiles[i] + '?access_token=' + this.authenticationService.access_token;
+    }
+   settingGifPaths(i: number) {
+      return this.saveVideoFile.gifFiles[i] + '?access_token=' + this.authenticationService.access_token;
+   }
+   settingImageGifPaths(){
+        this.imageFilesfirst = this.settingImagePaths(0);
+        this.imageFilessecond = this.settingImagePaths(1);
+        this.imageFilesthird = this.settingImagePaths(2);
+        this.giffirst = this.settingGifPaths(0);
+        this.gifsecond = this.settingGifPaths(1);
+        this.gifthird = this.settingGifPaths(2);
+   } 
     ngOnInit() {
         Metronic.init();
         Layout.init();
@@ -820,12 +833,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.categories = this.referenceService.refcategories;
         console.log(this.saveVideoFile);
         this.saveVideoFile.categories = this.categories;
-        this.imageFilesfirst = this.saveVideoFile.imageFiles[0] + '?access_token=' + this.authenticationService.access_token;
-        this.imageFilessecond = this.saveVideoFile.imageFiles[1] + '?access_token=' + this.authenticationService.access_token;
-        this.imageFilesthird = this.saveVideoFile.imageFiles[2] + '?access_token=' + this.authenticationService.access_token;
-        this.giffirst = this.saveVideoFile.gifFiles[0] + '?access_token=' + this.authenticationService.access_token;
-        this.gifsecond = this.saveVideoFile.gifFiles[1] + '?access_token=' + this.authenticationService.access_token;
-        this.gifthird = this.saveVideoFile.gifFiles[2] + '?access_token=' + this.authenticationService.access_token;
+        this.settingImageGifPaths();
         this.defaultVideoControllValues(this.saveVideoFile);
         try {
             this.buildForm();
@@ -1000,7 +1008,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             ]
             ],
             'id': [this.saveVideoFile.id],
-            'uploadedUserId' : [this.saveVideoFile.uploadedUserId],
+            'uploadedUserId': [this.saveVideoFile.uploadedUserId],
             'viewBy': [this.saveVideoFile.viewBy, Validators.required],
             'categoryId': [this.saveVideoFile.categoryId, Validators.required],
             'tags': [this.saveVideoFile.tags, Validators.required],
