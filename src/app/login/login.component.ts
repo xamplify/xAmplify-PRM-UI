@@ -93,10 +93,11 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(authorization, body, userName).subscribe( result => {
             if ( localStorage.getItem( 'currentUser' ) ) {
                 this.initializeTwitterNotification();
-                this.router.navigate( ['/home/dashboard/default'] );
                 // if user is coming from login
              //   this.getLoggedInUserDetails();
                 let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                console.log(currentUser)
+                console.log(currentUser.hasCompany);
                 if(currentUser.hasCompany){
                     this.router.navigate( ['/home/dashboard/default'] );
                 }else{
