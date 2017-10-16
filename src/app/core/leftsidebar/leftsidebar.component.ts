@@ -28,6 +28,8 @@ export class LeftsidebarComponent implements OnInit {
             this.baseRoute = "videos";
         else if( url.indexOf('contacts') >= 0)
             this.baseRoute = "contacts";
+        else if( url.indexOf('partners') >= 0)
+            this.baseRoute = "partners";
         else if( url.indexOf('emailtemplate') >= 0)
             this.baseRoute = "emailtemplate";
         else if( url.indexOf('campaigns') >= 0)

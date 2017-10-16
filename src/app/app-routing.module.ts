@@ -6,6 +6,7 @@ import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './core/home/home.component';
 import { VideosModule } from './videos/videos.module';
 import { ContactsModule } from './contacts/contacts.module';
+import { PartnersModule } from './partners/partners.module'; 
 import { EmailTemplateModule } from './email-template/email-template.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
@@ -37,6 +38,7 @@ export const routes: Routes = [
             { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
             { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
+            { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
             { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },

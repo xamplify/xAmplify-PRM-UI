@@ -29,7 +29,7 @@
 								</a>
 							</li>
 							<li>
-					       <a  [routerLink]="['./videos/manage_videos']" [class.disabled]="!authService.user.hasCompany ?true:null" >
+					       <a  [routerLink]="['./videos/manage']" [class.disabled]="!authService.user.hasCompany ?true:null" >
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Videos</span>
 								</a>
@@ -58,6 +58,30 @@
 							</li>
 						</ul>
 					</li>
+					
+						<li *ngIf="isContact" [ngClass]="{'active':  baseRoute === 'partners'}">
+						<a>
+						<i class="fa fa-list-alt"></i>
+						<span class="title">Partners</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" >
+						<li>
+								<a  [routerLink] ="['./partners/add']" [class.disabled]="!authService.user.hasCompany ?true:null" >
+								<i class="fa fa-users"></i>
+								<span class="title">Add Partners</span>
+								</a>
+							</li>
+							<li>
+								<a  [routerLink]="['./partners/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
+								<i class="fa fa-list"></i>
+								<span class="title">Manage Partners</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					
 					<li *ngIf="isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a>
 						<i class="fa fa-envelope"></i>
