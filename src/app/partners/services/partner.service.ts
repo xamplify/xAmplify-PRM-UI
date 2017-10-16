@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { ContactList } from '../models/contact-list';
-import { SocialContact } from '../models/social-contact';
-import { ZohoContact } from '../models/zoho-contact';
-import { SalesforceContact } from '../models/salesforce-contact';
-import { SalesforceListViewContact } from '../models/salesforce-list-view-contact';
+import { ContactList } from '../../contacts/models/contact-list';
+import { SocialContact } from '../../contacts/models/social-contact';
+import { ZohoContact } from '../../contacts/models/zoho-contact';
+import { SalesforceContact } from '../../contacts/models/salesforce-contact';
+import { SalesforceListViewContact } from '../../contacts/models/salesforce-list-view-contact';
 import { User } from '../../core/models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Logger } from "angular2-logger/core";

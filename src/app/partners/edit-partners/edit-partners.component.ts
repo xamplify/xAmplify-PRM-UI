@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PartnerService } from '../services/partner.service';
-import { ContactList } from '../models/contact-list';
-import { CustomeResponse } from '../models/response';
-import { AddContactsOption } from '../models/contact-option';
+import { ContactList } from '../../contacts/models/contact-list';
+import { CustomeResponse } from '../../contacts/models/response';
+import { AddContactsOption } from '../../contacts/models/contact-option';
 import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
@@ -12,9 +12,9 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { PagerService } from '../../core/services/pager.service';
 import { Pagination } from '../../core/models/pagination';
-import { UserListIds } from '../models/user-listIds';
+import { UserListIds } from '../../contacts/models/user-listIds';
 import { ReferenceService } from '../../core/services/reference.service';
-import { ContactsByType } from '../models/contacts-by-type';
+import { ContactsByType } from '../../contacts/models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
