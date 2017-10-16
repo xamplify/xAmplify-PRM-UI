@@ -13,7 +13,7 @@ import { SalesforceContact } from '../../contacts/models/salesforce-contact';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../../contacts/models/contact-option';
-import { SocialPagerService } from '../services/social-pager.service';
+import { SocialPagerService } from '../../contacts/services/social-pager.service';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
