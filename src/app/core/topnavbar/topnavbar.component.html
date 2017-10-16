@@ -244,9 +244,9 @@
 							<li *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)" >
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
-							<li *ngIf="refService.userDefaultPage == 'DASHBOARD'"><a [routerLink]="['/home/dashboard/welcome']"> 
+							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']"> 
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a></li>
-							<li *ngIf="refService.userDefaultPage == 'WELCOME'"><a [routerLink]="['/home/dashboard']"> 
+							<li *ngIf="refService.userDefaultPage == 'WELCOME'  && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard']"> 
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a></li>
 							<li><a [routerLink]="['/userlock']"> <i
 									class="icon-lock"></i> Lock Screen
