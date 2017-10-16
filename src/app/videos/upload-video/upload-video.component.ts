@@ -205,7 +205,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     this.videoFileService.actionValue = 'Save';
                     console.log(this.videoFileService.actionValue);
                     if (this.redirectPge === false) {
-                        this.router.navigateByUrl('/home/videos/manage_videos');
+                        this.router.navigateByUrl('/home/videos/manage');
                     } else if (this.playerInit === false) {
                         this.videoFileService.actionValue = '';
                         this.videoFileService.isProgressBar = false;

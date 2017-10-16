@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit,
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { Logger } from 'angular2-logger/core';
@@ -71,7 +72,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     categoryName: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public logger: Logger, public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
-        public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService) {
+        public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
+        public authenticationService: AuthenticationService) {
         this.xtremandLogger.log('share component constructor called');
         console.log('url is on angular 2' + document.location.href);
         this.embedUrl = document.location.href;
@@ -131,14 +133,18 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     if (this.embedVideoFile.is360video === true) {
                         try {
                             this.play360Video();
-                        } catch (err) { this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); }
+                        } catch (err) { 
+                             this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); 
+                        }
                     } else {
                         try {
                             this.playNormalVideo();
-                        } catch (err) { this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); }
+                        } catch (err) { 
+                            this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); 
+                        }
                     }
                 } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID") {
-                    this.router.navigate(['/No-Videos-Found-For-Specified-Embed-Url']);
+                     this.router.navigate(['/no-videos-found']);
                 }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);
@@ -147,12 +153,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 }
                 this.defaultCallToActionValues();
                 console.log(this.videoUrl);
-                this.shareUrl = 'http://aravindu.com/xtremand-share/video?viewBy=' + this.embedVideoFile.viewBy
+                this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy
                     + '&alias=' + this.embedVideoFile.alias;
                 console.log(this.shareUrl);
                 this.shareMetaTags();
             }, (error: any) => {
                 this.xtremandLogger.error(error);
+                this.router.navigate(['/no-videos-found']);
             });
     }
     ngOnInit() {
