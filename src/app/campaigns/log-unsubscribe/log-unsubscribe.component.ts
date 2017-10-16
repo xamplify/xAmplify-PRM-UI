@@ -10,6 +10,7 @@ import { LogService } from '../../core/services/log.service';
 export class LogUnsubscribeComponent implements OnInit {
 	 public userAlias: string;
      public companyId: number;
+     public message : string;
 	
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private logService: LogService) { }
@@ -21,6 +22,7 @@ export class LogUnsubscribeComponent implements OnInit {
             console.log(result['_body']);
             var body = result['_body'];
             var resp = JSON.parse(body);
+            this.message = resp.message;
             console.log(resp);
         })
   }
