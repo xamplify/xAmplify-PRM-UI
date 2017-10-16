@@ -761,7 +761,7 @@ img:hover {
 		  <div class="form-group">
 		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"><span style="color:red;"> *</span></i></label>
 		    <div class="col-sm-10">
-		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email *">
+		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email *" autocomplete="off">
 		    <div class="textCss"></div>
 		    <div style="color:red" *ngIf="!validEmailPatternSuccess">Invalid EmailId</div>
 		    </div>
@@ -778,7 +778,7 @@ img:hover {
 		    <div class="col-sm-10">
 		    <!-- <ngx-intl-tel-input [(value)]="addContactuser.mobileNumber"></ngx-intl-tel-input> -->
 		     <!-- <input type="tel" id="phone"> -->
-		      <input type="number" style="border:none" class="form-control" id="email" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
+		      <input type="number" style="border:none" class="form-control" id="phone" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
 		    <div class="textCss"></div>
 		    
 		    </div>
