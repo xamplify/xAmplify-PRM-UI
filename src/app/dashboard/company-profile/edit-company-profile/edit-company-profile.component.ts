@@ -56,7 +56,7 @@ export class EditCompanyProfileComponent implements OnInit {
         if(this.companyProfile.companyName.trim().length>0 && this.companyProfile.companyProfileName.trim().length>0){
             this.validateNames(this.companyProfile.companyName);
             this.validateProfileNames(this.companyProfile.companyProfileName);
-            let errorLength = $('div.form-group has-error has-feedback').length;
+            let errorLength = $('div.form-group.has-error.has-feedback').length;
             if(errorLength==0){
                  this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
                 .subscribe(
@@ -82,9 +82,10 @@ export class EditCompanyProfileComponent implements OnInit {
     }
     
     update(){
+        $('#edit-sucess').hide();
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
         this.validateNames(this.companyProfile.companyName);
-        let errorLength = $('div.form-group has-error has-feedback').length;
+        let errorLength = $('div.form-group.has-error.has-feedback').length;
         if(errorLength==0){
              this.companyProfileService.update(this.companyProfile,this.loggedInUserId)
             .subscribe(
@@ -92,6 +93,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.message = data.message;
                 $('#info').hide();
                 $('#edit-sucess').show( 600 );
+                setTimeout( function() { $( "#edit-sucess" ).slideUp( 500 ); }, 5000 );
             },
             error => { this.logger.errorPage( error ) },
             () => { this.logger.info( "Completed saveOrUpdate()" ) }
@@ -163,7 +165,6 @@ export class EditCompanyProfileComponent implements OnInit {
     setCompanyNameError(message:string){
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
         this.companyNameError = true;
-        alert(message);
         this.companyNameErrorMessage = message;
         this.companyNameDivClass = this.refService.errorClass;
     }
