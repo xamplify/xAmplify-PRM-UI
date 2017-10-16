@@ -4,6 +4,14 @@ a.disabled {
 	cursor: not-allowed;
 }
 
+.pagination {
+        margin: 10px 4px 1px;
+    }
+
+    .tabbable-custom {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+    }
+
 .custom-error-message {
 	padding: 5px;
 	border: 1px solid rgba(255, 0, 0, 0.21);
@@ -239,15 +247,7 @@ rotate
 											</button>
 										</div>
 									</div>
-									<!-- END DASHBOARD STATS -->
-									<div class="clearfix"></div>
-								</div>
-								<!-- END FILTER -->
-							</div>
-						</div>
-					</div>
-				</div>
-				<div *ngIf="response.responseType != null">
+									<div *ngIf="response.responseType != null">
 					<div class="alert alert-dismissible" role="alert"
 						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
   									'alert-danger': response.responseType == 'ERROR',
@@ -264,7 +264,11 @@ rotate
 						</h4>
 					</div>
 				</div>
-				<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+									<!-- END DASHBOARD STATS -->
+									<div class="clearfix"></div>
+								</div>
+								<!-- END FILTER -->
+			<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 				<div class="row mix-grid" style="margin-top: 10px">
 					<div *ngFor="let contactList of pagination.pagedItems">
 						<div class="col-md-3 col-sm-6 mix category_1 mix_all"
@@ -324,9 +328,7 @@ rotate
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div id="pagination">
+									<div id="pagination">
 			<!--pager here  -->
 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
 				class="pagination">
@@ -351,6 +353,12 @@ rotate
 				</li>
 			</ul>
 			<!-- pager end here -->
+		</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<app-edit-contacts *ngIf="showEdit" [contacts]="users"
 			(notifyParent)="update($event)"

@@ -5,6 +5,14 @@ a.disabled {
 	cursor: not-allowed;
 }
 
+.pagination {
+        margin: 10px 4px 1px;
+    }
+
+    .tabbable-custom {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+    }
+
 .textCss {
 	background-color: rgba(0,0,0,0.12);
     bottom: -2px;
@@ -363,7 +371,7 @@ a.disabled {
 										id="sample_editable_2">
 										<thead>
 											<tr>
-												<th>FIRST NAME</th>
+											       <th>FIRST NAME</th>
 													<th>LAST NAME</th>
 													<th>COMPANY</th>
 													<th>JOB TITLE</th>
@@ -409,6 +417,7 @@ a.disabled {
 										<th>EMAILID</th>
 										<th>FIRSTNAME</th>
 										<th>LASTNAME</th>
+										<th>MOBILE NUMBER</th>
 										<th *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">DELETE</th>
 									</tr>
 								</thead>
@@ -428,6 +437,7 @@ a.disabled {
 										<td>{{contact.emailId}}</td>
 										<td>{{contact.firstName}}</td>
 										<td class="center">{{contact.lastName}}</td>
+										<td class="center">{{contact.mobileNumber}}</td>
 										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
 										<td *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)"><a class="delete" (click)="deleteUserShowAlert(contact.id)">
 												Delete </a></td>
