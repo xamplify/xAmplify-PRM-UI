@@ -45,6 +45,7 @@ import { VideoUtilService} from './videos/services/video-util.service';
 
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
+import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
@@ -53,7 +54,7 @@ import { AccessDeniedComponent } from './error-pages/access-denied/access-denied
 @NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
         ShareVideoComponent, CampaignVideoComponent, ActivateAccountComponent,
-        LogEmailClickComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent
+        LogEmailClickComponent, LogUnsubscribeComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
         CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],

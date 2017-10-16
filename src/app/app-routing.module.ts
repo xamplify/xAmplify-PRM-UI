@@ -20,6 +20,7 @@ import { SocialCallbackComponent } from './social/common/social-callback/social-
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
 import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
+import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent },
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'user/logEmailURLClick', component: LogEmailClickComponent },
+    { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: '**', component: PageNotFoundComponent},

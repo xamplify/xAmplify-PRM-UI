@@ -23,6 +23,12 @@ export class LogService {
            .map(this.extractData)
            .catch(this.handleError);
 	}
+    
+    logunsubscribedUser(userAlias: string, companyId: number){
+    	return  this.http.post(this.URL + "log/unsubscribe-user?userAlias="+userAlias+"&companyId="+companyId,  +"" )
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 	
     private extractData( res: Response ) {
         console.log( res );
