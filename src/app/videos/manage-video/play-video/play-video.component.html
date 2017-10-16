@@ -166,12 +166,12 @@
 									<ul class="nav nav-tabs ">
 										<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"> Comments </a></li>
 									</ul>
-									<div *ngIf="comments==false">
+									<div *ngIf="!comments">
 										<h2>
-											<pre>Comments are disabled for this video.!! <br/> please select allow comments to get comments in edit video page !!!</pre>
+											<pre  style="border-radius: 0;color:#3e2525;">Comments are disabled for this video.!!! </pre>
 										</h2>
 									</div>
-									<div class="tab-content" *ngIf="comments ===true">
+									<div class="tab-content" *ngIf="comments">
 										<div class="tab-pane active" id="tab_1">
 											<!-- TASK COMMENTS -->
 											<div class="form-group">
@@ -280,7 +280,7 @@
 				</div>
 			</div>
 			<div class="col-md-5" style="margin-top: -10px;">
-				<div class="tabbable tabbable-custom tabbable-noborder">
+				<div class="tabbable tabbable-custom tabbable-noborder" style="box-shadow: 0 0 0px rgba(0,0,0,.4)!important;">
 
 					<div class="tab-content">
 						<div class="tab-pane active" style="margin-top: -13px;">

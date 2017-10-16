@@ -178,3 +178,10 @@
      left: 0;
      position: absolute;
 }
+	.pagination {
+        margin: -4px 4px 1px;
+	}
+
+	.tabbable-custom {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+	}

@@ -330,7 +330,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const disable = this;
         this.loadRangeDisable = false;
         setTimeout(function () {
-            if (disable.defaultSettingValue === true) {
+            if (disable.defaultSettingValue) {
                 disable.disablePlayerSettingnew = true;
             } else { disable.disablePlayerSettingnew = false; }
         }, 1);
@@ -398,11 +398,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.is360Value = true;
         $('edit_video_player').empty();
         $('.h-video').remove();
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+        this.videoUtilService.player360VideoJsFiles();
         const str = '<video id=videoId poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoPlayListSourceChange();
@@ -633,16 +629,22 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     enableSettings(event: boolean) {
         this.newEnableSetting = this.saveVideoFile.enableSettings = event;
     }
+    controllBarShow() {
+        $('.video-js .vjs-control-bar').show();
+    }
+    controllBarHide() {
+        $('.video-js .vjs-control-bar').hide();
+    }
     enableVideoControllers(event: boolean) {
         this.newEnableController = event;
         if (!this.newEnableController) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
+            this.controllBarHide();
+        } else { this.controllBarShow(); }
     }
     defaultVideoControllers() {
         if (!this.newEnableController) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
+            this.controllBarHide();
+        } else { this.controllBarShow(); }
     }
     is360VideoCondition(event: boolean) {
         this.saveVideoFile.is360video = this.newValue360 = this.value360 = event;
@@ -805,20 +807,20 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     showEditModalDialog() {
         $('#overLayDialog').append($('#overlay-modal').show());
     }
-   settingImagePaths(i: number) {
-      return this.saveVideoFile.imageFiles[i] + '?access_token=' + this.authenticationService.access_token;
+    settingImagePaths(i: number) {
+        return this.saveVideoFile.imageFiles[i] + '?access_token=' + this.authenticationService.access_token;
     }
-   settingGifPaths(i: number) {
-      return this.saveVideoFile.gifFiles[i] + '?access_token=' + this.authenticationService.access_token;
-   }
-   settingImageGifPaths(){
+    settingGifPaths(i: number) {
+        return this.saveVideoFile.gifFiles[i] + '?access_token=' + this.authenticationService.access_token;
+    }
+    settingImageGifPaths() {
         this.imageFilesfirst = this.settingImagePaths(0);
         this.imageFilessecond = this.settingImagePaths(1);
         this.imageFilesthird = this.settingImagePaths(2);
         this.giffirst = this.settingGifPaths(0);
         this.gifsecond = this.settingGifPaths(1);
         this.gifthird = this.settingGifPaths(2);
-   } 
+    }
     ngOnInit() {
         Metronic.init();
         Layout.init();
@@ -848,11 +850,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo').empty();
         if (this.saveVideoFile.is360video !== true) {
             $('.p-video').remove();
-            $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-            $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
-            $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
+            this.videoUtilService.normalVideoJsFiles();
             this.is360Value = false;
             const callactionValue = this;
             this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {}, function () {

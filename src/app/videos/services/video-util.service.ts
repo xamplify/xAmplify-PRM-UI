@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+declare var $: any;
+
 
 @Injectable()
 export class VideoUtilService {
@@ -17,7 +19,7 @@ export class VideoUtilService {
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
-     validationMessages = {
+    validationMessages = {
         'title': {
             'required': 'Title is required.',
             //   'minlength': 'Title must be at least 4 characters long.',
@@ -35,6 +37,23 @@ export class VideoUtilService {
         'upperText': { 'required': 'upper text is required', },
         'lowerText': { 'required': 'lower text is required', },
     };
+    videojshotkeys() {
+       $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+    }
+    player360VideoJsFiles() {
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+        this.videojshotkeys();
+    }
+    normalVideoJsFiles() {
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+        this.videojshotkeys();
+    }
     clipboardName: string;
     constructor() { }
     validateEmail(email: string) {

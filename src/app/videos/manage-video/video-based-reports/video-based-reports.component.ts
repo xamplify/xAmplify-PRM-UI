@@ -213,11 +213,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     } // ng After view closed
     playNormalVideo() {
         $('.p-video').remove();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
+        this.videoUtilService.normalVideoJsFiles();
         this.is360Value = false;
         const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
         $('#newPlayerVideo').append(str);
@@ -294,17 +290,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.is360Value = true;
         this.xtremandLogger.log('Loaded 360 Video');
         $('.h-video').remove();
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript" class="p-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript" class="p-video" />');
-        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet" class="p-video">');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript" class="p-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+        this.videoUtilService.player360VideoJsFiles();
         const str = '<video id=videoId poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        // this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '300px');
         $('#videoId').css('width', 'auto');

@@ -47,6 +47,10 @@
     overflow-y: auto; 
     -webkit-overflow-scrolling: touch; 
  }
+ .pre {
+    color: #3e2525 !important;
+    border-radius : 0 !important;
+   }
  .shareVideoButton{
     color: #fff;
     background-color: #00a6e8;
