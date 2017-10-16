@@ -47,28 +47,37 @@ export class EditCompanyProfileComponent implements OnInit {
    
     save() {
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
-        this.validateNames(this.companyProfile.companyName);
-        this.validateProfileNames(this.companyProfile.companyProfileName);
-        let errorLength = $('div.form-group has-error has-feedback').length;
-        if(errorLength==0){
-             this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
-            .subscribe(
-            data => {
-                this.message = data.message;
-                $('#info').hide();
-                $('#edit-sucess' ).show( 600 );
-                let self = this;
-                setTimeout(function(){
-                    $('#saveOrUpdateCompanyButton').prop('disabled',false);
-                    self.authenticationService.user.hasCompany = true;
-                    self.router.navigate(["/home/dashboard/welcome"]);
-                  }, 3000);
-               
-            },
-            error => { this.logger.errorPage( error ) },
-            () => { this.logger.info( "Completed saveOrUpdate()" ) }
-            ); 
+        if(this.companyProfile.companyName.trim().length==0){
+            this.setCompanyNameError("Please Enter Company Name");
         }
+        if(this.companyProfile.companyProfileName.trim().length==0){
+            this.setCompanyProfileNameError("Please Enter Company Profile Name");
+        }
+        if(this.companyProfile.companyName.trim().length>0 && this.companyProfile.companyProfileName.trim().length>0){
+            this.validateNames(this.companyProfile.companyName);
+            this.validateProfileNames(this.companyProfile.companyProfileName);
+            let errorLength = $('div.form-group has-error has-feedback').length;
+            if(errorLength==0){
+                 this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
+                .subscribe(
+                data => {
+                    this.message = data.message;
+                    $('#info').hide();
+                    $('#edit-sucess' ).show( 600 );
+                    let self = this;
+                    setTimeout(function(){
+                        $('#saveOrUpdateCompanyButton').prop('disabled',false);
+                        self.authenticationService.user.hasCompany = true;
+                        self.router.navigate(["/home/dashboard/welcome"]);
+                      }, 3000);
+                   
+                },
+                error => { this.logger.errorPage( error ) },
+                () => { this.logger.info( "Completed saveOrUpdate()" ) }
+                ); 
+            }
+        }
+      
        
     }
     
@@ -135,10 +144,10 @@ export class EditCompanyProfileComponent implements OnInit {
             value = value.trim().toLowerCase().replace(/\s/g,'');
             if(this.companyNames.indexOf(value)>-1){
                 if(this.companyProfile.isAdd){
-                  this.setCompanyNameError();
+                  this.setCompanyNameError("Company Name Already Exists");
                 }else{
                     if(this.existingCompanyName.trim().toLowerCase().replace(/\s/g,'')!=value){
-                        this.setCompanyNameError();
+                        this.setCompanyNameError("Company Name Already Exists");
                     }else{
                         this.removeCompanyNameError();
                     }
@@ -151,10 +160,11 @@ export class EditCompanyProfileComponent implements OnInit {
        
     }
     
-    setCompanyNameError(){
+    setCompanyNameError(message:string){
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
         this.companyNameError = true;
-        this.companyNameErrorMessage = "Company Name Already Exists";
+        alert(message);
+        this.companyNameErrorMessage = message;
         this.companyNameDivClass = this.refService.errorClass;
     }
     

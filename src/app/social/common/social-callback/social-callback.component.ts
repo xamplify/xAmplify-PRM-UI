@@ -53,7 +53,12 @@ export class SocialCallbackComponent implements OnInit {
                         .subscribe( result => {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {
-                                this.redirect();
+                               let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                               if(currentUser.hasCompany){
+                                   this.redirect();
+                               }else{
+                                   this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                               }
                             } else {
                                 this.router.navigate( ['/logout'] );
                             }
