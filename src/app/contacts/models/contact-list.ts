@@ -1,5 +1,5 @@
 export class ContactList {
-    name :string;
+    name :string="";
     createdDate:string;
     noOfContacts: number;
     activeUsersCount: number;
