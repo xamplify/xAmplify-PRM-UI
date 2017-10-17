@@ -103,6 +103,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     pagedItems: any[];
     checkingForEmail:boolean;
     isPartner: boolean;
+    checkingContactTypeName: string;
     
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -119,8 +120,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         let currentUrl = this.router.url;
         if(currentUrl.includes('home/contacts')){
             this.isPartner = false;
+            this.checkingContactTypeName = "Contact"
         }else{
             this.isPartner = true;  
+            this.checkingContactTypeName = "Partner"
         }
         
         this.contacts = new Array<User>();

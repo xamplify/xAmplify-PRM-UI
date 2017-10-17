@@ -120,10 +120,10 @@ rotate
 			<li><i class="fa fa-home"></i> <a
 				[routerLink]="['/']">Home</a> <i
 				class="fa fa-angle-right"></i></li>
-			<li><a (click)="navigateToManageContacts()">Manage Contacts</a>
+			<li><a (click)="navigateToManageContacts()">Manage {{checkingContactTypeName}}s</a>
 				<i class="fa fa-angle-right" *ngIf="! showListOfContactList"></i></li>
 			<li *ngIf="! showListOfContactList"><span class="capitalize">{{contactsByType.selectedCategory}}
-					contacts</span></li>
+					{{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 
@@ -144,7 +144,7 @@ rotate
 
 									<div class="page-bar">
 										<ul class="page-breadcrumb">
-											<li style="font-size: 16px;color:#888888">List of Contacts</li>
+											<li style="font-size: 16px;color:#888888">List of {{checkingContactTypeName}}s</li>
 
 										</ul>
 										<div class="page-toolbar">
@@ -190,7 +190,7 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.allContactsCount}}</div>
-													<div class="desc">All Contacts</div>
+													<div class="desc">All {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -203,7 +203,7 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.activeContactsCount}}</div>
-													<div class="desc">Active Contacts</div>
+													<div class="desc">Active {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -216,7 +216,7 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-													<div class="desc">Inactive Contacts</div>
+													<div class="desc">Inactive {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -229,7 +229,7 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.invalidContactsCount}}</div>
-													<div class="desc">Invalid Contacts</div>
+													<div class="desc">Invalid {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -242,7 +242,7 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-													<div class="desc">Unsubscribed Contacts</div>
+													<div class="desc">Unsubscribed {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -320,7 +320,7 @@ rotate
 										style="bottom: 10px; float: right; position: absolute; right: 10px;">Created
 										Date <br>{{contactList.createdDate}}
 									</span> <span align="left"
-										style="bottom: 10px; left: 10px; position: absolute;">Contacts
+										style="bottom: 10px; left: 10px; position: absolute;">{{checkingContactTypeName}}s
 										<br> {{contactList.noOfContacts}}
 									</span>
 								</div>
@@ -388,7 +388,7 @@ rotate
 				</div>
 		<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage"
 			class="alert alert-success alert-dismissable">
-			<strong>Success!</strong> Contact List has been Deleted successfully.
+			<strong>Success!</strong> {{checkingContactTypeName}} List has been Deleted successfully.
 		</div>
 		<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
   				<span [innerHTML]="response.responseMessage"></span>
@@ -443,7 +443,7 @@ rotate
 								<div class="contact-list-form">
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
-											<label for="name" class="col-xs-12 col-sm-5 control-label">Contact
+											<label for="name" class="col-xs-12 col-sm-5 control-label">{{checkingContactTypeName}}
 												List Name *</label>
 											<div class="col-xs-12 col-sm-7">
 												<input type="text" autocomplete="off" class="form-control"
@@ -454,12 +454,12 @@ rotate
 													placeholder="Contact List Name" #contactListName="ngModel">
 												<!-- Validation Messages -->
 												<div *ngIf="isValidContactName">
-													<p class="custom-error-message">Contact List Name
+													<p class="custom-error-message">{{checkingContactTypeName}} List Name
 														Already Exists</p>
 												</div>
 												<div *ngIf="contactsNotSelectedError">
 													<p class="custom-error-message">Please Select the
-														contacts.</p>
+														{{checkingContactTypeName}}s.</p>
 												</div>
 											</div>
 										</div>
@@ -489,14 +489,14 @@ rotate
 								<div
 									*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 									class="alert alert-info">
-									<h4>No contacts found..!</h4>
+									<h4>No {{checkingContactTypeName}}s found..!</h4>
 								</div>
 								<div class="portlet box blue"
 									*ngIf="contactsByType.contacts?.length > 0">
 									<div class="portlet-title">
 										<div class="caption">
 											<i class="fa fa-edit"></i><span class="capitalize">{{contactsByType.selectedCategory}}
-												Contacts List</span>
+												{{checkingContactTypeName}}s List</span>
 										</div>
 									</div>
 									<div class="portlet-body">

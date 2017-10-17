@@ -79,7 +79,7 @@ img:hover {
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li style="color:#888">Add Contacts</li>
+			<li style="color:#888">Add {{checkingContactTypeName}}s</li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a href="https://aravindu.com/vod/UPLOAD_USER_LIST _EMPTY.csv">
@@ -99,7 +99,7 @@ img:hover {
 						<div class="fileupload-buttonbar">
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6"
 								style="position: auto; border-right: 1px solid #999999; height: 150px;">
-								<h4 class="col-xs-12" style="right:6px">Add your contacts with given options</h4>
+								<h4 class="col-xs-12" style="right:6px">Add your {{checkingContactTypeName}}s with given options</h4>
 								<section>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
 										<button class="btn-primary btn-block" id="addContacts" (click)="addContactModalOpen()"
@@ -107,7 +107,7 @@ img:hover {
 											<i class="fa fa-user-plus"
 												style="font-size: 30px; padding-top: 15px;"></i>
 											<h6 class="uppercase" style="font-size: 11px">Add
-												Contact</h6>
+												{{checkingContactTypeName}}</h6>
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
@@ -244,7 +244,7 @@ img:hover {
 						<div class="contact-list-form">
 							<div class="col-xs-12 col-md-6">
 								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-4 control-label">Contact
+									<label for="name" class="col-xs-12 col-sm-4 control-label">{{checkingContactTypeName}}
 										List Name *</label>
 									<div class="col-xs-12 col-sm-8">
 										<input type="text" class="form-control" id="contactListName"
@@ -252,16 +252,16 @@ img:hover {
 											required [(ngModel)]="model.contactListName"
 											name="contactListName"
 											(input)="validateContactName(model.contactListName)"
-											minlength="1" maxlength="250" placeholder="Contact List Name"
+											minlength="1" maxlength="250" placeholder="List Name"
 											#contactListName="ngModel">
 
 										<!-- Validation Messages -->
 										<div *ngIf="isValidContactName">
-											<p class="custom-error-message">Contact List Name Already
+											<p class="custom-error-message">{{checkingContactTypeName}} List Name Already
 												Exists</p>
 										</div>
 										<div *ngIf="contactListNameError">
-											<p class="custom-error-message">Please enter the contact
+											<p class="custom-error-message">Please enter the {{checkingContactTypeName}}
 												list name.</p>
 										</div>
 										<div *ngIf="noOptionsClickError ">
@@ -324,7 +324,7 @@ img:hover {
 						<div *ngIf="isContactsThere"
 							class="col-xs-8 alert alert alert-danger alert-dismissable">
 							<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>No Contacts found.. !!!</strong>
+							<strong>No {{checkingContactTypeName}}s found.. !!!</strong>
 						</div>
 						<div *ngIf="fileTypeError" id="csvFileTypeError"
 							class="col-xs-8 alert alert-danger alert-dismissable">
@@ -732,7 +732,7 @@ img:hover {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
-        <h4 class="modal-title">Add Contact</h4>
+        <h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
       </div>
       <div class="modal-body">
       <form class="form-horizontal">

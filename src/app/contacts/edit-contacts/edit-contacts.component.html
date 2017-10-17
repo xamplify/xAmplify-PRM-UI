@@ -61,12 +61,12 @@ a.disabled {
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
 			class="fa fa-angle-right"></i></li>
-		<li><a (click)="refresh()"> Manage contacts</a></li>
+		<li><a (click)="refresh()"> Manage {{checkingContactTypeName}}s</a></li>
 		<li><a (click)="backToEditContacts()"><i
-				class="fa fa-angle-right"> </i>Edit contacts</a></li>
+				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
 		<li *ngIf="! showEditContactData"><i
 			class="fa fa-angle-right"> </i><span class="capitalize">{{contactsByType.selectedCategory}}
-				contacts</span></li>
+				{{checkingContactTypeName}}s</span></li>
 	</ul>
 </div>
 <div class="clearfix" id="manageContacts" *ngIf="showEditContactData">
@@ -120,7 +120,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.allContactsCount}}</div>
-										<div class="desc">All Contacts</div>
+										<div class="desc">All {{checkingContactTypeName}}s</div>
 									</div>
 								</button>
 							</div>
@@ -133,7 +133,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.activeContactsCount}}</div>
-										<div class="desc">Active Contacts</div>
+										<div class="desc">Active {{checkingContactTypeName}}s</div>
 									</div>
 								</button>
 							</div>
@@ -146,7 +146,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-										<div class="desc">Inactive Contacts</div>
+										<div class="desc">Inactive {{checkingContactTypeName}}s</div>
 									</div>
 								</button>
 							</div>
@@ -159,7 +159,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.invalidContactsCount}}</div>
-										<div class="desc">Invalid Contacts</div>
+										<div class="desc">Invalid {{checkingContactTypeName}}s</div>
 									</div>
 								</button>
 							</div>
@@ -172,7 +172,7 @@ a.disabled {
 									</div>
 									<div class="details">
 										<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-										<div class="desc">Unsubscribed Contacts</div>
+										<div class="desc">Unsubscribed {{checkingContactTypeName}}s</div>
 									</div>
 								</button>
 							</div>
@@ -207,7 +207,7 @@ a.disabled {
 			<div class="portlet box blue">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="fa fa-edit"></i>List of Contacts
+						<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -216,7 +216,7 @@ a.disabled {
 							<div class="col-sm-6">
 								<div class="btn-group">
 									<button id="add_contact" class="btn green" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
-										Add Contact <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
+										Add {{checkingContactTypeName}} <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
 								<div class="btn-group">
@@ -319,7 +319,7 @@ a.disabled {
 					<div *ngIf="noContactsFound==true" class="col-md-6"
 						class="col-md-9 alert alert-info alert-dismissable"
 						style="width: 100%">
-						<strong>No Contacts found.. !!!</strong>
+						<strong>No {{checkingContactTypeName}}s found.. !!!</strong>
 					</div>
 					<div *ngIf="showInvalidMaills==true" class="col-md-6"
 						class="col-md-9 alert alert alert-danger alert-dismissable">
@@ -522,7 +522,7 @@ a.disabled {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
-        <h4 class="modal-title">Add Contact</h4>
+        <h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
       </div>
       <div class="modal-body">
       <form class="form-horizontal">
@@ -626,10 +626,10 @@ a.disabled {
 			<strong>No Contacts found.. !!!</strong>
 		</div> -->
 		<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
-				<h4>No contacts found..!</h4>
+				<h4>No {{checkingContactTypeName}}s found..!</h4>
 		</div>
 			<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteSuccessMessage">
-  				<strong>Success!</strong> your contacts hasbeen deleted successfully.
+  				<strong>Success!</strong> your {{checkingContactTypeName}}s has been deleted successfully.
 			</div>
 			<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
   				<span [innerHTML]="response.responseMessage"></span>
@@ -641,7 +641,7 @@ a.disabled {
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-					<span class="capitalize">{{contactsByType.selectedCategory}} contacts List</span>
+					<span class="capitalize">{{contactsByType.selectedCategory}} {{checkingContactTypeName}} List</span>
 				</div>
 			</div>
 			<div class="portlet-body">

@@ -132,9 +132,22 @@ export class ManageContactsComponent implements OnInit {
                                 ];
     sortOptionForPagination = this.sortOptionsForPagination[0];
     public sortOption: any = this.sortOptions[0];
+    
+    isPartner: boolean;
+    checkingContactTypeName: string;
 
     constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router,
         private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, public xtremandLogger:XtremandLogger ) {
+       
+        let currentUrl = this.router.url;
+        if(currentUrl.includes('home/contacts')){
+            this.isPartner = false;
+            this.checkingContactTypeName = "Contact"
+        }else{
+            this.isPartner = true;  
+            this.checkingContactTypeName = "Partner"
+        }
+        
         this.show = false;
         this.showAll = true;
         this.showEdit = false;
@@ -185,7 +198,7 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
                 }
                 if (this.contactLists.length == 0) {
-                    this.setResponseDetails('INFO', 'No Contact lists found');
+                    this.setResponseDetails('INFO', 'No Data lists found');
                     this.pagedItems = null ;
                  }
                 this.referenceService.loading(this.httpRequestLoader, false);

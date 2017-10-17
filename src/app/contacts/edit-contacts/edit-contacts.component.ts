@@ -125,10 +125,23 @@ export class EditContactsComponent implements OnInit {
                                            ];
                sortOptionForPagination = this.sortOptionsForPagination[0];
                public sortOption: any = this.sortOptions[0];
+               
+               isPartner: boolean;
+               checkingContactTypeName: string;
 
     constructor( public refService:ReferenceService,private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private router: Router,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger:XtremandLogger  ) {
+        
+        let currentUrl = this.router.url;
+        if(currentUrl.includes('home/contacts')){
+            this.isPartner = false;
+            this.checkingContactTypeName = "Contact"
+        }else{
+            this.isPartner = true;  
+            this.checkingContactTypeName = "Partner"
+        }
+        
         this.users = new Array<User>();
         this.notifyParent = new EventEmitter<User>();
         this.hasContactRole = this.refService.hasRole(this.refService.roleName.contactsRole);
