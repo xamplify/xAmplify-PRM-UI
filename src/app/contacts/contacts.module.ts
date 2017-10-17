@@ -1,23 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddContactsComponent } from './add-contacts/add-contacts.component';
-import { ManageContactsComponent } from './manage-contacts/manage-contacts.component';
-import { EditContactsComponent } from './edit-contacts/edit-contacts.component';
 import {DashboardModule} from '../dashboard/dashboard.module';
 import {SharedModule} from '../shared/shared.module';
 import {ContactRoutingModule} from './contact-routing.module';
-import { GoogleCallBackComponent } from './google-call-back/google-call-back.component';
-import { SalesforceCallBackComponent } from './salesforce-call-back/salesforce-call-back.component';
-import { SocialPagerService } from './services/social-pager.service';
+import { SharedContactsModule } from '../shared/shared-contacts.module';
 
 @NgModule({
   imports: [
-    CommonModule,DashboardModule,SharedModule,ContactRoutingModule
+    CommonModule,DashboardModule,SharedModule,ContactRoutingModule, SharedContactsModule
   ],
-  providers:[SocialPagerService]
+  providers:[]
       , 
-  declarations: [AddContactsComponent, ManageContactsComponent, EditContactsComponent,
-                 GoogleCallBackComponent,
-                 SalesforceCallBackComponent]
+  declarations: []
 })
 export class ContactsModule { }

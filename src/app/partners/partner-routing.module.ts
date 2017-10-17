@@ -1,20 +1,19 @@
 import { NgModule }            from '@angular/core';
 import { RouterModule ,Routes}   from '@angular/router';
 
-import {AddPartnersComponent} from './add-partners/add-partners.component';
-import { GoogleCallBackComponent } from './google-call-back/google-call-back.component';
-import { SalesforceCallBackComponent } from './salesforce-call-back/salesforce-call-back.component';
-
-import {EditPartnersComponent} from './edit-partners/edit-partners.component';
-import {ManagePartnersComponent} from  './manage-partners/manage-partners.component';
+import {AddContactsComponent} from '../contacts/add-contacts/add-contacts.component';
+import { GoogleCallBackComponent } from '../contacts/google-call-back/google-call-back.component';
+import { SalesforceCallBackComponent } from '../contacts/salesforce-call-back/salesforce-call-back.component';
+import {EditContactsComponent} from '../contacts/edit-contacts/edit-contacts.component';
+import {ManageContactsComponent} from  '../contacts/manage-contacts/manage-contacts.component';
 
 
 const routes: Routes =  [ 
                           { path: '',redirectTo:'add' ,pathMatch:'full'},                             
-                          { path: 'add', component: AddPartnersComponent },
-                          { path: 'manage',component:ManagePartnersComponent},
+                          { path: 'add', component: AddContactsComponent },
+                          { path: 'manage',component:ManageContactsComponent},
                           { path: 'google-callback', component: GoogleCallBackComponent },
-                          { path: 'salesforce-callback', component: SalesforceCallBackComponent }
+                          { path: 'salesforce-callback', component: SalesforceCallBackComponent },
                            ];
 
 

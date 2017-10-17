@@ -7,19 +7,14 @@ import { SalesforceCallBackComponent } from './salesforce-call-back/salesforce-c
 
 import {EditContactsComponent} from './edit-contacts/edit-contacts.component';
 import {ManageContactsComponent} from  './manage-contacts/manage-contacts.component';
-//import {viewsReportComponent} from '../dashboard/views-report/views-report.component';
-//import {TableAdvanceComponent } from '../dashboard/tableadvance/tableadvance.component';
 
 
 const routes: Routes =  [ 
                           { path: '',redirectTo:'add' ,pathMatch:'full'},                             
                           { path: 'add', component: AddContactsComponent },
                           { path: 'manage',component:ManageContactsComponent},
-                          //{ path: 'manageContacts/table_advance', component: TableAdvanceComponent },
-                          //{ path: 'manageContacts/views_report', component: viewsReportComponent },
-                         // { path: 'manageContacts/all_contacts/views_report', component: viewsReportComponent },
                           { path: 'google-callback', component: GoogleCallBackComponent },
-                          { path: 'salesforce-callback', component: SalesforceCallBackComponent }
+                          { path: 'salesforce-callback', component: SalesforceCallBackComponent },
                            ];
 
 

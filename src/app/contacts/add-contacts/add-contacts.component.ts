@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
@@ -31,6 +31,7 @@ declare var $: any;
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination]
 })
 export class AddContactsComponent implements OnInit {
+    
     settingSocialNetwork: string;
 addContactForm: FormGroup;
 emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
@@ -101,6 +102,8 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     pager: any = {};
     pagedItems: any[];
     checkingForEmail:boolean;
+    isPartner: boolean;
+    
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -112,6 +115,14 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     constructor( public socialPagerService: SocialPagerService, private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
+        
+        let currentUrl = this.router.url;
+        if(currentUrl.includes('home/contacts')){
+            this.isPartner = false;
+        }else{
+            this.isPartner = true;  
+        }
+        
         this.contacts = new Array<User>();
         this.newUsers = new Array<User>();
         this.googleUsers = new Array<User>();

@@ -50,7 +50,6 @@ import { ServiceUnavailableComponent } from './error-pages/service-unavailable/s
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
 import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
-import { PartnerService } from './partners/services/partner.service';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
@@ -66,7 +65,7 @@ import { PartnerService } from './partners/services/partner.service';
     },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
         TwitterService, FacebookService, Logger, Options, XtremandLogger, VideoUtilService,
-        VideoFileService, UploadCloudvideoService, ContactService, PartnerService, EmailTemplateService, CampaignService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 
 })
