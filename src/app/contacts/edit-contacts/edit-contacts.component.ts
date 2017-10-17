@@ -1161,7 +1161,55 @@ export class EditContactsComponent implements OnInit {
            this.emailNotValid = false;
        }
    }
-      
+     
+   saveAs(){
+       let self = this;
+       swal({
+           title: this.checkingContactTypeName + ' List Name',
+           input: 'text',
+           showCancelButton: true,
+           confirmButtonText: 'Submit',
+           showLoaderOnConfirm: true,
+/*           preConfirm: function (email) {
+             return new Promise(function (resolve, reject) {
+               setTimeout(function() {
+                 if (email === 'taken@example.com') {
+                   reject('This email is already taken.')
+                 } else {
+                   resolve()
+                 }
+               }, 2000)
+             })
+           },*/
+           allowOutsideClick: false
+         }).then( function( name: any ) {
+             self.saveDuplicateContactList(name);
+         })
+   }
+   
+   saveDuplicateContactList(name: string) {
+      //alert("save");
+       if ( name != "") {
+            this.contactService.saveContactList( name, this.contacts )
+               .subscribe(
+                   data => {
+                       data = data;
+                       this.router.navigateByUrl( '/home/contacts/manage' )
+                       this.setResponseDetails('SUCCESS', 'your contact List created successfully');
+                   },
+
+                   (error: any) => {
+                       this.xtremandLogger.error(error);
+                       this.xtremandLogger.errorPage(error);
+                   },
+                   () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
+                   )
+       }
+       else {
+           this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
+       }
+   }
+   
     ngOnInit() {
         this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;
