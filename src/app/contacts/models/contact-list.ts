@@ -19,4 +19,5 @@ export class ContactList {
     emailId : string;
     firstName : string;
     lastName : string;
+    isPartnerUserList: boolean;
 }

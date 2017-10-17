@@ -44,6 +44,8 @@ export class EditContactsComponent implements OnInit {
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
     
+    
+    contactListObject: ContactList;
     selectedContactListName: string;
     public validEmailPatternSuccess: boolean = true;
     emailNotValid: boolean;
@@ -1167,10 +1169,11 @@ export class EditContactsComponent implements OnInit {
        swal({
            title: this.checkingContactTypeName + ' List Name',
            input: 'text',
+           inputValue: this.contactListName + '_copy',
            showCancelButton: true,
            confirmButtonText: 'Submit',
            showLoaderOnConfirm: true,
-/*           preConfirm: function (email) {
+           /*preConfirm: function (email) {
              return new Promise(function (resolve, reject) {
                setTimeout(function() {
                  if (email === 'taken@example.com') {
@@ -1188,9 +1191,10 @@ export class EditContactsComponent implements OnInit {
    }
    
    saveDuplicateContactList(name: string) {
-      //alert("save");
        if ( name != "") {
-            this.contactService.saveContactList( name, this.contacts )
+           this.contactListObject.name = name;
+           this.contactListObject.isPartnerUserList = this.isPartner; 
+           this.contactService.saveContactList( this.contactListObject, this.contacts )
                .subscribe(
                    data => {
                        data = data;

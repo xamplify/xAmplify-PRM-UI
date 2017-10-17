@@ -37,6 +37,7 @@ addContactForm: FormGroup;
 emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
+    contactListObject: ContactList;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
     addContactuser: User = new User();
@@ -487,7 +488,9 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
         }
-        this.contactService.saveContactList( this.model.contactListName, this.newUsers )
+        this.contactListObject.name = this.model.contactListName;
+        this.contactListObject.isPartnerUserList = this.isPartner;
+        this.contactService.saveContactList( this.contactListObject, this.newUsers )
             .subscribe(
             data => {
                 data = data;
@@ -1760,63 +1763,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         }
     }
 
-    /*validateAddContactForm() {
-       // var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';
-        this.addContactForm = this.fb.group({
-            'firstName': [null,this.addContactuser.firstName],
-            'lastName': [null,this.addContactuser.lastName],
-            'company': [null,this.addContactuser.company],
-            'title': [null,this.addContactuser.title],
-            'emailId': [null,this.addContactuser.emailId, [Validators.required, Validators.pattern( this.emailRegEx )]],
-            'address': [null,this.addContactuser.address],
-            'mobileNumber': [null,this.addContactuser.mobileNumber],
-            'description': [null,this.addContactuser.description],
-        }
-        );
-
-        this.addContactForm.valueChanges
-            .subscribe(data => this.onUpdatePasswordFormValueChanged(data));
-
-        this.onUpdatePasswordFormValueChanged(); // (re)set validation messages now
-    }
-
-
-    onUpdatePasswordFormValueChanged(data?: any) {
-        if (!this.addContactForm) { return; }
-        const form = this.addContactForm;
-
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
-
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
-
-
-    formErrors = {
-        'firstName': '',
-        'lastName': '',
-        'company': '',
-        'title': '',
-        'emailId': '',
-        'address': '',
-        'mobileNumber': '',
-        'description': ''
-    };
-
-    validationMessages = {
-        'emailId': {
-            'required': 'emailId is required.'
-        }
-    };
-    */
     ngDestroy() {
         this.contactService.successMessage = false;
         this.contactService.googleCallBack = false;

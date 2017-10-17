@@ -16,5 +16,7 @@ export class Pagination {
         isLoading:boolean = false;
         videoCategoryId:number = 0;
         isEmailTemplateSearchedFromCampaign:boolean=false;
+        filterKey: string = null;
+        filterValue: any = null;
 
 }

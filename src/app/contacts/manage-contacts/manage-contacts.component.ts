@@ -185,6 +185,8 @@ export class ManageContactsComponent implements OnInit {
     loadContactLists( pagination: Pagination ) {
         this.referenceService.loading(this.httpRequestLoader, true);
         this.pagination.maxResults = 12;
+        this.pagination.filterKey = 'isPartnerUserList';
+        this.pagination.filterValue = this.isPartner;
         this.contactService.loadContactLists( pagination )
             .subscribe(
             ( data: any ) => {
@@ -788,7 +790,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     contactsCount() {
-        this.contactService.loadContactsCount()
+        this.contactService.loadContactsCount(this.isPartner)
             .subscribe(
                 data => {
                     this.contactsByType.allContactsCount = data.allContactsCount;
@@ -816,6 +818,8 @@ export class ManageContactsComponent implements OnInit {
         }
         this.referenceService.loading(this.httpRequestLoader, true); 
         this.httpRequestLoader.isHorizontalCss = true;
+        this.contactsByType.pagination.filterKey = 'isPartnerUserList';
+        this.contactsByType.pagination.filterValue = this.isPartner;
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
             data => {

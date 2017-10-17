@@ -74,9 +74,9 @@ export class ContactService {
             .catch( this.handleError );
     }
  
-    loadContactsCount() {
+    loadContactsCount(isPartner: boolean) {
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -94,17 +94,17 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( contactListName: string, users: Array<User> ): Observable<User[]> {
+    saveContactList( contactListObject: ContactList, users: Array<User> ): Observable<User[]> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
-            body: users,
+            body: [contactListObject, users],
         })
         var headers = new Headers();
         headers.append( 'Content-Type', 'application/json' );
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "/save-userlist?userListName=" + contactListName + '&userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
