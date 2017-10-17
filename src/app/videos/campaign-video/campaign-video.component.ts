@@ -38,31 +38,31 @@ enum LogAction {
 })
 export class CampaignVideoComponent implements OnInit, OnDestroy {
     campaignVideoFile: SaveVideoFile;
-    public videoJSplayer: any;
-    public videoUrl: string;
-    public posterImagePath: string;
-    public is360Value: boolean;
-    public title: string;
-    public description: string;
-    public publicRouterUrl: string;
-    public typeValue: string;
-    public videoAlias: string;
-    public campaignAlias: string;
-    public userAlias: string;
-    public templateId: number;
-    public locationJson: any;
-    public deviceInfo: any;
-    public sessionId: string = null;
-    public videoLength: string;
-    public replyVideo: boolean;
-    public logVideoViewValue: boolean;
-    public timeValue: any;
-    public seekStart = null;
-    public seekStart360 = null;
+    videoJSplayer: any;
+    videoUrl: string;
+    posterImagePath: string;
+    is360Value: boolean;
+    title: string;
+    description: string;
+    publicRouterUrl: string;
+    typeValue: string;
+    videoAlias: string;
+    campaignAlias: string;
+    userAlias: string;
+    templateId: number;
+    locationJson: any;
+    deviceInfo: any;
+    sessionId: string = null;
+    videoLength: string;
+    replyVideo: boolean;
+    logVideoViewValue: boolean;
+    timeValue: any;
+    seekStart = null;
+    seekStart360 = null;
     uploadedDate: any;
     categoryName: any;
     LogAction: typeof LogAction = LogAction;
-    public emailLog: any;
+    emailLog: any;
     templatehtml: string;
     defaultTemplate: boolean;
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
@@ -73,8 +73,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
-    errorHtml = '<div class="portlet light" style="padding:5px 5px 400px 17px">' +
-    '<h3 style="color:blue;text-align: center;margin-top:120px;" >Sorry!!!. This campaign has been removed</h3></div>';
+    errorHtml = '<div class="portlet light" style="padding:5px 5px 300px 17px">' +
+    '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService,
@@ -161,8 +161,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (updatedBody.includes("video-tag")) {
                             this.defaultTemplate = true;
                             updatedBody = updatedBody.replace("view in browser", '');
-                            updatedBody = updatedBody.replace("SocialUbuntuURL",'');
-                            updatedBody = updatedBody.replace("Loading socialubuntu URL...",'');
+                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
+                            updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
@@ -176,7 +176,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
                             document.getElementById('para').innerHTML = this.templatehtml;
-                        } else if(updatedBody.includes('class="img-container center fullwidth"')){
+                        } else if (updatedBody.includes('class="img-container center fullwidth"')) {
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
@@ -188,21 +188,21 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("<Company_Logo>", '');
                             updatedBody = updatedBody.replace("<Title_here>", '');
                             updatedBody = updatedBody.replace("Image", '');
-                            updatedBody = updatedBody.replace('class="img-container center fullwidth"', 'id="newPlayerVideo"'); 
+                            updatedBody = updatedBody.replace('class="img-container center fullwidth"', 'id="newPlayerVideo"');
                             this.templatehtml = updatedBody;
                             this.defaultTemplate = false;
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
-                            updatedBody = updatedBody.replace("SocialUbuntuURL",'');
+                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
                             console.log(this.templatehtml);
-                            if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')){
+                            if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')) {
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
-                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>") && !updatedBody.includes("newPlayerVideo")){
-                                  updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
-                             } else {
-                                   updatedBody = this.campaignVideoTemplate;
-                             }
+                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>") && !updatedBody.includes("newPlayerVideo")) {
+                                updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
+                            } else {
+                                updatedBody = this.campaignVideoTemplate;
+                            }
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("SocialUbuntuImgURL", '');
@@ -210,7 +210,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             document.getElementById('para').innerHTML = this.templatehtml;
-                              console.log(this.campaignVideoTemplate);
+                            console.log(this.campaignVideoTemplate);
                         }
                         console.log(this.templatehtml);
                         console.log(result);
@@ -225,17 +225,17 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (this.campaignVideoFile.is360video === true) {
                             try {
                                 this.play360Video();
-                            } catch (err) { 
-                               // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
-                                 document.getElementById('para').innerHTML = this.errorHtml;
+                            } catch (err) {
+                                // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                                document.getElementById('para').innerHTML = this.errorHtml;
                             }
                         } else {
                             try {
                                 this.playNormalVideo();
                             } catch (err) {
-                              //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                                //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                                 document.getElementById('para').innerHTML = this.errorHtml;
-                                }
+                            }
                         }
                         this.defaultVideoSettings();
                         console.log(this.videoUrl);
@@ -243,7 +243,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
                         document.getElementById('para').innerHTML = this.errorHtml;
-                      //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
+                        //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                     }
                     );
             },
@@ -345,17 +345,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.is360Value = true;
         console.log('Loaded 360 Video');
         $('.h-video').remove();
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+        this.videoUtilService.player360VideoJsFiles();
         const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4';
-        //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '413px');
         $('#videoId').css('width', 'auto');
@@ -518,20 +513,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     }
     playNormalVideo() {
         $('.p-video').remove();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
+        this.videoUtilService.normalVideoJsFiles();
         this.is360Value = false;
         const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';
-        //  this.videoUrl =  'http://vjs.zencdn.net/v/oceans.mp4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        //     $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="video/mp4">');
         $('#videoId').css('height', '413px');
         $('#videoId').css('width', 'auto');
         $('.video-js .vjs-tech').css('width', '100%');

@@ -25,31 +25,24 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 })
 export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    public totalRecords: number;
-    videos: Array<SaveVideoFile>;
     imagepath: string;
-    public errorPrepender: 'Error In:';
-    public videoJSplayer: any;
+    errorPrepender: 'Error In:';
+    videoJSplayer: any;
     categories: Category[];
-    isvideoThere: boolean;
     showDatailedData: boolean;
     showVideoData: boolean;
-    pagedItems: any[];
-    public searchKey: string;
+    searchKey: string;
     sortingName: string = null;
     sortcolumn: string = null;
     sortingOrder: string = null;
     categoryNum: number;
-    public currentPageType: string = null;
-    public isCategoryThere: boolean;
-    public isCategoryUpdated: boolean;
+    currentPageType: string = null;
+    isCategoryThere: boolean;
     emptyViewsRecord: boolean;
-    public totalViewsForThisVideo: Array<ContactList>;
-
+    totalViewsForThisVideo: Array<ContactList>;
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
-    public videoSort: any;
-
+    videoSort: any;
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -113,34 +106,20 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoForViewsReport(pagination)
                 .subscribe((result: any) => {
-                    this.videos = result.listOfMobinars;
-                    this.totalRecords = result.totalRecords;
-                    this.averageSparklineData(this.videos);
-                    pagination.totalRecords = this.totalRecords;
-                    if (this.isCategoryThere === false || this.isCategoryUpdated === true) {
+                    pagination.totalRecords = result.totalRecords;
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                    if (!this.isCategoryThere) {
                         this.categories = result.categories;
                         this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
+                        this.isCategoryThere = true;
                     }
-                    this.referenceService.loading(this.httpRequestLoader, false);
-                    if (this.videos.length !== 0) {
-                        this.isvideoThere = false;
-                    } else {
-                        this.isvideoThere = true;
-                        this.pagedItems = null;
-                    }
-                    for (let i = 0; i < this.videos.length; i++) {
-                        this.imagepath = this.videos[i].imagePath + '?access_token=' + this.authenticationService.access_token;
-                        this.videos[i].imagePath = this.imagepath;
-                    }
-                    this.isCategoryThere = true;
-                    this.isCategoryUpdated = false;
-                    pagination = this.pagerService.getPagedItems(pagination, this.videos);
+                    pagination = this.pagerService.getPagedItems(pagination, result.listOfMobinars);
                 },
                 (error: string) => {
                     this.logger.error('error in videos: views report page' + error);
                     this.logger.errorPage(error);
                 },
-                () => console.log('load videos completed:' + this.videos),
+                () => console.log('load videos completed:'),
             );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -154,15 +133,15 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         }
     }
     getCategoryNumber() {
-        this.isvideoThere = false;
         console.log(this.categoryNum);
         this.videoFileService.viewsCategoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
-    searchVideoTitelName() {
-        console.log(this.searchKey);
+    searchKeyValue() {
         this.pagination.searchKey = this.searchKey;
+    }
+    searchVideoTitelName() {
         this.pagination.pageIndex = 1;
         if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
             this.loadVideos(this.pagination);
@@ -172,38 +151,22 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     selectedSortByValue(event: any) {
         this.videoSort = event;
         const sortedValue = this.videoSort.value;
+        let sortcolumn, sortingOrder: any;
         if (sortedValue !== '') {
             const options: string[] = sortedValue.split('-');
-            this.sortcolumn = options[0];
-            this.sortingOrder = options[1];
+            sortcolumn = options[0];
+            sortingOrder = options[1];
         } else {
-            this.sortcolumn = null;
-            this.sortingOrder = null;
+            sortcolumn = sortingOrder = null;
         }
         this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = this.sortcolumn;
-        this.pagination.sortingOrder = this.sortingOrder;
+        this.pagination.sortcolumn = sortcolumn;
+        this.pagination.sortingOrder = sortingOrder;
         if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
             this.loadVideos(this.pagination);
         } else if (this.currentPageType == "all_contacts" || (this.currentPageType == "all_contacts" && this.searchKey == "")) {
         }
     }
-    userSelectedSortByValue(event: any) {
-        this.contactsUsersSort = event;
-        const sortedValue = this.contactsUsersSort.value;
-        if (sortedValue !== '') {
-            const options: string[] = sortedValue.split('-');
-            this.sortcolumn = options[0];
-            this.sortingOrder = options[1];
-        } else {
-            this.sortcolumn = null;
-            this.sortingOrder = null;
-        }
-        this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = this.sortcolumn;
-        this.pagination.sortingOrder = this.sortingOrder;
-    }
-
     showPreview(videoFile: SaveVideoFile) {
         this.appendVideoData(videoFile, "main_video", "modal-title");
         $("#show_preview").modal({ backdrop: 'static', keyboard: false });
@@ -248,10 +211,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         if (is360) {
             console.log("Loaded 360 Video");
             $('.h-video').remove();
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-            $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+            this.videoUtilService.player360VideoJsFiles();
             var str = '<video id=videoId poster=' + fullImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#" + titleId).append(title);
             $("#" + divId).append(str);
@@ -273,8 +233,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         } else {
             console.log("Loaded Normal Video");
             $('.p-video').remove();
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
+            this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster=' + fullImagePath + ' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#" + titleId).append(title);
             $("#" + divId).append(str);
@@ -313,13 +272,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         this.pagination.sortingOrder = null;
         this.loadVideos(this.pagination);
         this.currentPageType = null;
-    }
-    showViewsData() {
-        this.showDatailedData = true;
-        this.showVideoData = false;
-        this.pagination.sortcolumn = null;
-        this.pagination.sortingOrder = null;
-        this.currentPageType = "views_page";
     }
     ngOnInit() {
         try {

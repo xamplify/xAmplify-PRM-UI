@@ -7,10 +7,6 @@
 	.pagination {
 		margin: 10px 4px 1px;
 	}
-
-	.tabbable-custom {
-		box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
-	}
 </style>
 <div class="page-content">
 	<div>
@@ -79,12 +75,12 @@
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<div class="margin-top-10">
 								<div *ngIf="!httpRequestLoader.isLoading">
-									<div *ngIf="isVideoThere" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+									<div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
 										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
 										<p>Sorry, no videos found..!!</p>
 									</div>
 								</div>
-								<div class="row mix-grid" style="margin-top: 10px;padding:7px" *ngIf="videos && !httpRequestLoader.isLoading">
+								<div class="row mix-grid" style="margin-top: 10px;padding:7px" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
 											<div id="container">
@@ -134,7 +130,7 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="!isVideoThere">
+						<div *ngIf="pagination.pagedItems.length !== 0">
 							<!--pager here  -->
 							<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
