@@ -193,6 +193,14 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    loadChannelVideos(pagination:Pagination,categoryId:number){
+        const url = this.URL +"channel-videos/"+categoryId +
+        '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

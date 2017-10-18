@@ -45,8 +45,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isLoading:boolean  = false;
     selectedRow:Number;
     categories: Category[];
+    partnerCategories:Category[];
     campaignVideos: Array<SaveVideoFile>;
+    channelVideos:Array<SaveVideoFile>;
     isvideoThere:boolean;
+    isPartnerVideoExists:boolean = false;
     isCategoryThere :boolean=false;
     isCategoryUpdated:boolean;
     isvideosLength:boolean;
@@ -76,6 +79,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     successTabClass:string = this.completedTabClass;
     /*************Pagination********************/
     videosPagination:Pagination = new Pagination();
+    channelVideosPagination:Pagination = new Pagination();
     contactsUsersPagination:Pagination = new Pagination();
     emailTemplatesPagination:Pagination = new Pagination();
     pagedItems: any[];
@@ -97,8 +101,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     launchVideoPreview:SaveVideoFile = new SaveVideoFile();
     savedVideoFile:SaveVideoFile = new SaveVideoFile();
     videoSearchInput:string = "";
+    channelVideoSearchInput:string = "";
     filteredVideoIds: Array<number>;
     showSelectedVideo:boolean = false;
+    tabClass:string = "tablinks";
+    tabClassActive = this.tabClass+" active";
+    myVideosClass = this.tabClass;
+    partnerVideosClass = this.tabClass;
+    styleHiddenClass:string = "none";
+    styleDisplayClass:string = "block";
+    partnerVideosStyle = this.styleHiddenClass;
+    myVideosStyle = this.styleHiddenClass;
+    partnerVideoSelected:boolean = false;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -178,6 +192,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
             this.campaign.timeZoneId = this.timeZones[0];
+            this.myVideosClass = this.tabClassActive;
+            this.myVideosStyle = this.styleDisplayClass;
         }
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -194,6 +210,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
         if(this.campaignService.campaign!=undefined){
+            this.resetTabClass();
+            this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
@@ -216,6 +234,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCampaignDetailsFormValid = false;
             }
             /***********Select Video Tab*************************/
+            if(this.campaign.partnerVideoSelected){
+                this.partnerVideosClass = this.tabClassActive;
+                this.partnerVideosStyle = this.styleDisplayClass;
+            }else{
+               this.myVideosClass = this.tabClassActive;
+               this.myVideosStyle  = this.styleDisplayClass;
+            }
             var selectedVideoId  = this.campaignService.campaign.selectedVideoId;
             if(selectedVideoId>0){
                 this.isVideo = true;
@@ -340,6 +365,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         //this.validatecampaignForm();
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
+        this.loadPartnerVideos(this.channelVideosPagination);
         this.loadCampaignContacts(this.contactsPagination);
         if(this.campaignType=="video"){
            this.width="20%";
@@ -380,6 +406,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
             this.loadEmailTemplates(this.emailTemplatesPagination);
+        }else if(module=="partner-videos"){
+            this.channelVideosPagination.pageIndex  = pageIndex;
+            this.loadPartnerVideos(this.channelVideosPagination);
         }
         
     }
@@ -506,13 +535,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     
     /*************************************************************Select Video***************************************************************************************/
-    setClickedRow = function(videoFile:any){
+    setClickedRow = function(videoFile:any,videoType:string){
         console.log(videoFile);
        let videoId = videoFile.id;
         if(videoFile.viewBy=="DRAFT"){
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
         }else{
             this.selectedRow = videoId;
+            if(videoType=="partner-videos"){
+                this.campaign.partnerVideoSelected = true;
+            }else{
+                this.campaign.partnerVideoSelected = false;
+            }
             $('#campaign_video_id_'+videoId).prop( "checked", true );
             this.launchVideoPreview = videoFile;
             this.isVideo = true;
@@ -544,28 +578,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             .subscribe(
             (result:any) => {
                 this.campaignVideos = result.listOfMobinars;
+                this.categories = result.categories;
                 pagination.totalRecords = result.totalRecords;
-                if(this.isCategoryThere == false || this.isCategoryUpdated == true){
-                     this.categories = result.categories;
-                     this.categories.sort(function(a, b) { return (a.id) - (b.id); });
-                }
-                console.log(this.categories);
-                if(this.campaignVideos.length!= 0){
-                    this.isvideoThere = false;
-                 }
-                 else {
-                     this.isvideoThere = true;
-                     this.pagedItems = null; 
-                 }
-                if(this.campaignVideos.length==0) this.isvideosLength=true;
-                else this.isvideosLength = false;   
-                for (var i = 0; i < this.campaignVideos.length; i++) {
-                    this.imagePath = this.campaignVideos[i].imagePath+"?access_token=" + this.authenticationService.access_token;
-                    this.campaignVideos[i].imagePath = this.imagePath;
-                }
-                this.isCategoryThere = true;
-                this.isCategoryUpdated = false;
-               this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
+                this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
                console.log( this.videosPagination);
                this.filterVideosForEditCampaign();
                this.refService.loading(this.campaignVideo.httpRequestLoader, false);
@@ -577,6 +592,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             () => this.logger.info("Finished loadCampaignVideos()", this.videosPagination)
             )
      }
+    
+    loadPartnerVideos(pagination:Pagination){
+        this.videoFileService.loadChannelVideos(pagination,pagination.videoCategoryId)
+        .subscribe(
+            (result:any) => {
+               this.channelVideos = result.listOfMobinars;
+               pagination.totalRecords = result.totalRecords;
+               this.partnerCategories = result.categories;
+               this.channelVideosPagination = this.pagerService.getPagedItems(pagination, this.channelVideos);
+               console.log( this.channelVideosPagination);
+               this.filterPartnerVideosForEditCampaign();
+               this.refService.loading(this.campaignVideo.httpRequestLoader, false);
+            },
+            (error:string) => {
+                this.logger.errorPage(error)
+            },
+            () => this.logger.info("Finished loadChannelVideos()", this.channelVideosPagination)
+            )
+    }
     /********************Filter Category Videos********************************/
     showUpdatevalue: boolean = false;
     showMessage: boolean = false;
@@ -595,6 +629,22 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
        
     }
+    
+    
+    filterPartnerCategoryVideos(event:any){
+        if(event.target.value!=""){
+            this.isPartnerVideoExists = false;
+            this.channelVideosPagination.videoCategoryId =  event.target.value;
+            this.channelVideosPagination.pageIndex = 1;
+            this.loadPartnerVideos(this.channelVideosPagination);
+        }else{
+            this.channelVideosPagination.videoCategoryId = 0;
+            this.channelVideosPagination.pageIndex = 1;
+            this.loadPartnerVideos(this.channelVideosPagination);
+        }
+       
+    }
+    
     filterVideosByType(event:any){
         if(event.target.value!=""){
             this.videosPagination.filterBy = event.target.value.trim();
@@ -604,6 +654,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.videosPagination.pageIndex = 1;
         this.loadCampaignVideos(this.videosPagination);
     }
+    
+    
+    filterPartnerVideosByType(event:any){
+        if(event.target.value!=""){
+            this.channelVideosPagination.filterBy = event.target.value.trim();
+        }else{
+            this.channelVideosPagination.filterBy = null;
+        }
+        this.channelVideosPagination.pageIndex = 1;
+        this.loadPartnerVideos(this.channelVideosPagination);
+    }
     searchVideo(){
         this.videosPagination.pageIndex = 1;
         if(this.videoSearchInput==""){
@@ -611,6 +672,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         this.videosPagination.searchKey = this.videoSearchInput;
         this.loadCampaignVideos(this.videosPagination);
+    }
+    searchChannelVideo(){
+        this.channelVideosPagination.pageIndex = 1;
+        if(this.channelVideoSearchInput==""){
+            this.channelVideoSearchInput=null;
+        }
+        this.channelVideosPagination.searchKey = this.channelVideoSearchInput;
+        this.loadPartnerVideos(this.channelVideosPagination); 
     }
     filterVideosForEditCampaign(){
         if(this.videosPagination.filterBy==null && this.videosPagination.searchKey==null && this.videosPagination.videoCategoryId==0){
@@ -621,6 +690,22 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }else{
             this.filteredVideoIds = this.videosPagination.pagedItems.map(function(a) {return a.id;});
+            if(this.filteredVideoIds.indexOf(this.videoId)>-1){
+                this.showSelectedVideo=true;
+            }else{
+                this.showSelectedVideo=false;
+            }
+        }
+    } 
+    filterPartnerVideosForEditCampaign(){
+        if(this.channelVideosPagination.filterBy==null && this.channelVideosPagination.searchKey==null && this.channelVideosPagination.videoCategoryId==0){
+            if(this.channelVideosPagination.pageIndex==1){
+                this.showSelectedVideo=true;
+            }else{
+                this.showSelectedVideo=false;
+            }
+        }else{
+            this.filteredVideoIds = this.channelVideosPagination.pagedItems.map(function(a) {return a.id;});
             if(this.filteredVideoIds.indexOf(this.videoId)>-1){
                 this.showSelectedVideo=true;
             }else{
@@ -1219,6 +1304,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'socialSharingIcons': true,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
+            'partnerVideoSelected':this.campaign.partnerVideoSelected,
             'userListIds': this.selectedContactListIds,
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
@@ -1723,4 +1809,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           });
          return arr;
      }
+     
+     showTab(evt, cityName) {
+         let i, tabcontent, tablinks;
+         tabcontent = document.getElementsByClassName("tabcontent");
+         for (i = 0; i < tabcontent.length; i++) {
+             tabcontent[i].style.display = "none";
+         }
+         tablinks = document.getElementsByClassName("tablinks");
+         for (i = 0; i < tablinks.length; i++) {
+             tablinks[i].className = tablinks[i].className.replace("active", "");
+         }
+         document.getElementById(cityName).style.display = "block";
+         evt.currentTarget.className += " active";
+     }
+     
+     resetTabClass(){
+         this.myVideosClass = this.tabClass;
+         this.myVideosStyle = this.styleHiddenClass;
+         this.partnerVideosClass = this.tabClass;
+         this.partnerVideosStyle  = this.styleHiddenClass;
+     }
+     
+     
 }

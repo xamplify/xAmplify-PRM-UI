@@ -66,7 +66,7 @@ export class EditCompanyProfileComponent implements OnInit {
                     $('#edit-sucess' ).show( 600 );
                     let self = this;
                     setTimeout(function(){
-                        $('#saveOrUpdateCompanyButton').prop('disabled',false);
+                        $('#saveOrUpdateCompanyButton').prop('disabled',true);
                         self.authenticationService.user.hasCompany = true;
                         self.router.navigate(["/home/dashboard/welcome"]);
                       }, 3000);

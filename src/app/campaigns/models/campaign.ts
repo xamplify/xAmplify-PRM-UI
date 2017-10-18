@@ -35,9 +35,11 @@ export class Campaign {
     campaignUrls: Array<Url>;
     timeZoneId: any;
     channelCampaign: boolean = false;
+    partnerVideoSelected:boolean = false;
 
     socialStatus: SocialStatus;
     createdTime: Date;
     updatedTime: Date;
     updatedBy: number;
+    
 }

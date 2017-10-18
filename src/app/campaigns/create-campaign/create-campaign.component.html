@@ -238,47 +238,23 @@
 								</div> 
 								<div class="portlet-body" style="background-color: white;">
 							<div id="home" class="tab-pane fade in active">
-						    <!-- <h3>HOME</h3> -->
-						    <div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
-						    <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-								<div class="portlet-input input-inline input-large">
-									<div class="input-icon right">
-										<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-										<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+								<div class="tab">
+									  <!-- <button *ngIf="!campaign.partnerVideoSelected" class="tablinks active" (click)="showTab($event,'my-videos')" id="my-videos-tab">My Videos</button>
+									  <button *ngIf="campaign.partnerVideoSelected" class="tablinks active" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button> -->
+									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab">My Videos</button>
+									  <button  [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
+								</div>
+							
+							<div id="my-videos" class="tabcontent" [style.display]="myVideosStyle">
+								<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
+							    <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+									<div class="portlet-input input-inline input-large">
+										<div class="input-icon right">
+											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
+											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+										</div>
 									</div>
 								</div>
-							</div>
-						   <!--  <div class="row-fluid">
-							    <div class="span6">
-								    <div class="dataTables_length" id="videos_table_new_length"><label><div class="select2-container span12" id="s2id_autogen19"><a href="javascript:void(0)" class="select2-choice" tabindex="-1">   
-								    	<span class="select2-chosen" id="select2-chosen-20">5</span>
-								    		<abbr class="select2-search-choice-close"></abbr>   
-								    	<span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a>
-								    	<label for="s2id_autogen20" class="select2-offscreen"></label>
-								    	<input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-20" id="s2id_autogen20">
-								    	<div class="select2-drop select2-display-none">   <div class="select2-search select2-search-hidden select2-offscreen">
-									    	<label for="s2id_autogen20_search" class="select2-offscreen"></label>       
-									    	<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" 
-									    		aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-20" id="s2id_autogen20_search" placeholder="">  
-									    	 </div>   
-									    	 <ul class="select2-results" role="listbox" id="select2-results-20">
-									    	 </ul>
-								    	 </div>
-								    	 </div>
-								    	 <select name="videos_table_new_length" aria-controls="videos_table_new" class="select2-wrapper span12" tabindex="-1" title="" style="display: none;">
-								    	 <option value="5">5</option>
-								    	 <option value="10">10</option>
-								    	 <option value="15">15</option>
-								    	 <option value="20">20</option>
-								    	 <option value="-1">All</option></select></label>
-								    	 </div>
-									</div>
-						    	 <div class="span6">
-						    	 	<div id="videos_table_new_filter" class="dataTables_filter">
-						    	 	<label>Search:<input type="search" class="input-medium" placeholder="" aria-controls="videos_table_new"></label>
-						    	 	</div>
-						    	 </div>End Of 239
-						    	</div> -->
 						    	<table class="table table-filter" cellspacing="0" width="100%"  style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
 								<thead style="background-color: #B7B7B7;">
 									<tr role="row">
@@ -288,7 +264,7 @@
 										<span class="filter_column filter_select">
 										<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)">
 											<option value="" class="search_init">---Select Category---</option>
-											<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}">{{category.name}}</option>
+											<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}" [selected]="category.id==videosPagination.videoCategoryId">{{category.name}}</option>
 										</select>
 										</span>
 									</th>
@@ -319,12 +295,12 @@
 								</tr>	
 								<ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	
 								<!-- ------------------Selected Video Row-->
-									<ng-container *ngIf="showSelectedVideo==true">
+									<ng-container *ngIf="showSelectedVideo==true && !partnerVideoSelected">
 									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id"
-									 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile)">
-									<!-- --------------Thumbnail--------------------------- --><!-- savedVideoFile.id===videoId -->
+									 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'my-videos')">
+									<!-- --------------Thumbnail--------------------------- -->
 										<td style="text-align: center;">
-											 <input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile)"   
+											 <input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')"   
 											 	name="videoFileId" [value]="savedVideoFile.id"  id="campaign_video_id_{{savedVideoFile.id}}"> 
 												<a href="javascript:void(0)" (mouseover)="showPreview(savedVideoFile)">
 													<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
@@ -345,7 +321,7 @@
 														</b>
 													</a>
 												</p>
-												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
+												<p>by <b>{{savedVideoFile.uploadedBy}} Edited</b> </p>
 												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
 											</div>
 										</div>
@@ -367,11 +343,11 @@
 									</ng-container>
 									<!-- --------------------Avalilable Campaign Videos------------ -->	
 									<tr role="row" class="odd" *ngFor="let videoFile of videosPagination.pagedItems;let i =  index" 
-									(click)="setClickedRow(videoFile)" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
+									(click)="setClickedRow(videoFile,'my-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
 										[attr.title]="draftMessage"  (mouseover)='showToolTip(videoFile.viewBy)'>
 										<!-- --------------Thumbnail--------------------------- -->
 										<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile)" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">   
+											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">   
 												<a href="javascript:void(0)" (mouseover)="showPreview(videoFile)" lang="{{videoFile.id}}">
 													<img src="{{videoFile.imagePath}}" width="100px" height="50px">
 												</a>
@@ -439,6 +415,173 @@
                                           </ul>
 								<!-- pager end here -->
 								</div>
+							</div>
+							</div>
+								
+							<div id="channel-videos" class="tabcontent"  [style.display]="partnerVideosStyle">
+									<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
+							    <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+									<div class="portlet-input input-inline input-large">
+										<div class="input-icon right">
+											<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
+											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+										</div>
+									</div>
+								</div>
+						    	<table class="table table-filter" cellspacing="0" width="100%"  style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
+								<thead style="background-color: #B7B7B7;">
+									<tr role="row">
+									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
+									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th>
+									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1" aria-label="CategoryAccountingAgriculture and FisheryAlternative MedicineApparel and FashionAutomotiveAviation and AerospaceLeisure,Travel and TourismManufacturingMediaNon-profitReal EstateSecurity and InvestigationsSportsTechnology (General)">
+										<span class="filter_column filter_select">
+										<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)">
+											<option value="" class="search_init">---Select Category---</option>
+											<option *ngFor="let category of partnerCategories" class="colorSelect" value="{{category.id}}" [selected]="category.id==channelVideosPagination.videoCategoryId">{{category.name}}</option>
+										</select>
+										</span>
+									</th>
+									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1">
+										<span class="filter_column filter_select">
+										<select class="form-control" (change)="filterPartnerVideosByType($event)">
+											<option value="" class="search_init">---Select Type---</option>
+								            <option  value="PRIVATE">private</option>
+								            <option  value="PUBLIC">public</option>
+								            <option  value="UNLISTED">unlisted</option>
+					         			 </select>
+										</span>
+									</th>
+									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+									</tr>
+								</thead>
+								<tbody class="row_selected">
+								<tr>
+										<td colspan="5">
+											<app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
+											<app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError"></app-error-pages>
+										</td>
+									</tr>
+								<tr>
+									<td colspan="5">
+										<div  *ngIf="channelVideosPagination.totalRecords==0" class="alert alert-info"><strong>No Videos Found</strong></div>
+									</td>
+								</tr>	
+								<ng-container *ngIf="channelVideosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	
+									<ng-container *ngIf="showSelectedVideo==true && partnerVideoSelected">
+									<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id"
+									 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'partner-videos')">
+										<td style="text-align: center;">
+											 <input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')"   
+											 	name="videoFileId" [value]="savedVideoFile.id"  id="campaign_video_id_{{savedVideoFile.id}}"> 
+												<a href="javascript:void(0)" (mouseover)="showPreview(savedVideoFile)">
+													<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
+												</a>
+										</td>
+										<td style="text-align: center">
+										<div class="row">
+											<div class="col-md-12" title="{{savedVideoFile.title}}">
+												<p style="margin: 0;">
+													<a href="javascript:void(0)" class="not-active">
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">
+																	{{savedVideoFile.title|slice:0:50}}....
+														</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">
+																	{{savedVideoFile.title}}
+														</b>
+													</a>
+												</p>
+												<p>by <b>{{savedVideoFile.uploadedBy}} Edited</b> </p>
+												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
+											</div>
+										</div>
+										</td>
+										<td style="text-align: center;">
+											{{savedVideoFile.category.name}}
+										</td>
+										<td style="text-align: center;">
+											<span class="label label-blue" style="color: #607D8B"><b>{{savedVideoFile.viewBy | lowercase}}</b></span>
+										</td>
+										<td style="text-align: center;">
+											<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
+											<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
+										</td>
+									</tr>
+									</ng-container>
+									<!-- --------------------Avalilable Campaign Videos------------ -->	
+									<tr role="row" class="odd" *ngFor="let videoFile of channelVideosPagination.pagedItems;let i =  index" 
+									(click)="setClickedRow(videoFile,'partner-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
+										[attr.title]="draftMessage"  (mouseover)='showToolTip(videoFile.viewBy)'>
+										<!-- --------------Thumbnail--------------------------- -->
+										<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
+											<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">   
+												<a href="javascript:void(0)" (mouseover)="showPreview(videoFile)" lang="{{videoFile.id}}">
+													<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+												</a>
+										</td>
+										<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+											<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers." >   
+												<a href="javascript:void(0)" class="not-active">
+													<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+												</a>
+										</td>
+										<!-- --------------Title--------------------------- -->
+										<td style="text-align: center" *ngIf="videoFile.id!==videoId">
+										<div class="row">
+											<div class="col-md-12">
+												<p style="margin: 0;" title="{{videoFile.title}}">
+													<a href="javascript:void(0)" class="not-active">
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length>50">
+																	{{videoFile.title|slice:0:50}}....
+														</b>
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length<=50">
+																	{{videoFile.title}}
+														</b>
+													</a>
+												</p>
+												<p>by <b>{{videoFile.uploadedBy}}</b> </p>
+												<p>  <span style="float:right">{{videoFile.uploadedDate}} </span></p>
+											</div>
+										</div>
+										</td>
+										<!-- --------------Category--------------------------- -->
+										<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
+											{{videoFile.category.name}}
+										</td>
+										<!-- --------------Published To--------------------------- -->
+										<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
+										<span class="label label-blue" style="color: #607D8B"><b>{{videoFile.viewBy | lowercase}}</b></span>
+										</td>
+										<!-- --------------Status--------------------------- -->
+										<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
+											<img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
+											<img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
+										</td>
+									</tr>
+									</ng-container>
+								</tbody>
+							</table>
+								<div *ngIf="!isPartnerVideoExists && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">   
+								<!--pager here  -->
+								 	 <ul *ngIf="channelVideosPagination.pager.pages && channelVideosPagination.pager.pages.length" class="pagination">
+                                             <li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}">
+                                                <a (click)="setPage(1,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === 1">First</a>
+                                             </li>
+                                             <li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}" >
+                                                 <a (click)="setPage(channelVideosPagination.pager.currentPage - 1,'partner-videos')"  [class.disabled]="channelVideosPagination.pager.currentPage === 1">Previous</a>
+                                              </li>
+                                              <li *ngFor="let page of channelVideosPagination.pager.pages" [ngClass]="{active:channelVideosPagination.pager.currentPage === page}">
+                                                 <a (click)="setPage(page,'partner-videos')">{{page}}</a>
+                                              </li>
+                                              <li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages}">
+                                                  <a (click)="setPage(channelVideosPagination.pager.currentPage + 1,'partner-videos')"  [class.disabled]="channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages">Next</a>
+                                              </li>
+                                               <li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages}">
+                                                  <a (click)="setPage(channelVideosPagination.pager.totalPages,'partner-videos')"  [class.disabled]="channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages">Last</a>
+                                              </li>
+                                          </ul>
+								<!-- pager end here -->
+								</div>
+							</div>
 							</div>
 						  </div>
                         	</div></div></div></div>
