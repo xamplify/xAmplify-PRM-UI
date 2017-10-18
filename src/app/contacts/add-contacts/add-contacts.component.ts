@@ -152,7 +152,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             var responsePath = response;
             this.xtremandLogger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
             $( "#uploadContactsMessage" ).show();
-            router.navigateByUrl( '/home/contacts/manage' )
+            if(this.isPartner == false){
+                this.router.navigateByUrl( '/home/contacts/manage' )
+                }else{
+                    this.router.navigateByUrl( '/home/partner/manage' )
+                }
         };
     }
 
@@ -497,7 +501,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 data = data;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 $( "#uploadContactsMessage" ).show();
+                if(this.isPartner == false){
                 this.router.navigateByUrl( '/home/contacts/manage' )
+                }else{
+                    this.router.navigateByUrl( '/home/partner/manage' )
+                }
                 this.contactService.successMessage = true;
             },
             ( error: any ) => {
@@ -578,7 +586,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manage' )
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( '/home/partner/manage' )
+                        }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -620,7 +632,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                             data = data;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
-                            this.router.navigateByUrl( '/home/contacts/manage' )
+                            if(this.isPartner == false){
+                                this.router.navigateByUrl( '/home/contacts/manage' )
+                                }else{
+                                    this.router.navigateByUrl( '/home/partner/manage' )
+                                }
                         },
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
@@ -915,7 +931,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        if(this.isPartner == false){
+                            this.router.navigateByUrl( '/home/contacts/manage' )
+                            }else{
+                                this.router.navigateByUrl( '/home/partner/manage' )
+                            }
                     },
                     ( error: any ) => {
                         this.xtremandLogger.error( error );
@@ -957,7 +977,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manage' )
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( '/home/partner/manage' )
+                        }
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
@@ -1261,7 +1285,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        if(this.isPartner == false){
+                            this.router.navigateByUrl( '/home/contacts/manage' )
+                            }else{
+                                this.router.navigateByUrl( '/home/partner/manage' )
+                            }
                     },
 
                     ( error: any ) => {
@@ -1304,7 +1332,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manage' )
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( '/home/partner/manage' )
+                        }
                     this.contactService.successMessage = true;
                 },
 
@@ -1573,7 +1605,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
-                    this.router.navigateByUrl( '/home/contacts/manage' )
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( '/home/partner/manage' )
+                        }
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
@@ -1605,7 +1641,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
-                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        if(this.isPartner == false){
+                            this.router.navigateByUrl( '/home/contacts/manage' )
+                            }else{
+                                this.router.navigateByUrl( '/home/partner/manage' )
+                            }
                     },
                     ( error: any ) => {
                         this.xtremandLogger.error( error );
