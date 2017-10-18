@@ -15,4 +15,5 @@ export class SocialContact{
     contacts: SocialContact[];
     id:number;
     checked:boolean=true;
+    isPartnerUserList: boolean;
 }

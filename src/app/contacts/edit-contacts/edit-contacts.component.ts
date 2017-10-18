@@ -1192,9 +1192,10 @@ export class EditContactsComponent implements OnInit {
    
    saveDuplicateContactList(name: string) {
        if ( name != "") {
+           this.contactListObject = new ContactList;
            this.contactListObject.name = name;
-           this.contactListObject.isPartnerUserList = this.isPartner; 
-           this.contactService.saveContactList( this.contactListObject, this.contacts )
+           this.contactListObject.isPartnerUserList = this.isPartner;
+           this.contactService.saveContactList( this.contacts, name, this.isPartner )
                .subscribe(
                    data => {
                        data = data;

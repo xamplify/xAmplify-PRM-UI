@@ -35,6 +35,7 @@ export class ManageContactsComponent implements OnInit {
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
     contactsNotSelectedError: boolean = false;
+contactListObject: ContactList;
     
     hasContactRole:boolean = false;
     loggedInUserId = 0;
@@ -685,10 +686,13 @@ export class ManageContactsComponent implements OnInit {
         let selectedUsers = new Array<User>();
         this.xtremandLogger.info( "SelectedUserIDs:" + this.selectedContactListIds );
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+        this.contactListObject = new ContactList;
+        this.contactListObject.name = this.model.contactListName;
+        this.contactListObject.isPartnerUserList = this.isPartner;
         if ( this.model.contactListName != "" && !this.isValidContactName && this.model.contactListName != " ") {
             if ( this.selectedContactListIds.length != 0 ) {
                 if(this.model.contactListName.length != ""){
-                    this.contactService.saveContactList( this.model.contactListName, this.allselectedUsers )
+                    this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                     .subscribe(
                     data => {
                         data = data;

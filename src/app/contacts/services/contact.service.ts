@@ -94,17 +94,17 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( contactListObject: ContactList, users: Array<User> ): Observable<User[]> {
+    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean ): Observable<User[]> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
-            body: [contactListObject, users],
+            body:  users,
         })
         var headers = new Headers();
         headers.append( 'Content-Type', 'application/json' );
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )

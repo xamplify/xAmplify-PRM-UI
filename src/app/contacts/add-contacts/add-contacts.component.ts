@@ -491,7 +491,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.contactListObject = new ContactList;
         this.contactListObject.name = this.model.contactListName;
         this.contactListObject.isPartnerUserList = this.isPartner;
-        this.contactService.saveContactList( this.contactListObject, this.newUsers )
+        this.contactService.saveContactList(this.newUsers, this.model.contactListName, this.isPartner)
             .subscribe(
             data => {
                 data = data;
@@ -567,9 +567,12 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
         }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+        this.contactListObject = new ContactList;
+        this.contactListObject.name = this.model.contactListName;
+        this.contactListObject.isPartnerUserList = this.isPartner;
         if ( this.model.contactListName != ' ' ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
-            this.contactService.saveContactList( this.model.contactListName, this.clipboardUsers )
+            this.contactService.saveContactList( this.clipboardUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -608,7 +611,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
                     }
                     this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
-                    this.contactService.saveContactList( this.model.contactListName, this.contacts )
+                    this.contactListObject = new ContactList;
+                    this.contactListObject.name = this.model.contactListName;
+                    this.contactListObject.isPartnerUserList = this.isPartner;
+                    this.contactService.saveContactList(this.contacts,this.model.contactListName, this.isPartner )
                         .subscribe(
                         data => {
                             data = data;
@@ -897,6 +903,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     saveGoogleContacts() {
         this.socialContact.socialNetwork = "GOOGLE";
         this.socialContact.contactName = this.model.contactListName;
+        this.socialContact.isPartnerUserList = this.isPartner;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.socialContact.contactType = "CONTACT";
         this.socialContact.contacts = this.gContacts;
@@ -941,7 +948,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1239,6 +1249,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     saveZohoContacts() {
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactName = this.model.contactListName;
+        this.socialContact.isPartnerUserList = this.isPartner;
         this.socialContact.contactType = this.contactType;
         this.socialContact.contacts = this.zContacts;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
@@ -1284,7 +1295,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1550,7 +1564,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.contactService.saveContactList( this.model.contactListName, selectedUsers )
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1575,6 +1592,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     saveSalesforceContacts() {
         this.socialContact.socialNetwork = "salesforce";
         this.socialContact.contactName = this.model.contactListName;
+        this.socialContact.isPartnerUserList = this.isPartner;
         this.socialContact.contactType = this.contactType;
         this.socialContact.alias = this.salesforceListViewId;
         this.socialContact.contacts = this.salesforceContactUsers;
