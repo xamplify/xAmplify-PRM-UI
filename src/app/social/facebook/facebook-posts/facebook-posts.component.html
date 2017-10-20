@@ -18,20 +18,18 @@
         <div class="portlet-title">
           <div class="caption">
             <div class="col-xs-12 flex">
-              <img class="profile-image" alt="{{post.from.name}}"
-                src="{{socialConnection.profileImage}}">
-              <div style="margin-left: 1em;">
+              <img class="profile-image" alt="{{post.from.name}}" src="{{socialConnection.profileImage}}">
+              <div  class='pl10'>
                 <h4 *ngIf="post.type == 'video' || post.type == 'photo'"
                   class="caption-subject text-left m0">{{post.story}}</h4>
-                <h4 *ngIf="post.type == 'link'"
-                  class="caption-subject text-left m0">{{post.from.name}}</h4>
+                <h5 *ngIf="post.type == 'link' || post.type == 'status'" class="caption-subject text-left m0 spn">{{post.from.name}}</h5>
                 <h5>{{post.createdTime | date: 'short'}}</h5>
               </div>
             </div>
           </div>
         </div>
         <div class="portlet-body container-fluid">
-          <div *ngIf="post.type == 'video'" style="padding-top: 1em;">
+          <div *ngIf="post.type == 'video'" class='pt10'>
             <div *ngIf="post.application !== null">
               <div *ngIf="post.application.name == 'youtube'">
                 <iframe [src]="post.source"></iframe>
@@ -54,9 +52,12 @@
                   class="img-responsive">
                 <h4>{{post.name}}</h4>
                 <p>{{post.description}}</p>
-                <h4 class="uppercase">{{post.caption}}</h4>
+                <h5 class="uppercase bold">{{post.caption}}</h5>
               </div>
             </a>
+          </div>
+          <div *ngIf="post.type == 'status'">
+          	<h4 class='m0' [innerHTML]="post.message"></h4>
           </div>
 			<div class="flex">
 				<section *ngIf="post.likes">

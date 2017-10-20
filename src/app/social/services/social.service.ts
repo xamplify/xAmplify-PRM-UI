@@ -110,8 +110,8 @@ export class SocialService {
             .catch( this.handleError );
     }
 
-    updateStatus( userId: number, socialStatus: SocialStatus ) {
-        return this.http.post( this.URL + 'social/update-status?access_token=' + this.authenticationService.access_token + '&userId=' + userId, socialStatus )
+    updateStatus( socialStatus: SocialStatus ) {
+        return this.http.post( this.URL + 'social/update-status?access_token=' + this.authenticationService.access_token, socialStatus )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -159,8 +159,8 @@ export class SocialService {
     }
     
     
-    getSocialCampaign(socialCampaignId: number){
-        return this.http.get( this.URL + 'social/campaign/'+socialCampaignId+'?access_token='+ this.authenticationService.access_token )
+    getSocialCampaign(socialCampaignAlias: string){
+        return this.http.get( this.URL + 'social/campaign/'+socialCampaignAlias+'?access_token='+ this.authenticationService.access_token )
         .map( this.extractData )
         .catch( this.handleError );
     }

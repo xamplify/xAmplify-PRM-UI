@@ -1748,9 +1748,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 return obj.selected === true;
             });
             this.socialStatus.socialStatusProviders = socialStatusProviders;
-            console.log( this.socialStatus );
+            this.socialStatus.userId = this.loggedInUserId;
             swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
-            this.socialService.updateStatus( this.loggedInUserId, this.socialStatus )
+            this.socialService.updateStatus( this.socialStatus )
                 .subscribe(
                 data => {
                     this.initializeSocialStatus();

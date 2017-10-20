@@ -285,6 +285,7 @@ nav a.active {
 .btn,
 .portlet.light,
 .form-control,
+.page-bar,
 .bootstrap-switch, .bootstrap-switch-handle-on, .bootstrap-switch-handle-off
 button {
 	border-radius: 0 !important;

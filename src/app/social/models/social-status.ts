@@ -18,4 +18,11 @@ export class SocialStatus{
 
     shareNow: boolean;
     isEnable: boolean;
+    
+    alias: string;
+    campaignId: number;
+    campaignName: string;
+    userListIds: number[] = [];
+    socialCampaign: boolean = false;
+    emailOpened: boolean = false;
 }

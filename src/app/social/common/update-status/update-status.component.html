@@ -72,14 +72,14 @@
 				<div class="portlet-body clearfix" style="padding: 15px;">
 				    <div class="form-group m0 pull-right">
 						<h5 class="control-label font-purple-intense pr10">Notify Me When Email is opened</h5>
-						<switch [status]="campaign.emailOpened"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+						<switch [status]="socialStatus.emailOpened"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-							   (statusChange)="campaign.emailOpened = !campaign.emailOpened">
+							   (statusChange)="socialStatus.emailOpened = !socialStatus.emailOpened">
 						</switch>
 			  		</div>
 					<div class="form-group m0">
 				    	<label for="campaignName"><h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6></label>
-				    	<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="campaign.campaignName">
+				    	<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialStatus.campaignName">
 				    </div>
 				</div>
 			</div>
@@ -121,11 +121,16 @@
 					</section>
                 </div>
                 <div class="col-sm-12">
-					<textarea placeholder="What's happening?" rows="4"
-						class="form-control form-group rounded-0 margin-bottom-10px"
-						[(ngModel)]="socialStatus.statusMessage"
-						maxlength="140"></textarea>
-					<h6 class="pull-right mt0"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+					<section [hidden]="isSocialCampaign && alias">
+						<textarea placeholder="What's happening?" rows="4"
+							class="form-control form-group rounded-0 margin-bottom-10px"
+							[(ngModel)]="socialStatus.statusMessage"
+							maxlength="140"></textarea>
+						<h6 class="pull-right mt0"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+					</section>
+					<section *ngIf="isSocialCampaign && alias">
+						<!-- <h4>{{campaign.socialStatus.statusMessage}}</h4> -->
+					</section>
                 </div>
                 <div class="col-sm-12">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
@@ -141,59 +146,59 @@
                         <input type="text" class="form-control flatpickr rounded-0" placeholder="Select Date.." [(ngModel)]="socialStatus.scheduledTimeUser" />
                     </div>
                     <div class="form-group">
-                        <select name="timezone" class="form-control rounded-0">
-			  		 <option value="-12" >(GMT -12:00)</option>
-			         <option value="-11" >(GMT -11:00)</option>
-			         <option value="-10" >(GMT -10:00)</option>
-			         <option value="-9"  >(GMT -9:00)</option>
-			         <option value="-8"  >(GMT -8:00)</option>
-			         <option value="-7"  >(GMT -7:00)</option>
-			         <option value="-6"  >(GMT -6:00)</option>
-			         <option value="-5"  >(GMT -5:00)</option>
-			         <option value="-4.5">(GMT -4:30)</option>
-			         <option value="-4"  >(GMT -4:00)</option>
-			         <option value="-3.5">(GMT -3:30)</option>
-			         <option value="-3"  >(GMT -3:00)</option>
-			         <option value="-2"  >(GMT -2:00)</option>
-			         <option value="-1"  >(GMT -1:00 hour)</option>
-			         <option value="0"  >(GMT +0:00)</option>
-			         <option value="1"   >(GMT +1:00)</option>
-			         <option value="2"   >(GMT +2:00)</option>
-			         <option value="3"   >(GMT +3:00)</option>
-			         <option value="3.5" >(GMT +3:30)</option>
-			         <option value="4"   >(GMT +4:00)</option>
-			         <option value="4.5" >(GMT +4:30)</option>
-			         <option value="5"   >(GMT +5:00)</option>
-			         <option value="5.5" selected="selected">(GMT +5:30)</option>
-			         <option value="5.75">(GMT +5:45)</option>
-			         <option value="6"   >(GMT +6:00)</option>
-			         <option value="6.5" >(GMT +6:30)</option>
-			         <option value="7"   >(GMT +7:00)</option>
-			         <option value="8"   >(GMT +8:00)</option>
-			         <option value="9"   >(GMT +9:00)</option>
-			         <option value="9.5" >(GMT +9:30)</option>
-			         <option value="10"  >(GMT +10:00)</option>
-			         <option value="11"  >(GMT +11:00)</option>
-			         <option value="12"  >(GMT +12:00)</option>
-				</select>
+                    	<select name="timezone" class="form-control rounded-0">
+					  		 <option value="-12" >(GMT -12:00)</option>
+					         <option value="-11" >(GMT -11:00)</option>
+					         <option value="-10" >(GMT -10:00)</option>
+					         <option value="-9"  >(GMT -9:00)</option>
+					         <option value="-8"  >(GMT -8:00)</option>
+					         <option value="-7"  >(GMT -7:00)</option>
+					         <option value="-6"  >(GMT -6:00)</option>
+					         <option value="-5"  >(GMT -5:00)</option>
+					         <option value="-4.5">(GMT -4:30)</option>
+					         <option value="-4"  >(GMT -4:00)</option>
+					         <option value="-3.5">(GMT -3:30)</option>
+					         <option value="-3"  >(GMT -3:00)</option>
+					         <option value="-2"  >(GMT -2:00)</option>
+					         <option value="-1"  >(GMT -1:00 hour)</option>
+					         <option value="0"  >(GMT +0:00)</option>
+					         <option value="1"   >(GMT +1:00)</option>
+					         <option value="2"   >(GMT +2:00)</option>
+					         <option value="3"   >(GMT +3:00)</option>
+					         <option value="3.5" >(GMT +3:30)</option>
+					         <option value="4"   >(GMT +4:00)</option>
+					         <option value="4.5" >(GMT +4:30)</option>
+					         <option value="5"   >(GMT +5:00)</option>
+					         <option value="5.5" selected="selected">(GMT +5:30)</option>
+					         <option value="5.75">(GMT +5:45)</option>
+					         <option value="6"   >(GMT +6:00)</option>
+					         <option value="6.5" >(GMT +6:30)</option>
+					         <option value="7"   >(GMT +7:00)</option>
+					         <option value="8"   >(GMT +8:00)</option>
+					         <option value="9"   >(GMT +9:00)</option>
+					         <option value="9.5" >(GMT +9:30)</option>
+					         <option value="10"  >(GMT +10:00)</option>
+					         <option value="11"  >(GMT +11:00)</option>
+					         <option value="12"  >(GMT +12:00)</option>
+						</select>
                     </div>
                     <button type="button" class="btn btn-success rounded-0" (click)="schedule()">Schedule</button>
                     <button type="button" class="btn btn-default rounded-0" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
                 </div>
                 <div class="col-xs-12 margin-bottom-10px">
                     <div class="col-xs-6 p0">
-                        <label class="fileContainer padding-right-10px">
-		    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i><span class='hidden-xs'>Add photos</span>
-		    				<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
-						</label>
-                        <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Import Videos</button>
+                        <section [hidden]="isSocialCampaign && alias">
+	                        <label class="fileContainer padding-right-10px">
+			    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i><span class='hidden-xs'>Add photos</span>
+			    				<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
+							</label>
+	                        <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Import Videos</button>
+                        </section>
                     </div>
                     <div class="col-xs-6 p0">
 						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-success rounded-0" [disabled]="socialStatus.statusMessage?.length === 0"
-								(click)="showScheduleOption('schedule-option-div')">Schedule</button>
-							<button type="button" style="min-width: 32px;" class="btn btn-success dropdown-toggle rounded-0" [disabled]="socialStatus.statusMessage?.length === 0"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button type="button" class="btn btn-success rounded-0" (click)="showScheduleOption('schedule-option-div')">Schedule</button>
+							<button type="button" style="min-width: 32px;" class="btn btn-success dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu pull-right">

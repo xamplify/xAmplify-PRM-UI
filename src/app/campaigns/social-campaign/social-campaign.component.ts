@@ -7,11 +7,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./social-campaign.component.css']
 })
 export class SocialCampaignComponent implements OnInit {
-    socialCampaignId: number;
+    alias: string;
     constructor( public activatedRoute: ActivatedRoute ) { }
 
     ngOnInit() {
-        this.socialCampaignId = this.activatedRoute.snapshot.params['id'];
+        this.alias = this.activatedRoute.snapshot.params['alias'];
     }
 
 }

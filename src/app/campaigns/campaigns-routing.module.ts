@@ -13,7 +13,7 @@ export const campaignRoutes: Routes = [
     { path:'select-campaign',component:SelectCampaignTypeComponent},
     { path:'create-campaign',component:CreateCampaignComponent},
     { path:'social',component:SocialCampaignComponent},
-    { path:'social/:id',component:SocialCampaignComponent},
+    { path:'social/:alias',component:SocialCampaignComponent},
     { path:'edit-campaign',component:CreateCampaignComponent},
     { path: 'manage-campaigns', component: ManagePublishComponent },
     { path: ':campaignId/details', component: AnalyticsComponent },

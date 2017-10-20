@@ -19,7 +19,6 @@ import { TwitterService } from "../../services/twitter.service";
 import { FacebookService } from "../../services/facebook.service";
 import { VideoFileService } from "../.././../videos/services/video-file.service";
 import { ContactService } from "../.././../contacts/services/contact.service";
-import { CampaignService } from "../.././../campaigns/services/campaign.service";
 
 import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
@@ -33,7 +32,7 @@ declare var $, flatpickr, videojs: any;
 })
 export class UpdateStatusComponent implements OnInit {
     @Input('isSocialCampaign') isSocialCampaign: boolean = false;
-    @Input('socialCampaignId') socialCampaignId: number;
+    @Input('alias') alias: string;
  
     videoUrl: string;
     posterImage: string;
@@ -41,7 +40,6 @@ export class UpdateStatusComponent implements OnInit {
     selectedVideo: SaveVideoFile;
     userId: number;
     
-    campaign = new Campaign();
     socialStatus = new SocialStatus();
     previewContactList = new ContactList();
     socialStatusList = new Array<SocialStatus>();
@@ -54,10 +52,12 @@ export class UpdateStatusComponent implements OnInit {
     constructor(private socialService: SocialService, private twitterService: TwitterService, 
             private facebookService: FacebookService, private videoFileService: VideoFileService, 
             private authenticationService: AuthenticationService, private contactService: ContactService,
-            private campaignService: CampaignService, private pagerService: PagerService, private router: Router, 
+            private pagerService: PagerService, private router: Router, 
             private logger: Logger, public callActionSwitch: CallActionSwitch) {
         
         this.resetCustomResponse();
+        this.userId = this.authenticationService.getUserId();
+        this.socialStatus.userId = this.userId;
     }
     
     resetCustomResponse(){
@@ -196,7 +196,7 @@ export class UpdateStatusComponent implements OnInit {
         let isValid: boolean = true;
         isValid = this.isSocialAccountsSelected();
         
-        if(! this.campaign.campaignName){
+        if(! this.socialStatus.campaignName){
             isValid = false;
             this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
         }
@@ -209,17 +209,17 @@ export class UpdateStatusComponent implements OnInit {
 
     createSocialCampaign(){
         this.resetCustomResponse();
+        this.socialStatus.socialCampaign = this.isSocialCampaign;
         $('html, body').animate({
             scrollTop: $("#us-right").offset().top
         }, 500);
         if(this.validate()){
             this.setCustomResponse(ResponseType.Loading, 'Creating Social Campaign');
-            this.campaign.socialStatus = this.socialStatus;
-            console.log(this.campaign);
+            this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
             
-            this.campaign.userId = this.userId;
+            this.socialStatus.userId = this.userId;
             
-            this.campaignService.createSocialCampaign(this.campaign)
+            this.socialService.updateStatus(this.socialStatus)
             .subscribe(
             data => {
                 this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
@@ -231,24 +231,25 @@ export class UpdateStatusComponent implements OnInit {
             },
             () => {
                 this.initializeSocialStatus();
-                this.campaign = new Campaign();
-                this.campaign.userListIds = [];
+                this.socialStatus.userListIds = [];
             }
             ); 
         }
     }
     
+    filterSelectedSocialProviders(socialStatusProviders: Array<SocialStatusProvider>){
+        socialStatusProviders = socialStatusProviders.filter(function (obj) {
+            return obj.selected === true;
+        });
+        return socialStatusProviders;
+    }
+    
     updateStatus() {
         
         if(this.validate()){
-            let socialStatusProviders = this.socialStatus.socialStatusProviders;
-            socialStatusProviders = socialStatusProviders.filter(function (obj) {
-                return obj.selected === true;
-            });
-            this.socialStatus.socialStatusProviders = socialStatusProviders;
-            console.log(this.socialStatus);
+            this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
             this.setCustomResponse(ResponseType.Loading, 'Updating Status');
-            this.socialService.updateStatus(this.userId, this.socialStatus)
+            this.socialService.updateStatus(this.socialStatus)
                 .subscribe(
                 data => {
                     this.initializeSocialStatus();
@@ -502,11 +503,11 @@ export class UpdateStatusComponent implements OnInit {
     highlightRow( contactListId:number ){
         let isChecked = $('#'+contactListId).is(':checked');
         if(isChecked){
-            if(!this.campaign.userListIds.includes(contactListId))
-                this.campaign.userListIds.push(contactListId);
+            if(!this.socialStatus.userListIds.includes(contactListId))
+                this.socialStatus.userListIds.push(contactListId);
             $('#'+contactListId).parent().closest('tr').addClass('highlight');
         }else{
-            this.campaign.userListIds.splice($.inArray(contactListId, this.campaign.userListIds),1);
+            this.socialStatus.userListIds.splice($.inArray(contactListId, this.socialStatus.userListIds),1);
             $('#'+contactListId).parent().closest('tr').removeClass('highlight');
         }
     }
@@ -517,21 +518,20 @@ export class UpdateStatusComponent implements OnInit {
         this.highlightRow(contactListId);
     }
     
-    getSocialCampaign(socialCampaignId: number){
+    getSocialCampaign(socialCampaignAlias: string){
 
-        this.socialService.getSocialCampaign(socialCampaignId)
+        this.socialService.getSocialCampaign(socialCampaignAlias)
             .subscribe(
             data => {
-                console.log(data);
+                this.socialStatus = data;
             },
-            error => console.log( error ),
+            error => this.router.navigate( ['/home/error/404'] ),
             () => {}
             );
     
     }
     
     ngOnInit() {
-        this.userId = this.authenticationService.getUserId();
         this.listSocialConnections();
         this.listEvents();
         this.constructCalendar();
@@ -540,8 +540,8 @@ export class UpdateStatusComponent implements OnInit {
         if (this.isSocialCampaign)
             this.loadContactLists(this.contactListsPagination);
         
-        /*if(this.isSocialCampaign && this.socialCampaignId)
-            this.getSocialCampaign(this.socialCampaignId);*/
+        if(this.isSocialCampaign && this.alias)
+            this.getSocialCampaign(this.alias);
     }
 
     ngOnDestroy() {
