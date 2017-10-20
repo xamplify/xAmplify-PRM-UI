@@ -129,7 +129,7 @@
 						<h6 class="pull-right mt0"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 					</section>
 					<section *ngIf="isSocialCampaign && alias">
-						<!-- <h4>{{campaign.socialStatus.statusMessage}}</h4> -->
+						<h4>{{socialStatus.statusMessage}}</h4>
 					</section>
                 </div>
                 <div class="col-sm-12">
@@ -206,7 +206,7 @@
 								<li *ngIf="isSocialCampaign"><a (click)="createSocialCampaign()">Post Now</a></li>
 							</ul>
 						</div>
-						<span *ngIf="socialStatus.id != null">
+						<span *ngIf="socialStatus.id != null" [hidden]="socialStatus.userId != userId">
 							<button type="button" class="btn btn-success rounded-0 pull-right margin-right-10px" (click)="initializeSocialStatus()">Cancel</button>				
 							<button type="button" class="btn btn-danger rounded-0 pull-right margin-right-10px" (click)="deleteStatus(socialStatus)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
 						</span>

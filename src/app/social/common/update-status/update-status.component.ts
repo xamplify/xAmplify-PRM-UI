@@ -223,6 +223,7 @@ export class UpdateStatusComponent implements OnInit {
             .subscribe(
             data => {
                 this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
+                this.socialStatus.campaignName = null;
             },
             error => {
                 this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
@@ -540,8 +541,10 @@ export class UpdateStatusComponent implements OnInit {
         if (this.isSocialCampaign)
             this.loadContactLists(this.contactListsPagination);
         
-        if(this.isSocialCampaign && this.alias)
+        if(this.isSocialCampaign && this.alias){
             this.getSocialCampaign(this.alias);
+            this.listSocialStatusProviders();
+        }
     }
 
     ngOnDestroy() {
