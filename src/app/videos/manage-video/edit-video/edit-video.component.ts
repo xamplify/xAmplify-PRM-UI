@@ -599,14 +599,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     changePlayerColor(event: any) {
         this.compPlayerColor = this.saveVideoFile.playerColor = event;
-        // $('.video-js').css('color', this.saveVideoFile.playerColor);
-        // $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
+       //  $('.video-js').css('color', this.saveVideoFile.playerColor);
+         $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
         // $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
         $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-play-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
-        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
+     //   $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
     }

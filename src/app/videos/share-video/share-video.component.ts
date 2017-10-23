@@ -181,16 +181,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-        // $('.video-js').css('color', this.embedVideoFile.playerColor);
-        // $('.video-js .vjs-play-progress').css('background-color', this.embedVideoFile.playerColor);
-        // $('.video-js .vjs-volume-level').css('background-color', this.embedVideoFile.playerColor);
-        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
-        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
+         this.videoUtilService.videoColorControlls(this.embedVideoFile);
         if (this.embedVideoFile.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
