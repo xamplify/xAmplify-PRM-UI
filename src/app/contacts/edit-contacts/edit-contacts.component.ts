@@ -1199,7 +1199,11 @@ export class EditContactsComponent implements OnInit {
                .subscribe(
                    data => {
                        data = data;
-                       this.router.navigateByUrl( '/home/contacts/manage' )
+                       if(this.isPartner == false){
+                           this.router.navigateByUrl( '/home/contacts/manage' )
+                           }else{
+                               this.router.navigateByUrl( 'home/partners/manage' )
+                           }
                        this.setResponseDetails('SUCCESS', 'your contact List created successfully');
                    },
 

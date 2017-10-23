@@ -155,7 +155,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             if(this.isPartner == false){
                 this.router.navigateByUrl( '/home/contacts/manage' )
                 }else{
-                    this.router.navigateByUrl( '/home/partner/manage' )
+                    this.router.navigateByUrl( 'home/partners/manage' )
                 }
         };
     }
@@ -504,7 +504,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 if(this.isPartner == false){
                 this.router.navigateByUrl( '/home/contacts/manage' )
                 }else{
-                    this.router.navigateByUrl( '/home/partner/manage' )
+                    this.router.navigateByUrl( 'home/partners/manage' )
                 }
                 this.contactService.successMessage = true;
             },
@@ -589,7 +589,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     if(this.isPartner == false){
                         this.router.navigateByUrl( '/home/contacts/manage' )
                         }else{
-                            this.router.navigateByUrl( '/home/partner/manage' )
+                            this.router.navigateByUrl( 'home/partners/manage' )
                         }
                 },
                 ( error: any ) => {
@@ -635,7 +635,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                             if(this.isPartner == false){
                                 this.router.navigateByUrl( '/home/contacts/manage' )
                                 }else{
-                                    this.router.navigateByUrl( '/home/partner/manage' )
+                                    this.router.navigateByUrl( 'home/partners/manage' )
                                 }
                         },
                         ( error: any ) => {
@@ -934,7 +934,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         if(this.isPartner == false){
                             this.router.navigateByUrl( '/home/contacts/manage' )
                             }else{
-                                this.router.navigateByUrl( '/home/partner/manage' )
+                                this.router.navigateByUrl( 'home/partners/manage' )
                             }
                     },
                     ( error: any ) => {
@@ -980,7 +980,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     if(this.isPartner == false){
                         this.router.navigateByUrl( '/home/contacts/manage' )
                         }else{
-                            this.router.navigateByUrl( '/home/partner/manage' )
+                            this.router.navigateByUrl( 'home/partners/manage' )
                         }
                     this.contactService.successMessage = true;
                 },
@@ -1288,7 +1288,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         if(this.isPartner == false){
                             this.router.navigateByUrl( '/home/contacts/manage' )
                             }else{
-                                this.router.navigateByUrl( '/home/partner/manage' )
+                                this.router.navigateByUrl( 'home/partners/manage' )
                             }
                     },
 
@@ -1335,7 +1335,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     if(this.isPartner == false){
                         this.router.navigateByUrl( '/home/contacts/manage' )
                         }else{
-                            this.router.navigateByUrl( '/home/partner/manage' )
+                            this.router.navigateByUrl( 'home/partners/manage' )
                         }
                     this.contactService.successMessage = true;
                 },
@@ -1608,7 +1608,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     if(this.isPartner == false){
                         this.router.navigateByUrl( '/home/contacts/manage' )
                         }else{
-                            this.router.navigateByUrl( '/home/partner/manage' )
+                            this.router.navigateByUrl( 'home/partners/manage' )
                         }
                     this.contactService.successMessage = true;
                 },
@@ -1644,7 +1644,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         if(this.isPartner == false){
                             this.router.navigateByUrl( '/home/contacts/manage' )
                             }else{
-                                this.router.navigateByUrl( '/home/partner/manage' )
+                                this.router.navigateByUrl( 'home/partners/manage' )
                             }
                     },
                     ( error: any ) => {
