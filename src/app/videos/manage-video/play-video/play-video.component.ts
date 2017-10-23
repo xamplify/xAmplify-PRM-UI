@@ -498,12 +498,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loadAllVideos(this.pagination);
     }
     defaultVideoOptions() {
-        $('.video-js').css('color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.selectedVideo.controllerColor + '!important');
+           this.videoUtilService.videoColorControlls(this.selectedVideo);
         if (!this.selectedVideo.allowFullscreen) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {

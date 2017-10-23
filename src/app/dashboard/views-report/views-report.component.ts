@@ -197,13 +197,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
     }
     videoControllColors(videoFile: SaveVideoFile) {
-        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-play-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' +videoFile.playerColor + '!important');
-        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        this.videoUtilService.videoColorControlls(videoFile);
         const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }

@@ -114,5 +114,15 @@ export class VideoUtilService {
         }
         return num;
     }
+    videoColorControlls(videoFile: SaveVideoFile){
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' +videoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+    }
+
 
 }
