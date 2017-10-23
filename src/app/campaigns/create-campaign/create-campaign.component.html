@@ -111,7 +111,15 @@
 											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 										</div>
 									</div>
-
+									<div class="form-group" *ngIf="campaignType=='video'">
+										<label class="control-label col-md-3">Partner Campaign<font style="color: red"><b>*</b></font></label>
+										<div class="col-md-9">
+											<switch [status]="campaign.channelCampaign"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
+														   (statusChange)="setChannelCampaign($event)">
+											</switch>
+										</div>
+									</div>
 									<div class="form-group" [attr.class]="fromNameDivClass">
 										<label class="control-label col-md-3">From Name<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
@@ -135,15 +143,6 @@
 										<label class="control-label col-md-3">Pre Header<font style="color: red"><b>*</b></font></label>
 										<div class="col-md-9">
 											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200"  />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3">Channel Campaign<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
-											<switch [status]="campaign.channelCampaign"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
-														   (statusChange)="setChannelCampaign($event)">
-											</switch>
 										</div>
 									</div>
 									<div class="form-group">
@@ -261,7 +260,7 @@
 									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1" aria-label="CategoryAccountingAgriculture and FisheryAlternative MedicineApparel and FashionAutomotiveAviation and AerospaceLeisure,Travel and TourismManufacturingMediaNon-profitReal EstateSecurity and InvestigationsSportsTechnology (General)">
 										<span class="filter_column filter_select">
 										<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)">
-											<option value="" class="search_init">---Select Category---</option>
+											<option value="" class="search_init">Category</option>
 											<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}" [selected]="category.id==videosPagination.videoCategoryId">{{category.name}}</option>
 										</select>
 										</span>
@@ -269,7 +268,7 @@
 									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1">
 										<span class="filter_column filter_select">
 										<select class="form-control" (change)="filterVideosByType($event)">
-											<option value="" class="search_init">---Select Type---</option>
+											<option value="" class="search_init">Type</option>
 								            <option  value="PRIVATE">private</option>
 								            <option  value="PUBLIC">public</option>
 								            <option  value="UNLISTED">unlisted</option>
@@ -319,7 +318,7 @@
 														</b>
 													</a>
 												</p>
-												<p>by <b>{{savedVideoFile.uploadedBy}} Edited</b> </p>
+												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
 												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
 											</div>
 										</div>
@@ -434,7 +433,7 @@
 									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1" aria-label="CategoryAccountingAgriculture and FisheryAlternative MedicineApparel and FashionAutomotiveAviation and AerospaceLeisure,Travel and TourismManufacturingMediaNon-profitReal EstateSecurity and InvestigationsSportsTechnology (General)">
 										<span class="filter_column filter_select">
 										<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)">
-											<option value="" class="search_init">---Select Category---</option>
+											<option value="" class="search_init">Category</option>
 											<option *ngFor="let category of partnerCategories" class="colorSelect" value="{{category.id}}" [selected]="category.id==channelVideosPagination.videoCategoryId">{{category.name}}</option>
 										</select>
 										</span>
@@ -442,7 +441,7 @@
 									<th style="text-align: center; background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0);" class="sorting_disabled" rowspan="1" colspan="1">
 										<span class="filter_column filter_select">
 										<select class="form-control" (change)="filterPartnerVideosByType($event)">
-											<option value="" class="search_init">---Select Type---</option>
+											<option value="" class="search_init">Type</option>
 								            <option  value="PRIVATE">private</option>
 								            <option  value="PUBLIC">public</option>
 								            <option  value="UNLISTED">unlisted</option>
@@ -488,7 +487,7 @@
 														</b>
 													</a>
 												</p>
-												<p>by <b>{{savedVideoFile.uploadedBy}} Edited</b> </p>
+												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
 												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
 											</div>
 										</div>

@@ -184,6 +184,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public callActionSwitch: CallActionSwitch
             ){
         this.logger.info("create-campaign-component constructor loaded");
+        this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
@@ -365,7 +366,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
-        this.loadCampaignContacts(this.contactsPagination);
+        if(this.isAdd){
+            this.contactsPagination.filterValue = false;
+            this.loadCampaignContacts(this.contactsPagination);
+        }else{
+            this.contactsPagination.filterValue = this.campaign.channelCampaign;
+            this.loadCampaignContacts(this.contactsPagination);
+        }
+        
         if(this.campaignType=="video"){
            this.width="20%";
             this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
@@ -521,6 +529,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
+        this.selectedContactListIds = [];
+        this.isContactList = false;
+        if(event){
+            this.contactsPagination.filterValue = true;
+            this.loadCampaignContacts(this.contactsPagination);
+        }else{
+            this.contactsPagination.filterValue = false;
+            this.loadCampaignContacts(this.contactsPagination);
+        }
     }
     setVideoPlayed(event:any){
         this.campaign.videoPlayed = event;
@@ -869,8 +886,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                
             },
             (error:string) => {
-                this.logger.error(this.refService.errorPrepender+" loadCampaignContacts():"+error);
-                this.refService.showServerError(this.campaignContact.httpRequestLoader);
+                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished loadCampaignContacts()", this.contactsPagination)
             )
