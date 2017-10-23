@@ -96,6 +96,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
         $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.selectedVideo.controllerColor + '!important');
         if (this.selectedVideo.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
@@ -108,7 +109,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         } else { $('.video-js .vjs-control-bar').show(); }
     }
     transperancyControllBar(value: any) {
-        const rgba = this.videoUtilService.convertHexToRgba(this.selectedVideo.controllerColor, value);
+        const color: any = this.selectedVideo.controllerColor;
+        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     renderMap(countryWiseData: any) {

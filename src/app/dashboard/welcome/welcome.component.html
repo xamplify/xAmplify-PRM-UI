@@ -8,6 +8,9 @@
 pointer-events:none;
 cursor: not-allowed;
 }
+.page-bar-shadow {
+		box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+}
 </style>
 <div class="page-content">
 	<div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
@@ -37,7 +40,7 @@ cursor: not-allowed;
 		</div>
 	</div>
 
-	<div class="page-bar">
+	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
@@ -115,7 +118,7 @@ cursor: not-allowed;
 		</div>
 	</div>
 	
-	<div class="page-bar">
+	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-12">
 			<div class="flex">
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 p5">

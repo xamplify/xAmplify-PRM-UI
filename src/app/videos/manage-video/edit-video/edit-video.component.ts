@@ -544,16 +544,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // video controller methods
     transperancyControllBar(value: any) {
-        let color: any = this.saveVideoFile.controllerColor;
-        if (color.includes('rgba')) {
-            color = this.videoUtilService.convertRgbToHex(this.saveVideoFile.controllerColor);
-        }
-        if (this.saveVideoFile.controllerColor === '#fff') {
-            color = '#fbfbfb';
-        } else if (this.saveVideoFile.controllerColor === '#ccc') {
-            color = '#cccddd';
-        }
-        const rgba = this.videoUtilService.convertHexToRgba(color, value);
+        const color: any = this.saveVideoFile.controllerColor;
+        const  rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
         this.valueRange = value;
         this.xtremandLogger.log(this.valueRange);
@@ -565,16 +557,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.saveVideoFile.allowLikes = this.newAllowLikes = this.likes = event;
     }
     defaultPlayerSettingsCondition(playerSettings: any) {
+        // future work is there on enable casting and enable settings.
         this.valueRange = playerSettings.transparency;
         this.newEnableController = playerSettings.enableVideoController;
-        this.newComments = playerSettings.allowComments;
+        this.comments = this.newComments = playerSettings.allowComments; // done
         this.newFullScreen = playerSettings.allowFullscreen;
-        this.newAllowLikes = playerSettings.allowLikes;
-        this.newAllowEmbed = playerSettings.allowEmbed;
-        this.newEnableCasting = playerSettings.enableCasting;
-        this.newEnableSetting = playerSettings.enableSettings;
-        this.newAllowSharing = playerSettings.allowSharing;
-        this.newValue360 = playerSettings.is360video;
+        this.likes = this.newAllowLikes = playerSettings.allowLikes; // done
+        this.embedVideo = this.newAllowEmbed = playerSettings.allowEmbed; // done
+        this.newEnableCasting = playerSettings.enableCasting; // need to work
+        this.newEnableSetting = playerSettings.enableSettings; // need to work
+        this.shareValues =  this.newAllowSharing = playerSettings.allowSharing; // done
+        this.newValue360 = playerSettings.is360video; // no need to chagne. after saving the video, this option will affect
+        this.changeFullscreenCondtion(this.newFullScreen);
     }
     defaultSettingValuesBoolean(event: boolean) { this.defaultSettingValue = this.disablePlayerSettingnew = event; }
     disableTransperancy(event: boolean) { (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event; }
@@ -588,14 +582,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
             this.changePlayerColor(this.compPlayerColor);
             this.changeControllerColor(this.compControllerColor);
+            this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
             if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
             this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
         } else {
             this.defaultSettingValuesBoolean(event);
             if (!this.loadRangeDisable) { this.disableTransperancy(event); }
             this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
-            this.changeControllerColor(this.compControllerColor);
             this.changePlayerColor(this.compPlayerColor);
+            this.changeControllerColor(this.compControllerColor);
+            this.changeTransperancyControllBar(this.tempVideoFile.transparency,  this.compControllerColor);
             if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
             this.defaultPlayerSettingsCondition(this.tempVideoFile);
         }
@@ -603,13 +599,29 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     changePlayerColor(event: any) {
         this.compPlayerColor = this.saveVideoFile.playerColor = event;
-        $('.video-js').css('color', this.saveVideoFile.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
+        // $('.video-js').css('color', this.saveVideoFile.playerColor);
+        // $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
+        // $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
     }
     changeControllerColor(event: any) {
         this.compControllerColor = this.saveVideoFile.controllerColor = event;
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.saveVideoFile.controllerColor + '!important');
+    }
+    changeTransperancyControllBar(value: number, color: string) {
+        const  rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+    }
+    changeFullscreenCondtion(event: boolean) {
+       if (!event) {
+            $('.video-js .vjs-fullscreen-control').hide();
+        } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     changeFullscreen(event: any) {
         this.newFullScreen = this.saveVideoFile.allowFullscreen = event;
@@ -793,13 +805,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-        $('.video-js').css('color', this.saveVideoFile.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
-        if (this.saveVideoFile.controllerColor === '#fff') {
-            const event = '#fbfbfb';
-            $('.video-js .vjs-control-bar').css('background-color', event);
-        } else { $('.video-js .vjs-control-bar').css('background-color', this.saveVideoFile.controllerColor); }
+        // $('.video-js').css('color', this.saveVideoFile.playerColor);
+        // $('.video-js .vjs-play-progress').css('background-color', this.saveVideoFile.playerColor);
+        // $('.video-js .vjs-volume-level').css('background-color', this.saveVideoFile.playerColor);
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         if (this.saveVideoFile.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
@@ -990,8 +1005,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.play360Video();
         }
         this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
-        this.defaultVideoSettings();
-        this.transperancyControllBar(this.valueRange);
+       // this.defaultVideoSettings();
+       // this.transperancyControllBar(this.valueRange);
         if (!this.newEnableController) {
             this.defaultVideoControllers();
         }

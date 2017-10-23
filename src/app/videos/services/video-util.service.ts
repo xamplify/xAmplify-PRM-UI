@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SaveVideoFile } from '../models/save-video-file';
 declare var $: any;
 
 
@@ -38,7 +39,7 @@ export class VideoUtilService {
         'lowerText': { 'required': 'lower text is required', },
     };
     videojshotkeys() {
-       $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
     }
     player360VideoJsFiles() {
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
@@ -59,6 +60,18 @@ export class VideoUtilService {
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return validation.test(email);
+    }
+    transparancyControllBarColor(color: string, value: number) {
+        if (color.includes('rgba')) {
+            color = this.convertRgbToHex(color);
+        }
+        if (color === '#fff') {
+            color = '#fbfbfb';
+        } else if (color === '#ccc') {
+            color = '#cccddd';
+        }
+        const rgba = this.convertHexToRgba(color, value);
+        return rgba;
     }
     convertHexToRgba(hex: string, opacity: number) {
         hex = hex.replace('#', '');

@@ -181,10 +181,16 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-        $('.video-js').css('color', this.embedVideoFile.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.embedVideoFile.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.embedVideoFile.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.embedVideoFile.controllerColor);
+        // $('.video-js').css('color', this.embedVideoFile.playerColor);
+        // $('.video-js .vjs-play-progress').css('background-color', this.embedVideoFile.playerColor);
+        // $('.video-js .vjs-volume-level').css('background-color', this.embedVideoFile.playerColor);
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.embedVideoFile.playerColor + '!important');
         if (this.embedVideoFile.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
@@ -665,7 +671,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         } else { $('.video-js .vjs-control-bar').show(); }
     }
     transperancyControllBar(value: any) {
-        const rgba = this.videoUtilService.convertHexToRgba(this.embedVideoFile.controllerColor, value);
+        const color: any = this.embedVideoFile.controllerColor;
+        const  rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     extractData(res: Response) {

@@ -33,8 +33,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     showVideoData: boolean;
     searchKey: string;
     sortingName: string = null;
-    sortcolumn: string = null;
-    sortingOrder: string = null;
     categoryNum: number;
     currentPageType: string = null;
     isCategoryThere: boolean;
@@ -119,7 +117,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     this.logger.error('error in videos: views report page' + error);
                     this.logger.errorPage(error);
                 },
-                () => console.log('load videos completed:'),
+                () => console.log('load videos completed:')
             );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -198,8 +196,26 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $('#main_video_src').empty();
         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
     }
+    videoControllColors(videoFile: SaveVideoFile) {
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' +videoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+    }
     appendVideoData(videoFile: SaveVideoFile, divId: string, titleId: string) {
         console.log(videoFile);
+        const videoSelf = this;
+     //   videoFile.transparency = 100; // need to get the value from db
+        if (videoFile.viewBy === 'DRAFT') {
+            console.log(this.referenceService.defaultPlayerSettings);
+            videoFile.playerColor = this.referenceService.defaultPlayerSettings.playerColor;
+            videoFile.controllerColor = this.referenceService.defaultPlayerSettings.controllerColor;
+        }
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
@@ -224,7 +240,10 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                 autoMobileOrientation: true,
                 clickAndDrag: true,
                 clickToToggle: true,
-                callback: function () { player.ready(); }
+                callback: function () {
+                  player.ready();
+                  videoSelf.videoControllColors(videoFile);
+                }
             });
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
@@ -247,7 +266,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $("#videoId").css("max-width", "100%");
             var document: any = window.document;
             var player = videojs("videoId");
-            console.log(player);
+            this.videoControllColors(videoFile);
+             console.log(player);
             if (player) {
                 player.on('fullscreenchange', function () {
                     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;

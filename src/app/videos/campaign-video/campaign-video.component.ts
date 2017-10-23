@@ -316,11 +316,18 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     }
     defaultVideoSettings() {
         this.xtremandLogger.log('default settings called');
-        $('.video-js').css('color', this.campaignVideoFile.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.campaignVideoFile.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.campaignVideoFile.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.campaignVideoFile.controllerColor);
-        const rgba = this.videoUtilService.convertHexToRgba(this.campaignVideoFile.controllerColor, this.campaignVideoFile.transparency);
+        // $('.video-js').css('color', this.campaignVideoFile.playerColor);
+        // $('.video-js .vjs-play-progress').css('background-color', this.campaignVideoFile.playerColor);
+        // $('.video-js .vjs-volume-level').css('background-color', this.campaignVideoFile.playerColor);
+        // $('.video-js .vjs-control-bar').css('background-color', this.campaignVideoFile.controllerColor);
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.campaignVideoFile.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.campaignVideoFile.playerColor + '!important');
+        const rgba = this.videoUtilService.transparancyControllBarColor(this.campaignVideoFile.controllerColor, this.campaignVideoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     trimCurrentTime(currentTime) {
