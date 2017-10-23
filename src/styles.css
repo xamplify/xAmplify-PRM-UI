@@ -286,6 +286,7 @@ nav a.active {
 .portlet.light,
 .form-control,
 .page-bar,
+.modal-content,
 .bootstrap-switch, .bootstrap-switch-handle-on, .bootstrap-switch-handle-off
 button {
 	border-radius: 0 !important;
@@ -321,4 +322,9 @@ tr.highlight {
 }
 .tabbable-custom {
 		box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+}
+
+.control-label {
+    font-weight: 600;
+    color: #777;
 }

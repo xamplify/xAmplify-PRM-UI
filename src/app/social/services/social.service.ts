@@ -105,7 +105,7 @@ export class SocialService {
     }
 
     listEvents( userId: number ) {
-        return this.http.get( this.URL + 'social/update-status?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
+        return this.http.get( this.URL + 'social/list/'+userId+'?access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }

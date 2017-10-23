@@ -246,7 +246,6 @@ export class UpdateStatusComponent implements OnInit {
     }
     
     updateStatus() {
-        
         if(this.validate()){
             this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
             this.setCustomResponse(ResponseType.Loading, 'Updating Status');
@@ -273,18 +272,20 @@ export class UpdateStatusComponent implements OnInit {
     }
 
     deleteStatus(socialStatus: SocialStatus) {
-        console.log(this.socialStatus);
+        this.setCustomResponse(ResponseType.Loading, 'Please Wait while we are processing your request.');
         this.socialService.deleteStatus(socialStatus)
             .subscribe(
             data => {
+                this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.')
                 $('#full-calendar').fullCalendar('removeEvents');
                 this.listEvents();
+                this.initializeSocialStatus();
             },
-            error => console.log(error),
+            error => this.setCustomResponse(ResponseType.Error, 'An Error occurred while deleting the status.'),
             () => console.log('Finished')
             );
     }
-
+    
     initializeSocialStatus() {
         this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
         this.socialStatus.id = null;
@@ -332,12 +333,13 @@ export class UpdateStatusComponent implements OnInit {
     }
     
     editSocialStatus(socialStatus: SocialStatus) {
+        this.resetCustomResponse();
         $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
         $('html,body').animate({ scrollTop: 0 }, 'slow');
-        //this.initializeSocialStatus();
+        this.initializeSocialStatus();
         this.socialStatus = socialStatus;
-        this.listSocialStatusProviders();
-
+        for(let i in this.socialStatus.socialStatusProviders)
+            this.socialStatus.socialStatusProviders[i].selected = true;  
     }
 
     showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); }
@@ -480,7 +482,6 @@ export class UpdateStatusComponent implements OnInit {
             data => {
                 this.socialStatusList = data;
                 for ( var i in this.socialStatusList ) {
-
                     var event = {
                         title: this.socialStatusList[i].statusMessage,
                         start: this.socialStatusList[i].scheduledTimeUser,

@@ -408,8 +408,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="full-calendar-modal-event-{{socialStatus.id}}" tabindex="-1"
-	role="dialog" *ngFor="let socialStatus of socialStatusList">
+<div class="modal fade" id="full-calendar-modal-event-{{item.id}}" tabindex="-1" role="dialog" *ngFor="let item of socialStatusList">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
@@ -419,17 +418,17 @@
 				<h4 id="full-calendar-modal-title" class="modal-title">Edit Post</h4>
 			</div>
 			<div id="full-calendar-modal-body" class="modal-body">
-				<h4>{{socialStatus.statusMessage}}</h4>
+				<h4 class='mt0'>{{item.statusMessage}}</h4>
 				<div *ngIf="socialStatus.socialStatusContents?.length > 0">
 					<span *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
 						<img *ngIf="socialStatusContent.fileType  == 'image'"
 							alt="{{socialStatusContent.fileType}}"
-							src="{{MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{accessToken}}"
+							src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
 							style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
 						<video *ngIf="socialStatusContent.fileType  == 'video'"
 							width="100%" height="240" controls>
 							<source
-								src="{{MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{accessToken}}"
+								src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{authenticationService.access_token}}"
 								type="video/mp4">
 						</video>
 					</span>
@@ -437,7 +436,7 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn-sm uppercase rounded-0" (click)="editSocialStatus(socialStatus)">Edit</button>
+				<button type="button" class="btn btn-primary btn-sm uppercase rounded-0" (click)="editSocialStatus(item)">Edit</button>
 				<button type="button" class="btn btn-dialog btn-sm uppercase rounded-0" data-dismiss="modal">Close</button>
 			</div>
 		</div>
