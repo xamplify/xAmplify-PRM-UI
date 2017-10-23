@@ -26,7 +26,6 @@ import { ContactList } from '../../contacts/models/contact-list';
 import { Category } from '../../videos/models/category';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-
 import { SocialStatus } from "../../social/models/social-status";
 import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
@@ -211,11 +210,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         if(this.campaignService.campaign!=undefined){
             this.resetTabClass();
-            this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             $('head').append('<script src="https://yanwsh.github.io/videojs-panorama/videojs/v5/video.min.js"  class="p-video"  />');
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             if(this.timeZones.indexOf(this.campaign.timeZoneId)<0){
                 this.campaign.timeZoneId = this.timeZones[0];
             }
@@ -594,6 +593,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
     
     loadPartnerVideos(pagination:Pagination){
+        this.campaignVideo.httpRequestLoader.isHorizontalCss=true;
+        this.refService.loading(this.campaignVideo.httpRequestLoader, true);
         this.videoFileService.loadChannelVideos(pagination,pagination.videoCategoryId)
         .subscribe(
             (result:any) => {

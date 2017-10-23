@@ -1,5 +1,4 @@
 <div class="page-content">
-
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
@@ -26,6 +25,12 @@
 				</ng-container>
 	  		
 		</div>
+			<div [hidden]="!processor.isProcessing">
+			<div class="div-loader" [style.height]="processor.divHeight">
+				<div id="process-loader"></div>
+			</div>
+		</div>
+		<div  [hidden]="processor.isProcessing" >
 			<form role="form" >
 				<div class="form-group" [attr.class]="companyNameDivClass">
 					<label class="control-label">Company Name <font style="color: red"><b>*</b></font></label>
@@ -51,7 +56,7 @@
 						<button type="submit" *ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="update()" class="btn green-haze">Update</button>
 					</div>
 			</form>
-		
+		</div>
 		
 		</div>
 	</div>

@@ -786,4 +786,12 @@ export class ReferenceService {
 
         ];
     }
+    
+    hideVerticalScrollBar() {
+        $( "body" ).css( "overflow", "hidden" );
+    }
+    
+    getDivHeightByClassName(className:string){
+        return  $(className).height()+"px";
+    }
 }

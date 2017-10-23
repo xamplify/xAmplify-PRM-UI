@@ -7,13 +7,17 @@ import {CompanyProfileService} from '../services/company-profile.service';
 import {noWhiteSpaceValidator } from '../../../form-validator';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { ActivatedRoute,Router } from '@angular/router';
+import { Processor } from '../../../core/models/processor';
 declare var $:any;
 @Component({
   selector: 'app-edit-company-profile',
   templateUrl: './edit-company-profile.component.html',
-  styleUrls: ['./edit-company-profile.component.css']
+  styleUrls: ['./edit-company-profile.component.css'],
+  providers:[Processor]
 })
 export class EditCompanyProfileComponent implements OnInit {
+    isLoading:boolean = false;
+    loaderHeight:string = "";
     loggedInUserId: number = 0;
     companyProfile:CompanyProfile = new CompanyProfile();
     message:string = "";
@@ -28,7 +32,7 @@ export class EditCompanyProfileComponent implements OnInit {
     companyProfileNameErrorMessage:string = "";
     existingCompanyName:string = "";
     constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private companyProfileService: CompanyProfileService,
-        private fb: FormBuilder,public refService:ReferenceService,private router:Router) {
+        private fb: FormBuilder,public refService:ReferenceService,private router:Router,public processor:Processor) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
@@ -58,7 +62,8 @@ export class EditCompanyProfileComponent implements OnInit {
             this.validateProfileNames(this.companyProfile.companyProfileName);
             let errorLength = $('div.form-group.has-error.has-feedback').length;
             if(errorLength==0){
-                 this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
+                this.processor.set(this.processor);
+                this.companyProfileService.save(this.companyProfile,this.loggedInUserId)
                 .subscribe(
                 data => {
                     this.message = data.message;
@@ -69,6 +74,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         $('#saveOrUpdateCompanyButton').prop('disabled',true);
                         self.authenticationService.user.hasCompany = true;
                         self.router.navigate(["/home/dashboard/welcome"]);
+                        self.processor.set(this.processor);
                       }, 3000);
                    
                 },
@@ -87,12 +93,14 @@ export class EditCompanyProfileComponent implements OnInit {
         this.validateNames(this.companyProfile.companyName);
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if(errorLength==0){
-             this.companyProfileService.update(this.companyProfile,this.loggedInUserId)
+            this.processor.set(this.processor);
+            this.companyProfileService.update(this.companyProfile,this.loggedInUserId)
             .subscribe(
             data => {
                 this.message = data.message;
                 $('#info').hide();
                 $('#edit-sucess').show( 600 );
+                this.processor.remove(this.processor);
                 setTimeout( function() { $( "#edit-sucess" ).slideUp( 500 ); }, 5000 );
             },
             error => { this.logger.errorPage( error ) },
@@ -226,6 +234,7 @@ export class EditCompanyProfileComponent implements OnInit {
         }
         
     }
+    
     
 
 }
