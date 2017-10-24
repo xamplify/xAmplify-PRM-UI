@@ -23,9 +23,9 @@ declare var swal, $, Metronic, Layout, Demo, videojs: any;
     providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-    public defaultVideoPlayer: DefaultVideoPlayer;
-    public videoJSplayer: any;
-    public videoUrl: string;
+    defaultVideoPlayer: DefaultVideoPlayer;
+    videoJSplayer: any;
+    videoUrl: string;
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
     busy: Subscription;
@@ -37,16 +37,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     userData: User;
     parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/profile-pic.gif' };
     className: string = "form-control ng-touched ng-dirty ng-valid";
-    public uploader: FileUploader;
-    public compPlayerColor: string;
-    public compControllerColor: string;
-    public valueRange: number;
+    uploader: FileUploader;
+    compPlayerColor: string;
+    compControllerColor: string;
+    valueRange: number;
     profilePictueError: boolean = false;
     profilePictureErrorMessage: string = "";
     active = false;
     defaultPlayerSuccess = false;
     isPlayed = false;
-    loggedInUserId:number = 0;
+    loggedInUserId: number = 0;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
@@ -54,23 +54,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
-          this.router.navigateByUrl('/home/dashboard');
+            this.router.navigateByUrl('/home/dashboard');
         } else {
-        console.log(this.userData);
-        if (this.userData.firstName !== null) {
-            this.parentModel.displayName = this.userData.firstName;
-        } else {
-            this.parentModel.displayName = this.userData.emailId;
-        }
-        if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-            this.userProfileImage = this.userData.profileImagePath;
-            this.parentModel.profilePicutrePath = this.userData.profileImagePath;
-        }
+            console.log(this.userData);
+            if (this.userData.firstName !== null) {
+                this.parentModel.displayName = this.userData.firstName;
+            } else {
+                this.parentModel.displayName = this.userData.emailId;
+            }
+            if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
+                this.userProfileImage = this.userData.profileImagePath;
+                this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+            }
         }
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 100 * 1024 * 1024, // 100 MB
-            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" +this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
+            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
         });
 
 
@@ -145,35 +145,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         }
     }
-    videojsCall(){
-       if(!this.videoJSplayer){
-        const self = this;
-        this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
-            { "controls": true, "autoplay": false, "preload": "auto" },
-            function () {
-                this.ready(function () {
-                    $('.vjs-big-play-button').css('display', 'block');
-                    self.isPlayed = false;
+    videojsCall() {
+        if (!this.videoJSplayer) {
+            const self = this;
+            this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
+                { "controls": true, "autoplay": false, "preload": "auto" },
+                function () {
+                    this.ready(function () {
+                        $('.vjs-big-play-button').css('display', 'block');
+                        self.isPlayed = false;
+                    });
+                    this.on('play', function () {
+                        self.isPlayed = true;
+                        $('.vjs-big-play-button').css('display', 'none');
+                    });
+                    this.on('pause', function () {
+                        self.isPlayed = true;
+                        $('.vjs-big-play-button').css('display', 'none');
+                    });
                 });
-                this.on('play', function () {
-                     self.isPlayed  = true;
-                     $('.vjs-big-play-button').css('display', 'none');
-                });
-                this.on('pause', function () {
-                     self.isPlayed  = true;
-                     $('.vjs-big-play-button').css('display', 'none');
-                });
-            });
-             this.defaultVideoSettings();
+            this.defaultVideoSettings();
             this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
             if (this.refService.defaultPlayerSettings.enableVideoController === false) {
-            this.defaultVideoControllers();
-        }
-       } else { this.logger.log('you already initialized the videojs');}
+                this.defaultVideoControllers();
+            }
+        } else { this.logger.log('you already initialized the videojs'); }
     }
     ngOnInit() {
         try {
-       //    $("#defaultPlayerSettings").hide();
+            //    $("#defaultPlayerSettings").hide();
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -189,25 +189,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (err) { }
     }
     ngAfterViewInit() {
-        // const self = this;
         $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="profile-video"/>');
         this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
-        // this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
-        //     { "controls": true, "autoplay": false, "preload": "auto" },
-        //     function () {
-        //         this.ready(function () {
-        //             $('.vjs-big-play-button').css('display', 'block');
-        //             self.isPlayed = false;
-        //         });
-        //         this.on('play', function () {
-        //              self.isPlayed  = true;
-        //              $('.vjs-big-play-button').css('display', 'none');
-        //         });
-        //         this.on('pause', function () {
-        //              self.isPlayed  = true;
-        //              $('.vjs-big-play-button').css('display', 'none');
-        //         });
-        //     });
         this.defaultVideoSettings();
         this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
         if (this.refService.defaultPlayerSettings.enableVideoController === false) {
@@ -222,7 +205,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
-            'userId':this.loggedInUserId
+            'userId': this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword == this.updatePasswordForm.value.newPassword) {
             $('#update-password-error-div').show(600);
@@ -270,7 +253,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     checkPassword(event: any) {
         var password = event.target.value;
         if (password != "") {
-            var user = { 'oldPassword': password, 'userId':this.loggedInUserId };
+            var user = { 'oldPassword': password, 'userId': this.loggedInUserId };
             this.userService.comparePassword(user)
                 .subscribe(
                 data => {
@@ -358,42 +341,42 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         'firstName': {
             'required': 'First Name required.',
-            'whitespace':'Invalid Data',
+            'whitespace': 'Invalid Data',
             'minlength': 'First Name must be at least 3 characters long.',
             'maxlength': 'First Name cannot be more than 50 characters long.',
-            'pattern':'Invalid Name'
+            'pattern': 'Invalid Name'
         },
         'lastName': {
             'required': 'Last Name required.',
-            'whitespace':'Invalid Data',
+            'whitespace': 'Invalid Data',
             'minlength': 'Last Name must be at least 3 characters long.',
             'maxlength': 'Last Name cannot be more than 50 characters long.',
-            'pattern':'Invalid Name'
+            'pattern': 'Invalid Name'
         },
         'mobileNumber': {
             'required': 'Mobile Number required.',
             'minlength': 'Mobile should be 10 digit.',
             'maxlength': 'Mobile should be 10 digit.',
-            'pattern':'Mobile Number Only Should Be Numbers'
-            
+            'pattern': 'Mobile Number Only Should Be Numbers'
+
         },
         'interests': {
             'required': 'Interests required.',
-            'whitespace':'Invalid Data',
+            'whitespace': 'Invalid Data',
             'minlength': 'interest be at least 3 characters long.',
             'maxlength': 'interest cannot be more than 50 characters long.',
-            'pattern':'Only Characters Allowed'
+            'pattern': 'Only Characters Allowed'
         },
         'occupation': {
             'required': 'Occupation required.',
-            'whitespace':'Invalid Data',
+            'whitespace': 'Invalid Data',
             'minlength': 'occupation be at least 3 characters long.',
             'maxlength': 'occupation cannot be more than 50 characters long.',
-            'pattern':'Only Characters Allowed'
+            'pattern': 'Only Characters Allowed'
         },
         'description': {
             'required': 'About required.',
-            'whitespace':'Invalid Data',
+            'whitespace': 'Invalid Data',
             'minlength': 'description be at least 3 characters long.',
             'maxlength': 'description cannot be more than 50 characters long.'
         },
@@ -408,18 +391,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     /*******************Update User Profile*************************************/
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
-        var urlPatternRegEx =/(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+        var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
         var mobileNumberPatternRegEx = /^[0-9]{10,10}$/;
-       // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
+        // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
         var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
         console.log(this.userData);
         this.updateUserProfileForm = this.fb.group({
-            'firstName': [this.userData.firstName,Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],//Validators.pattern(nameRegEx)
-            'lastName': [this.userData.lastName, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],//Validators.pattern(nameRegEx)
-            'mobileNumber': [this.userData.mobileNumber,Validators.compose([Validators.required,Validators.minLength( 10 ),Validators.maxLength( 10 ),Validators.pattern(mobileNumberPatternRegEx)])],
-            'interests': [this.userData.interests, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
-            'occupation': [this.userData.occupation, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
-            'description': [this.userData.description, Validators.compose([Validators.required,noWhiteSpaceValidator,Validators.maxLength( 50 )])],
+            'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+            'interests': [this.userData.interests, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'occupation': [this.userData.occupation, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'description': [this.userData.description, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.required, Validators.pattern(urlPatternRegEx)]],
 
         });
@@ -513,7 +496,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.active = true;
                     const response = JSON.parse(body);
                     console.log(response);
-                  //  this.defaultPlayerSuccess = true;
+                    //  this.defaultPlayerSuccess = true;
                     this.refService.defaultPlayerSettings = response;
                     this.defaultVideoPlayer = response;
                     this.compControllerColor = response.controllerColor;
@@ -531,7 +514,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isPlayed === false) {
             this.videoJSplayer.play();
             this.videoJSplayer.pause();
-          }
+        }
         this.defaultVideoPlayer.enableVideoController = event;
         if (event === true) {
             $('.video-js .vjs-control-bar').show();
@@ -545,38 +528,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     changeControllerColor(event: any) {
         this.defaultVideoPlayer.controllerColor = event;
         this.compControllerColor = event;
-        $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.defaultVideoPlayer.controllerColor+'!important');
+        const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     changePlayerColor(event: any) {
         this.defaultVideoPlayer.playerColor = event;
         this.compPlayerColor = event;
-        $('.video-js').css('color', this.defaultVideoPlayer.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.defaultVideoPlayer.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.defaultVideoPlayer.playerColor);
+        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
     }
     transperancyControllBar(value: any) {
         this.valueRange = value;
-        let color: any = this.defaultVideoPlayer.controllerColor;
-       if (color.includes('rgba')) {
-          color = this.videoUtilService.convertRgbToHex(this.defaultVideoPlayer.controllerColor);
-       }
-        this.defaultVideoPlayer.transparency = value;
-        if (this.defaultVideoPlayer.controllerColor === '#fff') {
-            color = '#fbfbfb';
-        } else if (this.defaultVideoPlayer.controllerColor === '#ccc') {
-            color = '#cccddd';
-        }
-        const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        $('.video-js .vjs-control-bar').css('cssText','background-color:'+ rgba+'!important');
-        console.log(this.valueRange);
+        const color: any = this.defaultVideoPlayer.controllerColor;
+        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     defaulttransperancyControllBar(value: any) {
-        let color: any;
-        if (this.refService.defaultPlayerSettings.controllerColor === '#fff') {
-            color = '#fbfbfb';
-        } else { color = this.refService.defaultPlayerSettings.controllerColor; }
-        const rgba = this.videoUtilService.convertHexToRgba(color, value);
-        $('.video-js .vjs-control-bar').css('cssText','background-color:'+rgba+'!important');
+        const color: any = this.refService.defaultPlayerSettings.controllerColor;
+        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     allowLikes(event: any) {
         this.defaultVideoPlayer.allowLikes = event;
@@ -594,10 +569,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.allowSharing = event;
     }
     enableEmbed(event: any) {
-       this.defaultVideoPlayer.allowEmbed = event;
+        this.defaultVideoPlayer.allowEmbed = event;
     }
     enable360Video(event: any) {
-       this.defaultVideoPlayer.is360video = event;
+        this.defaultVideoPlayer.is360video = event;
     }
     changeFullscreen(event: any) {
         this.defaultVideoPlayer.allowFullscreen = event;
@@ -612,34 +587,34 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('background-color', this.refService.defaultPlayerSettings.playerColor);
         if (this.refService.defaultPlayerSettings.controllerColor === '#fff') {
             const event = '#fbfbfb';
-            $('.video-js .vjs-control-bar').css('cssText','background-color:'+ event+'!important');
-        } else { $('.video-js .vjs-control-bar').css('cssText','background-color:'+this.refService.defaultPlayerSettings.controllerColor+'!important'); }
+            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
+        } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.refService.defaultPlayerSettings.controllerColor + '!important'); }
         if (this.refService.defaultPlayerSettings.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     UpdatePlayerSettingsValues() {
-     //   $("#defaultPlayerSettings").hide();
+        //   $("#defaultPlayerSettings").hide();
         this.defaultPlayerSuccess = false;
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
         this.updatePlayerBusy = this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
-              //  this.defaultPlayerSuccess = true;
+                //  this.defaultPlayerSuccess = true;
                 const selfCheck = this;
                 setTimeout(function () {
-                   selfCheck.defaultPlayerSuccess = true;
-                 }, 1003);
+                    selfCheck.defaultPlayerSuccess = true;
+                }, 1003);
                 this.getVideoDefaultSettings();
-              }
-          );
-       // this.defaultPlayerSuccess = true;
-       const self = this;
-       setTimeout(function () {
-                 $('#defaultPlayerSettings').slideUp(500);
-                 self.defaultPlayerSuccess = false;
-                }, 5000);
+            }
+            );
+        // this.defaultPlayerSuccess = true;
+        const self = this;
+        setTimeout(function () {
+            $('#defaultPlayerSettings').slideUp(500);
+            self.defaultPlayerSuccess = false;
+        }, 5000);
     }
     defaultPlayerbuildForm() {
         this.defaultPlayerForm = this.fb.group({
@@ -675,8 +650,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     ngOnDestroy() {
-        if(this.isPlayed === true) { 
-        this.videoJSplayer.dispose(); }
+        if (this.isPlayed === true) {
+            this.videoJSplayer.dispose();
+        }
         $('.profile-video').remove();
     }
 }
