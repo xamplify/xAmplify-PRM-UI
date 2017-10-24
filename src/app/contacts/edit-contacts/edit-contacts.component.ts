@@ -65,6 +65,7 @@ export class EditContactsComponent implements OnInit {
     isShowUsers: boolean = true;
     public users: Array<User>;
     response: CustomeResponse = new CustomeResponse();
+    
  
     dublicateEmailId: boolean = false;
     noOfContactsDropdown : boolean = true;
@@ -1142,7 +1143,6 @@ export class EditContactsComponent implements OnInit {
    addContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
-       //$( '#addContactModal' ).modal( 'hide' );
    }
    validateEmail(emailId: string){
        if(this.validateEmailAddress( emailId )){
@@ -1217,6 +1217,13 @@ export class EditContactsComponent implements OnInit {
        else {
            this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
        }
+   }
+   
+   toggle(i: number){
+       $('#more_'+i).toggle();
+       //alert($('#more_'+i).attr('class'));
+       $('#more_'+i).toggleClass('hidden').toggleClass('show');
+
    }
    
     ngOnInit() {

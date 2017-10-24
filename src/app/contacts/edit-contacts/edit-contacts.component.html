@@ -404,27 +404,116 @@ a.disabled {
 					<div class="clearfix">
 					<div class="col-xs-12">
 					<div class="table-responsive">
-						<form #f="ngForm" style="background-color: white">
+						<table class='table table-striped table-hover table-bordered' *ngIf="(contacts?.length > 0) && isShowUsers">
+							<tbody>
+								<tr>
+								   <td align="center"><input type="checkbox" [name]="all"
+											[(ngModel)]="isHeaderCheckBoxChecked"
+											(change)="checkAll($event)" [id]="checkAllExistingContacts"/>
+									</td>
+									<td>EMAILID</td>
+									<td>FIRST NAME</td>
+									<td>LAST NAME</td>
+									<td>MORE</td>
+									<td>DELETE</td>
+								</tr>
+								<ng-container *ngFor="let contact of pagination.pagedItems;let i = index">
+									<tr class='row_{{i}}'>
+											<td align="center"
+											*ngIf="isAdd || !isCampaignDraftContactList "><input
+											type="checkbox"
+											[checked]="selectedContactListIds.indexOf(contact.id)>-1"
+											class="chk"
+											[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+											lang="{{contact.name}}" name="campaignContact[]"
+											value="{{contact.id}}" id="{{contact.id}}"
+											(click)="highlightRow(contact.id,$event)" />
+										</td>
+										<td>{{contact.emailId}}</td>
+										<td>{{contact.firstName}}</td>
+										<td>{{contact.lastName}}</td>
+										<td><button (click)="toggle(i)">More</button></td>
+										<td *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)"><button class="delete" (click)="deleteUserShowAlert(contact.id)">
+												Delete </button></td>
+									</tr>
+									<ng-container *ngIf="selectedAddContactsOption == 0">
+									<tr *ngFor="let newContact of users; let i = index"
+										class="new_row">
+										<td align="center"><input type="checkbox" checked="newContact.checked"></td>
+										<td>
+										    <input type=Text
+											[(ngModel)]="newContact.emailId" class="form-control"
+											[ngModelOptions]="{standalone: true}"
+											#emailId="ngModel">
+										</td>
+										<td><input type=Text [(ngModel)]="newContact.firstName"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											maxlength="32"></td>
+										<td><input type=Text [(ngModel)]="newContact.lastName"
+											class="form-control" [ngModelOptions]="{standalone: true}"
+											maxlength="32"></td>
+											<td>-</td>
+										<td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td>
+									</tr>
+									</ng-container>
+										<tr id='more_{{i}}' class="hidden">
+											<td>
+											<table>
+													<tbody>
+														<tr>
+															<td>Mobile No:</td>
+															<td>9989735289</td>
+														</tr>
+														<tr>
+															<td>Company:</td>
+															<td>strartapps</td>
+														</tr>
+														<tr>
+															<td>Job title:</td>
+															<td>software engineer</td>
+														</tr>
+														<tr>
+															<td>Address:</td>
+															<td>hyderabad,telangana,india</td>
+														</tr>
+														<tr>
+															<td>Notes:</td>
+															<td>software solutions</td>
+														</tr>
+													</tbody>
+												</table></td>
+										</tr>
+										</ng-container>
+								
+							</tbody>
+						</table>
+						
+						
+						<!-- <form #f="ngForm" style="background-color: white">
 							<table class="table table-striped table-hover table-bordered" *ngIf="(contacts?.length > 0) && isShowUsers">
 								<thead>
 									<tr>
-										<!-- <th><input type="checkbox" [checked]="isAvailable"
+										<th><input type="checkbox" [checked]="isAvailable"
 										(change)="checked($event.target.checked)"></th>
-									<th>USERNAME</th> -->
-										<td align="center"><input type="checkbox" name="all"
+									<th>USERNAME</th>
+										<td align="center"><input type="checkbox" [name]="all"
 											[(ngModel)]="isHeaderCheckBoxChecked"
-											(change)="checkAll($event)" class=""
-											id="checkAllExistingContacts" /></td>
+											(change)="checkAll($event)" [id]="checkAllExistingContacts"/></td>
 										<th>EMAILID</th>
 										<th>FIRSTNAME</th>
 										<th>LASTNAME</th>
 										<th>MOBILE NUMBER</th>
+										<th>COMPANY</th>
+										<th>JOB TITLE</th>
+										<th>ADDRESS</th>
+										<th>NOTES</th>
 										<th *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">DELETE</th>
+									<th> <a>MORE</a> </th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let contact of pagination.pagedItems;let i = index"
-										id="row_{{contact.id}}">
+									<tr *ngFor="let contact of pagination.pagedItems;let i = index" id="row_{{contact.id}}">
 										<td align="center"
 											*ngIf="isAdd || !isCampaignDraftContactList "><input
 											type="checkbox"
@@ -433,17 +522,25 @@ a.disabled {
 											[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
 											lang="{{contact.name}}" name="campaignContact[]"
 											value="{{contact.id}}" id="{{contact.id}}"
-											(click)="highlightRow(contact.id,$event)" /></td>
-
+											(click)="highlightRow(contact.id,$event)" />
+										</td>
 										<td>{{contact.emailId}}</td>
 										<td>{{contact.firstName}}</td>
 										<td class="center">{{contact.lastName}}</td>
-										<td class="center">{{contact.mobileNumber}}</td>
-										<!-- <td><a class="edit" href="javascript:;"> Edit </a></td> -->
+										<td class="center">{{contact.mobileNumber}}9999999999</td>
+										
 										<td *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)"><a class="delete" (click)="deleteUserShowAlert(contact.id)">
 												Delete </a></td>
-
+									    <td><a>more</a></td>
 									</tr>
+									<tr id="details_{{contact.id}}">
+										<td>{{contact.company}}company </td>
+										<td>{{contact.title}} software engineer com team leader</td>
+										<td>{{contact.address}} kphb hyderabad telangana indial asia peddampet</td>
+										<td>{{contact.discription}}hello this is naresh kotha at xtremand in kphb and strartapps in gachibouli</td>
+									</tr>
+									
+									<tr>more</tr>
 									<ng-container *ngIf="selectedAddContactsOption == 0">
 									<tr *ngFor="let newContact of users; let i = index"
 										class="new_row">
@@ -460,14 +557,14 @@ a.disabled {
 										</td>
 										<td><input type=Text [(ngModel)]="newContact.firstName"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"> <!-- <div
+											maxlength="32"> <div
 										[hidden]="firstName.valid || (firstName.pristine && !f.submitted)"
-										class="alert alert-danger">firstName is required.</div> --></td>
+										class="alert alert-danger">firstName is required.</div></td>
 										<td><input type=Text [(ngModel)]="newContact.lastName"
 											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"> <!-- <div
+											maxlength="32"> <div
 										[hidden]="lastName.valid || (lastName.pristine && !f.submitted)"
-										class="alert alert-danger">lastName is required.</div> --></td>
+										class="alert alert-danger">lastName is required.</div></td>
 										<td><a class="delete" (click)="cancelRow(i)"> Cancel
 										</a></td>
 									</tr>
@@ -475,7 +572,7 @@ a.disabled {
 								</tbody>
 							</table>
 
-						</form>
+						</form> -->
 					</div>
 					</div>
 				</div>
