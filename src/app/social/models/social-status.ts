@@ -1,10 +1,10 @@
-import {SocialStatusContent} from './social-status-content';
-import {SocialStatusProvider} from './social-status-provider';
+import { SocialStatusContent } from './social-status-content';
+import { SocialStatusProvider } from './social-status-provider';
 
-export class SocialStatus{
+export class SocialStatus {
     id: number;
     userId: number;
-    statusMessage: string='';
+    statusMessage: string = '';
     scheduledTimeServer: Date;
     scheduledTimeUser: Date;
     timeZone: string;
@@ -18,11 +18,12 @@ export class SocialStatus{
 
     shareNow: boolean;
     isEnable: boolean;
-    
+
     alias: string;
+    parent: number;
     campaignId: number;
     campaignName: string;
     userListIds: number[] = [];
-    socialCampaign: boolean = false;
-    emailOpened: boolean = false;
+    socialCampaign = false;
+    emailOpened = false;
 }

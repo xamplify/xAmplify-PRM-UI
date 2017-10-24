@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Logger } from 'angular2-logger/core';
-
-import { SaveVideoFile } from "../../../videos/models/save-video-file";
-import { SocialStatus } from "../../models/social-status";
-import { SocialStatusContent } from "../../models/social-status-content";
-import { SocialStatusProvider } from "../../models/social-status-provider";
+import { SaveVideoFile } from '../../../videos/models/save-video-file';
+import { SocialStatus } from '../../models/social-status';
+import { SocialStatusContent } from '../../models/social-status-content';
+import { SocialStatusProvider } from '../../models/social-status-provider';
 import { ContactList } from '../../../contacts/models/contact-list';
 import { Campaign } from '../../../campaigns/models/campaign';
 
@@ -14,11 +13,11 @@ import { ResponseType } from '../../../core/models/response-type';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { PagerService } from '../../../core/services/pager.service';
-import { SocialService } from "../../services/social.service";
-import { TwitterService } from "../../services/twitter.service";
-import { FacebookService } from "../../services/facebook.service";
-import { VideoFileService } from "../.././../videos/services/video-file.service";
-import { ContactService } from "../.././../contacts/services/contact.service";
+import { SocialService } from '../../services/social.service';
+import { TwitterService } from '../../services/twitter.service';
+import { FacebookService } from '../../services/facebook.service';
+import { VideoFileService } from '../.././../videos/services/video-file.service';
+import { ContactService } from '../.././../contacts/services/contact.service';
 
 import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
@@ -31,15 +30,13 @@ declare var $, flatpickr, videojs: any;
     providers: [PagerService, Pagination, CallActionSwitch]
 })
 export class UpdateStatusComponent implements OnInit {
-    @Input('isSocialCampaign') isSocialCampaign: boolean = false;
+    @Input('isSocialCampaign') isSocialCampaign = false;
     @Input('alias') alias: string;
- 
     videoUrl: string;
     posterImage: string;
     videoJSplayer: any;
     selectedVideo: SaveVideoFile;
     userId: number;
-    
     socialStatus = new SocialStatus();
     previewContactList = new ContactList();
     socialStatusList = new Array<SocialStatus>();
@@ -49,23 +46,22 @@ export class UpdateStatusComponent implements OnInit {
     contactsPagination: Pagination = new Pagination();
     videosPagination: Pagination = new Pagination();
 
-    constructor(private socialService: SocialService, private twitterService: TwitterService, 
-            private facebookService: FacebookService, private videoFileService: VideoFileService, 
-            private authenticationService: AuthenticationService, private contactService: ContactService,
-            private pagerService: PagerService, private router: Router, 
-            private logger: Logger, public callActionSwitch: CallActionSwitch) {
-        
+    constructor(private socialService: SocialService, private twitterService: TwitterService,
+        private facebookService: FacebookService, private videoFileService: VideoFileService,
+        private authenticationService: AuthenticationService, private contactService: ContactService,
+        private pagerService: PagerService, private router: Router,
+        private logger: Logger, public callActionSwitch: CallActionSwitch) {
+
         this.resetCustomResponse();
         this.userId = this.authenticationService.getUserId();
         this.socialStatus.userId = this.userId;
     }
-    
-    resetCustomResponse(){
+    resetCustomResponse() {
         this.customResponse.type = null;
         this.customResponse.statusText = null;
     }
-    
-    setCustomResponse(type: ResponseType, statusText: string){
+
+    setCustomResponse(type: ResponseType, statusText: string) {
         this.customResponse.type = type;
         this.customResponse.statusText = statusText;
     }
@@ -74,7 +70,7 @@ export class UpdateStatusComponent implements OnInit {
         this.selectedVideo = videoFile;
         this.posterImage = videoFile.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf("."));
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
 
         this.videoJSplayer.play();
@@ -86,16 +82,15 @@ export class UpdateStatusComponent implements OnInit {
 
     addVideo() {
         console.log(this.socialStatus.socialStatusContents.length);
-        if (this.socialStatus.socialStatusContents.length > 0 && (Array.from(this.socialStatus.socialStatusContents)[0].fileType != "video")) {
-            
+        if (this.socialStatus.socialStatusContents.length > 0 &&
+            (Array.from(this.socialStatus.socialStatusContents)[0].fileType !== 'video')) {
             this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
-        
         } else {
             this.socialStatus.statusMessage = this.selectedVideo.title;
-            let socialStatusContent: SocialStatusContent = new SocialStatusContent();
+            const socialStatusContent: SocialStatusContent = new SocialStatusContent();
             socialStatusContent.id = this.selectedVideo.id;
             socialStatusContent.fileName = this.selectedVideo.title;
-            socialStatusContent.fileType = "video";
+            socialStatusContent.fileType = 'video';
             socialStatusContent.filePath = this.videoUrl;
             this.socialStatus.socialStatusContents.push(socialStatusContent);
         }
@@ -103,11 +98,11 @@ export class UpdateStatusComponent implements OnInit {
     }
 
     removeItem(i: number, socialStatusContent: SocialStatusContent) {
-        console.log(socialStatusContent + "" + i);
+        console.log(socialStatusContent + '' + i);
         this.socialService.removeMedia(socialStatusContent.fileName)
             .subscribe(
             data => {
-                $("#preview-" + i).remove('slow');
+                $('#preview-' + i).remove('slow');
                 this.socialStatus.socialStatusContents.splice(i);
                 this.resetCustomResponse();
             },
@@ -115,7 +110,7 @@ export class UpdateStatusComponent implements OnInit {
             () => console.log('Finished')
             );
     }
-    
+
     validateImageUpload(files: any) {
         this.customResponse.statusArray = [];
         const uploadedFilesCount = files.length;
@@ -123,16 +118,17 @@ export class UpdateStatusComponent implements OnInit {
         if ((uploadedFilesCount + existingFilesCount) > 4) {
             this.setCustomResponse(ResponseType.Warning, 'You can upload maximum 4 images.');
             return false;
-        } else if ((this.socialStatus.socialStatusContents.length === 1) && 
-                    (Array.from(this.socialStatus.socialStatusContents)[0].fileType === 'video')) {
+        } else if ((this.socialStatus.socialStatusContents.length === 1) &&
+            (Array.from(this.socialStatus.socialStatusContents)[0].fileType === 'video')) {
             this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a Tweet.');
             return false;
         } else {
-            for (let file of files) {
+            for (const file of files) {
                 if (file.size > 3145728) {
                     // File size should not be more than 3 MB
                     this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
-                    this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
+                    this.customResponse.statusArray.push(
+                        'The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
                     return false;
                 }
                 console.log(file.name + ': ' + file.size);
@@ -145,14 +141,14 @@ export class UpdateStatusComponent implements OnInit {
         if (this.validateImageUpload(files)) {
             if (files.length > 0) {
                 const formData: FormData = new FormData();
-                for (let file of files) {
+                for (const file of files) {
                     formData.append('files', file, file.name);
                 }
 
                 this.socialService.uploadMedia(formData)
                     .subscribe(
                     data => {
-                        for (let i in data) {
+                        for (const i in data) {
                             const socialStatusContent = data[i];
                             this.socialStatus.socialStatusContents.push(socialStatusContent);
                         }
@@ -162,7 +158,7 @@ export class UpdateStatusComponent implements OnInit {
                     () => console.log('Finished')
                     );
             }
-        }else{
+        } else {
             // alert('error');
         }
 
@@ -175,78 +171,79 @@ export class UpdateStatusComponent implements OnInit {
 
         this.updateStatus();
     }
-    
+
     validate() {
         return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
     }
-    
-    countSelectedSocialAccounts(){
-        return this.socialStatus.socialStatusProviders.filter((x,i) => { return x.selected; }).length;
+
+    countSelectedSocialAccounts() {
+        return this.socialStatus.socialStatusProviders.filter((x, i) => { return x.selected; }).length;
     }
-    
-    isSocialAccountsSelected(){
-        if(this.countSelectedSocialAccounts() < 1){
+
+    isSocialAccountsSelected() {
+        if (this.countSelectedSocialAccounts() < 1) {
             this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
             return false;
-        }else
+        } else {
             return true;
+        }
     }
-    
-    isValidSocialCampaign(){
-        let isValid: boolean = true;
+
+    isValidSocialCampaign() {
+        let isValid = true;
         isValid = this.isSocialAccountsSelected();
-        
-        if(! this.socialStatus.campaignName){
+
+        if (!this.socialStatus.campaignName) {
             isValid = false;
             this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
         }
         return isValid;
     }
-    
-    isValidUpdateStatus(){
+
+    isValidUpdateStatus() {
         return this.isSocialAccountsSelected();
     }
 
-    createSocialCampaign(){
+    createSocialCampaign() {
         this.resetCustomResponse();
         this.socialStatus.socialCampaign = this.isSocialCampaign;
         $('html, body').animate({
-            scrollTop: $("#us-right").offset().top
+            scrollTop: $('#us-right').offset().top
         }, 500);
-        if(this.validate()){
+        if (this.validate()) {
             this.setCustomResponse(ResponseType.Loading, 'Creating Social Campaign');
             this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
-            
+
             this.socialStatus.userId = this.userId;
-            
+
             this.socialService.updateStatus(this.socialStatus)
-            .subscribe(
-            data => {
-                this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
-                this.socialStatus.campaignName = null;
-            },
-            error => {
-                this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-                this.customResponse.statusArray = [];
-                this.customResponse.statusArray.push(error);
-            },
-            () => {
-                this.initializeSocialStatus();
-                this.socialStatus.userListIds = [];
-            }
-            ); 
+                .subscribe(
+                data => {
+                    this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
+                    this.socialStatus.campaignName = null;
+                },
+                error => {
+                    this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+                    this.customResponse.statusArray = [];
+                    this.customResponse.statusArray.push(error);
+                },
+                () => {
+                    this.initializeSocialStatus();
+                    this.socialStatus.userListIds = [];
+                }
+                );
         }
     }
-    
-    filterSelectedSocialProviders(socialStatusProviders: Array<SocialStatusProvider>){
+
+    filterSelectedSocialProviders(socialStatusProviders: Array<SocialStatusProvider>) {
         socialStatusProviders = socialStatusProviders.filter(function (obj) {
             return obj.selected === true;
         });
         return socialStatusProviders;
     }
-    
+
     updateStatus() {
-        if(this.validate()){
+        if (this.validate()) {
             this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
             this.setCustomResponse(ResponseType.Loading, 'Updating Status');
             this.socialService.updateStatus(this.socialStatus)
@@ -262,7 +259,7 @@ export class UpdateStatusComponent implements OnInit {
                     this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
                 },
                 () => console.log('Finished')
-                );            
+                );
         }
     }
 
@@ -276,7 +273,7 @@ export class UpdateStatusComponent implements OnInit {
         this.socialService.deleteStatus(socialStatus)
             .subscribe(
             data => {
-                this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.')
+                this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.');
                 $('#full-calendar').fullCalendar('removeEvents');
                 this.listEvents();
                 this.initializeSocialStatus();
@@ -285,7 +282,7 @@ export class UpdateStatusComponent implements OnInit {
             () => console.log('Finished')
             );
     }
-    
+
     initializeSocialStatus() {
         this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
         this.socialStatus.id = null;
@@ -320,26 +317,27 @@ export class UpdateStatusComponent implements OnInit {
     }
     openListVideosModal() {
         $('#listVideosModal').modal('show');
-        if (this.videosPagination.pagedItems.length == 0) {
+        if (this.videosPagination.pagedItems.length === 0) {
             $('#preview-section').hide();
             this.listVideos(this.videosPagination);
         }
     }
-    
-    closeListVideosModal(){
+
+    closeListVideosModal() {
         $('#listVideosModal').modal('hide');
         this.videoJSplayer.pause();
         this.videoJSplayer.currentTime(0);
     }
-    
+
     editSocialStatus(socialStatus: SocialStatus) {
         this.resetCustomResponse();
         $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.initializeSocialStatus();
         this.socialStatus = socialStatus;
-        for(let i in this.socialStatus.socialStatusProviders)
-            this.socialStatus.socialStatusProviders[i].selected = true;  
+        for (let i in this.socialStatus.socialStatusProviders){
+            this.socialStatus.socialStatusProviders[i].selected = true;
+        }
     }
 
     showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); }
@@ -350,20 +348,20 @@ export class UpdateStatusComponent implements OnInit {
         const self = this;
         this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
     }
-    
+
     /*****************LOAD VIDEOS WITH PAGINATION START *****************/
-    
+
     listVideos(videosPagination: Pagination) {
         this.videoFileService.loadVideoFiles(videosPagination)
             .subscribe((result: any) => {
                 if (result.totalRecords > 0) {
-                    $("#preview-section").show();
+                    $('#preview-section').show();
                     videosPagination.totalRecords = result.totalRecords;
                     videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
 
 
                     $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript"  class="profile-video"/>');
-                    this.videoJSplayer = videojs("videojs-video");
+                    this.videoJSplayer = videojs('videojs-video');
                     this.previewVideo(videosPagination.pagedItems[0]);
                 }
             }),
@@ -376,66 +374,66 @@ export class UpdateStatusComponent implements OnInit {
             this.listVideos(this.videosPagination);
         }
     }
-    
+
     /*****************LOAD VIDEOS WITH PAGINATION END *****************/
-    
-    
+
+
     /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
-    
+
     loadContactLists(contactListsPagination: Pagination) {
         this.contactService.loadContactLists(contactListsPagination)
             .subscribe(
-                (data: any) => {
-                    contactListsPagination.totalRecords = data.totalRecords;
-                    contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
-                },
-                (error: any) => {
-                    this.logger.error(error);
-                },
-                () => this.logger.info("MangeContactsComponent loadContactLists() finished")
-            )
+              (data: any) => {
+                  contactListsPagination.totalRecords = data.totalRecords;
+                  contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+              },
+              (error: any) => {
+                  this.logger.error(error);
+              },
+              () => this.logger.info('MangeContactsComponent loadContactLists() finished')
+            );
     }
-    
-    setPageContactLists(page: number){
+
+    setPageContactLists(page: number) {
         if (page !== this.contactListsPagination.pageIndex) {
             this.contactListsPagination.pageIndex = page;
             this.loadContactLists(this.contactListsPagination);
         }
     }
     /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
-    
-    
+
+
     /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION START *****************/
-    loadContactsOnPreview( contactList: ContactList, pagination: Pagination){
+    loadContactsOnPreview(contactList: ContactList, pagination: Pagination) {
         pagination.pageIndex = 1;
         this.loadContacts(contactList, pagination);
     }
-    
-    loadContacts( contactList: ContactList, pagination: Pagination) {
+
+    loadContacts(contactList: ContactList, pagination: Pagination) {
         this.previewContactList = contactList;
-        this.contactService.loadUsersOfContactList( this.previewContactList.id, pagination ).subscribe(
-            ( data: any ) => {
+        this.contactService.loadUsersOfContactList(this.previewContactList.id, pagination).subscribe(
+            (data: any) => {
                 pagination.totalRecords = data.totalRecords;
-                this.contactsPagination = this.pagerService.getPagedItems( pagination, data.listOfUsers );
-                $( '#contactsModal' ).modal('show');
+                this.contactsPagination = this.pagerService.getPagedItems(pagination, data.listOfUsers);
+                $('#contactsModal').modal('show');
             },
             error =>
-                () => console.log( "loadContacts() finished" )
-        )
-   }
-    
-    setPageContacts(page: number){
+                () => console.log('loadContacts() finished')
+        );
+    }
+
+    setPageContacts(page: number) {
         if (page !== this.contactsPagination.pageIndex) {
             this.contactsPagination.pageIndex = page;
             this.loadContacts(this.previewContactList, this.contactsPagination);
         }
     }
-    
+
     /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
 
     constructCalendar() {
-        let self = this;
-        $( '#full-calendar' ).fullCalendar( {
+        const self = this;
+        $('#full-calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
                 center: 'title',
@@ -447,19 +445,19 @@ export class UpdateStatusComponent implements OnInit {
             },
             defaultView: 'month',
             timeFormat: 'h:mm',
-            eventRender: function( event: any, element: any ) {
-                element.find( ".fc-time" ).addClass( 'fc-time-title' );
-                element.find( ".fc-title" ).addClass( 'fc-time-title' );
-                element.find( '.fc-time-title' ).wrapAll( '<div class="fc-right-block col-xs-9 pull-right p0"></div>' );
-                element.find( ".fc-time" ).css( { "display": "block" });
+            eventRender: function (event: any, element: any) {
+                element.find('.fc-time').addClass('fc-time-title');
+                element.find('.fc-title').addClass('fc-time-title');
+                element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-9 pull-right p0"></div>');
+                element.find('.fc-time').css({ "display": "block" });
 
                 let socialStatusProviders = event.data.socialStatusProviders;
                 let str = '';
-                for ( var i in socialStatusProviders ) {
-                    
+                for (var i in socialStatusProviders) {
+
                     str += `<img class="img-responsive img-circle" style="height: auto; width: 100%;" src="${socialStatusProviders[i].socialConnection.profileImage}">`;
-                    
-                    if('FACEBOOK' === socialStatusProviders[i].socialConnection.source)
+
+                    if ('FACEBOOK' === socialStatusProviders[i].socialConnection.source)
                         str += '<i class="fa fa-social pull-right fa-facebook fa-facebook-color"></i>';
                     else if ('TWITTER' === socialStatusProviders[i].socialConnection.source)
                         str += '<i class="fa fa-social pull-right fa-twitter fa-twitter-color"></i>';
@@ -469,88 +467,89 @@ export class UpdateStatusComponent implements OnInit {
                 element.find( ".fc-right-block" )
                     .after( $( "<div id='" + event.id + "' class='fc-left-block col-xs-3 p0'>" + str + "</div>" ) );
             },
-            eventClick: function( event: any, element: any ) {
-                $( '#full-calendar-modal-event-' + event.id ).modal( 'show' );
+            eventClick: function (event: any, element: any) {
+                $('#full-calendar-modal-event-' + event.id).modal('show');
             },
         });
     }
 
     listEvents() {
         let self = this;
-        this.socialService.listEvents( this.userId )
+        this.socialService.listEvents(this.userId)
             .subscribe(
             data => {
                 this.socialStatusList = data;
-                for ( var i in this.socialStatusList ) {
+                for (var i in this.socialStatusList) {
                     var event = {
                         title: this.socialStatusList[i].statusMessage,
                         start: this.socialStatusList[i].scheduledTimeUser,
                         id: this.socialStatusList[i].id,
                         data: this.socialStatusList[i],
                     };
-                    $( '#full-calendar' ).fullCalendar( 'renderEvent', event, true );
+                    $('#full-calendar').fullCalendar('renderEvent', event, true);
                 }
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => {
-                flatpickr( '.flatpickr', {
+                flatpickr('.flatpickr', {
                     enableTime: true,
                     minDate: new Date()
                 });
-                console.log( "listEvents() finished" )
+                console.log('listEvents() finished');
             }
             );
     }
-    
-    highlightRow( contactListId:number ){
-        let isChecked = $('#'+contactListId).is(':checked');
-        if(isChecked){
-            if(!this.socialStatus.userListIds.includes(contactListId))
+
+    highlightRow(contactListId: number) {
+        let isChecked = $('#' + contactListId).is(':checked');
+        if (isChecked) {
+            if (!this.socialStatus.userListIds.includes(contactListId))
                 this.socialStatus.userListIds.push(contactListId);
-            $('#'+contactListId).parent().closest('tr').addClass('highlight');
-        }else{
-            this.socialStatus.userListIds.splice($.inArray(contactListId, this.socialStatus.userListIds),1);
-            $('#'+contactListId).parent().closest('tr').removeClass('highlight');
+            $('#' + contactListId).parent().closest('tr').addClass('highlight');
+        } else {
+            this.socialStatus.userListIds.splice($.inArray(contactListId, this.socialStatus.userListIds), 1);
+            $('#' + contactListId).parent().closest('tr').removeClass('highlight');
         }
     }
-    
-    toggleContactListCheckbox( contactListId:number ){
-        let isChecked = $('#'+contactListId).is(':checked');
-        $('#'+contactListId).prop('checked', isChecked);
+
+    toggleContactListCheckbox(contactListId: number) {
+        const isChecked = $('#' + contactListId).is(':checked');
+        $('#' + contactListId).prop('checked', isChecked);
         this.highlightRow(contactListId);
     }
-    
-    getSocialCampaign(socialCampaignAlias: string){
 
+    getSocialCampaign(socialCampaignAlias: string) {
         this.socialService.getSocialCampaign(socialCampaignAlias)
             .subscribe(
             data => {
                 this.socialStatus = data;
+              this.socialStatus.shareNow = true;
             },
-            error => this.router.navigate( ['/home/error/404'] ),
-            () => {}
+            error => this.router.navigate(['/home/error/404']),
+            () => {
+             this.listSocialStatusProviders();
+            }
             );
-    
     }
-    
+
     ngOnInit() {
         this.listSocialConnections();
         this.listEvents();
         this.constructCalendar();
-        $("#schedule-later-div").hide();
-        
-        if (this.isSocialCampaign)
+        $('#schedule-later-div').hide();
+
+        if (this.isSocialCampaign) {
             this.loadContactLists(this.contactListsPagination);
-        
-        if(this.isSocialCampaign && this.alias){
+        }
+        if (this.isSocialCampaign && this.alias) {
             this.getSocialCampaign(this.alias);
-            this.listSocialStatusProviders();
         }
     }
 
     ngOnDestroy() {
-        if (this.videoJSplayer != undefined)
+        if (this.videoJSplayer != undefined) {
             this.videoJSplayer.dispose();
+        }
         $('.profile-video').remove();
     }
 }

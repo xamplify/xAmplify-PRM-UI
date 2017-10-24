@@ -1,4 +1,4 @@
- <style type="text/css">
+<style type="text/css">
   a.disabled { pointer-events: none; cursor: not-allowed; }
 </style> 
 <div class="page-content">
@@ -130,9 +130,15 @@
 					</section>
 					<section *ngIf="isSocialCampaign && alias">
 						<h4>{{socialStatus.statusMessage}}</h4>
+						<div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
+                        <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
+                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+							<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+						</video>
+                    	</div>
 					</section>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-12" [hidden]="isSocialCampaign && alias">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
                         <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
                         <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
