@@ -316,7 +316,7 @@
 												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
 												<div>
 													<span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
-													<img *ngIf="imageUrlPath" [src]=i mageUrlPath style="height: 71px; width: 98px">
+													<img *ngIf="imageUrlPath" [src]=imageUrlPath style="height: 71px; width: 98px">
 												</div>
 												<div *ngIf="ownThumbnail" class="alert alert-danger" style="margin-top: -7px;height: 38px;">
 													<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
