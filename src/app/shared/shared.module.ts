@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { UiSwitchModule } from 'ngx-ui-switch/src';
+import { UiSwitchModule } from 'ngx-ui-switch';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TagInputModule } from 'ngx-chips';
 import { HttpModule } from '@angular/http';
