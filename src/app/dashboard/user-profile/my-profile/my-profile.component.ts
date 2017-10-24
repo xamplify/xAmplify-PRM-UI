@@ -24,6 +24,7 @@ declare var swal, $, Metronic, Layout, Demo, videojs: any;
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
+    tempDefaultVideoPlayerSettings: any;
     videoJSplayer: any;
     videoUrl: string;
     updatePasswordForm: FormGroup;
@@ -47,10 +48,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultPlayerSuccess = false;
     isPlayed = false;
     loggedInUserId: number = 0;
+    tempPlayerColor: string;
+    tempControllerColor: string;
+    isAllowComments: boolean;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
+        this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
+        console.log(this.videoUtilService.videoTempDefaultSettings)
+      //  this.isAllowComments = this.refService.defaultPlayerSettings.allowComments;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
@@ -498,10 +505,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.log(response);
                     //  this.defaultPlayerSuccess = true;
                     this.refService.defaultPlayerSettings = response;
+                    this.tempDefaultVideoPlayerSettings = response;
                     this.defaultVideoPlayer = response;
                     this.compControllerColor = response.controllerColor;
                     this.compPlayerColor = response.playerColor;
                     this.valueRange = response.transparency;
+                    this.tempControllerColor = response.controllerColor;
+                    this.tempPlayerColor = response.playerColor;
                     this.defaultPlayerbuildForm();
                 }
             }
@@ -615,6 +625,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('#defaultPlayerSettings').slideUp(500);
             self.defaultPlayerSuccess = false;
         }, 5000);
+    }
+    resetForm() {
+        console.log(this.refService.defaultPlayerSettings);
+        console.log(this.videoUtilService.videoTempDefaultSettings);
+        this.compControllerColor = this.tempControllerColor;
+        this.compPlayerColor = this.tempPlayerColor;
+        this.valueRange = this.refService.defaultPlayerSettings.transparency;
+     //   this.defaultVideoPlayer = this.videoUtilService.videoTempDefaultSettings;
+        this.defaultVideoPlayer.allowFullscreen = this.videoUtilService.videoTempDefaultSettings.allowFullscreen;
+        this.defaultVideoPlayer.allowComments = this.videoUtilService.videoTempDefaultSettings.allowComments;
+        this.defaultVideoPlayer.allowEmbed = this.videoUtilService.videoTempDefaultSettings.allowEmbed;
+        this.defaultVideoPlayer.is360video = this.videoUtilService.videoTempDefaultSettings.is360video;
+        this.defaultVideoPlayer.allowLikes = this.videoUtilService.videoTempDefaultSettings.allowLikes;
+        this.defaultVideoPlayer.allowSharing = this.videoUtilService.videoTempDefaultSettings.allowSharing;
+        this.defaultVideoPlayer.enableCasting = this.videoUtilService.videoTempDefaultSettings.enableCasting;
+        this.defaultVideoPlayer.enableSettings = this.videoUtilService.videoTempDefaultSettings.enableSettings;
+        this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
+        this.changeControllerColor(this.defaultVideoPlayer.controllerColor);
+        this.changePlayerColor(this.defaultVideoPlayer.playerColor);
+        this.transperancyControllBar(this.valueRange);
+        this.enableVideoController(this.defaultVideoPlayer.enableVideoController);
+        this.changeFullscreen(this.defaultVideoPlayer.allowFullscreen);
     }
     defaultPlayerbuildForm() {
         this.defaultPlayerForm = this.fb.group({

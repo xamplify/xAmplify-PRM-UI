@@ -458,7 +458,7 @@
 																<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
 																	<label class="col-xs-3 col-sm-6 col-md-6 " >Enable Video Controller:</label>
 																	<div class="col-xs-9 col-sm-6 col-md-6">
-																		<switch [status]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 																			[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 																			(statusChange)="enableVideoController($event)">
 																		</switch>
@@ -500,14 +500,14 @@
 															<div class="form-group">
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 																<div class="col-xs-6 col-sm-3 col-md-3">
-		                                                           <switch [status]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+		                                                           <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 											                    	 (statusChange)="allowSharing($event)">
 		                                                          </switch> 
 																</div>
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
-															      <switch [status]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															      <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 											                    	(statusChange)="changeFullscreen($event)">
 		                                                          </switch>
@@ -516,14 +516,14 @@
 														<div class="form-group" style="margin-top: 38px;">
 														<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 														<div class="col-xs-6 col-sm-3 col-md-3">
-														     <switch [status]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+														     <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 											                    	(statusChange)="allowLikes($event)">
 		                                                    </switch>
 														</div>
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
-													           <switch [status]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+													           <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 																[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 																(statusChange)="enableEmbed($event)">
 															 </switch>
@@ -535,14 +535,14 @@
 															<div class= "form-group"> 
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 																<div class="col-xs-6 col-sm-3 col-md-3">
-																    <switch [status]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																    <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 											                    	(statusChange)="enableSettings($event)">
 		                                                          </switch>
 																</div>
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
-														          <switch [status]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+														          <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 																	(statusChange)="allowComments($event)">
 																 </switch>
@@ -551,27 +551,26 @@
 															<div class="form-group" style="margin-top: 37px;">
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
-														         <switch [status]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+														         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	[onColor]="callActionSwitch.onYellowColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 																	(statusChange)="enableCasting($event)">
 																</switch>
 															</div>
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 																	<div class="col-xs-6 col-sm-3 col-md-3">
-																	<switch [status]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											                    	  [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 																	  (statusChange)="enable360Video($event)">
 																	</switch>	
 																</div>
 															</div>
-															<div class="form-group">
-															<div class="col-xs-12 col-sm-12 col-md-12" style="float:left">
+														</div>
+														</div>
+													      <div class="col-xs-12 col-sm-12 col-md-12" style="float:left; padding:0;margin-top: 14px;">
 															<button type="submit"  class="btn green-haze">Save Changes</button>
+														    <button type="button" class="btn default" (click)="resetForm()">Cancel</button>
 															</div>
-															</div>	
-														</div>
-														</div>
-														</form>
+													</form>
 												</div>
 											</div>
 										</div>

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SaveVideoFile } from '../models/save-video-file';
+import { DefaultVideoPlayer } from '../models/default-video-player';
 declare var $: any;
 
 
 @Injectable()
 export class VideoUtilService {
+    videoTempDefaultSettings: DefaultVideoPlayer;
     videoSizes = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
     publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
     formErrors = {
