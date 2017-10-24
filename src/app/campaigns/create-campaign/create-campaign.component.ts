@@ -1,6 +1,6 @@
 import { Component, OnInit,OnDestroy,ViewChild, ElementRef,HostListener} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import{ PlatformLocation} from '@angular/common';
+import { PlatformLocation} from '@angular/common';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -13,7 +13,7 @@ import { UserService } from '../../core/services/user.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-
+import { VideoUtilService } from '../../videos/services/video-util.service';
 import { Campaign } from '../models/campaign';
 import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
@@ -181,7 +181,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
-                public callActionSwitch: CallActionSwitch
+                public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
             ){
         this.logger.info("create-campaign-component constructor loaded");
         this.contactsPagination.filterKey = "isPartnerUserList";
@@ -766,9 +766,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('#main_video_src').empty();
         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
     }
-    
+    videoControllColors(videoFile: SaveVideoFile) {
+        this.videoUtilService.videoColorControlls(videoFile);
+        const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+    }
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
        console.log(videoFile);
+       let videoSelf = this;
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
@@ -803,6 +808,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 clickToToggle: true,
                 callback: function () {
                   player.ready();
+                 videoSelf.videoControllColors(videoFile);
                 }
               });
             $("#videoId").css("width", "550px");
@@ -829,6 +835,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#videoId").css("max-width", "100%");
             var document:any = window.document;
             var player = videojs("videoId");
+            this.videoControllColors(videoFile);
             console.log(player);
             if(player){
                 player.on('fullscreenchange', function () {
