@@ -744,6 +744,7 @@
 									<li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li>
 									<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
 									<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
+									<li class="filter" (click)="filterTemplates('PARTNER',7)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Partner Templates</li>
 								</ul>
 							</div>
 							<div class="col-xs-12 col-sm-4">
@@ -778,6 +779,11 @@
 												<div (click)="setEmailTemplate(campaign.emailTemplate)" 
 												*ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
 													<div class="col-md-3 col-sm-4 col-xs-6 box"	>
+													 <div id="container">
+														<h3 *ngIf="campaign.emailTemplate.type=='PARTNER'">
+															{{emailTemplate.type}}<span class="arrow"></span>
+														</h3>
+													</div>
 													<div class="portlet light block" [class.active]="emailTemplateId == selectedEmailTemplateRow"><!-- [class.active]="emailTemplateId == selectedEmailTemplateRow" -->
 														<div class="portlet-title">
 															<div class="caption">
@@ -805,6 +811,11 @@
 											<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index"
 														 (click)="setEmailTemplate(emailTemplate)"  >
 											<div class="col-md-3 col-sm-4 col-xs-6 box" *ngIf="emailTemplateId!=emailTemplate.id"  >
+											 <div id="container">
+												<h3 *ngIf="emailTemplate.type=='PARTNER'">
+													{{emailTemplate.type}}<span class="arrow"></span>
+												</h3>
+											</div>
 												<div class="portlet light block" [class.active]="emailTemplate.id == selectedEmailTemplateRow">
 													<div class="portlet-title">
 														<div class="caption">

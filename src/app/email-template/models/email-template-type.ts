@@ -1,3 +1,3 @@
 export enum EmailTemplateType{
-   NONE,BASIC,RICH,UPLOADED
+   NONE,BASIC,RICH,UPLOADED,PARTNER
 }

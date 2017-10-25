@@ -33,6 +33,7 @@
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video Template's</li>
 								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video Template's</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Template</li>
+								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner Template</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -57,7 +58,12 @@
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-								<div class="portlet light block">
+							<div id="container">
+								<h3 *ngIf="emailTemplate.type=='PARTNER'">
+									{{emailTemplate.type}}<span class="arrow"></span>
+								</h3>
+							</div>
+							<div class="portlet light block">
 									<div class="portlet-title">
 									<i class="fa fa-eye" style="font-size: 30px;float: right;" aria-hidden="true" (click)="showPreview(emailTemplate)"></i>
 										<div class="ellipsis">

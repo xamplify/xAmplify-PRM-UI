@@ -11,7 +11,7 @@ import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
@@ -69,7 +69,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
-        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:Logger) {
+        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
            this.message = "Template Created Successfully";
@@ -99,7 +99,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 ( error: string ) => {
-                    this.logger.error(this.refService.errorPrepender+" listEmailTemplates():"+error);
+                    this.logger.errorPage(error);
                     this.refService.showServerError(this.httpRequestLoader);
                 }
                 );
@@ -261,7 +261,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 
             },
             ( error: string ) => { 
-                this.logger.error(this.refService.errorPrepender+" deleteEmailTemplate():"+error);
+                this.logger.errorPage(error);
                 this.refService.showServerError(this.httpRequestLoader); 
                 }
             );
@@ -276,6 +276,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.pagination.emailTemplateType =EmailTemplateType.RICH;
         }else if(type=="UPLOADED"){
             this.pagination.emailTemplateType =EmailTemplateType.UPLOADED;
+        }else if(type=="PARTNER"){
+            this.pagination.emailTemplateType = EmailTemplateType.PARTNER;
         }
        
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab

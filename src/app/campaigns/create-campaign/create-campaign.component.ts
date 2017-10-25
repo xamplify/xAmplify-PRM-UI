@@ -1157,6 +1157,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
            this.selectedEmailTemplateType = EmailTemplateType.NONE;
        }
+       else if(type=="PARTNER"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
+           this.selectedEmailTemplateType = EmailTemplateType.PARTNER;
+       }
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -1498,6 +1502,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
     /********************************************On Destory********************************************/
     ngOnDestroy() {
+        this.campaignService.campaign = undefined;
         if(!this.isReloaded){
             if(!this.isLaunched){
                 if(this.isAdd){
