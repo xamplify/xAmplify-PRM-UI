@@ -41,6 +41,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
     videoSort: any;
+    videotitle: string;
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -192,6 +193,10 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             }
         }
     }
+     videoTitleLength(title: string) {
+        if (title.length > 70) { title = title.substring(0, 60) + '.....'; }
+        return title;
+    }
     playVideo() {
         $('#main_video_src').empty();
         this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
@@ -212,7 +217,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         }
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
-        var title = videoFile.title;
+        this.videotitle = videoFile.title;
+        var title = this.videoTitleLength(videoFile.title);
         var videoPath = videoFile.videoPath;
         var is360 = videoFile.is360video;
         $("#" + divId).empty();

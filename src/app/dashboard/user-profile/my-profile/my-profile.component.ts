@@ -50,7 +50,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     loggedInUserId: number = 0;
     tempPlayerColor: string;
     tempControllerColor: string;
-    isEnableCalled = false;
+    isPlayerSettingUpdated = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
@@ -518,6 +518,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.tempControllerColor = response.controllerColor;
                     this.tempPlayerColor = response.playerColor;
                     this.defaultPlayerbuildForm();
+                    if (this.isPlayerSettingUpdated === true) {
+                    this.videoUtilService.videoTempDefaultSettings = response; }
                 }
             }
         );
@@ -526,7 +528,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultPlayerSuccess = false;
     }
     enableVideoController(event: any) {
-        this.isEnableCalled = true;
         if (this.isPlayed === false) {
             this.videoJSplayer.play();
             this.videoJSplayer.pause();
@@ -611,6 +612,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     UpdatePlayerSettingsValues() {
         //   $("#defaultPlayerSettings").hide();
+        this.isPlayerSettingUpdated = true;
         this.defaultPlayerSuccess = false;
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;

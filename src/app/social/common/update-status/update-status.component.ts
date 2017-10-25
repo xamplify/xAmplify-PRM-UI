@@ -18,7 +18,7 @@ import { TwitterService } from '../../services/twitter.service';
 import { FacebookService } from '../../services/facebook.service';
 import { VideoFileService } from '../.././../videos/services/video-file.service';
 import { ContactService } from '../.././../contacts/services/contact.service';
-
+import { VideoUtilService } from '../../../videos/services/video-util.service';
 import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 
@@ -49,7 +49,7 @@ export class UpdateStatusComponent implements OnInit {
     constructor(private socialService: SocialService, private twitterService: TwitterService,
         private facebookService: FacebookService, private videoFileService: VideoFileService,
         private authenticationService: AuthenticationService, private contactService: ContactService,
-        private pagerService: PagerService, private router: Router,
+        private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
         private logger: Logger, public callActionSwitch: CallActionSwitch) {
 
         this.resetCustomResponse();
@@ -65,14 +65,18 @@ export class UpdateStatusComponent implements OnInit {
         this.customResponse.type = type;
         this.customResponse.statusText = statusText;
     }
-
+     videoControllColors(videoFile: SaveVideoFile) {
+        this.videoUtilService.videoColorControlls(videoFile);
+        const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
+        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+    }
     previewVideo(videoFile: SaveVideoFile) {
         this.selectedVideo = videoFile;
         this.posterImage = videoFile.imagePath;
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-
+        this.videoControllColors(videoFile);
         this.videoJSplayer.play();
         $('#list-videos-table > tbody > tr').click(function () {
             $('input[type=radio]', this).attr('checked', 'checked');
