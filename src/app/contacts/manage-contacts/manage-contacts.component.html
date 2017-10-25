@@ -248,22 +248,22 @@ rotate
 										</div>
 									</div>
 									<div *ngIf="response.responseType != null">
-					<div class="alert alert-dismissible" role="alert"
-						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
-  									'alert-danger': response.responseType == 'ERROR',
-  									'alert-info': response.responseType == 'INFO'}">
-						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close" (click)="response.responseType = null">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="flex">
-							<i class="fa"
-								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
- 								 'fa-exclamation': response.responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
-						</h4>
-					</div>
-				</div>
+										<div class="alert alert-dismissible" role="alert"
+											[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+					  									'alert-danger': response.responseType == 'ERROR',
+					  									'alert-info': response.responseType == 'INFO'}">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close" (click)="response.responseType = null">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="flex">
+												<i class="fa"
+													[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+					 								 'fa-exclamation': response.responseType == 'ERROR'}"
+													aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
+											</h4>
+										</div>
+									</div>
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 								</div>

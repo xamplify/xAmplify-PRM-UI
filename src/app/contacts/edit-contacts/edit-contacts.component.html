@@ -386,8 +386,8 @@ a.disabled {
 											<tr *ngFor="let user of users">
 												   <td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<td>{{user.company}}</td>
-													<td>{{user.title}}</td>
+													<td>{{user.contactCompany}}</td>
+													<td>{{user.jobTitle}}</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.address}}</td>
 													<td>{{user.mobileNumber}}</td>
@@ -432,7 +432,12 @@ a.disabled {
 										<td>{{contact.emailId}}</td>
 										<td>{{contact.firstName}}</td>
 										<td>{{contact.lastName}}</td>
-										<td><button (click)="toggle(i)">More</button></td>
+										<td>
+										<button (click)="toggle(i)">More</button>
+										<!-- <button (click)="toggle(i)" *ngIf="showDetailsButton && showMoreDetails==''">More</button>
+										<button (click)="toggle(i)" *ngIf="showingDetailsName == 'Less' && showMoreDetails=='More'">Less</button>
+										<button (click)="toggle(i)" *ngIf="showingDetailsName == 'More' && showMoreDetails=='Less'">More</button> -->
+										</td>
 										<td *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)"><button class="delete" (click)="deleteUserShowAlert(contact.id)">
 												Delete </button></td>
 									</tr>

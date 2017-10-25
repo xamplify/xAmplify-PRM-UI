@@ -443,12 +443,12 @@ img:hover {
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											maxlength="32"> -->
 										</td>
-										<td>{{newContact.company}}
+										<td>{{newContact.contactCompany}}
 										<!-- <input type=Text [(ngModel)]="newContact.lastName"
 											class="form-control" [ngModelOptions]="{standalone: true}"
 											maxlength="32"> -->
 											</td>
-											<td>{{newContact.title}}</td>
+											<td>{{newContact.jobTitle}}</td>
 											<td>{{newContact.emailId}}</td>
 											<td>{{newContact.address}}</td>
 											<td>{{newContact.mobileNumber}}
@@ -677,8 +677,8 @@ img:hover {
 												<tr *ngFor="let user of contacts">
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<td>{{user.company}}</td>
-													<td>{{user.title}}</td>
+													<td>{{user.contactCompany}}</td>
+													<td>{{user.jobTitle}}</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.address}}</td>
 													<td>{{user.mobileNumber}}</td>
