@@ -175,7 +175,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.refService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
-        } else { this.logger.log('you already initialized the videojs'); }
+         setTimeout(function () {
+             self.videoJSplayer.play();
+             self.videoJSplayer.pause();  
+        }, 1);
+        } else { 
+            this.logger.log('you already initialized the videojs');
+         }
     }
     ngOnInit() {
         try {
@@ -643,8 +649,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
         this.changeControllerColor(this.compControllerColor);
         this.changePlayerColor(this.compPlayerColor);
-         this.transperancyControllBar(this.valueRange);
-         if (this.defaultVideoPlayer.enableVideoController === false && this.isEnableCalled=== true) {
+        this.transperancyControllBar(this.valueRange);
+         if (this.defaultVideoPlayer.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
