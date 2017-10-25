@@ -57,3 +57,11 @@ border-radius: 0;
     border-radius: 0;
 } 
 
+.pclass-css{
+    padding: 0;
+    margin-left: -20px;
+    width: 105%;
+    background: #00a6e8;
+    height: 26px;
+    margin-bottom: 9px;
+  }

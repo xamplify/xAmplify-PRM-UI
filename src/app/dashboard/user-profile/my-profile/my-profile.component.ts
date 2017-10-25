@@ -50,14 +50,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     loggedInUserId: number = 0;
     tempPlayerColor: string;
     tempControllerColor: string;
-    isAllowComments: boolean;
+    isEnableCalled = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
-        console.log(this.videoUtilService.videoTempDefaultSettings)
-      //  this.isAllowComments = this.refService.defaultPlayerSettings.allowComments;
+        console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
         this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
@@ -521,6 +520,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultPlayerSuccess = false;
     }
     enableVideoController(event: any) {
+        this.isEnableCalled = true;
         if (this.isPlayed === false) {
             this.videoJSplayer.play();
             this.videoJSplayer.pause();
@@ -629,10 +629,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     resetForm() {
         console.log(this.refService.defaultPlayerSettings);
         console.log(this.videoUtilService.videoTempDefaultSettings);
-        this.compControllerColor = this.tempControllerColor;
-        this.compPlayerColor = this.tempPlayerColor;
-        this.valueRange = this.refService.defaultPlayerSettings.transparency;
-     //   this.defaultVideoPlayer = this.videoUtilService.videoTempDefaultSettings;
+        this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
+        this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
+        this.valueRange = this.videoUtilService.videoTempDefaultSettings.transparency;
         this.defaultVideoPlayer.allowFullscreen = this.videoUtilService.videoTempDefaultSettings.allowFullscreen;
         this.defaultVideoPlayer.allowComments = this.videoUtilService.videoTempDefaultSettings.allowComments;
         this.defaultVideoPlayer.allowEmbed = this.videoUtilService.videoTempDefaultSettings.allowEmbed;
@@ -642,11 +641,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.enableCasting = this.videoUtilService.videoTempDefaultSettings.enableCasting;
         this.defaultVideoPlayer.enableSettings = this.videoUtilService.videoTempDefaultSettings.enableSettings;
         this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
-        this.changeControllerColor(this.defaultVideoPlayer.controllerColor);
-        this.changePlayerColor(this.defaultVideoPlayer.playerColor);
-        this.transperancyControllBar(this.valueRange);
-        this.enableVideoController(this.defaultVideoPlayer.enableVideoController);
-        this.changeFullscreen(this.defaultVideoPlayer.allowFullscreen);
+        this.changeControllerColor(this.compControllerColor);
+        this.changePlayerColor(this.compPlayerColor);
+         this.transperancyControllBar(this.valueRange);
+         if (this.defaultVideoPlayer.enableVideoController === false && this.isEnableCalled=== true) {
+            $('.video-js .vjs-control-bar').hide();
+        } else { $('.video-js .vjs-control-bar').show(); }
     }
     defaultPlayerbuildForm() {
         this.defaultPlayerForm = this.fb.group({
