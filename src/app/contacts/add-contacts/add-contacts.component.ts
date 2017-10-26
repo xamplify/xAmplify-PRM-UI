@@ -1821,6 +1821,19 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             this.xtremandLogger.error( "addContacts.component error " + err );
         }
     }
+    
+    toggle(i: number){
+        const className = $('#more_'+i).attr('class');
+        if(className === 'hidden'){
+            $('#more_'+i).removeClass('hidden');
+            $('#more_'+i).addClass('show-more');
+            $("#more_less_button_"+i).attr('value', 'less');
+        }else{
+            $('#more_'+i).removeClass('show-more');
+            $('#more_'+i).addClass('hidden');
+            $("#more_less_button_"+i).attr('value', 'more');
+        }
+    }
 
     ngDestroy() {
         this.contactService.successMessage = false;
