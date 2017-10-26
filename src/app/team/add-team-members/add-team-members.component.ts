@@ -248,11 +248,15 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
   
-    validateEmailId(emailId:string){
+    validateEmailId(emailId:string,isTabChangeEvent:boolean){
         try{
             this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
             if(!this.teamMemberUi.validEmailId){
-                this.showErrorMessage("Invalid Email Id");
+                if(isTabChangeEvent){
+                  this.showErrorMessage("Invalid Email Id");
+                }else{
+                    this.teamMemberUi.isValidForm = false;
+                }
             }else{
                 /**********Method To Check Whether Org Admin Or Not***********/
                 console.log(this.orgAdminEmailIds);
@@ -280,6 +284,10 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
+    }
+    
+    validateEmailIdOnBlur(emailId:string){
+        alert("tab clikce");
     }
     
     
@@ -311,6 +319,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.teamMemberUi.validEmailId = false;
             this.emaillIdDivClass = this.defaultClass;
             this.teamMemberUi.isValidForm = false;
+            this.closePopup();
         }catch(error){
             this.showUIError(error);
         }
@@ -584,13 +593,19 @@ export class AddTeamMembersComponent implements OnInit {
       }
       
       showAddTeamMember(){
-          this.isAddTeamMember = true;
+         // this.isAddTeamMember = true;
           $( "#csv-error-div" ).hide();
+          $('#addTeamMember').show();
       }
       clearForm(){
           this.emaillIdDivClass = this.defaultClass;
           $(".text-danger").text('');
           this.isAddTeamMember = false;
-          this.clearRows();
+         // this.clearRows();
+          this.closePopup();
+      }
+      closePopup(){
+          $('#addTeamMember').hide();
+          $('#add-team-member-form')[0].reset();
       }
 }

@@ -52,55 +52,56 @@
 						</div>
 					</div>
 				</div>
-				<div class="portlet-body">
-					<div class="row">
+					<div class="margin-top-10" >
+							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-							<div id="container">
-								<h3 *ngIf="emailTemplate.type=='PARTNER'">
-									{{emailTemplate.type}}<span class="arrow"></span>
-								</h3>
-							</div>
-							<div class="portlet light block">
-									<div class="portlet-title">
-									<i class="fa fa-eye" style="font-size: 30px;float: right;" aria-hidden="true" (click)="showPreview(emailTemplate)"></i>
-										<div class="ellipsis">
-											<h4 class="caption-subject font-purple-intense  text-center ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+								<div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+									<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
+									   <div id="container">
+											<h3 *ngIf="emailTemplate.type=='PARTNER'" style="width: 21%">
+												{{emailTemplate.type}}<span class="arrow"></span>
+											</h3>
 										</div>
-									</div>
-									<div class="portlet-body">
-										<div class="row email-template-container">
-											<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" style="width: 117px;height: 134px;">
-											<div class="email-template-i-container" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
-										       <i class="fa fa-pencil-square-o fa-3x" aria-hidden="true" (click)="edit(emailTemplate.id)"></i>
-										       <i class="fa fa-trash fa-3x" aria-hidden="true" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete Template"></i>
-										    </div>
+									<div class="mix-inner" id="mix-inner">
+										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">										
+										<div class="mix-details" id="mix-details">
+											<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+											<div style="top: 2%; position: relative; margin-left: 5px;">
+											</div>
+											<div id="template-action-div">
+											<a class="mix-preview2" (click)="showPreview(emailTemplate)" title="Preview" data-rel="">
+												<i class="fa fa-eye"></i>
+										    </a>
+										    <a  class="mix-preview1" (click)="edit(emailTemplate.id)" title="Edit" data-rel=""
+										    		 *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+												<i class="fa fa-pencil-square-o"></i>
+										    </a>
+										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 
+										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+												<i class="fa fa-trash"></i>
+											</a>
+											</div>
+											<span align="right" class="template-created-on-label">
+												<b>Created On</b>
+											</span>
+											<span align="right" title="upladed date" class="template-created-on-value" >
+												<b>{{emailTemplate.createdDate}}</b>
+									 		</span>
+									 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
+									 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
+												<b  *ngIf="emailTemplate.createdBy?.length<=20">{{emailTemplate.createdBy}}</b>
+									 		</span>
+									 		<span align="left" class="template-created-by-value"><b>Created By</b></span>
 										</div>
 									</div>
 								</div>
 							</div>
-							</ng-container>
-					</div>
-				</div>
-				<div class="modal" id="show_email_template_preivew">
-					<div class="modal-dialog modal-lg" style="width: 75%;">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-								<h4 class="modal-title" id="email-template-title"	style="text-align: center;"></h4>
-							</div>
-							<div class="modal-body">
-								<div id="htmlContent"></div>
-							</div>
-							<div class="modal-footer">
-								<a href="javascript:void(0)" data-dismiss="modal"
-									class="btn btn-default" style="float: right">Close</a>
+							</ng-container>	
 							</div>
 						</div>
-					</div>
-				</div>
+						<!-- End of 24 -->
 				<div *ngIf="pagination.totalRecords>0">
 					  <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
                           <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
@@ -125,6 +126,25 @@
 			<!-- END PAGE CONTENT-->
 		</div>
 	</div>
+	
+	
+			<div class="modal" id="show_email_template_preivew">
+					<div class="modal-dialog modal-lg" style="width: 75%;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+								<h4 class="modal-title" id="email-template-title"	style="text-align: center;"></h4>
+							</div>
+							<div class="modal-body">
+								<div id="htmlContent"></div>
+							</div>
+							<div class="modal-footer">
+								<a href="javascript:void(0)" data-dismiss="modal"
+									class="btn btn-default" style="float: right">Close</a>
+							</div>
+						</div>
+					</div>
+				</div>
 						
 </div>
 				<!-- END PAGE CONTENT-->

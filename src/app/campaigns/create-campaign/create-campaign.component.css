@@ -894,3 +894,27 @@ h3 {
      left: 0;
      position: absolute;
 }
+
+#mix-inner{
+	height: 200px;
+	border: 1px solid #dad4d4;
+}
+#emailtemplate-image{
+	width: 117px;
+	height: 134px;
+	margin-top: 10px;
+}
+
+#template-edit{
+	left: 16%;
+}
+
+#template-delete{
+	margin-left:-4px; 
+	width: 44px;
+}
+
+#template-action-div{
+	top: 30%; 
+	position: relative;
+}

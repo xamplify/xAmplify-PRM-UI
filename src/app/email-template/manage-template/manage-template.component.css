@@ -125,40 +125,97 @@ a.disabled {
 	float: right;
 }
 
-   #container {
-    margin: -4px;
-    width: 500px;
-    height: 25px;
-    padding-top: 30px;
-    font-family: helvetica, arial, sans-serif;
-    }
- 
-h3 {
-     background: #337ab7;
-     background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
-     background: -webkit-gradient(linear, left top, left bottom, from(#16b2f4), to(#16b2f4));
-     padding: 4px 23px;
-     margin-left: -16px;
-     margin-top: 3px;
-     position: relative;
-     width: 30%;
-     font-size: 17px;
-     z-index: 340;
-	 
-    -moz-box-shadow: 1px 1px 3px #292929;
-    -webkit-box-shadow: 1px 1px 3px #292929;
-       box-shadow: 1px 1px 3px #292929;
- 
-    color: #fdfdfd;
-  /*   text-shadow: 0 1px 0 #0e0e0e; */
+#container {
+	margin: -4px;
+	width: 500px;
+	height: 25px;
+	padding-top: 30px;
+	font-family: helvetica, arial, sans-serif;
 }
- 
+
+h3 {
+	background: #337ab7;
+	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#16b2f4),
+		to(#16b2f4));
+	padding: 4px 23px;
+	margin-left: -16px;
+	margin-top: 3px;
+	position: relative;
+	width: 30%;
+	font-size: 17px;
+	z-index: 340;
+	-moz-box-shadow: 1px 1px 3px #292929;
+	-webkit-box-shadow: 1px 1px 3px #292929;
+	box-shadow: 1px 1px 3px #292929;
+	color: #fdfdfd;
+	/*   text-shadow: 0 1px 0 #0e0e0e; */
+}
+
 .arrow {
-     width: 0; height: 0;
-     line-height: 0;
-     border-left: 20px solid transparent;
-     border-top: 10px solid #16b2f4;
-     top: 102%;
-     left: 0;
-     position: absolute;
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border-left: 20px solid transparent;
+	border-top: 10px solid #16b2f4;
+	top: 102%;
+	left: 0;
+	position: absolute;
+}
+
+#mix-inner {
+	height: 200px;
+	border: 1px solid #dad4d4;
+}
+
+#emailtemplate-image {
+	width: 117px;
+	height: 134px;
+	margin-top: 10px;
+}
+
+#template-edit {
+	left: 16%;
+}
+
+#template-delete {
+	margin-left: -4px;
+	width: 44px;
+}
+
+#template-action-div {
+	top: 30%;
+	position: relative;
+}
+
+#mix-details {
+	z-index: 700;
+	padding: 7px;
+	height: 185px;
+}
+
+.template-created-on-label {
+	bottom: 24px;
+	float: right;
+	position: absolute;
+	right: 17px;
+}
+
+.template-created-on-value {
+	bottom: 2px;
+	float: right;
+	position: absolute;
+	right: 17px;
+}
+
+.template-created-by-label {
+	bottom: 1px;
+	left: 10px;
+	position: absolute;
+}
+
+.template-created-by-value {
+	bottom: 25px;
+	left: 10px;
+	position: absolute;
 }
