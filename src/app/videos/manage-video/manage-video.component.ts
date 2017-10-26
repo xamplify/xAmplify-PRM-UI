@@ -42,6 +42,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     hasStatsRole = false;
     hasCampaignRole = false;
     loggedInUserId = 0;
+    loggedUserName: string;
     hasAllAccess = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sortVideos: any;
@@ -52,6 +53,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
         console.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.loggedUserName = this.authenticationService.user.emailId;
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];

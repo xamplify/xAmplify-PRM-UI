@@ -694,5 +694,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoJSplayer.dispose();
         }
         $('.profile-video').remove();
+        this.refService.defaulgVideoMethodCalled = false;
     }
 }

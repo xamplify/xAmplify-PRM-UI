@@ -42,6 +42,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     sortVideos: any;
     videoSort: any;
     videotitle: string;
+    noVideos = false;
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -106,6 +107,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.videoFileService.loadVideoForViewsReport(pagination)
                 .subscribe((result: any) => {
                     pagination.totalRecords = result.totalRecords;
+                    this.noVideos = result.listOfMobinars.length === 0 ? true : false;
                     this.referenceService.loading(this.httpRequestLoader, false);
                     if (!this.isCategoryThere) {
                         this.categories = result.categories;

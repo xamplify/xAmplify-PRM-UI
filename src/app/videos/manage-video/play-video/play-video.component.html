@@ -100,11 +100,11 @@
 					</div>
 					<div class="col-xs-12" style="padding: 0;">
 						<span class="pull-right">
-						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
-							<a style="text-decoration:none;" title="I like this" ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+						<button style="color: #337ab7; background: #fff;" title="I like this" (click)="likesValuesDemo()">
+							<a style="text-decoration:none;"  ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
 							{{likesValues}}</a></button>
-						<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
-							<a  style="text-decoration:none; color: #f3565d; background: #fff;padding: 0;"  title="I dislike this">
+						<button style="color: #f3565d; background: #fff;padding: 0;"  title="I dislike this" (click)="disLikesValuesDemo()">
+							<a  style="text-decoration:none; color: #f3565d; background: #fff;padding: 0;" >
 								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
 							{{disLikesValues}}</a></button>
 					</span>
@@ -299,9 +299,9 @@
 															<h4>{{titleCheckLength(videoFile.title)}}</h4>
 															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel=""> <i class="fa fa-play" style="margin-right:0px"></i>
 													</a>
-															<span align="right" style="bottom: 10px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-															<span align="left" style="bottom: 24px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
-															<span align="left" style="bottom: 10px; left: 10px; position: absolute;">by customer</span>
+															<span align="right" style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+															<span align="left" style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
+															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
 														</div>
 													</div>
 												</div>

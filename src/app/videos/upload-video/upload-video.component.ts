@@ -1,5 +1,5 @@
 import { Component, OnInit, Directive, ViewChild, ChangeDetectorRef, AfterContentInit, ElementRef, OnDestroy } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Headers, Response } from '@angular/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -80,7 +80,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     uploadeRecordVideo = false;
     isProgressBar = false;
     noSpaceOnDevice = false;
-    constructor(public http: Http, public router: Router, public xtremandLogger: XtremandLogger,
+    errorNull = false;
+    failedtoUpload = false;
+    failedtoUploadMessage: string;
+    constructor(public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
         public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
@@ -125,7 +128,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.isFileProgress = true;
                 this.isFileDrop = true;
                 this.isProgressBar = true;
-              //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
             };
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
                 this.loading = true;
@@ -228,6 +230,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.noSpaceOnDevice = true;
                         this.setTimoutMethod();
                     } else {
+                        this.errorNull = true;
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
                             this.player.recorder.reset();
@@ -276,6 +279,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             val.maxSubscription = false;
             val.codecSupport = false;
             val.noSpaceOnDevice = false;
+            val.errorNull = false;
             val.router.navigate(['./home/videos']);
         }, 5000);
     }

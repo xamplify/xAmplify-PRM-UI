@@ -117,6 +117,10 @@
 							 No Space Left on the device Please Contact the admin.!!
 							<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
 						</div>
+						<div *ngIf="errorNull" class="alert alert-danger alert-dismissable" style="position: relative;top: -13px;">
+							 Something went wrong !! Please Contact the admin.!!
+							<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
+						</div>
 						<div class="col-xs-12" style="padding: 0; margin-bottom: 10px;">
 							<div *ngIf="isDisable==false">
 								<div *ngFor="let item of uploader.queue">

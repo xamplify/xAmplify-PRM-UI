@@ -118,10 +118,11 @@
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>
 													</div>
-													<span align="right" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-													<span align="right" title="upladed date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
-													<span align="left" style="bottom: 10px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
-												</div>
+													<span align="right"  title="video length" style="bottom: 13px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
+													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
+												    <span align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
+											 	</div>
 											</div>
 											<div>
 											</div>
