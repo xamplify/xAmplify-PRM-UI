@@ -421,40 +421,28 @@ img:hover {
 										<th>ADDRESS</th>
 										<th>MOBILENUMBER</th>
 										<th>NOTES</th>
-										<!-- <th>CANCEL</th> -->
+										<th>CANCEL</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr *ngFor="let newContact of newUsers; let i = index"
 										id="row_{{newContact.id}}">
-										<td>{{newContact.firstName}}
-										<!-- <input type=Text [(ngModel)]="newContact.emailId"
-											class="form-control" [ngModelOptions]="{standalone: true}"
-											required
-											pattern="^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,15})+$"
-											#emailId="ngModel"
-											(input)="checkingRowEails(emailId.valid, emailId.pristine, !f.submitted)">
-											<div
-												[hidden]="emailId.valid || (emailId.pristine && !f.submitted)"
-												class="custom-error-message">Invalid EmailId.</div> -->
-												</td>
-										<td>{{newContact.lastName}}
-										<!-- <input type=Text [(ngModel)]="newContact.firstName"
-											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"> -->
-										</td>
-										<td>{{newContact.contactCompany}}
-										<!-- <input type=Text [(ngModel)]="newContact.lastName"
-											class="form-control" [ngModelOptions]="{standalone: true}"
-											maxlength="32"> -->
+											<td>
+											   {{newContact.firstName}}
+											</td>
+											<td>
+											   {{newContact.lastName}}
+											</td>
+											<td>
+											   {{newContact.contactCompany}}
 											</td>
 											<td>{{newContact.jobTitle}}</td>
 											<td>{{newContact.emailId}}</td>
 											<td>{{newContact.address}}</td>
 											<td>{{newContact.mobileNumber}}
 											<td>{{newContact.description}}</td>
-										<!-- <td><a class="delete" (click)="cancelRow(i)"> Cancel
-										</a></td> -->
+										<td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -767,11 +755,21 @@ img:hover {
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="address" style="color:#53affe"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
-		    <div class="col-sm-10">
-		      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address">
-		    <div class="textCss"></div>
-		    </div>
+		    <div class="form-inline">
+		   <label class="control-label col-sm-2" for="address" style="color:#53affe;"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+		   <div class="form-group col-sm-4">
+			      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address lane1">
+			    <div class="textCss"></div>
+		  </div> 
+		   <div class="form-group col-sm-3">
+			      <input type="city" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="city/town">
+			    <div class="textCss"></div>
+		  </div>
+		  <div class="form-group col-sm-3">
+			      <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country">
+			    <div class="textCss"></div>
+		  </div>
+		  </div>
 		  </div>
 		  <div class="form-group">
 		    <label class="control-label col-sm-2" for="phone" style="color:green"><i class="fa fa-phone" aria-hidden="true"></i></label>
