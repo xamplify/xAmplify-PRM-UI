@@ -30,7 +30,8 @@ declare var swal: any;
     selector: 'app-edit-contacts',
     templateUrl: './edit-contacts.component.html',
     styleUrls: ['../../../assets/css/button.css',
-        '../../../assets/css/numbered-textarea.css'],
+        '../../../assets/css/numbered-textarea.css',
+        './edit-contacts.component.css'],
     providers: [Pagination,HttpRequestLoader]
 })
 export class EditContactsComponent implements OnInit {
@@ -65,11 +66,9 @@ export class EditContactsComponent implements OnInit {
     isShowUsers: boolean = true;
     public users: Array<User>;
     response: CustomeResponse = new CustomeResponse();
-    showDetailsButton: boolean = true;
-    showingDetailsName: string = 'More';
-    showMoreDetails = '';
     
- 
+    lessButton: boolean = false;
+    
     dublicateEmailId: boolean = false;
     noOfContactsDropdown : boolean = true;
     validCsvContacts : boolean;
@@ -1223,15 +1222,15 @@ export class EditContactsComponent implements OnInit {
    }
    
    toggle(i: number){
-       $('#more_'+i).toggle();
-       //alert($('#more_'+i).attr('class'));
-       $('#more_'+i).toggleClass('hidden').toggleClass('show');
-       if($('#more_'+i).attr('class') == 'show'){
-           this.showingDetailsName = 'Less';
-           this.showMoreDetails = 'More';
+       const className = $('#more_'+i).attr('class');
+       if(className === 'hidden'){
+           $('#more_'+i).removeClass('hidden');
+           $('#more_'+i).addClass('show-more');
+           $("#more_less_button_"+i).attr('value', 'less');
        }else{
-           this.showMoreDetails = 'Less';
-           this.showingDetailsName = 'More';
+           $('#more_'+i).removeClass('show-more');
+           $('#more_'+i).addClass('hidden');
+           $("#more_less_button_"+i).attr('value', 'more');
        }
    }
    
