@@ -59,8 +59,8 @@ export class AuthenticationService {
             this.map = res.json();
             return this.map;
         })
-            .flatMap((map) => this.http.post(this.REST_URL + "admin/getUserByUserName?userName=" + userName
-                + "&access_token=" + this.map.access_token, "")
+            .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
+                + '&access_token=' + this.map.access_token, '')
                 .map((res: Response) => {
                     const userToken = {
                         'userName': userName,
@@ -79,7 +79,7 @@ export class AuthenticationService {
                 }));
     }
     getUserByUserName(userName: string) {
-        return this.http.post(this.REST_URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.access_token, "")
+        return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, '')
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
