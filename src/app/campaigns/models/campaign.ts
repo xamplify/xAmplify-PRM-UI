@@ -3,6 +3,7 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { Reply } from './campaign-reply';
 import { Url } from './campaign-url';
 import { SocialStatus } from '../../social/models/social-status';
+import { CampaignType } from './campaign-type';
 export class Campaign {
 
     campaignName: string;
@@ -41,5 +42,6 @@ export class Campaign {
     createdTime: Date;
     updatedTime: Date;
     updatedBy: number;
+    campaignType:CampaignType;
     
 }

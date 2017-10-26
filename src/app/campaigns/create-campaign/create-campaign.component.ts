@@ -17,6 +17,7 @@ import { VideoUtilService } from '../../videos/services/video-util.service';
 import { Campaign } from '../models/campaign';
 import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
+import { CampaignType } from '../models/campaign-type';
 import { CampaignVideo } from '../models/campaign-video';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
 import { CampaignContact } from '../models/campaign-contact';
@@ -1318,6 +1319,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             timeZoneId = this.campaignLaunchForm.value.timeZoneId;
         }
+        let campaignType = CampaignType.REGULAR;
+        if("regular"==this.campaignType){
+            campaignType = CampaignType.REGULAR;
+        }else if("video"==this.campaignType){
+            campaignType = CampaignType.VIDEO;
+        }
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -1344,7 +1351,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'testEmailId': emailId,
             'socialStatus': this.socialStatus,
             'campaignReplies':this.replies,
-            'campaignUrls':this.urls
+            'campaignUrls':this.urls,
+            'campaignType':campaignType
         };
         console.log(data);
         return data;
