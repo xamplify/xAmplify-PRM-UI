@@ -170,7 +170,7 @@ contactListObject: ContactList;
         }
         this.noSaveButtonDisable = true;
         
-        this.hasContactRole = this.referenceService.hasRole(this.referenceService.roleName.contactsRole);
+        this.hasContactRole = this.referenceService.hasRole(this.referenceService.roles.contactsRole);
         console.log("ContactRole"+this.hasContactRole);
         
         this.hasAllAccess = this.referenceService.hasAllAccess();

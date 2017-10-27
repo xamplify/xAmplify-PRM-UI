@@ -1,4 +1,4 @@
-export class RoleName {
+export class Roles {
   campaignRole = 'ROLE_CAMPAIGN';
   contactsRole = 'ROLE_CONTACT';
   emailTemplateRole = 'ROLE_EMAIL_TEMPLATE';

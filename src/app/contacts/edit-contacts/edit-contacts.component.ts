@@ -188,7 +188,7 @@ export class EditContactsComponent implements OnInit {
         
         this.users = new Array<User>();
         this.notifyParent = new EventEmitter<User>();
-        this.hasContactRole = this.refService.hasRole(this.refService.roleName.contactsRole);
+        this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);
         
         this.hasAllAccess = this.refService.hasAllAccess();
         this.loggedInUserId = this.authenticationService.getUserId();

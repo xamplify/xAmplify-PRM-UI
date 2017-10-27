@@ -62,9 +62,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public socialService: SocialService, public authenticationService: AuthenticationService, public logger: Logger,
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
-        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roleName.campaignRole);
-        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
-        this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roleName.socialShare);
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+        this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
+        this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
     }
 
     genderDemographics(userId: number) {

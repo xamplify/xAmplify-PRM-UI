@@ -79,7 +79,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.showMessageOnTop();
         }
         this.hasAllAccess = this.refService.hasAllAccess();
-        this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roleName.emailTemplateRole);
+        this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
     }
     showMessageOnTop(){
         $(window).scrollTop(0);

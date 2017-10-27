@@ -73,8 +73,8 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Launched Successfully";
         }
-        this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roleName.campaignRole);
-        this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roleName.statsRole);
+        this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
+        this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
        
     }

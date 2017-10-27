@@ -8,7 +8,7 @@ import {AuthenticationService} from '../../core/services/authentication.service'
 import {ReferenceService} from '../../core/services/reference.service';
 import {Logger} from 'angular2-logger/core';
 import {UtilService} from '../../core/services/util.service';
-import {RoleName} from '../../core/models/role-name';
+import {Roles} from '../../core/models/roles';
 declare var swal, $: any;
 @Component({
   selector: 'app-topnavbar',
@@ -25,7 +25,7 @@ export class TopnavbarComponent implements OnInit {
   campaignVideoWatchedNotifications: any;
   campaignVideoWatchedNotificationCount = 0;
   hasVideoRole = false;
-  roleName: RoleName = new RoleName();
+  roleName: Roles = new Roles();
   hasSocialStatusRole = false;
   isOrgAdmin = false;
   @Input() model = {'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};

@@ -94,7 +94,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
         this.loggedInUserId = this.authenticationService.getUserId();
-        this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roleName.videRole);
+        this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
     }
     embedSourcePath(alias: string, viewBy: string) {

@@ -9,7 +9,7 @@ import { Logger } from 'angular2-logger/core';
 import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { RoleName } from '../../core/models/role-name';
+import { Roles } from '../../core/models/roles';
 declare var $: any;
 
 @Injectable()
@@ -34,7 +34,7 @@ export class ReferenceService {
     isEnabledCamera = false;
     cameraIsthere: boolean;
     topNavBarNotificationDetails: any = new Object();
-    roleName: RoleName = new RoleName();
+    roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'welcome';
     hasCompany:boolean = false;
@@ -156,7 +156,7 @@ export class ReferenceService {
     }
     hasRole(roleName: string) {
         let roles = this.authenticationService.getRoles();
-        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roleName.orgAdminRole) > -1 || roles.indexOf(this.roleName.allRole)>-1) {
+        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.allRole)>-1) {
             return true;
         } else {
             return false;
@@ -174,7 +174,7 @@ export class ReferenceService {
     
     hasAllAccess(){
         let roles = this.authenticationService.getRoles();
-        if(roles.indexOf(this.roleName.allRole)>-1 ||roles.indexOf(this.roleName.orgAdminRole)>-1){
+        if(roles.indexOf(this.roles.allRole)>-1 ||roles.indexOf(this.roles.orgAdminRole)>-1){
             return true;
         }else{
             return false;

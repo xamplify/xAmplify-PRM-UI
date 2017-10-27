@@ -6,7 +6,7 @@ import { Logger } from 'angular2-logger/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { RoleName } from '../../core/models/role-name';
+import { Roles } from '../../core/models/roles';
 declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
 @Component({
     selector: 'app-select-campaign',
@@ -17,7 +17,7 @@ declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
 export class SelectCampaignTypeComponent implements OnInit{
    
     public emailTypes = ['Video Campaign','Regular Campaign'];
-    roleName:RoleName=new RoleName();
+    roleName:Roles=new Roles();
     hasSocialStatusRole:boolean = false;
     isOrgAdmin:boolean = false;
     constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:Logger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
