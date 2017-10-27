@@ -286,8 +286,8 @@ rotate
 									*ngIf="contactList.socialNetwork=='MANUAL'"
 									src="{{normalImage}}" alt="">
 								<div class="mix-details-fill">
-									<h4 style="top: 10%; position: relative;" title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
-									<div style="top: 12%; position: relative;">
+									<h4 style="top: 5%; position: relative;" title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
+									<div style="top: 4%; position: relative;">
 										<a class="mix-preview5"
 											(click)="downloadContactList(contactList.id)"
 											title="Dowload List" data-rel="fancybox-button"> <i
@@ -312,23 +312,24 @@ rotate
 										*ngIf="contactList.synchronisedList == true">
 										<a class="mix-preview2" title="sychronizeContactList"  *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 											(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
-											data-rel="fancybox-button" style="left: 38%;"> <i
+											data-rel="fancybox-button" style="left: 38%;top:-16px;"> <i
 											class="fa fa-refresh" aria-hidden="true"></i>
 										</a>
 									</div>
 									<span align="right"
-										style="bottom: 10px; float: right; position: absolute; right: 10px;">Created
+										style="bottom: 5px; float: right; position: absolute; right: 10px;">Created
 										Date <br>{{contactList.createdDate}}
 									</span> <span align="left"
-										style="bottom: 10px; left: 10px; position: absolute;">{{checkingContactTypeName}}s
-										<br> {{contactList.noOfContacts}}
+										style="bottom: 0; left: 6px; position: absolute;">Created By
+										<br> <h5 class="m0" title={{contactList.uploadedBy}}>{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
+										<br><h5 class="m0" style="position: absolute;top:34px">#{{contactList.noOfContacts}}</h5>
 									</span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-									<div id="pagination">
+		<div id="pagination">
 			<!--pager here  -->
 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
 				class="pagination">
