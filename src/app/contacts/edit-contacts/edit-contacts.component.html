@@ -486,7 +486,85 @@ a.disabled {
 											</td>
 										</tr>
 								</ng-container>
-										<ng-container *ngIf="selectedAddContactsOption == 0">
+										
+								<ng-container *ngIf="selectedAddContactsOption == 0">
+								<ng-container *ngFor="let newContact of users; let i = index">
+									<tr class='row_{{i}}'>
+										<td align="center"><input type="checkbox" checked="newContact.checked">
+										</td>
+										<td><input type=Text
+											[(ngModel)]="newContact.emailId" class="form-control"
+											[ngModelOptions]="{standalone: true}"
+											#emailId="ngModel"></td>
+										<td><input type=Text
+											[(ngModel)]="newContact.firstName" class="form-control"
+											[ngModelOptions]="{standalone: true}"
+											#emailId="ngModel"></td>
+										<td><input type=Text
+											[(ngModel)]="newContact.lastName" class="form-control"
+											[ngModelOptions]="{standalone: true}"
+											#emailId="ngModel"></td>
+										<td>
+										<button id='more_less_button_{{i}}' (click)="newContact.isShowDetails = ! newContact.isShowDetails">
+											<span *ngIf="!newContact.isShowDetails">More</span>
+											<span *ngIf="newContact.isShowDetails">Less</span>
+										</button>
+										<td><a class="delete" (click)="cancelRow(i)"> Cancel
+										</a></td>
+									</tr>
+									<tr [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}" >
+											<td colspan="6">
+											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
+													<tbody>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Company:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.contactCompany" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Job Title:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.jobTitle" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Address:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.address" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															 <td class='pt10 pb10'>City:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.city" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Country:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.country" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Mobile Number:</td>
+															<td class='pt10 pb10'><input type=Text
+																[(ngModel)]="newContact.mobileNumber" class="form-control"
+																[ngModelOptions]="{standalone: true}"></td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Notes:</td>
+															<td class='pt10 pb10'><textarea
+																[(ngModel)]="newContact.description" class="form-control"
+																[ngModelOptions]="{standalone: true}"></textarea></td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+								</ng-container>
+								</ng-container>
+										<!-- <ng-container *ngIf="selectedAddContactsOption == 0">
 									<tr *ngFor="let newContact of users; let i = index"
 										class="new_row">
 										<td align="center"><input type="checkbox" checked="newContact.checked"></td>
@@ -506,7 +584,7 @@ a.disabled {
 										<td><a class="delete" (click)="cancelRow(i)"> Cancel
 										</a></td>
 									</tr>
-									</ng-container>
+									</ng-container> -->
 							</tbody>
 						</table>
 						
