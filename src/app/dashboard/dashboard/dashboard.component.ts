@@ -53,9 +53,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     countryViewsData: any;
     loggedInUserId: number;
     userCampaignReport: CampaignReport = new CampaignReport();
-    hasCampaignRole:boolean = false;
-    hasStatsRole:boolean = false;
-    hasSocialStatusRole:boolean = false;
+    hasCampaignRole = false;
+    hasStatsRole = false;
+    hasSocialStatusRole = false;
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
@@ -197,7 +197,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => console.log('getTotalCountOfTFFF() method invoke started finished.')
             );
     }
-    
+
     getPage( socialConnection: SocialConnection, pageId: string ) {
         this.facebookService.getPage( socialConnection, pageId )
             .subscribe(
@@ -248,7 +248,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             this.getTotalCountOfTFFF(this.socialConnections[i]);
                             this.getGenderDemographics(this.socialConnections[i]);
                             this.getWeeklyTweets(this.socialConnections[i]);
-                        }else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null){
+                        }else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null) {
                             this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
                         }
                     }
@@ -263,7 +263,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.userService.getUserDefaultPage( userId )
         .subscribe(
         data => {
-            if(data['_body'].includes('dashboard')){
+            if (data['_body'].includes('dashboard')) {
                 this.userDefaultPage.isCurrentPageDefaultPage = true;
                 this.referenceService.userDefaultPage = 'DASHBOARD';
             }
@@ -274,7 +274,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 }
 
     setDashboardAsDefaultPage(event: any) {
-        this.referenceService.userDefaultPage = event ?  'DASHBOARD': 'WELCOME';
+        this.referenceService.userDefaultPage = event ?  'DASHBOARD' : 'WELCOME';
         this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
                 data => {
@@ -288,7 +288,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 },
                 () => { }
             );
-    }   
+    }
 
     listCampaignInteractionsData(userId: number, reportType: string) {
         this.campaignService.listCampaignInteractionsData(userId, reportType)
@@ -298,13 +298,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.totalCampaignsCount = this.campaigns.length;
             },
             error => { },
-            () => this.logger.info("Finished listCampaign()")
+            () => this.logger.info('Finished listCampaign()')
             );
     }
 
     createCampaign(campaignType: string) {
         this.referenceService.selectedCampaignType = campaignType;
-        this.router.navigate(["/home/campaigns/create-campaign"]);
+        this.router.navigate(['/home/campaigns/create-campaign']);
     }
 
     getUserCampaignReport(userId: number) {
@@ -316,7 +316,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             error => { },
             () => {
-                this.logger.info("Finished getUserCampaignReport()");
+                this.logger.info('Finished getUserCampaignReport()');
                 if (this.userCampaignReport == null) {
                     this.userCampaignReport = new CampaignReport();
                     this.userCampaignReport.userId = userId;
@@ -331,12 +331,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
-        if (('CUSTOM' == userCampaignReport.campaignReportOption) && (null != userCampaignReport.campaigns)) {
-            var campaignsArray: string[] = userCampaignReport.campaigns.split(',');
+        if (('CUSTOM' === userCampaignReport.campaignReportOption) && (null != userCampaignReport.campaigns)) {
+            const campaignsArray: string[] = userCampaignReport.campaigns.split(',');
 
-            for (var i in campaignsArray) {
-                var result = this.launchedCampaignsMaster.filter(function (obj) {
-                    return obj.id == parseInt(campaignsArray[i]);
+            for (const i of Object.keys(campaignsArray)) {
+                const result = this.launchedCampaignsMaster.filter(function (obj) {
+                    return obj.id === parseInt(campaignsArray[i], 10);
                 });
                 console.log(result);
                 this.launchedCampaignsChild.push(result[0]);
@@ -347,8 +347,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     validateUserCampaignReport(userCampaignReport: CampaignReport) {
         let isValid = true;
-        if ('CUSTOM' == userCampaignReport.campaignReportOption) {
-            let campaignIds: string[] = [];
+        if ('CUSTOM' === userCampaignReport.campaignReportOption) {
+            const campaignIds: string[] = [];
 
             $('.launchedCampaignsChild > div >h6').each(function () {
                 campaignIds.push($(this).attr('id'));
@@ -358,22 +358,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.setCampaignReportResponse('WARNING', 'You can not add more than 4 campaigns.');
                 isValid = false;
             }
-            if (campaignIds.length == 0) {
+            if (campaignIds.length === 0) {
                 this.setCampaignReportResponse('WARNING', 'Please select campaigns.');
                 isValid = false;
             }
         }
 
-        if (isValid)
+        if (isValid) {
             this.saveUserCampaignReport(userCampaignReport);
-        else
+        } else {
             return false;
+      }
     }
 
     saveUserCampaignReport(userCampaignReport: CampaignReport) {
-        if (userCampaignReport.userId == null)
+        if (userCampaignReport.userId == null) {
             userCampaignReport.userId = this.loggedInUserId;
-
+        }
         this.campaignService.saveUserCampaignReport(userCampaignReport)
             .subscribe(
             data => {
@@ -384,7 +385,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             error => {
                 this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
             },
-            () => this.logger.info("Finished saveUserCampaignReport()")
+            () => this.logger.info('Finished saveUserCampaignReport()')
             );
     }
 
@@ -411,7 +412,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
             },
             error => console.log(error),
-            () => console.log("dashboard reports counts completed")
+            () => console.log('dashboard reports counts completed')
             );
     }
 
@@ -419,11 +420,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._dashboardService.getEmailActionCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalEmailOpenedCount = data["email_opened_count"];
-                this.dashboardReport.totalEmailClickedCount = data["email_url_clicked_count"] + data["email_gif_clicked_count"];
+                this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
+                this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
             },
             error => console.log(error),
-            () => console.log("emailOpenedCount completed")
+            () => console.log('emailOpenedCount completed')
             );
     }
 
@@ -431,30 +432,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
-                this.dashboardReport.totalEmailWatchedCount = data["watched-users-count"];
+                this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
             },
             error => console.log(error),
-            () => console.log("emailWatchedCount completed")
+            () => console.log('emailWatchedCount completed')
             );
     }
 
     setPage(page: number, currentPage: string) {
         this.pagination.pageIndex = page;
-        if(currentPage == "emailOpened"){
+        if (currentPage === 'emailOpened') {
             this.listOfEmailOpenLogs(13);
-        }
-        else if(currentPage == "emailClicked"){
+        } else if (currentPage === 'emailClicked') {
             this.listOfEmailClickedLogs();
-        }
-        else if(currentPage == "emailWatched"){
+        } else if (currentPage === 'emailWatched') {
             this.listOfWatchedLogs();
         }
     }
 
-    listOfEmailOpenLogs(actionId: number){
+    listOfEmailOpenLogs(actionId: number) {
         this._dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
-            (result:any) => {
+            (result: any) => {
                     this.dashboardReport.emailOpenedList = result;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailOpenedList );
@@ -463,8 +462,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
-    
-    listOfEmailClickedLogs(){
+
+    listOfEmailClickedLogs() {
         this._dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
@@ -476,7 +475,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
-    
+
     listOfWatchedLogs() {
         this.logger.log(this.pagination);
         this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
@@ -487,10 +486,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailWatchedList );
             },
             error => console.log(error),
-            () => console.log("finished")
+            () => console.log('finished')
             );
     }
-    
+
     getCountriesTotalViewsData() {
         this._dashboardService.getCountryViewsDetails().
         subscribe(result => {
@@ -502,12 +501,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.errorPage(error);
         });
     }
-    
-    cancelEmailStateModalPopUp(){
+
+    cancelEmailStateModalPopUp() {
       this.pagination = new Pagination();
       this.pagination.pageIndex = 1;
     }
-    
+
     ngOnInit() {
         try {
             this.dashboardReportsCount();

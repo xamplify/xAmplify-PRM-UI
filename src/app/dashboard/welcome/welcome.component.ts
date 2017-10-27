@@ -14,17 +14,17 @@ import { DashboardReport } from '../../core/models/dashboard-report';
     styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-    
+
     userDefaultPage: UserDefaultPage;
     dashboardReport: DashboardReport;
     loggedInUserId: number;
-    hasVideoRole:boolean = false;
-    hasContactRole:boolean = false;
-    hasCampaignRole:boolean = false;
-    hasEmailTemplateRole:boolean = false;
-    hasStatsRole:boolean = false;
-    hasSocialStatusRole:boolean = false;
-    constructor( private userService: UserService, private authenticationService: AuthenticationService, 
+    hasVideoRole = false;
+    hasContactRole = false;
+    hasCampaignRole = false;
+    hasEmailTemplateRole = false;
+    hasStatsRole = false;
+    hasSocialStatusRole = false;
+    constructor( private userService: UserService, private authenticationService: AuthenticationService,
             private referenceService: ReferenceService, private dashboardService: DashboardService ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -34,14 +34,14 @@ export class WelcomeComponent implements OnInit {
         this.hasEmailTemplateRole =  this.referenceService.hasRole(this.referenceService.roleName.emailTemplateRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roleName.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roleName.socialShare);
-        
+
     }
-    
+
     getDefaultPage( userId: number ) {
         this.userService.getUserDefaultPage( userId )
             .subscribe(
             data => {
-                if(data['_body'].includes('welcome')){
+                if (data['_body'].includes('welcome')) {
                     this.userDefaultPage.isCurrentPageDefaultPage = true;
                     this.referenceService.userDefaultPage = 'WELCOME';
                 }
@@ -51,7 +51,7 @@ export class WelcomeComponent implements OnInit {
             );
     }
     setWelcomeAsDefaultPage( event: any ) {
-        this.referenceService.userDefaultPage = event ?  'WELCOME': 'DASHBOARD';
+        this.referenceService.userDefaultPage = event ?  'WELCOME' : 'DASHBOARD';
         this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
             data => {
@@ -66,8 +66,8 @@ export class WelcomeComponent implements OnInit {
             () => { }
             );
     }
-    
-    dashboardReports(loggedInUserId: number){
+
+    dashboardReports(loggedInUserId: number) {
         this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
             .subscribe(
             data => {
@@ -79,9 +79,9 @@ export class WelcomeComponent implements OnInit {
                 this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
             },
             error => console.log(error),
-            () => console.log("dashboard reports counts completed")
+            () => console.log('dashboard reports counts completed')
             );
-    
+
     }
 
     ngOnInit() {
