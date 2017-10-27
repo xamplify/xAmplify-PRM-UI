@@ -461,15 +461,23 @@ a.disabled {
 															<td class='pt10 pb10'>Job Title:</td>
 															<td class='pt10 pb10'>{{contact.jobTitle}}</td>
 														</tr>
-														<tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Address:</td>
 															<td class='pt10 pb10'>{{contact.address}}</td>
 														</tr>
-														<tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															 <td class='pt10 pb10'>City:</td>
+															<td class='pt10 pb10'>{{contact.city}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Country:</td>
+															<td class='pt10 pb10'>{{contact.country}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Mobile Number:</td>
 															<td class='pt10 pb10'>{{contact.mobileNumber}}</td>
 														</tr>
-														<tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Notes:</td>
 															<td class='pt10 pb10'>{{contact.description}}</td>
 														</tr>
@@ -678,8 +686,11 @@ a.disabled {
 			      <input type="city" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="city/town">
 			    <div class="textCss"></div>
 		  </div>
-		  <div class="form-group col-sm-3">
-			      <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country">
+		 <div class="form-group col-sm-3">
+		  <select  class="form-control" style="border:none; width:120%" class="form-control" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="country">
+				<option *ngFor="let country of countries" [value]="country">{{country}}</option>
+				</select>
+			      <!-- <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country"> -->
 			    <div class="textCss"></div>
 		  </div>
 		  </div>
