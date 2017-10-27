@@ -176,6 +176,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isReloaded:boolean = false;
     timeZones=[];
     invalidScheduleTime:boolean = false;
+    hasInternalError:boolean =false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1495,6 +1496,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             },
             error => {
+                this.hasInternalError = true;
                 this.logger.errorPage(error);
             },
             () => this.logger.info("Finished launchCampaign()")
@@ -1511,33 +1513,36 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;
-        if(!this.isReloaded){
-            if(!this.isLaunched){
-                if(this.isAdd){
-                    this.saveCampaignOnDestroy();
-                }else{
-                    let self = this;
-                    swal( {
-                        title: 'Are you sure?',
-                        text: "You have unchanged Campaign data",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, Save it!'
+        if(!this.hasInternalError){
+            if(!this.isReloaded){
+                if(!this.isLaunched){
+                    if(this.isAdd){
+                        this.saveCampaignOnDestroy();
+                    }else{
+                        let self = this;
+                        swal( {
+                            title: 'Are you sure?',
+                            text: "You have unchanged Campaign data",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, Save it!'
 
-                    }).then(function() {
-                            self.saveCampaignOnDestroy();
-                            /*self.getRepliesData();
-                            self.getOnClickData();*/
-                    },function (dismiss) {
-                        if (dismiss === 'cancel') {
-                            self.reInitialize();
-                        }
-                    })
-                }
-             }
+                        }).then(function() {
+                                self.saveCampaignOnDestroy();
+                                /*self.getRepliesData();
+                                self.getOnClickData();*/
+                        },function (dismiss) {
+                            if (dismiss === 'cancel') {
+                                self.reInitialize();
+                            }
+                        })
+                    }
+                 }
+            }
         }
+       
          }
     
     saveCampaignOnDestroy(){

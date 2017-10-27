@@ -81,12 +81,6 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    private extractData(res: Response) {
-        let body = res.json();
-        console.log(body);
-        return body || {};
-    }
-    
     getHeatMap( userId: number, campaignId: number ) {
         return this.http.get( this.URL + 'user-video-heat-map?access_token=' + this.authenticationService.access_token + '&userId='+userId+'&campaignId='+campaignId )
             .map( this.extractData )
@@ -189,35 +183,14 @@ export class CampaignService {
             .catch( this.handleError );
     }
 
-    private handleError(error: any) {
-        if (error.status === 500) {
-            console.log(error);
-            var response =  JSON.parse(error['_body']);
-            return Observable.throw(new Error(response.message));
-        }
-        else if (error.status === 400) {
-            return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 409) {
-            return Observable.throw(new Error(error.status));
-        }
-        else if (error.status === 406) {
-            return Observable.throw(new Error(error.status));
-        }
-        /*var body = error['_body'];
-        if (body != "") {
-            var response = JSON.parse(body);
-            if (response.message != undefined) {
-                return Observable.throw(response.message);
-            } else {
-                return Observable.throw(response.error);
-            }
 
-        } else {
-            let errMsg = (error.message) ? error.message :
-                error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-            return Observable.throw(error);
-        }*/
-
+    private extractData(res: Response) {
+        let body = res.json();
+        console.log(body);
+        return body || {};
     }
+    
+    
+    private handleError(error: any) {
+        return Observable.throw( error );}
 }

@@ -213,7 +213,6 @@ export class ReferenceService {
             '(GMT -10:00) Pacific/Tahiti',
             '(GMT -10:00) Pacific/Johnston',
             '(GMT -10:00) Pacific/Honolulu',
-            '(GMT -10:00) HST',
             '(GMT -10:00) US/Hawaii',
             '(GMT -10:00) Etc/GMT+10',
             '(GMT -09:30) Pacific/Marquesas',
