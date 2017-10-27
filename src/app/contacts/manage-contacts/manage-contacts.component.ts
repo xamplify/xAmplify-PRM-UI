@@ -65,6 +65,7 @@ contactListObject: ContactList;
     invalidDeleteErrorMessage: boolean = false;
     
     public invalidIds: Array<UserListIds>;
+    isShowDetails = false;
     
     contactsByType: ContactsByType = new ContactsByType();
     
@@ -971,6 +972,20 @@ contactListObject: ContactList;
         this.response.responseType = null;
         this.response.responseMessage = null;
     }
+    
+    toggle(i: number){
+        const className = $('#more_'+i).attr('class');
+        if(className === 'hidden'){
+            $('#more_'+i).removeClass('hidden');
+            $('#more_'+i).addClass('show-more');
+            $("#more_less_button_"+i).attr('value', 'less');
+        }else{
+            $('#more_'+i).removeClass('show-more');
+            $('#more_'+i).addClass('hidden');
+            $("#more_less_button_"+i).attr('value', 'more');
+        }
+    }
+    
 
     ngOnInit() {
         try {

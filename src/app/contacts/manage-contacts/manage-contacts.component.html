@@ -546,13 +546,14 @@ rotate
 															id="checkAllExistingInvalidContacts" />
 														</td>
 														<th>EMAILID</th>
-														<th>FIRSTNAME</th>
-														<th>LASTNAME</th>
+														<th>FIRST NAME</th>
+														<th>LAST NAME</th>
+														<th>MORE</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr
-														*ngFor="let contact of contactsByType.contacts; let i = index">
+												<ng-container *ngFor="let contact of contactsByType.contacts; let i = index">
+													<tr>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'all'"><input
 															type="checkbox"
@@ -576,7 +577,50 @@ rotate
 														<td>{{contact.emailId}}</td>
 														<td>{{contact.firstName}}</td>
 														<td>{{contact.lastName}}</td>
+														<td>
+														<button id='more_less_button_{{i}}' (click)="contact.isShowDetails = ! contact.isShowDetails">
+															<span *ngIf="!contact.isShowDetails">More</span>
+															<span *ngIf="contact.isShowDetails">Less</span>
+														</button>
+														</td>
 													</tr>
+													<tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}" >
+											<td colspan="6">
+											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
+													<tbody>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Company:</td>
+															<td class='pt10 pb10'>{{contact.contactCompany}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Job Title:</td>
+															<td class='pt10 pb10'>{{contact.jobTitle}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Address:</td>
+															<td class='pt10 pb10'>{{contact.address}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															 <td class='pt10 pb10'>City:</td>
+															<td class='pt10 pb10'>{{contact.city}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Country:</td>
+															<td class='pt10 pb10'>{{contact.country}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Mobile Number:</td>
+															<td class='pt10 pb10'>{{contact.mobileNumber}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Notes:</td>
+															<td class='pt10 pb10'>{{contact.description}}</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+										</ng-container>
 												</tbody>
 											</table>
 											<ul
