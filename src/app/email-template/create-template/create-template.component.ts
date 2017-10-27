@@ -216,40 +216,24 @@ export class CreateTemplateComponent implements OnInit {
 	              return $('<input type="submit" class="btn btn-primary" value="'+text+'">').on('click', cb);
 	          }
 	      }
-	      var specialLinks = [{
-	          type: 'unsubscribe',
-	          label: 'SpecialLink.Unsubscribe',
-	          link: 'http://[unsubscribe]/'
-	      }, {
-	          type: 'subscribe',
-	          label: 'SpecialLink.Subscribe',
-	          link: 'http://[subscribe]/'
-	      }];
 
-	      var mergeTags = [{
-	        name: 'tag 1',
-	        value: '[tag1]'
-	      }, {
-	        name: 'tag 2',
-	        value: '[tag2]'
-	      }];
-
-	      var mergeContents = [{
-	        name: 'content 1',
-	        value: '[content1]'
-	      }, {
-	        name: 'content 2',
-	        value: '[content1]'
-	      }];
+          var mergeTags = [{
+              name: 'First Name',
+              value: '{{firstName}}'
+	         }, {
+                  name: 'Last Name',
+                  value: '{{lastName}}'
+	         },{
+                 name: 'Full Name',
+                 value: '{{fullName}}'
+	         }];
 	      var beeUserId = "bee-"+loggedInUserId;
 	      var beeConfig = {  
 	        uid: beeUserId,
 	        container: 'bee-plugin-container',
 	        autosave: 15, 
 	        language: 'en-US',
-	        specialLinks: specialLinks,
 	        mergeTags: mergeTags,
-	        mergeContents: mergeContents,
 	        onSave: function(jsonFile, htmlFile) { 
 	            save(jsonFile, htmlFile);
 	        },
