@@ -13,12 +13,12 @@ declare var swal: any;
 })
 export class SocialManageComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
-    response : any;
+    response: any;
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService ) { }
 
     listAccounts( userId: number, providerName: string ) {
-        this.socialService.listAccounts( userId, providerName, "ALL" )
+        this.socialService.listAccounts( userId, providerName, 'ALL' )
             .subscribe(
             result => {
                 this.socialConnections = result;
@@ -40,15 +40,15 @@ export class SocialManageComponent implements OnInit {
             } );
 
     }
-    
-    confirmDialog(socialConnection: SocialConnection){
-        if(! socialConnection.active)
+
+    confirmDialog(socialConnection: SocialConnection) {
+        if (! socialConnection.active) {
             socialConnection.active = !socialConnection.active;
-        else {
-            let self = this;
+        } else {
+            const self = this;
             swal( {
                 title: 'Are you sure?',
-                text: "Do you really want to deselect it!",
+                text: 'Do you really want to deselect it!',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -63,11 +63,10 @@ export class SocialManageComponent implements OnInit {
 
     ngOnInit() {
         try {
-            let providerName = this.route.snapshot.params['social'];
-            let userId = this.authenticationService.getUserId();
+            const providerName = this.route.snapshot.params['social'];
+            const userId = this.authenticationService.getUserId();
             this.listAccounts( userId, providerName );
-        }
-        catch ( err ) {
+        } catch ( err ) {
             console.log( err );
         }
     }
