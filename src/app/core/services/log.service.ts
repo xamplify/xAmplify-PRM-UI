@@ -10,37 +10,41 @@ import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class LogService {
-	
-	URL = this.authenticationService.REST_URL;
-	
+
+    URL = this.authenticationService.REST_URL;
+
     constructor(
-            private http: Http,
-            private authenticationService: AuthenticationService ) {
-        }
-	
-    logEmailUrlClicks(emailLog:any) {
-    	   return  this.http.post(this.URL + "user/logEmailURLClick", emailLog)
-           .map(this.extractData)
-           .catch(this.handleError);
-	}
-    
-    logunsubscribedUser(userAlias: string, companyId: number){
-    	return  this.http.post(this.URL + "log/unsubscribe-user?userAlias="+userAlias+"&companyId="+companyId,  +"" )
-        .map(this.extractData)
-        .catch(this.handleError);
+        private http: Http,
+        private authenticationService: AuthenticationService) {
     }
-	
-    private extractData( res: Response ) {
-        console.log( res );
+
+    logEmailUrlClicks(emailLog: any) {
+        return this.http.post(this.URL + "user/logEmailURLClick", emailLog)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    logunsubscribedUser(userAlias: string, companyId: number) {
+        return this.http.post(this.URL + "log/unsubscribe-user?userAlias=" + userAlias + "&companyId=" + companyId, +"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    showCampaignEmail(campaignAlias: string , userAlias: string, templateId: number) {
+         return this.http.post(this.URL + "user/showCampaignEmail/?userAlias=" + userAlias + "&companyId=" + templateId, +"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    private extractData(res: Response) {
+        console.log(res);
         let body = res;
-        console.log( "response.json(): " + body );
+        console.log("response.json(): " + body);
         return body || {};
     }
 
-    private handleError( error: any ) {
-    	const errMsg = ( error.message ) ? error.message :
+    private handleError(error: any) {
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-        return Observable.throw( errMsg );
+        return Observable.throw(errMsg);
     }
-	
+
 }

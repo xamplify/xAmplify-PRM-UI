@@ -139,10 +139,10 @@
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;margin-top: 10px;">
-					<button [hidden]="!shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
+					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 				</button>
-					<button [hidden]="!embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
+					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
 					 [disabled]="isThisDraftVideo">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 				</button>

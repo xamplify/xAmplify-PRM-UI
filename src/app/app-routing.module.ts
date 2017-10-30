@@ -26,6 +26,7 @@ import { ServiceUnavailableComponent } from './error-pages/service-unavailable/s
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
 import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
+import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -51,6 +52,7 @@ export const routes: Routes = [
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'embed-video/:type/:alias', component: ShareVideoComponent },
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent },
+    { path: 'user/showCampaignEmail', component: LogRegularCampaignComponent },
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'user/logEmailURLClick', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },

@@ -64,7 +64,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     LogAction: typeof LogAction = LogAction;
     emailLog: any;
     templatehtml: string;
-    defaultTemplate: boolean;
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
@@ -159,7 +158,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
-                            this.defaultTemplate = true;
                             updatedBody = updatedBody.replace("view in browser", '');
                             updatedBody = updatedBody.replace("SocialUbuntuURL", '');
                             updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
@@ -190,7 +188,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('class="img-container center fullwidth"', 'id="newPlayerVideo"');
                             this.templatehtml = updatedBody;
-                            this.defaultTemplate = false;
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');

@@ -11,6 +11,7 @@ import { VideoFileService } from '../services/video-file.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { VideoUtilService } from '../services/video-util.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { HomeComponent } from '../../core/home/home.component';
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
@@ -87,7 +88,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
         public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
-        public deviceService: Ng2DeviceService) {
+        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService) {
         try {
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;
@@ -134,6 +135,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.isProgressBar = false;
                 if (response.includes('No space left on device')) {
                     this.noSpaceOnDevice = true;
+                    this.failedtoUploadMessage = this.videoUtilService.noSpaceMesg;
                     this.setTimoutMethod();
                 } else {
                      this.processVideo(JSON.parse(response).path); }
@@ -167,25 +169,20 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
 
     checkMimeTypes(isSupportfile: string) {
-        if (isSupportfile === 'video/mp4') {
-            this.videoDisabled = false;
-            this.previewDisabled = true;
-        } else if (this.browserInfo.includes('chrome') && (isSupportfile === 'video/mpeg')) {
-            this.videoDisabled = false;
-            this.previewDisabled = true;
+        if (isSupportfile === 'video/mp4' || (this.browserInfo.includes('chrome') && (isSupportfile === 'video/mpeg'))) {
+            this.setVideoPreviewTypes(false, true);
         } else if (this.browserInfo.includes('firefox') && (isSupportfile === 'video/mov')) {
-            this.videoDisabled = false;
-            this.previewDisabled = true;
-        } else { this.videoDisabled = true; this.previewDisabled = false; }
+            this.setVideoPreviewTypes(false, true);
+        } else {  this.setVideoPreviewTypes(true, false); }
+    }
+    setVideoPreviewTypes(videodisable: boolean, previewdisable: boolean) {
+         this.videoDisabled = videodisable;
+         this.previewDisabled = previewdisable;
     }
     processVideo(responsePath: any) {
         if (!this.videoFileService.isProgressBar) { this.cloudStorageDisabled(); }
         const val = this;
-        if (this.RecordSave !== true) {
-            setTimeout(function () {
-                val.processing = true;
-            }, 100);
-        }
+        if (this.RecordSave !== true) {  setTimeout(function () {  val.processing = true; }, 100); }
         console.log(responsePath);
         return this.videoFileService.processVideoFile(responsePath)
             .subscribe((result: any) => {
@@ -222,15 +219,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.processing = false;
                         this.defaultSettings();
                         this.maxSubscription = true;
+                        this.failedtoUploadMessage = this.videoUtilService.maxSubscriptionMesg;
                         this.setTimoutMethod();
                     } else if (this.processVideoResp.error.includes('Codec is not supported')) {
                         this.codecSupport = true;
+                        this.failedtoUploadMessage = this.videoUtilService.codecNotSupportMesg;
                         this.setTimoutMethod();
                     } else if (this.processVideoResp.error.includes('No space left on device')){
                         this.noSpaceOnDevice = true;
+                        this.failedtoUploadMessage = this.videoUtilService.noSpaceMesg;
                         this.setTimoutMethod();
                     } else {
                         this.errorNull = true;
+                        this.failedtoUploadMessage = this.videoUtilService.errorNullMesg;
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
                             this.player.recorder.reset();
@@ -259,9 +260,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const file: File = fileList[0];
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
-            if (size > this.maxVideoSize) {
-                this.maxSizeOver = true;
-            } else { this.maxSizeOver = false; }
+            this.maxSizeOver = size > this.maxVideoSize ? true : false;
+            this.failedtoUploadMessage = this.videoUtilService.maxSizeOverMesg;
         }
     }
     public fileOverBase(e: any): void {
@@ -299,6 +299,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.maxSubscription = false;
         this.codecSupport = false;
         this.noSpaceOnDevice = false;
+        this.errorNull = false;
         this.router.navigate(['./home/videos']);
     }
     fileDropDisabled() {
@@ -349,14 +350,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         console.log(formData);
         return this.videoFileService.saveRecordedVideo(formData)
-            .subscribe(
-            (result: any) => {
+            .subscribe((result: any) => {
                 this.processVideo(result.path);
-            }, (error: any) => {
+             }, (error: any) => {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
-            }
-            );
+             } );
     }
     removeRecordVideo() {
         this.player.recorder.stopDevice();
@@ -512,12 +511,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.stopButtonDisabled = true; // stop button disabled in modal pop up
                 self.testSpeedshow = true; // show the test speed button
                 self.testSpeeddisabled = true; // test speed button disabled
-                // let volume = self.changeVolume*10000;
                 self.testSpeed();
                 self.rageDisabled = true;
                 console.log('started recording!');
-                // $('.video-js .vjs-control-bar').attr('style', 'background-color : rgba(43, 51, 63, 0.7)');
-                // $("#script-text").animate({ scrollTop: $("#script-text").prop("scrollHeight") }, volume);
                 self.saveVideo = false; // save button disabled
                 self.discardVideo = false; // discard button disabled
             });
@@ -578,24 +574,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     googleDriveChange() {
-        // if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
-        //     this.sweetAlertMesg === 'Drive') { swal('Oops...', 'You minimized Google Drive window!', 'error'); }
-        // if (this.isChecked !== true && this.cloudBox === false && this.camera === false && this.cloudOneDrive === false &&
-        //     this.cloudDropbox === false) {
-        //   this.cloudDrive = true;
-        //  this.isDisable = true;
-        //  this.isFileDrop = true;
-        //  this.isChecked = true;
-        //  this.sweetAlertDisabled = false;
         this.sweetAlertMesg = 'Drive';
-        //  this.fileDropDisabled();
         this.onApiLoad();    // google drive code
-        // $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
-        // $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
-        // $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
-        // $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-        // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3');
-        // }
     }
     defaultDesabled() {
         this.sweetAlertDisabled = true;
@@ -844,18 +824,18 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('r-video').remove();
         if (this.deviceNotSupported) { swal.close(); }
         console.log('Deinit - Destroyed Component');
-        if (this.camera === true) {
+        if (this.camera) {
             this.modalPopupClosed();
             this.videoFileService.actionValue = '';
         }
-        if (this.playerInit === true) {
+        if (this.playerInit) {
             this.player.recorder.destroy();
             this.playerInit = false;
         }
         this.isChecked = false;
         this.noSpaceOnDevice = false;
-        if ((this.isProgressBar === true || this.uploadeRecordVideo === true || this.cloudStorageSelected === true
-            || this.processing === true) && this.errorIsThere === false) {
+        if ((this.isProgressBar || this.uploadeRecordVideo  || this.cloudStorageSelected || this.processing ) 
+            && this.errorIsThere === false) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
             $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');

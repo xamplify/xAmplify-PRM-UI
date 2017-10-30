@@ -13,6 +13,13 @@ export class VideoUtilService {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
         'description': '', 'upperText': '', 'lowerText': '',
     };
+    noSpaceMesg = 'No Space Left on the device Please Contact the admin.!!';
+    maxSubscriptionMesg = 'Maximum Disk Space Reached for you subscription.!! Please Contact the admin.';
+    codecNotSupportMesg  = 'Codec is not supported for this video..We are unable to ' +
+    'process your video file. Please upload another video file!!';
+    maxSizeOverMesg = 'Your video size is more than the maximum video file size(800 MB)' +
+     'Please upload another video file within the limit!!';
+    errorNullMesg = 'Something went wrong !! Please Contact the admin.!!';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
@@ -25,7 +32,6 @@ export class VideoUtilService {
     validationMessages = {
         'title': {
             'required': 'Title is required.',
-            //   'minlength': 'Title must be at least 4 characters long.',
             'maxlength': 'Title cannot be more than 256 characters long.',
         },
         'viewBy': { 'required': 'Publish is required' },
@@ -64,14 +70,9 @@ export class VideoUtilService {
         return validation.test(email);
     }
     transparancyControllBarColor(color: string, value: number) {
-        if (color.includes('rgba')) {
-            color = this.convertRgbToHex(color);
-        }
-        if (color === '#fff') {
-            color = '#fbfbfb';
-        } else if (color === '#ccc') {
-            color = '#cccddd';
-        }
+        if (color.includes('rgba')) { color = this.convertRgbToHex(color); }
+        if (color === '#fff') {  color = '#fbfbfb';
+        } else if (color === '#ccc') { color = '#cccddd';  }
         const rgba = this.convertHexToRgba(color, value);
         return rgba;
     }
@@ -99,9 +100,7 @@ export class VideoUtilService {
     }
     truncateHourZeros(length) {
         const val = length.split(':');
-        if (val.length === 3 && val[0] === '00') {
-            length = val[1] + ':' + val[2];
-        }
+        if (val.length === 3 && val[0] === '00') { length = val[1] + ':' + val[2]; }
         return length;
     }
     nFormatter(num) {
@@ -116,13 +115,13 @@ export class VideoUtilService {
         }
         return num;
     }
-    videoColorControlls(videoFile: SaveVideoFile){
+    videoColorControlls(videoFile: SaveVideoFile) {
         $('.video-js .vjs-big-play-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-play-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' +videoFile.playerColor + '!important');
+        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
     }
 

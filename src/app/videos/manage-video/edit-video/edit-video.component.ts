@@ -555,6 +555,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultPlayerSettingsCondition(playerSettings: any) {
         // future work is there on enable casting and enable settings.
+        try {
         this.valueRange = playerSettings.transparency;
         this.newEnableController = playerSettings.enableVideoController;
         this.comments = this.newComments = playerSettings.allowComments; // done
@@ -566,6 +567,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.shareValues = this.newAllowSharing = playerSettings.allowSharing; // done
         this.newValue360 = playerSettings.is360video; // no need to chagne. after saving the video, this option will affect
         this.changeFullscreenCondtion(this.newFullScreen);
+        }catch (error) { console.log('error' + error);}
+
     }
     defaultSettingValuesBoolean(event: boolean) { this.defaultSettingValue = this.disablePlayerSettingnew = event; }
     disableTransperancy(event: boolean) { (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event; }
@@ -573,6 +576,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.compPlayerColor = playercolor; this.compControllerColor = controlcolor;
     }
     defaultPlayerSettingsValues(event: boolean) {
+       try{
         if (event) {
             this.defaultSettingValuesBoolean(event);
             if (!this.loadRangeDisable) { this.disableTransperancy(event); }
@@ -593,6 +597,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.defaultPlayerSettingsCondition(this.tempVideoFile);
         }
         this.loadNgOninit = false;
+       } catch (error) { console.log(error); }
     }
     changePlayerColor(event: any) {
         this.compPlayerColor = this.saveVideoFile.playerColor = event;
@@ -782,10 +787,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { this.settingDefaultGifImagePath(false, false, false); }
     }
     defaultVideoControllValues(videoFile: any) {
+        try{
         this.likes = videoFile.allowLikes;
         this.comments = videoFile.allowComments;
         this.shareValues = videoFile.allowSharing;
         this.embedVideo = videoFile.allowEmbed;
+        } catch(error){ console.log('error');}
     }
     showEditModalDialog() {
         $('#overLayDialog').append($('#overlay-modal').show());
@@ -819,7 +826,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.saveVideoFile);
         this.saveVideoFile.categories = this.categories;
         this.settingImageGifPaths();
-        this.defaultVideoControllValues(this.saveVideoFile);
+     //   this.defaultVideoControllValues(this.saveVideoFile);
         try {
             this.buildForm();
             this.defaultImagePaths();
@@ -972,8 +979,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {   // playing 360 video
             this.play360Video();
         }
-        this.defaultPlayerSettingsValues(this.defaultSettingValue); //  true ///need to change the true value to dynamic value
+       try{ this.defaultPlayerSettingsValues(this.defaultSettingValue); 
+         }catch(error){ console.log('error');}
+        //  true ///need to change the true value to dynamic value
         if (!this.newEnableController) { this.defaultVideoControllers(); }
+        this.changeDetectorRef.detectChanges();
     }
     /*********************************Save Video*******************************/
     buildForm(): void {
