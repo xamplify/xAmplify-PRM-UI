@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LogService } from '../../core/services/log.service';
-
+declare var $: any;
 
 @Component({
   selector: 'app-log-regular-campaign',
@@ -37,10 +37,25 @@ export class LogRegularCampaignComponent implements OnInit {
     try {
       this.LogService.showCampaignEmail(this.campaignAlias, this.userAlias, this.templateId)
         .subscribe((result: any) => {
-                this.templatehtml = result.templatehtml;
-               this.xtremandLogger.log(this.templatehtml);
-                document.getElementById('regular-campaign').innerHTML = this.templatehtml;
-
+              this.templatehtml = result['_body'];
+              this.xtremandLogger.log(this.templatehtml);
+              let updatedBody = this.templatehtml;
+              updatedBody = updatedBody.replace(/\\/g, "");
+              updatedBody = updatedBody.replace("view in browser", '');
+              updatedBody = updatedBody.replace("SocialUbuntuURL", '');
+              updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
+              updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+              updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+              updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
+              updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
+              updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
+              updatedBody = updatedBody.replace("<Company_name>", '');
+              updatedBody = updatedBody.replace("<company_name></company_name>", "");
+              updatedBody = updatedBody.replace("<Company_Logo>", '');
+              updatedBody = updatedBody.replace("<Title_here>", '');
+               updatedBody = updatedBody.replace("n ", "");
+              this.templatehtml = updatedBody;
+              document.getElementById('regular-campaign').innerHTML = this.templatehtml;
         }, (error: any) => {
           this.xtremandLogger.error('log regular campaign component:  Loading Videos():' + error);
           this.xtremandLogger.errorPage(error);
