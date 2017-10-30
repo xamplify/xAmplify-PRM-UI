@@ -19,7 +19,8 @@ export class FacebookPostsComponent implements OnInit {
     httpRequestLoader = new HttpRequestLoader();
     socialConnection = new SocialConnection();
     constructor( private route: ActivatedRoute, private facebookService: FacebookService,
-        private authenticationService: AuthenticationService, private socialService: SocialService, private referenceService: ReferenceService) { }
+        private authenticationService: AuthenticationService, private socialService: SocialService,
+        private referenceService: ReferenceService) { }
 
     getPosts( socialConnection: SocialConnection ) {
         this.referenceService.loading( this.httpRequestLoader, true );
@@ -36,9 +37,9 @@ export class FacebookPostsComponent implements OnInit {
             () => console.log( 'getPosts() Finished.' )
             );
     }
-    
-    getSocialConnection(profileId: string, userId: number){
-        this.socialService.getSocialConnectionByUserIdAndProfileId(profileId, userId)
+
+    getSocialConnection(profileId: string, userId: number) {
+        this.socialService.getSocialConnectionByProfileId(profileId, 'FACEBOOK')
             .subscribe(
             data => {
                 this.socialConnection = data;
@@ -49,7 +50,7 @@ export class FacebookPostsComponent implements OnInit {
             },
             () => {
                 this.getPosts( this.socialConnection );
-                console.log( 'getPosts() Finished.' )
+                console.log( 'getPosts() Finished.' );
             }
             );
     }
@@ -58,7 +59,7 @@ export class FacebookPostsComponent implements OnInit {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.getUserId();
-            
+
             this.getSocialConnection(profileId, userId);
         } catch ( err ) {
             console.log( err );

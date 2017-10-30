@@ -7009,7 +7009,8 @@ li.stream-item.highlighted {
 
 .tweet {
     border-bottom: 1px solid #e1e8ed;
-    cursor: pointer
+    cursor: pointer;
+    background: #fff;
 }
 
 .tweet p {
@@ -7249,10 +7250,6 @@ li.stream-item.highlighted {
     padding-right: 1px;
     position: relative;
     top: 1px
-}
-
-.tweet:hover {
-    background-color: #fff;
 }
 
 .stream-item {

@@ -232,8 +232,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    listSocialAccounts(userId: number) {
-        this.socialService.listActiveSocialConnections(userId)
+    listActiveSocialAccounts(userId: number) {
+        this.socialService.listAccounts(userId, 'ALL',  'ACTIVE')
             .subscribe(
             data => {
                 this.socialConnections = data;
@@ -531,7 +531,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.averageSparklineData();
 
             this.facebookSparklineData();
-            this.listSocialAccounts(this.loggedInUserId);
+            this.listActiveSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);
         } catch (err) {
