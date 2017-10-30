@@ -69,7 +69,7 @@ a.disabled {
 				{{checkingContactTypeName}}s</span></li>
 	</ul>
 </div>
-<div class="clearfix" id="manageContacts" *ngIf="showEditContactData">
+<div class="clearfix" id="manageContacts">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
@@ -83,7 +83,7 @@ a.disabled {
 								<li><i style="font-size: 16px;">{{selectedContactListName}} List</i></li>
 
 							</ul>
-							<div class="page-toolbar">
+							<div class="page-toolbar" *ngIf="showEditContactData">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
 										<div style="float: left; margin-right: 10px; width: 50%">
@@ -108,13 +108,36 @@ a.disabled {
 									</div>
 								</div>
 							</div>
+	<div class="page-toolbar" *ngIf="!showEditContactData">
+		<div class="btn-group pull-right">
+			<div class="inputs" align="right" style="float: right">
+				<div style="float: left; margin-right: 10px; width: 50%">
+					<select class="form-control" [(ngModel)]="sortOption"
+						(ngModelChange)="sortByOption($event)">
+						<ng-container *ngFor="let sort of sortOptions; let i = index">
+						<option [ngValue]="sort">{{sort.name}}</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="portlet-input input-inline input-small">
+					<div class="input-icon right">
+						<i class="icon-magnifier"
+							style="cursor: pointer; font-size: 18px;"
+							(click)="search('contactList')"></i> <input type="text"
+							[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+							class="form-control input-circle" placeholder="search...">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 						</div>
 						<!-- END DASHBOARD STATS -->
 						<div class="clearfix"></div>
 
 						<div class="row">
 							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat blue-soft">
+								<button class="btn-block dashboard-stat blue-soft" (click)="backToEditContacts()">
 									<div class="visual">
 										<i class="fa fa-users"></i>
 									</div>
@@ -126,7 +149,7 @@ a.disabled {
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat red-soft"
-									(click)="listOfSelectedContactListByType('active')"
+									(click)="showingContactDetails('active')"
 									[disabled]="contactsByType.activeContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye"></i>
@@ -139,7 +162,7 @@ a.disabled {
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat blue-sharp"
-									(click)="listOfSelectedContactListByType('non-active')"
+									(click)="showingContactDetails('non-active')"
 									[disabled]="contactsByType.inactiveContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-eye-slash"></i>
@@ -152,7 +175,7 @@ a.disabled {
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat yellow-gold"
-									(click)="listOfSelectedContactListByType('invalid')"
+									(click)="showingContactDetails('invalid')"
 									[disabled]="contactsByType.invalidContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-user-times"></i>
@@ -165,7 +188,7 @@ a.disabled {
 							</div>
 							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
 								<button class="btn-block dashboard-stat green-soft"
-									(click)="listOfSelectedContactListByType('unsubscribe')"
+									(click)="showingContactDetails('unsubscribe')"
 									[disabled]="contactsByType.unsubscribedContactsCount == 0">
 									<div class="visual">
 										<i class="fa fa-times"></i>
@@ -201,7 +224,7 @@ a.disabled {
 						</h4>
 					</div>
 				</div>
-	<div class="row">
+	<div class="row" *ngIf="showEditContactData">
 		<div class="col-md-12">
 			<!-- BEGIN EXAMPLE TABLE PORTLET-->
 			<div class="portlet box blue">
@@ -743,7 +766,7 @@ a.disabled {
 
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" *ngIf="showAllContactData">
-	<div class="page-toolbar">
+	<!-- <div class="page-toolbar">
 		<div class="btn-group pull-right">
 			<div class="inputs" align="right" style="float: right">
 				<div style="float: left; margin-right: 10px; width: 50%">
@@ -765,7 +788,7 @@ a.disabled {
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="col-md-12" style="margin-top: 15px">
 		<!-- <div *ngIf="noContactsFound1==true" class="col-md-6"
 			class="col-md-9 alert alert-info alert-dismissable"

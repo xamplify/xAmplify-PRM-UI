@@ -884,6 +884,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     backToEditContacts() {
+        this.setPage(1);
         this.searchKey = null;
         this.pagination.searchKey = this.searchKey;
         this.pagination.maxResults = 10;
@@ -1089,7 +1090,13 @@ export class EditContactsComponent implements OnInit {
             })
             }
     }
-
+    showingContactDetails(contactType: string){
+        this.resetResponse();
+        this.contactsByType.pagination = new Pagination();
+        this.sortOptionForPagination = this.sortOptionsForPagination[0];
+        this.contactsByType.selectedCategory = null;
+        this.listOfSelectedContactListByType(contactType);
+    }
     listOfSelectedContactListByType(contactType: string){
         this.currentContactType = '';
         this.showAllContactData = true;
