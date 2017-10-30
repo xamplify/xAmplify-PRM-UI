@@ -385,7 +385,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         user.jobTitle = data[3];
                         user.emailId = data[4];
                         user.address = data[5];
-                        user.mobileNumber = data[6];
+                        user.city = data[6];
                         break;
                     case 8:
                         user.firstName = data[0];
@@ -394,8 +394,31 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         user.jobTitle = data[3];
                         user.emailId = data[4];
                         user.address = data[5];
-                        user.mobileNumber = data[6];
-                        user.description = data[7];
+                        user.city = data[6];
+                        user.country = data[7];
+                        break;
+                    case 9:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.city = data[6];
+                        user.country = data[7];
+                        user.mobileNumber = data[8];
+                        break;
+                    case 10:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.city = data[6];
+                        user.country = data[7];
+                        user.mobileNumber = data[8];
+                        user.description = data[9];
                         break;
                 }
                 this.xtremandLogger.info( user );
