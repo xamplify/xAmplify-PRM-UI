@@ -68,7 +68,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/campaigns/manage-campaigns']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i>
 				</div>
@@ -81,7 +81,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/emailtemplate/manageTemplates']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-envelope-o fa-3" aria-hidden="true"></i>
 				</div>
@@ -218,7 +218,7 @@ cursor: not-allowed;
 						<h1 class="bold" style="color: #FBB23E">Template</h1>
 						<p>Design beautiful, responsive templates to effectively communicate with your audience.</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplate/selectTemplate']" [class.disabled]="!hasEmailTemplateRole ? true : null">create template</button>
+							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="!hasEmailTemplateRole ? true : null">create template</button>
 							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

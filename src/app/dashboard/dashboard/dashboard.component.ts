@@ -304,7 +304,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     createCampaign(campaignType: string) {
         this.referenceService.selectedCampaignType = campaignType;
-        this.router.navigate(['/home/campaigns/create-campaign']);
+        this.router.navigate(['/home/campaigns/create']);
     }
 
     getUserCampaignReport(userId: number) {

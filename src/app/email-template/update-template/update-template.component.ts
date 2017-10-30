@@ -36,7 +36,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
         if(this.emailTemplateService.emailTemplate==undefined){
-            this.router.navigate(["/home/emailtemplate/selectTemplate"]);
+            this.router.navigate(["/home/emailtemplates/select"]);
         }
         emailTemplateService.getAvailableNames(this.authenticationService.getUserId()).subscribe(
             (data: any) => {
@@ -97,7 +97,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                 this.isLoading = false;
                 if (data == "success") {
                     this.refService.isUpdated = true;
-                    this.router.navigate(["/home/emailtemplate/manageTemplates"]);
+                    this.router.navigate(["/home/emailtemplates/manage"]);
                     } else{
                         this.isVideoTagError = true;
                         this.videoTagsError = data;

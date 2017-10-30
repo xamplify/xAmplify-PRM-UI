@@ -11,12 +11,12 @@ import { UploadEmailTemplateComponent } from './upload-email-template/upload-ema
 import {HelpComponent} from './help/help.component';
 
 export const emailRoutes: Routes = [
-{ path: '', redirectTo: 'manageTemplates', pathMatch: 'full' },
-{ path: 'manageTemplates', component: ManageTemplateComponent },
-{ path: 'selectTemplate', component: SelectTemplateComponent },
-{ path: 'createTemplate', component: CreateTemplateComponent },
-{ path: 'uploadTemplate', component: UploadEmailTemplateComponent },
-{ path: 'updateTemplate', component: UpdateTemplateComponent },
+{ path: '', redirectTo: 'manage', pathMatch: 'full' },
+{ path: 'manage', component: ManageTemplateComponent },
+{ path: 'select', component: SelectTemplateComponent },
+{ path: 'create', component: CreateTemplateComponent },
+{ path: 'upload', component: UploadEmailTemplateComponent },
+{ path: 'update', component: UpdateTemplateComponent },
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
 { path: 'help', component: HelpComponent },

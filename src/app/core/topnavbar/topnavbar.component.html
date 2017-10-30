@@ -89,7 +89,8 @@
 					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-envelope-open"></i>
-						<span class="badge badge-default">{{campaignEmailNotificationCount}}</span>
+							<span class="badge badge-default" *ngIf="campaignEmailNotificationCount>0" style="background-color: #d43135">{{campaignEmailNotificationCount}}</span>
+							<span class="badge badge-default" *ngIf="campaignEmailNotificationCount==0" style="background-color: #14B9D6">{{campaignEmailNotificationCount}}</span>
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">
@@ -117,7 +118,8 @@
 					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="fa fa-play-circle"></i>
-						<span class="badge badge-default">{{campaignVideoWatchedNotificationCount}}</span>
+							<span class="badge badge-default" *ngIf="campaignVideoWatchedNotificationCount>0" style="background-color: #d43135">{{campaignVideoWatchedNotificationCount}}</span>
+							<span class="badge badge-default" *ngIf="campaignVideoWatchedNotificationCount==0" style="background-color: #14B9D6">{{campaignVideoWatchedNotificationCount}}</span>
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">

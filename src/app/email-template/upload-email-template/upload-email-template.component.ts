@@ -53,7 +53,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.loggedInUserId = this.authenticationService.getUserId();
        
         if(this.emailTemplateService.isRegularUpload==undefined){
-            this.router.navigate(["/home/emailtemplate/selectTemplate"]);
+            this.router.navigate(["/home/emailtemplates/select"]);
         }
         emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
             (data: any) => {
@@ -207,7 +207,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 this.loading = false;
                 if (data == "success") {
                 this.refService.isCreated = true;
-                this.router.navigate(["/home/emailtemplate/manageTemplates"]);
+                this.router.navigate(["/home/emailtemplates/manage"]);
                 } else{
                     this.isVideoTagError = true;
                     this.videoTagsError = data;

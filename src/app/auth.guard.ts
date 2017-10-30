@@ -23,17 +23,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
-            // if ( !this.authenticationService.user.id ) {
-            //     this.getUserByUserName( userName );
-            // }
+            
             return true;
+        }else{
+            this.authenticationService.redirectUrl = url;
+            // Navigate to the login page
+            this.router.navigate( ['/login'] );
+            return false;
         }
-        // Store the attempted URL for redirecting
-        this.authenticationService.redirectUrl = url;
-        
-        // Navigate to the login page
-        this.router.navigate( ['/login'] );
-        return false;
     }
 
     getUserByUserName( userName: string ) {

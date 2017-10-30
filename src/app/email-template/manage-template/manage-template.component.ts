@@ -186,9 +186,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             ( data: EmailTemplate ) => {
                 this.emailTemplateService.emailTemplate = data;
                 if ( data.regularTemplate || data.videoTemplate ) {
-                    this.router.navigate( ["/home/emailtemplate/updateTemplate"] );
+                    this.router.navigate( ["/home/emailtemplates/update"] );
                 } else {
-                    this.router.navigate( ["/home/emailtemplate/createTemplate"] );
+                    this.router.navigate( ["/home/emailtemplates/create"] );
                 }
 
             },

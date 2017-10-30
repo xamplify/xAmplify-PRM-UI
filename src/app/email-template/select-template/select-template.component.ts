@@ -210,7 +210,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            .subscribe(
                (data:any) => {
                 this.emailTemplateService.emailTemplate = data;
-                   this.router.navigate(["/home/emailtemplate/createTemplate"]);
+                   this.router.navigate(["/home/emailtemplates/create"]);
                },
                (error:string) => {
                    this.logger.error(this.refService.errorPrepender+" showTemplateById():"+error);
@@ -221,11 +221,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
        }else if(index==17 || index==1){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+           this.router.navigate(["/home/emailtemplates/upload"]);
        }else if(index==16 || index==0){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
-           this.router.navigate(["/home/emailtemplate/uploadTemplate"]);
+           this.router.navigate(["/home/emailtemplates/upload"]);
        }
     }
     

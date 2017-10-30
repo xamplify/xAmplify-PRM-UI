@@ -34,7 +34,7 @@ export const routes: Routes = [
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
         children: [
             { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-            { path: 'emailtemplate', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
+            { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
             { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
             { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },

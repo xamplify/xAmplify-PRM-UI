@@ -9,13 +9,13 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 
 export const campaignRoutes: Routes = [
 
-    { path: '', redirectTo: 'select-campaign', pathMatch: 'full' },
-    { path:'select-campaign',component:SelectCampaignTypeComponent},
-    { path:'create-campaign',component:CreateCampaignComponent},
+    { path: '', redirectTo: 'select', pathMatch: 'full' },
+    { path:'select',component:SelectCampaignTypeComponent},
+    { path:'create',component:CreateCampaignComponent},
     { path:'social',component:SocialCampaignComponent},
     { path:'social/:alias',component:SocialCampaignComponent},
-    { path:'edit-campaign',component:CreateCampaignComponent},
-    { path: 'manage-campaigns', component: ManagePublishComponent },
+    { path:'edit',component:CreateCampaignComponent},
+    { path: 'manage', component: ManagePublishComponent },
     { path: ':campaignId/details', component: AnalyticsComponent },
 ];
 

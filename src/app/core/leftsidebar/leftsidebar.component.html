@@ -92,14 +92,14 @@
 						
 						<ul class="sub-menu" style="width: 105%" >
 						<li>
-							<a  [routerLink]="['./emailtemplate/selectTemplate']" [class.disabled]="!authService.user.hasCompany ?true:null" >
+							<a  [routerLink]="['./emailtemplates/select']" [class.disabled]="!authService.user.hasCompany ?true:null" >
 
 								<i class="fa fa-envelope"></i>
 								<span class="title">Create Email Template</span>
 								</a>
 							</li>
 						<li>
-				              <a  [routerLink]="['./emailtemplate']" [class.disabled]="!authService.user.hasCompany ?true:null">
+				              <a  [routerLink]="['./emailtemplates']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Email Templates</span>
 								</a>
@@ -121,7 +121,7 @@
 								</a>
 							</li>
 							<li>
-								<a  [routerLink] ="['./campaigns/manage-campaigns']" [class.disabled]="!authService.user.hasCompany ?true:null">
+								<a  [routerLink] ="['./campaigns/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Campaigns</span>
 								</a>

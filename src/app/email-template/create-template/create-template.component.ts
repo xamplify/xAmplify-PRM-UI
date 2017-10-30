@@ -73,7 +73,7 @@ export class CreateTemplateComponent implements OnInit {
 	              title = "Update Template Name";
 	          }
 	      }else{
-	          this.router.navigate(["/home/emailtemplate/selectTemplate"]);
+	          this.router.navigate(["/home/emailtemplates/select"]);
 	      }
 	      
 	      var save = function(jsonContent:string, htmlContent:string) {
@@ -101,7 +101,7 @@ export class CreateTemplateComponent implements OnInit {
                              data => {
                                  self.isLoading = false;
                                  refService.isUpdated = true;
-                                 router.navigate(["/home/emailtemplate/manageTemplates"]);
+                                 router.navigate(["/home/emailtemplates/manage"]);
                                  
                              },
                              error => {
@@ -193,7 +193,7 @@ export class CreateTemplateComponent implements OnInit {
                       data => {
                           self.isLoading = false;
                           refService.isCreated = true;
-                          router.navigate(["/home/emailtemplate/manageTemplates"]);
+                          router.navigate(["/home/emailtemplates/manage"]);
                       },
                       error => {
                           self.isLoading = false;

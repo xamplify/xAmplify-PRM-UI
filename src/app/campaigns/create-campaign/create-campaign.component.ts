@@ -203,12 +203,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadCampaignNames( this.loggedInUserId );
             }
         if(this.campaignService.campaign==undefined){
-            if(this.router.url=="/home/campaigns/edit-campaign"){
+            if(this.router.url=="/home/campaigns/edit"){
                 this.isReloaded = true;
-                this.router.navigate(["/home/campaigns/manage-campaigns"]);
+                this.router.navigate(["/home/campaigns/manage"]);
             }else if(this.campaignType.length==0){
                 this.isReloaded = true;
-                this.router.navigate(["/home/campaigns/select-campaign"]);
+                this.router.navigate(["/home/campaigns/select"]);
             }
         }
         if(this.campaignService.campaign!=undefined){
@@ -1489,7 +1489,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.refService.campaignSuccessMessage = data.scheduleCampaign;
                     this.isLaunched = true;
                     this.reInitialize();
-                    this.router.navigate(["/home/campaigns/manage-campaigns"]);
+                    this.router.navigate(["/home/campaigns/manage"]);
                 }else{
                     this.isLoading = false;
                     this.invalidScheduleTime = true;
