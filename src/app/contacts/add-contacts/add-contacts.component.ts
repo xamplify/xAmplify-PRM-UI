@@ -286,8 +286,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                         user.contactCompany = data[2];
                         user.jobTitle = data[3];
                         user.address = data[5];
-                        user.mobileNumber = data[6];
-                        user.description = data[7];
+                        user.city = data[6];
+                        user.country = data[7];
+                        user.mobileNumber = data[8];
+                        user.description = data[9];
                         self.contacts.push( user );
                     }
                 }
