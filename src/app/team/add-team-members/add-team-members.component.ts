@@ -463,7 +463,7 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-            if(headers.length==7){
+            if(headers.length==8){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
