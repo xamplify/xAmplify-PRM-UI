@@ -343,15 +343,15 @@ a.disabled {
 									style="background-color: #26a69a; color: white"
 									(click)="clipboardShowPreview()">SHOW PREVIEW</button>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-7">
 								<textarea [(ngModel)]="clipboardTextareaText"
-									placeholder="firstName,lastName,company,jobtitle,email,address,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,mobileNumber,notes"
+									placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
 									[ngModelOptions]="{standalone: true}"
 									style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 									required="required">
 							</textarea>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-5">
 								<span id="clipBoardValidationMessage"></span>
 							</div>
 						</div>
@@ -374,25 +374,70 @@ a.disabled {
 											<tr>
 											       <th>FIRST NAME</th>
 													<th>LAST NAME</th>
-													<th>COMPANY</th>
-													<th>JOB TITLE</th>
+													<!-- <th>COMPANY</th>
+													<th>JOB TITLE</th> -->
 													<th>EMAILID</th>
-													<th>ADDRESS</th>
+													<!-- <th>ADDRESS</th>
 													<th>MOBILENUMBER</th>
-													<th>NOTES</th>
+													<th>NOTES</th> -->
+													<th>MORE</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr *ngFor="let user of users">
+										<ng-container *ngFor="let user of users">
+											<tr>
 												   <td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<td>{{user.contactCompany}}</td>
-													<td>{{user.jobTitle}}</td>
+													<!-- <td>{{user.contactCompany}}</td>
+													<td>{{user.jobTitle}}</td> -->
 													<td>{{user.emailId}}</td>
-													<td>{{user.address}}</td>
+													<!-- <td>{{user.address}}</td>
 													<td>{{user.mobileNumber}}</td>
-													<td>{{user.description}}</td>
+													<td>{{user.description}}</td> -->
+													<td>
+														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
+															<span *ngIf="!user.isShowDetails">More</span>
+															<span *ngIf="user.isShowDetails">Less</span>
+														</button>
+														</td>
 											</tr>
+											<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}" >
+												  <td colspan="6">
+													<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
+													<tbody>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Company:</td>
+															<td class='pt10 pb10'>{{user.contactCompany}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Job Title:</td>
+															<td class='pt10 pb10'>{{user.jobTitle}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Address:</td>
+															<td class='pt10 pb10'>{{user.address}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															 <td class='pt10 pb10'>City:</td>
+															<td class='pt10 pb10'>{{user.city}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Country:</td>
+															<td class='pt10 pb10'>{{user.country}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Mobile Number:</td>
+															<td class='pt10 pb10'>{{user.mobileNumber}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Notes:</td>
+															<td class='pt10 pb10'>{{user.description}}</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+										</ng-container>
 										</tbody>
 									</table>
 
