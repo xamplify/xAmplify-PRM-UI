@@ -78,6 +78,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         console.log('url is on angular 2' + document.location.href);
         this.embedUrl = document.location.href;
         this.logVideoViewValue = true;
+        this.callAction.isOverlay = true;
     }
     // setConfirmUnload(on) {
     // window.onbeforeunload = (on) ? this.setMessage : null;

@@ -72,7 +72,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
-    errorHtml = '<div class="portlet light" style="padding:5px 5px 300px 17px">' +
+    errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
     '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
