@@ -1,5 +1,5 @@
 import {KloutInfluence} from './klout-influence';
-export class Klout{
+export class Klout {
     myInfluencersCount: Number;
     myInfluenceesCount: Number;
     myInfluencees: KloutInfluence[];

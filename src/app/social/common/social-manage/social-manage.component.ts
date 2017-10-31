@@ -22,6 +22,7 @@ export class SocialManageComponent implements OnInit {
             .subscribe(
             result => {
                 this.socialConnections = result;
+              console.table(result);
                 this.socialService.setDefaultAvatar(this.socialConnections);
             },
             error => console.log( error ),

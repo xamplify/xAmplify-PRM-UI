@@ -39,7 +39,7 @@ export class FacebookPostsComponent implements OnInit {
     }
 
     getSocialConnection(profileId: string, userId: number) {
-        this.socialService.getSocialConnectionByProfileId(profileId, 'FACEBOOK')
+        this.socialService.getSocialConnection(profileId, 'FACEBOOK')
             .subscribe(
             data => {
                 this.socialConnection = data;

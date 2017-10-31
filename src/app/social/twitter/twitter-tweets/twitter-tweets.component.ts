@@ -1,9 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Trend } from '../../models/trend';
-
-import { TwitterService } from "../../services/twitter.service";
+import { TwitterService } from '../../services/twitter.service';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
@@ -15,10 +14,9 @@ import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 declare var $: any;
 
 @Component( {
-    selector: "app-twitter-tweets",
-    templateUrl: "./twitter-tweets.component.html",
+    selector: 'app-twitter-tweets',
+    templateUrl: './twitter-tweets.component.html',
     styleUrls: ['./twitter-tweets.component.css']
-
 })
 
 export class TwitterTweetsComponent implements OnInit {
@@ -35,22 +33,22 @@ export class TwitterTweetsComponent implements OnInit {
         this.twitterService.getTweets( socialConnection, 0, 100 )
             .subscribe(
             data => {
-                for ( var i in data ) {
-                    var splitted = data[i].unmodifiedText.split( " " );
-                    var updatedText = "";
-                    for ( var j in splitted ) {
-                        var eachWord = "";
-                        if ( splitted[j].startsWith( "@" ) ) {
+                for ( const i of Object.keys(data) ) {
+                    const splitted = data[i].unmodifiedText.split( ' ' );
+                    let updatedText = '';
+                    for ( const j of Object.keys(splitted) ) {
+                        let eachWord = '';
+                        if ( splitted[j].startsWith( '@' ) ) {
                             eachWord = '<a href="https://twitter.com/' + splitted[j].substring( 1 ) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
-                        } else if ( splitted[j].startsWith( "#" ) ) {
+                        } else if ( splitted[j].startsWith( '#' ) ) {
                             eachWord = '<a href="https://twitter.com/hashtag/' + splitted[j].substring( 1 ) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
                         }
-                        else if ( splitted[j].startsWith( "https://t.co" ) || splitted[j].startsWith( "http://t.co" ) ) {
-                            eachWord = "";
+                        else if ( splitted[j].startsWith( 'https://t.co' ) || splitted[j].startsWith( 'http://t.co' ) ) {
+                            eachWord = '';
                         } else {
                             eachWord = splitted[j];
                         }
-                        updatedText = updatedText + eachWord + " ";
+                        updatedText = updatedText + eachWord + ' ';
                     }
                     updatedText = updatedText.trim();
                     data[i].unmodifiedText = updatedText;
@@ -71,8 +69,8 @@ export class TwitterTweetsComponent implements OnInit {
             .subscribe(
             data => {
                 this.trends = data.trends.splice( 0, 10 );
-                for ( var i in this.trends ) {
-                    if ( this.trends[i].name.startsWith( "#" ) ) {
+                for ( let i in this.trends ) {
+                    if ( this.trends[i].name.startsWith( '#' ) ) {
                         this.trends[i].name = '<a href="https://twitter.com/hashtag/' + this.trends[i].name.substring( 1 ) + '?src=tren" target="_blank"><b>' + this.trends[i].name + '</b></a>';
                     } else {
                         this.trends[i].name = '<a href="https://twitter.com/search?q=' + this.trends[i].name + '&src=tren" target="_blank"><b>' + this.trends[i].name + '</b></a>'
@@ -80,16 +78,16 @@ export class TwitterTweetsComponent implements OnInit {
                 }
             },
             error => console.log( error ),
-            () => console.log( "getTrends() finished." )
+            () => console.log( 'getTrends() finished.' )
             );
     }
 
     populateReplyModalContent( id: number, screenName: string, text: string ) {
-        $( "div.modal-body" ).html( "" );
-        $( "h4#replyModalLabel" ).html( "Reply to @" + screenName );
-        $( "#content-" + id ).clone().prependTo( "div.modal-body" );
-        $( "div.modal-body" ).append( "<textarea class='tweet-status' style='margin-top: 1em; min-width: 100%; max-width: 100%; min-height:64px; max-height:64px;'>@" + screenName + " </textarea><input type='hidden' class='tweet-id'>" );
-        $( ".tweet-id" ).val( id );
+        $( 'div.modal-body' ).html( '' );
+        $( 'h4#replyModalLabel' ).html( 'Reply to @' + screenName );
+        $( '#content-' + id ).clone().prependTo( 'div.modal-body' );
+        $( 'div.modal-body' ).append( '<textarea class=\'tweet-status\' style=\'margin-top: 1em; min-width: 100%; max-width: 100%; min-height:64px; max-height:64px;\'>@' + screenName + ' </textarea><input type=\'hidden\' class=\'tweet-id\'>' );
+        $( '.tweet-id' ).val( id );
     }
 
     reply() {
@@ -105,16 +103,26 @@ export class TwitterTweetsComponent implements OnInit {
             );
     }
 
+  getSocialConnection( profileId: string, source: string ) {
+      this.socialService.getSocialConnection(profileId, source)
+        .subscribe(
+          data => {
+              this.socialConnection = data;
+          },
+          error => console.log( error ),
+          () => {
+              this.getTweets( this.socialConnection );
+              this.getTrends( this.socialConnection );
+          }
+        );
+  }
+
     ngOnInit() {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.user.id;
-            this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
-
-            this.getTweets( this.socialConnection );
-            this.getTrends( this.socialConnection );
-        }
-        catch ( err ) {
+            this.getSocialConnection( profileId, 'TWITTER' );
+        } catch ( err ) {
             console.log( err );
         }
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Logger } from "angular2-logger/core";
+import { Logger } from 'angular2-logger/core';
 
 import { TwitterProfile } from '../../models/twitter-profile';
 import { KloutScore } from '../../models/klout-score';
@@ -47,12 +47,12 @@ export class TwitterAnalyticsComponent implements OnInit {
         this.twitterService.getAnalytics( socialConnection )
             .subscribe(
             data => {
-                this.twitterProfile = data["twitterProfile"];
-                this.followersGenderPercentage = data["followersGenderPercentage"];
+                this.twitterProfile = data['twitterProfile'];
+                this.followersGenderPercentage = data['followersGenderPercentage'];
             },
 
             error => this.logger.error( error ),
-            () => this.logger.log( "Twitter Analytics finished." )
+            () => this.logger.log( 'Twitter Analytics finished.' )
             );
     }
 
@@ -60,13 +60,13 @@ export class TwitterAnalyticsComponent implements OnInit {
         this.twitterService.getKloutData( socialConnection )
             .subscribe(
             data => {
-                this.kloutScore = data["kloutScore"];
-                this.kloutTopics = data["kloutTopics"];
-                this.klout = data["klout"];
+                this.kloutScore = data['kloutScore'];
+                this.kloutTopics = data['kloutTopics'];
+                this.klout = data['klout'];
             },
 
             error => this.logger.error( error ),
-            () => this.logger.log( "Twitter Analytics finished." )
+            () => this.logger.log( 'Twitter Analytics finished.' )
             );
     }
 
@@ -74,42 +74,53 @@ export class TwitterAnalyticsComponent implements OnInit {
         this.twitterService.getWeeklyReport( socialConnection , this.userId)
             .subscribe(
             data => {
-                this.weeklyMessagesCount = data["weeklyMessagesCount"];
-                this.weeklyMessagesRecievedCount = data["weeklyMessagesRecievedCount"];
-                this.weeklyMessagesSentCount = data["weeklyMessagesSentCount"];
-                this.weeklyMentionsCount = data["weeklyMentionsCount"];
-                this.weeklyFriendsCount = data["weeklyFriendsCount"];
-                this.weeklyFollowersCount = data["weeklyFollowersCount"];
+                this.weeklyMessagesCount = data['weeklyMessagesCount'];
+                this.weeklyMessagesRecievedCount = data['weeklyMessagesRecievedCount'];
+                this.weeklyMessagesSentCount = data['weeklyMessagesSentCount'];
+                this.weeklyMentionsCount = data['weeklyMentionsCount'];
+                this.weeklyFriendsCount = data['weeklyFriendsCount'];
+                this.weeklyFollowersCount = data['weeklyFollowersCount'];
 
-                $( "#sparkline_friends" ).sparkline( data["weeklyFriends"], {
+                $( '#sparkline_friends' ).sparkline( data['weeklyFriends'], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_followers" ).sparkline( data["weeklyFollowers"], {
+                $( '#sparkline_followers' ).sparkline( data['weeklyFollowers'], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_direct_messages" ).sparkline( data["weeklyMessages"], {
+                $( '#sparkline_direct_messages' ).sparkline( data['weeklyMessages'], {
                     type: 'pie', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_mentions" ).sparkline( data["weeklyMentions"], {
+                $( '#sparkline_mentions' ).sparkline( data['weeklyMentions'], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_messages_sent" ).sparkline( data["weeklyMessagesSent"], {
+                $( '#sparkline_messages_sent' ).sparkline( data['weeklyMessagesSent'], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_messages_recieved" ).sparkline( data["weeklyMessagesRecieved"], {
+                $( '#sparkline_messages_recieved' ).sparkline( data['weeklyMessagesRecieved'], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_clicks" ).sparkline( [], {
+                $( '#sparkline_clicks' ).sparkline( [], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
-                $( "#sparkline_retweets" ).sparkline( [], {
+                $( '#sparkline_retweets' ).sparkline( [], {
                     type: 'bar', padding: '0px', barWidth: '4', height: '30', barColor: '#00aced', barSpacing: '3'
                 });
             },
 
             error => console.log( error ),
-            () => console.log( "Twitter Weekly Report finished." )
+            () => console.log( 'Twitter Weekly Report finished.' )
             );
+    }
+
+    getSocialConnection(profileId: string, source: string) {
+      this.socialService.getSocialConnection(profileId, source)
+        .subscribe(
+        data => {
+          this.socialConnection = data;
+        },
+        error => console.log(error),
+        () => {}
+        );
     }
 
     ngOnInit() {
@@ -117,24 +128,24 @@ export class TwitterAnalyticsComponent implements OnInit {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             this.userId = this.authenticationService.user.id;
-            this.socialConnection = this.socialService.getSocialConnection( profileId, this.userId );
+            this.getSocialConnection( profileId, 'TWITTER' );
 
             this.getAnalytics( this.socialConnection );
             this.getWeeklyReport( this.socialConnection );
             this.getKloutData( this.socialConnection );
 
-            $( "#pulse" ).pulsate( { color: "#09f", reach: 5, glow: false });
-            $( "#pulse1" ).pulsate( { color: "#09f", reach: 5, glow: false });
-            $( ".pulse1" ).pulsate( { glow: true });
-            $( ".pulse2" ).pulsate( { color: "#09f" });
-            $( ".pulse3" ).pulsate( { reach: 10 });
-            $( ".pulse4" ).pulsate( { speed: 2500 });
-            $( ".pulse5" ).pulsate( { pause: 1000 });
-            $( ".pulse6" ).pulsate( { onHover: true });
+            $( '#pulse' ).pulsate( { color: '#09f', reach: 5, glow: false });
+            $( '#pulse1' ).pulsate( { color: '#09f', reach: 5, glow: false });
+            $( '.pulse1' ).pulsate( { glow: true });
+            $( '.pulse2' ).pulsate( { color: '#09f' });
+            $( '.pulse3' ).pulsate( { reach: 10 });
+            $( '.pulse4' ).pulsate( { speed: 2500 });
+            $( '.pulse5' ).pulsate( { pause: 1000 });
+            $( '.pulse6' ).pulsate( { onHover: true });
 
             Metronic.init(); // init metronic core componets
             Layout.init(); // init layout
-            Demo.init(); // init demo features 
+            Demo.init(); // init demo features
             QuickSidebar.init(); // init quick sidebar
             Index.init();
             Index.initDashboardDaterange();
@@ -145,9 +156,7 @@ export class TwitterAnalyticsComponent implements OnInit {
             Index.initMiniCharts();
             Tasks.initDashboardWidget();
 
-            //$(".GaugeMeter").gaugeMeter();
-        }
-        catch ( err ) {
+        } catch ( err ) {
             console.log( err );
         }
 

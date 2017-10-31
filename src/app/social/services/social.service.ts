@@ -28,18 +28,7 @@ export class SocialService {
       .catch(this.handleError);
   }
 
-  getSocialConnection(profileId: string, userId: number) {
-    if (this.socialConnections.length === 0) {
-      this.listAccounts(userId, 'ALL', 'ACTIVE');
-    }
-    for (const i in this.socialConnections) {
-      if ((profileId === this.socialConnections[i].profileId) && (userId === this.socialConnections[i].userId)) {
-        return this.socialConnections[i];
-      }
-    }
-  }
-
-  getSocialConnectionByProfileId( profileId: string, source: string ) {
+  getSocialConnection( profileId: string, source: string ) {
     return this.http.get(this.URL + `social/account/${source}/${profileId}?access_token=${this.authenticationService.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);

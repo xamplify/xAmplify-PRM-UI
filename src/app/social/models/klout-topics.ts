@@ -1,4 +1,4 @@
-export class KloutTopics{
+export class KloutTopics {
     id:  String;
     imageUrl: String;
     displayType: String;

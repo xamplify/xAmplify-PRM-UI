@@ -22,7 +22,7 @@ const routes: Routes = [
     { path: 'twitter-friends/:profileId', component: TwitterFriendsComponent },
     { path: 'twitter-followers/:profileId', component: TwitterFollowersComponent },
     { path: 'twitter-analytics/:profileId', component: TwitterAnalyticsComponent },
-    { path: 'twitter-user/:profileId', component: TwitterProfileComponent },
+    { path: 'twitter-user/:profileId1/:profileId2', component: TwitterProfileComponent },
 
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
     { path: 'facebook-posts/:profileId', component: FacebookPostsComponent },

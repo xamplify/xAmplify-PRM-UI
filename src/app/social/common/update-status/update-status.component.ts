@@ -471,7 +471,7 @@ export class UpdateStatusComponent implements OnInit {
           }
         }
         element.find('.fc-right-block')
-          .after($('<div id=" + event.id + " class="fc-left-block col-xs-3 p0"> + str + </div> '));
+          .after($(`<div id = ${event.id} class="fc-left-block col-xs-3 p0"> ${str} </div>`));
       },
       eventClick: function(event: any, element: any) {
         $('#full-calendar-modal-event-' + event.id).modal('show');
@@ -485,6 +485,7 @@ export class UpdateStatusComponent implements OnInit {
       .subscribe(
       data => {
         this.socialStatusList = data;
+        console.table(data);
         for (const i of Object.keys(this.socialStatusList)) {
           const event = {
             title: this.socialStatusList[i].statusMessage,

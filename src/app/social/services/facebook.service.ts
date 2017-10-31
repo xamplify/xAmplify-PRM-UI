@@ -8,7 +8,7 @@ import {SocialConnection} from '../models/social-connection';
 @Injectable()
 export class FacebookService {
     URL = this.authenticationService.REST_URL + 'facebook/';
-    
+
     constructor(private http: Http, private authenticationService: AuthenticationService, private utilService: UtilService) {}
 
     getPosts(socialConnection: SocialConnection) {
@@ -56,7 +56,7 @@ export class FacebookService {
     }
 
     getInsight(socialConnection: SocialConnection, ownerId: string, metrics: string, period: string) {
-        return this.http.get(this.URL + 'insights' + '?access_token=' + this.authenticationService.access_token 
+        return this.http.get(this.URL + 'insights' + '?access_token=' + this.authenticationService.access_token
                 + '&ownerId=' + ownerId + '&metrics=' + metrics + '&period=' + period + '&facebookAccessToken='+socialConnection.accessToken)
             .map(this.extractData)
             .catch(this.handleError);

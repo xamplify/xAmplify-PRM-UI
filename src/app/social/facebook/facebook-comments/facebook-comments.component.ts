@@ -16,7 +16,7 @@ export class FacebookCommentsComponent implements OnInit {
     getComments() {
         this.facebookService.getComments( this.postId, this.facebookAccessToken )
             .subscribe(
-            data => this.comments = data["data"],
+            data => this.comments = data['data'],
             error => console.log( error ),
             () => console.log( 'getComments() Finished.' )
             );

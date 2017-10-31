@@ -287,12 +287,22 @@ export class FacebookAnalyticsComponent implements OnInit {
             }]
         });
     }
+    getSocialConnection( profileId: string, source: string ) {
+      this.socialService.getSocialConnection(profileId, source)
+        .subscribe(
+          data => {
+              this.socialConnection = data;
+          },
+          error => console.log( error ),
+          () => {}
+        );
+  }
 
     ngOnInit() {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.user.id;
-            this.socialConnection = this.socialService.getSocialConnection( profileId, userId );
+            this.getSocialConnection( profileId, 'FACEBOOK' );
 
             this.getPage( this.socialConnection, profileId );
         } catch ( err ) {
