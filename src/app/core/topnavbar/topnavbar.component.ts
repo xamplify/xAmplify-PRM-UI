@@ -181,5 +181,10 @@ export class TopnavbarComponent implements OnInit {
     this.listCampaignEmailNotifications();
     this.listCampaignVideoNotifications();
   }
+  
+  logout(){
+      this.authenticationService.logout();
+      this.router.navigate(['/login']);
+  }
 
 }

@@ -10,7 +10,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 })
 export class AppComponent implements OnInit {
 
-    constructor(private logger: Logger, private slimLoadingBarService: SlimLoadingBarService, private router: Router, ) {
+    constructor(private logger: Logger, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
         logger.level = logger.Level.LOG;
         this.logger.log('AppComponent constructor');
     }

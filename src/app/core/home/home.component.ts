@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReferenceService } from '../services/reference.service';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+declare var $:any;
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,18 @@ import { UserService } from '../services/user.service';
 
 export class HomeComponent implements OnInit {
         public refcategories: any;
-	    constructor(public referenceService: ReferenceService, public userService: UserService) {  }
+	    constructor(public referenceService: ReferenceService, public userService: UserService,private router:Router) { 
+	        this.isAuthorized();
+	    }
+	    
+	    
+	    isAuthorized():boolean{
+	        if(!localStorage.getItem( 'currentUser' )){
+	            $('.page-container,.page-header.navbar.navbar-fixed-top').html('');
+                this.router.navigateByUrl('/login');
+                return false;
+            }
+	    }
 	    getCategorisService() {
 	        this.referenceService.getCategories()
 	            .subscribe((result: any) => {
@@ -43,6 +56,7 @@ export class HomeComponent implements OnInit {
 			this.getVideoDefaultSettings();
 			this.referenceService.defaulgVideoMethodCalled = true;
 			}
+			
        }
 
 }

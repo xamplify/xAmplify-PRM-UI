@@ -85,59 +85,62 @@ export class LoginComponent implements OnInit {
        if(this.model.username.length === 0 || this.model.password.length === 0) {
          this.logErrorEmpty()
         } else {
-        this.loading = true;
-        const userName = this.model.username.toLowerCase();
-        this.refService.userName = userName;
-        const authorization = 'Basic ' + btoa( 'my-trusted-client:');
-        const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-        this.authenticationService.login(authorization, body, userName).subscribe( result => {
-            if ( localStorage.getItem( 'currentUser' ) ) {
-                this.initializeTwitterNotification();
-                // if user is coming from login
-             //   this.getLoggedInUserDetails();
-                let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
-                console.log(currentUser)
-                console.log(currentUser.hasCompany);
-                if(currentUser.hasCompany){
-                    this.router.navigate( ['/home/dashboard/default'] );
-                }else{
-                    this.router.navigate( ['/home/dashboard/add-company-profile'] );
-                }
-                // if user is coming from any link
-                if (this.authenticationService.redirectUrl) {
-                    this.router.navigate([this.authenticationService.redirectUrl]);
-                    this.authenticationService.redirectUrl = null;
-                }
+            if(localStorage.getItem( 'currentUser' )){
+                this.router.navigate( ['/home/dashboard/default'] );
+                return false
+            }else{
+                this.loading = true;
+                const userName = this.model.username.toLowerCase();
+                this.refService.userName = userName;
+                const authorization = 'Basic ' + btoa( 'my-trusted-client:');
+                const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
+                this.authenticationService.login(authorization, body, userName).subscribe( result => {
+                    if ( localStorage.getItem( 'currentUser' ) ) {
+                        this.initializeTwitterNotification();
+                        // if user is coming from login
+                     //   this.getLoggedInUserDetails();
+                        let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                        console.log(currentUser);
+                        console.log(currentUser.hasCompany);
+                        if(currentUser.hasCompany){
+                            this.router.navigate( ['/home/dashboard/default'] );
+                        }else{
+                            this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                        }
+                        // if user is coming from any link
+                        if (this.authenticationService.redirectUrl) {
+                            this.router.navigate([this.authenticationService.redirectUrl]);
+                            this.authenticationService.redirectUrl = null;
+                        }
+                        
+                    } else {
+                        this.logError();
+                    }
+                },
+                    //err => this.logError(),
+                   // () => console.log( 'login() Complete' ),
                 
-            } else {
-                this.logError();
+                (error:any)=>{
+                     var body = error['_body'];
+                     if ( body != "" ) {
+                         var response = JSON.parse( body );
+                         if ( response.error_description == "Bad credentials" ) {
+                             this.error = 'Username or password is incorrect';
+                              setTimeout(()=> {
+                                  this.error = '';
+                              },5000)
+                         }else if(response.error_description == "User is disabled" ){
+                             this.error = 'Your account is not activated.!';
+                             setTimeout(()=> {
+                                 this.error = '';
+                             },5000)
+                         }
+                     }
+                    console.log("error:" + error)
+                    
+                });
+                return false;
             }
-        },
-            //err => this.logError(),
-           // () => console.log( 'login() Complete' ),
-            
-            
-        
-        (error:any)=>{
-        	 var body = error['_body'];
-        	 if ( body != "" ) {
-                 var response = JSON.parse( body );
-                 if ( response.error_description == "Bad credentials" ) {
-                	 this.error = 'Username or password is incorrect';
-                	  setTimeout(()=> {
-                          this.error = '';
-                      },5000)
-                 }else if(response.error_description == "User is disabled" ){
-                	 this.error = 'Your account is not activated.!';
-                     setTimeout(()=> {
-                         this.error = '';
-                     },5000)
-                 }
-        	 }
-            console.log("error:" + error)
-            
-        });
-        return false;
       }
     }
     logError() {
@@ -158,9 +161,13 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         try {
             console.log( "ngOnInit(): LoginComponent" );
-            this.authenticationService.logout();
-            this.refService.topNavBarUserDetails.displayName = "Loading....";
-            this.refService.topNavBarUserDetails.profilePicutrePath = "assets/images/profile-pic.gif";
+            if(localStorage.getItem( 'currentUser' )){
+                this.router.navigate( ['/home/dashboard/default'] );
+                return false;
+            }
+          //  this.authenticationService.logout();
+           /* this.refService.topNavBarUserDetails.displayName = "Loading....";
+            this.refService.topNavBarUserDetails.profilePicutrePath = "assets/images/profile-pic.gif";*/
             Metronic.init();
             Layout.init();
             Login.init();

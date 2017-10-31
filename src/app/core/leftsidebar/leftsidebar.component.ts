@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {Router} from '@angular/router';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {Roles} from '../../core/models/roles';
 import {ReferenceService} from '../../core/services/reference.service';
@@ -19,7 +20,7 @@ export class LeftsidebarComponent implements OnInit {
     isVideo = false;
     isOrgAdmin = false;
     roleName: Roles= new Roles();
-    constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService) {
+    constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
         this.location = location;
         const url = this.location.path();
         if ( url.indexOf('dashboard') >= 0) {
@@ -73,6 +74,11 @@ export class LeftsidebarComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+  
+  logout(){
+      this.authService.logout();
+      this.router.navigate(['/login']);
   }
 
 }
