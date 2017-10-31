@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
+import { Criteria } from '../models/criteria';
 import { CustomeResponse } from '../models/response';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
@@ -45,6 +46,9 @@ export class EditContactsComponent implements OnInit {
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
     
+    criteria = new Criteria();
+    criterias = new Array<Criteria>();
+    filterValue: any;
     
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -170,6 +174,25 @@ export class EditContactsComponent implements OnInit {
                
                isPartner: boolean;
                checkingContactTypeName: string;
+               
+               filterOptions = [
+                                { 'name': '', 'value': 'Field Name'},
+                                { 'name': 'firstName', 'value': 'firstName'},
+                                { 'name': 'lastName', 'value': 'lastName'},
+                                { 'name': 'Company', 'value': 'company'},
+                                { 'name': 'JobTitle', 'value': 'jobTitle'},
+                                { 'name': 'country', 'value': 'country'},
+                                ];
+            filterOption = this.filterOptions[0];
+            
+            filterConditions = [
+                             { 'name': '', 'value': 'Condition'},
+                             { 'name': 'eq', 'value': '='},
+                             { 'name': 'lt', 'value': '<'},
+                             { 'name': 'gt', 'value': '>'},
+                             { 'name': 'like', 'value': 'like'},
+                             ];
+            filterCondition = this.filterConditions[0];
 
     constructor( public refService:ReferenceService,private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private router: Router,
@@ -1303,6 +1326,19 @@ export class EditContactsComponent implements OnInit {
            $('#more_'+i).addClass('hidden');
            $("#more_less_button_"+i).attr('value', 'more');
        }
+   }
+   
+   contactFilter(){
+       console.log("filterValue "+ this.filterValue);
+       console.log("filterOption "+  this.filterOption.name);
+       console.log("filterCondition "+this.filterCondition.name);
+       
+       this.criteria.property = this.filterOption.name;
+       this.criteria.value1 = this.filterValue;
+       this.criteria.operation = this.filterCondition.name;
+       
+       this.criterias.push(this.criteria);
+       console.log( this.criteria );
    }
    
     ngOnInit() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
+import { Criteria } from '../models/criteria';
 import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
 import { CustomeResponse } from '../models/response';
@@ -28,6 +29,7 @@ declare let jsPDF;
     templateUrl: './manage-contacts.component.html',
     providers: [SocialContact, Pagination]
 })
+
 export class ManageContactsComponent implements OnInit {
     public show: boolean = false;
     public deleteUserSucessMessage: boolean = false;
@@ -35,7 +37,10 @@ export class ManageContactsComponent implements OnInit {
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
     contactsNotSelectedError: boolean = false;
-contactListObject: ContactList;
+    contactListObject: ContactList;
+    criteria = new Criteria();
+    criterias = new Array<Criteria>();
+    filterValue: any;
     
     hasContactRole:boolean = false;
     loggedInUserId = 0;
@@ -134,6 +139,25 @@ contactListObject: ContactList;
                                 ];
     sortOptionForPagination = this.sortOptionsForPagination[0];
     public sortOption: any = this.sortOptions[0];
+    
+    filterOptions = [
+                        { 'name': '', 'value': 'Field Name'},
+                        { 'name': 'firstName', 'value': 'firstName'},
+                        { 'name': 'lastName', 'value': 'lastName'},
+                        { 'name': 'Company', 'value': 'company'},
+                        { 'name': 'JobTitle', 'value': 'jobTitle'},
+                        { 'name': 'country', 'value': 'country'},
+                        ];
+    filterOption = this.filterOptions[0];
+    
+    filterConditions = [
+                     { 'name': '', 'value': 'Condition'},
+                     { 'name': 'eq', 'value': '='},
+                     { 'name': 'lt', 'value': '<'},
+                     { 'name': 'gt', 'value': '>'},
+                     { 'name': 'like', 'value': 'like'},
+                     ];
+    filterCondition = this.filterConditions[0];
     
     isPartner: boolean;
     checkingContactTypeName: string;
@@ -991,6 +1015,18 @@ contactListObject: ContactList;
         }
     }
     
+    contactFilter(){
+        console.log("filterValue "+ this.filterValue);
+        console.log("filterOption "+  this.filterOption.name);
+        console.log("filterCondition "+this.filterCondition.name);
+        
+        this.criteria.property = this.filterOption.name;
+        this.criteria.value1 = this.filterValue;
+        this.criteria.operation = this.filterCondition.name;
+        
+        this.criterias.push(this.criteria);
+        console.log( this.criteria );
+    }
 
     ngOnInit() {
         try {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ContactList } from '../models/contact-list';
+import { Criteria } from '../models/criteria';
 import { SocialContact } from '../models/social-contact';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';

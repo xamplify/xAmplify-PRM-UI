@@ -85,6 +85,10 @@ a.disabled {
 							</ul>
 							<div class="page-toolbar" *ngIf="showEditContactData">
 								<div class="btn-group pull-right">
+								<div class="inputs" align="right" style="float: right">
+										<div style="float: left;cursor:pointer; margin-right: 10px" data-toggle="modal" data-target="#filterModal">
+											<i class="fa fa-filter" aria-hidden="true" style="color:#0095da;font-size:30px;margin-top:10px;"></i>
+										</div>
 									<div class="inputs" align="right" style="float: right">
 										<div style="float: left; margin-right: 10px; width: 50%">
 											<select class="form-control" [(ngModel)]="sortOption"
@@ -960,5 +964,79 @@ a.disabled {
 			</li>
 		</ul>
 	</div>
+</div>
+
+<div id="filterModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Contacts filtering</h4>
+      </div>
+      <div class="modal-body" style="padding:28px;">
+      <div class="row">
+        <div class="form-group">
+		    <div class="form-inline">
+		   <div class="form-group col-sm-3">
+			      <select class="form-control"
+					[(ngModel)]="filterOption">
+					<ng-container
+						*ngFor="let filterOption of filterOptions; let i = index">
+					<option [ngValue]="filterOption">{{filterOption.value}}</option>
+					</ng-container>
+				</select>
+		  </div> 
+		   <div class="form-group col-sm-3">
+			      <select class="form-control"
+					[(ngModel)]="filterCondition">
+					<ng-container
+						*ngFor="let filterCondition of filterConditions; let i = index">
+					<option [ngValue]="filterCondition">{{filterCondition.value}}</option>
+					</ng-container>
+				</select>
+		  </div>
+		  <div class="form-group col-sm-6">
+		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="filterValue">
+		  </div>
+		  </div>
+		  </div>
+		  
+		  <!-- <div class="form-group">
+		    <div class="form-inline">
+		   <div class="form-group col-sm-3">
+			      <select class="form-control"
+					[(ngModel)]="filterOption">
+					<ng-container
+						*ngFor="let filterOption of filterOptions; let i = index">
+					<option [ngValue]="filterOption">{{filterOption.value}}</option>
+					</ng-container>
+				</select>
+		  </div> 
+		   <div class="form-group col-sm-3">
+			      <select class="form-control"
+					[(ngModel)]="filterCondition">
+					<ng-container
+						*ngFor="let filterCondition of filterConditions; let i = index">
+					<option [ngValue]="filterCondition">{{filterCondition.value}}</option>
+					</ng-container>
+				</select>
+		  </div>
+		  <div class="form-group col-sm-6">
+		  	<input type="text" class="form-control">
+		  </div>
+		  </div>
+		  </div> -->
+		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default"(click)="contactFilter()">Submit</button>
+        <!-- <button type="button" class="btn btn-default"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 <!-- END PAGE CONTENT -->
