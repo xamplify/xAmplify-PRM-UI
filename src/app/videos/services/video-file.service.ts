@@ -117,7 +117,7 @@ export class VideoFileService {
     saveCalltoActionUser(user: User) {
         console.log(user);
         try {
-            const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
+            const url = this.URL + 'user/save-call-action-user';
             return this.http.post(url, user)
                 .map(this.extractData)
                 .catch(this.handleError);
@@ -130,6 +130,13 @@ export class VideoFileService {
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         } catch (error) { console.log(error); }
+    }
+    showCampaignEmail(campaignAlias: string, userAlias: string, templateId: number) {
+        const url =  this.authenticationService.REST_URL;
+        return this.http.post(url + 'user/showCampaignEmail?campaignAlias=' + campaignAlias + '&userAlias=' +
+            userAlias + '&templateId=' + templateId, '')
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     logEmbedVideoActions(xtremandLog: XtremandLog) {
         xtremandLog.campaignId = 0;

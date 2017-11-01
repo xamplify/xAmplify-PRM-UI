@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { LogService } from '../../core/services/log.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
 declare var $: any;
 
 @Component({
@@ -18,7 +18,7 @@ export class LogRegularCampaignComponent implements OnInit {
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
-  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, public LogService: LogService) {
+  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, public videoFileService: VideoFileService) {
     this.xtremandLogger.log('Ui regular campaign called');
   }
 
@@ -35,15 +35,11 @@ export class LogRegularCampaignComponent implements OnInit {
 
   getRegularTemplateHtml() {
     try {
-      this.LogService.showCampaignEmail(this.campaignAlias, this.userAlias, this.templateId)
+      this.videoFileService.showCampaignEmail(this.campaignAlias, this.userAlias, this.templateId)
         .subscribe((result: any) => {
-              this.templatehtml = result._body;
-            //  this.templatehtml = result.templatehtml;
+              this.templatehtml = result.templatehtml;
               this.xtremandLogger.log(this.templatehtml);
               let updatedBody = this.templatehtml;
-              updatedBody = updatedBody.replace("templatehtml", "");
-              updatedBody = updatedBody.replace("{", "");
-              updatedBody = updatedBody.replace(/\\/g, "");
               updatedBody = updatedBody.replace("view in browser", '');
               updatedBody = updatedBody.replace("SocialUbuntuURL", '');
               updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
@@ -56,7 +52,6 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<company_name></company_name>", "");
               updatedBody = updatedBody.replace("<Company_Logo>", '');
               updatedBody = updatedBody.replace("<Title_here>", '');
-              updatedBody = updatedBody.replace("n ", "");
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
         }, (error: any) => {

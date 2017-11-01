@@ -29,12 +29,6 @@ export class LogService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    showCampaignEmail(campaignAlias: string, userAlias: string, templateId: number) {
-        return this.http.post(this.URL + 'user/showCampaignEmail?campaignAlias=' + campaignAlias + '&userAlias=' +
-            userAlias + '&templateId=' + templateId, '')
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
     private extractData(res: Response) {
         console.log(res);
         let body = res;
