@@ -847,7 +847,7 @@ export class EditContactsComponent implements OnInit {
         this.xtremandLogger.info( "manageContacts editContactList #contactSelectedListId " + contactSelectedListId );
         this.selectedContactListId = contactSelectedListId;
         this.currentContactType = "all_contacts";
-        this.contactService.loadUsersOfContactList( contactSelectedListId, pagination ).subscribe(
+         this.contactService.loadUsersOfContactList( contactSelectedListId, pagination ).subscribe(
             ( data: any ) => {
                 this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                 this.contacts = data.listOfUsers;
@@ -1339,6 +1339,7 @@ export class EditContactsComponent implements OnInit {
        
        this.criterias.push(this.criteria);
        console.log( this.criteria );
+       this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
    }
    
     ngOnInit() {

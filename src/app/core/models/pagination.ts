@@ -1,4 +1,6 @@
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+ import { Criteria } from '../../contacts/models/criteria';
+
 export class Pagination {
 	    pageIndex: number = 1 ;
 		maxResults :number=10;
@@ -18,5 +20,6 @@ export class Pagination {
         isEmailTemplateSearchedFromCampaign:boolean=false;
         filterKey: string = null;
         filterValue: any = null;
+        criterias : Criteria[]= null;
 
 }

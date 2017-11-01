@@ -41,8 +41,10 @@ export class ContactService {
         console.log( logger );
     }
     
-    loadUsersOfContactList( contactListId: number, pagination: Pagination ): Observable<User[]> {
-        return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
+    loadUsersOfContactList( contactListId: number, criterias: Array<Criteria>, pagination: Pagination ): Observable<any> {
+    
+    	pagination.criterias=criterias;
+    	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
