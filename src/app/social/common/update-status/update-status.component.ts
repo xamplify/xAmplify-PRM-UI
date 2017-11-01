@@ -303,6 +303,7 @@ export class UpdateStatusComponent implements OnInit {
       .subscribe(
       result => {
         this.socialService.socialConnections = result;
+        console.table(result);
       },
       error => console.log(error),
       () => {
@@ -534,6 +535,8 @@ export class UpdateStatusComponent implements OnInit {
       data => {
         this.socialStatus = data;
         this.socialStatus.shareNow = true;
+        this.socialStatus.isPartner = true;
+        this.socialStatus.emailOpened = false;
       },
       error => this.router.navigate(['/home/error/404']),
       () => {

@@ -70,7 +70,7 @@
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
 									<li *ngFor="let item of notifications">
-										<a [routerLink]="['social/twitter-user', item.targetUrl]">
+										<a [routerLink]="[item.targetUrl]">
 										<span class="time">{{item.createdTime | date: 'shortTime'}}</span>
 										<span class="details">
 										<span class="label label-sm label-icon label-success">
