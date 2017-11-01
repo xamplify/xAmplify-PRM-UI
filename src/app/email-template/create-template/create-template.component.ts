@@ -226,7 +226,11 @@ export class CreateTemplateComponent implements OnInit {
 	         },{
                  name: 'Full Name',
                  value: '{{fullName}}'
-	         }];
+	         }
+	         ,{
+                 name: 'Email Id',
+                 value: '{{emailId}}'
+             }];
 	      var beeUserId = "bee-"+loggedInUserId;
 	      var beeConfig = {  
 	        uid: beeUserId,

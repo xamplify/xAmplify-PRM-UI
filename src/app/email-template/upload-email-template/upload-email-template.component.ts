@@ -49,7 +49,7 @@ export class UploadEmailTemplateComponent implements OnInit {
             private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
-        this.emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}}";
+        this.emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
         this.loggedInUserId = this.authenticationService.getUserId();
        
         if(this.emailTemplateService.isRegularUpload==undefined){
