@@ -92,8 +92,11 @@
 	                				'alert-warning': customResponse.type === 2,
 	                				'alert-danger': customResponse.type === 3}">
 	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.statusText = null"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="m0">{{customResponse.statusText}}</h4>
-	                    <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+	                    <h4 class="m0 bold">{{customResponse.statusText}}</h4>
+	                    <ng-container *ngIf='customResponse.statusArray'>
+	                    	<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+	                    </ng-container>
+	                    
 	                </div>
                 </section>
                 <div class="col-sm-12">
@@ -221,7 +224,17 @@
             </div>
 			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix" style="padding: 15px;">
-					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
+				    <div class="form-group m0 pull-right">
+						<h5 class="control-label font-purple-intense pr10">Partner Contacts</h5>
+						<switch [status]="socialStatus.isPartner"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+							   (statusChange)="toggleContactLists()">
+						</switch>
+			  		</div>
+					<div class="form-group m0">
+				    	<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
+				    </div>
+				    
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
 						<div class='alert alert-info' role='alert'>
 							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
@@ -230,7 +243,7 @@
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
-							<table class="table table-condensed table-hover table-bordered table-striped">
+							<table class="table table-condensed table-hover table-bordered table-striped" id='contact-list-table'>
 								<thead>
 									<tr>
 										<th>Select</th>
@@ -307,31 +320,32 @@
 	                            <table class="table table-hover" id="list-videos-table">
 	                                <thead>
 	                                    <tr>
-	                                        <th>Select</th>
+	                                        <th style="width: 20%">Select</th>
 	                                        <th>Video File Name</th>
-	                                        <th></th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                                    <tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index">
-	                                        <td (click)="previewVideo(video)">
-	                                        	<input type="radio" name="videoPath" [checked]="i === 0">
-	                                        	<img alt="{{video.title}}" src="{{video.imagePath}}" height="24px" width="auto">
+	                                        <td (click)="previewVideo(video)" style="width: 20%">
+	                                        	<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>
+	                                        	<img alt="{{video.title}}" src="{{video.imagePath}}" height="24px" width="auto" class='pl10 align-middle'>
                                         	</td>
 	                                        <td (click)="previewVideo(video)">
 	                                        	<h5>{{video.title}}</h5>
-	                                        	<h6 style="margin: 5px 0 0 0">{{video.videoLength}}</h6>
+	                                        	<h6 style="margin: 3px 0 0 0">{{video.videoLength}}</h6>
 	                                        </td>
-	                                        <td>
-	                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
-	                                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
-	                                        </td>
+	                                        <!-- 
+		                                        <td>
+		                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
+		                                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
+		                                        </td>
+	                                         -->
 	                                    </tr>
 	                                </tbody>
 	                            </table>
                             </div>
                             <!--pager here  -->
-							 <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
+							 <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination m0 p0">
                                            <li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
                                               <a (click)="setPageVideos(1)" [class.disabled]="videosPagination.pager.currentPage === 1">First</a>
                                            </li>

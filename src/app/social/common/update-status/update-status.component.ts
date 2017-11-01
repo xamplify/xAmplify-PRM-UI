@@ -181,7 +181,7 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   countSelectedSocialAccounts() {
-    return this.socialStatus.socialStatusProviders.filter((x, i) => {return x.selected; }).length;
+    return this.socialStatus.socialStatusProviders.filter((x, i) => {return x.selected;}).length;
   }
 
   isSocialAccountsSelected() {
@@ -226,6 +226,7 @@ export class UpdateStatusComponent implements OnInit {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialStatus.campaignName = null;
           $('input:checkbox').removeAttr('checked');
+          $('#contact-list-table tr').removeClass("highlight");
         },
         error => {
           this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
@@ -345,8 +346,8 @@ export class UpdateStatusComponent implements OnInit {
     }
   }
 
-  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden'); }
-  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden'); }
+  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden');}
+  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden');}
 
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
@@ -386,6 +387,8 @@ export class UpdateStatusComponent implements OnInit {
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 
   loadContactLists(contactListsPagination: Pagination) {
+    this.contactListsPagination.filterKey = 'isPartnerUserList';
+    this.contactListsPagination.filterValue = this.socialStatus.isPartner;
     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
@@ -485,7 +488,6 @@ export class UpdateStatusComponent implements OnInit {
       .subscribe(
       data => {
         this.socialStatusList = data;
-        console.table(data);
         for (const i of Object.keys(this.socialStatusList)) {
           const event = {
             title: this.socialStatusList[i].statusMessage,
@@ -538,6 +540,12 @@ export class UpdateStatusComponent implements OnInit {
         this.listSocialStatusProviders();
       }
       );
+  }
+
+  toggleContactLists() {
+    this.socialStatus.isPartner = !this.socialStatus.isPartner;
+    this.contactListsPagination.pageIndex = 1; 
+    this.loadContactLists(this.contactListsPagination);
   }
 
   ngOnInit() {

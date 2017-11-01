@@ -74,6 +74,23 @@ export class TopnavbarComponent implements OnInit {
     }
   }
 
+  listNotifications(){
+      this.twitterService.listNotifications(this.authenticationService.getUserId())
+      .subscribe(
+      data => {
+          this.notifications = data;
+          let count = 0;
+          for (const i in this.notifications) {
+            if (this.notifications[i].read === false) {
+              count = count + 1;
+            }
+          }
+          this.notificationsCount = count;
+      },
+      error => console.log(error),
+      () => console.log('Finished')
+      );
+  }
 
   listTwitterNotifications() {
     setInterval(() => {
@@ -178,6 +195,7 @@ export class TopnavbarComponent implements OnInit {
 
   ngOnInit() {
     //this.listTwitterNotifications();
+    this.listNotifications();
     this.listCampaignEmailNotifications();
     this.listCampaignVideoNotifications();
   }

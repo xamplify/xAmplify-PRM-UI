@@ -330,5 +330,9 @@ tr.highlight {
 }
 
 .white{
-	
+	color: #fff;	
+}
+
+.align-middle{
+	vertical-align: middle;
 }

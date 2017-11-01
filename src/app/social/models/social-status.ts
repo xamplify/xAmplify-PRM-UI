@@ -26,4 +26,5 @@ export class SocialStatus {
   userListIds: number[] = [];
   socialCampaign = false;
   emailOpened = false;
+  isPartner = true;
 }
