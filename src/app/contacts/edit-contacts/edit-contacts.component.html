@@ -71,7 +71,7 @@ a.disabled {
 </div>
 <div class="clearfix" id="manageContacts">
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-xs-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
 
 				<div class="tab-content">
@@ -212,7 +212,7 @@ a.disabled {
 			</div>
 		</div>
 	</div>
-		<div *ngIf="response.responseType != null">
+		<div class="col-sm-12" *ngIf="response.responseType != null">
 					<div class="alert alert-dismissible" role="alert"
 						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
   									'alert-danger': response.responseType == 'ERROR'}">
@@ -228,8 +228,8 @@ a.disabled {
 						</h4>
 					</div>
 				</div>
-	<div class="row" *ngIf="showEditContactData">
-		<div class="col-md-12">
+	<div *ngIf="showEditContactData">
+		<div class="col-xs-12">
 			<!-- BEGIN EXAMPLE TABLE PORTLET-->
 			<div class="portlet box blue">
 				<div class="portlet-title">
@@ -385,7 +385,7 @@ a.disabled {
 					</div>
 
 					<div class="row" id="file_preview" *ngIf="filePrevew">
-						<div class="col-md-12">
+						<div class="col-xs-12">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet box blue">
 								<div class="portlet-title">
@@ -793,7 +793,7 @@ a.disabled {
 			</div>
 		</div>
 	</div> -->
-	<div class="col-md-12" style="margin-top: 15px">
+	<div class="col-xs-12" style="margin-top: 15px">
 		<!-- <div *ngIf="noContactsFound1==true" class="col-md-6"
 			class="col-md-9 alert alert-info alert-dismissable"
 			style="width: 100%">
@@ -810,7 +810,7 @@ a.disabled {
   				<span [innerHTML]="response.responseMessage"></span>
 			</div>
 	</div>
-	<div class="col-md-12" style="margin-top: 12px"
+	<div class="col-xs-12" style="margin-top: 12px"
 		id="hidingListOfUsersTable">
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<div class="portlet box blue">
@@ -822,7 +822,7 @@ a.disabled {
 			<div class="portlet-body">
 				<div class="table-toolbar">
 					<div class="row">
-						<div class="col-md-12" style="align: right">
+						<div class="col-xs-12" style="align: right">
 							<div class="btn-group pull-right" *ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
 								<button class="btn dropdown-toggle" data-toggle="dropdown">
 									Tools <i class="fa fa-angle-down"></i>
