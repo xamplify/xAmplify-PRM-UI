@@ -890,7 +890,7 @@ img:hover {
 		    <div class="col-sm-10">
 		    <!-- <ngx-intl-tel-input [(value)]="addContactuser.mobileNumber"></ngx-intl-tel-input> -->
 		     <!-- <input type="tel" id="phone"> -->
-		      <input type="number" style="border:none" class="form-control" id="phone" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
+		      <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" style="border:none" class="form-control" id="phone" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
 		    <div class="textCss"></div>
 		    
 		    </div>
