@@ -177,11 +177,11 @@ export class EditContactsComponent implements OnInit {
                
                filterOptions = [
                                 { 'name': '', 'value': 'Field Name'},
-                                { 'name': 'firstName', 'value': 'firstName'},
-                                { 'name': 'lastName', 'value': 'lastName'},
-                                { 'name': 'Company', 'value': 'company'},
-                                { 'name': 'JobTitle', 'value': 'jobTitle'},
-                                { 'name': 'country', 'value': 'country'},
+                                { 'name': 'firstName', 'value': 'First Name'},
+                                { 'name': 'lastName', 'value': 'Last Name'},
+                                { 'name': 'Company', 'value': 'Company'},
+                                { 'name': 'JobTitle', 'value': 'Job Title'},
+                                { 'name': 'country', 'value': 'Country'},
                                 ];
             filterOption = this.filterOptions[0];
             
@@ -1316,6 +1316,8 @@ export class EditContactsComponent implements OnInit {
        }
    }
    
+   
+  
    toggle(i: number){
        const className = $('#more_'+i).attr('class');
        if(className === 'hidden'){
@@ -1327,6 +1329,13 @@ export class EditContactsComponent implements OnInit {
            $('#more_'+i).addClass('hidden');
            $("#more_less_button_"+i).attr('value', 'more');
        }
+   }
+   modelForSeg(){
+       this.addNewRow();
+   }
+   addNewRow(){
+       let criteria = new Criteria();
+       this.criterias.push( criteria );
    }
    
    contactFilter(){
@@ -1341,6 +1350,9 @@ export class EditContactsComponent implements OnInit {
        this.criterias.push(this.criteria);
        console.log( this.criteria );
        this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+       this.criterias.length = 0;
+       $( "#filterModal .close" ).click()
+
    }
    
     ngOnInit() {

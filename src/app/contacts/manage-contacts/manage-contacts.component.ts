@@ -142,11 +142,11 @@ export class ManageContactsComponent implements OnInit {
     
     filterOptions = [
                         { 'name': '', 'value': 'Field Name'},
-                        { 'name': 'firstName', 'value': 'firstName'},
-                        { 'name': 'lastName', 'value': 'lastName'},
-                        { 'name': 'Company', 'value': 'company'},
-                        { 'name': 'JobTitle', 'value': 'jobTitle'},
-                        { 'name': 'country', 'value': 'country'},
+                        { 'name': 'firstName', 'value': 'First Name'},
+                        { 'name': 'lastName', 'value': 'Last Name'},
+                        { 'name': 'Company', 'value': 'Company'},
+                        { 'name': 'JobTitle', 'value': 'Job Title'},
+                        { 'name': 'country', 'value': 'Country'},
                         ];
     filterOption = this.filterOptions[0];
     
@@ -1026,8 +1026,18 @@ export class ManageContactsComponent implements OnInit {
         
         this.criterias.push(this.criteria);
         console.log( this.criteria );
+        this.criterias.length = 0;
+        $( "#filterModal .close" ).click()
     }
 
+    modelForSeg(){
+        this.addNewRow();
+    }
+    addNewRow(){
+        let criteria = new Criteria();
+        this.criterias.push( criteria );
+    }
+    
     ngOnInit() {
         try {
             this.loadContactLists( this.pagination );
