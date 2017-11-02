@@ -1838,6 +1838,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     
     addContactModalOpen(){
         $( "#addContactModal" ).show();
+        this.addContactuser.country = (this.countries[0]);
     }
     
     addContactModalClose(){

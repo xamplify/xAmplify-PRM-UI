@@ -537,6 +537,7 @@ export class EditContactsComponent implements OnInit {
            }
         this.fileTypeError = false;
         this.noContactsFound = false;
+        this.addContactuser = new User();
     }
 
     cancelRow( rowId: number ) {
@@ -1235,6 +1236,7 @@ export class EditContactsComponent implements OnInit {
    
    addContactModalOpen(){
        $( "#addContactModal" ).show();
+       this.addContactuser.country = (this.countries[0]);
    }
    
    addContactModalClose(){
@@ -1283,6 +1285,7 @@ export class EditContactsComponent implements OnInit {
            },*/
            allowOutsideClick: false
          }).then( function( name: any ) {
+             
              self.saveDuplicateContactList(name);
          })
    }
