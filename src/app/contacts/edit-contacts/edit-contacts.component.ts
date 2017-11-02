@@ -188,8 +188,6 @@ export class EditContactsComponent implements OnInit {
             filterConditions = [
                              { 'name': '', 'value': 'Condition'},
                              { 'name': 'eq', 'value': '='},
-                             { 'name': 'lt', 'value': '<'},
-                             { 'name': 'gt', 'value': '>'},
                              { 'name': 'like', 'value': 'like'},
                              ];
             filterCondition = this.filterConditions[0];
@@ -1335,24 +1333,18 @@ export class EditContactsComponent implements OnInit {
    }
    modelForSeg(){
        this.addNewRow();
+       this.criteria.property = this.filterOptions[0].value;
+       this.criteria.operation = this.filterConditions[0].value;
    }
+   
    addNewRow(){
        let criteria = new Criteria();
        this.criterias.push( criteria );
    }
    
    contactFilter(){
-       console.log("filterValue "+ this.filterValue);
-       console.log("filterOption "+  this.filterOption.name);
-       console.log("filterCondition "+this.filterCondition.name);
-       
-       this.criteria.property = this.filterOption.name;
-       this.criteria.value1 = this.filterValue;
-       this.criteria.operation = this.filterCondition.name;
-       
-       this.criterias.push(this.criteria);
-       console.log( this.criteria );
-       this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+       console.log(this.criterias);
+       // this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
        this.criterias.length = 0;
        $( "#filterModal .close" ).click()
 

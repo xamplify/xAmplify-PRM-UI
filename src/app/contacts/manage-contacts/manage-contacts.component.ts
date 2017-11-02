@@ -153,8 +153,6 @@ export class ManageContactsComponent implements OnInit {
     filterConditions = [
                      { 'name': '', 'value': 'Condition'},
                      { 'name': 'eq', 'value': '='},
-                     { 'name': 'lt', 'value': '<'},
-                     { 'name': 'gt', 'value': '>'},
                      { 'name': 'like', 'value': 'like'},
                      ];
     filterCondition = this.filterConditions[0];
@@ -854,6 +852,8 @@ export class ManageContactsComponent implements OnInit {
         this.httpRequestLoader.isHorizontalCss = true;
         this.contactsByType.pagination.filterKey = 'isPartnerUserList';
         this.contactsByType.pagination.filterValue = this.isPartner;
+        this.contactsByType.pagination.criterias = this.criterias;
+        
         this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -1016,21 +1016,14 @@ export class ManageContactsComponent implements OnInit {
     }
     
     contactFilter(){
-        console.log("filterValue "+ this.filterValue);
-        console.log("filterOption "+  this.filterOption.name);
-        console.log("filterCondition "+this.filterCondition.name);
-        
-        this.criteria.property = this.filterOption.name;
-        this.criteria.value1 = this.filterValue;
-        this.criteria.operation = this.filterCondition.name;
-        
-        this.criterias.push(this.criteria);
-        console.log( this.criteria );
+        console.log( this.criterias );
         this.criterias.length = 0;
         $( "#filterModal .close" ).click()
     }
 
     modelForSeg(){
+        this.criteria.property = this.filterOptions[0].value;
+        this.criteria.operation = this.filterConditions[0].value;
         this.addNewRow();
     }
     addNewRow(){

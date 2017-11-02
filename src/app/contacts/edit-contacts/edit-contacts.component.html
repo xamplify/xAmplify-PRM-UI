@@ -973,29 +973,26 @@ a.disabled {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Contacts filtering</h4>
+        <h4 class="modal-title">Segmentation</h4>
       </div>
       <div class="modal-body" style="padding:28px;">
-      <div class="row" *ngFor="let addRow of criterias">
+      <div class="row" *ngFor="let addRow of criterias; let i = index">
         <div class="form-group">
 		    <div class="form-inline">
 		   <div class="form-group col-sm-3">
 			      <select class="form-control" 
-					[(ngModel)]="addRow.filterOption">
-					<option *ngFor="let filterOption of filterOptions; let i = index" [value]="filterOption.value" [ngValue]="0">{{filterOption.value}}</option>
+					[(ngModel)]="criterias[i].property">
+					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.value}}</option>
 				</select>
 		  </div> 
 		   <div class="form-group col-sm-3">
 			      <select class="form-control"
-					[(ngModel)]="addRow.filterCondition">
-					<ng-container
-						*ngFor="let filterCondition of filterConditions; let i = index">
-					<option [ngValue]="filterCondition">{{filterCondition.value}}</option>
-					</ng-container>
+					[(ngModel)]="criterias[i].operation">
+					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
 				</select>
 		  </div>
 		  <div class="form-group col-sm-6">
-		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="addRow.filterValue">
+		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="criterias[i].value1">
 		  </div>
 		  </div>
 		  </div>
