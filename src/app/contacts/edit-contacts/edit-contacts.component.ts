@@ -49,6 +49,7 @@ export class EditContactsComponent implements OnInit {
     criteria = new Criteria();
     criterias = new Array<Criteria>();
     filterValue: any;
+    isSegmentation: boolean = false;
     
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -1337,6 +1338,12 @@ export class EditContactsComponent implements OnInit {
        this.criteria.operation = this.filterConditions[0].value;
    }
    
+   removeSegmentation(){
+       this.isSegmentation = false;
+       this.criterias.length = 0;
+       this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+   }
+   
    addNewRow(){
        let criteria = new Criteria();
        this.criterias.push( criteria );
@@ -1369,7 +1376,8 @@ export class EditContactsComponent implements OnInit {
        }
        console.log(this.criterias);
         this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
-       this.criterias.length = 0;
+        this.isSegmentation = true;
+        this.criterias.length = 0;
        $( "#filterModal .close" ).click()
 
    }

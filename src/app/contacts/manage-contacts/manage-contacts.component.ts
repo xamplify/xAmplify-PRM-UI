@@ -60,6 +60,7 @@ export class ManageContactsComponent implements OnInit {
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     contactCountLoad: boolean = false;
+    isSegmentation: boolean = false;
     
     listContactData: boolean = true;
     response: CustomeResponse = new CustomeResponse();
@@ -1041,6 +1042,7 @@ export class ManageContactsComponent implements OnInit {
         }
         this.listContactsByType(this.contactsByType.selectedCategory);
         console.log( this.criterias );
+        this.isSegmentation = true;
         this.criterias.length = 0;
         $( "#filterModal .close" ).click()
     }
@@ -1050,6 +1052,12 @@ export class ManageContactsComponent implements OnInit {
         this.criteria.operation = this.filterConditions[0].value;
         this.addNewRow();
     }
+    
+    removeSegmentation(){
+        this.criterias.length = 0;
+        this.listContactsByType(this.contactsByType.selectedCategory);
+    }
+    
     addNewRow(){
         let criteria = new Criteria();
         this.criterias.push( criteria );
