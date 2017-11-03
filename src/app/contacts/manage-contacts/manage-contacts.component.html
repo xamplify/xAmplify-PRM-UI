@@ -704,9 +704,14 @@ rotate
 					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 				</select>
 		  </div>
-		  <div class="form-group col-sm-4">
+		  <div class="form-group col-sm-2">
 		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="criterias[i].value1">
 		  </div>
+		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
+		  <span (click)="cancelRow(i)">
+				<img src='https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-delete-trash-24.png'>
+			</span>
+			</div>
 		  </div>
 		  </div>
 		  

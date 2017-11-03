@@ -1400,6 +1400,12 @@ export class EditContactsComponent implements OnInit {
 
    }
    
+   cancelSegmentationRow( rowId: number ) {
+       if ( rowId !== -1 ) {
+           this.criterias.splice( rowId, 1 );
+       }
+   }
+   
     ngOnInit() {
         this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;

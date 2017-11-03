@@ -1065,6 +1065,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     removeSegmentation(){
+        this.isSegmentation = false;
         this.criterias.length = 0;
         this.listContactsByType(this.contactsByType.selectedCategory);
     }
@@ -1086,6 +1087,12 @@ export class ManageContactsComponent implements OnInit {
         }
         catch ( error ) {
             this.xtremandLogger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
+        }
+    }
+    
+    cancelRow( rowId: number ) {
+        if ( rowId !== -1 ) {
+            this.criterias.splice( rowId, 1 );
         }
     }
 
