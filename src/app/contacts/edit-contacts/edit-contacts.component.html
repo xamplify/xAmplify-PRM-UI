@@ -336,9 +336,7 @@ a.disabled {
 						</div>
 						<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
 							class="alert alert-danger alert-dismissable" style="width: 80%">
-							<b>We found invalid emailIds please remove..<strong
-								style="color: black; font-size: 18px">{{invalidPatternEmails}}</strong>
-								and Re Upload..
+							<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong> and Re Upload..
 							</b>
 						</div>
 					</div>
@@ -482,16 +480,17 @@ a.disabled {
 					
 					
 					<div class="table-responsive">
-								<table class='table table-hover table-bordered' *ngIf="(contacts?.length > 0) && isShowUsers">
+								<table class='table tgrid' *ngIf="(contacts?.length > 0) && isShowUsers">
 								<thead>
 									<tr>
 										<th class='text-center'><input type="checkbox" [name]="all"
 											[(ngModel)]="isHeaderCheckBoxChecked"
 											(change)="checkAll($event)" [id]="checkAllExistingContacts" />
 										</th>
-										<th>EMAILID</th>
-										<th>FIRST NAME</th>
-										<th>LAST NAME</th>
+										<th>NAME</th>
+										<th>CONTACT</th>
+										<th>ROLE</th>
+										<th>ADDRESS</th>
 										<th>MORE</th>
 										<th class='text-center'>DELETE</th>
 									</tr>
@@ -499,19 +498,38 @@ a.disabled {
 								<tbody>
 								<ng-container *ngFor="let contact of pagination.pagedItems;let i = index">
 									<tr class='row_{{i}}'>
-											<td class='text-center'
-											*ngIf="isAdd || !isCampaignDraftContactList "><input
-											type="checkbox"
-											[checked]="selectedContactListIds.indexOf(contact.id)>-1"
-											class="chk"
-											[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+										<td class='text-center'
+											*ngIf="isAdd || !isCampaignDraftContactList ">
+											<input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1"
+											class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
 											lang="{{contact.name}}" name="campaignContact[]"
 											value="{{contact.id}}" id="{{contact.id}}"
 											(click)="highlightRow(contact.id,$event)" />
 										</td>
-										<td>{{contact.emailId}}</td>
-										<td>{{contact.firstName}}</td>
-										<td>{{contact.lastName}}</td>
+										<td>
+							          		<div class="flex">
+												<span class='profile'>
+												 <span class='uppercase'>{{contact.firstName | slice:0:1}}{{contact.lastName | slice:0:1}}</span>
+												</span> 
+												<span style="margin-left: 20px;">
+													<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
+													<h6 class='m0'><a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a></h6>
+												</span>
+											</div>
+										</td>
+										<td>
+											<h5>
+												<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
+											</h5>
+										</td>
+										<td>
+											<h5 class='mb0'>{{contact.jobTitle}}</h5>
+											<h6 class='mt0'>{{contact.contactCompany}}</h6>
+										</td>
+										<td>
+											<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+											<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
+										</td>
 										<td>
 										<button id='more_less_button_{{i}}' (click)="contact.isShowDetails = ! contact.isShowDetails">
 											<span *ngIf="!contact.isShowDetails">More</span>
@@ -519,39 +537,17 @@ a.disabled {
 										</button>
 										</td>
 										<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-											<button class="btn-sm btn-danger" (click)="deleteUserShowAlert(contact.id)">
-												<i class="fa fa-trash-o" aria-hidden="true"></i>
-											</button>
+											<span (click)="deleteUserShowAlert(contact.id)">
+												<!-- <i class="fa fa-trash-o" aria-hidden="true"></i> -->
+												<img src='https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-delete-trash-24.png'>
+											</span>
 										</td>
+										<ng-template #NA>N/A</ng-template>
 									</tr>
 									<tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}" >
 											<td colspan="6">
 											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
 													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'>{{contact.contactCompany}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'>{{contact.jobTitle}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'>{{contact.address}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'>{{contact.city}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'>{{contact.country}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'>{{contact.mobileNumber}}</td>
-														</tr>
 														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Notes:</td>
 															<td class='pt10 pb10'>{{contact.description}}</td>

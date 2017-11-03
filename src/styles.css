@@ -336,3 +336,48 @@ tr.highlight {
 .align-middle{
 	vertical-align: middle;
 }
+
+.tgrid {
+	border: 1px solid #e9eef2;
+}
+
+.tgrid>thead {
+	color: #8c9dad;
+	background-color: #e9eef2;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.tgrid> thead> tr> th {
+	border-bottom: 0;
+}
+
+.profile {
+	background: #9079d2;
+	border-radius: 30px;
+	font-size: 12px;
+	font-weight: 700;
+	min-height: 40px;
+	max-height: 40px;
+	min-width: 40px;
+	max-width: 40px;
+	text-align: center;
+	color: #fff;
+	padding-top: 12px;
+}
+.tgrid>tbody>tr>td, .tgrid>tbody>tr>th, .tgrid>thead>tr>td, .tgrid>thead>tr>th
+	{
+	padding: 10px !important;
+	vertical-align: middle;
+	color: #919191;
+}
+
+.tgrid> tbody> tr:hover1 {
+	-webkit-box-shadow: 0 0 50px -20px #555;
+	-moz-box-shadow: 0 0 50px -20px #555;
+	box-shadow: 0 0 50px -20px #555;
+}
+
+.flex{
+	display: flex;
+}
