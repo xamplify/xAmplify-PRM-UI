@@ -1343,8 +1343,32 @@ export class EditContactsComponent implements OnInit {
    }
    
    contactFilter(){
+       for(let i=0;i< this.criterias.length;i++){
+           if(this.criterias[i].operation == "="){
+               this.criterias[i].operation = "eq";
+           }
+           if(this.criterias[i].property == "First Name"){
+               this.criterias[i].property = "firstName";
+           }
+           else if(this.criterias[i].property == "Last Name"){
+               this.criterias[i].property = "lastName";
+           }
+           else if(this.criterias[i].property == "Company"){
+               this.criterias[i].property = "company";
+           }
+           else if(this.criterias[i].property == "Job Title"){
+               this.criterias[i].property = "jobTitle";
+           }
+           else if(this.criterias[i].property == "Country"){
+               this.criterias[i].property = "country";
+           }
+           console.log(this.criterias[i].operation);
+           console.log(this.criterias[i].property);
+           console.log(this.criterias[i].value1);
+           
+       }
        console.log(this.criterias);
-       // this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+        this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
        this.criterias.length = 0;
        $( "#filterModal .close" ).click()
 

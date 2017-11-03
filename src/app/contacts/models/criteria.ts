@@ -8,5 +8,5 @@ export class Criteria {
     value2: any=null;
     value3: any[]=null;
     operationName:OPERATION_NAME=null;
-    operation:string = "Operation";   
+    operation:string = "Condition";   
 }
