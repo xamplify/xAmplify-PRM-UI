@@ -25,13 +25,6 @@
 					</div>
 					<!-- /.modal-dialog -->
 				</div>
-				<!-- /.modal -->
-				
-				<!-- END STYLE CUSTOMIZER -->
-				<!-- BEGIN PAGE HEADER-->
-				<!--<h3 class="page-title">
-				User Account
-				</h3>-->
 				<app-topnavbar [model]="parentModel"></app-topnavbar>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
@@ -67,14 +60,6 @@
 										{{userData.occupation}}
 									</div>
 								</div>
-								<!-- END SIDEBAR USER TITLE -->
-								<!-- SIDEBAR BUTTONS -->
-								<!--<div class="profile-userbuttons">
-									<button type="button" class="btn btn-circle green-haze btn-sm">Follow</button>
-									<button type="button" class="btn btn-circle btn-danger btn-sm">Message</button>
-								</div>-->
-								<!-- END SIDEBAR BUTTONS -->
-								<!-- SIDEBAR MENU -->
 								<div class="profile-usermenu">
 									<ul class="nav">
 										<li class="active">
@@ -91,60 +76,10 @@
 								</div>
 								<!-- END MENU -->
 							</div>
-							<!-- END PORTLET MAIN -->
-							<!-- PORTLET MAIN -->
 							<div class="portlet light">
-								<!-- STAT -->
-								<!-- <div class="row list-separated profile-stat">
-									<div class="col-md-4 col-sm-4 col-xs-6">
-										<div class="uppercase profile-stat-title">
-											 37
-										</div>
-										<div class="uppercase profile-stat-text">
-											 Projects
-										</div>
-									</div>
-									<div class="col-md-4 col-sm-4 col-xs-6">
-										<div class="uppercase profile-stat-title">
-											 51
-										</div>
-										<div class="uppercase profile-stat-text">
-											 Tasks
-										</div>
-									</div>
-									<div class="col-md-4 col-sm-4 col-xs-6">
-										<div class="uppercase profile-stat-title">
-											 61
-										</div>
-										<div class="uppercase profile-stat-text">
-											 Uploads
-										</div>
-									</div>
-								</div> -->
-								<!-- END STAT -->
-								<!-- <div>
-									<h4 class="profile-desc-title">About {{userData.displayName}}</h4>
-									<span class="profile-desc-text"> {{userData.description}} </span>
-									<div class="margin-top-20 profile-desc-link">
-										<i class="fa fa-globe"></i>
-										<a href="http://www.keenthemes.com">www.keenthemes.com</a>
-									</div>
-									<div class="margin-top-20 profile-desc-link">
-										<i class="fa fa-twitter"></i>
-										<a href="http://www.twitter.com/keenthemes/">@keenthemes</a>
-									</div>
-									<div class="margin-top-20 profile-desc-link">
-										<i class="fa fa-facebook"></i>
-										<a href="http://www.facebook.com/keenthemes/">keenthemes</a>
-									</div>
-								</div> -->
 									<div>
-									<!-- <h4 class="profile-desc-title">About {{userData.displayName}}</h4>
-									<span class="profile-desc-text">{{userData.description}} </span> -->
 									<div class="margin-top-20 profile-desc-link">
-										<!-- <i class="fa fa-globe"></i>
-										<a href="http://www.keenthemes.com">www.keenthemes.com</a> -->
-											<div class="col-xs-12">
+									 <div class="col-xs-12">
 										<div class="col-xs-6">
 										<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Projects </h4>
 										</div>
@@ -158,9 +93,6 @@
 										</div>
 									</div>
 									<div class="margin-top-20 profile-desc-link">
-										<!-- <i class="fa fa-twitter"></i>
-										<a href="http://www.twitter.com/keenthemes/">@keenthemes</a> -->
-										 <!-- <h4>Tasks(Min)  (83/9999) </h4> -->
 										<div class="col-xs-12">
 										 <div class="col-xs-6">
 										<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Tasks(Min) </h4>
@@ -176,9 +108,6 @@
 										</div>
 									</div>
 									<div class="margin-top-20 profile-desc-link">
-										<!-- <i class="fa fa-facebook"></i>
-										<a href="http://www.facebook.com/keenthemes/">keenthemes</a> -->
-										<!-- <h4>Uploads(Min)  (2/999) </h4> -->
 									  	  <div class="col-xs-12">
 										<div class="col-xs-6">
 										<h4  style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Uploads(Min) </h4>
@@ -196,8 +125,6 @@
 							</div>
 							<!-- END PORTLET MAIN -->
 						</div>
-						<!-- END BEGIN PROFILE SIDEBAR -->
-						<!-- BEGIN PROFILE CONTENT -->
 						<div class="profile-content" style="box-shadow: 0 0 5px rgba(0,0,0,.4)!important;">
 							<div class="row" style="background: white">
 								<div class="col-md-12">
@@ -227,9 +154,7 @@
 										</div>
 										<div class="portlet-body">
 											<div class="tab-content">
-												<!-- PERSONAL INFO TAB -->
 											<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
-											<!-- 		<div class="tab-pane active" id="tab_1_1" > -->
 													<div  class="alert alert-success alert-dismissable" id="update-profile-div-id" style="display: none">
 													 <a (click)="hideDiv('update-profile-div-id')" class="close" aria-label="close">x</a>
 														<strong>Profile Updated Successfully</strong>
@@ -274,8 +199,6 @@
 														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
 													</form>
 												</div>
-												<!-- END PERSONAL INFO TAB -->
-											<!-- CHANGE AVATAR TAB -->
 												<div class="tab-pane" id="tab_1_2">
 													<div class="alert alert-success" id="profile-pic-upload-div" style="display: none">
 														<a (click)="hideDiv('profile-pic-upload-div')" class="close" aria-label="close">�</a>
@@ -293,11 +216,10 @@
 																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
 																</div>
 																<div>
-																	<span class="btn default btn-file">Select image
+																	<button class="btn default btn-file">Select image
 																	<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
 																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" #input/> 
-																	</span>
-																	
+																	</button>
 																</div>
 															</div>
 															
@@ -311,8 +233,6 @@
 															<tbody>
 																<tr *ngFor="let item of uploader.queue">
 																	<td><strong>{{ item?.file?.name }}</strong></td>
-																	<!-- <td *ngIf="uploader.isHTML5" nowrap>{{
-																		item?.file?.size/1024/1024 | number:'.2' }} MB</td> -->
 																    <td nowrap>{{ (item?.file?.size/1024/1024).toFixed(2) }} MB</td>		
 																	<td >
 																		<div class="progress" style="margin-bottom: 0;">
@@ -345,7 +265,6 @@
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
 												<div class="tab-pane" id="tab_1_3" [ngBusy]="{busy: updatePasswordBusy, message: 'Please Wait...'}">
-													<!--  <div class="tab-pane" id="tab_1_3"> -->
 													<div id="update-password-div" class="alert alert-success" style="display: none;">
 														<a (click)="hideDiv('update-password-div')" class="close" aria-label="close">�</a>
 														<strong>Password Updated Successfully</strong>
@@ -377,7 +296,6 @@
 														</div>
 													</form>
 												</div>
-												<!-- END CHANGE PASSWORD TAB -->
 												<!-- PRIVACY SETTINGS TAB -->
 												<div class="tab-pane" id="tab_1_4">
 													<form action="#">
@@ -435,7 +353,7 @@
 												<!-- END PRIVACY SETTINGS TAB -->
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
-													<div style="padding: 5px 5px 422px 10px;">   
+														<div>   
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 														<div *ngIf="defaultPlayerSuccess" id="defaultPlayerSettings"
 															class="alert alert-success alert-dismissable" style="width:104.5%;margin-left:-17px;">
@@ -566,7 +484,7 @@
 															</div>
 														</div>
 														</div>
-													      <div class="col-xs-12 col-sm-12 col-md-12" style="float:left; padding:0;margin-top: 14px;">
+													      <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
 															<button type="submit"  class="btn green-haze">Save Changes</button>
 														    <button type="button" class="btn default" (click)="resetForm()">Cancel</button>
 															</div>

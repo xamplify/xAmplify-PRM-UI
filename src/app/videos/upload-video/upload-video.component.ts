@@ -379,8 +379,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         // this.router.navigate(['./home/videos']);
     }
     trimVideoTitle(title: string) {
-        if (title.length > 40) {
-            const fileTitleStart = title.substr(0, 40);
+        if (title.length > 30) {
+            const fileTitleStart = title.substr(0, 25);
             const fileTitleend = title.slice(-5);
             return fileTitleStart + '...' + fileTitleend;
         } else {

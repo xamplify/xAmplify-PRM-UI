@@ -30,9 +30,11 @@
     -o-transition: width .6s ease;
     transition: width .6s ease;
 }
- :host /deep/ .bootstrap-switch { 
+
+  :host /deep/ .bootstrap-switch { 
 border-radius: 0;
 }
+
 
 :host /deep/ .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, 
