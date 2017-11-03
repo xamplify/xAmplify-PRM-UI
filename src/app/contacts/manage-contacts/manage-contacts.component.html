@@ -685,7 +685,7 @@ rotate
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" (click)="cancelSegmentation()">&times;</button>
         <h4 class="modal-title">Segmentation</h4>
       </div>
       <div class="modal-body" style="padding:28px;">
@@ -716,10 +716,13 @@ rotate
 		  </div>
 		  
 		  </div>
+		  <div class="row">
+		  <button type="button" class="btn btn-default pull-right" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"(click)="contactFilter()">Submit</button>
-        <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
+       <!--  <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
         <button type="button" class="btn btn-default" (click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
       </div>
     </div>
