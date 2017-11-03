@@ -1354,7 +1354,7 @@ export class EditContactsComponent implements OnInit {
                this.criterias[i].property = "lastName";
            }
            else if(this.criterias[i].property == "Company"){
-               this.criterias[i].property = "company";
+               this.criterias[i].property = "contactCompany";
            }
            else if(this.criterias[i].property == "Job Title"){
                this.criterias[i].property = "jobTitle";

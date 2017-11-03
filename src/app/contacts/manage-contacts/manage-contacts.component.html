@@ -691,13 +691,13 @@ rotate
 		   <div class="form-group col-sm-3">
 			      <select class="form-control" 
 					[(ngModel)]="criterias[i].property">
-					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.value}}</option>
+					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.name}}</option>
 				</select>
 		  </div> 
 		   <div class="form-group col-sm-3">
 			     <select class="form-control"
 					[(ngModel)]="criterias[i].operation">
-					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
+					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 				</select>
 		  </div>
 		  <div class="form-group col-sm-6">

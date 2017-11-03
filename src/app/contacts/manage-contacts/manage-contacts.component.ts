@@ -141,18 +141,18 @@ export class ManageContactsComponent implements OnInit {
     public sortOption: any = this.sortOptions[0];
     
     filterOptions = [
-                        { 'name': '', 'value': 'Field Name'},
-                        { 'name': 'firstName', 'value': 'First Name'},
-                        { 'name': 'lastName', 'value': 'Last Name'},
-                        { 'name': 'Company', 'value': 'Company'},
-                        { 'name': 'JobTitle', 'value': 'Job Title'},
-                        { 'name': 'country', 'value': 'Country'},
+                        { 'name': 'Field Name', 'value': ''},
+                        { 'name': 'First Name', 'value': 'firstName'},
+                        { 'name': 'Last Name', 'value': 'lastName'},
+                        { 'name': 'Company', 'value': 'company'},
+                        { 'name': 'Job Title', 'value': 'jobTitle'},
+                        { 'name': 'Country', 'value': 'country'},
                         ];
     filterOption = this.filterOptions[0];
     
     filterConditions = [
-                     { 'name': '', 'value': 'Condition'},
-                     { 'name': 'eq', 'value': '='},
+                     { 'name': 'Condition', 'value': ''},
+                     { 'name': '=', 'value': 'eq'},
                      { 'name': 'like', 'value': 'like'},
                      ];
     filterCondition = this.filterConditions[0];
@@ -1016,6 +1016,30 @@ export class ManageContactsComponent implements OnInit {
     }
     
     contactFilter(){
+        for(let i=0;i< this.criterias.length;i++){
+            if(this.criterias[i].operation == "="){
+                this.criterias[i].operation = "eq";
+            }
+            if(this.criterias[i].property == "First Name"){
+                this.criterias[i].property = "firstName";
+            }
+            else if(this.criterias[i].property == "Last Name"){
+                this.criterias[i].property = "lastName";
+            }
+            else if(this.criterias[i].property == "Company"){
+                this.criterias[i].property = "contactCompany";
+            }
+            else if(this.criterias[i].property == "Job Title"){
+                this.criterias[i].property = "jobTitle";
+            }
+            else if(this.criterias[i].property == "Country"){
+                this.criterias[i].property = "country";
+            }
+            console.log(this.criterias[i].operation);
+            console.log(this.criterias[i].property);
+            console.log(this.criterias[i].value1);
+        }
+        this.listContactsByType(this.contactsByType.selectedCategory);
         console.log( this.criterias );
         this.criterias.length = 0;
         $( "#filterModal .close" ).click()
