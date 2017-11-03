@@ -1,3 +1,21 @@
+.fa-cloud-upload{
+  color: white; 
+  font-size: 5em;
+  line-height: initial;
+}
+
+	textarea {
+		resize: none;
+		max-height: 100%;
+		max-width: 100%;
+		min-height: 100%;
+		min-width: 100%;
+		padding: 10px;
+	}
+	.upload-video{
+         font-weight: 500;
+         color: white;
+	}
 /*model popup css*/
 #myVideo{  background-color: #5fdbf5; width: 100%;}
 .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
@@ -9,12 +27,13 @@
        }
  /* drop files css*/
  .my-drop-zone { 
-         border: dotted 3px lightgray; 
-         text-align: center;
+         /* border: dotted 3px lightgray;  */
          width :auto; 
-         height: 151px;
+         border-radius: 0;
          }
-    .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+    /* .nv-file-over { border: dotted 3px red; } */
+    .nav-file-over { border: 0;}
+     /* Default class applied to drop zones on over */
     .another-file-over-class { border: dotted 3px green; }      
 
 /*file input css */

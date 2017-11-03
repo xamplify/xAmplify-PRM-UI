@@ -73,3 +73,6 @@ h3 {
 	.page-bar {
 		border-radius: 0
 	}
+	.pagination {
+		margin: 10px 4px 1px;
+	}
