@@ -689,10 +689,10 @@ rotate
         <h4 class="modal-title">Segmentation</h4>
       </div>
       <div class="modal-body" style="padding:28px;">
-      <div class="row" *ngFor="let addRow of criterias; let i = index">
+      <div class="row" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
         <div class="form-group">
 		    <div class="form-inline">
-		   <div class="form-group col-sm-3">
+		   <div class="form-group col-sm-4">
 			      <select class="form-control" 
 					[(ngModel)]="criterias[i].property">
 					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.name}}</option>
@@ -704,7 +704,7 @@ rotate
 					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 				</select>
 		  </div>
-		  <div class="form-group col-sm-6">
+		  <div class="form-group col-sm-4">
 		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="criterias[i].value1">
 		  </div>
 		  </div>
@@ -715,7 +715,7 @@ rotate
       <div class="modal-footer">
         <button type="button" class="btn btn-default"(click)="contactFilter()">Submit</button>
         <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" (click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
       </div>
     </div>
 

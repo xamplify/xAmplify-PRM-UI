@@ -183,6 +183,9 @@ export class EditContactsComponent implements OnInit {
                                 { 'name': 'Company', 'value': 'Company'},
                                 { 'name': 'JobTitle', 'value': 'Job Title'},
                                 { 'name': 'country', 'value': 'Country'},
+                                { 'name': 'city', 'value': 'City'},
+                                { 'name': 'mobileNumber', 'value': 'Mobile Number'},
+                                { 'name': 'notes', 'value': 'Notes'},
                                 ];
             filterOption = this.filterOptions[0];
             
@@ -1134,6 +1137,7 @@ export class EditContactsComponent implements OnInit {
         }
         this.refService.loading(this.httpRequestLoader, true); 
         this.httpRequestLoader.isHorizontalCss = true;
+        this.contactsByType.pagination.criterias = this.criterias;
         this.contactService.listOfSelectedContactListByType(this.selectedContactListId,contactType, this.contactsByType.pagination)
         .subscribe(
             data => {
@@ -1341,6 +1345,7 @@ export class EditContactsComponent implements OnInit {
    removeSegmentation(){
        this.isSegmentation = false;
        this.criterias.length = 0;
+       this.checkingLoadContactsCount = true;
        this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
    }
    
@@ -1372,15 +1377,25 @@ export class EditContactsComponent implements OnInit {
            else if(this.criterias[i].property == "Country"){
                this.criterias[i].property = "country";
            }
+           else if(this.criterias[i].property == "City"){
+               this.criterias[i].property = "city";
+           }
+           else if(this.criterias[i].property == "Mobile Number"){
+               this.criterias[i].property = "mobileNumber";
+           }
+           else if(this.criterias[i].property == "Notes"){
+               this.criterias[i].property = "notes";
+           }
            console.log(this.criterias[i].operation);
            console.log(this.criterias[i].property);
            console.log(this.criterias[i].value1);
            
        }
        console.log(this.criterias);
+        this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
         this.isSegmentation = true;
-        this.criterias.length = 0;
+        //this.criterias.length = 0;
        $( "#filterModal .close" ).click()
 
    }

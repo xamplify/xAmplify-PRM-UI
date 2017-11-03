@@ -148,6 +148,9 @@ export class ManageContactsComponent implements OnInit {
                         { 'name': 'Company', 'value': 'company'},
                         { 'name': 'Job Title', 'value': 'jobTitle'},
                         { 'name': 'Country', 'value': 'country'},
+                        { 'name': 'City', 'value': 'city'},
+                        { 'name': 'Mobile Number', 'value': 'mobile Number'},
+                        { 'name': 'Notes', 'value': 'notes'},
                         ];
     filterOption = this.filterOptions[0];
     
@@ -1035,6 +1038,14 @@ export class ManageContactsComponent implements OnInit {
             }
             else if(this.criterias[i].property == "Country"){
                 this.criterias[i].property = "country";
+            }else if(this.criterias[i].property == "City"){
+                this.criterias[i].property = "city";
+            }
+            else if(this.criterias[i].property == "Mobile Number"){
+                this.criterias[i].property = "mobileNumber";
+            }
+            else if(this.criterias[i].property == "Notes"){
+                this.criterias[i].property = "notes";
             }
             console.log(this.criterias[i].operation);
             console.log(this.criterias[i].property);
@@ -1056,6 +1067,10 @@ export class ManageContactsComponent implements OnInit {
     removeSegmentation(){
         this.criterias.length = 0;
         this.listContactsByType(this.contactsByType.selectedCategory);
+    }
+    
+    cancelSegmentation(){
+        this.criterias.length = 0;
     }
     
     addNewRow(){
