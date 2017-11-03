@@ -1349,6 +1349,9 @@ export class EditContactsComponent implements OnInit {
        this.criterias.push( criteria );
    }
    
+   cancelSegmentation(){
+       this.criterias.length = 0;
+   }
    contactFilter(){
        for(let i=0;i< this.criterias.length;i++){
            if(this.criterias[i].operation == "="){
