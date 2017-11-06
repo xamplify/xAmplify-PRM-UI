@@ -1384,7 +1384,7 @@ export class EditContactsComponent implements OnInit {
                this.criterias[i].property = "mobileNumber";
            }
            else if(this.criterias[i].property == "Notes"){
-               this.criterias[i].property = "notes";
+               this.criterias[i].property = "description";
            }
            console.log(this.criterias[i].operation);
            console.log(this.criterias[i].property);

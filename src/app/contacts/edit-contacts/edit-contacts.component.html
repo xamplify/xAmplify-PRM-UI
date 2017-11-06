@@ -289,17 +289,7 @@ a.disabled {
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12">
-					<div class="btn-group pull-left" *ngIf="noOfContactsDropdown">
-						<select class="form-control" [(ngModel)]="sortOptionForPagination"
-							(ngModelChange)="onChangeAllContactUsers($event)">
-							<ng-container
-								*ngFor="let sort of sortOptionsForPagination; let i = index">
-							<option [ngValue]="sort">{{sort.value}}</option>
-							</ng-container>
-						</select> <br>
-					</div>
-					</div>
+					
 					<div style="margin-bottom: 0px; padding-left: 1cm">
 						<table class="table" *ngIf="uploadCsvUsingFile">
 							<thead>
@@ -667,6 +657,15 @@ a.disabled {
 					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 				</li>
 			</ul>
+					<div class="btn-group pull-right" *ngIf="noOfContactsDropdown">
+						<select class="form-control" [(ngModel)]="sortOptionForPagination"
+							(ngModelChange)="onChangeAllContactUsers($event)">
+							<ng-container
+								*ngFor="let sort of sortOptionsForPagination; let i = index">
+							<option [ngValue]="sort">{{sort.value}}</option>
+							</ng-container>
+						</select> <br>
+					</div>
 
 		</div>
 
