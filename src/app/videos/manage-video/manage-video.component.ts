@@ -64,16 +64,16 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showMessage = this.showUpdatevalue = false;
     }
     ngOnInit() {
+        QuickSidebar.init();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
-        $('html,body').animate({ scrollTop: 0 }, 'slow');
-        Metronic.init();
-        Layout.init();
-        Demo.init();
-        Index.init();
-        QuickSidebar.init();
+        // $('html,body').animate({ scrollTop: 0 }, 'slow');
+        // Metronic.init();
+        // Layout.init();
+        // Demo.init();
+        // Index.init();
         if (this.referenceService.homeMethodsCalled === false) {
             this.homeComponent.getVideoTitles();
             this.homeComponent.getCategorisService();

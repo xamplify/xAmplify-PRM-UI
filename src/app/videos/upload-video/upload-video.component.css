@@ -123,3 +123,5 @@
 .portlet.light {
   border-radius: 0
 }
+
+#file-upload { width:0; height:0; } 

@@ -605,11 +605,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.hideSaveDiscard = true;
         this.isFileProgress = false;
         this.sweetAlertDisabled = false;
-        $('.dropBox').attr('style', 'cursor:pointer; opacity:1');
-        $('.googleDrive').attr('style', 'cursor:pointer; opacity:1');
-        $('.box').attr('style', 'cursor:pointer; opacity:1');
-        $('.camera').attr('style', 'cursor:pointer; opacity:1');
-        $('.oneDrive').attr('style', 'cursor:pointer; opacity:1');
+        $('.dropBox').attr('style', 'cursor:pointer; opacity:0.7');
+        $('.googleDrive').attr('style', 'cursor:pointer; opacity:0.7');
+        $('.box').attr('style', 'cursor:pointer; opacity:0.7');
+        $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
+        $('.oneDrive').attr('style', 'cursor:pointer; opacity:0.7');
         $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
     }
     enableDropdown() {
@@ -806,6 +806,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 return true;
         }
         return false;
+    }
+    dropClick(){
+      $('#file-upload').click();
     }
     ngOnInit() {
         QuickSidebar.init();
