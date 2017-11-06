@@ -678,7 +678,7 @@ rotate
 </div>
 
 <div id="filterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:53%;">
 
     <!-- Modal content-->
     <div class="modal-content">
@@ -686,8 +686,10 @@ rotate
         <button type="button" class="close" data-dismiss="modal" (click)="cancelSegmentation()">&times;</button>
         <h4 class="modal-title">Segmentation</h4>
       </div>
-      <div class="modal-body" style="padding:28px;">
-      <div class="row" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
+ <div class="modal-body" style="padding:28px;">
+      <div class="row">
+      <div class="col-sm-12">
+      <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
         <div class="form-group">
 		    <div class="form-inline">
 		   <div class="form-group col-sm-4">
@@ -697,7 +699,7 @@ rotate
 				</select>
 		  </div> 
 		   <div class="form-group col-sm-3">
-			     <select class="form-control"
+			      <select class="form-control"
 					[(ngModel)]="criterias[i].operation">
 					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 				</select>
@@ -706,16 +708,17 @@ rotate
 		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="criterias[i].value1">
 		  </div>
 		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
-		  <span (click)="cancelRow(i)">
+		  <span (click)="cancelSegmentationRow(i)">
 				<img src='https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-delete-trash-24.png'>
 			</span>
 			</div>
 		  </div>
 		  </div>
-		  
 		  </div>
-		  <div class="row">
+		<div class="row col-sm-1" style="left:26px;">
 		  <button type="button" class="btn btn-default pull-right" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
+      </div>
+      </div>
       </div>
       </div>
       <div class="modal-footer">

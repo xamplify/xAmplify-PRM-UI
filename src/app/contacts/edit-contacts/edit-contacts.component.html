@@ -265,7 +265,7 @@ a.disabled {
 									</button>
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-6" style="top:9px">
 								<div>
 								<div>
 									<button id="cancel_button" class="btn pull-right"
@@ -966,7 +966,7 @@ a.disabled {
 </div>
 
 <div id="filterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:53%;">
 
     <!-- Modal content-->
     <div class="modal-content">
@@ -975,7 +975,9 @@ a.disabled {
         <h4 class="modal-title">Segmentation</h4>
       </div>
       <div class="modal-body" style="padding:28px;">
-      <div class="row" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
+      <div class="row">
+      <div class="col-sm-12">
+      <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
         <div class="form-group">
 		    <div class="form-inline">
 		   <div class="form-group col-sm-4">
@@ -1001,8 +1003,10 @@ a.disabled {
 		  </div>
 		  </div>
 		  </div>
-		  <div class="row">
+		<div class="row col-sm-1" style="left:26px;">
 		  <button type="button" class="btn btn-default pull-right" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
+      </div>
+      </div>
       </div>
       </div>
       <div class="modal-footer">
