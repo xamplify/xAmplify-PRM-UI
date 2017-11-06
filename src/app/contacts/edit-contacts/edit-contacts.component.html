@@ -80,7 +80,7 @@ a.disabled {
 
 						<div class="page-bar">
 							<ul class="page-breadcrumb">
-								<li><i style="font-size: 16px;">{{selectedContactListName}} List</i></li>
+								<li style="font-size: 16px;font-family:Open Sans; color:#989292">{{selectedContactListName}} List</li>
 
 							</ul>
 							<div class="page-toolbar">
@@ -116,29 +116,29 @@ a.disabled {
 									</div>
 								</div>
 							</div>
-	<div class="page-toolbar" *ngIf="!showEditContactData">
-		<div class="btn-group pull-right">
-			<div class="inputs" align="right" style="float: right">
-				<div style="float: left; margin-right: 10px; width: 50%">
-					<select class="form-control" [(ngModel)]="sortOption"
-						(ngModelChange)="sortByOption($event)">
-						<ng-container *ngFor="let sort of sortOptions; let i = index">
-						<option [ngValue]="sort">{{sort.name}}</option>
-						</ng-container>
-					</select>
-				</div>
-				<div class="portlet-input input-inline input-small">
-					<div class="input-icon right">
-						<i class="icon-magnifier"
-							style="cursor: pointer; font-size: 18px;"
-							(click)="search('contactList')"></i> <input type="text"
-							[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-							class="form-control input-circle" placeholder="search...">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+							<div class="page-toolbar" *ngIf="!showEditContactData">
+								<div class="btn-group pull-right">
+									<div class="inputs" align="right" style="float: right">
+										<div style="float: left; margin-right: 10px; width: 50%">
+											<select class="form-control" [(ngModel)]="sortOption"
+												(ngModelChange)="sortByOption($event)">
+												<ng-container *ngFor="let sort of sortOptions; let i = index">
+												<option [ngValue]="sort">{{sort.name}}</option>
+												</ng-container>
+											</select>
+										</div>
+										<div class="portlet-input input-inline input-small">
+											<div class="input-icon right">
+												<i class="icon-magnifier"
+													style="cursor: pointer; font-size: 18px;"
+													(click)="search('contactList')"></i> <input type="text"
+													[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+													class="form-control input-circle" placeholder="search...">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- END DASHBOARD STATS -->
 						<div class="clearfix"></div>
@@ -966,7 +966,7 @@ a.disabled {
 	</div>
 </div>
 
-<div id="filterModal" class="modal fade" role="dialog">
+<div id="filterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
 
     <!-- Modal content-->

@@ -1054,7 +1054,7 @@ export class ManageContactsComponent implements OnInit {
         this.listContactsByType(this.contactsByType.selectedCategory);
         console.log( this.criterias );
         this.isSegmentation = true;
-        this.criterias.length = 0;
+        //this.criterias.length = 0;
         $( "#filterModal .close" ).click()
     }
 
