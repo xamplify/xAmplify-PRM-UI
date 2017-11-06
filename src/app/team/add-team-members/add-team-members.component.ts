@@ -222,12 +222,13 @@ export class AddTeamMembersComponent implements OnInit {
             data => {
                 if(teamMember.teamMemberId==0){
                     self.successMessage ="All Team Members Deleted Successfully";
+                    self.pagination.pageIndex = 0;
                 }else{
                     self.successMessage = teamMember.emailId+" Deleted Successfully";
+                    self.pagination.pageIndex = self.pagination.pageIndex-1;
                 }
                  $( "#team-member-success-div" ).show();
                 setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
-                self.pagination.pageIndex = 1;
                 self.listTeamMembers(self.pagination);
                 self.listEmailIds();
                 self.clearRows();

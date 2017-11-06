@@ -196,6 +196,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.isCampaignDeleted = true;
             $( '#campaignListDiv_' + id ).remove();
             setTimeout( function() { $( "#deleteSuccess" ).slideUp( 500 ); }, 5000 );
+            this.pagination.pageIndex = this.pagination.pageIndex-1;
             this.listCampaign(this.pagination);
         },
         error => { console.log(error)},

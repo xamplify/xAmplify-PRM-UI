@@ -252,6 +252,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     this.isEmailTemplateDeleted = true;
                     this.isCampaignEmailTemplate = false;
                     setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
+                    this.pagination.pageIndex = this.pagination.pageIndex-1;
                     this.listEmailTemplates(this.pagination);
                 }else{
                     this.isEmailTemplateDeleted = false;

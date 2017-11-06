@@ -77,6 +77,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     currentTabActiveClass:string = this.activeTabClass;
     inActiveTabClass:string = this.defaultTabClass;
     successTabClass:string = this.completedTabClass;
+    invalidScheduleTimeError:string = "";
     /*************Pagination********************/
     videosPagination:Pagination = new Pagination();
     channelVideosPagination:Pagination = new Pagination();
@@ -1493,6 +1494,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }else{
                     this.isLoading = false;
                     this.invalidScheduleTime = true;
+                    this.invalidScheduleTimeError = response.message;
                 }
             },
             error => {
