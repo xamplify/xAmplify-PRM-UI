@@ -1079,6 +1079,12 @@ export class ManageContactsComponent implements OnInit {
         this.criterias.push( criteria );
     }
     
+    cancelRow( rowId: number ) {
+        if ( rowId !== -1 ) {
+            this.criterias.splice( rowId, 1 );
+        }
+    }
+    
     ngOnInit() {
         try {
             this.loadContactLists( this.pagination );
@@ -1090,12 +1096,6 @@ export class ManageContactsComponent implements OnInit {
         }
     }
     
-    cancelRow( rowId: number ) {
-        if ( rowId !== -1 ) {
-            this.criterias.splice( rowId, 1 );
-        }
-    }
-
     ngOnDestroy() {
         this.xtremandLogger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;
