@@ -1070,7 +1070,7 @@
         	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" >
-        		<h4 class="text-left"><b>ADD REPLY-{{i+1}}</b></h4>
+        		<h4 class="text-left"><b>ADD REPLY-{{i+1}}</b></h4>dfd
         		<hr>
 					<div class="panel-body">
 						<form class="role" id="form-{{reply.divId}}">
@@ -1122,7 +1122,7 @@
 						            <option  [value]="true" [selected]="url.scheduled ==true">Schedule</option>
 					          </select>
 							</div>
-							<div *ngIf="url.scheduled=='true'">	
+							<div *ngIf="url.scheduled==true || url.scheduled=='true'">	
 								<div class="form-group col-md-3">
 										<label for="days">Wait X Days After Click</label>
 										 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
