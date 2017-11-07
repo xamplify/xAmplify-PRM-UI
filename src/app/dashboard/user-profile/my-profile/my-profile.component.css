@@ -2,6 +2,10 @@
         top: 57px !important;
         left: 120px !important;
     }
+  .disablePlayerValues {
+		pointer-events: none;
+		opacity: 0.6;
+  }
   .videoCssDefault{ 
         position: absolute;
         right: 34px;

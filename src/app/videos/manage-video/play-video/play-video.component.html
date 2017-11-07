@@ -297,8 +297,8 @@
 														<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
 														<div class="mix-details">
 															<h4>{{titleCheckLength(videoFile.title)}}</h4>
-															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel=""> <i class="fa fa-play" style="margin-right:0px"></i>
-													</a>
+															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel="">
+																 <i class="fa fa-play" style="margin-right:0px"></i></a>
 															<span align="right" style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 															<span align="left" style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span><br>
 															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>

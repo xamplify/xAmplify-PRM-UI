@@ -51,6 +51,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     tempPlayerColor: string;
     tempControllerColor: string;
     isPlayerSettingUpdated = false;
+    hasAllAccess = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
@@ -58,6 +59,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.hasAllAccess = this.refService.hasAllAccess();
         this.callActionSwitch.size = 'normal';
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
