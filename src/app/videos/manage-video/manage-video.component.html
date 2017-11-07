@@ -105,8 +105,8 @@
 														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
 													   </a>
-														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" (click)="campaignRouter(videoFile)" title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
-														<i class="fa fa-bullhorn"></i>
+														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Cannot Create Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
+														<i class="fa fa-bullhorn" title="Cannot Create Campaign for DRAFT"></i>
 													   </a>
 													</span>
 														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)"
