@@ -1486,7 +1486,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaignService.saveCampaign( data )
             .subscribe(
             response => {
-                if(response.message=="success"){
+                if(response.statusCode==2000){
                     this.refService.campaignSuccessMessage = data.scheduleCampaign;
                     this.isLaunched = true;
                     this.reInitialize();
@@ -1510,8 +1510,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     return false;
     }
-    
-  
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;
