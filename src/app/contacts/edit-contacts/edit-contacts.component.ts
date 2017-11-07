@@ -65,6 +65,8 @@ export class EditContactsComponent implements OnInit {
     invalidDeleteErrorMessage: boolean = false;
     editListContacts: boolean = true;
     
+    segmetationButtonDisabled: boolean = false;
+    
     uploadCsvUsingFile: boolean = false;
     contactsByType: ContactsByType = new ContactsByType();
     showSelectedCategoryUsers: boolean = true;
@@ -1352,6 +1354,7 @@ export class EditContactsComponent implements OnInit {
    addNewRow(){
        let criteria = new Criteria();
        this.criterias.push( criteria );
+       this.segmetationButtonDisabled = false;
    }
    
    cancelSegmentation(){
@@ -1404,6 +1407,16 @@ export class EditContactsComponent implements OnInit {
        if ( rowId !== -1 ) {
            this.criterias.splice( rowId, 1 );
        }
+   }
+   
+   disblingSegmetationButton(i: number){
+     /*  for(let i=0;i < this.criterias.length;i++){*/
+       if(this.criterias[i].operation != "Condition" && this.criterias[i].property != "Field Name" && this.criterias[i].value1.length !=0){
+           this.segmetationButtonDisabled = true;
+       }else{
+           this.segmetationButtonDisabled = false;
+       }
+      // }
    }
    
     ngOnInit() {
