@@ -288,10 +288,10 @@ export class ManageContactsComponent implements OnInit {
               }
             },
             ( error: any ) => {
-                let body: string = error['_body'];
-                body = body.substring(1, body.length-1);
-                if ( body.includes( 'Please Launch or Delete those campaigns first' )) {
-                    this.setResponseDetails('ERROR', body);
+               // let body: string = error['_body'];
+               // body = body.substring(1, body.length-1);
+                if ( error.includes( 'Please Launch or Delete those campaigns first' )) {
+                    this.setResponseDetails('ERROR', error);
                 }else{
                     this.xtremandLogger.errorPage(error);
                 }
@@ -784,10 +784,10 @@ export class ManageContactsComponent implements OnInit {
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
             ( error: any ) => {
-                let body: string = error['_body'];
-                body = body.substring(1, body.length-1);
-                if ( body.includes( 'Please Launch or Delete those campaigns first' )) {
-                    this.setResponseDetails('ERROR', body);
+                //let body: string = error['_body'];
+                //body = body.substring(1, body.length-1);
+                if ( error.includes( 'Please Launch or Delete those campaigns first' )) {
+                    this.setResponseDetails('ERROR', error);
                     this.invalidDeleteErrorMessage = true;
                 }else{
                     this.xtremandLogger.errorPage(error);
