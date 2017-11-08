@@ -341,7 +341,7 @@ export class ContactService {
         const errMsg = ( error.message ) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
          const errorbody = error._body;
-         if ( errorbody.indexOf('contactlist is being used in one or more campaigns. Please delete those campaigns first.') >= 0) {
+         if ( errorbody.indexOf('Please Launch or Delete those campaigns first') >= 0) {
             return Observable.throw( errorbody );
            }
          else {
@@ -352,7 +352,7 @@ export class ContactService {
         const errMsg = ( error.message ) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
          const errorbody = error._body;
-         if ( errorbody.indexOf('contactlist is being used in one or more campaigns. Please delete those campaigns first.') >= 0) {
+         if ( errorbody.indexOf('Please Launch or Delete those campaigns first') >= 0) {
             return Observable.throw( errorbody );
            }
          else {

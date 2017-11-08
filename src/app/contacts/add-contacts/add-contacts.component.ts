@@ -1805,7 +1805,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 }
             },
             ( error: any ) => {
-                if ( error.search( 'contactlist is being used in one or more campaigns. Please delete those campaigns first.' ) != -1 ) {
+                if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
                     $( "#settingsSalesforce .close" ).click()
                     this.deleteErrorMessage = true;

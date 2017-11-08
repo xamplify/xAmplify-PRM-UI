@@ -290,7 +290,7 @@ export class ManageContactsComponent implements OnInit {
             ( error: any ) => {
                 let body: string = error['_body'];
                 body = body.substring(1, body.length-1);
-                if ( body.includes( 'Please delete those campaigns first.' )) {
+                if ( body.includes( 'Please Launch or Delete those campaigns first' )) {
                     this.setResponseDetails('ERROR', body);
                 }else{
                     this.xtremandLogger.errorPage(error);
@@ -786,7 +786,7 @@ export class ManageContactsComponent implements OnInit {
             ( error: any ) => {
                 let body: string = error['_body'];
                 body = body.substring(1, body.length-1);
-                if ( body.includes( 'Please delete those campaigns first.' )) {
+                if ( body.includes( 'Please Launch or Delete those campaigns first' )) {
                     this.setResponseDetails('ERROR', body);
                     this.invalidDeleteErrorMessage = true;
                 }else{
