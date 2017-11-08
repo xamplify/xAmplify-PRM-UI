@@ -1,127 +1,127 @@
 .fa-cloud-upload{
-  color: white; 
-  font-size: 5em;
-  line-height: initial;
+color: white; 
+font-size: 5em;
+line-height: initial;
 }
 
-	textarea {
-		resize: none;
-		max-height: 100%;
-		max-width: 100%;
-		min-height: 100%;
-		min-width: 100%;
-		padding: 10px;
-	}
-	.upload-video{
-         font-weight: 500;
-         color: white;
-	}
+textarea {
+resize: none;
+max-height: 100%;
+max-width: 100%;
+min-height: 100%;
+min-width: 100%;
+padding: 10px;
+}
+.upload-video{
+      font-weight: 500;
+      color: white;
+}
 /*model popup css*/
 #myVideo{  background-color: #5fdbf5; width: 100%;}
 .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
-                -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
+            -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
 .zoomin img:hover { width: 87px;height: 87px;  } 
- .closeModal { 
-      background-color:white;color:red ;float:right;
-       font-size:21px;font-weight:700;line-height:1;opacity:1;
-       }
- /* drop files css*/
- .my-drop-zone { 
-         /* border: dotted 3px lightgray;  */
-         width :auto; 
-         border-radius: 0;
-         }
-    /* .nv-file-over { border: dotted 3px red; } */
-    .nav-file-over { border: 0;}
-     /* Default class applied to drop zones on over */
-    .another-file-over-class { border: dotted 3px green; }      
+.closeModal { 
+  background-color:white;color:red ;float:right;
+    font-size:21px;font-weight:700;line-height:1;opacity:1;
+    }
+/* drop files css*/
+.my-drop-zone { 
+      /* border: dotted 3px lightgray;  */
+      width :auto; 
+      border-radius: 0;
+      }
+/* .nv-file-over { border: dotted 3px red; } */
+.nav-file-over { border: 0;}
+  /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }      
 
 /*file input css */
 .fileinput-button {
-  position: relative;
-  overflow: hidden;
+position: relative;
+overflow: hidden;
 }
 .fileinput-button input {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  opacity: 0;
-  -ms-filter: 'alpha(opacity=0)';
-  font-size: 200px;
-  direction: ltr;
-  cursor: pointer;
+position: absolute;
+top: 0;
+right: 0;
+margin: 0;
+opacity: 0;
+-ms-filter: 'alpha(opacity=0)';
+font-size: 200px;
+direction: ltr;
+cursor: pointer;
 }
 /* Fixes for IE < 8 */
 @media screen\9 {
-  .fileinput-button input {
-    filter: alpha(opacity=0);
-    font-size: 100%;
-    height: 100%;
-  }
+.fileinput-button input {
+filter: alpha(opacity=0);
+font-size: 100%;
+height: 100%;
+}
 }
 .customLoaderBar{
-  padding: 0px;
-    background-color: #b0b6bd;
-    margin-bottom: 20px;
-    margin-right: 304px;
-    margin-left: 19px;
+padding: 0px;
+background-color: #b0b6bd;
+margin-bottom: 20px;
+margin-right: 304px;
+margin-left: 19px;
 }
 
 .loaderSymbol{
-    height: 49px;
-    margin-top: -15px;
-    margin-left: -2px;
-    color: black;
-    border-color: #000000;
- }
-  .p-tag-loaderCss { 
-    top: -63px;
-    position: relative;
-    left: 36px;
-  }
- .loader-image-tag {
-    width: 64px;
-    top: -22px;
-    left: -23px;
-    position: relative;
- }
+height: 49px;
+margin-top: -15px;
+margin-left: -2px;
+color: black;
+border-color: #000000;
+}
+.p-tag-loaderCss { 
+top: -63px;
+position: relative;
+left: 36px;
+}
+.loader-image-tag {
+width: 64px;
+top: -22px;
+left: -23px;
+position: relative;
+}
 .h2text {
-	font-weight: bold;color:blue;
-	}
+font-weight: bold;color:blue;
+}
 .disabledSocial {
-	  cursor: not-allowed;
-	  opacity:0.4;
+cursor: not-allowed;
+opacity:0.4;
 }
 
 /* record modal popup css */
 /deep/ .vjs-device-button.vjs-control {
-   position: absolute;
-    right: 0;
-    left: 0;
+position: absolute;
+right: 0;
+left: 0;
 }
 /deep/ .video-js .vjs-time-control{
-    line-height : 3.3em;
-  }
+line-height : 3.3em;
+}
 /deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
-	line-height: 2.455em;
+line-height: 2.455em;
 }  
 
 /deep/ .vjs-control-bar {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  background-color : rgba(43, 51, 63, 0.7) !important;
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+background-color : rgba(43, 51, 63, 0.7) !important;
 }
 
 .record-textarea{
-  width: 100% ;height:55px;line-height:16px; font-size: 14px;
+width: 100% ;height:55px;line-height:16px; font-size: 14px;
 }
 
 .page-bar,
 .portlet.light {
-  border-radius: 0
+border-radius: 0
 }
 
 #file-upload { width:0; height:0; } 

@@ -457,10 +457,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.fileDropDisabled();
             this.recordVideo();
             this.playerInit = true;
-            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
+            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
             const self = this;
             self.player = videojs('myVideo',
                 {
@@ -544,10 +544,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.sweetAlertMesg = 'DropBox';
             this.fileDropDisabled();
             this.downloadFromDropbox();
-            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
+            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
@@ -566,26 +566,28 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.downloadFrombox();
             this.cloudOneDrive = true;
             this.cloudDrive = true;
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
+            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
     googleDriveChange() {
         this.sweetAlertMesg = 'Drive';
+        if(this.uploader.queue.length === 0){
         this.onApiLoad();    // google drive code
+        }
     }
     defaultDesabled() {
         this.sweetAlertDisabled = true;
         this.isChecked = true;
         this.isSelectedVideo = true;
-        $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
-        $('.box').attr('style', 'cursor:not-allowed; opacity:0.3');
-        $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.3');
-        $('.camera').attr('style', 'cursor:not-allowed; opacity:0.3');
-        $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.3');
+        $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+        $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+        $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+        $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+        $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
     }
     cloudStorageDisabled() {
         $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');

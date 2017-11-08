@@ -370,7 +370,7 @@
 														<div class= "col-xs-12 col-sm-12 col-md-12" style="padding:0">
 														<div class ="col-xs-12 col-sm-6 col-md-7" style="padding:0"> 
 																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																		<label class="form-group col-xs-3 col-sm-6 col-md-6">Player Color:</label>
+																		<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
 																		<div class="col-xs-9 colsm-6 col-md-6">
 																			<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
 																				formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
@@ -378,7 +378,7 @@
 																		</div>
 																	</div>
 																<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																	<label class="col-xs-3 col-sm-6 col-md-6 " >Enable Video Controller:</label>
+																	<label class="col-xs-3 col-sm-6 col-md-6 control-label" >Enable Video Controller:</label>
 																	<div class="col-xs-9 col-sm-6 col-md-6">
 																		<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 																			[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -387,7 +387,7 @@
 																	</div>
 																</div>
 																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-3 col-sm-6 col-md-6"  >Controller Color:</label>
+																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
 																		<div class="col-xs-9 colsm-6 col-md-6" >
 																			<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 																				formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" 
@@ -396,7 +396,7 @@
 																		</div>
 																	</div>
 																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-5 col-sm-6 col-md-6">Transparency:</label>
+																		<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
 																		<div class="col-xs-6 col-sm-5 col-md-5">
 																		<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;"  
 																		[class.disablePlayerValues]="!hasAllAccess" (input)="transperancyControllBar(Transvalue.value)" #Transvalue> 
