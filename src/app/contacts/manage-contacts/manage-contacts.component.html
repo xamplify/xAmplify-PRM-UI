@@ -510,16 +510,6 @@ rotate
 											*ngIf="contactsByType.contacts?.length > 0">
 											<div class="row">
 												<div class="col-xs-12">
-													<div class="btn-group pull-left">
-														<select class="form-control"
-															[(ngModel)]="sortOptionForPagination"
-															(ngModelChange)="onChangeAllContactUsers($event)">
-															<ng-container
-																*ngFor="let sort of sortOptionsForPagination; let i = index">
-															<option [ngValue]="sort">{{sort.value}}</option>
-															</ng-container>
-														</select>
-													</div>
 													<div class="btn-group pull-right"
 														*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
 														<button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -535,13 +525,6 @@ rotate
 										</div>
 										<div class="table-responsive">
 										<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-											
-											
-											
-											
-											
-											
-											
 											
 					<table class='table tgrid'
 						id="sample_editable_1" *ngIf="!httpRequestLoader.isLoading">
@@ -637,19 +620,6 @@ rotate
 								</ng-container>
 							</tbody>
 						</table>
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
 											<!-- <table class="table table-striped table-hover table-bordered" *ngIf="!httpRequestLoader.isLoading">
 												<thead>
 													<tr>
@@ -778,6 +748,17 @@ rotate
 													[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
 												</li>
 											</ul>
+											
+											<div class="btn-group pull-right">
+														<select class="form-control"
+															[(ngModel)]="sortOptionForPagination"
+															(ngModelChange)="onChangeAllContactUsers($event)">
+															<ng-container
+																*ngFor="let sort of sortOptionsForPagination; let i = index">
+															<option [ngValue]="sort">{{sort.value}}</option>
+															</ng-container>
+														</select>
+													</div>
 										</div>
 									</div>
 								</div>
@@ -837,7 +818,7 @@ rotate
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" [disabled]="!segmetationButtonDisabled" (click)="contactFilter()">Submit</button>
+        <button type="button" class="btn btn-default" (click)="contactFilter()">Submit</button>
        <!--  <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
         <button type="button" class="btn btn-default" (click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
       </div>
