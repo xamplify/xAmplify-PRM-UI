@@ -519,10 +519,13 @@
 									<label class="col-xs-6 control-label">Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
-											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
+											<!-- <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
 											 [switch-off-color]="callActionSwitch.offColorBswitch" [switch-size]="callActionSwitch.size" [switch-animate]="callActionSwitch.animate"
 											 [(ngModel)]="enableCalltoAction" [ngModelOptions]="{standalone: true}" (onChangeState)="enableCallToActionMethodTest($event.currentValue)">
-											</bSwitch>
+											</bSwitch> -->
+											<switch [status]="enableCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+												 [offColor]="callActionSwitch.onYellowColorSwitch" [size]="callActionSwitch.size" (statusChange)="enableCallToActionMethodTest($event)">
+											</switch>
 										</div>
 									</div>
 								</div>
@@ -534,22 +537,30 @@
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
 										<div>
 											<label> Start of the video</label>
-											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
+											<!-- <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
 											   [switch-off-color]="callActionSwitch.offColorBswitch" [switch-size]="callActionSwitch.bsize"
 											   [switch-animate]="callActionSwitch.animate" [switch-disabled]="!enableCalltoAction"
 											 [(ngModel)]="callAction.startCalltoAction" [ngModelOptions]="{standalone: true}" (onChangeState)="startCallToactionOverlay($event.currentValue)">
-											</bSwitch>
+											</bSwitch> -->
+											<switch [status]="callAction.startCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
+												  [size]="callActionSwitch.bsize" (statusChange)="startCallToactionOverlay($event)">
+											</switch>
 										</div>
 									</div>
 									<div class="col-xs-3 col-sm-3 col-md-1 col-lg-1" style="padding: 1em; left: -21px;">(Or)</div>
 									<div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
 										<div>
 											<label> End of the video</label>
-											<bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
+											<!-- <bSwitch [switch-off-text]="callActionSwitch.offTextValue" [switch-on-text]="callActionSwitch.onTextValue" [switch-on-color]="callActionSwitch.onColorBswitch"
 											  [switch-off-color]="callActionSwitch.offColorBswitch" [switch-disabled]="!enableCalltoAction"
 											  [switch-size]="callActionSwitch.bsize" [switch-animate]="callActionSwitch.animate"
 											 [(ngModel)]="callAction.endCalltoAction" [ngModelOptions]="{standalone: true}" (onChangeState)="endCallToactionOverlay($event.currentValue)">
-											</bSwitch>
+											</bSwitch> -->
+											<switch [status]="callAction.endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
+												 [offColor]="callActionSwitch.onDefaultColorSwitch"  [disabled]="!enableCalltoAction"
+												  [size]="callActionSwitch.bsize" (statusChange)="endCallToactionOverlay($event)">
+											</switch>
 										</div>
 									</div>
 								</div>

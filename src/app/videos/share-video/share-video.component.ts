@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
-import { Logger } from 'angular2-logger/core';
 import { VideoUtilService } from '../services/video-util.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
@@ -71,7 +70,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     uploadedDate: any;
     categoryName: any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
-        public logger: Logger, public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
         public authenticationService: AuthenticationService) {
         this.xtremandLogger.log('share component constructor called');
@@ -747,14 +746,14 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.videoJSplayer.play();
             } else { this.videoJSplayer.pause(); }
         }
-        this.logger.debug(this.callAction.email_id);
+        this.xtremandLogger.debug(this.callAction.email_id);
         this.user.emailId = this.toLowerString(this.callAction.email_id);
         this.user.firstName = this.callAction.firstName;
         this.user.lastName = this.callAction.lastName;
-        this.logger.debug(this.user);
+        this.xtremandLogger.debug(this.user);
         this.videoFileService.saveCalltoActionUser(this.user)
             .subscribe((result: any) => {
-                this.logger.info('Save user Form call to acton is successfull' + result);
+                this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
             },
             (error: any) => {
                 //  this.errorPage = true;
@@ -782,7 +781,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
         // this.setConfirmUnload(false);
-        this.logger.info('Deinit - Destroyed Share-Video Component');
+        this.xtremandLogger.info('Deinit - Destroyed Share-Video Component');
         this.videoStoppedEvent();
         if (this.videoJSplayer) {
             this.videoJSplayer.dispose();

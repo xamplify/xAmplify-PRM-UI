@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Logger } from 'angular2-logger/core';
 
 import { SocialConnection } from '../../social/models/social-connection';
 import { Campaign } from '../../campaigns/models/campaign';
@@ -59,7 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
-        public socialService: SocialService, public authenticationService: AuthenticationService, public logger: Logger,
+        public socialService: SocialService, public authenticationService: AuthenticationService,
         public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
         public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
@@ -86,7 +85,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
             data => {
-                this.logger.info(data);
+                this.xtremandLogger.info(data);
                 this.dashboardReport.genderDemographicsMale = data['male'];
                 this.dashboardReport.genderDemographicsFemale = data['female'];
             },
@@ -185,11 +184,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
-        this.logger.log('getTotalCountOfTFFF() method invoke started.');
+        this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
         this.twitterService.getTotalCountOfTFFF(socialConnection)
             .subscribe(
             data => {
-                this.logger.log(data);
+                this.xtremandLogger.log(data);
                 socialConnection.twitterTotalFollowersCount = data['followersCount'];
                 socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
             },
@@ -298,7 +297,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.totalCampaignsCount = this.campaigns.length;
             },
             error => { },
-            () => this.logger.info('Finished listCampaign()')
+            () => this.xtremandLogger.info('Finished listCampaign()')
             );
     }
 
@@ -316,7 +315,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             error => { },
             () => {
-                this.logger.info('Finished getUserCampaignReport()');
+                this.xtremandLogger.info('Finished getUserCampaignReport()');
                 if (this.userCampaignReport == null) {
                     this.userCampaignReport = new CampaignReport();
                     this.userCampaignReport.userId = userId;
@@ -385,7 +384,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             error => {
                 this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
             },
-            () => this.logger.info('Finished saveUserCampaignReport()')
+            () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
             );
     }
 
@@ -477,7 +476,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listOfWatchedLogs() {
-        this.logger.log(this.pagination);
+        this.xtremandLogger.log(this.pagination);
         this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
