@@ -12,7 +12,6 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { LoaderComponent } from '../loader/loader.component';
 import { ErrorPagesComponent } from '../error-pages/error-pages.component';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { BusyModule } from 'tixif-ngx-busy';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
@@ -23,12 +22,12 @@ import { ConnectAccountsComponent } from '../social/common/connect-accounts/conn
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                 TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, BusyModule, TimepickerModule.forRoot()
-                , JWBootstrapSwitchModule,  BootstrapSwitchModule.forRoot(), TimezonePickerModule],
+                ,BootstrapSwitchModule.forRoot(), TimezonePickerModule],
         declarations: [LoaderComponent, ErrorPagesComponent, UpdateStatusComponent, ConnectAccountsComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                 HttpModule, Ng2FilterPipeModule, LoaderComponent, ErrorPagesComponent, BusyModule, TimepickerModule,
-                JWBootstrapSwitchModule, BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent],
+                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent],
         providers: [],
 })
 
