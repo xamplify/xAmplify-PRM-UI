@@ -19,6 +19,11 @@
     width: 91%;
 }
 
+a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
 .imageblur {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
@@ -120,16 +125,16 @@ img:hover {
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
-										<button class="btn-info fileinput-button btn-block"
-											id="uploadCSV" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+										<div class="btn-info fileinput-button btn-block" style="height: 80px;"
+											id="uploadCSV" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 											<i class="fa fa-file-excel-o"
-												style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase" style="font-size: 11px">Upload a
+												style="font-size: 30px; padding-top: 22px;padding-left: 65px;"></i>
+											<h6 class="uppercase" style="font-size: 11px;padding-left: 42px;">Upload a
 												CSV</h6>
 											<input type="file" ng2FileSelect
 												*ngIf="uploader.queue.length==0" [uploader]="uploader"
 												(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
-										</button>
+										</div>
 									</div>
 								</section>
 
