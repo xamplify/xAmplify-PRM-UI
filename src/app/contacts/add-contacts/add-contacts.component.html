@@ -131,8 +131,8 @@ img:hover {
 												style="font-size: 30px; padding-top: 22px;padding-left: 65px;"></i>
 											<h6 class="uppercase" style="font-size: 11px;padding-left: 42px;">Upload a
 												CSV</h6>
-											<input type="file" ng2FileSelect
-												*ngIf="uploader.queue.length==0" [uploader]="uploader"
+											<input type="file" ng2FileSelect 
+												*ngIf="uploader.queue.length==0" [uploader]="uploader" title=" "
 												(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
 										</div>
 									</div>

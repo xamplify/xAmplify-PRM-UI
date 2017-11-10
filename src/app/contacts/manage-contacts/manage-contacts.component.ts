@@ -980,6 +980,10 @@ export class ManageContactsComponent implements OnInit {
         this.response.responseType = null;
         this.resetPagination();
         this.listContactData = true;
+        
+        this.isSegmentation = false;
+        this.criterias.length = 0;
+        
         this.contactsByType.pagination = new Pagination();
         
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
