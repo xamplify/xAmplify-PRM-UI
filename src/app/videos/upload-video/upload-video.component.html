@@ -78,7 +78,7 @@
 							<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add file...</span>
 								<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob"
 								 [class.customDisableCss]="isFileProgress==true" *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true || isSelectedVideo == true"
-								 (change)="fileSizeCheck($event)" #input />
+								 (change)="fileSizeCheck($event)" title=" " #input />
 							</div>
 						</div>
 						<div *ngIf="MultipleVideo" style="float: left; width: 113px;">
@@ -161,7 +161,7 @@
 						 (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone"
 						 style="position: relative;top: -5px; background-color: #00a6e8; cursor:pointer" (click)="dropClick()">
 							<input type="file" ng2FileSelect  [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob"
-								  *ngIf="uploader.queue.length==0" style="opacity: 0.0; position: absolute;" id="file-upload">
+								  *ngIf="uploader.queue.length==0" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
 						    <div class="text-center"> 
 								<i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i>
 								<h2 class="upload-video" style="margin-top: 3px;">Upload a video </h2>
