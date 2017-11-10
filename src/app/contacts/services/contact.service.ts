@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
 import { SocialContact } from '../models/social-contact';
