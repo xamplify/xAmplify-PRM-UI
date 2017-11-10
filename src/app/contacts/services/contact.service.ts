@@ -9,7 +9,7 @@ import { SalesforceContact } from '../models/salesforce-contact';
 import { SalesforceListViewContact } from '../models/salesforce-list-view-contact';
 import { User } from '../../core/models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { Logger } from "angular2-logger/core";
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
 import 'rxjs/add/operator/catch';
@@ -31,13 +31,12 @@ export class ContactService {
     public salesforceContactCallBack: boolean;
     public pagination: Pagination;
 
-    log: Logger;
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
-    constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: Logger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
+    constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
     

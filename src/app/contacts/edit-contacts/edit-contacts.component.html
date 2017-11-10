@@ -14,8 +14,13 @@ a.disabled {
     }
 
 .textWhite{
-color:#ffffff;
+		color:#ffffff;
 }
+
+a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
 
 .textCss {
 	background-color: rgba(0,0,0,0.12);
@@ -260,12 +265,12 @@ color:#ffffff;
 									</button>
 								</div>
 								<div class="btn-group">
-									<button class="fileUpload btn btn-primary" id="upload_csv" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1"
+									<div class="fileUpload btn btn-primary" id="upload_csv" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1"
 										style="background-color: #26a69a">
 										Upload CSV <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
 										<input type="file" ng2FileSelect class="upload" [uploader]="uploader"
 											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1" />
-									</button>
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-6" style="top:9px">
@@ -832,7 +837,7 @@ color:#ffffff;
 								</td>
 										<td>
 							          		<div class="flex">
-												<span class='profile'>
+												<span class='profile' style="background-color: #3598dc;">
 												 <span class='uppercase'>{{allcontacts.firstName | slice:0:1}}{{allcontacts.lastName | slice:0:1}}</span>
 												</span> 
 												<span style="margin-left: 20px;">

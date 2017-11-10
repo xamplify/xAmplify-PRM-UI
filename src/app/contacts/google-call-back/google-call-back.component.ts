@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ContactService } from '../services/contact.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 @Component({
   selector: 'app-google-call-back',
@@ -12,23 +13,23 @@ export class GoogleCallBackComponent implements OnInit {
     
     public googleContactCallBack:boolean;
     
-    constructor(private router: Router, private contactService: ContactService) {}
+    constructor(private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {}
     
     googleCallback(){
         this.contactService.googleCallback()
         .subscribe(
             result => {
                 localStorage.removeItem("userAlias");
-                console.log("result: "+result);
+                this.xtremandLogger.info("result: "+result);
                 this.contactService.googleCallBack = true;
                 this.router.navigate(['/home/contacts/add']);
                 
             },
         error => {                
             localStorage.removeItem("userAlias");
-            console.log(error)
+            this.xtremandLogger.info(error)
         },
-        () => console.log('login() Complete'));
+        () => this.xtremandLogger.info('login() Complete'));
     }
     
     ngOnInit(){
@@ -37,7 +38,7 @@ export class GoogleCallBackComponent implements OnInit {
              this.googleCallback();
         }
         catch(err){
-            console.log(err);
+            this.xtremandLogger.error(err);
         }
     }       
 

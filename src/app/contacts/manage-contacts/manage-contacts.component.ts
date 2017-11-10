@@ -504,6 +504,7 @@ export class ManageContactsComponent implements OnInit {
     }
     
     update(user:User) {
+        this.contactCountLoad = true;
         this.navigateToManageContacts();
         this.contactsCount();
         this.showAll = true;
