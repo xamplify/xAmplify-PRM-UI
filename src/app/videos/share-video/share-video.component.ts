@@ -8,7 +8,6 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { VideoUtilService } from '../services/video-util.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
-import { ShareButton, ShareProvider } from 'ngx-sharebuttons';
 import { XtremandLog } from '../models/xtremand-log';
 import { CallAction } from '../models/call-action';
 declare var $, videojs: any;

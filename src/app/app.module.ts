@@ -3,6 +3,7 @@ import { HashLocationStrategy, Location, LocationStrategy, PathLocationStrategy 
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -58,8 +59,9 @@ import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/lo
         LogUnsubscribeComponent, ServiceUnavailableComponent,PageNotFoundComponent, AccessDeniedComponent,
         LogRegularCampaignComponent
     ],
-    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, AppRoutingModule, DashboardModule,
-        CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(), Ng2DeviceDetectorModule.forRoot()],
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule,HttpClientJsonpModule, 
+              AppRoutingModule, DashboardModule, CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+              Ng2DeviceDetectorModule.forRoot()],
     providers: [{
         provide: Http,
         useFactory: httpService,
