@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { Observable } from 'rxjs/Observable';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
@@ -53,7 +53,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isPlayerSettingUpdated = false;
     hasAllAccess = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
-        public logger: Logger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
+        public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;

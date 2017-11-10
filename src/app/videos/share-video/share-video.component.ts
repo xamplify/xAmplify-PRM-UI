@@ -9,7 +9,6 @@ import { VideoUtilService } from '../services/video-util.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
 import { ShareButton, ShareProvider } from 'ngx-sharebuttons';
-import { Subscription } from 'rxjs/Subscription';
 import { XtremandLog } from '../models/xtremand-log';
 import { CallAction } from '../models/call-action';
 declare var $, videojs: any;
@@ -51,7 +50,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     embedUrl: string;
     routerAlias: string;
     routerType: string;
-    sub: Subscription;
     title: string;
     upperTextValue: string;
     lowerTextValue: string;

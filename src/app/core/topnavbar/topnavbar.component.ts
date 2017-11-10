@@ -6,7 +6,7 @@ import {SocialService} from '../../social/services/social.service';
 import {User} from '../models/user';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {ReferenceService} from '../../core/services/reference.service';
-import {Logger} from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import {UtilService} from '../../core/services/util.service';
 import {Roles} from '../../core/models/roles';
 declare var swal, $: any;
@@ -32,7 +32,7 @@ export class TopnavbarComponent implements OnInit {
   constructor(public router: Router, public userService: UserService,
               public twitterService: TwitterService, public utilService: UtilService,
               public socialService: SocialService, public authenticationService: AuthenticationService,
-              public refService: ReferenceService, public logger: Logger) {
+              public refService: ReferenceService, public logger: XtremandLogger) {
     const userName = this.authenticationService.user.emailId;
     if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
       this.refService.topNavbarUserService = true;
