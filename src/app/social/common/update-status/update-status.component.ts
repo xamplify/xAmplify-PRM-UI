@@ -530,7 +530,7 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   getSocialCampaign(socialCampaignAlias: string) {
-    this.socialService.getSocialCampaign(socialCampaignAlias)
+    this.socialService.getSocialCampaignByAlias(socialCampaignAlias)
       .subscribe(
       data => {
         this.socialStatus = data;

@@ -48,8 +48,9 @@ h5 {
 }
 
 .profile-picture {
-	height: 170px;
-	width: auto;
+	height: 150px;
+	width: 150px;
+	border: 1px solid #e9e7e7;
 }
 
 .checked {

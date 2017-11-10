@@ -54,7 +54,7 @@ export class SocialManageComponent implements OnInit {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, deselect'
+                confirmButtonText: 'Yes'
 
             }).then( function() {
                 socialConnection.active = !socialConnection.active;

@@ -15,33 +15,33 @@ export class Campaign {
     selectedVideoId: number;
     userListIds: number[] = [];
     userId: number;
-    emailOpened: boolean = false;
-    videoPlayed: boolean = false;
+    emailOpened = false;
+    videoPlayed = false;
     socialSharingIcons: boolean;
-    replyVideo: boolean = false;
+    replyVideo = false;
     selectedEmailTemplateId: number;
     optionForSendingMials: string;
     launchTime: Date;
     endTime: Date;
     scheduleCampaign: string;
     isChecked: boolean;
-    campaignId: number = 0;
+    campaignId = 0;
     campaignVideoFile: SaveVideoFile;
     emailTemplate: EmailTemplate = new EmailTemplate();
     scheduleTime: string;
     regularEmail: boolean;
     launched: boolean;
-    launchedOn: string = "";
+    launchedOn = "";
     campaignReplies: Array<Reply>;
     campaignUrls: Array<Url>;
     timeZoneId: any;
-    channelCampaign: boolean = false;
-    partnerVideoSelected:boolean = false;
+    channelCampaign = false;
+    partnerVideoSelected = false;
 
     socialStatus: SocialStatus;
     createdTime: Date;
     updatedTime: Date;
     updatedBy: number;
-    campaignType:CampaignType;
+    campaignType: CampaignType;
     
 }

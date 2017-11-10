@@ -140,8 +140,14 @@ export class SocialService {
   }
 
 
-  getSocialCampaign(socialCampaignAlias: string) {
-    return this.http.get(this.URL + 'social/campaign/' + socialCampaignAlias + '?access_token=' + this.authenticationService.access_token)
+  getSocialCampaignByAlias(alias: string) {
+    return this.http.get(this.URL + 'social/status-by-alias/' + alias + '?access_token=' + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  
+  getSocialCampaignByCampaignId(campaignId: number) {
+    return this.http.get(this.URL + 'social/status-by-campaign-id/' + campaignId + '?access_token=' + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
