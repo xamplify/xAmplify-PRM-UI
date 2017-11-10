@@ -16,7 +16,7 @@
 		bottom: -183px;
 	}
 </style>
-<div class="portlet light" style="padding:0px 5px 690px 17px">
+<div class="portlet light clearfix" style="background: white; box-shadow: 0 0 0px rgba(0,0,0,.4)!important;">
 	<div class="portlet-body">
 		<div class="col-md-6" style="padding:0">
 			<div>
@@ -69,7 +69,7 @@
 				<p align="justify">Category : {{categoryName}}</p>
 			</div>
 			<div class="col-xs-12" style="padding:0">
-				<share-buttons (popUpClosed)="sharedSuccess()"  [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
+				<share-buttons (popUpClosed)="sharedSuccess()" [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
 			</div>
 			<!-- 2 modal popup end here-->
 		</div>

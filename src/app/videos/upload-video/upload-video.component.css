@@ -1,3 +1,6 @@
+input[type='file'] {
+  color: transparent;
+}
 .fa-cloud-upload{
 color: white; 
 font-size: 5em;

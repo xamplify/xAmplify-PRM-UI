@@ -5,7 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Category } from '../../videos/models/category';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -42,7 +42,7 @@ export class ReferenceService {
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
-    constructor(private http: Http, private authenticationService: AuthenticationService, private logger: Logger,
+    constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router) {
         console.log('reference service constructor');
     }

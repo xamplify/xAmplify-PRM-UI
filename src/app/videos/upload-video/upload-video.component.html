@@ -164,12 +164,12 @@
 								  *ngIf="uploader.queue.length==0" style="opacity: 0.0; position: absolute;" id="file-upload">
 						    <div class="text-center"> 
 								<i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i>
-								<h2 class="upload-video">Upload a video </h2>
+								<h2 class="upload-video" style="margin-top: 3px;">Upload a video </h2>
 								<h6 style="color:#fff">Drop a video file here or select a video from your device</h6>
 							</div>	
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-8 col-lg-6" style="margin: 50px auto;">
+					<div class="col-xs-12 col-sm-6 col-md-8 col-lg-6" style="margin: 38px auto;">
 						<div class="col-xs-4 col-sm-4 col-md-2" [class.customDisableCss]='uploader.queue.length'>
 							<img src="assets/images/record.png" title="Click here To Record from computer acttached camera" (click)="cameraChange()"
 							 height="70" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut ="this.style.opacity= 0.7">

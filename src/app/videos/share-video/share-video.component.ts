@@ -161,7 +161,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         //  this.setConfirmUnload(true);
-        $('#overlay-modal').hide();
+        $('body').css('cssText', 'background-color: white !important');
+    	$('#overlay-modal').hide();
         console.log('Share video component ngOnInit called');
         this.createSessionId();
         this.deviceDectorInfo();

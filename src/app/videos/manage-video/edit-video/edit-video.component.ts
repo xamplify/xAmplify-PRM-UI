@@ -212,8 +212,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     public validatorsTag = [this.startsWithAt];
     shareClick() {
-        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
-            'mywindow', 'menubar=1,resizable=1,width=670,height=485');
+        let shareUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
+        this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
+      //	window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
+      //      'mywindow', 'menubar=1,resizable=1,width=670,height=485'); 
     }
     // call to action values
     callActionValues(overlayValue: string, startCallAction: boolean, endCallAction: boolean, videoPlaybutton: string) {
