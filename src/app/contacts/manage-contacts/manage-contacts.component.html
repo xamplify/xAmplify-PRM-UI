@@ -341,7 +341,7 @@ rotate
 					[class.disabled]="pagination.pager.currentPage === 1">Previous</a></li>
 				<li *ngFor="let page of pagination.pager.pages"
 					[ngClass]="{active:pagination.pager.currentPage === page}"><a
-					(click)="setPage(page)">{{page}}</a></li>
+					(click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
 				<li
 					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
 					<a (click)="setPage(pagination.pager.currentPage + 1)"
@@ -733,7 +733,7 @@ rotate
 													*ngFor="let page of contactsByType.pagination.pager.pages"
 													[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
 													<a
-													(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)">{{page}}</a>
+													(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)" [class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
 												</li>
 												<li
 													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
@@ -790,18 +790,18 @@ rotate
 		    <div class="form-inline">
 		   <div class="form-group col-sm-4">
 			      <select class="form-control" 
-					[(ngModel)]="criterias[i].property" (input)="disblingSegmetationButton()">
+					[(ngModel)]="criterias[i].property">
 					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.name}}</option>
 				</select>
 		  </div> 
 		   <div class="form-group col-sm-3">
 			      <select class="form-control"
-					[(ngModel)]="criterias[i].operation" (input)="disblingSegmetationButton()">
+					[(ngModel)]="criterias[i].operation">
 					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 				</select>
 		  </div>
 		  <div class="form-group col-sm-2">
-		  	<input type="text" class="form-control" placeholder="value" (input)="disblingSegmetationButton()" [(ngModel)]="criterias[i].value1">
+		  	<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1">
 		  </div>
 		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
 		  <span (click)="cancelRow(i)">
@@ -816,6 +816,7 @@ rotate
       </div>
       </div>
       </div>
+      <div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage"><h4 class="m0" style="color:red; text-align: center;">Please fill the required inputs:</h4></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="contactFilter()">Submit</button>

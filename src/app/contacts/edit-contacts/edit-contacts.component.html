@@ -377,7 +377,7 @@ a.disabled {
 							</div>
 							<div class="col-sm-7">
 								<textarea [(ngModel)]="clipboardTextareaText"
-									placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes&#10;firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
+									placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
 									[ngModelOptions]="{standalone: true}"
 									style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 									required="required">
@@ -709,7 +709,7 @@ a.disabled {
 				</li>
 				<li *ngFor="let page of pagination.pager.pages"
 					[ngClass]="{active:pagination.pager.currentPage === page}"><a
-					(click)="setPage(page)">{{page}}</a></li>
+					(click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
 				<li
 					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
 					<a (click)="setPage(pagination.pager.currentPage + 1)"
@@ -904,7 +904,7 @@ a.disabled {
 			<li *ngFor="let page of contactsByType.pagination.pager.pages"
 				[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
 				<a
-				(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)">{{page}}</a>
+				(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)" [class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
 			</li>
 			<li
 				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
@@ -1053,18 +1053,18 @@ a.disabled {
 		    <div class="form-inline">
 		   <div class="form-group col-sm-4">
 			      <select class="form-control" 
-					[(ngModel)]="criterias[i].property" (input)="disblingSegmetationButton(i)">
+					[(ngModel)]="criterias[i].property">
 					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.value}}</option>
 				</select>
 		  </div> 
 		   <div class="form-group col-sm-3">
 			      <select class="form-control"
-					[(ngModel)]="criterias[i].operation" (input)="disblingSegmetationButton(i)">
+					[(ngModel)]="criterias[i].operation">
 					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
 				</select>
 		  </div>
 		  <div class="form-group col-sm-2">
-		  	<input type="text" class="form-control" placeholder="value" [(ngModel)]="criterias[i].value1" (input)="disblingSegmetationButton(i)">
+		  	<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required>
 		  </div>
 		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
 		  <span (click)="cancelSegmentationRow(i)">
@@ -1079,6 +1079,7 @@ a.disabled {
       </div>
       </div>
       </div>
+      <div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage"><h4 class="m0" style="color:red; text-align: center;">Please fill the required inputs:</h4></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"  (click)="contactFilter()">Submit</button>
@@ -1088,5 +1089,6 @@ a.disabled {
     </div>
 
   </div>
+</div>
 </div>
 <!-- END PAGE CONTENT -->

@@ -50,6 +50,7 @@ export class EditContactsComponent implements OnInit {
     criterias = new Array<Criteria>();
     filterValue: any;
     isSegmentation: boolean = false;
+    isSegmentationErrorMessage: boolean;
     
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -179,7 +180,7 @@ export class EditContactsComponent implements OnInit {
                checkingContactTypeName: string;
                
                filterOptions = [
-                                { 'name': '', 'value': 'Field Name'},
+                                { 'name': '', 'value': 'Field Name*'},
                                 { 'name': 'firstName', 'value': 'First Name'},
                                 { 'name': 'lastName', 'value': 'Last Name'},
                                 { 'name': 'Company', 'value': 'Company'},
@@ -192,7 +193,7 @@ export class EditContactsComponent implements OnInit {
             filterOption = this.filterOptions[0];
             
             filterConditions = [
-                             { 'name': '', 'value': 'Condition'},
+                             { 'name': '', 'value': 'Condition*'},
                              { 'name': 'eq', 'value': '='},
                              { 'name': 'like', 'value': 'like'},
                              ];
@@ -1360,6 +1361,7 @@ export class EditContactsComponent implements OnInit {
    cancelSegmentation(){
        this.criterias.length = 0;
    }
+   
    contactFilter(){
        for(let i=0;i< this.criterias.length;i++){
            if(this.criterias[i].operation == "="){
@@ -1393,13 +1395,20 @@ export class EditContactsComponent implements OnInit {
            console.log(this.criterias[i].property);
            console.log(this.criterias[i].value1);
            
+           if(this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+               this.isSegmentationErrorMessage = true;
+           }else{
+               this.isSegmentationErrorMessage = false; 
+           }
+           
        }
        console.log(this.criterias);
         this.checkingLoadContactsCount = true;
-        this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
-        this.isSegmentation = true;
-        //this.criterias.length = 0;
-       $( "#filterModal .close" ).click()
+        if(!this.isSegmentationErrorMessage){
+            this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+            this.isSegmentation = true;
+           $( "#filterModal .close" ).click()
+   }
 
    }
    

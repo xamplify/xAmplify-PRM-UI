@@ -61,6 +61,7 @@ export class ManageContactsComponent implements OnInit {
     
     contactCountLoad: boolean = false;
     isSegmentation: boolean = false;
+    isSegmentationErrorMessage: boolean;
     
     listContactData: boolean = true;
     response: CustomeResponse = new CustomeResponse();
@@ -142,7 +143,7 @@ export class ManageContactsComponent implements OnInit {
     public sortOption: any = this.sortOptions[0];
     
     filterOptions = [
-                        { 'name': 'Field Name', 'value': ''},
+                        { 'name': 'Field Name*', 'value': ''},
                         { 'name': 'First Name', 'value': 'firstName'},
                         { 'name': 'Last Name', 'value': 'lastName'},
                         { 'name': 'Company', 'value': 'company'},
@@ -155,7 +156,7 @@ export class ManageContactsComponent implements OnInit {
     filterOption = this.filterOptions[0];
     
     filterConditions = [
-                     { 'name': 'Condition', 'value': ''},
+                     { 'name': 'Condition*', 'value': ''},
                      { 'name': '=', 'value': 'eq'},
                      { 'name': 'like', 'value': 'like'},
                      ];
@@ -1055,12 +1056,19 @@ export class ManageContactsComponent implements OnInit {
             console.log(this.criterias[i].operation);
             console.log(this.criterias[i].property);
             console.log(this.criterias[i].value1);
+            
+            if(this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                this.isSegmentationErrorMessage = true;
+            }else{
+                this.isSegmentationErrorMessage = false; 
+            }
         }
+        if(!this.isSegmentationErrorMessage){
         this.listContactsByType(this.contactsByType.selectedCategory);
         console.log( this.criterias );
         this.isSegmentation = true;
-        //this.criterias.length = 0;
         $( "#filterModal .close" ).click()
+        }
     }
 
     modelForSeg(){
