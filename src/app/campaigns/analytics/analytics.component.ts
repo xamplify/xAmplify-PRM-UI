@@ -4,7 +4,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Campaign} from '../models/campaign';
 import {CampaignReport} from '../models/campaign-report';
 import {Pagination} from '../../core/models/pagination';
-import {CampaignType} from '../models/campaign-type';
 import {SocialStatus} from '../../social/models/social-status';
 
 import {CampaignService} from '../services/campaign.service';
@@ -36,7 +35,7 @@ export class AnalyticsComponent implements OnInit {
   usersWatchListPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
-  CampaignType: typeof CampaignType = CampaignType;
+  campaignType: string;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, private referenceService: ReferenceService) {
@@ -281,8 +280,8 @@ export class AnalyticsComponent implements OnInit {
       error => console.log(error),
       () => {
         const campaignType = this.campaign.campaignType.toLocaleString();
-        console.log(campaignType);
         if (campaignType.includes('VIDEO')) {
+          this.campaignType = 'VIDEO';
           this.getCountryWiseCampaignViews(campaignId);
           this.renderMap();
 
@@ -291,7 +290,10 @@ export class AnalyticsComponent implements OnInit {
           this.getCampaignWatchedUsersCount(campaignId);
           this.campaignWatchedUsersListCount(campaignId);
         } else if (campaignType.includes('SOCIAL')) {
+          this.campaignType = 'SOCIAL';
           this.getSocialCampaignByCampaignId(campaignId);
+        } else{
+            this.campaignType = 'REGULAR';
         }
       }
       )

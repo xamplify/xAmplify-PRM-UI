@@ -9,7 +9,7 @@
 			<li>{{campaign.campaignName}}</li>
 		</ul>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaign.campaignType !== 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">
 				<div class="portlet-title">
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaign.campaignType !== 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
@@ -36,7 +36,7 @@
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x">
-		<div class="p-5x" [ngClass]="{'col-xs-4': campaign.campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaign.campaignType === 'VIDEO'}">
+		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#emailSentListModal" [disabled]="campaignReport.emailSentCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
@@ -46,7 +46,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [ngClass]="{'col-xs-4': campaign.campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaign.campaignType === 'VIDEO'}">
+		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color2-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)" [disabled]="campaignReport.emailOpenCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
@@ -56,7 +56,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [ngClass]="{'col-xs-4': campaign.campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaign.campaignType === 'VIDEO'}">
+		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color3-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)" [disabled]="campaignReport.emailClickedCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
@@ -66,7 +66,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="campaign.campaignType === 'VIDEO'">
+		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'">
 			<button class="portlet light color2-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)" [disabled]="campaignReport.usersWatchCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
@@ -77,7 +77,7 @@
 			</button>
 		</div>
 	</div>
-	<section class='clearfix' *ngIf="campaign.campaignType === 'SOCIAL' && socialStatus">
+	<section class='clearfix' *ngIf="campaignType === 'SOCIAL' && socialStatus">
 		<div class="col-xs-12 pl10 pr10">
 			<div class="portlet light">
 				<div class="portlet-title">
@@ -104,7 +104,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaign.campaignType === 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaignType === 'VIDEO'">
 		<div class="col-xs-12 p-5x">
 			<div class="portlet light">
 				<div class="portlet-title">
