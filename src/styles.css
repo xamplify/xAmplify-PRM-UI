@@ -1,6 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files 
 @import '~ngx-sharebuttons/styles/share-buttons.css';
-@import '~ngx-sharebuttons/styles/themes/default/default-theme.css';
+@import '~ngx-sharebuttons/styles/themes/default/default-theme.css'; */
 h1 {
 	color: #369;
 	font-family: Arial, Helvetica, sans-serif;
