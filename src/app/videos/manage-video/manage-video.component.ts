@@ -149,7 +149,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
     };
     titleCheckLength(title: string) {
-        if (title.length > 25) { title = title.substring(0, 24) + '...'; }
+        if (title.length > 22) { title = title.substring(0, 21) + '...'; }
         return title;
     }
     setPage(page: number) {
