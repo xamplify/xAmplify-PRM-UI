@@ -52,6 +52,8 @@ export class EditContactsComponent implements OnInit {
     isSegmentation: boolean = false;
     isSegmentationErrorMessage: boolean;
     
+    totalListUsers = [];
+    
     contactListObject: ContactList;
     selectedContactListName: string;
     public validEmailPatternSuccess: boolean = true;
@@ -66,14 +68,15 @@ export class EditContactsComponent implements OnInit {
     invalidDeleteErrorMessage: boolean = false;
     editListContacts: boolean = true;
     
-    segmetationButtonDisabled: boolean = false;
-    
     uploadCsvUsingFile: boolean = false;
     contactsByType: ContactsByType = new ContactsByType();
+    gettingAllUserspagination: Pagination = new Pagination();
     showSelectedCategoryUsers: boolean = true;
     isShowUsers: boolean = true;
     public users: Array<User>;
     response: CustomeResponse = new CustomeResponse();
+    
+    selectedContactForSave = [];
     
     
     countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
@@ -883,6 +886,10 @@ export class EditContactsComponent implements OnInit {
                 this.checkingLoadContactsCount = false;
                 this.xtremandLogger.log( this.allUsers );
                 
+                
+                this.loadAllContactListUsers( this.selectedContactListId );
+                
+                
                 var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
@@ -1301,7 +1308,8 @@ export class EditContactsComponent implements OnInit {
            this.contactListObject = new ContactList;
            this.contactListObject.name = name;
            this.contactListObject.isPartnerUserList = this.isPartner;
-           this.contactService.saveContactList( this.contacts, name, this.isPartner )
+           if(this.selectedContactListIds.length == 0){
+           this.contactService.saveContactList( this.totalListUsers, name, this.isPartner )
                .subscribe(
                    data => {
                        data = data;
@@ -1319,6 +1327,35 @@ export class EditContactsComponent implements OnInit {
                    },
                    () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                    )
+       }else{
+           for(let i=0;i< this.selectedContactListIds.length; i++){
+               for(let j=0;j< this.totalListUsers.length;j++){
+                   if(this.selectedContactListIds[i] == this.totalListUsers[j].id){
+                       this.selectedContactForSave.push(this.totalListUsers[j]);
+                       break;
+                   }
+               } 
+           }
+           console.log(this.selectedContactForSave);
+           this.contactService.saveContactList( this.selectedContactForSave, name, this.isPartner )
+           .subscribe(
+               data => {
+                   data = data;
+                   if(this.isPartner == false){
+                       this.router.navigateByUrl( '/home/contacts/manage' )
+                       }else{
+                           this.router.navigateByUrl( 'home/partners/manage' )
+                       }
+                   this.setResponseDetails('SUCCESS', 'your contact List created successfully');
+               },
+
+               (error: any) => {
+                   this.xtremandLogger.error(error);
+                   this.xtremandLogger.errorPage(error);
+               },
+               () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
+               )
+         }    
        }
        else {
            this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
@@ -1355,11 +1392,11 @@ export class EditContactsComponent implements OnInit {
    addNewRow(){
        let criteria = new Criteria();
        this.criterias.push( criteria );
-       this.segmetationButtonDisabled = false;
    }
    
    cancelSegmentation(){
        this.criterias.length = 0;
+       this.isSegmentationErrorMessage = false;
    }
    
    contactFilter(){
@@ -1408,6 +1445,7 @@ export class EditContactsComponent implements OnInit {
             this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
             this.isSegmentation = true;
            $( "#filterModal .close" ).click()
+           this.isSegmentationErrorMessage = false;
    }
 
    }
@@ -1418,14 +1456,20 @@ export class EditContactsComponent implements OnInit {
        }
    }
    
-   disblingSegmetationButton(i: number){
-     /*  for(let i=0;i < this.criterias.length;i++){*/
-       if(this.criterias[i].operation != "Condition" && this.criterias[i].property != "Field Name" && this.criterias[i].value1.length !=0){
-           this.segmetationButtonDisabled = true;
-       }else{
-           this.segmetationButtonDisabled = false;
-       }
-      // }
+   loadAllContactListUsers( contactSelectedListId: number) {
+       this.selectedContactListId = contactSelectedListId;
+       this.gettingAllUserspagination.maxResults = 500;
+       this.gettingAllUserspagination.pageIndex = 1;
+        this.contactService.loadUsersOfContactList( contactSelectedListId, this.gettingAllUserspagination )
+        .subscribe(
+           ( data: any ) => {
+               console.log(data.listOfUsers);
+              // alert(data.listOfUsers.length);
+               this.totalListUsers = data.listOfUsers;
+           },
+           error => this.xtremandLogger.error( error ),
+           () => this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+       )
    }
    
     ngOnInit() {
