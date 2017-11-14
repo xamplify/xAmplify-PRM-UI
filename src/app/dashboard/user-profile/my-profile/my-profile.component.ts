@@ -7,7 +7,6 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
-import { Observable } from 'rxjs/Observable';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../../core/services/reference.service';

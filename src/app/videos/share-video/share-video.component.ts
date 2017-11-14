@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, AfterViewInit, Renderer } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -776,6 +776,16 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.xtremandLog.endTime = new Date();
         console.log(this.xtremandLog);
         this.videoLogAction(this.xtremandLog);
+    }
+    
+   @HostListener('window:beforeunload', [ '$event' ])
+    beforeUnloadHander(event) {
+        this.xtremandLog.actionId = this.LogAction.videoStopped;
+        this.xtremandLog.startTime = new Date();
+        this.xtremandLog.endTime = new Date();
+        console.log(this.xtremandLog);
+        this.videoLogAction(this.xtremandLog);
+       // event.returnValue = "Are you sure?";
     }
     ngOnDestroy() {
         // this.setConfirmUnload(false);

@@ -86,42 +86,7 @@
 			<li *ngIf="showDatailedData">
 				<i class="fa fa-angle-right"></i> Total Views
 			</li>
-
 		</ul>
-	</div>
-	<!-- <div class="page-bar" style="padding:4px;box-shadow: 0 0 4px rgba(0,0,0,.4)!important; border-radius: 0;">
-		<div class="col-md-12">
-			<div class="col-md-4" style="width:29%;margin-left:-15px; padding:0" *ngIf="showVideoData">
-				<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
-					<option  [value]="0" class="form-control">All Categories</option>
-					<option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
-				</select>
-			</div>
-			<div class="col-md-8">
-				<div class="btn-group pull-right" style="margin-right: -80px;">
-					<div class="inputs" align="right" style="float: right">
-						<div style="float: left; margin-right: 10px" *ngIf="showVideoData">
-							<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
-							 <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
-						  </select>
-						</div>
-						<div class="portlet-input input-inline input-small">
-							<div class="input-icon right">
-								<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-								<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-								 class="form-control input-circle" (input)="searchKeyValue()"
-								 placeholder="search...">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
-	<div *ngIf="noVideos" class="col-md-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
-		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>No Views found.. !!!</strong>
 	</div>
 	<!-- <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader> -->
 	<div class="modal" id="show_preview">
@@ -143,8 +108,8 @@
 		<div style="margin-bottom: 54px;">
 		<div class="col-md-12">
 			<div class="col-md-4" style="width:29%;margin-left:-15px; padding:0" *ngIf="showVideoData">
-				<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
-					<option  [value]="0" class="form-control">All Categories</option>
+				<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()" style="cursor: pointer">
+					<option  [value]="0" class="form-control" style="cursor: pointer">All Categories</option>
 					<option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
 				</select>
 			</div>
@@ -152,7 +117,7 @@
 				<div class="btn-group pull-right" style="margin-right: -80px;">
 					<div class="inputs" align="right" style="float: right">
 						<div style="float: left; margin-right: 10px" *ngIf="showVideoData">
-							<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
+							<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
 							 <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 						  </select>
 						</div>
@@ -168,6 +133,10 @@
 				</div>
 			</div>
 		</div>
+		<div *ngIf="noVideos" class="col-md-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
+		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>No Views found.. !!!</strong>
+	   </div>
 	</div>
 		<div *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 			<div>
