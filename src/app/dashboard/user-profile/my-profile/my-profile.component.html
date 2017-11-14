@@ -132,7 +132,7 @@
 												<li>
 													<a href="#tab_1_4" data-toggle="tab" >Privacy Settings</a>
 												</li>
-												<li>
+												<li *ngIf="hasCompany">
 													<a href="#tab_1_5" data-toggle="tab" (click)="videojsCall()">Default Player Settings</a>
 												</li>
 											</ul>
