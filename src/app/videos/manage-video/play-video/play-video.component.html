@@ -296,7 +296,7 @@
 													<div class="mix-inner">
 														<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
 														<div class="mix-details">
-															<h4>{{titleCheckLength(videoFile.title)}}</h4>
+															<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
 															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel="">
 																 <i class="fa fa-play" style="margin-right:0px"></i></a>
 															<span align="right" style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>

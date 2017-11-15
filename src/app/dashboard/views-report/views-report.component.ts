@@ -25,19 +25,14 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 })
 export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    imagepath: string;
-    errorPrepender: 'Error In:';
     videoJSplayer: any;
     categories: Category[];
     showDatailedData: boolean;
     showVideoData: boolean;
     searchKey: string;
-    sortingName: string = null;
     categoryNum: number;
     currentPageType: string = null;
     isCategoryThere: boolean;
-    emptyViewsRecord: boolean;
-    totalViewsForThisVideo: Array<ContactList>;
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
     videoSort: any;

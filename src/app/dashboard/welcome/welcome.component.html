@@ -44,75 +44,75 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-play fa-3" aria-hidden="true"></i>
+					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalUploadedvideos}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right">videos</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">videos</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
+					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalContacts}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right">contacts</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">contacts</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true"></i>
+					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalCreatedCampaigns}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right">campaign</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">campaign</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-envelope-o fa-3" aria-hidden="true"></i>
+					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.toalEmailTemplates}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right">Template</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">Template</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" style="min-height: 11em;" [class.disabled]="!hasSocialStatusRole ? true : null">
+			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasSocialStatusRole ? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-users fa-3" aria-hidden="true"></i>
+					<i class="fa fa-users fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalSocialAccounts}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right">Social Accounts</h3>
+					<h3 class="pull-right"  style="margin-top: 3px; margin-bottom: -6px;">Social Accounts</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="col-xs-12">
-					<h1 class="bold"><i class="fa fa-line-chart" aria-hidden="true"></i></h1>
+					<h1 class="bold"><i class="fa fa-line-chart" aria-hidden="true" style="font-size: 1.3em; margin-left: -42px;opacity: 0.5;"></i></h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="text-center">Analytics</h3>
+					<h3 class="text-center" style="margin-top: 11px;">Analytics</h3>
 				</div>
 			</div>
 		</div>
