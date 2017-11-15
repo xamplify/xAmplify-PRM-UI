@@ -457,7 +457,7 @@ export class UpdateStatusComponent implements OnInit {
       eventRender: function(event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title');
         element.find('.fc-title').addClass('fc-time-title');
-        element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-9 pull-right p0"></div>');
+        element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-9 pull-right p0 mr-10"></div>');
         element.find('.fc-time').css({'display': 'block'});
 
         const socialStatusProviders = event.data.socialStatusProviders;
@@ -467,11 +467,11 @@ export class UpdateStatusComponent implements OnInit {
           str += `<img class="img-responsive img-circle" style="height: auto; width: 100%;" src="${profileImage}">`;
 
           if ('FACEBOOK' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-facebook fa-facebook-color"></i>';
+            str += '<i class="fa fa-social pull-right fa-facebook white mt-10"></i>';
           } else if ('TWITTER' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-twitter fa-twitter-color"></i>';
+            str += '<i class="fa fa-social pull-right fa-twitter  white mt-10"></i>';
           } else if ('GOOGLE' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-google fa-google-color"></i>';
+            str += '<i class="fa fa-social pull-right fa-google  white mt-10"></i>';
           }
         }
         element.find('.fc-right-block')

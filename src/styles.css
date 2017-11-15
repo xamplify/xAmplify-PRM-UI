@@ -239,6 +239,12 @@ nav a.active {
 .mr0 { margin-right: 0 !important; }
 .m0 { margin: 0 !important; }
 
+.mt-10 { margin-top: -10px !important; }
+.mb-10 { margin-bottom: -10px !important; }
+.ml-10 { margin-left: -10px !important; }
+.mr-10 { margin-right: -10px !important; }
+.m-10 { margin: -10px !important; }
+
 .pt0 { padding-top: 0 !important; }
 .pb0 { padding-bottom: 0 !important; }
 .pl0 { padding-left: 0 !important; }
@@ -274,6 +280,9 @@ nav a.active {
 .fc-event {
     border: 1px solid rgba(58, 135, 173, 0);
     background-color: rgba(58, 135, 173, 0.7);
+}
+.fc-content{
+	padding: 5px;
 }
 
 /* table */
@@ -382,4 +391,8 @@ tr.highlight {
 
 .flex{
 	display: flex;
+}
+
+.white{
+	color: #fff;
 }

@@ -291,7 +291,8 @@ export class FacebookAnalyticsComponent implements OnInit {
       this.socialService.getSocialConnection(profileId, source)
         .subscribe(
           data => {
-              this.socialConnection = data;
+            this.socialConnection = data;
+            this.getPage( this.socialConnection, profileId );
           },
           error => console.log( error ),
           () => {}
@@ -304,7 +305,6 @@ export class FacebookAnalyticsComponent implements OnInit {
             const userId = this.authenticationService.user.id;
             this.getSocialConnection( profileId, 'FACEBOOK' );
 
-            this.getPage( this.socialConnection, profileId );
         } catch ( err ) {
             console.log( err );
         }
