@@ -1386,6 +1386,7 @@ export class EditContactsComponent implements OnInit {
        this.isSegmentation = false;
        this.criterias.length = 0;
        this.checkingLoadContactsCount = true;
+       this.selectedAddContactsOption = 8;
        this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
    }
    
@@ -1446,6 +1447,7 @@ export class EditContactsComponent implements OnInit {
             this.isSegmentation = true;
            $( "#filterModal .close" ).click()
            this.isSegmentationErrorMessage = false;
+           this.selectedAddContactsOption = 9;
    }
 
    }

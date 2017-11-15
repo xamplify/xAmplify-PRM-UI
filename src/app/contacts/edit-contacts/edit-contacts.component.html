@@ -93,15 +93,16 @@ a.disabled {
 
 							</ul>
 							<div class="page-toolbar">
-								<div class="btn-group pull-right" *ngIf="showEditContactData">
-								<div class="inputs" align="right" style="float: right">
-										<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: left;cursor:pointer; margin-right: 10px" data-toggle="modal" data-target="#filterModal">
+							<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: left;cursor:pointer; margin-right: 10px" data-toggle="modal" data-target="#filterModal">
 											<i class="fa fa-filter" aria-hidden="true" style="color:#0095da;font-size:30px;margin-top:10px;"></i>
 										</div>
 										<div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: left;cursor:pointer; margin-right: 10px">
 											<i class="fa fa-filter" aria-hidden="true" style="color:red;font-size:30px;margin-top:10px;"></i>
 											<i class="fa fa-times" aria-hidden="true" style="color:red;margin-left: -12px;"></i>
 										</div>
+								<div class="btn-group pull-right" *ngIf="showEditContactData">
+								<div class="inputs" align="right" style="float: right">
+										
 									<div class="inputs" align="right" style="float: right">
 										<div style="float: left; margin-right: 10px; width: 50%">
 											<select class="form-control" [(ngModel)]="sortOption"
@@ -254,22 +255,22 @@ a.disabled {
 						<div class="clearfix">
 							<div class="col-sm-6">
 								<div class="btn-group">
-									<button id="add_contact" class="btn green" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2">
+									<button id="add_contact" class="btn green" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
 										Add {{checkingContactTypeName}} <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
 								<div class="btn-group">
-									<button id="copyFrom_clipboard" class="btn green" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2"
+									<button id="copyFrom_clipboard" class="btn green" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 										(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
 										Copy From ClipBoard <i class="fa fa-clipboard" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
 									</button>
 								</div>
 								<div class="btn-group">
-									<div class="fileUpload btn btn-primary" id="upload_csv" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1"
+									<div class="fileUpload btn btn-primary" id="upload_csv" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 										style="background-color: #26a69a">
 										Upload CSV <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
 										<input type="file" ng2FileSelect class="upload" [uploader]="uploader" title=" "
-											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1" />
+											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 									</div>
 								</div>
 							</div>
@@ -290,7 +291,7 @@ a.disabled {
 										<ul class="dropdown-menu pull-right">
 											<li><a id="save_button" (click)="saveContacts()">Save </a></li>
 											<li><a id="saveAs_button" *ngIf="selectedAddContactsOption == 8" (click)="saveAs()">Save As </a></li>
-											<li><a id="delete_button" *ngIf="selectedAddContactsOption == 8" (click)="showAlert(selectedContactListId)"> Delete</a></li>
+											<li><a id="delete_button" *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9" (click)="showAlert(selectedContactListId)"> Delete</a></li>
 										</ul>
 									</div>
 								</div>
