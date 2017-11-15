@@ -1085,6 +1085,7 @@ export class ManageContactsComponent implements OnInit {
     
     cancelSegmentation(){
         this.criterias.length = 0;
+        this.isSegmentationErrorMessage = false;
     }
     
     addNewRow(){
