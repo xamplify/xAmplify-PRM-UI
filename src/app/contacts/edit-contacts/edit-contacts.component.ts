@@ -840,7 +840,6 @@ export class EditContactsComponent implements OnInit {
             $('#row_'+contactId).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
         }
-        //this.contactsUtility();
         if(this.selectedContactListIds.length == this.pagination.pagedItems.length ){
             this.isHeaderCheckBoxChecked = true;
         }else{
@@ -1134,6 +1133,7 @@ export class EditContactsComponent implements OnInit {
         this.contactsByType.selectedCategory = null;
         this.listOfSelectedContactListByType(contactType);
     }
+    
     listOfSelectedContactListByType(contactType: string){
         this.currentContactType = '';
         this.showAllContactData = true;
@@ -1156,9 +1156,6 @@ export class EditContactsComponent implements OnInit {
                 this.contactsByType.pagination.totalRecords = data.totalRecords;
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
            
-               /* if(this.contactsByType.pagination.totalRecords == 0){
-                this.setResponseDetails('ERROR', 'No contacts found');
-                }*/
                 if(this.contactsByType.selectedCategory == 'invalid'){
                     this.userListIds = data.listOfUsers;
                 }
@@ -1265,6 +1262,7 @@ export class EditContactsComponent implements OnInit {
            this.checkingForEmail = false;
        }
    }
+   
    checkingEmailPattern( emailId: string ) {
        this.validEmailPatternSuccess = false;
        if ( this.validateEmailAddress( emailId ) ) {
@@ -1376,6 +1374,7 @@ export class EditContactsComponent implements OnInit {
            $("#more_less_button_"+i).attr('value', 'more');
        }
    }
+   
    modelForSeg(){
        this.addNewRow();
        this.criteria.property = this.filterOptions[0].value;
@@ -1387,7 +1386,11 @@ export class EditContactsComponent implements OnInit {
        this.criterias.length = 0;
        this.checkingLoadContactsCount = true;
        this.selectedAddContactsOption = 8;
-       this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+       if(this.currentContactType == "all_contacts"){
+           this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+       }else{
+           this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
+       }
    }
    
    addNewRow(){
@@ -1443,7 +1446,11 @@ export class EditContactsComponent implements OnInit {
        console.log(this.criterias);
         this.checkingLoadContactsCount = true;
         if(!this.isSegmentationErrorMessage){
-            this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+            if(this.currentContactType == "all_contacts"){
+                this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
+            }else{
+                this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
+            }
             this.isSegmentation = true;
            $( "#filterModal .close" ).click()
            this.isSegmentationErrorMessage = false;
@@ -1466,7 +1473,6 @@ export class EditContactsComponent implements OnInit {
         .subscribe(
            ( data: any ) => {
                console.log(data.listOfUsers);
-              // alert(data.listOfUsers.length);
                this.totalListUsers = data.listOfUsers;
            },
            error => this.xtremandLogger.error( error ),
