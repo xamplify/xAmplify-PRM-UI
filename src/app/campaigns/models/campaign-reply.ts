@@ -1,4 +1,4 @@
-
+import { Pagination } from '../../core/models/pagination';
 export class Reply{
     id:number;
     replyInDays:number;
@@ -9,4 +9,7 @@ export class Reply{
     emailAction:any;
     scheduled:boolean;
     replyInDaysSum:number;
+    emailTemplatePageIndex:number = 0;
+    emailTemplatesPagination:Pagination = new Pagination();
+
 }

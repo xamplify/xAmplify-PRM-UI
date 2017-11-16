@@ -10,6 +10,8 @@ import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Roles } from '../../core/models/roles';
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
 declare var $: any;
 
 @Injectable()
@@ -793,4 +795,49 @@ export class ReferenceService {
     getDivHeightByClassName(className:string){
         return  $(className).height()+"px";
     }
+    getCountries() {
+        return [
+            new Country(0, '', '---Please Select Country---'),
+            new Country(1, 'AU', 'Australia'),
+            new Country(2, 'IN', 'India'),
+            new Country(3, 'MY', 'Malaysia'),
+            new Country(4, 'SG', 'Singapore'),
+            new Country(5, 'GB', 'United Kingdom'),
+            new Country(6, 'US', 'United States'),
+        ];
+    }
+
+    getTimeZones() {
+        return [
+            new Timezone(0, '', '---Please Select Timezone---'),
+            new Timezone(1, 'Australia/Perth', '(GMT+08:00) Western Time - Perth'),
+            new Timezone(1, 'Australia/Adelaide', '(GMT+10:30) Central Time - Adelaide'),
+            new Timezone(1, 'Australia/Darwin', '(GMT+09:30) Central Time - Darwin'),
+            new Timezone(1, 'Australia/Brisbane', '(GMT+10:00) Eastern Time - Brisbane'),
+            new Timezone(1, 'Australia/Hobart', '(GMT+11:00) Eastern Time - Hobart'),
+            new Timezone(1, 'Australia/Sydney', '(GMT+11:00) Eastern Time - Melbourne, Sydney'),
+            new Timezone(2, 'Asia/Calcutta', '(GMT+05:30) India Standard Time'),
+            new Timezone(3, 'Asia/Kuala_Lumpur', '(GMT+08:00) Kuala Lumpur'),
+            new Timezone(4, 'Asia/Singapore', '(GMT+08:00) Singapore'),
+            new Timezone(5, 'Europe/London', '(GMT+00:00) London'),
+            new Timezone(6, 'Pacific/Honolulu', '(GMT-10:00) Hawaii Time'),
+            new Timezone(6, 'America/Anchorage', '(GMT-09:00) Alaska Time'),
+            new Timezone(6, 'America/Los_Angeles', '(GMT-08:00) Pacific Time'),
+            new Timezone(6, 'America/Denver', '(GMT-07:00) Mountain Time'),
+            new Timezone(6, 'America/Phoenix', '(GMT-07:00) Mountain Time - Arizona'),
+            new Timezone(6, 'America/Chicago', '(GMT-06:00) Central Time'),
+            new Timezone(6, 'America/New_York', '(GMT-05:00) Eastern Time'),
+          
+        ];
+    }
+    
+    
+    getCountryCodeFromBrowser(){
+        let code;
+        $.getJSON('http://freegeoip.net/json/', function(result) {
+           code=  result.country_code;
+          });
+        return code;
+    }
+    
 }

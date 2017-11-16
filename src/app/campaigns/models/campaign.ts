@@ -34,7 +34,6 @@ export class Campaign {
     launchedOn = "";
     campaignReplies: Array<Reply>;
     campaignUrls: Array<Url>;
-    timeZoneId: any;
     channelCampaign = false;
     partnerVideoSelected = false;
 
@@ -43,5 +42,8 @@ export class Campaign {
     updatedTime: Date;
     updatedBy: number;
     campaignType: CampaignType;
+    countryId:number = 0;
+    country:string = "";
+    timeZoneId: any;
     
 }

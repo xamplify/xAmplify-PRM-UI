@@ -32,6 +32,9 @@ import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
+import {validateCountryName} from '../../form-validator';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
 
 @Component({
@@ -175,9 +178,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     emailOpenedReplyDaysSum:number = 0;
     onClickScheduledDaysSum:number = 0;
     isReloaded:boolean = false;
-    timeZones=[];
     invalidScheduleTime:boolean = false;
     hasInternalError:boolean =false;
+    countries: Country[];
+    timezones: Timezone[];
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -187,16 +191,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
             ){
         this.logger.info("create-campaign-component constructor loaded");
+        this.countries = this.refService.getCountries();
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
-        this.timeZones = this.refService.getAllTimeZones();
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
-            this.campaign.timeZoneId = this.timeZones[0];
             this.myVideosClass = this.tabClassActive;
             this.myVideosStyle = this.styleDisplayClass;
+            this.campaign.countryId = this.countries[0].id;
+            this.onSelect(this.campaign.countryId);
         }
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -219,9 +224,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
-            if(this.timeZones.indexOf(this.campaign.timeZoneId)<0){
-                this.campaign.timeZoneId = this.timeZones[0];
-            }
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
@@ -302,7 +304,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.logger.info("No Email Template Added For Campaign");
             }
             if(this.campaign.timeZoneId==undefined){
-                this.campaign.timeZoneId = this.timeZones[0];
+                this.campaign.countryId = this.countries[0].id;
+                this.onSelect(this.campaign.countryId);
+            }else{
+                let countryNames = this.refService.getCountries().map(function(a) {return a.name;});
+                let countryIndex = countryNames.indexOf(this.campaign.country)
+                if(countryIndex>-1){
+                    this.campaign.countryId = this.countries[countryIndex].id;
+                    this.onSelect(this.campaign.countryId);
+                }else{
+                    this.campaign.countryId = this.countries[0].id;
+                    this.onSelect(this.campaign.countryId);
+                }
+                
             }
         }//End Of Edit
         if(this.refService.campaignVideoFile!=undefined){
@@ -1094,8 +1108,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             pagination.campaignDefaultTemplate = false;
             pagination.isEmailTemplateSearchedFromCampaign = true;
         }
-        pagination.maxResults = 12;
-        console.log(pagination);
+        pagination.maxResults = 2;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -1109,8 +1122,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
             },
             (error:string) => {
-                this.logger.error(this.refService.errorPrepender+" loadEmailTemplates():"+error);
-                this.refService.showServerError(this.campaignEmailTemplate.httpRequestLoader);
+               this.logger.errorPage(error);
             },
             () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
             )
@@ -1244,12 +1256,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaignLaunchForm = this.fb.group( {
             'scheduleCampaign': [this.campaign.scheduleCampaign,Validators.required],
             'launchTime': [this.campaign.scheduleTime],
-            'timeZoneId':[ this.campaign.timeZoneId]
+            'timeZoneId':[ this.campaign.timeZoneId],
+            'countryId':[this.campaign.countryId,Validators.compose([Validators.required,validateCountryName])]
         },{
             validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
         }
         );
-
         this.campaignLaunchForm.valueChanges
             .subscribe( data => this.onLaunchValueChanged( data ) );
 
@@ -1327,6 +1339,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if("video"==this.campaignType){
             campaignType = CampaignType.VIDEO;
         }
+        let country = $.trim($('#countryName option:selected').text());
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -1354,7 +1367,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'socialStatus': this.socialStatus,
             'campaignReplies':this.replies,
             'campaignUrls':this.urls,
-            'campaignType':campaignType
+            'campaignType':campaignType,
+            'country':country
         };
         console.log(data);
         return data;
@@ -1594,7 +1608,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'message': '',
             'scheduleCampaign': '',
             'launchTime': '',
-            'contactListId': ''
+            'contactListId': '',
+            'countryId':''
         };
 
         validationMessages = {
@@ -1628,7 +1643,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             },
             'contactListId': {
                 'pattern': 'please select atleast one contact list'
-            }
+            },
+            'countryId': {
+                'required': 'Country is required.',
+                'invalidCountry':'Country is required.'
+            },
 
 
         };
@@ -1806,6 +1825,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
  /***************************Email Rules***********************************/
         addReplyRows() {
             this.reply = new Reply();
+            $('.bs-timepicker-field').attr("disabled",'disabled');
             let length = this.allItems.length;
             length = length+1;
             var id = 'reply-'+length;
@@ -1872,6 +1892,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.partnerVideosClass = this.tabClass;
          this.partnerVideosStyle  = this.styleHiddenClass;
      }
+     selectReplyEmailBody(event:any,index:number,reply:Reply){
+         if(event){
+             $('#ck-editor-'+index).hide();
+             $('#reply-email-template-'+index).show();
+         }else{
+             $('#reply-email-template-'+index).hide();
+             $('#ck-editor-'+index).show();
+         }
+     }
+     setPage1(pageIndex:number,module:string,reply:Reply){
+         if(module=="reply-email-templates"){
+             reply.emailTemplatePageIndex = pageIndex;
+             this.setPage(pageIndex, "emailTemplates");
+         }
+     }
      
-     
+     onSelect(countryId) {
+         this.timezones = this.refService.getTimeZones().filter((item)=> item.countryId == countryId);
+       }
 }

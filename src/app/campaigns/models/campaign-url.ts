@@ -1,3 +1,4 @@
+import { Pagination } from '../../core/models/pagination';
 export class Url{
     id:number;
     replyInDays:number;
@@ -8,4 +9,6 @@ export class Url{
     divId:string;
     scheduled:boolean;
     replyInDaysSum:number;
+    emailTemplatePageIndex:number = 0;
+    emailTemplatesPagination:Pagination = new Pagination();
 }
