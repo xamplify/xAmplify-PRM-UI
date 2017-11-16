@@ -191,7 +191,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         }
     }
      videoTitleLength(title: string) {
-        if (title.length > 70) { title = title.substring(0, 60) + '.....'; }
+        if (title.length > 60) { title = title.substring(0, 60) + '.....'; }
         return title;
     }
     playVideo() {

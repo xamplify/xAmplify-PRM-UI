@@ -164,8 +164,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<Company_name>", '');
@@ -174,20 +172,28 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
                             document.getElementById('para').innerHTML = this.templatehtml;
-                        } else if (updatedBody.includes('class="img-container center fullwidth"')) {
+                         }
+                          else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"'))
+                           {
+                            updatedBody = updatedBody.replace("view in browser", '');
+                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
+                            updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
+                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", '');
+                            updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
+                            updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo"></div> <a ');
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<Company_name>", '');
                             updatedBody = updatedBody.replace("<Company_Logo>", '');
                             updatedBody = updatedBody.replace("<Title_here>", '');
                             updatedBody = updatedBody.replace("Image", '');
-                            updatedBody = updatedBody.replace('class="img-container center fullwidth"', 'id="newPlayerVideo"');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
+                            console.log(this.templatehtml);
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
