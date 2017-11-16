@@ -476,10 +476,20 @@ export class UpdateStatusComponent implements OnInit {
         }
         element.find('.fc-right-block')
           .after($(`<div id = ${event.id} class="fc-left-block col-xs-3 p0"> ${str} </div>`));
+          $(element).popover({ 
+            html: true,
+            placement: 'auto',
+            content: function() {
+              return $('#full-calendar-modal-event-' + event.id).html();
+            }
+          });
+          $('.fc-content').on('click', function (e) {
+            $('.fc-content').not(this).popover('hide');
+          });
       },
-      eventClick: function(event: any, element: any) {
-        $('#full-calendar-modal-event-' + event.id).modal('show');
-      },
+      // eventClick: function(event: any, element: any) {
+      //   $('#full-calendar-modal-event-' + event.id).modal('show');
+      // },
     });
   }
 

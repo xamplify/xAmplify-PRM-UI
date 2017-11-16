@@ -433,58 +433,41 @@
   </div>
 </div>
 
-<div class="modal fade" id="full-calendar-modal-event-{{item.id}}" tabindex="-1" role="dialog" *ngFor="let item of socialStatusList">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content rounded-0">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">x</span> <span class="sr-only">close</span>
-				</button>
-				<h4 id="full-calendar-modal-title" class="modal-title">Edit Post</h4>
-			</div>
-			<div id="full-calendar-modal-body" class="modal-body">
-				<h4 class="mt0 mb10">Selected Accounts</h4>
-				<span *ngFor="let socialStatusProvider of item.socialStatusProviders" style="padding-right: 5px">
-					<div class="btn btn-xs white"
+<div class="hidden" id="full-calendar-modal-event-{{item.id}}" *ngFor="let item of socialStatusList">
+	<span *ngFor="let socialStatusProvider of item.socialStatusProviders" style="padding-right: 5px">
+		<div class="btn btn-xs white"
+			[ngClass]="{
+					'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+					'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+					'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+			<div class="col-xs-12" style="display: inline-flex;">
+				<i class="fa fa-social pull-right" 
 						[ngClass]="{
-								'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
-								'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-								'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-						<div class="col-xs-12" style="display: inline-flex;">
-							<i class="fa fa-social pull-right" 
-									[ngClass]="{
-										'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
-										'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-										'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
-							<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
-							<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
-						</div>
-					</div>
-				</span>
-				<div>
-					<h4 [innerHTML]="item.statusMessage"></h4>
-					<div *ngIf="item.socialStatusContents?.length > 0">
-						<span *ngFor="let socialStatusContent of item.socialStatusContents">
-							<img *ngIf="socialStatusContent.fileType  == 'image'"
-								alt="{{socialStatusContent.fileType}}"
-								src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
-								onerror="this.src='http://blog.adriansandu.com/wp-content/uploads/2012/08/chrome-broken.png'"
-								style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
-							<video *ngIf="socialStatusContent.fileType  == 'video'"
-								width="100%" height="240" controls>
-								<source
-									src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{authenticationService.access_token}}"
-									type="video/mp4">
-							</video>
-						</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn-sm uppercase rounded-0" (click)="editSocialStatus(item)">Edit</button>
-				<button type="button" class="btn btn-dialog btn-sm uppercase rounded-0" data-dismiss="modal">Close</button>
+							'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+							'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+							'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+				<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
+				<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
 			</div>
 		</div>
+	</span>
+	<div>
+		<h4 [innerHTML]="item.statusMessage"></h4>
+		<div *ngIf="item.socialStatusContents?.length > 0">
+			<span *ngFor="let socialStatusContent of item.socialStatusContents">
+				<img *ngIf="socialStatusContent.fileType  == 'image'"
+					alt="{{socialStatusContent.fileType}}"
+					src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+					onerror="this.src='http://blog.adriansandu.com/wp-content/uploads/2012/08/chrome-broken.png'"
+					style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
+				<video *ngIf="socialStatusContent.fileType  == 'video'"
+					width="100%" height="240" controls>
+					<source
+						src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{authenticationService.access_token}}"
+						type="video/mp4">
+				</video>
+			</span>
+		</div>
 	</div>
+	<button type="button" class="btn btn-primary btn-sm uppercase rounded-0" (click)="editSocialStatus(item)">Edit</button>
 </div>
