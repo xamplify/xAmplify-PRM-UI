@@ -67,10 +67,15 @@
 										    	<h3 *ngIf="!campaign.launched && campaign.launchedOn?.length==0" class="saved">Saved<span class="saved-arrow"></span></h3> 
 										    </div>
 											<div class="mix-inner" style="height: 173px;">
-												<img *ngIf="!campaign.regularEmail && campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 173px;" alt="No Image Found">
-												<img *ngIf="!campaign.regularEmail && !campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-												<img *ngIf="campaign.regularEmail && campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.regularEmail && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 173px;" alt="No Image Found">
+												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " class="img-responsive" src="assets/images/video-email.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+												
+												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;" alt="No Image Found">
+												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+
+												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" class="img-responsive" src="assets/images/social-campaign.png" style="height: 173px;" alt="No Image Found">
+												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" class="img-responsive" src="assets/images/social-campaign.png" style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
+												
 												<div class="mix-details" style="z-index: 700;padding: 7px;height: 165px;">
 													<h4 class="ellipsis" title="{{campaign.campaignName}}" style="height: 20px;">{{campaign.campaignName}}</h4>
 													<!-- <div style="top: 2%; position: relative; margin-left: 5px;">

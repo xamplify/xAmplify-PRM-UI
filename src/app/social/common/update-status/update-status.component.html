@@ -92,7 +92,12 @@
 	                				'alert-warning': customResponse.type === 2,
 	                				'alert-danger': customResponse.type === 3}">
 	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.statusText = null"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="m0 bold">{{customResponse.statusText}}</h4>
+	                    <h4 class="m0 bold">
+							<i class="fa pr10" 
+							[ngClass]="{'fa-check': customResponse.type === 1,
+	                				'fa-exclamation': customResponse.type === 2,
+	                				'fa-times': customResponse.type === 3}" aria-hidden="true"></i>
+							{{customResponse.statusText}}</h4>
 	                    <ng-container *ngIf='customResponse.statusArray'>
 	                    	<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
 	                    </ng-container>
@@ -438,20 +443,41 @@
 				<h4 id="full-calendar-modal-title" class="modal-title">Edit Post</h4>
 			</div>
 			<div id="full-calendar-modal-body" class="modal-body">
-				<h4 class='mt0'>{{item.statusMessage}}</h4>
-				<div *ngIf="socialStatus.socialStatusContents?.length > 0">
-					<span *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-						<img *ngIf="socialStatusContent.fileType  == 'image'"
-							alt="{{socialStatusContent.fileType}}"
-							src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
-							style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
-						<video *ngIf="socialStatusContent.fileType  == 'video'"
-							width="100%" height="240" controls>
-							<source
-								src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{authenticationService.access_token}}"
-								type="video/mp4">
-						</video>
-					</span>
+				<h4 class="mt0 mb10">Selected Accounts</h4>
+				<span *ngFor="let socialStatusProvider of item.socialStatusProviders" style="padding-right: 5px">
+					<div class="btn btn-xs white"
+						[ngClass]="{
+								'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+								'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+								'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+						<div class="col-xs-12" style="display: inline-flex;">
+							<i class="fa fa-social pull-right" 
+									[ngClass]="{
+										'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+										'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+							<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
+							<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
+						</div>
+					</div>
+				</span>
+				<div>
+					<h4 [innerHTML]="item.statusMessage"></h4>
+					<div *ngIf="item.socialStatusContents?.length > 0">
+						<span *ngFor="let socialStatusContent of item.socialStatusContents">
+							<img *ngIf="socialStatusContent.fileType  == 'image'"
+								alt="{{socialStatusContent.fileType}}"
+								src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+								onerror="this.src='http://blog.adriansandu.com/wp-content/uploads/2012/08/chrome-broken.png'"
+								style="height: auto; width: auto; max-width: 175px; max-height: 175px;">
+							<video *ngIf="socialStatusContent.fileType  == 'video'"
+								width="100%" height="240" controls>
+								<source
+									src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.contentPath}}?access_token={{authenticationService.access_token}}"
+									type="video/mp4">
+							</video>
+						</span>
+					</div>
 				</div>
 			</div>
 

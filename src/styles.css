@@ -245,6 +245,12 @@ nav a.active {
 .mr-10 { margin-right: -10px !important; }
 .m-10 { margin: -10px !important; }
 
+.mt10 { margin-top: 10px !important; }
+.mb10 { margin-bottom: 10px !important; }
+.ml10 { margin-left: 10px !important; }
+.mr10 { margin-right: 10px !important; }
+.m10 { margin: 10px !important; }
+
 .pt0 { padding-top: 0 !important; }
 .pb0 { padding-bottom: 0 !important; }
 .pl0 { padding-left: 0 !important; }
