@@ -197,13 +197,15 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
-                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
                             console.log(this.templatehtml);
                             if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')) {
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
-                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>") && !updatedBody.includes("newPlayerVideo")) {
+                            } else if (updatedBody.includes('<a href="<SocialUbuntuURL>">')) {
+                                updatedBody = updatedBody.replace('<a href="<SocialUbuntuURL>">', '<div id="newPlayerVideo"></div><a>');
+                            }  else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")) {
                                 updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
-                            } else {
+                            } 
+                            else {
                                 updatedBody = this.campaignVideoTemplate;
                             }
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
