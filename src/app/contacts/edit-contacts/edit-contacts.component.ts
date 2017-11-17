@@ -1444,9 +1444,9 @@ export class EditContactsComponent implements OnInit {
            
        }
        console.log(this.criterias);
-        this.checkingLoadContactsCount = true;
         if(!this.isSegmentationErrorMessage){
             if(this.currentContactType == "all_contacts"){
+                this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId,this.pagination );
             }else{
                 this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
