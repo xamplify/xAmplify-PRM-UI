@@ -50,7 +50,7 @@ export class UpdateStatusComponent implements OnInit {
     private facebookService: FacebookService, private videoFileService: VideoFileService,
     private authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
-    private logger: Logger, public callActionSwitch: CallActionSwitch) {
+    private logger: Logger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute) {
 
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
@@ -338,7 +338,7 @@ export class UpdateStatusComponent implements OnInit {
 
   editSocialStatus(socialStatus: SocialStatus) {
     this.resetCustomResponse();
-    $('#full-calendar-modal-event-' + socialStatus.id).modal('hide');
+    $('#fc-event-' + socialStatus.id).modal('hide');
     $('html,body').animate({scrollTop: 0}, 'slow');
     this.initializeSocialStatus();
     this.socialStatus = socialStatus;
@@ -479,17 +479,16 @@ export class UpdateStatusComponent implements OnInit {
           $(element).popover({ 
             html: true,
             placement: 'auto',
+            trigger : 'hover',
             content: function() {
-              return $('#full-calendar-modal-event-' + event.id).html();
+              $( "#fc-event-body-" + event.id ).after( '' );
+               return $('#fc-event-' + event.id).html();
             }
           });
-          $('.fc-content').on('click', function (e) {
-            $('.fc-content').not(this).popover('hide');
-          });
       },
-      // eventClick: function(event: any, element: any) {
-      //   $('#full-calendar-modal-event-' + event.id).modal('show');
-      // },
+      eventClick: function(event) {
+       self.editSocialStatus(event.data);
+    }
     });
   }
 
