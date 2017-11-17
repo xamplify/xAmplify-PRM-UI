@@ -34,7 +34,6 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
-import {validateCountryName} from '../../form-validator';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
 
 @Component({
@@ -1257,7 +1256,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'scheduleCampaign': [this.campaign.scheduleCampaign,Validators.required],
             'launchTime': [this.campaign.scheduleTime],
             'timeZoneId':[ this.campaign.timeZoneId],
-            'countryId':[this.campaign.countryId,Validators.compose([Validators.required,validateCountryName])]
+            'countryId':[this.campaign.countryId]
         },{
             validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
         }
