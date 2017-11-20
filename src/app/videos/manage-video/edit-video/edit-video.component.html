@@ -129,10 +129,10 @@
 						</div>
 					</form>
 					<div>
-						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
+						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer" (click)="repeatPlay()">
 							<i class="fa fa-repeat" aria-hidden="true"></i>
 						</div>
-						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer">
+						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer" (click)="skipOverplay()">
 							<i class="fa fa-forward" aria-hidden="true"></i>
 							<b style="font-size: 13px; color:white;">skip</b>
 						</div>

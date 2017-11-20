@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input, Inject, HostListener, AfterViewInit, Renderer } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
@@ -42,8 +42,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     videoUrl: string;
     posterImagePath: string;
     is360Value: boolean;
-    title: string;
-    description: string;
     publicRouterUrl: string;
     typeValue: string;
     videoAlias: string;
@@ -118,7 +116,20 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLog.longitude = data.lon;
         this.xtremandLog.countryCode = data.countryCode;
     }
-
+    replaceUpdateBody(updatedBody: any) {
+        updatedBody = updatedBody.replace("view in browser", '');
+        updatedBody = updatedBody.replace("SocialUbuntuURL", '');
+        updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
+        updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
+        updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
+        updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
+        updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
+        updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
+        updatedBody = updatedBody.replace("<Company_name>", '');
+        updatedBody = updatedBody.replace("<Company_Logo>", '');
+        updatedBody = updatedBody.replace("<Title_here>", '');
+        return updatedBody;
+    }
     getCampaignVideo() {
         this.utilService.getJSONLocation()
             .subscribe(
@@ -158,43 +169,21 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
-                            updatedBody = updatedBody.replace("view in browser", '');
-                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
-                            updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
-                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
-                            updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
-                            updatedBody = updatedBody.replace("<Company_name>", '');
-                            updatedBody = updatedBody.replace("<Company_Logo>", '');
-                            updatedBody = updatedBody.replace("<Title_here>", '');
+                            updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
                             document.getElementById('para').innerHTML = this.templatehtml;
-                         }
-                          else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"'))
-                           {
-                            updatedBody = updatedBody.replace("view in browser", '');
-                            updatedBody = updatedBody.replace("SocialUbuntuURL", '');
-                            updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
-                            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
+                        }
+                        else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
+                            updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo"></div> <a ');
-                            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
-                            updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
-                            updatedBody = updatedBody.replace("<Company_name>", '');
-                            updatedBody = updatedBody.replace("<Company_Logo>", '');
-                            updatedBody = updatedBody.replace("<Title_here>", '');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             document.getElementById('para').innerHTML = this.templatehtml;
+                            $('#newPlayerVideo').css({ "width": "562px", "margin-left": "-24px" });
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
                             console.log(this.templatehtml);
@@ -202,9 +191,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
                             } else if (updatedBody.includes('<a href="<SocialUbuntuURL>">')) {
                                 updatedBody = updatedBody.replace('<a href="<SocialUbuntuURL>">', '<div id="newPlayerVideo"></div><a>');
-                            }  else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")) {
+                            } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")) {
                                 updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
-                            } 
+                            }
                             else {
                                 updatedBody = this.campaignVideoTemplate;
                             }
@@ -218,27 +207,18 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             console.log(this.campaignVideoTemplate);
                         }
                         console.log(this.templatehtml);
-                        console.log(result);
                         this.posterImagePath = this.campaignVideoFile.imagePath;
                         this.is360Value = this.campaignVideoFile.is360video;
-                        this.title = this.campaignVideoFile.title;
-                        this.description = this.campaignVideoFile.description;
-                        this.uploadedDate = this.campaignVideoFile.uploadedDate;
-                        this.categoryName = this.campaignVideoFile.category.name;
-                        this.videoLength = this.truncateHourZeros(this.campaignVideoFile.videoLength);
-                        console.log(this.videoLength);
-                        if (this.campaignVideoFile.is360video === true) {
+                        if (this.campaignVideoFile.is360video) {
                             try {
                                 this.play360Video();
                             } catch (err) {
-                                // this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                                 document.getElementById('para').innerHTML = this.errorHtml;
                             }
                         } else {
                             try {
                                 this.playNormalVideo();
                             } catch (err) {
-                                //  this.router.navigate(['/user/showCampaignVideo/campaign-video-not-found']);
                                 document.getElementById('para').innerHTML = this.errorHtml;
                             }
                         }
@@ -254,13 +234,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             },
             error => console.log(error));
     }
-    truncateHourZeros(length) {
-        const val = length.split(":");
-        if (val.length == 3 && val[0] == "00") {
-            length = val[1] + ":" + val[2];
-        }
-        return length;
-    }
     getCurrentTimeValues(time: any) {
         const whereYouAt = time;
         const minutes = Math.floor(whereYouAt / 60);
@@ -270,19 +243,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const timeValue = x + ":" + y;
         this.timeValue = timeValue;
         console.log('enter int o get current time' + timeValue);
-    }
-    timeConversion(totalSeconds: number) {
-        const MINUTES_IN_AN_HOUR = 60;
-        const SECONDS_IN_A_MINUTE = 60;
-        const seconds = totalSeconds % SECONDS_IN_A_MINUTE;
-        const totalMinutes = totalSeconds / SECONDS_IN_A_MINUTE;
-        const minutes = totalMinutes % MINUTES_IN_AN_HOUR;
-        const hours = totalMinutes / MINUTES_IN_AN_HOUR;
-        return this.addZeros(hours) + ":" + this.addZeros(minutes) + ":" + this.addZeros(seconds);
-    }
-    addZeros(val: number) {
-        const value = val;
-        return value.toString().length == 1 ? "0" + value : value;
     }
     loacationDetails() {
         this.videoFileService.getJSONLocation()
@@ -574,9 +534,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 seekCheck = false;
                 self.videoFileService.pauseAction = false;
                 console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                const time = self.timeConversion(player.currentTime());
-                console.log(time);
-                console.log(self.truncateHourZeros(time).toString());
                 self.xtremandLog.actionId = self.LogAction.pauseVideo;
                 self.xtremandLog.startTime = new Date();
                 self.xtremandLog.endTime = new Date();
@@ -696,7 +653,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 }
             });
         });
-        //    this.videoPlayListSourceM3U8();
     }
     extractData(res: Response) {
         const body = res.json();

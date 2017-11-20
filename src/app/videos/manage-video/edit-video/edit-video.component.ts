@@ -813,6 +813,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.gifsecond = this.settingGifPaths(1);
         this.gifthird = this.settingGifPaths(2);
     }
+    skipOverplay(){
+        $('#overlay-modal').hide();
+    }
+    repeatPlay(){
+          $('#overlay-modal').hide();
+          if(this.videoJSplayer){
+             this.videoJSplayer.play();
+          }
+    }
     ngOnInit() {
         Metronic.init();
         Layout.init();
