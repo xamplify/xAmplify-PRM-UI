@@ -494,6 +494,7 @@ a.disabled {
 										<th>Job Title</th>
 										<th>ADDRESS</th>
 										<th>MORE</th>
+										<th class='text-center'>EDIT</th>
 										<th class='text-center'>DELETE</th>
 									</tr>
 								</thead>
@@ -537,6 +538,11 @@ a.disabled {
 											<span *ngIf="!contact.isShowDetails">More</span>
 											<span *ngIf="contact.isShowDetails">Less</span>
 										</button>
+										</td>
+										<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+											<span (click)="editUserDetails(contact)">
+												<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#3375af;cursor:pointer;font-size: 25px; margin-top:14px"></i>
+											</span>
 										</td>
 										<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
 											<span (click)="deleteUserShowAlert(contact.id)">
@@ -942,7 +948,8 @@ a.disabled {
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
+        <button type="button" *ngIf="!updateContactUser" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
+        <button type="button" *ngIf="updateContactUser" class="close" data-dismiss="modal" (click)="updateContactModalClose()" >&times;</button>
         <h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
       </div>
       <div class="modal-body">
@@ -950,11 +957,13 @@ a.disabled {
 		   <div class="form-inline">
 		   <label class="control-label col-sm-2" for="name" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
 		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="firstName" [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
+			      <input type="name" style="border:none" class="form-control" id="firstName" [(ngModel)]="addContactuser.firstName"
+			       [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
 			    <div class="textCss"></div>
 		  </div> 
 		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="lastName" [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
+			      <input type="name" style="border:none" class="form-control" id="lastName" [(ngModel)]="addContactuser.lastName"
+			       [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
 			    <div class="textCss"></div>
 		  </div>
 		  </div>
@@ -1017,9 +1026,13 @@ a.disabled {
 		  </div>
       </form>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" *ngIf="!updateContactUser">
         <button type="submit" class="btn green" [disabled]="!checkingForEmail" (click)="addContactsOption(AddContactsOption.ADDCONTACT);">Add</button>
         <button type="button" class="btn green" data-dismiss="modal" (click)="addContactModalClose()">Close</button>
+      </div>
+      <div class="modal-footer" *ngIf="updateContactUser">
+        <button type="submit" class="btn green" [disabled]="!checkingForEmail" (click)="updateContact()">Update</button>
+        <button type="button" class="btn green" data-dismiss="modal" (click)="updateContactModalClose()">Close</button>
       </div>
     </div>
 

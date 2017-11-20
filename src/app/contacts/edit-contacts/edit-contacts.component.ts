@@ -60,6 +60,7 @@ export class EditContactsComponent implements OnInit {
     emailNotValid: boolean;
     checkingForEmail: boolean;
     addContactuser: User = new User();
+    updateContactUser: boolean = false;
     
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -1252,6 +1253,7 @@ export class EditContactsComponent implements OnInit {
    addContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
+       
    }
    validateEmail(emailId: string){
        if(this.validateEmailAddress( emailId )){
@@ -1478,6 +1480,45 @@ export class EditContactsComponent implements OnInit {
            error => this.xtremandLogger.error( error ),
            () => this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
        )
+   }
+   
+   editUserDetails(contactDetails: any){
+       this.checkingForEmail = true;
+       
+       this.updateContactUser = true
+       this.addContactuser.firstName = contactDetails.firstName;
+       this.addContactuser.lastName = contactDetails.lastName;
+       this.addContactuser.contactCompany = contactDetails.contactCompany;
+       this.addContactuser.jobTitle = contactDetails.jobTitle;
+       this.addContactuser.emailId = contactDetails.emailId;
+       this.addContactuser.address = contactDetails.address;
+       this.addContactuser.city = contactDetails.city;
+       this.addContactuser.country = contactDetails.country;
+       this.addContactuser.mobileNumber = contactDetails.mobileNumber;
+       this.addContactuser.description = contactDetails.description;
+       $( "#addContactModal" ).show();
+       console.log(contactDetails);
+   }
+   
+   updateContactModalClose(){
+       $('#addContactModal').modal('toggle');
+       $( "#addContactModal .close" ).click()
+       this.updateContactUser = false;
+       this.addContactuser.firstName = "";
+       this.addContactuser.lastName = "";
+       this.addContactuser.contactCompany = "";
+       this.addContactuser.jobTitle = "";
+       this.addContactuser.emailId = "";
+       this.addContactuser.address = "";
+       this.addContactuser.city = "";
+       this.addContactuser.country = "";
+       this.addContactuser.mobileNumber = "";
+       this.addContactuser.description = "";
+       
+   }
+   
+   updateContact(){
+       $( "#addContactModal .close" ).click()
    }
    
     ngOnInit() {
