@@ -6,31 +6,31 @@ a.disabled {
 }
 
 .pagination {
-        margin: 10px 4px 1px;
-    }
+	margin: 10px 4px 1px;
+}
 
-    .tabbable-custom {
-        box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
-    }
+.tabbable-custom {
+	box-shadow: 0 0 5px rgba(0, 0, 0, .4) !important;
+}
 
-.textWhite{
-		color:#ffffff;
+.textWhite {
+	color: #ffffff;
 }
 
 a.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
+	pointer-events: none;
+	cursor: not-allowed;
+}
 
 .textCss {
-	background-color: rgba(0,0,0,0.12);
-    bottom: -2px;
-    height: 1px;
-    left: 13;
-    margin: 0;
-    padding: 0;
-   /*  position: absolute; */
-    width: 91%;
+	background-color: rgba(0, 0, 0, 0.12);
+	bottom: -2px;
+	height: 1px;
+	left: 13;
+	margin: 0;
+	padding: 0;
+	/*  position: absolute; */
+	width: 91%;
 }
 
 .capitalize {
@@ -60,8 +60,9 @@ a.disabled {
 }
 
 .alert {
-    padding: 6px;
-    }
+	padding: 6px;
+}
+
 .alert-success, .alert-danger, .alert-warning>h5 {
 	font-size: 14px;
 }
@@ -70,18 +71,20 @@ a.disabled {
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
 			class="fa fa-angle-right"></i></li>
-		<li><a (click)="refresh()"> Manage {{checkingContactTypeName}}s</a></li>
+		<li><a (click)="refresh()"> Manage
+				{{checkingContactTypeName}}s</a></li>
 		<li><a (click)="backToEditContacts()"><i
 				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
-		<li *ngIf="! showEditContactData"><i
-			class="fa fa-angle-right"> </i><span class="capitalize">{{contactsByType.selectedCategory}}
+		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
+		</i><span class="capitalize">{{contactsByType.selectedCategory}}
 				{{checkingContactTypeName}}s</span></li>
 	</ul>
 </div>
 <div class="clearfix" id="manageContacts">
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="tabbable tabbable-custom tabbable-noborder" style="background: white;">
+			<div class="tabbable tabbable-custom tabbable-noborder"
+				style="background: white;">
 
 				<div class="tab-content">
 					<div class="tab-pane active">
@@ -89,836 +92,613 @@ a.disabled {
 
 						<div class="page-bar">
 							<ul class="page-breadcrumb">
-								<li style="font-size: 16px;font-family:Open Sans; color:#989292">{{selectedContactListName}} List</li>
+								<li
+									style="font-size: 16px; font-family: Open Sans; color: #989292">{{selectedContactListName}}
+									List</li>
 
 							</ul>
 							<div class="page-toolbar">
-							<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: left;cursor:pointer; margin-right: 10px" data-toggle="modal" data-target="#filterModal">
-											<i class="fa fa-filter" aria-hidden="true" style="color:#0095da;font-size:30px;margin-top:10px;"></i>
-										</div>
-										<div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: left;cursor:pointer; margin-right: 10px">
-											<i class="fa fa-filter" aria-hidden="true" style="color:red;font-size:30px;margin-top:10px;"></i>
-											<i class="fa fa-times" aria-hidden="true" style="color:red;margin-left: -12px;"></i>
-										</div>
+								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+									style="float: left; cursor: pointer; margin-right: 10px"
+									data-toggle="modal" data-target="#filterModal">
+									<i class="fa fa-filter" aria-hidden="true"
+										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+								</div>
+								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+									style="float: left; cursor: pointer; margin-right: 10px">
+									<i class="fa fa-filter" aria-hidden="true"
+										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+										class="fa fa-times" aria-hidden="true"
+										style="color: red; margin-left: -12px;"></i>
+								</div>
 								<div class="btn-group pull-right" *ngIf="showEditContactData">
-								<div class="inputs" align="right" style="float: right">
-										
 									<div class="inputs" align="right" style="float: right">
-										<div style="float: left; margin-right: 10px; width: 50%">
-											<select class="form-control" [(ngModel)]="sortOption"
-												(ngModelChange)="sortByOption($event)">
-												<ng-container
-													*ngFor="let sort of sortOptions; let i = index">
-												<option [ngValue]="sort">{{sort.name}}</option>
-												</ng-container>
-											</select>
-										</div>
-										<div class="portlet-input input-inline input-small">
-											<div class="input-icon right">
-												<i class="icon-magnifier"
-													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contactList')"></i> <input type="text"
-													[(ngModel)]="searchKey"
-													[ngModelOptions]="{standalone: true}"
-													class="form-control input-circle" placeholder="search...">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="page-toolbar" *ngIf="!showEditContactData">
-								<div class="btn-group pull-right">
-									<div class="inputs" align="right" style="float: right">
-										<div style="float: left; margin-right: 10px; width: 50%">
-											<select class="form-control" [(ngModel)]="sortOption"
-												(ngModelChange)="sortByOption($event)">
-												<ng-container *ngFor="let sort of sortOptions; let i = index">
-												<option [ngValue]="sort">{{sort.name}}</option>
-												</ng-container>
-											</select>
-										</div>
-										<div class="portlet-input input-inline input-small">
-											<div class="input-icon right">
-												<i class="icon-magnifier"
-													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contactList')"></i> <input type="text"
-													[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-													class="form-control input-circle" placeholder="search...">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- END DASHBOARD STATS -->
-						<div class="clearfix"></div>
 
-						<div class="row">
-							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat blue-soft" (click)="backToEditContacts()">
-									<div class="visual">
-										<i class="fa fa-users"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.allContactsCount}}</div>
-										<div class="desc">All {{checkingContactTypeName}}s</div>
-									</div>
-								</button>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat red-soft"
-									(click)="showingContactDetails('active')"
-									[disabled]="contactsByType.activeContactsCount == 0">
-									<div class="visual">
-										<i class="fa fa-eye"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.activeContactsCount}}</div>
-										<div class="desc">Active {{checkingContactTypeName}}s</div>
-									</div>
-								</button>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat blue-sharp"
-									(click)="showingContactDetails('non-active')"
-									[disabled]="contactsByType.inactiveContactsCount == 0">
-									<div class="visual">
-										<i class="fa fa-eye-slash"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-										<div class="desc">Inactive {{checkingContactTypeName}}s</div>
-									</div>
-								</button>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat yellow-gold"
-									(click)="showingContactDetails('invalid')"
-									[disabled]="contactsByType.invalidContactsCount == 0">
-									<div class="visual">
-										<i class="fa fa-user-times"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.invalidContactsCount}}</div>
-										<div class="desc">Invalid {{checkingContactTypeName}}s</div>
-									</div>
-								</button>
-							</div>
-							<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
-								<button class="btn-block dashboard-stat green-soft"
-									(click)="showingContactDetails('unsubscribe')"
-									[disabled]="contactsByType.unsubscribedContactsCount == 0">
-									<div class="visual">
-										<i class="fa fa-times"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-										<div class="desc">Unsubscribed {{checkingContactTypeName}}s</div>
-									</div>
-								</button>
-							</div>
-						</div>
-						<!-- END DASHBOARD STATS -->
-						<div class="clearfix"></div>
-					<!-- END FILTER -->
-				</div>
-			</div>
-		<div class="col-sm-12" *ngIf="response.responseType != null">
-					<div class="alert alert-dismissible" role="alert" style="width: 103%;margin-left: -16px;"
-						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
-  									'alert-danger': response.responseType == 'ERROR'}">
-						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close" (click)="response.responseType = null">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="flex" style="padding-top: 10px;">
-							<i class="fa"
-								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
- 								 'fa-exclamation': response.responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
-						</h4>
-					</div>
-				</div>
-	<div *ngIf="showEditContactData">
-		<div class="col-xs-12" style="width: 103%;left: -18px;">
-			<!-- BEGIN EXAMPLE TABLE PORTLET-->
-			<div class="portlet box blue">
-				<div class="portlet-title">
-					<div class="caption">
-						<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
-					</div>
-				</div>
-				<div class="portlet-body">
-					<div class="table-toolbar" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-						<div class="clearfix">
-							<div class="col-sm-6">
-								<div class="btn-group">
-									<button id="add_contact" class="btn green" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
-										Add {{checkingContactTypeName}} <i class="fa fa-plus"style="font-size: 12px;margin-left: 5px;"></i>
-									</button>
-								</div>
-								<div class="btn-group">
-									<button id="copyFrom_clipboard" class="btn green" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-										(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
-										Copy From ClipBoard <i class="fa fa-clipboard" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
-									</button>
-								</div>
-								<div class="btn-group">
-									<div class="fileUpload btn btn-primary" id="upload_csv" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
-										style="background-color: #26a69a">
-										Upload CSV <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px;margin-left: 5px;"></i>
-										<input type="file" ng2FileSelect class="upload" [uploader]="uploader" title=" "
-											(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px; width: 50%">
+												<select class="form-control" [(ngModel)]="sortOption"
+													(ngModelChange)="sortByOption($event)">
+													<ng-container
+														*ngFor="let sort of sortOptions; let i = index">
+													<option [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
+												</select>
+											</div>
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"
+														style="cursor: pointer; font-size: 18px;"
+														(click)="search('contactList')"></i> <input type="text"
+														[(ngModel)]="searchKey"
+														[ngModelOptions]="{standalone: true}"
+														class="form-control input-circle" placeholder="search...">
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-sm-6" style="top:9px">
-								<div>
-								<div>
-									<button id="cancel_button" class="btn pull-right"
-										(click)="cancelContacts()"
-										style="margin-left: 5px;">
-										Cancel<i class="fa fa-cancel"></i>
-									</button>
-								</div>
+								<div class="page-toolbar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
-										<button class="btn dropdown-toggle" id="save&delete_button"
-											data-toggle="dropdown">
-											Actions <i class="fa fa-angle-down"></i>
-										</button>
-										<ul class="dropdown-menu pull-right">
-											<li><a id="save_button" (click)="saveContacts()">Save </a></li>
-											<li><a id="saveAs_button" *ngIf="selectedAddContactsOption == 8" (click)="saveAs()">Save As </a></li>
-											<li><a id="delete_button" *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9" (click)="showAlert(selectedContactListId)"> Delete</a></li>
-										</ul>
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px; width: 50%">
+												<select class="form-control" [(ngModel)]="sortOption"
+													(ngModelChange)="sortByOption($event)">
+													<ng-container
+														*ngFor="let sort of sortOptions; let i = index">
+													<option [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
+												</select>
+											</div>
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"
+														style="cursor: pointer; font-size: 18px;"
+														(click)="search('contactList')"></i> <input type="text"
+														[(ngModel)]="searchKey"
+														[ngModelOptions]="{standalone: true}"
+														class="form-control input-circle" placeholder="search...">
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					
-					<div style="margin-bottom: 0px; padding-left: 1cm">
-						<table class="table" *ngIf="uploadCsvUsingFile">
-							<thead>
-							</thead>
-							<tbody>
-								<tr *ngFor="let item of uploader.queue">
-									<td width="28%"><strong>{{ item?.file?.name }}</strong></td>
-									<td *ngIf="uploader.isHTML5" nowrap>{{
-										item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-									<td *ngIf="uploader.isHTML5">
-										<div class="progress" style="margin-bottom: 0;">
-											<div class="progress-bar" role="progressbar"
-												[ngStyle]="{ 'width': item.progress + '%' }"></div>
-										</div>
-									</td>
-									<td class="text-center"><span *ngIf="item.isSuccess"><i
-											class="glyphicon glyphicon-ok"></i></span> <span
-										*ngIf="item.isCancel"><i
-											class="glyphicon glyphicon-ban-circle"></i></span> <span
-										*ngIf="item.isError"><i
-											class="glyphicon glyphicon-remove"></i></span></td>
-									<td nowrap>
-										<button type="button" class="btn btn-danger btn-xs"
-											(click)="item.remove()" (click)="removeCsv()">
-											<span class="glyphicon glyphicon-trash"></span> Remove
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div *ngIf="fileTypeError" id="csvFileTypeError"
-							class="alert alert-danger alert-dismissable" style="width: 50%">
-							<b>File type not allowed please select the .csv file only..</b>
-						</div>
-						<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
-							class="alert alert-danger alert-dismissable" style="width: 80%">
-							<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong> and Re Upload..
-							</b>
-						</div>
-					</div>
-					<div *ngIf="dublicateEmailId" class="col-md-6"
-						class="col-md-9 alert alert alert-danger alert-dismissable"
-						style="width: 100%">
-						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<h4>Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u></h4>
-					</div>
-					
-					<div *ngIf="noContactsFound==true" style="background-color:#3598dc"
-									class="alert alert-info">
-									<h4 style="margin-top: 8px;color:white">No {{checkingContactTypeName}}s found..!</h4>
-								</div>
-					<!-- <div *ngIf="noContactsFound==true" class="col-md-6"
-						class="col-md-9 alert alert-info alert-dismissable"
-						style="width: 100%">
-						<strong>No {{checkingContactTypeName}}s found.. !!!</strong>
-					</div> -->
-					<div *ngIf="showInvalidMaills==true" class="col-md-6"
-						class="col-md-9 alert alert alert-danger alert-dismissable">
-						<a class="close" (click)="closeShowValidMessage()"
-							data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
-							email pattern Contacts found.. !!!</strong>
-					</div>
-					<div class="row" *ngIf="selectedAddContactsOption == 1">
-						<div class="col-sm-12">
-							<h3 class="col-xs-12">Copy from text -- paste below</h3>
-							<div class="col-sm-12 form-group">
-								<div class="col-sm-3" style="padding-left: 0px;">
-									<select class="col-sm-2 options form-control">
-										<option selected value="DEFAULT">Delimeter Type</option>
-										<option value="CommaSeperated">Comma Seperated</option>
-										<option value="TabSeperated">Tab Seperated</option>
-									</select>
-								</div>
-								<button class=" col-sm-3 btn btn-default" type="button"
-									style="background-color: #26a69a; color: white"
-									(click)="clipboardShowPreview()">SHOW PREVIEW</button>
-							</div>
-							<div class="col-sm-7">
-								<textarea [(ngModel)]="clipboardTextareaText"
-									placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
-									[ngModelOptions]="{standalone: true}"
-									style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
-									required="required">
-							</textarea>
-							</div>
-							<div class="col-sm-5">
-								<span id="clipBoardValidationMessage"></span>
-							</div>
-						</div>
-					</div>
+							<!-- END DASHBOARD STATS -->
+							<div class="clearfix"></div>
 
-					<div class="row" id="file_preview" *ngIf="filePrevew">
-						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat blue-soft"
+										(click)="backToEditContacts()">
+										<div class="visual">
+											<i class="fa fa-users"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.allContactsCount}}</div>
+											<div class="desc">All {{checkingContactTypeName}}s</div>
+										</div>
+									</button>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat red-soft"
+										(click)="showingContactDetails('active')"
+										[disabled]="contactsByType.activeContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-eye"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.activeContactsCount}}</div>
+											<div class="desc">Active {{checkingContactTypeName}}s</div>
+										</div>
+									</button>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat blue-sharp"
+										(click)="showingContactDetails('non-active')"
+										[disabled]="contactsByType.inactiveContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-eye-slash"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
+											<div class="desc">Inactive {{checkingContactTypeName}}s</div>
+										</div>
+									</button>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat yellow-gold"
+										(click)="showingContactDetails('invalid')"
+										[disabled]="contactsByType.invalidContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-user-times"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.invalidContactsCount}}</div>
+											<div class="desc">Invalid {{checkingContactTypeName}}s</div>
+										</div>
+									</button>
+								</div>
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+									<button class="btn-block dashboard-stat green-soft"
+										(click)="showingContactDetails('unsubscribe')"
+										[disabled]="contactsByType.unsubscribedContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-times"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
+											<div class="desc">Unsubscribed
+												{{checkingContactTypeName}}s</div>
+										</div>
+									</button>
+								</div>
+							</div>
+							<!-- END DASHBOARD STATS -->
+							<div class="clearfix"></div>
+							<!-- END FILTER -->
+						</div>
+					</div>
+					<div class="col-sm-12" *ngIf="response.responseType != null">
+						<div class="alert alert-dismissible" role="alert"
+							style="width: 103%; margin-left: -16px;"
+							[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+  									'alert-danger': response.responseType == 'ERROR'}">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close" (click)="response.responseType = null">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="flex" style="padding-top: 10px;">
+								<i class="fa"
+									[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+ 								 'fa-exclamation': response.responseType == 'ERROR'}"
+									aria-hidden="true" style="padding-right: 7px;"></i> <span
+									[innerHTML]="response.responseMessage"></span>
+							</h4>
+						</div>
+					</div>
+					<div *ngIf="showEditContactData">
+						<div class="col-xs-12" style="width: 103%; left: -18px;">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet box blue">
 								<div class="portlet-title">
 									<div class="caption">
-										<i class="fa fa-edit"></i>File Preview
+										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
 								</div>
 								<div class="portlet-body">
-
-									<table class="table table-striped table-hover table-bordered"
-										id="sample_editable_2">
-										<thead>
-											<tr>
-											       <th>FIRST NAME</th>
-													<th>LAST NAME</th>
-													<!-- <th>COMPANY</th>
-													<th>JOB TITLE</th> -->
-													<th>EMAILID</th>
-													<!-- <th>ADDRESS</th>
-													<th>MOBILENUMBER</th>
-													<th>NOTES</th> -->
-													<th>MORE</th>
-											</tr>
-										</thead>
-										<tbody>
-										<ng-container *ngFor="let user of users">
-											<tr>
-												   <td>{{user.firstName}}</td>
-													<td>{{user.lastName}}</td>
-													<!-- <td>{{user.contactCompany}}</td>
-													<td>{{user.jobTitle}}</td> -->
-													<td>{{user.emailId}}</td>
-													<!-- <td>{{user.address}}</td>
-													<td>{{user.mobileNumber}}</td>
-													<td>{{user.description}}</td> -->
-													<td>
-														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-															<span *ngIf="!user.isShowDetails">More</span>
-															<span *ngIf="user.isShowDetails">Less</span>
+									<div class="table-toolbar"
+										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+										<div class="clearfix">
+											<div class="col-sm-6">
+												<div class="btn-group">
+													<button id="add_contact" class="btn green"
+														(click)="addContactModalOpen()"
+														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
+														Add {{checkingContactTypeName}} <i class="fa fa-plus"
+															style="font-size: 12px; margin-left: 5px;"></i>
+													</button>
+												</div>
+												<div class="btn-group">
+													<button id="copyFrom_clipboard" class="btn green"
+														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+														(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
+														Copy From ClipBoard <i class="fa fa-clipboard"
+															aria-hidden="true"
+															style="font-size: 12px; margin-left: 5px;"></i>
+													</button>
+												</div>
+												<div class="btn-group">
+													<div class="fileUpload btn btn-primary" id="upload_csv"
+														[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
+														style="background-color: #26a69a">
+														Upload CSV <i class="fa fa-upload" aria-hidden="true"
+															style="font-size: 12px; margin-left: 5px;"></i> <input
+															type="file" ng2FileSelect class="upload"
+															[uploader]="uploader" title=" "
+															(change)="fileChange(input)" accept=".csv" #input
+															[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6" style="top: 9px">
+												<div>
+													<div>
+														<button id="cancel_button" class="btn pull-right"
+															(click)="cancelContacts()" style="margin-left: 5px;">
+															Cancel<i class="fa fa-cancel"></i>
 														</button>
-														</td>
-											</tr>
-											<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}" >
-												  <td colspan="6">
-													<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
+													</div>
+													<div class="btn-group pull-right">
+														<button class="btn dropdown-toggle"
+															id="save&delete_button" data-toggle="dropdown">
+															Actions <i class="fa fa-angle-down"></i>
+														</button>
+														<ul class="dropdown-menu pull-right">
+															<li><a id="save_button" (click)="saveContacts()">Save
+															</a></li>
+															<li><a id="saveAs_button"
+																*ngIf="selectedAddContactsOption == 8"
+																(click)="saveAs()">Save As </a></li>
+															<li><a id="delete_button"
+																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
+																(click)="showAlert(selectedContactListId)"> Delete</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div style="margin-bottom: 0px; padding-left: 1cm">
+										<table class="table" *ngIf="uploadCsvUsingFile">
+											<thead>
+											</thead>
+											<tbody>
+												<tr *ngFor="let item of uploader.queue">
+													<td width="28%"><strong>{{ item?.file?.name
+															}}</strong></td>
+													<td *ngIf="uploader.isHTML5" nowrap>{{
+														item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+													<td *ngIf="uploader.isHTML5">
+														<div class="progress" style="margin-bottom: 0;">
+															<div class="progress-bar" role="progressbar"
+																[ngStyle]="{ 'width': item.progress + '%' }"></div>
+														</div>
+													</td>
+													<td class="text-center"><span *ngIf="item.isSuccess"><i
+															class="glyphicon glyphicon-ok"></i></span> <span
+														*ngIf="item.isCancel"><i
+															class="glyphicon glyphicon-ban-circle"></i></span> <span
+														*ngIf="item.isError"><i
+															class="glyphicon glyphicon-remove"></i></span></td>
+													<td nowrap>
+														<button type="button" class="btn btn-danger btn-xs"
+															(click)="item.remove()" (click)="removeCsv()">
+															<span class="glyphicon glyphicon-trash"></span> Remove
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<div *ngIf="fileTypeError" id="csvFileTypeError"
+											class="alert alert-danger alert-dismissable"
+											style="width: 50%">
+											<b>File type not allowed please select the .csv file
+												only..</b>
+										</div>
+										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
+											class="alert alert-danger alert-dismissable"
+											style="width: 80%">
+											<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
+												and Re Upload..
+											</b>
+										</div>
+									</div>
+									<div *ngIf="dublicateEmailId" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable"
+										style="width: 100%">
+										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<h4>
+											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
+										</h4>
+									</div>
+
+									<div *ngIf="noContactsFound==true"
+										style="background-color: #3598dc" class="alert alert-info">
+										<h4 style="margin-top: 8px; color: white">No
+											{{checkingContactTypeName}}s found..!</h4>
+									</div>
+									<div *ngIf="showInvalidMaills==true" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable">
+										<a class="close" (click)="closeShowValidMessage()"
+											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
+											email pattern Contacts found.. !!!</strong>
+									</div>
+									<div class="row" *ngIf="selectedAddContactsOption == 1">
+										<div class="col-sm-12">
+											<h3 class="col-xs-12">Copy from text -- paste below</h3>
+											<div class="col-sm-12 form-group">
+												<div class="col-sm-3" style="padding-left: 0px;">
+													<select class="col-sm-2 options form-control">
+														<option selected value="DEFAULT">Delimeter Type</option>
+														<option value="CommaSeperated">Comma Seperated</option>
+														<option value="TabSeperated">Tab Seperated</option>
+													</select>
+												</div>
+												<button class=" col-sm-3 btn btn-default" type="button"
+													style="background-color: #26a69a; color: white"
+													(click)="clipboardShowPreview()">SHOW PREVIEW</button>
+											</div>
+											<div class="col-sm-7">
+												<textarea [(ngModel)]="clipboardTextareaText"
+													placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes      firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
+													[ngModelOptions]="{standalone: true}"
+													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
+													required="required">
+							</textarea>
+											</div>
+											<div class="col-sm-5">
+												<span id="clipBoardValidationMessage"></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="row" id="file_preview" *ngIf="filePrevew">
+										<div class="col-xs-12">
+											<!-- BEGIN EXAMPLE TABLE PORTLET-->
+											<div class="portlet box blue">
+												<div class="portlet-title">
+													<div class="caption">
+														<i class="fa fa-edit"></i>File Preview
+													</div>
+												</div>
+												<div class="portlet-body">
+
+													<table
+														class="table table-striped table-hover table-bordered"
+														id="sample_editable_2">
+														<thead>
+															<tr>
+																<th>FIRST NAME</th>
+																<th>LAST NAME</th>
+																<th>EMAILID</th>
+																<th>MORE</th>
+															</tr>
+														</thead>
+														<tbody>
+															<ng-container *ngFor="let user of users">
+															<tr>
+																<td>{{user.firstName}}</td>
+																<td>{{user.lastName}}</td>
+																<td>{{user.emailId}}</td>
+																<td>
+																	<button id='more_less_button_{{i}}'
+																		(click)="user.isShowDetails = ! user.isShowDetails">
+																		<span *ngIf="!user.isShowDetails">More</span> <span
+																			*ngIf="user.isShowDetails">Less</span>
+																	</button>
+																</td>
+															</tr>
+															<tr
+																[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+																<td colspan="6">
+																	<table cellpadding="5" cellspacing="0"
+																		style="padding-left: 50px; margin-left: 55px;">
+																		<tbody>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Company:</td>
+																				<td class='pt10 pb10'>{{user.contactCompany}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Job Title:</td>
+																				<td class='pt10 pb10'>{{user.jobTitle}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Address:</td>
+																				<td class='pt10 pb10'>{{user.address}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>City:</td>
+																				<td class='pt10 pb10'>{{user.city}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Country:</td>
+																				<td class='pt10 pb10'>{{user.country}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Mobile Number:</td>
+																				<td class='pt10 pb10'>{{user.mobileNumber}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Notes:</td>
+																				<td class='pt10 pb10'>{{user.description}}</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+															</ng-container>
+														</tbody>
+													</table>
+
+												</div>
+											</div>
+											<!-- END EXAMPLE TABLE PORTLET-->
+										</div>
+									</div>
+									<div class="clearfix">
+										<div class="col-xs-12">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="(contacts?.length > 0) && isShowUsers">
+													<thead>
+														<tr>
+															<th class='text-center'><input type="checkbox"
+																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																[id]="checkAllExistingContacts" /></th>
+															<th style="width: 25%">NAME</th>
+															<th>CONTACT</th>
+															<th>Job Title</th>
+															<th>ADDRESS</th>
+															<th class='text-center'>MORE</th>
+															<th class='text-center'>ACTIONS</th>
+														</tr>
+													</thead>
 													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'>{{user.contactCompany}}</td>
+														<ng-container
+															*ngFor="let contact of pagination.pagedItems;let i = index">
+														<tr class='row_{{i}}'>
+															<td class='text-center'
+																*ngIf="isAdd || !isCampaignDraftContactList "><input
+																type="checkbox"
+																[checked]="selectedContactListIds.indexOf(contact.id)>-1"
+																class="chk"
+																[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+																lang="{{contact.name}}" name="campaignContact[]"
+																value="{{contact.id}}" id="{{contact.id}}"
+																(click)="highlightRow(contact.id,$event)" /></td>
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase'>{{contact.firstName |
+																			slice:0:1}}{{contact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
+																		<h6 class='m0'>
+																			<a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0'>{{contact.jobTitle}}</h5>
+																<h6 class='mt0'>{{contact.contactCompany}}</h6>
+															</td>
+															<td align="center">
+																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+																<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="contact.isShowDetails = ! contact.isShowDetails">
+																	<span *ngIf="!contact.isShowDetails">More</span> <span
+																		*ngIf="contact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center"
+																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+																<span (click)="editUserDetails(contact)"> <i
+																	class="fa fa-pencil-square-o" aria-hidden="true"
+																	style="color: #3375af; cursor: pointer; font-size: 25px; margin-top: 14px; margin-right: 6px"></i>
+															</span> <span (click)="deleteUserShowAlert(contact.id)">
+																	<i class="fa fa-trash-o" aria-hidden="true"
+																	style="color: red; cursor: pointer; font-size: 25px; margin-top: 14px"></i>
+															</span>
+															</td>
+															<ng-template #NA>N/A</ng-template>
 														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'>{{user.jobTitle}}</td>
+														<tr
+															[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
+															<td colspan="6">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='pt10 pb10 bold'>Notes:</td>
+																			<td class='pt10 pb10'>{{contact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
 														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'>{{user.address}}</td>
+														</ng-container>
+														<ng-container *ngIf="selectedAddContactsOption == 0">
+														<ng-container
+															*ngFor="let newContact of users; let i = index">
+														<tr class='row_{{i}}' style="background-color: #73c5be;">
+															<td align="center"><input type="checkbox"
+																checked="newContact.checked"></td>
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase textWhite'>{{newContact.firstName
+																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold textWhite'
+																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
+																		<h6 class='m0 textWhite'>
+																			<a href="mailto:ksathish@xtremand.com"
+																				class='bold textWhite'>{{newContact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="newContact?.mobileNumber; else NA"
+																		class="textWhite">{{newContact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
+																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
+															</td>
+															<td>
+																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
+																<h5 *ngIf="newContact?.city && newContact.country"
+																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+																	<span *ngIf="!newContact.isShowDetails">More</span> <span
+																		*ngIf="newContact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center"><a class="delete textWhite"
+																(click)="cancelRow(i)"> Cancel </a></td>
+															<ng-template #NA>N/A</ng-template>
 														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'>{{user.city}}</td>
+														<tr
+															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
+															style="background-color: #73c5be;">
+															<td colspan="8">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
+																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
 														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'>{{user.country}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'>{{user.mobileNumber}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Notes:</td>
-															<td class='pt10 pb10'>{{user.description}}</td>
-														</tr>
+														</ng-container> </ng-container>
 													</tbody>
 												</table>
-											</td>
-										</tr>
-										</ng-container>
-										</tbody>
-									</table>
-
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<!-- END EXAMPLE TABLE PORTLET-->
-						</div>
-					</div>
-					<div class="clearfix">
-					<div class="col-xs-12">
-					
-					
-					<div class="table-responsive">
-								<table class='table tgrid' *ngIf="(contacts?.length > 0) && isShowUsers">
-								<thead>
-									<tr>
-										<th class='text-center'><input type="checkbox" [name]="all"
-											[(ngModel)]="isHeaderCheckBoxChecked"
-											(change)="checkAll($event)" [id]="checkAllExistingContacts" />
-										</th>
-										<th style="width:25%">NAME</th>
-										<th>CONTACT</th>
-										<th>Job Title</th>
-										<th>ADDRESS</th>
-										<th>MORE</th>
-										<th class='text-center'>EDIT</th>
-										<th class='text-center'>DELETE</th>
-									</tr>
-								</thead>
-								<tbody>
-								<ng-container *ngFor="let contact of pagination.pagedItems;let i = index">
-									<tr class='row_{{i}}'>
-										<td class='text-center'
-											*ngIf="isAdd || !isCampaignDraftContactList ">
-											<input type="checkbox" [checked]="selectedContactListIds.indexOf(contact.id)>-1"
-											class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
-											lang="{{contact.name}}" name="campaignContact[]"
-											value="{{contact.id}}" id="{{contact.id}}"
-											(click)="highlightRow(contact.id,$event)" />
-										</td>
-										<td>
-							          		<div class="flex">
-												<span class='profile' style="background-color: #3598dc;">
-												 <span class='uppercase'>{{contact.firstName | slice:0:1}}{{contact.lastName | slice:0:1}}</span>
-												</span> 
-												<span style="margin-left: 20px;">
-													<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
-													<h6 class='m0'><a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a></h6>
-												</span>
-											</div>
-										</td>
-										<td>
-											<h5>
-												<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-											</h5>
-										</td>
-										<td>
-											<h5 class='mb0'>{{contact.jobTitle}}</h5>
-											<h6 class='mt0'>{{contact.contactCompany}}</h6>
-										</td>
-										<td>
-											<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-											<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
-										</td>
-										<td>
-										<button id='more_less_button_{{i}}' (click)="contact.isShowDetails = ! contact.isShowDetails">
-											<span *ngIf="!contact.isShowDetails">More</span>
-											<span *ngIf="contact.isShowDetails">Less</span>
-										</button>
-										</td>
-										<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-											<span (click)="editUserDetails(contact)">
-												<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#3375af;cursor:pointer;font-size: 25px; margin-top:14px"></i>
-											</span>
-										</td>
-										<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-											<span (click)="deleteUserShowAlert(contact.id)">
-												<i class="fa fa-trash-o" aria-hidden="true" style="color:red;cursor:pointer;font-size: 25px; margin-top:14px"></i>
-												<!-- <img src='https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-delete-trash-24.png'> -->
-											</span>
-										</td>
-										<ng-template #NA>N/A</ng-template>
-									</tr>
-									<tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr>
-															<td class='pt10 pb10 bold'>Notes:</td>
-															<td class='pt10 pb10'>{{contact.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container>
-										
-								<ng-container *ngIf="selectedAddContactsOption == 0">
-								<!-- <ng-container *ngFor="let newContact of users; let i = index">
-									<tr class='row_{{i}}'>
-										<td align="center"><input type="checkbox" checked="newContact.checked">
-										</td>
-										<td><input type=Text
-											[(ngModel)]="newContact.emailId" class="form-control"
-											[ngModelOptions]="{standalone: true}"
-											#emailId="ngModel"></td>
-										<td><input type=Text
-											[(ngModel)]="newContact.firstName" class="form-control"
-											[ngModelOptions]="{standalone: true}"
-											#emailId="ngModel"></td>
-										<td><input type=Text
-											[(ngModel)]="newContact.lastName" class="form-control"
-											[ngModelOptions]="{standalone: true}"
-											#emailId="ngModel"></td>
-										<td>
-										<button id='more_less_button_{{i}}' (click)="newContact.isShowDetails = ! newContact.isShowDetails">
-											<span *ngIf="!newContact.isShowDetails">More</span>
-											<span *ngIf="newContact.isShowDetails">Less</span>
-										</button>
-										<td><a class="delete" (click)="cancelRow(i)"> Cancel
-										</a></td>
-									</tr>
-									<tr [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.contactCompany" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.jobTitle" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.address" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.city" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.country" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'><input type=Text
-																[(ngModel)]="newContact.mobileNumber" class="form-control"
-																[ngModelOptions]="{standalone: true}"></td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Notes:</td>
-															<td class='pt10 pb10'><textarea
-																[(ngModel)]="newContact.description" class="form-control"
-																[ngModelOptions]="{standalone: true}"></textarea></td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container> -->
-								<ng-container *ngFor="let newContact of users; let i = index">
-									<tr class='row_{{i}}' style="background-color: #73c5be;">
-										<td align="center"><input type="checkbox" checked="newContact.checked">
-										</td>
-										<td>
-							          		<div class="flex">
-												<span class='profile' style="background-color: #3598dc;">
-												 <span class='uppercase textWhite'>{{newContact.firstName | slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-												</span> 
-												<span style="margin-left: 20px;">
-													<h5 class='bold textWhite' style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-													<h6 class='m0 textWhite'><a href="mailto:ksathish@xtremand.com" class='bold textWhite'>{{newContact.emailId}}</a></h6>
-												</span>
-											</div>
-										</td>
-										<td>
-											<h5>
-												<span *ngIf="newContact?.mobileNumber; else NA" class="textWhite">{{newContact.mobileNumber}}</span>
-											</h5>
-										</td>
-										<td>
-											<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-											<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
-										</td>
-										<td>
-											<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-											<h5 *ngIf="newContact?.city && newContact.country" class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
-										</td>
-										<td>
-										<button id='more_less_button_{{i}}' (click)="newContact.isShowDetails = ! newContact.isShowDetails">
-											<span *ngIf="!newContact.isShowDetails">More</span>
-											<span *ngIf="newContact.isShowDetails">Less</span>
-										</button>
-										</td>
-										<td><a class="delete textWhite" (click)="cancelRow(i)"> Cancel
-										</a></td>
-										<ng-template #NA>N/A</ng-template>
-									</tr>
-									<tr [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}" style="background-color: #73c5be;">
-											<td colspan="8">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr>
-															<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
-															<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container>
-								</ng-container>
-							</tbody>
-						</table>
-					</div>
-					</div>
-				</div>
-				</div>
-			</div>
-			<!-- END EXAMPLE TABLE PORTLET-->
-			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
-				class="pagination">
-				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-					<a (click)="setPage(1)"
-					[class.disabled]="pagination.pager.currentPage === 1">First</a>
-				</li>
-				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-					<a (click)="setPage(pagination.pager.currentPage - 1)"
-					[class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-				</li>
-				<li *ngFor="let page of pagination.pager.pages"
-					[ngClass]="{active:pagination.pager.currentPage === page}"><a
-					(click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
-				<li
-					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.currentPage + 1)"
-					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-				</li>
-				<li
-					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.totalPages)"
-					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-				</li>
-			</ul>
-					<div class="btn-group pull-right" *ngIf="noOfContactsDropdown" style="left:-4px;">
-						<select class="form-control" [(ngModel)]="sortOptionForPagination"
-							(ngModelChange)="onChangeAllContactUsers($event)">
-							<ng-container
-								*ngFor="let sort of sortOptionsForPagination; let i = index">
-							<option [ngValue]="sort">{{sort.value}}</option>
-							</ng-container>
-						</select> <br>
-					</div>
-
-		</div>
-
-	</div>
-	</div>
-		
-		<div class="row col-xs-12" *ngIf="showAllContactData">
-	<!-- <div class="page-toolbar">
-		<div class="btn-group pull-right">
-			<div class="inputs" align="right" style="float: right">
-				<div style="float: left; margin-right: 10px; width: 50%">
-					<select class="form-control" [(ngModel)]="sortOption"
-						(ngModelChange)="sortByOption($event)">
-						<ng-container *ngFor="let sort of sortOptions; let i = index">
-						<option [ngValue]="sort">{{sort.name}}</option>
-						</ng-container>
-					</select>
-				</div>
-				<div class="portlet-input input-inline input-small">
-					<div class="input-icon right">
-						<i class="icon-magnifier"
-							style="cursor: pointer; font-size: 18px;"
-							(click)="search('contactList')"></i> <input type="text"
-							[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-							class="form-control input-circle" placeholder="search...">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<div class="col-xs-12">
-		<!-- <div *ngIf="noContactsFound1==true" class="col-md-6"
-			class="col-md-9 alert alert-info alert-dismissable"
-			style="width: 100%">
-			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>No Contacts found.. !!!</strong>
-		</div> -->
-		<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
-				<h4>No {{checkingContactTypeName}}s found..!</h4>
-		</div>
-			<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteSuccessMessage">
-  				<strong>Success!</strong> your {{checkingContactTypeName}}s has been deleted successfully.
-			</div>
-			<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
-  				<span [innerHTML]="response.responseMessage"></span>
-			</div>
-	</div>
-	<div class="col-xs-12"
-		id="hidingListOfUsersTable" style="top: -13px;width: 104%;left: -6px;">
-		<!-- BEGIN EXAMPLE TABLE PORTLET-->
-		<div class="portlet box blue">
-			<div class="portlet-title">
-				<div class="caption">
-					<span class="capitalize">{{contactsByType.selectedCategory}} {{checkingContactTypeName}} List</span>
-				</div>
-					<div class="btn-group pull-right" style="margin-top: 4px;color: #000000;" *ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-						<button class="btn dropdown-toggle" data-toggle="dropdown">
-							Tools <i class="fa fa-angle-down"></i>
-						</button>
-						<ul class="dropdown-menu pull-right">
-							<li><a id="delete_button"
-								(click)="invalidContactsShowAlert()"> Delete </a></li>
-							<!-- <li><a href="javascript:;"> Print </a></li>
-							<li><a (click)="convert()"> Save as PDF </a></li>
-							<li><a href="javascript:;"> Export to Excel </a></li> -->
-						</ul>
-					</div>
-			</div>
-			<div class="portlet-body">
-				<div class="table-responsive">
-				<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-					<table class='table tgrid'
-						id="sample_editable_1" *ngIf="!httpRequestLoader.isLoading">
-								<thead>
-									<tr>
-										<th style="text-align: center;" *ngIf="contactsByType.selectedCategory == 'invalid'"><input
-									type="checkbox" name="all"
-									[(ngModel)]="isInvalidHeaderCheckBoxChecked"
-									(change)="checkAllInvalidContacts($event)" class=""
-									id="checkAllExistingInvalidContacts" /></th>
-										<th style="width:25%">NAME</th>
-										<th>CONTACT</th>
-										<th>Job Title</th>
-										<th>ADDRESS</th>
-										<th>MORE</th>
-									</tr>
-								</thead>
-								<tbody>
-								<ng-container *ngFor="let allcontacts of contactsByType.contacts;let i = index">
-									<tr class='row_{{i}}'>
-										<td *ngIf="contactsByType.selectedCategory == 'invalid'" align="center"><input
-									type="checkbox"
-									[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-									class="chk"
-									[class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-									lang="{{allcontacts.name}}" name="invalidContact[]"
-									value="{{allcontacts.id}}" id="{{allcontacts.id}}"
-									(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
-								</td>
-										<td>
-							          		<div class="flex">
-												<span class='profile' style="background-color: #3598dc;">
-												 <span class='uppercase'>{{allcontacts.firstName | slice:0:1}}{{allcontacts.lastName | slice:0:1}}</span>
-												</span> 
-												<span style="margin-left: 20px;">
-													<h5 class='bold' style="margin: 7px 0 2px 0;">{{allcontacts.firstName}}&nbsp;{{allcontacts.lastName}}</h5>
-													<h6 class='m0'><a href="mailto:ksathish@xtremand.com" class='bold'>{{allcontacts.emailId}}</a></h6>
-												</span>
-											</div>
-										</td>
-										<td>
-											<h5>
-												<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
-											</h5>
-										</td>
-										<td>
-											<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
-											<h6 class='mt0'>{{allcontacts.contactCompany}}</h6>
-										</td>
-										<td>
-											<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-											<h5 *ngIf="allcontacts?.city && allcontacts.country" class='mt0'>{{allcontacts.city}},&nbsp;{{allcontacts.country}}</h5>
-										</td>
-										<td>
-											<button id='more_less_button_{{i}}' (click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
-												<span *ngIf="!allcontacts.isShowDetails">More</span>
-												<span *ngIf="allcontacts.isShowDetails">Less</span>
-											</button>
-										</td>
-										<ng-template #NA>N/A</ng-template>
-									</tr>
-									<tr [ngClass]="{'hidden': !allcontacts.isShowDetails, 'show-more': allcontacts.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr>
-															<td class='pt10 pb10 bold'>Notes:</td>
-															<td class='pt10 pb10'>{{allcontacts.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container>
-							</tbody>
-						</table>
-				</div>
-			</div>
-		</div>
-		<!--pager here  -->
-		<ul
-			*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
-			class="pagination">
-			<li
-				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-				<a
-				(click)="setPageForListContactsByType(1,contactsByType.selectedCategory)"
-				[class.disabled]="contactsByType.pagination.pager.currentPage === 1">First</a>
-			</li>
-			<li
-				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-				<a
-				(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage - 1,contactsByType.selectedCategory)"
-				[class.disabled]="contactsByType.pagination.pager.currentPage === 1">Previous</a>
-			</li>
-			<li *ngFor="let page of contactsByType.pagination.pager.pages"
-				[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
-				<a
-				(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)" [class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
-			</li>
-			<li
-				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-				<a
-				(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage + 1,contactsByType.selectedCategory)"
-				[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Next</a>
-			</li>
-			<li
-				[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-				<a
-				(click)="setPageForListContactsByType(contactsByType.pagination.pager.totalPages,contactsByType.selectedCategory)"
-				[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
-			</li>
-		</ul>
-		<div class="btn-group pull-right" style="left:-4px;">
+							<ul
+								*ngIf="pagination.pager.pages && pagination.pager.pages.length"
+								class="pagination">
+								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+									<a (click)="setPage(1)"
+									[class.disabled]="pagination.pager.currentPage === 1">First</a>
+								</li>
+								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+									<a (click)="setPage(pagination.pager.currentPage - 1)"
+									[class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+								</li>
+								<li *ngFor="let page of pagination.pager.pages"
+									[ngClass]="{active:pagination.pager.currentPage === page}"><a
+									(click)="setPage(page)"
+									[class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
+								<li
+									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+									<a (click)="setPage(pagination.pager.currentPage + 1)"
+									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+								</li>
+								<li
+									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+									<a (click)="setPage(pagination.pager.totalPages)"
+									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+								</li>
+							</ul>
+							<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
+								style="left: -4px;">
 								<select class="form-control"
 									[(ngModel)]="sortOptionForPagination"
 									(ngModelChange)="onChangeAllContactUsers($event)">
@@ -926,175 +706,418 @@ a.disabled {
 										*ngFor="let sort of sortOptionsForPagination; let i = index">
 									<option [ngValue]="sort">{{sort.value}}</option>
 									</ng-container>
-								</select>
+								</select> <br>
 							</div>
-		
-		
+						</div>
+					</div>
+				</div>
+
+				<div class="row col-xs-12" *ngIf="showAllContactData">
+					<div class="col-xs-12">
+						<div
+							*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
+							class="alert alert-info">
+							<h4>No {{checkingContactTypeName}}s found..!</h4>
+						</div>
+						<div class="alert alert-success alert-dismissable col-xs-12"
+							style="padding: 12px 10px 12px;"
+							*ngIf="invalidDeleteSuccessMessage">
+							<strong>Success!</strong> your {{checkingContactTypeName}}s has
+							been deleted successfully.
+						</div>
+						<div class="alert alert-danger" style="padding: 12px 10px 12px;"
+							*ngIf="invalidDeleteErrorMessage">
+							<span [innerHTML]="response.responseMessage"></span>
+						</div>
+					</div>
+					<div class="col-xs-12" id="hidingListOfUsersTable"
+						style="top: -13px; width: 104%; left: -6px;">
+						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+						<div class="portlet box blue">
+							<div class="portlet-title">
+								<div class="caption">
+									<span class="capitalize">{{contactsByType.selectedCategory}}
+										{{checkingContactTypeName}} List</span>
+								</div>
+								<div class="btn-group pull-right"
+									style="margin-top: 4px; color: #000000;"
+									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+									<button class="btn dropdown-toggle" data-toggle="dropdown">
+										Tools <i class="fa fa-angle-down"></i>
+									</button>
+									<ul class="dropdown-menu pull-right">
+										<li><a id="delete_button"
+											(click)="invalidContactsShowAlert()"> Delete </a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="portlet-body">
+								<div class="table-responsive">
+									<app-loader [model]="httpRequestLoader.isHorizontalCss"
+										*ngIf="httpRequestLoader.isLoading"></app-loader>
+									<table class='table tgrid' id="sample_editable_1"
+										*ngIf="!httpRequestLoader.isLoading">
+										<thead>
+											<tr>
+												<th style="text-align: center;"
+													*ngIf="contactsByType.selectedCategory == 'invalid'"><input
+													type="checkbox" name="all"
+													[(ngModel)]="isInvalidHeaderCheckBoxChecked"
+													(change)="checkAllInvalidContacts($event)" class=""
+													id="checkAllExistingInvalidContacts" /></th>
+												<th style="width: 25%">NAME</th>
+												<th>CONTACT</th>
+												<th>Job Title</th>
+												<th>ADDRESS</th>
+												<th>MORE</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ng-container
+												*ngFor="let allcontacts of contactsByType.contacts;let i = index">
+											<tr class='row_{{i}}'>
+												<td *ngIf="contactsByType.selectedCategory == 'invalid'"
+													align="center"><input type="checkbox"
+													[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+													class="chk"
+													[class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+													lang="{{allcontacts.name}}" name="invalidContact[]"
+													value="{{allcontacts.id}}" id="{{allcontacts.id}}"
+													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
+												</td>
+												<td>
+													<div class="flex">
+														<span class='profile' style="background-color: #3598dc;">
+															<span class='uppercase'>{{allcontacts.firstName |
+																slice:0:1}}{{allcontacts.lastName | slice:0:1}}</span>
+														</span> <span style="margin-left: 20px;">
+															<h5 class='bold' style="margin: 7px 0 2px 0;">{{allcontacts.firstName}}&nbsp;{{allcontacts.lastName}}</h5>
+															<h6 class='m0'>
+																<a href="mailto:ksathish@xtremand.com" class='bold'>{{allcontacts.emailId}}</a>
+															</h6>
+														</span>
+													</div>
+												</td>
+												<td>
+													<h5>
+														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
+													</h5>
+												</td>
+												<td>
+													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
+													<h6 class='mt0'>{{allcontacts.contactCompany}}</h6>
+												</td>
+												<td>
+													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
+													<h5 *ngIf="allcontacts?.city && allcontacts.country"
+														class='mt0'>{{allcontacts.city}},&nbsp;{{allcontacts.country}}</h5>
+												</td>
+												<td>
+													<button id='more_less_button_{{i}}'
+														(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
+														<span *ngIf="!allcontacts.isShowDetails">More</span> <span
+															*ngIf="allcontacts.isShowDetails">Less</span>
+													</button>
+												</td>
+												<ng-template #NA>N/A</ng-template>
+											</tr>
+											<tr
+												[ngClass]="{'hidden': !allcontacts.isShowDetails, 'show-more': allcontacts.isShowDetails}">
+												<td colspan="6">
+													<table cellpadding="5" cellspacing="0"
+														style="padding-left: 50px; margin-left: 55px;">
+														<tbody>
+															<tr>
+																<td class='pt10 pb10 bold'>Notes:</td>
+																<td class='pt10 pb10'>{{allcontacts.description}}</td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+											</ng-container>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!--pager here  -->
+						<ul
+							*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
+							class="pagination">
+							<li
+								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
+								<a
+								(click)="setPageForListContactsByType(1,contactsByType.selectedCategory)"
+								[class.disabled]="contactsByType.pagination.pager.currentPage === 1">First</a>
+							</li>
+							<li
+								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
+								<a
+								(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage - 1,contactsByType.selectedCategory)"
+								[class.disabled]="contactsByType.pagination.pager.currentPage === 1">Previous</a>
+							</li>
+							<li *ngFor="let page of contactsByType.pagination.pager.pages"
+								[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
+								<a
+								(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)"
+								[class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
+							</li>
+							<li
+								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
+								<a
+								(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage + 1,contactsByType.selectedCategory)"
+								[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Next</a>
+							</li>
+							<li
+								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
+								<a
+								(click)="setPageForListContactsByType(contactsByType.pagination.pager.totalPages,contactsByType.selectedCategory)"
+								[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
+							</li>
+						</ul>
+						<div class="btn-group pull-right" style="left: -4px;">
+							<select class="form-control"
+								[(ngModel)]="sortOptionForPagination"
+								(ngModelChange)="onChangeAllContactUsers($event)">
+								<ng-container
+									*ngFor="let sort of sortOptionsForPagination; let i = index">
+								<option [ngValue]="sort">{{sort.value}}</option>
+								</ng-container>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
 	</div>
-</div>
-		
+
+	<!-- modals -->
+
+	<div id="addContactModal" class="modal" id="addContactModal"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" *ngIf="!updateContactUser" class="close"
+						data-dismiss="modal" (click)="addContactModalClose()">&times;</button>
+					<button type="button" *ngIf="updateContactUser" class="close"
+						data-dismiss="modal" (click)="updateContactModalClose()">&times;</button>
+					<h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-inline">
+							<label class="control-label col-sm-2" for="name"
+								style="color: blue"><i class="glyphicon glyphicon-user"
+								style="right: 11px" aria-hidden="true"></i></label>
+							<div class="form-group col-sm-5">
+								<input type="name" style="border: none" class="form-control"
+									id="firstName" [(ngModel)]="addContactuser.firstName"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter First Name">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-5">
+								<input type="name" style="border: none" class="form-control"
+									id="lastName" [(ngModel)]="addContactuser.lastName"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter Last Name">
+								<div class="textCss"></div>
+							</div>
+						</div>
+						<div class="form-inline">
+							<label class="control-label col-sm-2" for="company"
+								style="color: #00bcd4; right: 11px !important"><i
+								class="fa fa-building-o" style="right: 11px !important"
+								aria-hidden="true"></i></label>
+							<div class="form-group col-sm-5">
+								<input type="company" style="border: none" class="form-control"
+									id="company" [(ngModel)]="addContactuser.contactCompany"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter Company">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-5">
+								<input type="title" style="border: none" class="form-control"
+									id="title" [(ngModel)]="addContactuser.jobTitle"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter JobTitle">
+								<div class="textCss"></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="email"
+								style="color: #8512b7; left: 12px"><i
+								class="fa fa-envelope-o" aria-hidden="true"></i><span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-10">
+								<input type="email" style="border: none" class="form-control"
+									id="email"
+									(blur)="checkingEmailPattern(addContactuser.emailId)"
+									(input)="validateEmail(addContactuser.emailId)"
+									[(ngModel)]="addContactuser.emailId"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter email *" autocomplete="off">
+								<div class="textCss"></div>
+								<div style="color: red" *ngIf="!validEmailPatternSuccess">invalid
+									emailId</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-inline">
+								<label class="control-label col-sm-2" for="address"
+									style="color: #53affe;"><i
+									class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+								<div class="form-group col-sm-4">
+									<input type="address" style="border: none" class="form-control"
+										id="address" [(ngModel)]="addContactuser.address"
+										[ngModelOptions]="{standalone: true}"
+										placeholder="Enter Address lane1">
+									<div class="textCss"></div>
+								</div>
+								<div class="form-group col-sm-3">
+									<input type="city" style="border: none" class="form-control"
+										id="city" [(ngModel)]="addContactuser.city"
+										[ngModelOptions]="{standalone: true}" placeholder="city/town">
+									<div class="textCss"></div>
+								</div>
+								<div class="form-group col-sm-3">
+									<select class="form-control" style="border: none; width: 120%"
+										class="form-control" [(ngModel)]="addContactuser.country"
+										[ngModelOptions]="{standalone: true}" placeholder="country">
+										<option *ngFor="let country of countries" [value]="country">{{country}}</option>
+									</select>
+									<!-- <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country"> -->
+									<div class="textCss"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="phone"
+								style="color: green"><i class="fa fa-phone"
+								aria-hidden="true"></i></label>
+							<div class="col-sm-10">
+								<input type="text"
+									onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+									style="border: none" class="form-control" id="number"
+									[(ngModel)]="addContactuser.mobileNumber"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter MobileNumber">
+								<div class="textCss"></div>
+
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="note"
+								style="color: #c3c308"><i
+								class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+							<div class="col-sm-10">
+								<textarea name="note" style="border: none" class="form-control"
+									id="note" [(ngModel)]="addContactuser.description"
+									[ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
+		      </textarea>
+								<div class="textCss"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer" *ngIf="!updateContactUser">
+					<button type="submit" class="btn green"
+						[disabled]="!checkingForEmail"
+						(click)="addContactsOption(AddContactsOption.ADDCONTACT);">Add</button>
+					<button type="button" class="btn green" data-dismiss="modal"
+						(click)="addContactModalClose()">Close</button>
+				</div>
+				<div class="modal-footer" *ngIf="updateContactUser">
+					<button type="submit" class="btn green"
+						[disabled]="!checkingForEmail" (click)="updateContact()">Update</button>
+					<button type="button" class="btn green" data-dismiss="modal"
+						(click)="updateContactModalClose()">Close</button>
+				</div>
+			</div>
+
 		</div>
 	</div>
-		
-</div>
+	<!-- closing modals -->
 
-<!-- modals -->
+	<!-- BEGIN PAGE CONTENT-->
 
-<div id="addContactModal" class="modal" id="addContactModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" data-keyboard="false"
-	data-backdrop="static">
-  <div class="modal-dialog">
+	<div id="filterModal" class="modal fade" role="dialog"
+		data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog" style="width: 53%;">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" *ngIf="!updateContactUser" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
-        <button type="button" *ngIf="updateContactUser" class="close" data-dismiss="modal" (click)="updateContactModalClose()" >&times;</button>
-        <h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
-      </div>
-      <div class="modal-body">
-      <form class="form-horizontal">
-		   <div class="form-inline">
-		   <label class="control-label col-sm-2" for="name" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="firstName" [(ngModel)]="addContactuser.firstName"
-			       [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
-			    <div class="textCss"></div>
-		  </div> 
-		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="lastName" [(ngModel)]="addContactuser.lastName"
-			       [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
-			    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  <div class="form-inline">
-		   <label class="control-label col-sm-2" for="company" style="color:#00bcd4;right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-5">
-		      <input type="company" style="border:none" class="form-control" id="company" [(ngModel)]="addContactuser.contactCompany" [ngModelOptions]="{standalone: true}" placeholder="Enter Company">
-		    <div class="textCss"></div>
-		  </div>
-		   <div class="form-group col-sm-5">
-		      <input type="title" style="border:none"  class="form-control" id="title" [(ngModel)]="addContactuser.jobTitle" [ngModelOptions]="{standalone: true}" placeholder="Enter JobTitle">
-		    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"></i><span style="color:red;"> *</span></label>
-		    <div class="col-sm-10">
-		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email *" autocomplete="off">
-		    <div class="textCss"></div>
-		    <div style="color:red" *ngIf="!validEmailPatternSuccess">invalid emailId</div>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <div class="form-inline">
-		   <label class="control-label col-sm-2" for="address" style="color:#53affe;"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-4">
-			      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address lane1">
-			    <div class="textCss"></div>
-		  </div> 
-		   <div class="form-group col-sm-3">
-			      <input type="city" style="border:none" class="form-control" id="city" [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="city/town">
-			    <div class="textCss"></div>
-		  </div>
-		 <div class="form-group col-sm-3">
-		  <select  class="form-control" style="border:none; width:120%" class="form-control" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="country">
-				<option *ngFor="let country of countries" [value]="country">{{country}}</option>
-				</select>
-			      <!-- <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country"> -->
-			    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="phone" style="color:green"><i class="fa fa-phone" aria-hidden="true"></i></label>
-		    <div class="col-sm-10">
-		    <!-- <ngx-intl-tel-input [(value)]="users.mobileNumber"></ngx-intl-tel-input> -->
-		     <!-- <input type="tel" id="phone"> -->
-		      <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" style="border:none" class="form-control" id="number" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber">
-		    <div class="textCss"></div>
-		    
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="note" style="color:#c3c308"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
-		    <div class="col-sm-10"> 
-		      <textarea name="note" style="border:none" class="form-control" id="note" [(ngModel)]="addContactuser.description" [ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
-		      </textarea>
-		      <div class="textCss"></div>
-		    </div>
-		  </div>
-      </form>
-      </div>
-      <div class="modal-footer" *ngIf="!updateContactUser">
-        <button type="submit" class="btn green" [disabled]="!checkingForEmail" (click)="addContactsOption(AddContactsOption.ADDCONTACT);">Add</button>
-        <button type="button" class="btn green" data-dismiss="modal" (click)="addContactModalClose()">Close</button>
-      </div>
-      <div class="modal-footer" *ngIf="updateContactUser">
-        <button type="submit" class="btn green" [disabled]="!checkingForEmail" (click)="updateContact()">Update</button>
-        <button type="button" class="btn green" data-dismiss="modal" (click)="updateContactModalClose()">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<!-- closing modals -->
-
-<!-- BEGIN PAGE CONTENT-->
-
-<div id="filterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" style="width:53%;">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="cancelSegmentation()">&times;</button>
-        <h4 class="modal-title">Segmentation</h4>
-      </div>
-      <div class="modal-body" style="padding:28px;">
-      <div class="row">
-      <div class="col-sm-12">
-      <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
-        <div class="form-group">
-		    <div class="form-inline">
-		   <div class="form-group col-sm-4">
-			      <select class="form-control" 
-					[(ngModel)]="criterias[i].property">
-					<option *ngFor="let filterOption of filterOptions; let i = index"  >{{filterOption.value}}</option>
-				</select>
-		  </div> 
-		   <div class="form-group col-sm-3">
-			      <select class="form-control"
-					[(ngModel)]="criterias[i].operation">
-					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
-				</select>
-		  </div>
-		  <div class="form-group col-sm-2">
-		  	<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required>
-		  </div>
-		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
-		  <span (click)="cancelSegmentationRow(i)">
-				<i class="fa fa-trash-o" aria-hidden="true" style="color:red;font-size: 26px; margin-top:6px"></i>
-			</span>
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						(click)="cancelSegmentation()">&times;</button>
+					<h4 class="modal-title">Segmentation</h4>
+				</div>
+				<div class="modal-body" style="padding: 28px;">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row col-sm-11"
+								*ngFor="let addRow of criterias; let i = index"
+								style="padding-bottom: 10px;">
+								<div class="form-group">
+									<div class="form-inline">
+										<div class="form-group col-sm-4">
+											<select class="form-control"
+												[(ngModel)]="criterias[i].property">
+												<option
+													*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-sm-3">
+											<select class="form-control"
+												[(ngModel)]="criterias[i].operation">
+												<option
+													*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-sm-2">
+											<input type="text" class="form-control" placeholder="value*"
+												[(ngModel)]="criterias[i].value1" required>
+										</div>
+										<div class="form-group col-sm-2"
+											style="left: 96px; top: 3px; cursor: pointer;">
+											<span (click)="cancelSegmentationRow(i)"> <i
+												class="fa fa-trash-o" aria-hidden="true"
+												style="color: red; font-size: 26px; margin-top: 6px"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row col-sm-1" style="left: 26px;">
+								<button type="button" class="btn btn-default pull-right"
+									(click)="addNewRow()">
+									<i class="fa fa-plus-square" aria-hidden="true"
+										style="color: green"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
+						<h4 class="m0" style="color: red; text-align: center;">Please
+							fill the required inputs:</h4>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						(click)="contactFilter()">Submit</button>
+					<!-- <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
+					<button type="button" class="btn btn-default"
+						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+				</div>
 			</div>
-		  </div>
-		  </div>
-		  </div>
-		<div class="row col-sm-1" style="left:26px;">
-		  <button type="button" class="btn btn-default pull-right" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
-      </div>
-      </div>
-      </div>
-      <div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage"><h4 class="m0" style="color:red; text-align: center;">Please fill the required inputs:</h4></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default"  (click)="contactFilter()">Submit</button>
-        <!-- <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
-        <button type="button" class="btn btn-default" (click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-
-  </div>
-</div>
+		</div>
+	</div>
 </div>
 <!-- END PAGE CONTENT -->
