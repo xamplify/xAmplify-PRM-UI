@@ -212,7 +212,7 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription">Save</button>
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription">{{saveButtonTitle}}</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
 								</div>
 							</div>
@@ -250,18 +250,17 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Publish to:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<select class="form-control" formControlName="viewBy" required title="If Private is selected,">
+											<select class="form-control" formControlName="viewBy" required title="select a video type">
 												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}</option>
 											</select>
 											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
 											</div>
 										</div>
 									</div>
-
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Categories:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<select class="form-control" title="If Private is selected," formControlName="categoryId" required>
+											<select class="form-control" title="select a category" formControlName="categoryId" required>
 												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}</option>
 											</select>
 											<div *ngIf="formErrors.category" class="alert alert-danger">{{formErrors.category}}
@@ -272,7 +271,7 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<tag-input formControlName="tags" [theme]="'foundation-theme'" [validators]="validatorsTag" required></tag-input>
+											<tag-input formControlName="tags" [theme]="'foundation-theme'" placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 										</div>
 									</div>

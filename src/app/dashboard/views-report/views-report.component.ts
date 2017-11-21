@@ -38,6 +38,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     videoSort: any;
     videotitle: string;
     noVideos = false;
+    length1 = 60;
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },

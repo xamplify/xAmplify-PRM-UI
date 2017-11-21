@@ -128,6 +128,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         updatedBody = updatedBody.replace("<Company_name>", '');
         updatedBody = updatedBody.replace("<Company_Logo>", '');
         updatedBody = updatedBody.replace("<Title_here>", '');
+        updatedBody = updatedBody.replace('<a href="<unsubscribeURL>">click here</a>',"");
+        updatedBody = updatedBody.replace("click here", "");
+        updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
         return updatedBody;
     }
     getCampaignVideo() {
@@ -186,6 +189,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             $('#newPlayerVideo').css({ "width": "562px", "margin-left": "-24px" });
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
+                            updatedBody = updatedBody.replace("click here","");
+                            updatedBody = updatedBody.replace('<a href="<unsubscribeURL>">click here</a>',"");
                             console.log(this.templatehtml);
                             if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')) {
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
