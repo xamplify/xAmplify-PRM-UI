@@ -2,9 +2,12 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Logger} from 'angular2-logger/core';
 import {SaveVideoFile} from '../../../videos/models/save-video-file';
+
+import {SocialStatusDto} from '../../models/social-status-dto';
 import {SocialStatus} from '../../models/social-status';
 import {SocialStatusContent} from '../../models/social-status-content';
 import {SocialStatusProvider} from '../../models/social-status-provider';
+
 import {ContactList} from '../../../contacts/models/contact-list';
 import {Campaign} from '../../../campaigns/models/campaign';
 
@@ -39,7 +42,7 @@ export class UpdateStatusComponent implements OnInit {
   userId: number;
   socialStatus = new SocialStatus();
   previewContactList = new ContactList();
-  socialStatusList = new Array<SocialStatus>();
+  socialStatusDtos = new Array<SocialStatusDto>();
   customResponse = new CustomResponse();
 
   contactListsPagination: Pagination = new Pagination();
@@ -455,39 +458,36 @@ export class UpdateStatusComponent implements OnInit {
       defaultView: 'month',
       timeFormat: 'h:mm',
       eventRender: function(event: any, element: any) {
-        element.find('.fc-time').addClass('fc-time-title');
-        element.find('.fc-title').addClass('fc-time-title');
-        element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-9 pull-right p0 mr-10"></div>');
-        element.find('.fc-time').css({'display': 'block'});
+        element.find('.fc-time').addClass('fc-time-title mr5');
+        element.find('.fc-title').addClass('fc-time-title ml5');
+        element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-11 flex pull-right p0 mr-10"></div>');
 
-        const socialStatusProviders = event.data.socialStatusProviders;
+        const socialStatusProvider = event.data.socialStatusProvider;
         let str = '';
-        for (const i of Object.keys(socialStatusProviders)) {
-          const profileImage = socialStatusProviders[i].socialConnection.profileImage;
-          str += `<img class="img-responsive img-circle" style="height: auto; width: 100%;" src="${profileImage}">`;
-
-          if ('FACEBOOK' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-facebook white mt-10"></i>';
-          } else if ('TWITTER' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-twitter  white mt-10"></i>';
-          } else if ('GOOGLE' === socialStatusProviders[i].socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-google  white mt-10"></i>';
+          if ('FACEBOOK' === socialStatusProvider.socialConnection.source) {
+            str += '<i class="fa fa-social pull-right fa-facebook white p-10"></i>';
+            element.css('background', '#3b5998');
+          } else if ('TWITTER' === socialStatusProvider.socialConnection.source) {
+            str += '<i class="fa fa-social pull-right fa-twitter  white p-10"></i>';
+            element.css('background', '#1da1f2');
+          } else if ('GOOGLE' === socialStatusProvider.socialConnection.source) {
+            str += '<i class="fa fa-social pull-right fa-google  white p-10"></i>';
+            element.css('background', '#d95535');
           }
-        }
+        
         element.find('.fc-right-block')
-          .after($(`<div id = ${event.id} class="fc-left-block col-xs-3 p0"> ${str} </div>`));
+          .after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
           $(element).popover({ 
             html: true,
             placement: 'auto',
             trigger : 'hover',
             content: function() {
-              $( "#fc-event-body-" + event.id ).after( '' );
-               return $('#fc-event-' + event.id).html();
+               return $('#fc-' + event.id).html();
             }
           });
       },
       eventClick: function(event) {
-       self.editSocialStatus(event.data);
+       self.editSocialStatus(event.data.socialStatus);
     }
     });
   }
@@ -497,15 +497,25 @@ export class UpdateStatusComponent implements OnInit {
     this.socialService.listEvents(this.userId)
       .subscribe(
       data => {
-        this.socialStatusList = data;
-        for (const i of Object.keys(this.socialStatusList)) {
-          const event = {
-            title: this.socialStatusList[i].statusMessage,
-            start: this.socialStatusList[i].scheduledTimeUser,
-            id: this.socialStatusList[i].id,
-            data: this.socialStatusList[i],
+        for (const i of Object.keys(data)) {
+          const socialStatus = data[i];
+          for (const j of Object.keys(socialStatus.socialStatusProviders)) {
+          const socialStatusDto = new SocialStatusDto();
+          socialStatusDto.socialStatus = socialStatus;
+          socialStatusDto.socialStatusContents = socialStatus.socialStatusContents;
+          socialStatusDto.socialStatusProvider = socialStatus.socialStatusProviders[j];
+
+          this.socialStatusDtos.push(socialStatusDto);
+          
+            const event = {
+            title: socialStatus.statusMessage,
+            start: socialStatus.scheduledTimeUser,
+            id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
+            data: socialStatusDto,
           };
           $('#full-calendar').fullCalendar('renderEvent', event, true);
+          }
+
         }
       },
       error => console.log(error),

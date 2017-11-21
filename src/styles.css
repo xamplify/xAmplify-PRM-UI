@@ -245,6 +245,12 @@ nav a.active {
 .mr-10 { margin-right: -10px !important; }
 .m-10 { margin: -10px !important; }
 
+.mt5 { margin-top: 5px !important; }
+.mb5 { margin-bottom: 5px !important; }
+.ml5 { margin-left: 5px !important; }
+.mr5 { margin-right: 5px !important; }
+.m5 { margin: 5px !important; }
+
 .mt10 { margin-top: 10px !important; }
 .mb10 { margin-bottom: 10px !important; }
 .ml10 { margin-left: 10px !important; }
@@ -285,7 +291,7 @@ nav a.active {
 /* full calendar */
 .fc-event {
     border: 1px solid rgba(58, 135, 173, 0);
-    background-color: rgba(58, 135, 173, 0.7);
+    background-color: none;
 }
 .fc-content{
 	padding: 5px;
