@@ -10,9 +10,10 @@ import { Ng2DeviceService } from 'ng2-device-detector';
     styleUrls: ['./log-email-click.component.css']
 })
 export class LogEmailClickComponent implements OnInit {
-    public campaignAlias: string;
-    public userAlias: string;
-    public url: string;
+    public campaignAlias: string=null;
+    public userAlias: string=null;
+    public url: string=null;
+    public alias :string;
     public emailLog: any;
     public deviceInfo: any;
 
@@ -46,7 +47,8 @@ export class LogEmailClickComponent implements OnInit {
                     'longitude': data.lon,
                     'countryCode': data.countryCode,
                     'videoId' : 0,
-                    'actionId' : 15
+                    'actionId' : 15,
+                    'alias':this.alias
                 };
 
                 console.log("emailLog" + this.emailLog);
@@ -66,12 +68,9 @@ export class LogEmailClickComponent implements OnInit {
 
 
     ngOnInit() {
-        this.activatedRoute.queryParams.subscribe(
-            (param: any) => {
-                this.campaignAlias = param['campaignAlias'];
-                this.userAlias = param['userAlias'];
-                this.url = param['url'];
-            });
+    	this.alias = this.activatedRoute.snapshot.params['alias'];
+    	
+     
         //this.getGeoLocation();
         this.logEmailUrlClicks();
 

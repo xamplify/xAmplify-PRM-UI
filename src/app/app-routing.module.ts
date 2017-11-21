@@ -54,7 +54,7 @@ export const routes: Routes = [
     { path: 'user/showCampaignVideo', component: CampaignVideoComponent },
     { path: 'user/showCampaignEmail', component: LogRegularCampaignComponent },
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
-    { path: 'user/logEmailURLClick', component: LogEmailClickComponent },
+    { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
