@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
+import { EditUser } from '../models/edit-user';
 import { CustomeResponse } from '../models/response';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
@@ -47,6 +48,7 @@ export class EditContactsComponent implements OnInit {
     @Output() notifyParent: EventEmitter<User>;
     
     criteria = new Criteria();
+    editUser: EditUser = new EditUser();
     criterias = new Array<Criteria>();
     filterValue: any;
     isSegmentation: boolean = false;
@@ -1522,8 +1524,10 @@ export class EditContactsComponent implements OnInit {
    }
    
    updateContactListUser(){
+       this.editUser.pagination = this.pagination;
+       this.editUser.user = this.addContactuser;
        $( "#addContactModal .close" ).click()
-       this.contactService.updateContactListUser( this.selectedContactListId, this.addContactuser, this.pagination )
+       this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
         .subscribe(
            ( data: any ) => {
               console.log(data);
@@ -1532,6 +1536,7 @@ export class EditContactsComponent implements OnInit {
            () => this.xtremandLogger.info( "EditContactsComponent updateContactListUser() finished" )
        )
    }
+   
    
     ngOnInit() {
         this.selectedContactListName = this.contactListName;

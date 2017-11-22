@@ -12,6 +12,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
+import { EditUser } from '../models/edit-user';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -128,9 +129,9 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    updateContactListUser( contactListId: number, userDetails: any, pagination: Pagination ): Observable<User[]> {
+    updateContactListUser( contactListId: number, editUser: EditUser ): Observable<any> {
         var requestoptions = new RequestOptions( {
-            body: [userDetails, pagination]
+            body: editUser,
         })
         var headers = new Headers();
         headers.append( 'Content-Type', 'application/json' );
