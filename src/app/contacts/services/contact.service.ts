@@ -127,6 +127,13 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    updateContactListUser( contactListId: number, userDetails: any ): Observable<User[]> {
+        var newUrl = this.contactsUrl + contactListId + '/edit?userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        return this._http.post( newUrl, userDetails )
+            .map(( response: any ) => response.json() )
+           .catch( this.handleError);
+    }
 
     removeContactListUsers( contactListId: number, removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( contactListId + "--" + removeUserIds );

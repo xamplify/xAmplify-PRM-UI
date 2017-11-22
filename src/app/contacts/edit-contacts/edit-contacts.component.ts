@@ -53,6 +53,7 @@ export class EditContactsComponent implements OnInit {
     isSegmentationErrorMessage: boolean;
     
     totalListUsers = [];
+    updatedUserDetails = [];
     
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -1246,6 +1247,7 @@ export class EditContactsComponent implements OnInit {
    }
    
    addContactModalOpen(){
+       this.addContactuser = new User();
        $( "#addContactModal" ).show();
        this.addContactuser.country = (this.countries[0]);
    }
@@ -1486,6 +1488,7 @@ export class EditContactsComponent implements OnInit {
        this.checkingForEmail = true;
        
        this.updateContactUser = true
+       this.addContactuser.id = contactDetails.id;
        this.addContactuser.firstName = contactDetails.firstName;
        this.addContactuser.lastName = contactDetails.lastName;
        this.addContactuser.contactCompany = contactDetails.contactCompany;
@@ -1498,13 +1501,14 @@ export class EditContactsComponent implements OnInit {
        this.addContactuser.description = contactDetails.description;
        $( "#addContactModal" ).show();
        console.log(contactDetails);
+       this.updatedUserDetails = contactDetails;
    }
    
    updateContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
        this.updateContactUser = false;
-       this.addContactuser.firstName = "";
+       /*this.addContactuser.firstName = "";
        this.addContactuser.lastName = "";
        this.addContactuser.contactCompany = "";
        this.addContactuser.jobTitle = "";
@@ -1513,12 +1517,20 @@ export class EditContactsComponent implements OnInit {
        this.addContactuser.city = "";
        this.addContactuser.country = "";
        this.addContactuser.mobileNumber = "";
-       this.addContactuser.description = "";
-       
+       this.addContactuser.description = "";*/
+       this.updatedUserDetails.length = 0;
    }
    
-   updateContact(){
+   updateContactListUser(){
        $( "#addContactModal .close" ).click()
+       this.contactService.updateContactListUser( this.selectedContactListId, this.addContactuser )
+        .subscribe(
+           ( data: any ) => {
+              console.log(data);
+           },
+           error => this.xtremandLogger.error( error ),
+           () => this.xtremandLogger.info( "EditContactsComponent updateContactListUser() finished" )
+       )
    }
    
     ngOnInit() {

@@ -95,7 +95,6 @@ a.disabled {
 								<li
 									style="font-size: 16px; font-family: Open Sans; color: #989292">{{selectedContactListName}}
 									List</li>
-
 							</ul>
 							<div class="page-toolbar">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -1036,7 +1035,7 @@ a.disabled {
 				</div>
 				<div class="modal-footer" *ngIf="updateContactUser">
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail" (click)="updateContact()">Update</button>
+						[disabled]="!checkingForEmail" (click)="updateContactListUser()">Update</button>
 					<button type="button" class="btn green" data-dismiss="modal"
 						(click)="updateContactModalClose()">Close</button>
 				</div>
