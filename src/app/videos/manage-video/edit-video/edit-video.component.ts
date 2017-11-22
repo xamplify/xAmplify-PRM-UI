@@ -133,6 +133,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isThisDraftVideo = false;
     selectedImagePath: string;
     saveButtonTitle = 'Save';
+    isDisable = false;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -1063,6 +1064,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
         if (this.isValidTitle === false) {
             this.saveButtonTitle = 'saving..';
+            this.isDisable = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.defaultSetting = this.defaultSettingValue;
             this.saveVideoFile.playerColor = this.compPlayerColor;
@@ -1116,6 +1118,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.notifyParent.emit(this.saveVideoFile);
                         this.videoFileService.videoViewBy = 'Save';
                         this.saveButtonTitle = 'Save';
+                        this.isDisable = false;
                     } else {
                         this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                     }

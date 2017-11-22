@@ -212,12 +212,11 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription">{{saveButtonTitle}}</button>
-									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()">Cancel</button>
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable">{{saveButtonTitle}}</button>
+									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable">Cancel</button>
 								</div>
 							</div>
 						</div>
-
 						<!-- BEGIN SAMPLE FORM PORTLET-->
 						<div class="portlet box green " style="margin-top: 3px;">
 							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
