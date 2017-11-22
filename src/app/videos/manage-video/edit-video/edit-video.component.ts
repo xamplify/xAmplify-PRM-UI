@@ -1120,10 +1120,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.saveButtonTitle = 'Save';
                         this.isDisable = false;
                     } else {
+                        this.isDisable = false;
+                        this.saveButtonTitle = 'Save';
                         this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                     }
                 },
                 (error: any) => {
+                    this.isDisable = false;
+                    this.saveButtonTitle = 'Save';
                     this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
                     this.xtremandLogger.errorPage(error);
                 }),

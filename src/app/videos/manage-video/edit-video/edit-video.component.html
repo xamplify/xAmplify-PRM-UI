@@ -241,7 +241,7 @@
 											 formControlName="title" required #videotitle>
 											<!-- <span *ngIf="!isValidTitle || formErrors.title== true" class="help-block">A block of help text.</span> -->
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red; padding: 2px">sorry,title already exist!</div>
+											<div *ngIf="isValidTitle" style="color: red; padding: 2px">Title already exists!</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
 										</div>
 									</div>
