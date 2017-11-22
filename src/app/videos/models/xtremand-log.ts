@@ -23,7 +23,6 @@ export class XtremandLog {
     videoAlias: string;
     campaignAlias: string;
     sessionId: string;
-
     startDurationHHMMSS: string;
     stopDurationHHMMSS: string;
 }

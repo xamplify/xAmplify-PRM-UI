@@ -1,12 +1,3 @@
-<style  type="text/css">
-.avatarImg {
-	 margin-top: 25px;
-    height: 114px;
-    width: 111px;
-    border-radius: 50% !important;
-}
-
-</style>
 <div class="page-lock">
 	<div class="page-logo">
 		<a class="brand">
@@ -15,34 +6,31 @@
 	</div>
 	<div class="page-body">
 		<div class="lock-head">
-			 Locked
+			Locked
 		</div>
 		<div class="lock-body">
 			<div class="pull-left lock-avatar-block">
-				<img [src] = userProfileImage class="avatarImg">
+				<img [src]="userProfileImage" class="avatarImg">
 			</div>
 			<form class="lock-form pull-left" action="index.html" method="post">
 				<h4>{{displayName}}</h4>
 				<div class="form-group">
-				 <div *ngIf="error" class="alert alert-danger" style="height: 43px">
-			    	<span style="position: relative; top: -3px;">{{error}}</span>
-		    	</div>
-					<input class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)"
-					 [(ngModel)]="password" autocomplete="off" 
-					placeholder="Password" name="password"/>
+					<div *ngIf="error" class="alert alert-danger" style="height: 43px">
+						<span style="position: relative; top: -3px;">{{error}}</span>
+					</div>
+					<input class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)" [(ngModel)]="password" autocomplete="off"
+					 placeholder="Password" name="password" />
 				</div>
 				<div class="form-actions">
-				  <!--<button type="submit" class="btn btn-success uppercase" [routerLink]="['../home/dashboard']">Login</button>-->
-				 <button type="submit" class="btn btn-success uppercase" [disabled] ="loginDisabled"
-				  (click)="lockScreenLogin()">Login</button>
+					<button type="submit" class="btn btn-success uppercase" [disabled]="loginDisabled" (click)="lockScreenLogin()">Login</button>
 				</div>
 			</form>
 		</div>
 		<div class="lock-bottom">
-			<a  [routerLink]="['../login']" >Not {{displayName}}?</a>
+			<a (click)="backToLogin()">Not {{displayName}}?</a>
 		</div>
 	</div>
 	<div class="page-footer-custom" style="color:#e0f1f7">
-		 2017 &copy; SocialUbuntu, All rights reserved.
+		2017 &copy; SocialUbuntu, All rights reserved.
 	</div>
 </div>
