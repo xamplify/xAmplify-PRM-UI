@@ -1531,6 +1531,8 @@ export class EditContactsComponent implements OnInit {
         .subscribe(
            ( data: any ) => {
               console.log(data);
+              this.setResponseDetails('SUCCESS', 'your contact has been updated successfully');
+              this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
            },
            error => this.xtremandLogger.error( error ),
            () => this.xtremandLogger.info( "EditContactsComponent updateContactListUser() finished" )
