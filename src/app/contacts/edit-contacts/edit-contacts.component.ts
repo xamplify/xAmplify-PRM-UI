@@ -1490,7 +1490,7 @@ export class EditContactsComponent implements OnInit {
        this.checkingForEmail = true;
        
        this.updateContactUser = true
-       this.addContactuser.id = contactDetails.id;
+       this.addContactuser.userId = contactDetails.id;
        this.addContactuser.firstName = contactDetails.firstName;
        this.addContactuser.lastName = contactDetails.lastName;
        this.addContactuser.contactCompany = contactDetails.contactCompany;
