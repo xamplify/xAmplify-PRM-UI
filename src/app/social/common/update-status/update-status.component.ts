@@ -473,6 +473,9 @@ export class UpdateStatusComponent implements OnInit {
           } else if ('GOOGLE' === socialStatusProvider.socialConnection.source) {
             str += '<i class="fa fa-social pull-right fa-google  white p-10"></i>';
             element.css('background', '#d95535');
+          } else if ('LINKEDIN' === socialStatusProvider.socialConnection.source) {
+            str += '<i class="fa fa-social pull-right fa-linkedin  white p-10"></i>';
+            element.css('background', '#007bb5');
           }
         
         element.find('.fc-right-block')

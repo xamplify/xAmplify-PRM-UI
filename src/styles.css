@@ -169,6 +169,9 @@ nav a.active {
 	margin: 0;
 	color: #00b3b3;
 }
+.fa-linkedin-color {
+	color: #007bb5;
+}
 
 .fa-facebook-color {
 	color: #3b5998;
@@ -183,19 +186,19 @@ nav a.active {
 }
 
 .btn-facebook {
-	background-color: #3b5998
+	background-color: #3b5998;
 }
 
 .btn-twitter {
-	background-color: #1da1f2
+	background-color: #1da1f2;
 }
 
 .btn-google {
-	background-color: #d95535
+	background-color: #d95535;
 }
 
 .btn-linkedin {
-	background-color: #0077B5
+	background-color: #007bb5;
 }
 
 .btn-facebook.active, 

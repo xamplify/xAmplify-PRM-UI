@@ -31,29 +31,31 @@ export class SocialCallbackComponent implements OnInit {
                 }else{
                     this.refService.userName = result["emailId"];
 
-                    if ( providerName == "salesforce" ) {
+                    if ( providerName === "salesforce" ) {
                         client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
                         client_secret = "8542957351694434668";
-
-                    } else if ( providerName == "google" ) {
+                    } else if ( providerName === "google" ) {
                         client_id = "733045589374-1u3eb2b1v5g8hsoql2f4qjr5kugkv51b.apps.googleusercontent.com";
                         client_secret = "dw8gUNgnPRqOV7V7aUuMUxye";
-                    } else if ( providerName == "facebook" ) {
+                    } else if ( providerName === "facebook" ) {
                         client_id = "1348853938538956";
                         client_secret = "69202865ccc82e3cf43a5aa097c4e7bf";
-                    } else if ( providerName == "twitter" ) {
+                    } else if ( providerName === "twitter" ) {
                         client_id = "J60F2OG6jZOEK33xK3MtiU4zI";
                         client_secret = "d3xQ5hPlPZtQdeMkNAjlejXFvwRrPSalwbpyApncxi49Pf4lFi";
+                    } else if ( providerName === "linkedin" ) {
+                        client_id = "81ujzv3pcekn3t";
+                        client_secret = "bfdJ4u0j6izlWSyd";
                     }
 
-                    var authorization = 'Basic' + btoa( client_id + ':' );
-                    var body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
+                    const authorization = 'Basic' + btoa( client_id + ':' );
+                    const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
                     this.authenticationService.login( authorization, body, this.refService.userName )
                         .subscribe( result => {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {
-                               let currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                               const currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
                                if(currentUser.hasCompany){
                                    this.redirect();
                                }else{
@@ -78,10 +80,12 @@ export class SocialCallbackComponent implements OnInit {
     }
 
     redirect() {
-        if ( !this.socialConnection.existingUser )
+        if ( !this.socialConnection.existingUser ){
             this.router.navigate( ['/home/social/manage/' + this.providerName] );
-        else
+        }
+        else{
             this.router.navigate( ['/home/dashboard/default'] );
+        }
     }
 
     ngOnInit() {
