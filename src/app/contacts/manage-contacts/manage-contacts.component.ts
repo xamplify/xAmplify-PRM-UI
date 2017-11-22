@@ -148,6 +148,7 @@ export class ManageContactsComponent implements OnInit {
                         { 'name': 'Last Name', 'value': 'lastName'},
                         { 'name': 'Company', 'value': 'company'},
                         { 'name': 'Job Title', 'value': 'jobTitle'},
+                        { 'name': 'Email Id', 'value': 'emailId'},
                         { 'name': 'Country', 'value': 'country'},
                         { 'name': 'City', 'value': 'city'},
                         { 'name': 'Mobile Number', 'value': 'mobile Number'},
@@ -1041,6 +1042,9 @@ export class ManageContactsComponent implements OnInit {
             }
             else if(this.criterias[i].property == "Job Title"){
                 this.criterias[i].property = "jobTitle";
+            }
+            else if(this.criterias[i].property == "Email Id"){
+                this.criterias[i].property = "emailId";
             }
             else if(this.criterias[i].property == "Country"){
                 this.criterias[i].property = "country";

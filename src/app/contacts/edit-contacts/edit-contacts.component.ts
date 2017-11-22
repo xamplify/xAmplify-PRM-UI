@@ -192,6 +192,7 @@ export class EditContactsComponent implements OnInit {
                                 { 'name': 'lastName', 'value': 'Last Name'},
                                 { 'name': 'Company', 'value': 'Company'},
                                 { 'name': 'JobTitle', 'value': 'Job Title'},
+                                { 'name': 'Email Id', 'value': 'Email Id'},
                                 { 'name': 'country', 'value': 'Country'},
                                 { 'name': 'city', 'value': 'City'},
                                 { 'name': 'mobileNumber', 'value': 'Mobile Number'},
@@ -1426,6 +1427,9 @@ export class EditContactsComponent implements OnInit {
            else if(this.criterias[i].property == "Job Title"){
                this.criterias[i].property = "jobTitle";
            }
+           else if(this.criterias[i].property == "Email Id"){
+               this.criterias[i].property = "emailId";
+           }
            else if(this.criterias[i].property == "Country"){
                this.criterias[i].property = "country";
            }
@@ -1538,7 +1542,6 @@ export class EditContactsComponent implements OnInit {
            () => this.xtremandLogger.info( "EditContactsComponent updateContactListUser() finished" )
        )
    }
-   
    
     ngOnInit() {
         this.selectedContactListName = this.contactListName;
