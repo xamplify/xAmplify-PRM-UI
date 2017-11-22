@@ -1523,7 +1523,7 @@ export class EditContactsComponent implements OnInit {
    
    updateContactListUser(){
        $( "#addContactModal .close" ).click()
-       this.contactService.updateContactListUser( this.selectedContactListId, this.addContactuser )
+       this.contactService.updateContactListUser( this.selectedContactListId, this.addContactuser, this.pagination )
         .subscribe(
            ( data: any ) => {
               console.log(data);

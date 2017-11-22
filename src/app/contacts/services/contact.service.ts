@@ -128,9 +128,17 @@ export class ContactService {
             .catch( this.handleError );
     }
     
-    updateContactListUser( contactListId: number, userDetails: any ): Observable<User[]> {
+    updateContactListUser( contactListId: number, userDetails: any, pagination: Pagination ): Observable<User[]> {
+        var requestoptions = new RequestOptions( {
+            body: [userDetails, pagination]
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
         var newUrl = this.contactsUrl + contactListId + '/edit?userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
-        return this._http.post( newUrl, userDetails )
+        return this._http.post( newUrl, options, requestoptions )
             .map(( response: any ) => response.json() )
            .catch( this.handleError);
     }
