@@ -1290,17 +1290,6 @@ export class EditContactsComponent implements OnInit {
            showCancelButton: true,
            confirmButtonText: 'Submit',
            showLoaderOnConfirm: true,
-           /*preConfirm: function (email) {
-             return new Promise(function (resolve, reject) {
-               setTimeout(function() {
-                 if (email === 'taken@example.com') {
-                   reject('This email is already taken.')
-                 } else {
-                   resolve()
-                 }
-               }, 2000)
-             })
-           },*/
            allowOutsideClick: false
          }).then( function( name: any ) {
              
@@ -1503,6 +1492,9 @@ export class EditContactsComponent implements OnInit {
        this.addContactuser.address = contactDetails.address;
        this.addContactuser.city = contactDetails.city;
        this.addContactuser.country = contactDetails.country;
+       if(this.addContactuser.country == null){
+           this.addContactuser.country = (this.countries[0]);
+       }
        this.addContactuser.mobileNumber = contactDetails.mobileNumber;
        this.addContactuser.description = contactDetails.description;
        $( "#addContactModal" ).show();
@@ -1514,16 +1506,6 @@ export class EditContactsComponent implements OnInit {
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
        this.updateContactUser = false;
-       /*this.addContactuser.firstName = "";
-       this.addContactuser.lastName = "";
-       this.addContactuser.contactCompany = "";
-       this.addContactuser.jobTitle = "";
-       this.addContactuser.emailId = "";
-       this.addContactuser.address = "";
-       this.addContactuser.city = "";
-       this.addContactuser.country = "";
-       this.addContactuser.mobileNumber = "";
-       this.addContactuser.description = "";*/
        this.updatedUserDetails.length = 0;
    }
    
@@ -1542,6 +1524,37 @@ export class EditContactsComponent implements OnInit {
            () => this.xtremandLogger.info( "EditContactsComponent updateContactListUser() finished" )
        )
    }
+   
+   updateContactListNameAlert(){
+       let self = this;
+       swal({
+           title: this.checkingContactTypeName + ' List Name',
+           input: 'text',
+           inputValue: this.contactListName,
+           showCancelButton: true,
+           confirmButtonText: 'Update',
+           showLoaderOnConfirm: true,
+           allowOutsideClick: false
+         }).then( function( name: any ) {
+             
+             self.updateContactListName(name);
+         })
+   }
+   
+   updateContactListName(newContactListName: string){
+       $( "#addContactModal .close" ).click()
+       this.contactService.updateContactListName( this.selectedContactListId, newContactListName )
+        .subscribe(
+           ( data: any ) => {
+              console.log(data);
+              this.setResponseDetails('SUCCESS', 'your contact List Name has been updated successfully');
+              this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+           },
+           error => this.xtremandLogger.error( error ),
+           () => this.xtremandLogger.info( "EditContactsComponent updateContactListName() finished" )
+       )
+   }
+   
    
     ngOnInit() {
         this.selectedContactListName = this.contactListName;

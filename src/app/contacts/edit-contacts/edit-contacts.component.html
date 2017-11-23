@@ -91,11 +91,11 @@ a.disabled {
 						<!-- BEGIN FILTER -->
 
 						<div class="page-bar">
-							<ul class="page-breadcrumb">
-								<li
-									style="font-size: 16px; font-family: Open Sans; color: #989292">{{selectedContactListName}}
-									List</li>
-							</ul>
+							<div class="page-breadcrumb">
+								<span title="Edit Contact list Name" style="font-size: 16px; font-family: Open Sans; color: #989292;cursor: pointer" 
+								(click)="updateContactListNameAlert()">{{selectedContactListName}}
+									List</span>
+							</div>
 							<div class="page-toolbar">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-right: 10px"
@@ -672,7 +672,7 @@ a.disabled {
 							<!-- END EXAMPLE TABLE PORTLET-->
 							<ul
 								*ngIf="pagination.pager.pages && pagination.pager.pages.length"
-								class="pagination">
+								class="pagination m0">
 								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
 									<a (click)="setPage(1)"
 									[class.disabled]="pagination.pager.currentPage === 1">First</a>
@@ -843,7 +843,7 @@ a.disabled {
 						<!--pager here  -->
 						<ul
 							*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
-							class="pagination">
+							class="pagination m0">
 							<li
 								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
 								<a
