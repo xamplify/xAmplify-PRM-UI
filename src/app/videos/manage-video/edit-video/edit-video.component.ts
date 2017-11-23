@@ -201,7 +201,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
         };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
-        this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
+        this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
     }  // closed constructor
     public startsWithAt(control: FormControl) {
         try {
@@ -212,12 +212,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
            return null;
         }catch (error) { console.log('empty tag'); }
     }
+
     public validatorsTag = [this.startsWithAt];
+
     shareClick() {
-        let shareUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias;
+        const shareUrl = this.authenticationService.APP_URL + 'embed/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
         this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
-      //	window.open(this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy + '/' + this.saveVideoFile.alias,
-      //      'mywindow', 'menubar=1,resizable=1,width=670,height=485'); 
     }
     // call to action values
     callActionValues(overlayValue: string, startCallAction: boolean, endCallAction: boolean, videoPlaybutton: string) {

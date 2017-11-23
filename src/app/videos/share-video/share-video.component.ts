@@ -131,13 +131,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         try {
                             this.play360Video();
                         } catch (err) { 
-                             this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); 
+                             this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']); 
                         }
                     } else {
                         try {
                             this.playNormalVideo();
                         } catch (err) { 
-                            this.router.navigate(['/embed-video/' + this.routerType + '/' + this.routerAlias + '/']); 
+                            this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']); 
                         }
                     }
                 } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID") {
@@ -150,6 +150,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 }
                 this.defaultCallToActionValues();
                 console.log(this.videoUrl);
+                this.embedVideoFile.viewBy = this.embedVideoFile.viewBy.toLowerCase();
                 this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy
                     + '&alias=' + this.embedVideoFile.alias;
                 console.log(this.shareUrl);

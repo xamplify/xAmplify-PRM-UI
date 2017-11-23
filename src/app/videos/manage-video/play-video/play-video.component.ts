@@ -99,7 +99,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     embedSourcePath(alias: string, viewBy: string) {
         this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' +
-        this.selectedVideo.viewBy + '/' + this.selectedVideo.alias;
+        this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias;
         console.log(this.embedSrcPath);
     }
     checkCallToActionAvailable() {
@@ -135,8 +135,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#modalDialog').append($('#overlay-modal').show());
     }
     shareClick() {
-        window.open(this.authenticationService.APP_URL + 'embed-video/' + this.selectedVideo.viewBy + '/' + this.selectedVideo.alias,
-            'mywindow', 'menubar=1,resizable=1,width=670,height=420');
+        const shareUrl = this.authenticationService.APP_URL+ 'embed/'+this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias; 
+        this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
     }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id
