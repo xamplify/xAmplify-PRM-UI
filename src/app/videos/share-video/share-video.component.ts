@@ -151,7 +151,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.defaultCallToActionValues();
                 console.log(this.videoUrl);
                 this.embedVideoFile.viewBy = this.embedVideoFile.viewBy.toLowerCase();
-                this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy
+                this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy.toLowerCase()
                     + '&alias=' + this.embedVideoFile.alias;
                 console.log(this.shareUrl);
                 this.shareMetaTags();
