@@ -186,7 +186,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             document.getElementById('para').innerHTML = this.templatehtml;
-                            $('#newPlayerVideo').css({ "width": "562px", "margin-left": "-24px" });
+                           // $('#newPlayerVideo').css({ "width": "562px", "margin-left": "-24px" });
                         } else {
                             updatedBody = updatedBody.replace("view in browser", '');
                             updatedBody = updatedBody.replace("click here","");
