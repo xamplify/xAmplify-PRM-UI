@@ -25,7 +25,7 @@ declare var Layout: any;
 declare var Demo: any;
 declare var Portfolio: any;
 declare var $: any;
-declare var swal: any;
+declare var Promise,swal: any;
 
 
 @Component( {
@@ -79,6 +79,7 @@ export class EditContactsComponent implements OnInit {
     isShowUsers: boolean = true;
     public users: Array<User>;
     response: CustomeResponse = new CustomeResponse();
+    names:string[]=[];
     
     selectedContactForSave = [];
     
@@ -1289,11 +1290,23 @@ export class EditContactsComponent implements OnInit {
            inputValue: this.contactListName + '_copy',
            showCancelButton: true,
            confirmButtonText: 'Submit',
-           showLoaderOnConfirm: true,
-           allowOutsideClick: false
+           //showLoaderOnConfirm: true,
+           allowOutsideClick: false,
+           preConfirm: function(name: any) {
+               return new Promise(function() {
+               console.log('logic begins');
+              var inputName = name.toLowerCase().replace(/\s/g, '');
+              if($.inArray(inputName, self.names) > -1){
+                   swal.showValidationError('This Contact List Name is already taken.')
+               }else{
+                   swal.close();
+                   self.saveDuplicateContactList(name);
+               }
+             });
+           }
          }).then( function( name: any ) {
              
-             self.saveDuplicateContactList(name);
+             //self.saveDuplicateContactList(name);
          })
    }
    
@@ -1533,10 +1546,21 @@ export class EditContactsComponent implements OnInit {
            inputValue: this.contactListName,
            showCancelButton: true,
            confirmButtonText: 'Update',
-           showLoaderOnConfirm: true,
-           allowOutsideClick: false
+           //showLoaderOnConfirm: true,
+           allowOutsideClick: false,
+           preConfirm: function(name: any) {
+               return new Promise(function() {
+               console.log('logic begins');
+              var inputName = name.toLowerCase().replace(/\s/g, '');
+              if($.inArray(inputName, self.names) > -1){
+                   swal.showValidationError('This Contact List Name is already taken.')
+               }else{
+                   swal.close();
+                   self.updateContactListName(name);
+               }
+             });
+           }
          }).then( function( name: any ) {
-             
              self.updateContactListName(name);
          })
    }
@@ -1555,9 +1579,29 @@ export class EditContactsComponent implements OnInit {
        )
    }
    
+   loadContactListsNames() {
+       this.contactService.loadContactListsNames()
+           .subscribe(
+           ( data: any ) => {
+               this.xtremandLogger.info( data );
+              // this.contactLists = data.listOfUserLists;
+               this.names.length = 0; 
+               for(let i=0;i< data.names.length;i++){
+                   this.names.push( data.names[i].replace(/\s/g, '') );
+                   }
+               console.log(this.names);
+           },
+           (error: any) => {
+               this.xtremandLogger.error(error);
+               this.xtremandLogger.errorPage(error);
+           },
+           () => this.xtremandLogger.info( "MangeContactsComponent loadContactListsName() finished" )
+           )
+   }
    
-    ngOnInit() {
-        this.selectedContactListName = this.contactListName;
+ngOnInit() {
+    this.loadContactListsNames();    
+    this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         let self = this;

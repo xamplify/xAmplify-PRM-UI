@@ -66,6 +66,13 @@ a.disabled {
 .alert-success, .alert-danger, .alert-warning>h5 {
 	font-size: 14px;
 }
+
+.page-breadcrumb div{
+  visibility:hidden;
+}
+.page-breadcrumb:hover div {
+ visibility:visible;
+}
 </style>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
@@ -94,7 +101,11 @@ a.disabled {
 							<div class="page-breadcrumb">
 								<span title="Edit Contact list Name" style="font-size: 16px; font-family: Open Sans; color: #989292;cursor: pointer" 
 								(click)="updateContactListNameAlert()">{{selectedContactListName}}
-									List</span>
+									List
+									</span>
+									<div style="color: #4d5b69;text-align: right;margin-top: -18px;margin-right: -19px;">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+									</div>
 							</div>
 							<div class="page-toolbar">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
