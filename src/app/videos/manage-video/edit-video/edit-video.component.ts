@@ -201,7 +201,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
         };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
-        this.embedUrl = this.authenticationService.APP_URL + 'embed-video/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
+        this.embedUrl = this.authenticationService.APP_URL + 'embed/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
     }  // closed constructor
     public startsWithAt(control: FormControl) {
         try {

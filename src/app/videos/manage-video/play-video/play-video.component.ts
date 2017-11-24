@@ -98,7 +98,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hasAllAccess = this.referenceService.hasAllAccess();
     }
     embedSourcePath(alias: string, viewBy: string) {
-        this.embedSrcPath = this.authenticationService.APP_URL + 'embed-video/' +
+        this.embedSrcPath = this.authenticationService.APP_URL + 'embed/' +
         this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias;
         console.log(this.embedSrcPath);
     }
