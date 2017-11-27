@@ -1541,11 +1541,12 @@ export class EditContactsComponent implements OnInit {
    updateContactListNameAlert(){
        let self = this;
        swal({
-           title: this.checkingContactTypeName + ' List Name',
-           //title: "<span style='font-weight: 100;font-size: 16px;'>Contact List Name</span>",
+           //title: this.checkingContactTypeName + ' List Name',
+           title: "<span style='font-weight: 100;font-family: Open Sans;font-size: 28px;'>Update List Name</span>",
            input: 'text',
            inputValue: this.contactListName,
            showCancelButton: true,
+           padding: 20,
            confirmButtonText: 'Update',
            //showLoaderOnConfirm: true,
            //animation: "slide-from-top",
