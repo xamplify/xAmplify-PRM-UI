@@ -171,6 +171,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     (result: any) => {
                         this.campaignVideoFile = result.videofile;
                         this.templatehtml = result.templatehtml;
+                        this.campaignAlias = result.campaignAlias;
+                        this.userAlias = result.userAlias;
+                        this.videoAlias = result.videoAlias;
+                        this.templateId = result.templateId;
+                        this.xtremandLogDefaultActions();
+                        
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
@@ -273,8 +279,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.deviceDectorInfo();
         this.alias = this.activatedRoute.snapshot.params['alias'];
 
-        this.xtremandLogDefaultActions();
+        
         this.getCampaignVideo();
+        //this.xtremandLogDefaultActions();
     }
     defaultVideoSettings() {
         this.xtremandLogger.log('default settings called');
