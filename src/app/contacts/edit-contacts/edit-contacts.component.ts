@@ -1542,15 +1542,17 @@ export class EditContactsComponent implements OnInit {
        let self = this;
        swal({
            title: this.checkingContactTypeName + ' List Name',
+           //title: "<span style='font-weight: 100;font-size: 16px;'>Contact List Name</span>",
            input: 'text',
            inputValue: this.contactListName,
            showCancelButton: true,
            confirmButtonText: 'Update',
            //showLoaderOnConfirm: true,
+           //animation: "slide-from-top",
            allowOutsideClick: false,
+           customClass: "sweet-alert",
            preConfirm: function(name: any) {
                return new Promise(function() {
-               console.log('logic begins');
               var inputName = name.toLowerCase().replace(/\s/g, '');
               if($.inArray(inputName, self.names) > -1){
                    swal.showValidationError('This Contact List Name is already taken.')

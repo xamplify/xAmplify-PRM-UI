@@ -73,6 +73,7 @@ a.disabled {
 .page-breadcrumb:hover div {
  visibility:visible;
 }
+
 </style>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
@@ -529,8 +530,8 @@ a.disabled {
 																[id]="checkAllExistingContacts" /></th>
 															<th style="width: 25%">NAME</th>
 															<th>CONTACT</th>
-															<th>Job Title</th>
-															<th>ADDRESS</th>
+															<th>JOB TITLE</th>
+															<th class='text-center'>ADDRESS</th>
 															<th class='text-center'>MORE</th>
 															<th class='text-center'>ACTIONS</th>
 														</tr>
@@ -777,7 +778,7 @@ a.disabled {
 													id="checkAllExistingInvalidContacts" /></th>
 												<th style="width: 25%">NAME</th>
 												<th>CONTACT</th>
-												<th>Job Title</th>
+												<th>JOB TITLE</th>
 												<th>ADDRESS</th>
 												<th>MORE</th>
 											</tr>
@@ -1018,7 +1019,7 @@ a.disabled {
 									style="border: none" class="form-control" id="number"
 									[(ngModel)]="addContactuser.mobileNumber"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter MobileNumber">
+									placeholder="Enter MobileNumber" maxlength="10">
 								<div class="textCss"></div>
 
 							</div>
@@ -1120,10 +1121,10 @@ a.disabled {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default"
+					<button type="button" class="btn green"
 						(click)="contactFilter()">Submit</button>
 					<!-- <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
-					<button type="button" class="btn btn-default"
+					<button type="button" class="btn green"
 						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
