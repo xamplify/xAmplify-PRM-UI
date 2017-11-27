@@ -123,9 +123,9 @@ export class VideoFileService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
-    showCampaignVideo(typeValue: string, emailLog: any) {
+    showCampaignVideo(emailLog: any) {
         try {
-            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo?type=' + typeValue;
+            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo' ;
             return this.http.post(url, emailLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);

@@ -43,11 +43,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     posterImagePath: string;
     is360Value: boolean;
     publicRouterUrl: string;
+    public alias :string;
     typeValue: string;
-    videoAlias: string;
-    campaignAlias: string;
-    userAlias: string;
-    templateId: number;
+    videoAlias: string=null;
+    campaignAlias: string=null;
+    userAlias: string=null;
+    templateId: number=null;
     locationJson: any;
     deviceInfo: any;
     sessionId: string = null;
@@ -161,10 +162,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     'longitude': data.lon,
                     'countryCode': data.countryCode,
                     'videoAlias': this.videoAlias,
-                    'actionId': 14
+                    'actionId': 14,
+                    'alias':this.alias
                 };
                 console.log("emailLog" + this.emailLog);
-                this.videoFileService.showCampaignVideo(this.typeValue, this.emailLog)
+                this.videoFileService.showCampaignVideo(this.emailLog)
                     .subscribe(
                     (result: any) => {
                         this.campaignVideoFile = result.videofile;
@@ -269,18 +271,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.createSessionId();
         this.xtremandLogger.log('public video component ngOnInit called');
         this.deviceDectorInfo();
-        this.activatedRoute.queryParams.subscribe(
-            (param: any) => {
-                this.typeValue = param['type'];
-                this.videoAlias = param['videoAlias'];
-                this.campaignAlias = param['campaignAlias'];
-                this.userAlias = param['userAlias'];
-                this.templateId = param['templateId'];
-            },
-            (error: any) => {
-                this.xtremandLogger.log(error);
-                this.xtremandLogger.error(error);
-            });
+        this.alias = this.activatedRoute.snapshot.params['alias'];
+
         this.xtremandLogDefaultActions();
         this.getCampaignVideo();
     }
