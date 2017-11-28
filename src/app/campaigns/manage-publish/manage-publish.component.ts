@@ -167,7 +167,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
            }
            
         },
-        error => console.log( error ),
+        error =>{this.logger.errorPage(error)},
         () => console.log()
         )
         this.isScheduledCampaignLaunched = false;
@@ -199,7 +199,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
             this.pagination.pageIndex = this.pagination.pageIndex-1;
             this.listCampaign(this.pagination);
         },
-        error => { console.log(error)},
+        error => { this.logger.errorPage(error)},
         () => console.log( "Campaign Deleted Successfully" )
         );
         this.isCampaignDeleted = false;

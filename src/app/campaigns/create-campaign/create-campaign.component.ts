@@ -222,6 +222,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            if(this.campaign.regularEmail){
+                this.campaignType = 'regular';
+            }else{
+                this.campaignType = 'video';
+            }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
@@ -274,11 +279,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCampaignDraftEmailTemplate = true;
                 this.selectedTemplateBody = this.campaign.emailTemplate.body;
                 this.emailTemplate = this.campaign.emailTemplate;
-            }
-            if(this.campaign.regularEmail){
-                this.campaignType = 'regular';
-            }else{
-                this.campaignType = 'video';
             }
           /************Launch Campaign**********************/
             this.name = this.campaignService.campaign.campaignName;
@@ -342,12 +342,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.replies = campaign.campaignReplies;
            for(var i=0;i<this.replies.length;i++){
                let reply = this.replies[i];
+               if(reply.defaultTemplate){
+                   reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
+               }
+               reply.emailTemplatesPagination = new Pagination();
                reply.replyTime = new Date(reply.replyTime);
                let length = this.allItems.length;
                length = length+1;
                var id = 'reply-'+length;
                reply.divId = id;
                this.allItems.push(id);
+               this.loadEmailTemplatesForAddReply(reply);
            } 
        }
        
@@ -357,12 +362,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.urls = campaign.campaignUrls;
             for(var i=0;i<this.urls.length;i++){
                 let url = this.urls[i];
+                if(url.defaultTemplate){
+                    url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
+                }
+                url.emailTemplatesPagination = new Pagination();
                 url.replyTime = new Date(url.replyTime);
                 let length = this.allItems.length;
                 length = length+1;
                 var id = 'click-'+length;
                 url.divId = id;
                 this.allItems.push(id);
+                this.loadEmailTemplatesForAddOnClick(url);
             }
         }
        
@@ -594,6 +604,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         
         
+    }
+    
+    setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
+        reply.selectedEmailTemplateId = emailTemplateId;
+        $('#reply-'+index+emailTemplateId).prop("checked",true);
+    }
+    setClickEmailTemplate(emailTemplateId:number,url:Url,index:number){
+        url.selectedEmailTemplateId = emailTemplateId;
+        $('#url-'+index+emailTemplateId).prop("checked",true);
     }
     showToolTip(videoType:string){
         if(videoType=="DRAFT"){
@@ -1107,7 +1126,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             pagination.campaignDefaultTemplate = false;
             pagination.isEmailTemplateSearchedFromCampaign = true;
         }
-        pagination.maxResults = 2;
+        pagination.maxResults = 12;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -1127,7 +1146,127 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
     
-
+     /**********************Email Templates For Add Reply**************************************************/
+    loadEmailTemplatesForAddReply(reply:Reply){
+        this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
+        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+        if(this.campaignType=="video"){
+            reply.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+        }else{
+            reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+        }
+        if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
+            reply.emailTemplatesPagination.campaignDefaultTemplate = true;
+        }else{
+            reply.emailTemplatesPagination.campaignDefaultTemplate = false;
+            reply.emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
+        }
+        reply.emailTemplatesPagination.maxResults = 12;
+        this.emailTemplateService.listTemplates(reply.emailTemplatesPagination,this.loggedInUserId)
+        .subscribe(
+            (data:any) => {
+                reply.emailTemplatesPagination.totalRecords = data.totalRecords;
+                reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.emailTemplates);
+                this.filterReplyrEmailTemplateForEditCampaign(reply);
+                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+            },
+            (error:string) => {
+               this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished loadEmailTemplatesForAddReply()",reply.emailTemplatesPagination)
+            )
+    }
+    
+    loadEmailTemplatesForAddOnClick(url:Url){
+        this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
+        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+        if(this.campaignType=="video"){
+            url.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+        }else{
+            url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+        }
+        if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
+            url.emailTemplatesPagination.campaignDefaultTemplate = true;
+        }else{
+            url.emailTemplatesPagination.campaignDefaultTemplate = false;
+            url.emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
+        }
+        url.emailTemplatesPagination.maxResults = 12;
+        this.emailTemplateService.listTemplates(url.emailTemplatesPagination,this.loggedInUserId)
+        .subscribe(
+            (data:any) => {
+                url.emailTemplatesPagination.totalRecords = data.totalRecords;
+                url.emailTemplatesPagination = this.pagerService.getPagedItems(url.emailTemplatesPagination, data.emailTemplates);
+                this.filterClickEmailTemplateForEditCampaign(url);
+                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+            },
+            (error:string) => {
+               this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()",url.emailTemplatesPagination)
+            )
+    }
+    
+    paginateEmailTemplateRows(pageIndex:number,reply:Reply){
+        reply.emailTemplatesPagination.pageIndex = pageIndex;
+        this.loadEmailTemplatesForAddReply(reply);
+    }
+    paginateClickEmailTemplateRows(pageIndex:number,url:Url){
+        url.emailTemplatesPagination.pageIndex = pageIndex;
+        this.loadEmailTemplatesForAddOnClick(url);
+    }
+    
+    filterEmailTemplateForEditCampaign(){
+        if(this.emailTemplatesPagination.emailTemplateType==0 && this.emailTemplatesPagination.searchKey==null){
+            if(this.emailTemplatesPagination.pageIndex==1){
+                this.showSelectedEmailTemplate=true;
+            }else{
+                this.showSelectedEmailTemplate=false;
+            }
+        }else{
+            this.filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+            if(this.filteredEmailTemplateIds.indexOf(this.emailTemplateId)>-1){
+                this.showSelectedEmailTemplate=true;
+            }else{
+                this.showSelectedEmailTemplate=false;
+            }
+        }
+    } 
+    
+    filterReplyrEmailTemplateForEditCampaign(reply:Reply){
+        if(reply.emailTemplatesPagination.emailTemplateType==0 && reply.emailTemplatesPagination.searchKey==null){
+            if(reply.emailTemplatesPagination.pageIndex==1){
+                reply.showSelectedEmailTemplate=true;
+            }else{
+                reply.showSelectedEmailTemplate=false;
+            }
+        }else{
+            let emailTemplateIds = reply.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+            if(emailTemplateIds.indexOf(reply.selectedEmailTemplateIdForEdit)>-1){
+                reply.showSelectedEmailTemplate=true;
+            }else{
+                reply.showSelectedEmailTemplate=false;
+            }
+        }
+    } 
+    
+    filterClickEmailTemplateForEditCampaign(url:Url){
+        if(url.emailTemplatesPagination.emailTemplateType==0 && url.emailTemplatesPagination.searchKey==null){
+            if(url.emailTemplatesPagination.pageIndex==1){
+                url.showSelectedEmailTemplate=true;
+            }else{
+                url.showSelectedEmailTemplate=false;
+            }
+        }else{
+            let emailTemplateIds = url.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+            if(emailTemplateIds.indexOf(url.selectedEmailTemplateIdForEdit)>-1){
+                url.showSelectedEmailTemplate=true;
+            }else{
+                url.showSelectedEmailTemplate=false;
+            }
+        }
+    } 
+    
     
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
         let body = emailTemplate.body;
@@ -1179,10 +1318,59 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
     }
+    
+    
+    filterReplyTemplates(type:string,index:number,reply:Reply){
+        if(type=="BASIC"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        }else if(type=="RICH"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="UPLOADED"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
+        }else if(type=="NONE"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+        }
+        else if(type=="PARTNER"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
+        }
+         reply.selectedEmailTemplateTypeIndex = index;
+         reply.emailTemplatesPagination.pageIndex = 1;
+         this.loadEmailTemplatesForAddReply(reply);
+     }
+    
+    filterClickTemplates(type:string,index:number,url:Url){
+        if(type=="BASIC"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        }else if(type=="RICH"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="UPLOADED"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
+        }else if(type=="NONE"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+        }
+        else if(type=="PARTNER"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
+        }
+        url.selectedEmailTemplateTypeIndex = index;
+        url.emailTemplatesPagination.pageIndex = 1;
+         this.loadEmailTemplatesForAddOnClick(url);
+     }
+    
     searchEmailTemplate(){
         this.emailTemplatesPagination.pageIndex = 1;
         this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
         this.loadEmailTemplates(this.emailTemplatesPagination);
+    }
+    searchReplyEmailTemplate(reply:Reply){
+        reply.emailTemplatesPagination.pageIndex = 1;
+        reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
+        this.loadEmailTemplatesForAddReply(reply);
+    }
+    
+    searchClickEmailTemplate(url:Url){
+        url.emailTemplatesPagination.pageIndex = 1;
+        url.emailTemplatesPagination.searchKey = url.emailTemplateSearchInput;
+        this.loadEmailTemplatesForAddOnClick(url);
     }
  
     setEmailTemplate(emailTemplate:EmailTemplate){
@@ -1234,22 +1422,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         console.log(this.emailTemplateHrefLinks);
     }
-    filterEmailTemplateForEditCampaign(){
-        if(this.emailTemplatesPagination.emailTemplateType==0 && this.emailTemplatesPagination.searchKey==null){
-            if(this.emailTemplatesPagination.pageIndex==1){
-                this.showSelectedEmailTemplate=true;
-            }else{
-                this.showSelectedEmailTemplate=false;
-            }
-        }else{
-            this.filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
-            if(this.filteredEmailTemplateIds.indexOf(this.emailTemplateId)>-1){
-                this.showSelectedEmailTemplate=true;
-            }else{
-                this.showSelectedEmailTemplate=false;
-            }
-        }
-    } 
+
     /*************************************************************Launch Campaign***************************************************************************************/
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
@@ -1377,15 +1550,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
+            this.removeStyleAttrByDivId('reply-days-'+reply.divId);
+            this.removeStyleAttrByDivId('send-time-'+reply.divId);
+            this.removeStyleAttrByDivId('message-'+reply.divId);
+            this.removeStyleAttrByDivId('email-template-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             if(reply.actionId!=16){
-                if(reply.replyTime==undefined || reply.replyTime==null ||reply.subject==null || reply.subject==undefined || reply.subject.trim().length==0 || reply.replyInDays==null){
-                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
+                this.validateReplyInDays(reply);
+                this.validateReplyTime(reply);
+                this.validateEmailTemplateForAddReply(reply);
             }else{
-                if(reply.subject==undefined || reply.subject==null  || reply.subject.trim().length==0){
-                    $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
+                this.validateEmailTemplateForAddReply(reply);
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
             if(errorLength==0){
@@ -1395,7 +1570,112 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            
         }
     }
-
+   
+    validateReplyInDays(reply:Reply){
+        if(reply.replyInDays==null){
+            this.addReplyDivError(reply.divId);
+            $('#reply-days-'+reply.divId).css('color','red');
+        }
+    }
+    
+    validateReplyTime(reply:Reply){
+        if(reply.replyTime==undefined || reply.replyTime==null){
+            this.addReplyDivError(reply.divId);
+            $('#send-time-'+reply.divId).css('color','red');
+        }
+    }
+    
+    validateEmailTemplateForAddReply(reply:Reply){
+        if(reply.defaultTemplate && reply.selectedEmailTemplateId==0){
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#email-template-'+reply.divId).css('color','red');
+        }else if(!reply.defaultTemplate &&(reply.subject==null || reply.subject==undefined || reply.subject.trim().length==0)){
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#message-'+reply.divId).css('color','red');
+        }
+    }
+    
+    addReplyDivError(divId:string){
+        $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
+    }
+    removeStyleAttrByDivId(divId:string){
+        $('#'+divId).removeAttr("style");
+    }
+    
+    getOnClickData(){
+        for(var i=0;i<this.urls.length;i++){
+            let url = this.urls[i];
+            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
+            this.removeStyleAttrByDivId('click-days-'+url.divId);
+            this.removeStyleAttrByDivId('click-send-time-'+url.divId);
+            this.removeStyleAttrByDivId('click-message-'+url.divId);
+            this.removeStyleAttrByDivId('click-email-template-'+url.divId);
+            this.removeStyleAttrByDivId('click-subject-'+url.divId);
+            $('#'+url.divId).addClass('portlet light dashboard-stat2');
+            console.log(url);
+            if(url.scheduled){
+                this.validateOnClickReplyTime(url);
+                this.validateOnClickSubject(url);
+                this.validateOnClickBody(url);
+                this.validateOnClickReplyInDays(url);
+                this.validateEmailTemplateForAddOnClick(url);
+                /*if(replyTime==undefined ||replyTime==null || url.subject==null ||url.subject==undefined ||  url.subject.trim().length==0 ||url.body==null || url.body==undefined || url.body.trim().length==0 ||  url.replyInDays==null){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                } */
+            }else{
+                this.validateOnClickSubject(url);
+                this.validateOnClickBody(url);
+                this.validateEmailTemplateForAddOnClick(url);
+               /* if(url.subject==undefined || url.subject==null ||url.subject==undefined || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
+                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+                }*/
+            }
+            var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+            if(errorLength==0){
+                this.addOnClickScheduledDaysSum(url, i);
+            }
+        }
+    }
+    
+    validateOnClickReplyTime(url:Url){
+        if(url.replyTime==undefined || url.replyTime==null){
+            this.addReplyDivError(url.divId);
+            $('#click-send-time-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickSubject(url:Url){
+        if( url.subject==null||url.subject==undefined ||url.subject.trim().length==0){
+            this.addReplyDivError(url.divId);
+            $('#click-subject-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickBody(url:Url){
+        if(url.body==null || url.body==undefined || url.body.trim().length==0){
+            this.addReplyDivError(url.divId);
+            $('#click-message-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickReplyInDays(url:Url){
+        if(url.replyInDays==null){
+            this.addReplyDivError(url.divId);
+            $('#click-days-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateEmailTemplateForAddOnClick(url:Url){
+        if(url.defaultTemplate && url.selectedEmailTemplateId==0){
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#click-email-template-'+url.divId).css('color','red');
+        }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || url.body.trim().length==0)){
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#click-message-'+url.divId).css('color','red');
+        }
+    }
+    
+    
     addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
         if(reply.actionId==0){
             if(index==0){
@@ -1418,30 +1698,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     
-    getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
-            let url = this.urls[i];
-            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
-            $('#'+url.divId).addClass('portlet light dashboard-stat2');
-            let replyTime = url.replyTime;
-            if(url.scheduled){
-                if(replyTime==undefined ||replyTime==null || url.subject==null ||url.subject==undefined ||  url.subject.trim().length==0 ||url.body==null || url.body==undefined || url.body.trim().length==0 ||  url.replyInDays==null){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                } 
-                var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-                if(errorLength==0){
-                    this.addOnClickScheduledDaysSum(url, i);
-                }
-               
-            }else{
-                if(url.subject==undefined || url.subject==null ||url.subject==undefined || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                }
-            }
-           
-        }
-        
-    }
+ 
+    
+    
     
     addOnClickScheduledDaysSum(url:Url,i:number){
         if(i==0){
@@ -1832,6 +2091,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.reply.actionId =0;
             this.replies.push(this.reply);
             this.allItems.push(id);
+            this.loadEmailTemplatesForAddReply(this.reply);
           }
         addClickRows(){
             this.url = new Url();
@@ -1843,6 +2103,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);
+            this.loadEmailTemplatesForAddOnClick(this.url);
         }
      remove(divId:string,type:string){
        console.log(divId);
@@ -1891,23 +2152,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.partnerVideosClass = this.tabClass;
          this.partnerVideosStyle  = this.styleHiddenClass;
      }
+     
      selectReplyEmailBody(event:any,index:number,reply:Reply){
-         if(event){
-             $('#ck-editor-'+index).hide();
-             $('#reply-email-template-'+index).show();
-         }else{
-             $('#reply-email-template-'+index).hide();
-             $('#ck-editor-'+index).show();
-         }
+         reply.defaultTemplate = event;
      }
-     setPage1(pageIndex:number,module:string,reply:Reply){
-         if(module=="reply-email-templates"){
-             reply.emailTemplatePageIndex = pageIndex;
-             this.setPage(pageIndex, "emailTemplates");
-         }
+     selectClickEmailBody(event:any,index:number,url:Url){
+         url.defaultTemplate = event;
      }
      
      onSelect(countryId) {
          this.timezones = this.refService.getTimeZones().filter((item)=> item.countryId == countryId);
        }
+     
 }
