@@ -1613,22 +1613,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             console.log(url);
-            if(url.scheduled){
+            if(url.scheduled==true){
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
-                this.validateOnClickBody(url);
                 this.validateOnClickReplyInDays(url);
                 this.validateEmailTemplateForAddOnClick(url);
-                /*if(replyTime==undefined ||replyTime==null || url.subject==null ||url.subject==undefined ||  url.subject.trim().length==0 ||url.body==null || url.body==undefined || url.body.trim().length==0 ||  url.replyInDays==null){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                } */
             }else{
                 this.validateOnClickSubject(url);
-                this.validateOnClickBody(url);
                 this.validateEmailTemplateForAddOnClick(url);
-               /* if(url.subject==undefined || url.subject==null ||url.subject==undefined || url.subject.trim().length==0||url.body==undefined || url.body==null || url.body.trim().length==0){
-                    $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-                }*/
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
             if(errorLength==0){
@@ -1697,11 +1689,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     
-    
- 
-    
-    
-    
     addOnClickScheduledDaysSum(url:Url,i:number){
         if(i==0){
             this.onClickScheduledDaysSum = url.replyInDays;
@@ -1709,6 +1696,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.onClickScheduledDaysSum = url.replyInDays+this.onClickScheduledDaysSum;
             url.replyInDaysSum = this.onClickScheduledDaysSum;
         }
+    }
+    
+    setUrlScheduleType(event,url:Url){
+       url.scheduled = event.target.value;
     }
     sendTestEmail(emailId:string){
         let self = this;
