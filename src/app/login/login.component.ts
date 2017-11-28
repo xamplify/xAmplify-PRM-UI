@@ -181,6 +181,8 @@ export class LoginComponent implements OnInit {
     showRegisterForm() {
         console.log( "showRegisterForm clicked" );
         $( '.login-form' ).hide();
+        this.signUpForm.reset();
+        this.signUpForm.controls.country.setValue(this.countries[0]);
         $( '.register-form' ).show();
     }
 
