@@ -751,7 +751,6 @@ export class ManageContactsComponent implements OnInit {
         else {
             this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
         }
-        //this.contactsNotSelectedError = false;
     }
 
     cancelAllContactsCancel() {

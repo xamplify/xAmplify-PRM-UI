@@ -1,13 +1,4 @@
 <style>
-/* textarea {`
-	background: url(http://i.imgur.com/2cOaJ.png);
-	background-attachment: local;
-	background-repeat: no-repeat;
-	padding-left: 35px;
-	padding-top: 10px;
-    border-color:#ccc;
-}
- */
 .textCss {
 	background-color: rgba(0,0,0,0.12);
     bottom: -2px;
@@ -15,7 +6,6 @@
     left: 13;
     margin: 0;
     padding: 0;
-   /*  position: absolute; */
     width: 91%;
 }
 
@@ -88,15 +78,16 @@ background-image: url("assets/images/crm/connecting.png");
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li style="color:#888">Add {{checkingContactTypeName}}s</li>
+			<li style="color: #888">Add {{checkingContactTypeName}}s</li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a href="https://aravindu.com/vod/UPLOAD_USER_LIST _EMPTY.csv">
-			<button type="button" class="btn green" download
-				style="color: #ffffff;">Download Csv File<i
-				class="fa fa-cloud-download" aria-hidden="true"
-				style="margin-left: 5px"></i></button>
-				</a>
+				<button type="button" class="btn green" download
+					style="color: #ffffff;">
+					Download Csv File<i class="fa fa-cloud-download" aria-hidden="true"
+						style="margin-left: 5px"></i>
+				</button>
+			</a>
 		</div>
 	</div>
 	<!-- BEGIN PAGE CONTENT-->
@@ -108,11 +99,13 @@ background-image: url("assets/images/crm/connecting.png");
 						<div class="fileupload-buttonbar">
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6"
 								style="position: auto; border-right: 1px solid #999999; height: 150px;">
-								<h4 class="col-xs-12" style="right:6px">Add your {{checkingContactTypeName}}s with given options</h4>
+								<h4 class="col-xs-12" style="right: 6px">Add your
+									{{checkingContactTypeName}}s with given options</h4>
 								<section>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
-										<button class="btn-primary btn-block" id="addContacts" (click)="addContactModalOpen()"
-											 [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5" >
+										<button class="btn-primary btn-block" id="addContacts"
+											(click)="addContactModalOpen()"
+											[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 											<i class="fa fa-user-plus"
 												style="font-size: 30px; padding-top: 15px;"></i>
 											<h6 class="uppercase" style="font-size: 11px">Add
@@ -121,7 +114,8 @@ background-image: url("assets/images/crm/connecting.png");
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
 										<button class="btn-success btn-block" id="copyFromClipBoard"
-											(click)="copyFromClipboard()" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+											(click)="copyFromClipboard()"
+											[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 											<i class="fa fa-users"
 												style="font-size: 30px; padding-top: 15px;"></i>
 											<h6 class="uppercase" style="font-size: 11px">Copy Form
@@ -129,15 +123,18 @@ background-image: url("assets/images/crm/connecting.png");
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
-										<div class="btn-info fileinput-button btn-block" style="height: 80px;"
-											id="uploadCSV" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+										<div class="btn-info fileinput-button btn-block"
+											style="height: 80px;" id="uploadCSV"
+											[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 											<i class="fa fa-file-excel-o"
-												style="font-size: 30px; padding-top: 22px;padding-left: 65px;"></i>
-											<h6 class="uppercase" style="font-size: 11px;padding-left: 42px;">Upload a
+												style="font-size: 30px; padding-top: 22px; padding-left: 65px;"></i>
+											<h6 class="uppercase"
+												style="font-size: 11px; padding-left: 42px;">Upload a
 												CSV</h6>
-											<input type="file" ng2FileSelect 
-												*ngIf="uploader.queue.length==0" [uploader]="uploader" title=" "
-												(change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
+											<input type="file" ng2FileSelect
+												*ngIf="uploader.queue.length==0" [uploader]="uploader"
+												title=" " (change)="fileChange(input)" accept=".csv" #input
+												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
 										</div>
 									</div>
 								</section>
@@ -146,25 +143,28 @@ background-image: url("assets/images/crm/connecting.png");
 								<span class="fileupload-process"> </span>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-								<h4 class="col-xs-12" style="left:9px">Import from available cloud service</h4>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="top: 3px;">
-									<a *ngIf="sfImageNormal"
-										id="salesforceContact_buttonNormal"
-										style="background-color: white" (click)="salesforceContacts()" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+								<h4 class="col-xs-12" style="left: 9px">Import from
+									available cloud service</h4>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
+										style="background-color: white" (click)="salesforceContacts()"
+										[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 										<img
-											[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-											src="assets/images/crm/sf.png" class="salesForceImageClass"
-											title="Click here To access user list from your Salesforce account"
-											height="86" width="90">
-									</a>
-									<a *ngIf="sfImageBlur" id="salesforceContact_button"
-										style="background-color: white" (click)="salesforceContacts()" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-										<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-											src="assets/images/crm/sf.png" class="salesForceImageClass"
-											title="Click here To access user list from your Salesforce account"
-											height="86" width="90"
-											onmouseover="this.src='assets/images/crm/connecting.png';"
-											onmouseout="this.src='assets/images/crm/sf.png';">
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										title="Click here To access user list from your Salesforce account"
+										height="86" width="90">
+									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
+										style="background-color: white" (click)="salesforceContacts()"
+										[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										title="Click here To access user list from your Salesforce account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"
 										id="salesforceGear" *ngIf="sfImageNormal"
@@ -174,25 +174,26 @@ background-image: url("assets/images/crm/connecting.png");
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="top: 3px;">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
-										style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5" >
+										style="background-color: white" (click)="googleContacts()"
+										[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 										<img
-											[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-											src="assets/images/crm/google.png" class="googleImageClass"
-											title="Click here To access user list from your Google contacts"
-											height="86" width="90"
-											onmouseover="this.src='assets/images/crm/connecting.png';"
-											onmouseout="this.src='assets/images/crm/google.png';">
-									</a>
-									<a id="googleContact_buttonNormal"
-										*ngIf="googleImageNormal" style="background-color: white"
-										(click)="googleContacts()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+										src="assets/images/crm/google.png" class="googleImageClass"
+										title="Click here To access user list from your Google contacts"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/google.png';">
+									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
+										style="background-color: white" (click)="googleContacts()"
+										[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 										<img
-											[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-											src="assets/images/crm/google.png" class="googleImageClass"
-											title="Click here To access user list from your Google contacts"
-											height="86" width="90">
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+										src="assets/images/crm/google.png" class="googleImageClass"
+										title="Click here To access user list from your Google contacts"
+										height="86" width="90">
 									</a>
 									<div id="GoogleGear" style="position: relative"
 										*ngIf="googleImageNormal"
@@ -202,26 +203,28 @@ background-image: url("assets/images/crm/connecting.png");
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="top: 3px;">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button"
 										style="background-color: white"
-										(click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
+										(click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 										<img
-											[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-											src="assets/images/crm/Zoho.png" class="zohoImageClass"
-											title="Click here To access user list from your Zoho account"
-											height="86" width="90"
-											onmouseover="this.src='assets/images/crm/connecting.png';"
-											onmouseout="this.src='assets/images/crm/Zoho.png';">
-									</a>
-									<a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										title="Click here To access user list from your Zoho account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/Zoho.png';">
+									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
 										style="background-color: white"
-										(click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
+										(click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 										<img
-											[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-											src="assets/images/crm/Zoho.png" class="zohoImageClass"
-											title="Click here To access user list from your Zoho account"
-											height="86" width="90">
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										title="Click here To access user list from your Zoho account"
+										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative"
 										*ngIf="zohoImageNormal"
@@ -231,16 +234,16 @@ background-image: url("assets/images/crm/connecting.png");
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="top: 3px;">
-									<a id="microsoftContact_button"
-										style="background-color: white">
-											<img src="assets/images/crm/dynamics.png"
-												class="imageClass imageblur mdImageClass"
-												title="Click here To access user list from your Microsoft CRM account"
-												height="86" width="90"
-												onmouseover="this.src='assets/images/crm/connecting.png';"
-												onmouseout="this.src='assets/images/crm/dynamics.png';">
-											<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a id="microsoftContact_button" style="background-color: white">
+										<img src="assets/images/crm/dynamics.png"
+										class="imageClass imageblur mdImageClass"
+										title="Click here To access user list from your Microsoft CRM account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/dynamics.png';">
+										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
 									</a>
 								</div>
 							</div>
@@ -263,12 +266,12 @@ background-image: url("assets/images/crm/connecting.png");
 
 										<!-- Validation Messages -->
 										<div *ngIf="isValidContactName">
-											<p class="custom-error-message">{{checkingContactTypeName}} List Name Already
-												Exists</p>
+											<p class="custom-error-message">{{checkingContactTypeName}}
+												List Name Already Exists</p>
 										</div>
 										<div *ngIf="contactListNameError">
-											<p class="custom-error-message">Please enter the {{checkingContactTypeName}}
-												list name.</p>
+											<p class="custom-error-message">Please enter the
+												{{checkingContactTypeName}} list name.</p>
 										</div>
 										<div *ngIf="noOptionsClickError ">
 											<p class="custom-error-message">Please select one of the
@@ -413,46 +416,8 @@ background-image: url("assets/images/crm/connecting.png");
 								<tbody class="files">
 								</tbody>
 							</table>
-							<!-- </form> -->
-							<!-- BEGIN PAGE CONTENT-->
-							<!-- <table class="table table-striped table-hover table-bordered"
+							<table class='table table-hover table-bordered'
 								id="sample_editable_1">
-								<thead>
-									<tr>
-										<th>FIRSTNAME</th>
-										<th>LAST NAME</th>
-										<th>COMPANY</th>
-										<th>TITLE</th>
-										<th>EMAIL</th>
-										<th>ADDRESS</th>
-										<th>MOBILENUMBER</th>
-										<th>NOTES</th>
-										<th>CANCEL</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr *ngFor="let newContact of newUsers; let i = index"
-										id="row_{{newContact.id}}">
-											<td>
-											   {{newContact.firstName}}
-											</td>
-											<td>
-											   {{newContact.lastName}}
-											</td>
-											<td>
-											   {{newContact.contactCompany}}
-											</td>
-											<td>{{newContact.jobTitle}}</td>
-											<td>{{newContact.emailId}}</td>
-											<td>{{newContact.address}}</td>
-											<td>{{newContact.mobileNumber}}
-											<td>{{newContact.description}}</td>
-										<td><a class="delete" (click)="cancelRow(i)"> Cancel
-										</a></td>
-									</tr>
-								</tbody>
-							</table> -->
-							<table class='table table-hover table-bordered' id="sample_editable_1">
 								<thead>
 									<tr>
 										<th>EMAILID</th>
@@ -463,58 +428,62 @@ background-image: url("assets/images/crm/connecting.png");
 									</tr>
 								</thead>
 								<tbody>
-								<ng-container *ngFor="let newContact of newUsers; let i = index">
+									<ng-container
+										*ngFor="let newContact of newUsers; let i = index">
 									<tr class='row_{{i}}'>
 										<td>{{newContact.emailId}}</td>
 										<td>{{newContact.firstName}}</td>
 										<td>{{newContact.lastName}}</td>
 										<td>
-										<button id='more_less_button_{{i}}' (click)="newContact.isShowDetails = ! newContact.isShowDetails">
-											<span *ngIf="!newContact.isShowDetails">More</span>
-											<span *ngIf="newContact.isShowDetails">Less</span>
-										</button>
+											<button id='more_less_button_{{i}}'
+												(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+												<span *ngIf="!newContact.isShowDetails">More</span> <span
+													*ngIf="newContact.isShowDetails">Less</span>
+											</button>
 										<td><a class="delete" (click)="cancelRow(i)"> Cancel
 										</a></td>
 									</tr>
-									<tr [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'>{{newContact.contactCompany}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'>{{newContact.jobTitle}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'>{{newContact.address}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'>{{newContact.city}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'>{{newContact.country}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'>{{newContact.mobileNumber}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Notes:</td>
-															<td class='pt10 pb10'>{{newContact.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container>
-							</tbody>
-						</table>
+									<tr
+										[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}">
+										<td colspan="6">
+											<table cellpadding="5" cellspacing="0"
+												style="padding-left: 50px; margin-left: 55px;">
+												<tbody>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Company:</td>
+														<td class='pt10 pb10'>{{newContact.contactCompany}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Job Title:</td>
+														<td class='pt10 pb10'>{{newContact.jobTitle}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Address:</td>
+														<td class='pt10 pb10'>{{newContact.address}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>City:</td>
+														<td class='pt10 pb10'>{{newContact.city}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Country:</td>
+														<td class='pt10 pb10'>{{newContact.country}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Mobile Number:</td>
+														<td class='pt10 pb10'>{{newContact.mobileNumber}}</td>
+													</tr>
+													<tr style="border-bottom: 1px solid #dcdcdc">
+														<td class='pt10 pb10'>Notes:</td>
+														<td class='pt10 pb10'>{{newContact.description}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+									</ng-container>
+								</tbody>
+							</table>
 						</div>
 						<div class="row" id="Gfile_preview">
 							<div class="col-md-12">
@@ -538,14 +507,12 @@ background-image: url("assets/images/crm/connecting.png");
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
-													<!-- <th>Edit</th>
-												<th>Delete</th> -->
 												</tr>
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index">
-													<td align="center"><input type="checkbox" name="selectedUserIds"
-														id="row_{{user.id}}"
+													<td align="center"><input type="checkbox"
+														name="selectedUserIds" id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
 														(change)="selectGoogleContact($event.target.checked)"></td>
@@ -556,24 +523,25 @@ background-image: url("assets/images/crm/connecting.png");
 											</tbody>
 										</table>
 
-										<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-             								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                							   <a (click)="setPage(1)">First</a>
-             								</li>
-            								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                 							   <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-             								</li>
-             								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                 							   <a (click)="setPage(page)">{{page}}</a>
-             								</li>
-             								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                 							   <a (click)="setPage(pager.currentPage + 1)">Next</a>
-             								</li>
-								            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-								               <a (click)="setPage(pager.totalPages)">Last</a>
-								            </li>
-         								</ul>
-										
+										<ul *ngIf="pager.pages && pager.pages.length"
+											class="pagination">
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(1)">First</a></li>
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of pager.pages"
+												[ngClass]="{active:pager.currentPage === page}"><a
+												(click)="setPage(page)">{{page}}</a></li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.currentPage + 1)">Next</a>
+											</li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.totalPages)">Last</a>
+											</li>
+										</ul>
+
 									</div>
 								</div>
 								<!-- END EXAMPLE TABLE PORTLET-->
@@ -602,14 +570,12 @@ background-image: url("assets/images/crm/connecting.png");
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
-													<!-- <th>Edit</th>
-												<th>Delete</th> -->
 												</tr>
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index">
-													<td align="center"><input type="checkbox" name="selectedUserIds"
-														id="row_{{user.id}}"
+													<td align="center"><input type="checkbox"
+														name="selectedUserIds" id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
 														(change)="selectZohoContact($event.target.checked)"></td>
@@ -619,23 +585,24 @@ background-image: url("assets/images/crm/connecting.png");
 												</tr>
 											</tbody>
 										</table>
-										<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-             								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                							   <a (click)="setPage(1)">First</a>
-             								</li>
-            								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                 							   <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-             								</li>
-             								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                 							   <a (click)="setPage(page)">{{page}}</a>
-             								</li>
-             								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                 							   <a (click)="setPage(pager.currentPage + 1)">Next</a>
-             								</li>
-								            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-								               <a (click)="setPage(pager.totalPages)">Last</a>
-								            </li>
-         								</ul>
+										<ul *ngIf="pager.pages && pager.pages.length"
+											class="pagination">
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(1)">First</a></li>
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of pager.pages"
+												[ngClass]="{active:pager.currentPage === page}"><a
+												(click)="setPage(page)">{{page}}</a></li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.currentPage + 1)">Next</a>
+											</li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.totalPages)">Last</a>
+											</li>
+										</ul>
 									</div>
 								</div>
 								<!-- END EXAMPLE TABLE PORTLET-->
@@ -664,15 +631,12 @@ background-image: url("assets/images/crm/connecting.png");
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
-													<!-- <th>Edit</th>
-												<th>Delete</th> -->
 												</tr>
 											</thead>
 											<tbody>
-												<tr
-													*ngFor="let user of pagedItems;let i = index">
-													<td align="center"><input type="checkbox" name="selectedUserIds"
-														id="row_{{user.id}}"
+												<tr *ngFor="let user of pagedItems;let i = index">
+													<td align="center"><input type="checkbox"
+														name="selectedUserIds" id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
 														(change)="selectSalesforceContact($event.target.checked)"></td>
@@ -682,23 +646,24 @@ background-image: url("assets/images/crm/connecting.png");
 												</tr>
 											</tbody>
 										</table>
-									<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-             								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                							   <a (click)="setPage(1)">First</a>
-             								</li>
-            								<li [ngClass]="{disabled:pager.currentPage === 1}">
-                 							   <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-             								</li>
-             								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                 							   <a (click)="setPage(page)">{{page}}</a>
-             								</li>
-             								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                 							   <a (click)="setPage(pager.currentPage + 1)">Next</a>
-             								</li>
-								            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-								               <a (click)="setPage(pager.totalPages)">Last</a>
-								            </li>
-         								</ul>
+										<ul *ngIf="pager.pages && pager.pages.length"
+											class="pagination">
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(1)">First</a></li>
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of pager.pages"
+												[ngClass]="{active:pager.currentPage === page}"><a
+												(click)="setPage(page)">{{page}}</a></li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.currentPage + 1)">Next</a>
+											</li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.totalPages)">Last</a>
+											</li>
+										</ul>
 									</div>
 								</div>
 								<!-- END EXAMPLE TABLE PORTLET-->
@@ -722,73 +687,63 @@ background-image: url("assets/images/crm/connecting.png");
 												<tr>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
-													<!-- <th>COMPANY</th>
-													<th>JOB TITLE</th> -->
 													<th>EMAILID</th>
-													<!-- <th>ADDRESS</th>
-													<th>CITY</th>
-													<th>COUNTRY</th>
-													<th>MOBILENUMBER</th> -->
 													<th>MORE</th>
 												</tr>
 											</thead>
 											<tbody>
-											<ng-container *ngFor="let user of contacts">
+												<ng-container *ngFor="let user of contacts">
 												<tr>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<!-- <td>{{user.contactCompany}}</td>
-													<td>{{user.jobTitle}}</td> -->
 													<td>{{user.emailId}}</td>
-													<!-- <td>{{user.address}}</td>
-													<td>{{user.city}}</td>
-													<td>{{user.country}}</td>
-													<td>{{user.mobileNumber}}</td> 
-													<td>{{user.description}}</td>-->
 													<td>
-														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-															<span *ngIf="!user.isShowDetails">More</span>
-															<span *ngIf="user.isShowDetails">Less</span>
+														<button id='more_less_button_{{i}}'
+															(click)="user.isShowDetails = ! user.isShowDetails">
+															<span *ngIf="!user.isShowDetails">More</span> <span
+																*ngIf="user.isShowDetails">Less</span>
 														</button>
-														</td>
+													</td>
 												</tr>
-												<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}" >
-												   <td colspan="6">
-													<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'>{{user.contactCompany}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'>{{user.jobTitle}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'>{{user.address}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'>{{user.city}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'>{{user.country}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'>{{user.mobileNumber}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Notes:</td>
-															<td class='pt10 pb10'>{{user.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-										</ng-container>
+												<tr
+													[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+													<td colspan="6">
+														<table cellpadding="5" cellspacing="0"
+															style="padding-left: 50px; margin-left: 55px;">
+															<tbody>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Company:</td>
+																	<td class='pt10 pb10'>{{user.contactCompany}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Job Title:</td>
+																	<td class='pt10 pb10'>{{user.jobTitle}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Address:</td>
+																	<td class='pt10 pb10'>{{user.address}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>City:</td>
+																	<td class='pt10 pb10'>{{user.city}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Country:</td>
+																	<td class='pt10 pb10'>{{user.country}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Mobile Number:</td>
+																	<td class='pt10 pb10'>{{user.mobileNumber}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Notes:</td>
+																	<td class='pt10 pb10'>{{user.description}}</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												</ng-container>
 											</tbody>
 										</table>
 
@@ -806,13 +761,11 @@ background-image: url("assets/images/crm/connecting.png");
 							</div>
 							<div class="panel-body">
 								<ul>
-								    <li>The maximum number of users allowed for each uploads
-                                        depends on your account.</li>
+									<li>The maximum number of users allowed for each uploads
+										depends on your account.</li>
 									<li>Only files with (<strong>.csv</strong>) extension are
 										allowed to upload.
 									</li>
-									<!-- <li>Upload CSV file format should be EMAILID,FIRST
-										NAME,LAST NAME.</li> -->
 								</ul>
 							</div>
 						</div>
@@ -828,97 +781,143 @@ background-image: url("assets/images/crm/connecting.png");
 
 <!-- MODALS -->
 
-<div id="addContactModal" class="modal" id="addContactModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" data-keyboard="false"
-	data-backdrop="static">
-  <div class="modal-dialog">
+<div id="addContactModal" class="modal" id="addContactModal"
+	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="addContactModalClose()" >&times;</button>
-        <h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
-      </div>
-      <div class="modal-body">
-      <form class="form-horizontal">
-		   <div class="form-inline">
-		   <label class="control-label col-sm-2" for="name" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="firstName" [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="Enter First Name">
-			    <div class="textCss"></div>
-		  </div> 
-		   <div class="form-group col-sm-5">
-			      <input type="name" style="border:none" class="form-control" id="lastName" [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Enter Last Name">
-			    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  <div class="form-inline">
-		   <label class="control-label col-sm-2" for="company" style="color:#00bcd4;right:11px !important"><i class="fa fa-building-o" style="right:11px !important" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-5">
-		      <input type="company" style="border:none" class="form-control" id="company" [(ngModel)]="addContactuser.contactCompany" [ngModelOptions]="{standalone: true}" placeholder="Enter Company">
-		    <div class="textCss"></div>
-		  </div>
-		   <div class="form-group col-sm-5">
-		      <input type="title" style="border:none"  class="form-control" id="title" [(ngModel)]="addContactuser.jobTitle" [ngModelOptions]="{standalone: true}" placeholder="Enter JobTitle">
-		    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"><span style="color:red;"> *</span></i></label>
-		    <div class="col-sm-10">
-		      <input type="email" style="border:none"  class="form-control" id="email" (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)" [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Enter email *" autocomplete="off">
-		    <div class="textCss"></div>
-		    <div style="color:red" *ngIf="!validEmailPatternSuccess">Invalid EmailId</div>
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <div class="form-inline">
-		   <label class="control-label col-sm-2" for="address" style="color:#53affe;"><i class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-4">
-			      <input type="address" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Enter Address lane1">
-			    <div class="textCss"></div>
-		  </div> 
-		   <div class="form-group col-sm-3">
-			      <input type="city" style="border:none" class="form-control" id="city" [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="city/town">
-			    <div class="textCss"></div>
-		  </div>
-		  <div class="form-group col-sm-3">
-		  <select  class="form-control" style="border:none; width:120%" class="form-control" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="country">
-				<option *ngFor="let country of countries" [value]="country">{{country}}</option>
-				</select>
-			      <!-- <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country"> -->
-			    <div class="textCss"></div>
-		  </div>
-		  </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="phone" style="color:green"><i class="fa fa-phone" aria-hidden="true"></i></label>
-		    <div class="col-sm-10">
-		    <!-- <ngx-intl-tel-input [(value)]="addContactuser.mobileNumber"></ngx-intl-tel-input> -->
-		     <!-- <input type="tel" id="phone"> -->
-		      <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" style="border:none" class="form-control"
-		       id="phone" [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"  placeholder="Enter MobileNumber" maxlength="10">
-		    <div class="textCss"></div>
-		    
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="note" style="color:#c3c308"><i class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
-		    <div class="col-sm-10"> 
-		      <textarea name="note" style="border:none" class="form-control" id="note" [(ngModel)]="addContactuser.description" [ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					(click)="addContactModalClose()">&times;</button>
+				<h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-inline">
+						<label class="control-label col-sm-2" for="name"
+							style="color: blue"><i class="glyphicon glyphicon-user"
+							style="right: 11px" aria-hidden="true"></i></label>
+						<div class="form-group col-sm-5">
+							<input type="name" style="border: none" class="form-control"
+								id="firstName" [(ngModel)]="addContactuser.firstName"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter First Name">
+							<div class="textCss"></div>
+						</div>
+						<div class="form-group col-sm-5">
+							<input type="name" style="border: none" class="form-control"
+								id="lastName" [(ngModel)]="addContactuser.lastName"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter Last Name">
+							<div class="textCss"></div>
+						</div>
+					</div>
+					<div class="form-inline">
+						<label class="control-label col-sm-2" for="company"
+							style="color: #00bcd4; right: 11px !important"><i
+							class="fa fa-building-o" style="right: 11px !important"
+							aria-hidden="true"></i></label>
+						<div class="form-group col-sm-5">
+							<input type="company" style="border: none" class="form-control"
+								id="company" [(ngModel)]="addContactuser.contactCompany"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter Company">
+							<div class="textCss"></div>
+						</div>
+						<div class="form-group col-sm-5">
+							<input type="title" style="border: none" class="form-control"
+								id="title" [(ngModel)]="addContactuser.jobTitle"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter JobTitle">
+							<div class="textCss"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="email"
+							style="color: #8512b7; left: 12px"><i
+							class="fa fa-envelope-o" aria-hidden="true"><span
+								style="color: red;"> *</span></i></label>
+						<div class="col-sm-10">
+							<input type="email" style="border: none" class="form-control"
+								id="email" (blur)="checkingEmailPattern(addContactuser.emailId)"
+								(input)="validateEmail(addContactuser.emailId)"
+								[(ngModel)]="addContactuser.emailId"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter email *" autocomplete="off">
+							<div class="textCss"></div>
+							<div style="color: red" *ngIf="!validEmailPatternSuccess">Invalid
+								EmailId</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-inline">
+							<label class="control-label col-sm-2" for="address"
+								style="color: #53affe;"><i
+								class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+							<div class="form-group col-sm-4">
+								<input type="address" style="border: none" class="form-control"
+									id="address" [(ngModel)]="addContactuser.address"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Enter Address lane1">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-3">
+								<input type="city" style="border: none" class="form-control"
+									id="city" [(ngModel)]="addContactuser.city"
+									[ngModelOptions]="{standalone: true}" placeholder="city/town">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-3">
+								<select class="form-control" style="border: none; width: 120%"
+									class="form-control" [(ngModel)]="addContactuser.country"
+									[ngModelOptions]="{standalone: true}" placeholder="country">
+									<option *ngFor="let country of countries" [value]="country">{{country}}</option>
+								</select>
+								<div class="textCss"></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="phone"
+							style="color: green"><i class="fa fa-phone"
+							aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+							<input type="text"
+								onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+								style="border: none" class="form-control" id="phone"
+								[(ngModel)]="addContactuser.mobileNumber"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Enter MobileNumber" maxlength="10"
+								autocomplete="off">
+							<div class="textCss"></div>
+
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="note"
+							style="color: #c3c308"><i
+							class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+							<textarea name="note" style="border: none" class="form-control"
+								id="note" [(ngModel)]="addContactuser.description"
+								[ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
 		      </textarea>
-		      <div class="textCss"></div>
-		    </div>
-		  </div>
-      </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn green" [disabled]="!checkingForEmail" (click)="addRow()">Add</button>
-        <button type="button" class="btn green" data-dismiss="modal" (click)="addContactModalClose()">Close</button>
-      </div>
-    </div>
+							<div class="textCss"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn green"
+					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
+				<button type="button" class="btn green" data-dismiss="modal"
+					(click)="addContactModalClose()">Close</button>
+			</div>
+		</div>
 
-  </div>
+	</div>
 </div>
 
 <div id="zohoId">
@@ -998,9 +997,8 @@ background-image: url("assets/images/crm/connecting.png");
 				<div>
 					<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
 						style="height: 65px" width="90px" />
-					<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;">
-						Retrieve Zoho Contacts
-					</h4>
+					<h4 class="modal-title" id="myModalLabel" align="center"
+						style="margin-top: -20px;">Retrieve Zoho Contacts</h4>
 				</div>
 			</div>
 			<div class="modal-body">

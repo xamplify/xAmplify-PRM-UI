@@ -117,11 +117,11 @@ rotate
 	<!-- page-breadcrumb -->
 	<div class="page-bar" *ngIf="!showEdit">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="['/']">Home</a> <i
-				class="fa fa-angle-right"></i></li>
-			<li><a (click)="navigateToManageContacts()">Manage {{checkingContactTypeName}}s</a>
-				<i class="fa fa-angle-right" *ngIf="! showListOfContactList"></i></li>
+			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
+				<i class="fa fa-angle-right"></i></li>
+			<li><a (click)="navigateToManageContacts()">Manage
+					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
+				*ngIf="! showListOfContactList"></i></li>
 			<li *ngIf="! showListOfContactList"><span class="capitalize">{{contactsByType.selectedCategory}}
 					{{checkingContactTypeName}}s</span></li>
 		</ul>
@@ -129,7 +129,7 @@ rotate
 
 	<div id="manageContacts" *ngIf="showListOfContactList">
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-		
+
 		<div *ngIf="showAll">
 			<!-- END PAGE HEADER-->
 			<!-- BEGIN PAGE CONTENT-->
@@ -144,7 +144,8 @@ rotate
 
 									<div class="page-bar m0">
 										<ul class="page-breadcrumb">
-											<li style="font-size: 16px;color:#888888">List of {{checkingContactTypeName}}s</li>
+											<li style="font-size: 16px; color: #888888">List of
+												{{checkingContactTypeName}}s</li>
 
 										</ul>
 										<div class="page-toolbar">
@@ -165,10 +166,10 @@ rotate
 														<div class="input-icon right">
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
-																(click)="search('contactList')"></i> 
-																<input type="text"
+																(click)="search('contactList')"></i> <input type="text"
 																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}" (input)="searchKeyValue('contactList')"
+																[ngModelOptions]="{standalone: true}"
+																(input)="searchKeyValue('contactList')"
 																class="form-control input-circle"
 																placeholder="search...">
 														</div>
@@ -216,7 +217,8 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-													<div class="desc">Inactive {{checkingContactTypeName}}s</div>
+													<div class="desc">Inactive
+														{{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -229,11 +231,13 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.invalidContactsCount}}</div>
-													<div class="desc">Invalid {{checkingContactTypeName}}s</div>
+													<div class="desc">Invalid
+														{{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
-										<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6" style="left:-8px">
+										<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6"
+											style="left: -8px">
 											<button class="btn-block dashboard-stat green-soft"
 												(click)="listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -242,7 +246,8 @@ rotate
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-													<div class="desc">Unsubscribed {{checkingContactTypeName}}s</div>
+													<div class="desc">Unsubscribed
+														{{checkingContactTypeName}}s</div>
 												</div>
 											</button>
 										</div>
@@ -260,7 +265,8 @@ rotate
 												<i class="fa"
 													[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
 					 								 'fa-exclamation': response.responseType == 'ERROR'}"
-													aria-hidden="true" style="padding-right: 7px;"></i> <span [innerHTML]="response.responseMessage"></span>
+													aria-hidden="true" style="padding-right: 7px;"></i> <span
+													[innerHTML]="response.responseMessage"></span>
 											</h4>
 										</div>
 									</div>
@@ -268,93 +274,102 @@ rotate
 									<div class="clearfix"></div>
 								</div>
 								<!-- END FILTER -->
-			<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-				<div class="row mix-grid" style="margin-top: 10px">
-					<div *ngFor="let contactList of pagination.pagedItems">
-						<div class="col-md-3 col-sm-6 mix category_1 mix_all"
-							style="display: block; opacity: 1;"
-							id="contactListDiv_{{contactList.id}}">
-							<div class="mix-inner">
-								<img class="img-responsive"
-									*ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}"
-									alt=""> <img class="img-responsive"
-									*ngIf="contactList.socialNetwork=='GOOGLE'"
-									src="{{googleImage}}" alt=""> <img class="img-responsive"
-									*ngIf="contactList.socialNetwork=='SALESFORCE'"
-									src="{{salesforceImage}}" alt=""> <img
-									class="img-responsive"
-									*ngIf="contactList.socialNetwork=='MANUAL'"
-									src="{{normalImage}}" alt="">
-								<div class="mix-details-fill">
-									<h4 style="top: 5%; position: relative;" title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
-									<div style="top: 4%; position: relative;">
-										<a class="mix-preview5"
-											(click)="downloadContactList(contactList.id)"
-											title="Dowload List" data-rel="fancybox-button"> <i
-											class="fa fa-cloud-download"></i>
-										</a> 
-										<a class="mix-preview4" *ngIf = "hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
-											(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)" title="Edit List"
-											data-rel="fancybox-button"> 
-											<i class="fa fa-pencil-square-o"></i>
-										</a>
-										<a class="mix-preview4" *ngIf = "!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
-											(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)" title="ContactList Info"
-											data-rel="fancybox-button"> <i
-											class="glyphicon glyphicon-info-sign"></i>
-										</a>
-										 <a class="mix-preview6"   *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)" (click)="showAlert(contactList.id)"
-											title="Delete List" data-rel="fancybox-button"
-											lang="{{contactList.id}}"> <i class="fa fa-trash"></i>
-										</a>
+								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+								<div class="row mix-grid" style="margin-top: 10px">
+									<div *ngFor="let contactList of pagination.pagedItems">
+										<div class="col-md-3 col-sm-6 mix category_1 mix_all"
+											style="display: block; opacity: 1;"
+											id="contactListDiv_{{contactList.id}}">
+											<div class="mix-inner">
+												<img class="img-responsive"
+													*ngIf="contactList.socialNetwork=='ZOHO'"
+													src="{{zohoImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='GOOGLE'"
+													src="{{googleImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='SALESFORCE'"
+													src="{{salesforceImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='MANUAL'"
+													src="{{normalImage}}" alt="">
+												<div class="mix-details-fill">
+													<h4 style="top: 5%; position: relative;"
+														title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
+													<div style="top: 4%; position: relative;">
+														<a class="mix-preview5"
+															(click)="downloadContactList(contactList.id)"
+															title="Dowload List" data-rel="fancybox-button"> <i
+															class="fa fa-cloud-download"></i>
+														</a> <a class="mix-preview4"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
+															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
+															title="Edit List" data-rel="fancybox-button"> <i
+															class="fa fa-pencil-square-o"></i>
+														</a> <a class="mix-preview4"
+															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
+															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
+															title="ContactList Info" data-rel="fancybox-button">
+															<i class="glyphicon glyphicon-info-sign"></i>
+														</a> <a class="mix-preview6"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+															(click)="showAlert(contactList.id)" title="Delete List"
+															data-rel="fancybox-button" lang="{{contactList.id}}">
+															<i class="fa fa-trash"></i>
+														</a>
+													</div>
+													<div style="top: 38%; position: relative;"
+														*ngIf="contactList.synchronisedList == true">
+														<a class="mix-preview2" title="sychronizeContactList"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
+															data-rel="fancybox-button" style="left: 38%; top: -16px;">
+															<i class="fa fa-refresh" aria-hidden="true"></i>
+														</a>
+													</div>
+													<span align="right"
+														style="bottom: 5px; float: right; position: absolute; right: 10px;">Created
+														Date <br>{{contactList.createdDate}}
+													</span> <span align="left"
+														style="bottom: 0; left: 6px; position: absolute;">Created
+														By <br>
+														<h5 class="m0" title={{contactList.uploadedBy}}>{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
+														<br>
+													<h5 class="m0" style="position: absolute; top: 34px">#{{contactList.noOfContacts}}</h5>
+													</span>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div style="top: 38%; position: relative;"
-										*ngIf="contactList.synchronisedList == true">
-										<a class="mix-preview2" title="sychronizeContactList"  *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
-											(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
-											data-rel="fancybox-button" style="left: 38%;top:-16px;"> <i
-											class="fa fa-refresh" aria-hidden="true"></i>
-										</a>
-									</div>
-									<span align="right"
-										style="bottom: 5px; float: right; position: absolute; right: 10px;">Created
-										Date <br>{{contactList.createdDate}}
-									</span> <span align="left"
-										style="bottom: 0; left: 6px; position: absolute;">Created By
-										<br> <h5 class="m0" title={{contactList.uploadedBy}}>{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
-										<br><h5 class="m0" style="position: absolute;top:34px">#{{contactList.noOfContacts}}</h5>
-									</span>
 								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-		<div id="pagination">
-			<!--pager here  -->
-			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
-				class="pagination m0">
-				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
-					(click)="setPage(1)"
-					[class.disabled]="pagination.pager.currentPage === 1">First</a></li>
-				<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
-					(click)="setPage(pagination.pager.currentPage - 1)"
-					[class.disabled]="pagination.pager.currentPage === 1">Previous</a></li>
-				<li *ngFor="let page of pagination.pager.pages"
-					[ngClass]="{active:pagination.pager.currentPage === page}"><a
-					(click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
-				<li
-					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.currentPage + 1)"
-					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-				</li>
-				<li
-					[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-					<a (click)="setPage(pagination.pager.totalPages)"
-					[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-				</li>
-			</ul>
-			<!-- pager end here -->
-		</div>
+								<div id="pagination">
+									<!--pager here  -->
+									<ul
+										*ngIf="pagination.pager.pages && pagination.pager.pages.length"
+										class="pagination m0">
+										<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
+											(click)="setPage(1)"
+											[class.disabled]="pagination.pager.currentPage === 1">First</a></li>
+										<li [ngClass]="{disabled:pagination.pager.currentPage === 1}"><a
+											(click)="setPage(pagination.pager.currentPage - 1)"
+											[class.disabled]="pagination.pager.currentPage === 1">Previous</a></li>
+										<li *ngFor="let page of pagination.pager.pages"
+											[ngClass]="{active:pagination.pager.currentPage === page}"><a
+											(click)="setPage(page)"
+											[class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
+										<li
+											[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+											<a (click)="setPage(pagination.pager.currentPage + 1)"
+											[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+										</li>
+										<li
+											[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+											<a (click)="setPage(pagination.pager.totalPages)"
+											[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+										</li>
+									</ul>
+									<!-- pager end here -->
+								</div>
 							</div>
 						</div>
 					</div>
@@ -365,33 +380,36 @@ rotate
 			(notifyParent)="update($event)"
 			[selectedContactListId]="selectedContactListId"
 			[uploadedUserId]="uploadedUserId"
-			[contactListId]="selectedContactListId" [contactListName]="selectedContactListName"></app-edit-contacts>
+			[contactListId]="selectedContactListId"
+			[contactListName]="selectedContactListName"></app-edit-contacts>
 	</div>
 
 	<div *ngIf="! showListOfContactList">
 		<div *ngIf="response.responseType != null">
-					<div class="alert alert-dismissible" role="alert"
-						[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+			<div class="alert alert-dismissible" role="alert"
+				[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
   									'alert-danger': response.responseType == 'ERROR'}">
-						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close" (click)="response.responseType = null">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h5 class="flex">
-							<i class="fa"
-								[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close" (click)="response.responseType = null">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h5 class="flex">
+					<i class="fa"
+						[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
  								 'fa-exclamation': response.responseType == 'ERROR'}"
-								aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
-						</h5>
-					</div>
-				</div>
+						aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
+				</h5>
+			</div>
+		</div>
 		<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage"
 			class="alert alert-success alert-dismissable">
-			<strong>Success!</strong> {{checkingContactTypeName}} List has been Deleted successfully.
+			<strong>Success!</strong> {{checkingContactTypeName}} List has been
+			Deleted successfully.
 		</div>
-		<div class="alert alert-danger" style="padding: 12px 10px 12px;" *ngIf="invalidDeleteErrorMessage">
-  				<span [innerHTML]="response.responseMessage"></span>
-			</div>
+		<div class="alert alert-danger" style="padding: 12px 10px 12px;"
+			*ngIf="invalidDeleteErrorMessage">
+			<span [innerHTML]="response.responseMessage"></span>
+		</div>
 		<div *ngIf="noContactsFound==true" class="col-md-6"
 			class="col-md-9 alert alert alert-danger alert-dismissable">
 			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -405,18 +423,24 @@ rotate
 						<!-- BEGIN PAGE HEADER-->
 						<div class="page-bar" style="margin-bottom: 6px">
 							<h4 class="btn-group pull-left">
-								<span class="capitalize" style="color:#888888">{{contactsByType.selectedCategory}}
+								<span class="capitalize" style="color: #888888">{{contactsByType.selectedCategory}}
 									contacts</span>
 							</h4>
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
-										<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: left;cursor:pointer; margin-right: 10px" data-toggle="modal" data-target="#filterModal">
-											<i class="fa fa-filter" aria-hidden="true" style="color:#0095da;font-size:30px;margin-top:10px;"></i>
+										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+											style="float: left; cursor: pointer; margin-right: 10px"
+											data-toggle="modal" data-target="#filterModal">
+											<i class="fa fa-filter" aria-hidden="true"
+												style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 										</div>
-										<div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: left;cursor:pointer; margin-right: 10px">
-											<i class="fa fa-filter" aria-hidden="true" style="color:red;font-size:30px;margin-top:10px;"></i>
-											<i class="fa fa-times" aria-hidden="true" style="color:red;margin-left: -12px;"></i>
+										<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+											style="float: left; cursor: pointer; margin-right: 10px">
+											<i class="fa fa-filter" aria-hidden="true"
+												style="color: red; font-size: 30px; margin-top: 10px;"></i>
+											<i class="fa fa-times" aria-hidden="true"
+												style="color: red; margin-left: -12px;"></i>
 										</div>
 										<div style="float: left; margin-right: 10px">
 											<select class="form-control" [(ngModel)]="sortOption"
@@ -432,9 +456,10 @@ rotate
 											<div class="input-icon right">
 												<i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contacts')"></i> 
-													<input type="text" [(ngModel)]="searchKey"
-													[ngModelOptions]="{standalone: true}" (input)="searchKeyValue('contacts')"
+													(click)="search('contacts')"></i> <input type="text"
+													[(ngModel)]="searchKey"
+													[ngModelOptions]="{standalone: true}"
+													(input)="searchKeyValue('contacts')"
 													class="form-control input-circle" placeholder="search...">
 											</div>
 										</div>
@@ -460,8 +485,8 @@ rotate
 													placeholder="List Name" #contactListName="ngModel">
 												<!-- Validation Messages -->
 												<div *ngIf="isValidContactName">
-													<p class="custom-error-message">{{checkingContactTypeName}} List Name
-														Already Exists</p>
+													<p class="custom-error-message">{{checkingContactTypeName}}
+														List Name Already Exists</p>
 												</div>
 												<div *ngIf="contactsNotSelectedError">
 													<p class="custom-error-message">Please Select the
@@ -504,116 +529,25 @@ rotate
 											<i class="fa fa-edit"></i><span class="capitalize">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span>
 										</div>
-										<div class="btn-group pull-right" style="margin-top: 4px;color: #000000;"
-														*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
-														<button class="btn dropdown-toggle" data-toggle="dropdown">
-															Tools <i class="fa fa-angle-down"></i>
-														</button>
-														<ul class="dropdown-menu pull-right">
-															<li><a id="delete_button"
-																(click)="invalidContactsShowAlert()">Delete</a></li>
-														</ul>
-													</div>
+										<div class="btn-group pull-right"
+											style="margin-top: 4px; color: #000000;"
+											*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
+											<button class="btn dropdown-toggle" data-toggle="dropdown">
+												Tools <i class="fa fa-angle-down"></i>
+											</button>
+											<ul class="dropdown-menu pull-right">
+												<li><a id="delete_button"
+													(click)="invalidContactsShowAlert()">Delete</a></li>
+											</ul>
+										</div>
 									</div>
 									<div class="portlet-body">
 										<div class="table-responsive">
-										<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-											
-					<table class='table tgrid'
-						id="sample_editable_1" *ngIf="!httpRequestLoader.isLoading">
-								<thead>
-									<tr>
-										<td align="center"
-															*ngIf="contactsByType.selectedCategory == 'all'"><input
-															type="checkbox" name="all"
-															[(ngModel)]="isHeaderCheckBoxChecked"
-															(change)="checkAll($event)" class=""
-															id="checkAllExistingContacts" /></td>
-														<td align="center"
-															*ngIf="contactsByType.selectedCategory == 'invalid'">
-															<input type="checkbox" name="all"
-															[(ngModel)]="isInvalidHeaderCheckBoxChecked"
-															(change)="checkAllInvalidContacts($event)" class=""
-															id="checkAllExistingInvalidContacts" />
-														</td>
-										<th style="width:25%">NAME</th>
-										<th>CONTACT</th>
-										<th>Job Title</th>
-										<th>ADDRESS</th>
-										<th>MORE</th>
-									</tr>
-								</thead>
-								<tbody>
-								<ng-container *ngFor="let contact of contactsByType.contacts; let i = index">
-									<tr class='row_{{i}}'>
-										<td align="center"
-															*ngIf="contactsByType.selectedCategory == 'all'"><input
-															type="checkbox"
-															[checked]="selectedContactListIds.indexOf(contact.id)>-1"
-															class="chk"
-															[class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
-															lang="{{contact.name}}" name="campaignContact[]"
-															value="{{contact.id}}" id="{{contact.id}}"
-															(click)="highlightRow(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
-														</td>
-														<td align="center"
-															*ngIf="contactsByType.selectedCategory == 'invalid'">
-															<input type="checkbox"
-															[checked]="selectedInvalidContactIds.indexOf(contact.id)>-1"
-															class="chk"
-															[class.contact-list-selected]="selectedInvalidContactIds.indexOf(contact.id)>-1"
-															lang="{{contact.name}}" name="invalidContact[]"
-															value="{{contact.id}}" id="{{contact.id}}"
-															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
-														</td>
-										<td>
-							          		<div class="flex">
-												<span class='profile' style="background-color: #3598dc;">
-												 <span class='uppercase'>{{contact.firstName | slice:0:1}}{{contact.lastName | slice:0:1}}</span>
-												</span> 
-												<span style="margin-left: 20px;">
-													<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
-													<h6 class='m0'><a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a></h6>
-												</span>
-											</div>
-										</td>
-										<td>
-											<h5>
-												<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-											</h5>
-										</td>
-										<td>
-											<h5 class='mb0'>{{contact.jobTitle}}</h5>
-											<h6 class='mt0'>{{contact.contactCompany}}</h6>
-										</td>
-										<td>
-											<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-											<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
-										</td>
-										<td>
-											<button id='more_less_button_{{i}}' (click)="contact.isShowDetails = ! contact.isShowDetails">
-												<span *ngIf="!contact.isShowDetails">More</span>
-												<span *ngIf="contact.isShowDetails">Less</span>
-											</button>
-										</td>
-										<ng-template #NA>N/A</ng-template>
-									</tr>
-									<tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr>
-															<td class='pt10 pb10 bold'>Notes:</td>
-															<td class='pt10 pb10'>{{contact.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-								</ng-container>
-							</tbody>
-						</table>
-											<!-- <table class="table table-striped table-hover table-bordered" *ngIf="!httpRequestLoader.isLoading">
+											<app-loader [model]="httpRequestLoader.isHorizontalCss"
+												*ngIf="httpRequestLoader.isLoading"></app-loader>
+
+											<table class='table tgrid' id="sample_editable_1"
+												*ngIf="!httpRequestLoader.isLoading">
 												<thead>
 													<tr>
 														<td align="center"
@@ -629,15 +563,17 @@ rotate
 															(change)="checkAllInvalidContacts($event)" class=""
 															id="checkAllExistingInvalidContacts" />
 														</td>
-														<th>EMAILID</th>
-														<th>FIRST NAME</th>
-														<th>LAST NAME</th>
+														<th style="width: 25%">NAME</th>
+														<th>CONTACT</th>
+														<th>Job Title</th>
+														<th>ADDRESS</th>
 														<th>MORE</th>
 													</tr>
 												</thead>
 												<tbody>
-												<ng-container *ngFor="let contact of contactsByType.contacts; let i = index">
-													<tr>
+													<ng-container
+														*ngFor="let contact of contactsByType.contacts; let i = index">
+													<tr class='row_{{i}}'>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'all'"><input
 															type="checkbox"
@@ -658,55 +594,58 @@ rotate
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
 														</td>
-														<td>{{contact.emailId}}</td>
-														<td>{{contact.firstName}}</td>
-														<td>{{contact.lastName}}</td>
 														<td>
-														<button id='more_less_button_{{i}}' (click)="contact.isShowDetails = ! contact.isShowDetails">
-															<span *ngIf="!contact.isShowDetails">More</span>
-															<span *ngIf="contact.isShowDetails">Less</span>
-														</button>
+															<div class="flex">
+																<span class='profile' style="background-color: #3598dc;">
+																	<span class='uppercase'>{{contact.firstName |
+																		slice:0:1}}{{contact.lastName | slice:0:1}}</span>
+																</span> <span style="margin-left: 20px;">
+																	<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
+																	<h6 class='m0'>
+																		<a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a>
+																	</h6>
+																</span>
+															</div>
+														</td>
+														<td>
+															<h5>
+																<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
+															</h5>
+														</td>
+														<td>
+															<h5 class='mb0'>{{contact.jobTitle}}</h5>
+															<h6 class='mt0'>{{contact.contactCompany}}</h6>
+														</td>
+														<td>
+															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+															<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
+														</td>
+														<td>
+															<button id='more_less_button_{{i}}'
+																(click)="contact.isShowDetails = ! contact.isShowDetails">
+																<span *ngIf="!contact.isShowDetails">More</span> <span
+																	*ngIf="contact.isShowDetails">Less</span>
+															</button>
+														</td>
+														<ng-template #NA>N/A</ng-template>
+													</tr>
+													<tr
+														[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
+														<td colspan="6">
+															<table cellpadding="5" cellspacing="0"
+																style="padding-left: 50px; margin-left: 55px;">
+																<tbody>
+																	<tr>
+																		<td class='pt10 pb10 bold'>Notes:</td>
+																		<td class='pt10 pb10'>{{contact.description}}</td>
+																	</tr>
+																</tbody>
+															</table>
 														</td>
 													</tr>
-													<tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}" >
-											<td colspan="6">
-											<table cellpadding="5" cellspacing="0" style="padding-left: 50px;    margin-left: 55px;">
-													<tbody>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Company:</td>
-															<td class='pt10 pb10'>{{contact.contactCompany}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Job Title:</td>
-															<td class='pt10 pb10'>{{contact.jobTitle}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Address:</td>
-															<td class='pt10 pb10'>{{contact.address}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															 <td class='pt10 pb10'>City:</td>
-															<td class='pt10 pb10'>{{contact.city}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Country:</td>
-															<td class='pt10 pb10'>{{contact.country}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
-															<td class='pt10 pb10'>{{contact.mobileNumber}}</td>
-														</tr>
-														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Notes:</td>
-															<td class='pt10 pb10'>{{contact.description}}</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-										</ng-container>
+													</ng-container>
 												</tbody>
-											</table> -->
+											</table>
 											<ul
 												*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
 												class="pagination m0">
@@ -726,7 +665,8 @@ rotate
 													*ngFor="let page of contactsByType.pagination.pager.pages"
 													[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
 													<a
-													(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)" [class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
+													(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)"
+													[class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
 												</li>
 												<li
 													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
@@ -741,17 +681,17 @@ rotate
 													[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
 												</li>
 											</ul>
-											
+
 											<div class="btn-group pull-right">
-														<select class="form-control"
-															[(ngModel)]="sortOptionForPagination"
-															(ngModelChange)="onChangeAllContactUsers($event)">
-															<ng-container
-																*ngFor="let sort of sortOptionsForPagination; let i = index">
-															<option [ngValue]="sort">{{sort.value}}</option>
-															</ng-container>
-														</select>
-													</div>
+												<select class="form-control"
+													[(ngModel)]="sortOptionForPagination"
+													(ngModelChange)="onChangeAllContactUsers($event)">
+													<ng-container
+														*ngFor="let sort of sortOptionsForPagination; let i = index">
+													<option [ngValue]="sort">{{sort.value}}</option>
+													</ng-container>
+												</select>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -766,59 +706,75 @@ rotate
 
 </div>
 
-<div id="filterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" style="width:53%;">
+<div id="filterModal" class="modal fade" role="dialog"
+	data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" style="width: 53%;">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" (click)="cancelSegmentation()">&times;</button>
-        <h4 class="modal-title">Segmentation</h4>
-      </div>
- <div class="modal-body" style="padding:28px;">
-      <div class="row">
-      <div class="col-sm-12">
-      <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
-        <div class="form-group">
-		    <div class="form-inline">
-		   <div class="form-group col-sm-4">
-			      <select class="form-control"  
-					[(ngModel)]="criterias[i].property">
-					<option *ngFor="let filterOption of filterOptions; let i = index" >{{filterOption.name}}</option>
-				</select>
-		  </div> 
-		   <div class="form-group col-sm-3">
-			      <select class="form-control"
-					[(ngModel)]="criterias[i].operation">
-					<option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
-				</select>
-		  </div>
-		  <div class="form-group col-sm-2">
-		  	<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1">
-		  </div>
-		  <div class="form-group col-sm-2" style="left: 96px; top: 3px;cursor:pointer;">
-		  <span (click)="cancelRow(i)">
-				<i class="fa fa-trash-o" aria-hidden="true" style="color:red;font-size: 26px; margin-top:6px"></i>
-			</span>
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					(click)="cancelSegmentation()">&times;</button>
+				<h4 class="modal-title">Segmentation</h4>
 			</div>
-		  </div>
-		  </div>
-		  </div>
-		<div class="row col-sm-1" style="left:26px;">
-		  <button type="button" class="btn btn-default pull-right" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
-      </div>
-      </div>
-      </div>
-      <div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage"><h4 class="m0" style="color:red; text-align: center;">Please fill the required inputs:</h4></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn green" (click)="contactFilter()">Submit</button>
-       <!--  <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
-        <button type="button" class="btn green" (click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
+			<div class="modal-body" style="padding: 28px;">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row col-sm-11"
+							*ngFor="let addRow of criterias; let i = index"
+							style="padding-bottom: 10px;">
+							<div class="form-group">
+								<div class="form-inline">
+									<div class="form-group col-sm-4">
+										<select class="form-control"
+											[(ngModel)]="criterias[i].property">
+											<option
+												*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}</option>
+										</select>
+									</div>
+									<div class="form-group col-sm-3">
+										<select class="form-control"
+											[(ngModel)]="criterias[i].operation">
+											<option
+												*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
+										</select>
+									</div>
+									<div class="form-group col-sm-2">
+										<input type="text" class="form-control" placeholder="value*"
+											[(ngModel)]="criterias[i].value1">
+									</div>
+									<div class="form-group col-sm-2"
+										style="left: 96px; top: 3px; cursor: pointer;">
+										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o"
+											aria-hidden="true"
+											style="color: red; font-size: 26px; margin-top: 6px"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row col-sm-1" style="left: 26px;">
+							<button type="button" class="btn btn-default pull-right"
+								(click)="addNewRow()">
+								<i class="fa fa-plus-square" aria-hidden="true"
+									style="color: green"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
+					<h4 class="m0" style="color: red; text-align: center;">Please
+						fill the required inputs:</h4>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn green" (click)="contactFilter()">Submit</button>
+				<button type="button" class="btn green"
+					(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
 
-  </div>
+	</div>
 </div>
 
 <!-- END PAGE CONTENT-->

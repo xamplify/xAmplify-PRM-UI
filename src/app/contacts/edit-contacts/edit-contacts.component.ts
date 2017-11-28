@@ -1549,7 +1549,6 @@ export class EditContactsComponent implements OnInit {
            padding: 20,
            confirmButtonText: 'Update',
            //showLoaderOnConfirm: true,
-           //animation: "slide-from-top",
            allowOutsideClick: false,
            customClass: "sweet-alert",
            preConfirm: function(name: any) {
