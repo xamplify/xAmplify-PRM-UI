@@ -49,13 +49,13 @@
 			<div class="clearfix">
 				<section class="clearfix">
 				<div class="col-xs-6 col-sm-3">
-						<button class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
-							<h6>Upload Csv</h6>
-							<input type="file"   class="file-upload"   #fileImportInput  name="File Upload"   id="txtFileUpload"   accept=".csv" (change)="fileChangeListener($event)" />
-						</button>
-						<button class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
-							<h6>Upload Csv</h6>
-						</button>
+						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
+							<h6 style="text-align: center;">Upload Csv</h6>
+							<input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
+						</div>
+						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
+							<h6 style="text-align: center;">Upload Csv</h6>
+						</div>
 					</div>
 					<div class="col-xs-6 col-sm-3">
 						<button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
