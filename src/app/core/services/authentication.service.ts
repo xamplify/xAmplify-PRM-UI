@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import { User } from '../models/user';
 import { Role } from '../models/role';
 import { UserToken } from '../models/user-token';

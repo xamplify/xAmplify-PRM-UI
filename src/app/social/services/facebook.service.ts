@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
 import {SocialConnection} from '../models/social-connection';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
+
 @Injectable()
 export class FacebookService {
     URL = this.authenticationService.REST_URL + 'facebook/';
