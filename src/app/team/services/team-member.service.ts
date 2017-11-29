@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { Observable }     from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TeamMember } from '../models/team-member';

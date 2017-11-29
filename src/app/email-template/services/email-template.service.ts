@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { Observable }     from 'rxjs/Rx';
-
+import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { EmailTemplate } from '../models/email-template';
 import 'rxjs/add/operator/catch';
