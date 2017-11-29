@@ -66,6 +66,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     seekStart360 = null;
     uploadedDate: any;
     categoryName: any;
+    shortnerAliasUrl: any;
+    shareShortUrl:any;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
@@ -84,7 +86,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         return 'you have message';
     }
     shareMetaTags() {
-        return this.http.get(this.shareUrl)
+        this.shareShortUrl = this.authenticationService.SHARE_URL+this.shortnerAliasUrl; 
+        return this.http.get(this.shareShortUrl)
             .map(this.extractData)
             .catch(this.handleError)
             .subscribe((result: any) => { },
@@ -154,10 +157,23 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy.toLowerCase()
                     + '&alias=' + this.embedVideoFile.alias;
                 console.log(this.shareUrl);
+                this.getshortnerAliasUrl()
                 this.shareMetaTags();
             }, (error: any) => {
                 this.xtremandLogger.error(error);
                 this.router.navigate(['/no-videos-found']);
+            });
+    }
+    getshortnerAliasUrl(){
+        const aliasUrl = 'viewBy=' + this.embedVideoFile.viewBy.toLowerCase() + '&alias=' + this.embedVideoFile.alias;
+        return this.http.get(this.authenticationService.REST_URL+'shortener-url-alias?aliasUrl='+aliasUrl,'')
+            .map(this.extractData)
+            .catch(this.handleError)
+            .subscribe((result: any) => { 
+                 this.shortnerAliasUrl = result.alias;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
             });
     }
     ngOnInit() {

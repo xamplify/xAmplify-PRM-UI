@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { User } from '../models/user';
 import { Role } from '../models/role';
@@ -30,7 +30,7 @@ export class AuthenticationService {
         this.APP_URL = 'https://socialubuntu.com/';
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
-        this.SHARE_URL = this.SERVER_URL + 'xtremand-share/';
+        this.SHARE_URL = this.SERVER_URL + 'embed/';
     }
 
     getOptions(): RequestOptions {
