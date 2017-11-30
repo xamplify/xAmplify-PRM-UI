@@ -492,7 +492,15 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
-        this.videoJSplayer = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }, function () {
+        this.videoJSplayer = videojs('videoId', {
+        html5: {
+          hls: {
+            overrideNative: true
+          },
+          nativeVideoTracks: false,
+          nativeAudioTracks: false,
+          nativeTextTracks: false
+        } }, { "controls": true, "autoplay": false, "preload": "auto" }, function () {
             const player = this;
             self.replyVideo = false;
             const document: any = window.document;

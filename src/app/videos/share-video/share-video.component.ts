@@ -85,17 +85,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoStoppedEvent();
         return 'you have message';
     }
-    shareMetaTags() {
-        this.shareShortUrl = this.authenticationService.SHARE_URL+this.shortnerAliasUrl; 
-        return this.http.get(this.shareShortUrl)
-            .map(this.extractData)
-            .catch(this.handleError)
-            .subscribe((result: any) => { },
-            (error: any) => {
-                // this.errorPage = true;
-                this.xtremandLogger.error(error);
-            });
-    }
     getVideo(alias: string, viewby: string) {
         this.videoFileService.getVideo(alias, viewby)
             .subscribe(
@@ -154,11 +143,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.defaultCallToActionValues();
                 console.log(this.videoUrl);
                 this.embedVideoFile.viewBy = this.embedVideoFile.viewBy.toLowerCase();
-                this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy.toLowerCase()
-                    + '&alias=' + this.embedVideoFile.alias;
-                console.log(this.shareUrl);
+              //  this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy.toLowerCase()
+              //      + '&alias=' + this.embedVideoFile.alias;
+            //    console.log(this.shareUrl);
                 this.getshortnerAliasUrl()
-                this.shareMetaTags();
+               // this.shareMetaTags();
             }, (error: any) => {
                 this.xtremandLogger.error(error);
                 this.router.navigate(['/no-videos-found']);
@@ -166,13 +155,26 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     getshortnerAliasUrl(){
         const aliasUrl = 'viewBy=' + this.embedVideoFile.viewBy.toLowerCase() + '&alias=' + this.embedVideoFile.alias;
-        return this.http.get(this.authenticationService.REST_URL+'shortener-url-alias?aliasUrl='+aliasUrl,'')
+        return this.http.get(this.authenticationService.REST_URL+'shortener-url-alias?aliasUrl='+
+         aliasUrl,'')
             .map(this.extractData)
             .catch(this.handleError)
             .subscribe((result: any) => { 
-                 this.shortnerAliasUrl = result.alias;
+                // this.shortnerAliasUrl = result.alias;
+                 this.shareMetaTags(result.alias);
             },
             (error: any) => {
+                this.xtremandLogger.error(error);
+            });
+    }
+    shareMetaTags(shareShortUrl: string) {
+        this.shareShortUrl = this.authenticationService.SHARE_URL + shareShortUrl; 
+        return this.http.get(this.shareShortUrl)
+            .map(this.extractData)
+            .catch(this.handleError)
+            .subscribe((result: any) => { },
+            (error: any) => {
+                // this.errorPage = true;
                 this.xtremandLogger.error(error);
             });
     }

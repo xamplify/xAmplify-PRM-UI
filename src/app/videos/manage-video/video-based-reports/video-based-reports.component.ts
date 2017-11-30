@@ -228,7 +228,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
-        this.videoJSplayer = videojs('videoId', {}, function () {
+        this.videoJSplayer = videojs('videoId', {
+        html5: {
+          hls: {
+            overrideNative: true
+          },
+          nativeVideoTracks: false,
+          nativeAudioTracks: false,
+          nativeTextTracks: false
+        } }, function () {
             const player = this;
             const document: any = window.document;
             const isValid = self.overLayValue;
