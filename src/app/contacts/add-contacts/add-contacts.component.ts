@@ -14,6 +14,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../models/contact-option';
 import { SocialPagerService } from '../services/social-pager.service';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -44,45 +45,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     public googleUsers: Array<User>;
     public clipboardUsers: Array<User>;
     public googleContactUser: Array<User>;
-
-    countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
-             
-             "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegowina","Botswana","Bouvet Island","Brazil",
-             
-             "British Indian Ocean Territory","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic",
-             
-             "Chad","Chile","China","Christmas Island","Cocos (Keeling) Islands","Colombia","Comoros","Congo","Congo, the Democratic Republic of the","Cook Islands","Costa Rica","Cote d'Ivoire",
-             
-             "Croatia (Hrvatska)","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia",
-             
-             "Falkland Islands (Malvinas)","Faroe Islands","Fiji","Finland","France","French Guiana","French Polynesia","French Southern Territories","Gabon","Gambia","Georgia","Germany","Ghana",
-             
-             "Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Heard and Mc Donald Islands","Holy See (Vatican City State)",
-             
-             "Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran (Islamic Republic of)","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya",
-             
-             "Kiribati","Korea, Democratic People's Republic of","Korea, Republic of","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Libyan Arab Jamahiriya",
-             
-             "Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia, The Former Yugoslav Republic of","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Martinique","Mauritania",
-             
-             "Mauritius","Mayotte","Mexico","Micronesia, Federated States of","Moldova, Republic of","Monaco","Mongolia","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands",
-             
-             "Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norfolk Island","Northern Mariana Islands","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea",
-             
-             "Paraguay","Peru","Philippines","Pitcairn","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russian Federation","Rwanda","Saint Kitts and Nevis","Saint LUCIA","Saint Vincent and the Grenadines",
-             
-             "Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Seychelles","Sierra Leone","Singapore","Slovakia (Slovak Republic)","Slovenia","Solomon Islands","Somalia","South Africa",
-           
-             "South Georgia and the South Sandwich Islands","Spain","Sri Lanka","St. Helena","St. Pierre and Miquelon","Sudan","Suriname","Svalbard and Jan Mayen Islands","Swaziland","Sweden","Switzerland",
-             
-             "Syrian Arab Republic","Taiwan, Province of China","Tajikistan","Tanzania, United Republic of","Thailand","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands",
-             
-             "Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela","Viet Nam","Virgin Islands (British)",
-             
-             "Virgin Islands (U.S.)","Wallis and Futuna Islands","Western Sahara","Yemen","Zambia","Zimbabwe"];
-
-
-
     public clipboardTextareaText: string;
     selectedZohoDropDown: string = 'DEFAULT';
     googleCheckboxValue: boolean = false;
@@ -137,7 +99,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     public gContacts: SocialContact[] = new Array();
     public zContacts: SocialContact[] = new Array();
     public salesforceContactUsers: SocialContact[] = new Array();
-    //public salesforceContactslist: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     pager: any = {};
     pagedItems: any[];
@@ -153,11 +114,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     contacts: User[];
     private socialContactType: string;
     emailNotValid: boolean;
-    constructor( public socialPagerService: SocialPagerService, private authenticationService: AuthenticationService, private contactService: ContactService,
+    constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
         
-        this.addContactuser.country = (this.countries[0]);
+        this.addContactuser.country = (this.referenceService.countries[0]);
         let currentUrl = this.router.url;
         if(currentUrl.includes('home/contacts')){
             this.isPartner = false;
@@ -312,7 +273,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             swal( "value can't be null" );
         }
         if ( selectedDropDown == "DEFAULT" ) {
-            swal( "Please Select the Delimeter Type" );
+            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 24px;'>Please Select the Delimeter Type</span>" );
             return false;
         }
         else {
@@ -808,7 +769,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.contacts.length = 0;
         this.model.contactListName = "";
         this.isValidContactName = false;
-        // this.removeCsvName = false;
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
@@ -937,7 +897,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.gContacts.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
-                    //this.googleImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1132,7 +1091,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     zohoContacts() {
-        //this.removeCsv();
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
@@ -1194,7 +1152,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             },
             () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
-
     }
 
     getZohoContacts( contactType: any, username: string, password: string ) {
@@ -1210,7 +1167,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
-                    // this.hideZohoModal();
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1221,7 +1177,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.xtremandLogger.info( this.getZohoConatacts );
-                    // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( "#Zfile_preview" ).show();
@@ -1254,7 +1209,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                             this.zohoCredentialError = '';
                         }, 5000 )
                     } else {
-                        //this.xtremandLogger.errorPage(error);
                     }
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -1299,7 +1253,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 this.selectedAddContactsOption = 5;
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
-                    // this.hideZohoModal();
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1504,7 +1457,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
-                // this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
@@ -1575,7 +1527,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
-                //this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
@@ -1638,7 +1589,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
-                //this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
@@ -1838,17 +1788,15 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     
     addContactModalOpen(){
         $( "#addContactModal" ).show();
-        this.addContactuser.country = (this.countries[0]);
+        this.addContactuser.country = (this.referenceService.countries[0]);
     }
     
     addContactModalClose(){
         $('#addContactModal').modal('toggle');
         $( "#addContactModal .close" ).click()
-        //$( '#addContactModal' ).modal( 'hide' );
     }
 
     ngOnInit() {
-       // this.validateAddContactForm();
         this.socialContactImage();
         this.hideModal();
         this.gContactsValue = true;
