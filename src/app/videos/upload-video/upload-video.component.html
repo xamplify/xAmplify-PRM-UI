@@ -109,7 +109,7 @@
 						<div *ngIf="isDisable==false">
 							<div *ngFor="let item of uploader.queue">
 								<div class="col-xs-12 col-sm-3 col-md-3 mo p0">
-									<video *ngIf="!videoDisabled" id="my-video" style="margin: -7px;" controls preload="auto" width="250" height="150">
+									<video *ngIf="!videoDisabled && browserInfo!=='safari'" id="my-video" style="margin: -7px;" controls preload="auto" width="250" height="150">
 										<source [src]='videoPreviewPath' type='video/mp4'>
 										<source [src]='videoPreviewPath' type='video/quicktime'>
 										<source [src]="videoPreviewPath" type='video/x-msvideo'>
@@ -117,7 +117,7 @@
 										<source [src]="videoPreviewPath" type='video/dvd'>
 										<source [src]="videoPreviewPath" type='video/xvid'>
 									</video>
-									<img *ngIf="!previewDisabled" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="250" height="150">
+									<img *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="250" height="150">
 								</div>
 								<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 10px 0;">
 									<h3 class="" style=" color: #00a6e8;font-weight: 600; ">{{ trimVideoTitle(item?.file?.name) }}</h3>

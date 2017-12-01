@@ -115,6 +115,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 url: this.URL + this.authenticationService.access_token
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
+                try{
                 fileItem.withCredentials = false;
                 $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
                 console.log(fileItem._file);
@@ -123,6 +124,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
                 this.defaultDesabled();
                 console.log(fileItem._file.size);
+                } catch(error) { this.xtremandLogger.log(error); }
             };
             this.uploader.onProgressItem = (fileItem: FileItem, progress: any) => {
                 this.loading = true;
