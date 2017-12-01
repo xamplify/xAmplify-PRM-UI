@@ -32,11 +32,8 @@
 } 
  
  /deep/ .vjs-remaining-time-display {
-    font-size: 14px;
+    font-size: 14.5px;
     width: 17px;
-	margin-top: 1px;
-	margin-right :13px;
-	
 }
 /deep/ .video-js .vjs-fullscreen-control{
     margin-top: 1px;
@@ -50,10 +47,10 @@
 	display: block;
 	height: 2.3em;
 }
-/deep/ .video-js .vjs-volume-menu-button{
+/* /deep/ .video-js .vjs-volume-menu-button{
 	font-size :11px;
     margin-left: -11px ;
-	}
+	} */
 /deep/ .video-js .vjs-play-control {
 	font-size :11px;
     background-color:transparent;
@@ -81,10 +78,40 @@
     border-radius: 0.3em;
 } 
 /* this time tool tip is not affecting..i commented the video-js,css line 687 code */
-/deep/ .video-js .vjs-progress-control:hover .vjs-time-tooltip,
+/* /deep/ .video-js .vjs-progress-control:hover .vjs-time-tooltip,
 .video-js .vjs-progress-control:hover .vjs-mouse-display:after,
 .video-js .vjs-progress-control:hover .vjs-play-progress:after {
     font-family: Arial, Helvetica, sans-serif;
     visibility: visible;
     font-size: 1em;
-     }
+     } */
+/deep/ .vjs-volume-control .vjs-control .vjs-volume-horizontal{
+    margin-left: -11px;
+    margin-top: 2px; 
+}
+/* /deep/ .vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal {
+     margin-left: -10px; 
+    }
+/deep/ .video-js .vjs-volume-panel{
+    margin-left: -6px;
+}   */  
+/deep/ .vjs-mouse-display {
+     display: none;
+  }
+/* /deep/ .video-js .vjs-mute-control, .video-js .vjs-volume-menu-button {
+      margin-left: -11px;
+} */  
+/deep/ .vjs-time-tooltip{
+    display: none;
+}
+/deep/ .video-js .vjs-mute-control, .video-js .vjs-volume-menu-button {
+    margin-top: 2px;
+    margin-left: -7px;
+}  
+/deep/ .video-js .vjs-volume-menu-button{ 
+    margin-left: -7px;
+}  
+/deep/ .vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal{
+    margin-top: 2px;
+    margin-left: -7px;
+ }

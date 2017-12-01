@@ -57,10 +57,13 @@ export class VideoUtilService {
         this.videojshotkeys();
     }
     normalVideoJsFiles() {
+     //  $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-js6.4.0.css" class="h-video" rel="stylesheet">');
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+       // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-hls.js" type="text/javascript"  class="h-video"/>');   
+         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         this.videojshotkeys();
     }
     clipboardName: string;
@@ -123,6 +126,7 @@ export class VideoUtilService {
         $('.video-js .vjs-play-progress').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
     }
     modalWindowPopUp(url, width, height) {
         var leftPosition, topPosition;

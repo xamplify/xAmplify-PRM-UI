@@ -612,6 +612,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
     }
     changeControllerColor(event: any) {
         this.compControllerColor = this.saveVideoFile.controllerColor = event;
