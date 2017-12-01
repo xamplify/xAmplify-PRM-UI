@@ -1848,6 +1848,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             $("#more_less_button_"+i).attr('value', 'more');
         }
     }
+    
+    downloadEmptyCsv(){
+        window.location.href = "https://aravindu.com/vod/UPLOAD_USER_LIST _EMPTY.csv";
+    }
 
     ngDestroy() {
         this.contactService.successMessage = false;
