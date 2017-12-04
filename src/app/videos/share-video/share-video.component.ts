@@ -154,9 +154,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             });
     }
     getshortnerAliasUrl(){
-        const aliasUrl = 'viewBy=' + this.embedVideoFile.viewBy.toLowerCase() + '&alias=' + this.embedVideoFile.alias;
-        return this.http.get(this.authenticationService.REST_URL+'shortener-url-alias?aliasUrl='+
-         aliasUrl,'')
+        return this.http.get(this.authenticationService.REST_URL+'videos/shortener-url-alias?viewBy='+this.embedVideoFile.viewBy
+        		+"&videoAlias="+this.embedVideoFile.alias, '')
             .map(this.extractData)
             .catch(this.handleError)
             .subscribe((result: any) => { 
