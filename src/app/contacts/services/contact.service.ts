@@ -145,7 +145,7 @@ export class ContactService {
     }
     
     updateContactListName( contactListId: number, contactListName: string ): Observable<any> {
-        var newUrl = this.contactsUrl + contactListId + '/edit?userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + contactListId + '/editContactListName?userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, contactListName )
             .map(( response: any ) => response.json() )
            .catch( this.handleError);

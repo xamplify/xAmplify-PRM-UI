@@ -53,6 +53,11 @@ export class AddTeamMembersComponent implements OnInit {
         this.userId = this.authenticationService.getUserId();
         
     }
+    
+    downloadEmptyCsv(){
+        window.location.href = "https://aravindu.com/vod/team-member-list.csv";
+    }
+    
     /**********On Init()**********/
     ngOnInit() {
         try {
