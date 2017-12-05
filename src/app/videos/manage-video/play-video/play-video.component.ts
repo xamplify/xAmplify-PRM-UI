@@ -129,14 +129,31 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.selectedVideo.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
         } else { this.isThisDraftVideo = false; }
-        this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
+     //   this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {
         $('#modalDialog').append($('#overlay-modal').show());
     }
     shareClick() {
-        const shareUrl = this.authenticationService.APP_URL+ 'embed/'+this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias; 
-        this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
+        this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
+            .subscribe((result: any) => {
+                this.embedUrl = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
+                this.shareMetaTags(this.embedUrl);
+                this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
+            });
+        // const shareUrl = this.authenticationService.APP_URL+ 'embed/'+this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias; 
+       // this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
+    }
+   shareMetaTags(shareShortUrl: string) {
+        this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
+            (error: any) => { this.xtremandLogger.error(error); });
+    }
+    embedModal(){
+      this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
+            .subscribe((result: any) => {
+                this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
+                this.shareMetaTags(this.embedSrcPath);
+            });
     }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id

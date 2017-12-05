@@ -88,7 +88,8 @@
 						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
 					       <i class="fa fa-share-alt" aria-hidden="true"></i> Share
 				        </button>
-						<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo">
+						<button *ngIf="embedVideo==true" class="btn btn-primary embedVideoButton" data-toggle="modal" data-target="#myModal" 
+						[disabled]="isThisDraftVideo" (click)="embedModal()">
 						   <i class="fa fa-external-link" aria-hidden="true"></i> Embed
 			        	</button>
 					</div>
