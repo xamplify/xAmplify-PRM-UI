@@ -805,14 +805,14 @@ background-image: url("assets/images/crm/connecting.png");
 							<input type="name" style="border: none" class="form-control"
 								id="firstName" [(ngModel)]="addContactuser.firstName"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Enter First Name">
+								placeholder="Enter First Name" maxlength="250">
 							<div class="textCss"></div>
 						</div>
 						<div class="form-group col-sm-5">
 							<input type="name" style="border: none" class="form-control"
 								id="lastName" [(ngModel)]="addContactuser.lastName"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Enter Last Name">
+								placeholder="Enter Last Name" maxlength="250">
 							<div class="textCss"></div>
 						</div>
 					</div>
@@ -825,14 +825,14 @@ background-image: url("assets/images/crm/connecting.png");
 							<input type="company" style="border: none" class="form-control"
 								id="company" [(ngModel)]="addContactuser.contactCompany"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Enter Company">
+								placeholder="Enter Company" maxlength="250">
 							<div class="textCss"></div>
 						</div>
 						<div class="form-group col-sm-5">
 							<input type="title" style="border: none" class="form-control"
 								id="title" [(ngModel)]="addContactuser.jobTitle"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Enter JobTitle">
+								placeholder="Enter JobTitle" maxlength="250">
 							<div class="textCss"></div>
 						</div>
 					</div>
@@ -847,7 +847,7 @@ background-image: url("assets/images/crm/connecting.png");
 								(input)="validateEmail(addContactuser.emailId)"
 								[(ngModel)]="addContactuser.emailId"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Enter email *" autocomplete="off">
+								placeholder="Enter email *" autocomplete="off" maxlength="250">
 							<div class="textCss"></div>
 							<div style="color: red" *ngIf="!validEmailPatternSuccess">Invalid
 								EmailId</div>
@@ -862,13 +862,13 @@ background-image: url("assets/images/crm/connecting.png");
 								<input type="address" style="border: none" class="form-control"
 									id="address" [(ngModel)]="addContactuser.address"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter Address lane1">
+									placeholder="Enter Address lane1" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 							<div class="form-group col-sm-3">
 								<input type="city" style="border: none" class="form-control"
 									id="city" [(ngModel)]="addContactuser.city"
-									[ngModelOptions]="{standalone: true}" placeholder="city/town">
+									[ngModelOptions]="{standalone: true}" placeholder="city/town" maxlength="44">
 								<div class="textCss"></div>
 							</div>
 							<div class="form-group col-sm-3">
