@@ -204,7 +204,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (err) { }
     }
     ngAfterViewInit() {
-        $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="profile-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="profile-video"/>');
         this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
         this.defaultVideoSettings();
         this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
@@ -561,6 +561,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.defaultVideoPlayer.playerColor + '!important');
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+        $('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
     }
     transperancyControllBar(value: any) {
         this.valueRange = value;

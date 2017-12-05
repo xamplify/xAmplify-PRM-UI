@@ -2,6 +2,9 @@
         top: 57px !important;
         left: 120px !important;
     }
+   :host /deep/ .video-js .vjs-mute-control {
+       background:  transparent;
+   } 
   .disablePlayerValues {
 		pointer-events: none;
 		opacity: 0.6;
