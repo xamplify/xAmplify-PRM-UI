@@ -731,7 +731,7 @@ rotate
 							*ngFor="let addRow of criterias; let i = index"
 							style="padding-bottom: 10px;">
 							<div class="form-group">
-								<div class="form-inline">
+								<div class="form-inline col-sm-12">
 									<div class="form-group col-sm-4">
 										<select class="form-control"
 											[(ngModel)]="criterias[i].property">
@@ -746,12 +746,12 @@ rotate
 												*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 										</select>
 									</div>
-									<div class="form-group col-sm-2">
+									<div class="form-group col-sm-3">
 										<input type="text" class="form-control" placeholder="value*"
 											[(ngModel)]="criterias[i].value1">
 									</div>
 									<div class="form-group col-sm-2"
-										style="left: 96px; top: 3px; cursor: pointer;">
+										style="left: 85px; top: 3px; cursor: pointer;">
 										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o"
 											aria-hidden="true"
 											style="color: red; font-size: 26px; margin-top: 6px"></i>
@@ -760,7 +760,7 @@ rotate
 								</div>
 							</div>
 						</div>
-						<div class="row col-sm-1" style="left: 26px;">
+						<div class="row col-sm-1" style="left: 50px;">
 							<button type="button" class="btn btn-default pull-right"
 								(click)="addNewRow()">
 								<i class="fa fa-plus-square" aria-hidden="true"

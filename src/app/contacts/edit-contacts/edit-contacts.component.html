@@ -1064,8 +1064,7 @@ a.disabled {
 	<!-- closing modals -->
 
 	<!-- BEGIN PAGE CONTENT-->
-
-	<div id="filterModal" class="modal fade" role="dialog"
+<div id="filterModal" class="modal fade" role="dialog"
 		data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog" style="width: 53%;">
 
@@ -1083,7 +1082,7 @@ a.disabled {
 								*ngFor="let addRow of criterias; let i = index"
 								style="padding-bottom: 10px;">
 								<div class="form-group">
-									<div class="form-inline">
+									<div class="form-inline col-sm-12">
 										<div class="form-group col-sm-4">
 											<select class="form-control"
 												[(ngModel)]="criterias[i].property">
@@ -1098,12 +1097,12 @@ a.disabled {
 													*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
 											</select>
 										</div>
-										<div class="form-group col-sm-2">
+										<div class="form-group col-sm-3">
 											<input type="text" class="form-control" placeholder="value*"
 												[(ngModel)]="criterias[i].value1" required>
 										</div>
 										<div class="form-group col-sm-2"
-											style="left: 96px; top: 3px; cursor: pointer;">
+											style="left: 85px; top: 3px; cursor: pointer;">
 											<span (click)="cancelSegmentationRow(i)"> <i
 												class="fa fa-trash-o" aria-hidden="true"
 												style="color: red; font-size: 26px; margin-top: 6px"></i>
@@ -1112,7 +1111,7 @@ a.disabled {
 									</div>
 								</div>
 							</div>
-							<div class="row col-sm-1" style="left: 26px;">
+							<div class="row col-sm-1" style="left: 50px;">
 								<button type="button" class="btn btn-default pull-right"
 									(click)="addNewRow()">
 									<i class="fa fa-plus-square" aria-hidden="true"
@@ -1136,5 +1135,76 @@ a.disabled {
 			</div>
 		</div>
 	</div>
+	<!-- <div id="filterModal" class="modal fade" role="dialog"
+		data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog" style="width: 53%;">
+
+			Modal content
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						(click)="cancelSegmentation()">&times;</button>
+					<h4 class="modal-title">Segmentation</h4>
+				</div>
+				<div class="modal-body" style="padding: 28px;">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row col-xs-11"
+								*ngFor="let addRow of criterias; let i = index"
+								style="padding-bottom: 10px;">
+								<div class="form-group">
+									<div class="form-inline">
+										<div class="form-group col-xs-4">
+											<select class="form-control"
+												[(ngModel)]="criterias[i].property">
+												<option
+													*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-xs-3">
+											<select class="form-control"
+												[(ngModel)]="criterias[i].operation">
+												<option
+													*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-xs-2">
+											<input type="text" class="form-control" placeholder="value*"
+												[(ngModel)]="criterias[i].value1" required>
+										</div>
+										<div class="form-group col-xs-2"
+											style="cursor: pointer;">
+											<span (click)="cancelSegmentationRow(i)"> <i
+												class="fa fa-trash-o" aria-hidden="true"
+												style="color: red; font-size: 26px; margin-top: 6px"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row col-xs-1">
+								<button type="button" class="btn btn-default pull-right"
+									(click)="addNewRow()">
+									<i class="fa fa-plus-square" aria-hidden="true"
+										style="color: green"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
+						<h4 class="m0" style="color: red; text-align: center;">Please
+							fill the required inputs:</h4>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn green"
+						(click)="contactFilter()">Submit</button>
+					<button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button>
+					<button type="button" class="btn green"
+						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div> -->
 </div>
 <!-- END PAGE CONTENT -->
