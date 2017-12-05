@@ -43,7 +43,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     posterImagePath: string;
     is360Value: boolean;
     publicRouterUrl: string;
-    public alias :string;
+    alias: string;
     typeValue: string;
     videoAlias: string=null;
     campaignAlias: string=null;
@@ -82,9 +82,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         console.log('url is on angular 2' + document.location.href);
         this.publicRouterUrl = document.location.href;
         this.logVideoViewValue = true;
-    }
-    LoginThroghCampaign() {
-        this.router.navigate(['/login']);
     }
     deviceDectorInfo() {
         console.log('device info in component');
@@ -397,7 +394,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
                     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                     if (selfPanorama.logVideoViewValue === true) {
-                        selfPanorama.videoLogAction(selfPanorama.xtremandLog);
                         selfPanorama.logVideoViewsCount();
                         selfPanorama.logVideoViewValue = false;
                     }
@@ -479,7 +475,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     }
     playNormalVideo() {
         $('.p-video').remove();
-        this.videoUtilService.normalVideoJsFiles();
+        //this.videoUtilService.normalVideoJsFiles();
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
         this.is360Value = false;
         const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls></video>';
         $('#newPlayerVideo').append(str);
@@ -492,15 +493,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
-        this.videoJSplayer = videojs('videoId', {
-        html5: {
-          hls: {
-            overrideNative: true
-          },
-          nativeVideoTracks: false,
-          nativeAudioTracks: false,
-          nativeTextTracks: false
-        } }, { "controls": true, "autoplay": false, "preload": "auto" }, function () {
+        this.videoJSplayer = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }, function () {
             const player = this;
             self.replyVideo = false;
             const document: any = window.document;
@@ -684,10 +677,10 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         console.log(this.xtremandLog);
         this.videoLogAction(this.xtremandLog);
     }
-    @HostListener('window:beforeunload', ['$event'])
-    beforeunloadHandler(event) {
-        this.videoStoppedEvent();
-    }
+    // @HostListener('window:beforeunload', ['$event'])
+    // beforeunloadHandler(event) {
+    //     this.videoStoppedEvent();
+    // }
     ngOnDestroy() {
         this.videoStoppedEvent();
         this.videoLogAction(this.xtremandLog);
