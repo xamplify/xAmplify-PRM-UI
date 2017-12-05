@@ -84,8 +84,12 @@ a.disabled {
 		<li><a (click)="backToEditContacts()"><i
 				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
-		</i><span class="capitalize">{{contactsByType.selectedCategory}}
-				{{checkingContactTypeName}}s</span></li>
+		</i>
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
+		   {{checkingContactTypeName}}s</span>
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+		   {{checkingContactTypeName}}s</span>
+		</li>
 	</ul>
 </div>
 <div class="clearfix" id="manageContacts">
@@ -747,7 +751,9 @@ a.disabled {
 						<div class="portlet box blue">
 							<div class="portlet-title">
 								<div class="caption">
-									<span class="capitalize">{{contactsByType.selectedCategory}}
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
+										{{checkingContactTypeName}} List</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
 										{{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
