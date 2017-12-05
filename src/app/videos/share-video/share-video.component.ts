@@ -68,6 +68,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     categoryName: any;
     shortnerAliasUrl: any;
     shareShortUrl:any;
+    shortnerUrlAlias : string;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
@@ -85,8 +86,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoStoppedEvent();
         return 'you have message';
     }
-    getVideo(alias: string, viewby: string) {
-        this.videoFileService.getVideo(alias, viewby)
+    getVideo(shortnerUrlAlias: string) {
+        this.videoFileService.getVideoByShortenerUrlAlias(shortnerUrlAlias)
             .subscribe(
             (result: any) => {
                 let message: any = '';
@@ -185,10 +186,10 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.createSessionId();
         this.deviceDectorInfo();
         this.loacationDetails();
-        this.routerType = this.route.snapshot.params['type'];
-        this.routerAlias = this.route.snapshot.params['alias'];
+        //this.routerType = this.route.snapshot.params['type'];
+        this.shortnerUrlAlias = this.route.snapshot.params['alias'];
         console.log(this.routerType + ' and ' + this.routerAlias);
-        this.getVideo(this.routerAlias, this.routerType);
+        this.getVideo(this.shortnerUrlAlias);
         console.log(this.embedVideoFile);
     }
     defaultCallToActionValues() {

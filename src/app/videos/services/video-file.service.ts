@@ -106,6 +106,25 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getVideoByShortenerUrlAlias(shortnerUrlAlias: string): Observable<SaveVideoFile> {
+        console.log(shortnerUrlAlias);
+        const url = this.URL + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
+        return this.http.get(url, '')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getShortnerUrlAlias(viewBy:string, alias:string){
+        return this.http.get(this.authenticationService.REST_URL+'videos/shortener-url-alias?viewBy='+viewBy
+                +"&videoAlias="+alias, '')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    shareMetaTags(shareShortUrl: string) {
+        return this.http.get(shareShortUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+    }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
         console.log('deleted video alias is ' + alias);
         const url = this.URL + 'video-status-change/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;

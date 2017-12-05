@@ -201,8 +201,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
         };
         this.notifyParent = new EventEmitter<SaveVideoFile>();
-        this.embedUrl = this.authenticationService.APP_URL + 'embed/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
-    }  // closed constructor
+    }  
     public startsWithAt(control: FormControl) {
         try {
             let checkTag: string;
@@ -216,9 +215,24 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public validatorsTag = [this.startsWithAt];
 
     shareClick() {
-        const shareUrl = this.authenticationService.APP_URL + 'embed/' + this.saveVideoFile.viewBy.toLowerCase() + '/' + this.saveVideoFile.alias;
-        this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
+        this.videoFileService.getShortnerUrlAlias(this.saveVideoFile.viewBy, this.saveVideoFile.alias)
+            .subscribe((result: any) => {
+                //result.alias;
+                this.embedUrl = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
+                this.shareMetaTags(this.embedUrl);
+                this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
+            });
+
     }
+
+    shareMetaTags(shareShortUrl: string) {
+        this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
+            (error: any) => {
+                // this.errorPage = true;
+                this.xtremandLogger.error(error);
+            });
+    }
+    
     // call to action values
     callActionValues(overlayValue: string, startCallAction: boolean, endCallAction: boolean, videoPlaybutton: string) {
         this.callAction.overLayValue = overlayValue;
