@@ -58,6 +58,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         public itemsSize:any = this.numberOfItemsPerPage[0];
         public isError:boolean = false;
         httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+        viewType: string = 'list';
                                 
     constructor(private campaignService:CampaignService,private router:Router,private logger:XtremandLogger,
             private pagination:Pagination,private pagerService: PagerService,

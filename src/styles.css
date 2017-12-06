@@ -395,7 +395,7 @@ tr.highlight {
 .tgrid>tbody>tr>td, .tgrid>tbody>tr>th, .tgrid>thead>tr>td, .tgrid>thead>tr>th
 	{
 	padding: 10px !important;
-	vertical-align: middle;
+	vertical-align: middle !important;
 	color: #919191;
 }
 
@@ -412,3 +412,7 @@ tr.highlight {
 .white{
 	color: #fff;
 }
+
+.f-w-500{font-weight: 500 !important;}
+.f-w-600{font-weight: 600 !important;}
+.f-w-700{font-weight: 700 !important;}
