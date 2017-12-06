@@ -47,6 +47,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sortVideos: any;
     videoSort: any;
+    
+    viewType: string = 'list';
+
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,

@@ -165,6 +165,7 @@ export class ManageContactsComponent implements OnInit {
     
     isPartner: boolean;
     checkingContactTypeName: string;
+    viewType: string = 'list';
 
     constructor(public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router,
         private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, public xtremandLogger:XtremandLogger ) {

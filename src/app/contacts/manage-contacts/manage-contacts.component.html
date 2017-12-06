@@ -1,4 +1,7 @@
 <style type="text/css">
+a:hover{
+	text-decoration: none;
+}
 a.disabled {
 	pointer-events: none;
 	cursor: not-allowed;
@@ -277,24 +280,69 @@ rotate
 								</div>
 								<!-- END FILTER -->
 								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-								<div class="row mix-grid" style="margin-top: 10px">
+
+
+								<!-- 
+									@author Manas Ranjan Sahoo
+									@since 06/12/2017
+								-->
+								
+								<section *ngIf="viewType === 'list'">
+									<table class='table tgrid'>
+										<thead>
+											<tr>
+												<th colspan="2" style="width: 50%">Contact List</th>
+												<th>Created Date</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let contactList of pagination.pagedItems">
+												<td style="width: 10%;">
+													<img *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}" alt="zoho" style="height: 70px;"> 
+													<img *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}" alt="google" style="height: 70px;"> 
+													<img *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}" alt="salesforce" style="height: 750px;"> 
+													<img *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}" alt="manual" style="height: 70px;">
+												</td>
+												<td>
+													<h4 title={{contactList.name}} class='mt5 mb5 f-w-600'>{{contactList.name}}</h4>
+													<h5 class='m0'>By <span class='f-w-600'>{{contactList.uploadedBy}}</span></h5>
+												</td>
+												<td>{{contactList.createdDate}}</td>
+												<td>
+													<a (click)="downloadContactList(contactList.id)" title="Dowload List" data-rel="fancybox-button"> 
+														<i class="fa fa-cloud-download mr5"></i>
+													</a> 
+													<a *ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
+														(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
+														title="Edit List">
+													 <i class="fa fa-pencil-square-o mr5"></i>
+													</a> 
+													<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
+														(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
+														title="ContactList Info">
+														<i class="glyphicon glyphicon-info-sign mr5"></i>
+													</a> 
+													<a *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+														(click)="showAlert(contactList.id)" title="Delete List">
+														<i class="fa fa-trash mr5"></i>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
+
+								<div class="row mix-grid mt10" *ngIf="viewType === 'grid'">
 									<div *ngFor="let contactList of pagination.pagedItems">
 										<div class="col-md-3 col-sm-6 mix category_1 mix_all"
 											style="display: block; opacity: 1;"
 											id="contactListDiv_{{contactList.id}}">
 											<div class="mix-inner">
-												<img class="img-responsive"
-													*ngIf="contactList.socialNetwork=='ZOHO'"
-													src="{{zohoImage}}" alt=""> <img
-													class="img-responsive"
-													*ngIf="contactList.socialNetwork=='GOOGLE'"
-													src="{{googleImage}}" alt=""> <img
-													class="img-responsive"
-													*ngIf="contactList.socialNetwork=='SALESFORCE'"
-													src="{{salesforceImage}}" alt=""> <img
-													class="img-responsive"
-													*ngIf="contactList.socialNetwork=='MANUAL'"
-													src="{{normalImage}}" alt="">
+												<img class="img-responsive" *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}" alt=""> 
+												<img class="img-responsive" *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}" alt=""> 
+												<img class="img-responsive" *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}" alt=""> 
+												<img class="img-responsive" *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}" alt="">
 												<div class="mix-details-fill">
 													<h4 style="top: 5%; position: relative;"
 														title={{contactList.name}}>{{contactListNameLength(contactList.name)}}</h4>
