@@ -167,9 +167,9 @@ background-image: url("assets/images/crm/connecting.png");
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"
-										id="salesforceGear" *ngIf="sfImageNormal"
-										(click)="settingSocialNetworkOpenModal('salesforce')">
-										<a> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
+										id="salesforceGear" *ngIf="sfImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
 									</div>
@@ -196,9 +196,9 @@ background-image: url("assets/images/crm/connecting.png");
 										height="86" width="90">
 									</a>
 									<div id="GoogleGear" style="position: relative"
-										*ngIf="googleImageNormal"
-										(click)="settingSocialNetworkOpenModal('google')">
-										<a> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
+										*ngIf="googleImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
 									</div>
@@ -227,9 +227,9 @@ background-image: url("assets/images/crm/connecting.png");
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative"
-										*ngIf="zohoImageNormal"
-										(click)="settingSocialNetworkOpenModal('zoho')">
-										<a> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
+										*ngIf="zohoImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
 									</div>
