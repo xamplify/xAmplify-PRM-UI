@@ -783,15 +783,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 $("#main_video").empty();
             }else{
               console.log("Clearing 360 video");
-                player.panorama({
-                    autoMobileOrientation: true,
-                    clickAndDrag: true,
-                    clickToToggle: true,
-                    callback: function () {
-                        player.pause();
-                        $("#main_video").empty();
-                    }
-                  });
+               $("#main_video").empty();
+                player.dispose();
+                // player.panorama({
+                //     autoMobileOrientation: true,
+                //     clickAndDrag: true,
+                //     clickToToggle: true,
+                //     callback: function () {
+                //         player.pause();
+                //         $("#main_video").empty();
+                //     }
+                //   });
                 
             }
         }
@@ -803,8 +805,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     videoControllColors(videoFile: SaveVideoFile) {
         this.videoUtilService.videoColorControlls(videoFile);
+        if(videoFile.controllerColor && videoFile.transparency) {
         const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+        }
     }
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
        console.log(videoFile);
@@ -853,8 +857,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             console.log("Loaded Normal Video");
             $('.p-video').remove();
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
+            // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
+            // $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
+            this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#"+titleId).append('Title:'+title);
             $('#'+titleId).prop('title',videoFile.title);
@@ -869,8 +874,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#videoId").css("height", "310px");
             $("#videoId").css("max-width", "100%");
             var document:any = window.document;
-            var player = videojs("videoId");
-            this.videoControllColors(videoFile);
+            const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
+            var player = videojs("videoId", {
+                html5: {
+                    hls: {
+                        overrideNative: overrideNativeValue
+                    },
+                    nativeVideoTracks: !overrideNativeValue,
+                    nativeAudioTracks: !overrideNativeValue,
+                    nativeTextTracks: !overrideNativeValue
+                } });
+            if(videoFile) {
+                this.videoControllColors(videoFile); 
+            }
             console.log(player);
             if(player){
                 player.on('fullscreenchange', function () {
@@ -881,19 +897,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         $(".vjs-tech").css("height", "100%");
                     }else if(event==="FullscreenOff"){
                         $("#videoId").css("width", "550px");
-                
                     }
-                     
                 });
             }
         }
         $("video").bind("contextmenu",function(){
             return false;
             });
-        
     }
-    
-   
     /*************************************************************Contact List***************************************************************************************/
     loadCampaignContacts(contactsPagination:Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;

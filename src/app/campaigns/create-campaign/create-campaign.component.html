@@ -1,3 +1,9 @@
+<style type="text/css">
+	a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+</style>
 <div class="page-content">
 	<div [hidden]="!isLoading">
 		<div class="div-loader">
@@ -401,7 +407,7 @@
                                                  <a (click)="setPage(videosPagination.pager.currentPage - 1,'videos')"  [class.disabled]="videosPagination.pager.currentPage === 1">Previous</a>
                                               </li>
                                               <li *ngFor="let page of videosPagination.pager.pages" [ngClass]="{active:videosPagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page,'videos')">{{page}}</a>
+                                                 <a (click)="setPage(page,'videos')"  [class.disabled]="videosPagination.pager.currentPage === page">{{page}}</a>
                                               </li>
                                               <li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
                                                   <a (click)="setPage(videosPagination.pager.currentPage + 1,'videos')"  [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Next</a>
@@ -691,7 +697,7 @@
                                                  <a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
                                               </li>
                                               <li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{disabled:contactsPagination.pager.currentPage === page}">
-                                                 <a (click)="setPage(page,'contacts',contactUsers)">{{page}}</a>
+                                                 <a (click)="setPage(page,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === page" >{{page}}</a>
                                               </li>
                                               <li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
                                                   <a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Next</a>
@@ -866,7 +872,7 @@
                                             <a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">Previous</a>
                                          </li>
                                          <li *ngFor="let page of emailTemplatesPagination.pager.pages" [ngClass]="{active:emailTemplatesPagination.pager.currentPage === page}">
-                                            <a (click)="setPage(page,'emailTemplates')">{{page}}</a>
+                                            <a (click)="setPage(page,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
                                          </li>
                                          <li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
                                              <a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Next</a>
@@ -1211,7 +1217,7 @@
                                             <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
                                          </li>
                                          <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}"><!-- [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}" -->
-                                            <a (click)="paginateEmailTemplateRows(page,reply)">{{page}}</a>
+                                            <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
                                          </li>
                                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
                                              <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
@@ -1376,7 +1382,7 @@
                                             <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage - 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
                                          </li>
                                          <li *ngFor="let page of url.emailTemplatesPagination.pager.pages" [ngClass]="{active:url.emailTemplatesPagination.pager.currentPage === page}"><!-- [ngClass]="{active:url.emailTemplatesPagination.pager.currentPage === page}" -->
-                                            <a (click)="paginateClickEmailTemplateRows(page,url)">{{page}}</a>
+                                            <a (click)="paginateClickEmailTemplateRows(page,url)"  [class.disabled]="url.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
                                          </li>
                                          <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages}">
                                              <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage + 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages">Next</a>
@@ -1451,7 +1457,7 @@
                                  <a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
                               </li>
                               <li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
-                                 <a (click)="setPage(page,'contactUsers')">{{page}}</a>
+                                 <a (click)="setPage(page,'contactUsers')" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
                               </li>
                               <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
                                   <a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
