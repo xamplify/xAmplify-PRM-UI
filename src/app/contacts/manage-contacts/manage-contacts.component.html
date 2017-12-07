@@ -309,22 +309,22 @@ rotate
 												</td>
 												<td>{{contactList.createdDate}}</td>
 												<td>
-													<a (click)="downloadContactList(contactList.id)" title="Dowload List" data-rel="fancybox-button"> 
-														<i class="fa fa-cloud-download mr5"></i>
-													</a> 
 													<a *ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
 														(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
 														title="Edit List">
-													 <i class="fa fa-pencil-square-o mr5"></i>
-													</a> 
+													 <i class="fa fa-pencil-square-o mr5" style="font-size: 23px;color:#1982dc"></i>
+													</a>
 													<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 														(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
 														title="ContactList Info">
-														<i class="glyphicon glyphicon-info-sign mr5"></i>
+														<i class="glyphicon glyphicon-info-sign mr5" style="font-size: 23px;color:#1982dc"></i>
+													</a>
+													<a (click)="downloadContactList(contactList.id)" title="Dowload List" data-rel="fancybox-button"> 
+														<i class="fa fa-cloud-download mr5" style="font-size: 23px;color:green"></i>
 													</a> 
 													<a *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 														(click)="showAlert(contactList.id)" title="Delete List">
-														<i class="fa fa-trash mr5"></i>
+														<i class="fa fa-trash mr5" style="font-size: 23px;color:red"></i>
 													</a>
 												</td>
 											</tr>
