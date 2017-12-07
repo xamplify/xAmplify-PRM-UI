@@ -100,6 +100,17 @@ export class UserService {
             .catch( this.handleError );
     }
     
+    isListView( userId: number ) {
+        return this.http.get( this.URL + "admin/get-user-listview?userId=" + userId + "&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    setListView( userId: number, isListView: boolean ) {
+        return this.http.get( this.URL + "admin/set-user-listview?userId=" + userId + "&isListView="+ isListView + "&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
  
     private extractData( res: Response ) {
         console.log( res );

@@ -13,4 +13,8 @@ export class CallActionSwitch {
      onSkyBlueColorSwitch = 'sky-blue';
      onYellowColorSwitch = 'yellow';
      onDefaultColorSwitch = 'default';
+    
+    onTextValueView = 'LIST';
+    offTextValueView = 'GRID';
+    isListView = true;
 }

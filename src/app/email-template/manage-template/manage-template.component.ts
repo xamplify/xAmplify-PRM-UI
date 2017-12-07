@@ -66,7 +66,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     public message:string;   
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    viewType: string = 'list';
+    isListView: boolean = false;
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
@@ -204,6 +204,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     ngOnInit() {
         try {
+            this.isListView = this.refService.isListView;
             Metronic.init();
             Layout.init();
             Demo.init();

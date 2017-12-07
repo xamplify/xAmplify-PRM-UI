@@ -58,7 +58,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
         public itemsSize:any = this.numberOfItemsPerPage[0];
         public isError:boolean = false;
         httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-        viewType: string = 'list';
+        isListView: boolean = false;
                                 
     constructor(private campaignService:CampaignService,private router:Router,private logger:XtremandLogger,
             private pagination:Pagination,private pagerService: PagerService,
@@ -145,6 +145,7 @@ export class ManagePublishComponent implements OnInit,OnDestroy {
     
     ngOnInit(){
         try{
+            this.isListView = this.refService.isListView;
             this.listCampaign(this.pagination);
         }catch(error){
             this.logger.error("error in manage-publish-component init() ",error);

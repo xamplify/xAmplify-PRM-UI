@@ -48,8 +48,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     sortVideos: any;
     videoSort: any;
     
-    viewType: string = 'list';
-
+    isListView = false;
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
@@ -67,6 +66,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showMessage = this.showUpdatevalue = false;
     }
     ngOnInit() {
+        this.isListView = this.referenceService.isListView;
         QuickSidebar.init();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);

@@ -52,6 +52,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isPlayerSettingUpdated = false;
     hasAllAccess = false;
     hasCompany: boolean;
+    defaultViewSuccess = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
@@ -189,6 +190,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit() {
         try {
             //    $("#defaultPlayerSettings").hide();
+            this.isListView(this.authenticationService.getUserId());
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -693,6 +695,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
+    
+    isListView(userId: number) {
+        this.userService.isListView(userId)
+            .subscribe(
+            data => {this.callActionSwitch.isListView = (data['_body'] == 'true');},
+            error => console.log(error),
+            () => { }
+            );
+    }
+    
+    setListView(isListView: boolean) {
+        this.userService.setListView(this.authenticationService.getUserId(), isListView)
+            .subscribe(
+            data => { 
+                this.refService.isListView = isListView;
+                this.defaultViewSuccess = true;
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
+    
     ngOnDestroy() {
         if (this.isPlayed === true) {
             this.videoJSplayer.dispose();

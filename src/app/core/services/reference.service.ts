@@ -45,7 +45,7 @@ export class ReferenceService {
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";
     deviceInfo: any;
-
+    isListView: boolean;
     countries = ["Country", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 
         "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegowina", "Botswana", "Bouvet Island", "Brazil",
