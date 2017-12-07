@@ -194,14 +194,15 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('.video-js .vjs-tech').css('width', '100%');
                     $('.video-js .vjs-tech').css('height', '100%');
                     const self = this;
+                    const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
                     this.videoJSplayer = videojs('videoId',  {
                         html5: {
                         hls: {
-                            overrideNative: true
+                            overrideNative: overrideNativevalue
                         },
-                        nativeVideoTracks: false,
-                        nativeAudioTracks: false,
-                        nativeTextTracks: false
+                        nativeVideoTracks: !overrideNativevalue,
+                        nativeAudioTracks: !overrideNativevalue,
+                        nativeTextTracks: !overrideNativevalue
                         } }, function () {
                         const player = this;
                         const document: any = window.document;
