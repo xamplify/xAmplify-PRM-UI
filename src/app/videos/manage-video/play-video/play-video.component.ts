@@ -195,14 +195,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('.video-js .vjs-tech').css('height', '100%');
                     const self = this;
                     this.videoJSplayer = videojs('videoId',  {
-        html5: {
-          hls: {
-            overrideNative: true
-          },
-          nativeVideoTracks: false,
-          nativeAudioTracks: false,
-          nativeTextTracks: false
-        } }, function () {
+                        html5: {
+                        hls: {
+                            overrideNative: true
+                        },
+                        nativeVideoTracks: false,
+                        nativeAudioTracks: false,
+                        nativeTextTracks: false
+                        } }, function () {
                         const player = this;
                         const document: any = window.document;
                         let startDuration;
@@ -767,14 +767,16 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         const self = this;
+        const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
+        console.log(overrideNativevalue);
         this.videoJSplayer = videojs('videoId',  {
         html5: {
           hls: {
-            overrideNative: true
+            overrideNative: overrideNativevalue
           },
-          nativeVideoTracks: false,
-          nativeAudioTracks: false,
-          nativeTextTracks: false
+          nativeVideoTracks: !overrideNativevalue,
+          nativeAudioTracks: !overrideNativevalue,
+          nativeTextTracks: !overrideNativevalue
         } }, function () {
             const player = this;
             let startDuration;

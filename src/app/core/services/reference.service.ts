@@ -12,23 +12,24 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Roles } from '../../core/models/roles';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
+import { Ng2DeviceService } from 'ng2-device-detector';
 declare var $: any;
 
 @Injectable()
 export class ReferenceService {
 
-    public refcategories: Category[];
-    public userName: any;
-    public selectedCampaignType: string = "";
-    public isCampaignFromVideoRouter: boolean = false;
+    refcategories: Category[];
+    userName: any;
+    selectedCampaignType: string = "";
+    isCampaignFromVideoRouter: boolean = false;
     campaignSuccessMessage: string = "";
     isCreated: boolean = false;
     isUpdated: boolean = false;
     errorPrepender: string = "Error In";
     campaignVideoFile: SaveVideoFile;
-    public videoTitles: string[];
+    videoTitles: string[];
     defaultPlayerSettings: DefaultVideoPlayer;
-    public homeMethodsCalled = false;
+    homeMethodsCalled = false;
     defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
     topNavbarUserService = false;
@@ -39,54 +40,61 @@ export class ReferenceService {
     roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     userDefaultPage: string = 'welcome';
-    hasCompany:boolean = false;
-    formGroupClass:string = "form-group";
+    hasCompany: boolean = false;
+    formGroupClass: string = "form-group";
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";
-    
-    
-countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan",
-                 
-                 "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegowina","Botswana","Bouvet Island","Brazil",
-                 
-                 "British Indian Ocean Territory","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic",
-                 
-                 "Chad","Chile","China","Christmas Island","Cocos (Keeling) Islands","Colombia","Comoros","Congo","Congo, the Democratic Republic of the","Cook Islands","Costa Rica","Cote d'Ivoire",
-                 
-                 "Croatia (Hrvatska)","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia",
-                 
-                 "Falkland Islands (Malvinas)","Faroe Islands","Fiji","Finland","France","French Guiana","French Polynesia","French Southern Territories","Gabon","Gambia","Georgia","Germany","Ghana",
-                 
-                 "Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Heard and Mc Donald Islands","Holy See (Vatican City State)",
-                 
-                 "Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran (Islamic Republic of)","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya",
-                 
-                 "Kiribati","Korea, Democratic People's Republic of","Korea, Republic of","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Libyan Arab Jamahiriya",
-                 
-                 "Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia, The Former Yugoslav Republic of","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Martinique","Mauritania",
-                 
-                 "Mauritius","Mayotte","Mexico","Micronesia, Federated States of","Moldova, Republic of","Monaco","Mongolia","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands",
-                 
-                 "Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norfolk Island","Northern Mariana Islands","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea",
-                 
-                 "Paraguay","Peru","Philippines","Pitcairn","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russian Federation","Rwanda","Saint Kitts and Nevis","Saint LUCIA","Saint Vincent and the Grenadines",
-                 
-                 "Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Seychelles","Sierra Leone","Singapore","Slovakia (Slovak Republic)","Slovenia","Solomon Islands","Somalia","South Africa",
-               
-                 "South Georgia and the South Sandwich Islands","Spain","Sri Lanka","St. Helena","St. Pierre and Miquelon","Sudan","Suriname","Svalbard and Jan Mayen Islands","Swaziland","Sweden","Switzerland",
-                 
-                 "Syrian Arab Republic","Taiwan, Province of China","Tajikistan","Tanzania, United Republic of","Thailand","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands",
-                 
-                 "Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela","Viet Nam","Virgin Islands (British)",
-                 
-                 "Virgin Islands (U.S.)","Wallis and Futuna Islands","Western Sahara","Yemen","Zambia","Zimbabwe"];
-    
-    
-    
+    deviceInfo: any;
+
+    countries = ["Country", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
+
+        "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegowina", "Botswana", "Bouvet Island", "Brazil",
+
+        "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic",
+
+        "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire",
+
+        "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia",
+
+        "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+
+        "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)",
+
+        "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+
+        "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya",
+
+        "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania",
+
+        "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands",
+
+        "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea",
+
+        "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint LUCIA", "Saint Vincent and the Grenadines",
+
+        "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
+
+        "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland",
+
+        "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands",
+
+        "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Viet Nam", "Virgin Islands (British)",
+
+        "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"];
+
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
-        private router: Router) {
+        private router: Router, public deviceService: Ng2DeviceService,) {
         console.log('reference service constructor');
+    }
+    getBrowserInfoForNativeSet(){
+         this.deviceInfo = this.deviceService.getDeviceInfo();
+         if(this.deviceInfo.device === 'iphone' || this.deviceInfo.os === 'mac' || this.deviceInfo.browser=== 'safari'){
+            return false; 
+         }
+         else {
+             return true;
+         }
     }
 
     getCategories(): Observable<Category[]> {
@@ -198,14 +206,14 @@ countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andor
     }
     hasRole(roleName: string) {
         let roles = this.authenticationService.getRoles();
-        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.allRole)>-1) {
+        if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.allRole) > -1) {
             return true;
         } else {
             return false;
         }
     }
-    
-    hasSelectedRole(roleName:string){
+
+    hasSelectedRole(roleName: string) {
         let roles = this.authenticationService.getRoles();
         if (roles.indexOf(roleName) > -1) {
             return true;
@@ -213,16 +221,16 @@ countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andor
             return false;
         }
     }
-    
-    hasAllAccess(){
+
+    hasAllAccess() {
         let roles = this.authenticationService.getRoles();
-        if(roles.indexOf(this.roles.allRole)>-1 ||roles.indexOf(this.roles.orgAdminRole)>-1){
+        if (roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     returnDuplicates(names: string[]) {
         var uniq = names
             .map((name) => {
@@ -241,8 +249,8 @@ countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andor
         },
             'slow');
     }
-    
-    
+
+
     getAllTimeZones() {
         return ['(GMT -12:00) Etc/GMT+12',
             '(GMT -11:00) Pacific/Niue',
@@ -827,13 +835,13 @@ countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andor
 
         ];
     }
-    
+
     hideVerticalScrollBar() {
-        $( "body" ).css( "overflow", "hidden" );
+        $("body").css("overflow", "hidden");
     }
-    
-    getDivHeightByClassName(className:string){
-        return  $(className).height()+"px";
+
+    getDivHeightByClassName(className: string) {
+        return $(className).height() + "px";
     }
     getCountries() {
         return [
@@ -867,17 +875,7 @@ countries = ["Country","Afghanistan","Albania","Algeria","American Samoa","Andor
             new Timezone(6, 'America/Phoenix', '(GMT-07:00) Mountain Time - Arizona'),
             new Timezone(6, 'America/Chicago', '(GMT-06:00) Central Time'),
             new Timezone(6, 'America/New_York', '(GMT-05:00) Eastern Time'),
-          
+
         ];
     }
-    
-    
-    getCountryCodeFromBrowser(){
-        let code;
-        $.getJSON('http://freegeoip.net/json/', function(result) {
-           code=  result.country_code;
-          });
-        return code;
-    }
-    
 }

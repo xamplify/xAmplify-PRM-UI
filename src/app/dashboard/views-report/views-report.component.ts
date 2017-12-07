@@ -263,7 +263,17 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $("#videoId").css("height", "310px");
             $("#videoId").css("max-width", "100%");
             var document: any = window.document;
-            var player = videojs("videoId");
+            const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
+            var player = videojs("videoId", {
+                html5: {
+                hls: {
+                  overrideNative: overrideNativeValue
+                },
+                  nativeVideoTracks: !overrideNativeValue,
+                  nativeAudioTracks: !overrideNativeValue,
+                  nativeTextTracks: !overrideNativeValue
+              }
+            });
             this.videoControllColors(videoFile);
              console.log(player);
             if (player) {

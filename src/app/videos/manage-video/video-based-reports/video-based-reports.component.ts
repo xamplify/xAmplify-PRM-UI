@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/cor
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoBaseReportService } from '../../services/video-base-report.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ChartModule } from 'angular2-highcharts';
@@ -41,7 +42,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     chartsData = [57, [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8], 67];
     campaignViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger) { }
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) { }
     areaCharts() {
         Highcharts.chart('area-chart', {
             chart: {
@@ -228,14 +229,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
+        const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
+        console.log(overrideNativeValue);
         this.videoJSplayer = videojs('videoId', {
         html5: {
           hls: {
-            overrideNative: true
+            overrideNative: overrideNativeValue
           },
-          nativeVideoTracks: false,
-          nativeAudioTracks: false,
-          nativeTextTracks: false
+          nativeVideoTracks: !overrideNativeValue,
+          nativeAudioTracks: !overrideNativeValue,
+          nativeTextTracks: !overrideNativeValue
         } }, function () {
             const player = this;
             const document: any = window.document;

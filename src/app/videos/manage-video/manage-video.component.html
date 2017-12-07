@@ -46,14 +46,14 @@
 							<div class="page-toolbar">
 								<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 									<div class="inputs" align="right">
-										<div style="padding:0" class="col-xs-12 col-sm-6 col-md-6">
-											<select class="form-control" style="cursor: pointer; width:50%; position: relative;float:left" [(ngModel)]="categoryNum"
+										<div style="padding:0" class="col-xs-12 col-sm-6 col-md-5">
+											<select class="form-control" style="cursor: pointer; width:65%; position: relative;float:left" [(ngModel)]="categoryNum"
 											 (ngModelChange)="getCategoryNumber()">
                                                <option  [value]="0" >All Categories</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
                                             </select>
 										</div>
-										<div class="col-xs-6 col-sm-3 p0 flex">
+										<div class="col-xs-6 col-sm-3 col-md-4 p0 flex">
 											<ng-container class='m10'>
 												<button class="btn btn-xs" [disabled]="viewType === 'list'" (click)="viewType = 'list'" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
 												<button class="btn btn-xs" [disabled]="viewType === 'grid'" (click)="viewType = 'grid'" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
@@ -63,7 +63,7 @@
 												<option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 											</select>
 										</div>
-										<div class="col-xs-6 col-sm-3 col-md-3" style="padding:0">
+										<div class="col-xs-6 col-sm-3 col-md-3 col-md-3" style="padding:0">
 											<div class="input-icon right" style="cursor:pointer">
 												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 												<input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control input-circle"
@@ -78,7 +78,7 @@
 								<div *ngIf="!httpRequestLoader.isLoading">
 									<div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
 										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<p>Sorry, no videos found..!!</p>
+										<p>Sorry, No videos found..!!</p>
 									</div>
 								</div>
 								
@@ -130,7 +130,7 @@
 															<i class="fa fa-bullhorn mr5" title="Can't create a Campaign for DRAFT"></i>
 													   	</a>
 													</span>
-													<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteAlert(videoFile.alias,i ,videoFile.title)"> 
+													<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
 							                             <i class="fa fa-trash mr5"></i>
 						                             </a>
 												</td>
@@ -172,7 +172,7 @@
 														<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 													   </a>
 													</span>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteAlert(videoFile.alias,i ,videoFile.title)"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
 														 onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>

@@ -280,6 +280,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.deletedVideo = true;
                 this.showVideoFileName = this.videoTitleLength(videoName);
                 this.loadVideosCount(this.authenticationService.user.id);
+                $('html,body').animate({ scrollTop: 0 }, 'slow');
                 this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
                     this.pagination.pageIndex = 1;
@@ -299,6 +300,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.campaignVideoMesg = message;
                     this.defaultBannerMessageValues();
                     this.campaignVideo = true;
+                    $('html,body').animate({ scrollTop: 0 }, 'slow');
                     setTimeout(function () {
                         $('#campaignVideo').slideUp(500);
                     }, 5000);
@@ -312,7 +314,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
         this.closeBannerPopup();
     }
-    deleteAlert(alias: string, position: number, videoName: string) {
+    deleteVideoAlert(alias: string, position: number, videoName: string) {
         console.log('videoId in sweetAlert()');
         const self = this;
         swal({

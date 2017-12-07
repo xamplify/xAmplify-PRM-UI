@@ -878,17 +878,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoUtilService.normalVideoJsFiles();
             this.is360Value = false;
             const callactionValue = this;
+            const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {
                 html5: {
                     hls: {
-                        overrideNative: true
+                        overrideNative: overrideNativeValue
                     },
-                    nativeVideoTracks: false,
-                    nativeAudioTracks: false,
-                    nativeTextTracks: false
-                }
-            }
-                , function () {
+                    nativeVideoTracks: !overrideNativeValue,
+                    nativeAudioTracks: !overrideNativeValue,
+                    nativeTextTracks: !overrideNativeValue
+                  }
+                 }, function () {
                     const player = this;
                     const isValid = callactionValue.callAction.overLayValue;
                     console.log(isValid);
