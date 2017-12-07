@@ -68,7 +68,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     categoryName: any;
     shortnerAliasUrl: any;
     shareShortUrl:any;
-    shortnerUrlAlias : string;
+    shortnerUrlAlias: string;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
         public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
@@ -144,38 +144,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.defaultCallToActionValues();
                 console.log(this.videoUrl);
                 this.embedVideoFile.viewBy = this.embedVideoFile.viewBy.toLowerCase();
-              //  this.shareUrl = this.authenticationService.SHARE_URL + 'video?viewBy=' + this.embedVideoFile.viewBy.toLowerCase()
-              //      + '&alias=' + this.embedVideoFile.alias;
-            //    console.log(this.shareUrl);
-                this.getshortnerAliasUrl()
-               // this.shareMetaTags();
             }, (error: any) => {
                 this.xtremandLogger.error(error);
                 this.router.navigate(['/no-videos-found']);
-            });
-    }
-    getshortnerAliasUrl(){
-        return this.http.get(this.authenticationService.REST_URL+'videos/shortener-url-alias?viewBy='+this.embedVideoFile.viewBy
-        		+"&videoAlias="+this.embedVideoFile.alias, '')
-            .map(this.extractData)
-            .catch(this.handleError)
-            .subscribe((result: any) => { 
-                // this.shortnerAliasUrl = result.alias;
-                 this.shareMetaTags(result.alias);
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-            });
-    }
-    shareMetaTags(shareShortUrl: string) {
-        this.shareShortUrl = this.authenticationService.SHARE_URL + shareShortUrl; 
-        return this.http.get(this.shareShortUrl)
-            .map(this.extractData)
-            .catch(this.handleError)
-            .subscribe((result: any) => { },
-            (error: any) => {
-                // this.errorPage = true;
-                this.xtremandLogger.error(error);
             });
     }
     ngOnInit() {
@@ -186,9 +157,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.createSessionId();
         this.deviceDectorInfo();
         this.loacationDetails();
-        //this.routerType = this.route.snapshot.params['type'];
         this.shortnerUrlAlias = this.route.snapshot.params['alias'];
-        console.log(this.routerType + ' and ' + this.routerAlias);
+        this.shareShortUrl =  this.authenticationService.SHARE_URL + this.shortnerUrlAlias;
         this.getVideo(this.shortnerUrlAlias);
         console.log(this.embedVideoFile);
     }

@@ -35,7 +35,7 @@
 				<p>{{campaignVideoMesg}}</p>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12">
-				<div class="tabbable tabbable-custom tabbable-noborder">
+				<div class="tabbable tabbable-custom tabbable-noborder" style="background: white">
 					<div class="tab-content">
 						<div class="tab-pane active m10">
 							<!-- <div *ngIf="disableDropDowns&& pagination.length==0" class="alert alert-info">
@@ -83,7 +83,7 @@
 								</div>
 								
 								<section *ngIf="viewType === 'list'">
-									<table class='table tgrid'>
+									<table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
 										<thead>
 											<tr>
 												<th colspan="2" style="width: 50%">Videos</th>
