@@ -40,6 +40,10 @@
 						</div>
 						<div class="colxs-12 col-sm-3">
 						<div class="inputs regular_emails" align="right" style="float: right">
+							<ng-container class='m10'>
+								<button class="btn btn-xs" [disabled]="viewType === 'list'" (click)="viewType = 'list'" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+								<button class="btn btn-xs" [disabled]="viewType === 'grid'" (click)="viewType = 'grid'" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+							</ng-container>
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
 									<i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
@@ -52,7 +56,45 @@
 						</div>
 					</div>
 				</div>
-					<div class="margin-top-10" >
+					
+					
+					<section *ngIf="viewType === 'list'">
+						<table class='table tgrid'>
+							<thead>
+								<tr>
+									<th colspan="2" style="width: 50%">Contact List</th>
+									<th>Created Date</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
+									<td style="width: 10%;">
+										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+									</td>
+									<td>
+										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+										<h5 class='m0'>By <span class='f-w-600'>{{emailTemplate.createdBy}}</span></h5>
+									</td>
+									<td>{{emailTemplate.createdDate}}</td>
+									<td>
+										<a (click)="showPreview(emailTemplate)" title="Preview" > 
+											<i class="fa fa-eye mr5"></i>
+										</a>
+									    <a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+											<i class="fa fa-pencil-square-o mr5"></i>
+									    </a>
+									    <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" 
+						    				*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+											<i class="fa fa-trash"></i>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+								
+					<div class="margin-top-10" *ngIf="viewType === 'grid'">
 							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>

@@ -66,6 +66,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     public message:string;   
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    viewType: string = 'list';
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, private refService: ReferenceService, 
