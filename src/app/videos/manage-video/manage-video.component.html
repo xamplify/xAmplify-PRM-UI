@@ -138,7 +138,7 @@
 										</tbody>
 									</table>
 								</section>
-								<ng-container [hidden]="isListView">
+								<section [hidden]="isListView">
 								<div class="row mix-grid" style="margin-top: 10px;padding:7px" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
 										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
@@ -188,7 +188,7 @@
 										</div>
 									</div>
 								</div>
-								</ng-container>
+								</section>
 							</div>
 						</div>
 						<div *ngIf="pagination.pagedItems.length !== 0">
