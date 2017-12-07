@@ -158,7 +158,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     videojsCall() {
         if (!this.videoJSplayer) {
             const self = this;
+            const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
+               { 
+               html5: {
+                    hls: {
+                        overrideNative: overrideNativeValue
+                    },
+                    nativeVideoTracks: !overrideNativeValue,
+                    nativeAudioTracks: !overrideNativeValue,
+                    nativeTextTracks: !overrideNativeValue
+                  }
+                 },
                 { "controls": true, "autoplay": false, "preload": "auto" },
                 function () {
                     this.ready(function () {
@@ -206,8 +217,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (err) { }
     }
     ngAfterViewInit() {
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="profile-video"/>');
-        this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4';
+     // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="profile-video"/>');
+        this.videoUtilService.normalVideoJsFiles();
+        this.videoUrl = this.authenticationService.MEDIA_URL+'Birds0211512666857407_mobinar.m3u8';
         this.defaultVideoSettings();
         this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
         if (this.refService.defaultPlayerSettings.enableVideoController === false) {
@@ -722,6 +734,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoJSplayer.dispose();
         }
         $('.profile-video').remove();
+        $('.h-video').remove();
         this.refService.defaulgVideoMethodCalled = false;
     }
 }
