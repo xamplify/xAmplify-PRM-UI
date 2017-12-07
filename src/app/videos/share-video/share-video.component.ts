@@ -47,7 +47,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     videoUrl: string;
     posterImagePath: string;
     is360Value: boolean;
-    embedUrl: string;
     routerAlias: string;
     routerType: string;
     title: string;
@@ -76,9 +75,12 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         public authenticationService: AuthenticationService) {
         this.xtremandLogger.log('share component constructor called');
         console.log('url is on angular 2' + document.location.href);
-        this.embedUrl = document.location.href;
+        this.shareUrl = document.location.href;
+        console.log(this.shareUrl);
+        this.shareUrl =  this.shareUrl.replace('https://socialubuntu.com', 'https://aravindu.com');
         this.logVideoViewValue = true;
         this.callAction.isOverlay = true;
+        console.log(this.shareUrl);
     }
     // setConfirmUnload(on) {
     // window.onbeforeunload = (on) ? this.setMessage : null;

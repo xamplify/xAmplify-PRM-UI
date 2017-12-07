@@ -1,5 +1,8 @@
-input[type='file'] {
-  color: transparent;
+
+input[type='file'],
+input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer; 
+    color: transparent;
 }
 .fa-cloud-upload{
 color: white; 

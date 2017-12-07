@@ -70,7 +70,8 @@
 			</div>
 			<div class="col-xs-12" style="padding:0">
 			  <!-- <share-buttons (closed)="sharedSuccess()" [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
-		      <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareShortUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons>
+		      <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
+		     <share-buttons (popUpClosed)="sharedSuccess()" [url]="'https://aravindu.com/embed/'+shortnerUrlAlias"></share-buttons>
 			</div>
 			<!-- 2 modal popup end here-->
 		</div>
