@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { VideoUtilService } from '../services/video-util.service';
+import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
 import { XtremandLog } from '../models/xtremand-log';
@@ -67,11 +68,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     uploadedDate: any;
     categoryName: any;
     shortnerAliasUrl: any;
-    shareShortUrl:any;
+    shareShortUrl: any;
     shortnerUrlAlias: string;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger,
-        public http: Http, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, 
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
+        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public referService: ReferenceService,
         public authenticationService: AuthenticationService) {
         this.xtremandLogger.log('share component constructor called');
         console.log('url is on angular 2' + document.location.href);
@@ -123,18 +124,18 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     if (this.embedVideoFile.is360video === true) {
                         try {
                             this.play360Video();
-                        } catch (err) { 
-                             this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']); 
+                        } catch (err) {
+                            this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']);
                         }
                     } else {
                         try {
                             this.playNormalVideo();
-                        } catch (err) { 
-                            this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']); 
+                        } catch (err) {
+                            this.router.navigate(['/embed/' + this.routerType + '/' + this.routerAlias + '/']);
                         }
                     }
                 } else if (message === "NO MOBINARS FOUND FOR SPECIFIED ID") {
-                     this.router.navigate(['/no-videos-found']);
+                    this.router.navigate(['/no-videos-found']);
                 }
                 this.defaultVideoSettings();
                 this.transperancyControllBar(this.embedVideoFile.transparency);
@@ -152,13 +153,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     ngOnInit() {
         //  this.setConfirmUnload(true);
         $('body').css('cssText', 'background-color: white !important');
-    	$('#overlay-modal').hide();
+        $('#overlay-modal').hide();
         console.log('Share video component ngOnInit called');
         this.createSessionId();
         this.deviceDectorInfo();
         this.loacationDetails();
         this.shortnerUrlAlias = this.route.snapshot.params['alias'];
-        this.shareShortUrl =  this.authenticationService.SHARE_URL + this.shortnerUrlAlias;
+        this.shareShortUrl = this.authenticationService.SHARE_URL + this.shortnerUrlAlias;
         this.getVideo(this.shortnerUrlAlias);
         console.log(this.embedVideoFile);
     }
@@ -168,7 +169,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-         this.videoUtilService.videoColorControlls(this.embedVideoFile);
+        this.videoUtilService.videoColorControlls(this.embedVideoFile);
         if (this.embedVideoFile.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
@@ -419,215 +420,224 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
-        this.videoJSplayer = videojs('videoId', {}, function () {
-            const player = this;
-            let startDuration;
-            self.replyVideo = false;
-            let isCallActionthere = false;
-            const document: any = window.document;
-            const isValid = self.callAction.overLayValue;
-            this.ready(function () {
-                self.videoFileService.pauseAction = false;
-                self.xtremandLog.startDuration = 0;
-                self.xtremandLog.stopDuration = 0;
-                $('.video-js .vjs-tech').css('width', '100%');
-                $('.video-js .vjs-tech').css('height', '100%');
-                if (isValid === 'StartOftheVideo') {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    $('#videoId').append($('#overlay-modal').show());
-                } else if (isValid !== 'StartOftheVideo') {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    $('#overlay-modal').hide(); player.play();
-                } else { $('#overlay-modal').hide(); }
-                $('#skipOverlay').click(function () {
-                    isCallActionthere = false;
-                    $('#overlay-modal').hide();
-                    player.play();
-                });
-                $('#playorsubmit').click(function () {
-                    isCallActionthere = false;
-                    $('#overlay-modal').hide();
-                    player.play();
-                });
-            });
-            this.on('play', function () {
-                self.videoFileService.pauseAction = false;
-                const seekigTime = self.trimCurrentTime(player.currentTime());
-                console.log('ply button pressed ');
-                $('.vjs-big-play-button').css('display', 'none');
-                console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                if (self.replyVideo === true) {
-                    self.xtremandLog.actionId = self.LogAction.replyVideo;
+        const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
+            this.videoJSplayer = videojs('videoId', {
+                html5: {
+                    hls: {
+                        overrideNative: overrideNativeValue
+                    },
+                    nativeVideoTracks: !overrideNativeValue,
+                    nativeAudioTracks: !overrideNativeValue,
+                    nativeTextTracks: !overrideNativeValue
+                } }, function() {
+                    const player = this;
+                    let startDuration;
                     self.replyVideo = false;
-                } else {
-                    self.xtremandLog.actionId = self.LogAction.playVideo;
-                }
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                console.log(self.xtremandLog.actionId);
-                self.videoLogAction(self.xtremandLog);
-                if (self.logVideoViewValue === true) {
-                    self.logVideoViewsCount();
-                    self.logVideoViewValue = false;
-                }
-            });
-            this.on('pause', function () {
-                self.videoFileService.pauseAction = false;
-                console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                self.xtremandLog.actionId = self.LogAction.pauseVideo;
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                self.videoLogAction(self.xtremandLog);
-            });
-            this.on('seeking', function () {
-                self.videoFileService.pauseAction = true;
-                const seekigTime = self.trimCurrentTime(player.currentTime());
-                if (self.seekStart === null) {
-                    self.seekStart = self.trimCurrentTime(player.currentTime());
-                }
-                console.log('enter into seeking');
-            });
-            this.on('seeked', function () {
-                self.videoFileService.pauseAction = true;
-                console.log('seeked from', self.seekStart);
-                console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
-                self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                self.xtremandLog.startDuration = self.seekStart;
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                if (self.xtremandLog.startDuration === self.xtremandLog.stopDuration) {
-                    self.xtremandLog.startDuration = self.videoFileService.campaignTimeValue;
-                    console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
-                }
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.videoLogAction(self.xtremandLog);
-                self.seekStart = null;
-            });
-            this.on('timeupdate', function () {
-                startDuration = self.trimCurrentTime(player.currentTime());
-            });
-            this.on('ended', function () {
-                const time = player.currentTime();
-                console.log(time);
-                self.replyVideo = true;
-                self.logVideoViewValue = true;
-                self.videoFileService.replyVideo = true;
-                console.log('video ended attempts' + self.replyVideo);
-                self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                self.videoLogAction(self.xtremandLog);
-                if (isValid === 'EndOftheVideo') {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                    if (event === "FullscreenOn") {
-                        isCallActionthere = true;
-                        self.overLaySet = true;
-                        self.fullScreenMode = true;
-                        $("#videoId").css("width", "auto");
-                        $("#videoId").css("height", "318px");
-                        $("#overlay-modal").css("width", "100%");
-                        $("#overlay-modal").css("height", "100%");
-                        $('#videoId').append($('#overlay-modal').show());
-                    } else {
-                        self.overLaySet = false;
-                        $('#videoId').append($('#overlay-modal').show());
-                    }
-                } else if (isValid !== 'EndOftheVideo') {
-                    $('.vjs-big-play-button').css('display', 'none');
-                    $('#overlay-modal').hide(); //  player.pause();
-                } else {
-                    $('#overlay-modal').hide(); // player.pause();
-                }
-                $('#repeatPlay').click(function () {
-                    $('#overlay-modal').hide();
-                    self.replyVideo = true;
-                    player.play();
-                });
-                $('#skipOverlay').click(function () {
-                    isCallActionthere = false;
-                    $('#overlay-modal').hide();
-                });
-                $('#playorsubmit').click(function () {
-                    isCallActionthere = false;
-                    player.pause();
-                    $('#overlay-modal').hide();
-                });
-            });
-            this.on('fullscreenchange', function () {
-                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                if (event === "FullscreenOn") {
-                    $(".vjs-tech").css("width", "100%");
-                    $(".vjs-tech").css("height", "100%");
-                } else if (event === "FullscreenOff") {
-                    $("#videoId").css("width", "auto");
-                    $("#videoId").css("height", "318px");
-                    self.fullScreenMode = false;
-                    self.overLaySet = false;
-                    if (isCallActionthere === true) {
-                        self.overLaySet = false;
-                        self.fullScreenMode = false;
-                        $("#overlay-modal").css("width", "auto");
-                        $("#overlay-modal").css("height", "318px");
-                        $('#videoId').append($('#overlay-modal').show());
-                    }
-                }
-            });
-            this.on('contextmenu', function (e) {
-                e.preventDefault();
-            });
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
+                    let isCallActionthere = false;
+                    const document: any = window.document;
+                    const isValid = self.callAction.overLayValue;
+                    this.ready(function () {
+                        self.videoFileService.pauseAction = false;
+                        self.xtremandLog.startDuration = 0;
+                        self.xtremandLog.stopDuration = 0;
+                        $('.video-js .vjs-tech').css('width', '100%');
+                        $('.video-js .vjs-tech').css('height', '100%');
+                        if (isValid === 'StartOftheVideo') {
+                            $('.vjs-big-play-button').css('display', 'none');
+                            $('#videoId').append($('#overlay-modal').show());
+                        } else if (isValid !== 'StartOftheVideo') {
+                            $('.vjs-big-play-button').css('display', 'none');
+                            $('#overlay-modal').hide(); player.play();
+                        } else { $('#overlay-modal').hide(); }
+                        $('#skipOverlay').click(function () {
+                            isCallActionthere = false;
+                            $('#overlay-modal').hide();
+                            player.play();
+                        });
+                        $('#playorsubmit').click(function () {
+                            isCallActionthere = false;
+                            $('#overlay-modal').hide();
+                            player.play();
+                        });
+                    });
+                    this.on('play', function () {
+                        self.videoFileService.pauseAction = false;
+                        const seekigTime = self.trimCurrentTime(player.currentTime());
+                        console.log('ply button pressed ');
+                        $('.vjs-big-play-button').css('display', 'none');
+                        console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
+                        if (self.replyVideo === true) {
+                            self.xtremandLog.actionId = self.LogAction.replyVideo;
+                            self.replyVideo = false;
+                        } else {
+                            self.xtremandLog.actionId = self.LogAction.playVideo;
                         }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        console.log(self.xtremandLog.actionId);
+                        self.videoLogAction(self.xtremandLog);
+                        if (self.logVideoViewValue === true) {
+                            self.logVideoViewsCount();
+                            self.logVideoViewValue = false;
                         }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
+                    });
+                    this.on('pause', function () {
+                        self.videoFileService.pauseAction = false;
+                        console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
+                        self.xtremandLog.actionId = self.LogAction.pauseVideo;
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        self.videoLogAction(self.xtremandLog);
+                    });
+                    this.on('seeking', function () {
+                        self.videoFileService.pauseAction = true;
+                        const seekigTime = self.trimCurrentTime(player.currentTime());
+                        if (self.seekStart === null) {
+                            self.seekStart = self.trimCurrentTime(player.currentTime());
+                        }
+                        console.log('enter into seeking');
+                    });
+                    this.on('seeked', function () {
+                        self.videoFileService.pauseAction = true;
+                        console.log('seeked from', self.seekStart);
+                        console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
+                        self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
+                        self.xtremandLog.startDuration = self.seekStart;
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        if (self.xtremandLog.startDuration === self.xtremandLog.stopDuration) {
+                            self.xtremandLog.startDuration = self.videoFileService.campaignTimeValue;
+                            console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
+                        }
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.videoLogAction(self.xtremandLog);
+                        self.seekStart = null;
+                    });
+                    this.on('timeupdate', function () {
+                        startDuration = self.trimCurrentTime(player.currentTime());
+                    });
+                    this.on('ended', function () {
+                        const time = player.currentTime();
+                        console.log(time);
+                        self.replyVideo = true;
+                        self.logVideoViewValue = true;
+                        self.videoFileService.replyVideo = true;
+                        console.log('video ended attempts' + self.replyVideo);
+                        self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
+                        self.xtremandLog.startTime = new Date();
+                        self.xtremandLog.endTime = new Date();
+                        self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
+                        self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
+                        self.videoLogAction(self.xtremandLog);
+                        if (isValid === 'EndOftheVideo') {
+                            $('.vjs-big-play-button').css('display', 'none');
+                            const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                            const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                            if (event === "FullscreenOn") {
+                                isCallActionthere = true;
+                                self.overLaySet = true;
+                                self.fullScreenMode = true;
+                                $("#videoId").css("width", "auto");
+                                $("#videoId").css("height", "318px");
+                                $("#overlay-modal").css("width", "100%");
+                                $("#overlay-modal").css("height", "100%");
+                                $('#videoId').append($('#overlay-modal').show());
+                            } else {
+                                self.overLaySet = false;
+                                $('#videoId').append($('#overlay-modal').show());
+                            }
+                        } else if (isValid !== 'EndOftheVideo') {
+                            $('.vjs-big-play-button').css('display', 'none');
+                            $('#overlay-modal').hide(); //  player.pause();
+                        } else {
+                            $('#overlay-modal').hide(); // player.pause();
+                        }
+                        $('#repeatPlay').click(function () {
+                            $('#overlay-modal').hide();
+                            self.replyVideo = true;
+                            player.play();
+                        });
+                        $('#skipOverlay').click(function () {
+                            isCallActionthere = false;
+                            $('#overlay-modal').hide();
+                        });
+                        $('#playorsubmit').click(function () {
+                            isCallActionthere = false;
+                            player.pause();
+                            $('#overlay-modal').hide();
+                        });
+                    });
+                    this.on('fullscreenchange', function () {
+                        const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                        const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                        if (event === "FullscreenOn") {
+                            $(".vjs-tech").css("width", "100%");
+                            $(".vjs-tech").css("height", "100%");
+                        } else if (event === "FullscreenOff") {
+                            $("#videoId").css("width", "auto");
+                            $("#videoId").css("height", "318px");
+                            self.fullScreenMode = false;
+                            self.overLaySet = false;
+                            if (isCallActionthere === true) {
+                                self.overLaySet = false;
+                                self.fullScreenMode = false;
+                                $("#overlay-modal").css("width", "auto");
+                                $("#overlay-modal").css("height", "318px");
+                                $('#videoId').append($('#overlay-modal').show());
                             }
                         }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
+                    });
+                    this.on('contextmenu', function (e) {
+                        e.preventDefault();
+                    });
+                    this.hotkeys({
+                        volumeStep: 0.1, seekStep: 5, enableMute: true,
+                        enableFullscreen: false, enableNumbers: false,
+                        enableVolumeScroll: true,
+                        fullscreenKey: function (event: any, player: any) {
+                            return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+                        },
+                        customKeys: {
+                            simpleKey: {
+                                key: function (e: any) { return (e.which === 83); },
+                                handler: function (player: any, options: any, e: any) {
+                                    if (player.paused()) { player.play(); } else { player.pause(); }
+                                }
+                            },
+                            complexKey: {
+                                key: function (e: any) { return (e.ctrlKey && e.which === 68); },
+                                handler: function (player: any, options: any, event: any) {
+                                    if (options.enableMute) { player.muted(!player.muted()); }
+                                }
+                            },
+                            numbersKey: {
+                                key: function (event: any) {
+                                    return ((event.which > 47 && event.which < 59) ||
+                                        (event.which > 95 && event.which < 106));
+                                },
+                                handler: function (player: any, options: any, event: any) {
+                                    if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
+                                        let sub = 48;
+                                        if (event.which > 95) { sub = 96; }
+                                        const number = event.which - sub;
+                                        player.currentTime(player.duration() * number * 0.1);
+                                    }
+                                }
+                            },
+                            emptyHotkey: {},
+                            withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
+                            withoutHandler: { key: function (e: any) { return true; } },
+                            malformedKey: {
+                                key: function () { console.log(' The Key function must return a boolean.'); },
+                                handler: function (player: any, options: any, event: any) { }
+                            }
+                        }
+                    });
+                });
         //    this.videoPlayListSourceM3U8();
     }
     getCurrentTimeValues(time: any) {
@@ -650,7 +660,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     transperancyControllBar(value: any) {
         const color: any = this.embedVideoFile.controllerColor;
-        const  rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     extractData(res: Response) {
@@ -766,15 +776,15 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         console.log(this.xtremandLog);
         this.videoLogAction(this.xtremandLog);
     }
-    
-   @HostListener('window:beforeunload', [ '$event' ])
+
+    @HostListener('window:beforeunload', ['$event'])
     beforeUnloadHander(event) {
         this.xtremandLog.actionId = this.LogAction.videoStopped;
         this.xtremandLog.startTime = new Date();
         this.xtremandLog.endTime = new Date();
         console.log(this.xtremandLog);
         this.videoLogAction(this.xtremandLog);
-       // event.returnValue = "Are you sure?";
+        // event.returnValue = "Are you sure?";
     }
     ngOnDestroy() {
         // this.setConfirmUnload(false);
