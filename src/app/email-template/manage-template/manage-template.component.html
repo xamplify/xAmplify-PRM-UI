@@ -62,7 +62,7 @@
 						<table class='table tgrid'>
 							<thead>
 								<tr>
-									<th colspan="2" style="width: 50%">Contact List</th>
+									<th colspan="2" style="width: 50%">Email Template List</th>
 									<th>Created Date</th>
 									<th>Actions</th>
 								</tr>
@@ -78,15 +78,15 @@
 									</td>
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
-										<a (click)="showPreview(emailTemplate)" title="Preview" > 
-											<i class="fa fa-eye mr5"></i>
-										</a>
 									    <a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
-											<i class="fa fa-pencil-square-o mr5"></i>
+											<i class="fa fa-pencil-square-o mr5" style="font-size: 21px;color:#1982dc"></i>
 									    </a>
+									    <a (click)="showPreview(emailTemplate)" title="Preview" > 
+											<i class="fa fa-eye mr5" style="font-size: 22px;color:black"></i>
+										</a>
 									    <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" 
 						    				*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
-											<i class="fa fa-trash"></i>
+											<i class="fa fa-trash" style="font-size: 22px;color:red"></i>
 										</a>
 									</td>
 								</tr>
