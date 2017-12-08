@@ -6,6 +6,7 @@ import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
+import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLog } from '../models/xtremand-log';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
@@ -75,7 +76,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
-        public http: Http, public authenticationService: AuthenticationService,
+        public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService) {
         console.log('share component constructor called');
@@ -475,14 +476,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     }
     playNormalVideo() {
         $('.p-video').remove();
-        //this.videoUtilService.normalVideoJsFiles();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
-        $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="h-video" />');
+        this.videoUtilService.normalVideoJsFiles();
         this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls></video>';
+        const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls ></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -493,7 +489,19 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
-        this.videoJSplayer = videojs('videoId', { "controls": true, "autoplay": false, "preload": "auto" }, function () {
+        const overrideNativevalue = this.referService.getBrowserInfoForNativeSet();
+        this.videoJSplayer = videojs('videoId', 
+        { controls: true,
+          autoplay: false,
+          preload: 'auto',
+          html5: {
+           hls: {
+                overrideNative: overrideNativevalue
+              },
+              nativeVideoTracks: !overrideNativevalue,
+              nativeAudioTracks: !overrideNativevalue,
+              nativeTextTracks: !overrideNativevalue
+          } }, function () {
             const player = this;
             self.replyVideo = false;
             const document: any = window.document;
