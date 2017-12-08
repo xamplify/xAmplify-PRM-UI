@@ -116,22 +116,22 @@
 												<td>
 													<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)"
 														(click)="showEditVideo(videoFile)" title="Edit Video"> 
-														<i class="fa fa-pencil-square-o mr5"></i>
+														<i class="fa fa-pencil-square-o mr5" style="font-size: 22px;color:#1982dc"></i>
 													</a> 
 													<a (click)="showCampaignVideoReport(videoFile)"
 														title="Video Based Reports"> 
-														<i class="fa fa-line-chart mr5"></i>
+														<i class="fa fa-line-chart mr5" style="font-size: 20px;color:#673AB7"></i>
 													</a>
 													<span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
 														<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
-															<i class="fa fa-bullhorn mr5"></i>
+															<i class="fa fa-bullhorn mr5" style="font-size: 20px;color:#4CAF50"></i>
 													   	</a>
 														<a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;">
-															<i class="fa fa-bullhorn mr5" title="Can't create a Campaign for DRAFT"></i>
+															<i class="fa fa-bullhorn mr5" title="Can't create a Campaign for DRAFT" style="font-size: 22px;color:#4CAF50"></i>
 													   	</a>
 													</span>
 													<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
-							                             <i class="fa fa-trash mr5"></i>
+							                             <i class="fa fa-trash mr5" style="font-size: 22px;color:red"></i>
 						                             </a>
 												</td>
 											</tr>
