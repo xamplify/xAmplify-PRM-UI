@@ -11,25 +11,26 @@ import { User } from '../../core/models/user';
 
 @Injectable()
 export class VideoFileService {
-    public actionValue: string;
-    public saveVideoFile: SaveVideoFile;
-    public categories: Category[];
-    public showSave: boolean;
-    public showUpadte: boolean;
-    public pagination: Pagination;
-    public Xtremandlog: XtremandLog;
-    public viewBytemp: string;
-    public logEnded: number;
-    public videoViewBy: string;
-    public replyVideo = false;
-    public timeValue: any;
-    public campaignTimeValue: any;
-    public pauseAction: boolean;
-    public pause360Action: boolean;
-    public categoryNumber = 0;
+    actionValue: string;
+    saveVideoFile: SaveVideoFile;
+    categories: Category[];
+    showSave: boolean;
+    showUpadte: boolean;
+    pagination: Pagination;
+    Xtremandlog: XtremandLog;
+    viewBytemp: string;
+    logEnded: number;
+    videoViewBy: string;
+    replyVideo = false;
+    timeValue: any;
+    campaignTimeValue: any;
+    pauseAction: boolean;
+    pause360Action: boolean;
+    categoryNumber = 0;
     viewsCategoryNumber = 0;
     isProgressBar = false;
-    public URL: string = this.authenticationService.REST_URL + 'videos/';
+    isSliderClicked =  false;
+    URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
     }
@@ -113,9 +114,9 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getShortnerUrlAlias(viewBy:string, alias:string){
-        return this.http.get(this.authenticationService.REST_URL+'videos/shortener-url-alias?viewBy='+viewBy
-                +"&videoAlias="+alias, '')
+    getShortnerUrlAlias(viewBy: string, alias: string) {
+        return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
+            + "&videoAlias=" + alias, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -123,7 +124,7 @@ export class VideoFileService {
         return this.http.get(shareShortUrl)
             .map(this.extractData)
             .catch(this.handleError);
-        
+
     }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
         console.log('deleted video alias is ' + alias);
@@ -144,14 +145,14 @@ export class VideoFileService {
     }
     showCampaignVideo(emailLog: any) {
         try {
-            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo' ;
+            const url = this.authenticationService.REST_URL + 'user/showCampaignVideo';
             return this.http.post(url, emailLog)
                 .map(this.extractData)
                 .catch(this.handleErrorLogAction);
         } catch (error) { console.log(error); }
     }
     showCampaignEmail(campaignAlias: string, userAlias: string, templateId: number) {
-        const url =  this.authenticationService.REST_URL;
+        const url = this.authenticationService.REST_URL;
         return this.http.post(url + 'user/showCampaignEmail?campaignAlias=' + campaignAlias + '&userAlias=' +
             userAlias + '&templateId=' + templateId, '')
             .map(this.extractData)
@@ -162,13 +163,15 @@ export class VideoFileService {
         xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
+            if(xtremandLog.actionId === 8) { this.isSliderClicked = true;}
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
-                || (xtremandLog.actionId === 2 && this.pause360Action === true)) {
-                console.log('service called replyed and ended the video');
+                || (xtremandLog.actionId === 2 && this.pause360Action === true || xtremandLog.actionId === 2 && this.isSliderClicked)) {
+                console.log('skipped api calling for video log');
                 this.replyVideo = false;
-            } else {
+                this.isSliderClicked = false;
+            }  else {
                 console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
                 return this.http.post(url, xtremandLog)
@@ -181,7 +184,9 @@ export class VideoFileService {
     }
     logCampaignVideoActions(xtremandLog: XtremandLog) {
         try {
+            let skipPause: any;
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
+            if (xtremandLog.actionId === 8) { skipPause = true; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
                 || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
@@ -219,13 +224,13 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
-    loadChannelVideos(pagination:Pagination,categoryId:number){
-        const url = this.URL +"channel-videos/"+categoryId +
-        '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+
+    loadChannelVideos(pagination: Pagination, categoryId: number) {
+        const url = this.URL + "channel-videos/" + categoryId +
+            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
-        .map(this.extractData)
-        .catch(this.handleError);
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     extractData(res: Response) {
         const body = res.json();
