@@ -286,7 +286,7 @@ rotate
 								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 
 
-								<section [hidden]="!isListView">
+								<section [hidden]="!isListView" *ngIf="pagination.pagedItems?.length != 0">
 									<table class='table tgrid'>
 										<thead>
 											<tr>
