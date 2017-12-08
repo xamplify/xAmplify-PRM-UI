@@ -320,11 +320,12 @@
                 <div class="modal-body clearfix">
                     <div class="row">
 						<div class="col-md-6 col-sm-6 col-xs-12" id="preview-section">
-							<video id="videojs-video" class="video-js vjs-default-skin vjs-16-9" style="max-width: 100%;"
+							<!-- <video id="videojs-video" class="video-js vjs-default-skin vjs-16-9" style="max-width: 100%;"
 								controls preload="auto" width="580" height="320"
 								[src] = videoUrl poster="{{posterImage}}">
 								<source [src] = videoUrl  type="video/mp4"/>
-							</video>
+							</video> -->
+							 <div id="newPlayerVideo"></div>
 						</div>
 						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-md-6 col-sm-6 col-xs-12">
                             <div class="table-responsive">

@@ -50,6 +50,7 @@ export class VideoUtilService {
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
     }
     player360VideoJsFiles() {
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="p-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');

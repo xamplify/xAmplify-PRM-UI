@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Logger} from 'angular2-logger/core';
 import {SaveVideoFile} from '../../../videos/models/save-video-file';
@@ -32,7 +32,7 @@ declare var $, flatpickr, videojs: any;
   styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
   providers: [PagerService, Pagination, CallActionSwitch]
 })
-export class UpdateStatusComponent implements OnInit {
+export class UpdateStatusComponent implements OnInit, OnDestroy {
   @Input('isSocialCampaign') isSocialCampaign = false;
   @Input('alias') alias: string;
   videoUrl: string;
@@ -74,19 +74,77 @@ export class UpdateStatusComponent implements OnInit {
     $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
   }
   previewVideo(videoFile: SaveVideoFile) {
+    // $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript" class="profile-video"/>');
+   // this.videoJSplayer = videojs('videojs-video');
     this.selectedVideo = videoFile;
     this.posterImage = videoFile.imagePath;
     this.videoUrl = this.selectedVideo.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-    this.videoControllColors(videoFile);
-    this.videoJSplayer.play();
+   // this.videoControllColors(videoFile);
+   // this.videoJSplayer.play();
+    if (this.selectedVideo.is360video) {
+         this.play360video(this.selectedVideo);
+    } else {
+          $('#newPlayerVideo').empty();
+          $('#videoId').remove();
+          $('.p-video').remove();
+          this.videoUtilService.normalVideoJsFiles();
+          const str = '<video id="videoId"  poster=' + this.posterImage + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
+          $('#newPlayerVideo').append(str);
+          this.videoUrl = this.selectedVideo.videoPath;
+          this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+          this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+          $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+          $('#videoId').css('height', '315px');
+          $('#videoId').css('width', 'auto');
+          $('.video-js .vjs-tech').css('width', '100%');
+          $('.video-js .vjs-tech').css('height', '100%');
+          const self = this;
+          const overrideNativevalue = true;
+          this.videoJSplayer = videojs('videoId',  {
+            autoplay : true, 
+            html5: {
+              hls: {
+                  overrideNative: overrideNativevalue
+              },
+              nativeVideoTracks: !overrideNativevalue,
+              nativeAudioTracks: !overrideNativevalue,
+              nativeTextTracks: !overrideNativevalue
+              } }  );
+      }
+      this.videoControllColors(videoFile);    
     $('#list-videos-table > tbody > tr').click(function() {
       $('input[type=radio]', this).attr('checked', 'checked');
     }
     );
-  }
-
+    }
+     play360video(videoFile) {
+        $('#newPlayerVideo').empty();
+        $('.h-video').remove();
+        this.videoUtilService.player360VideoJsFiles();
+        const str = '<video id=videoId  poster=' + this.posterImage + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+        $('#newPlayerVideo').append(str);
+        this.videoUrl = this.selectedVideo.videoPath;
+        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        const player = videojs('videoId', { autoplay : false, });
+        const self = this;
+        player.panorama({
+            autoMobileOrientation: true,
+            clickAndDrag: true,
+            clickToToggle: true,
+            callback: function () {
+                player.ready(function () {
+                  player.play();
+                });
+            }
+        });
+        this.videoControllColors(videoFile);  
+        $('#videoId').css('width', 'auto');
+        $('#videoId').css('height', '315px');
+    }
   addVideo() {
     console.log(this.socialStatus.socialStatusContents.length);
     if (this.socialStatus.socialStatusContents.length > 0 &&
@@ -368,14 +426,10 @@ export class UpdateStatusComponent implements OnInit {
           $('#preview-section').show();
           videosPagination.totalRecords = result.totalRecords;
           videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
-
-
-          $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript" class="profile-video"/>');
-          this.videoJSplayer = videojs('videojs-video');
           this.previewVideo(videosPagination.pagedItems[0]);
         }
-      }),
-      () => console.log('listVideos() completed:');
+      });
+      () => console.log('listVideos() completed:')
   }
 
   setPageVideos(page: number) {
