@@ -24,8 +24,12 @@ export class WelcomeComponent implements OnInit {
     hasEmailTemplateRole = false;
     hasStatsRole = false;
     hasSocialStatusRole = false;
-    constructor( private userService: UserService, private authenticationService: AuthenticationService,
-            private referenceService: ReferenceService, private dashboardService: DashboardService ) {
+    constructor( 
+            private userService: UserService, 
+            private authenticationService: AuthenticationService,
+            private referenceService: ReferenceService, 
+            private dashboardService: DashboardService 
+            ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);

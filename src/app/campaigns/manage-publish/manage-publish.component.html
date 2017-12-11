@@ -57,9 +57,8 @@
 									</div>
 								</div>
 							</div>
-					
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-						<table class='table tgrid table-hover table-sm' [hidden]="!isListView">
+						<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 50%">Campaign</th>
@@ -116,7 +115,7 @@
 						</table>
 					</section>
 					
-					<div class="tab-pane active" [hidden]="isListView">
+					<div class="tab-pane active" *ngIf="!isListView">
 						<div class="margin-top-10" >
 							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
