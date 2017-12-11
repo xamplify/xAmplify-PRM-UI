@@ -832,9 +832,12 @@
 															<div style="top: 2%; position: relative; margin-left: 5px;">
 															</div>
 															<div id="template-action-div">
-																	<a class="mix-preview4 icons-css"  title="Select" data-rel="">
-																		<i *ngIf="emailTemplate.id!=selectedEmailTemplateRow" class="fa fa-check-circle" id="fa-font-size"  (click)="setEmailTemplate(emailTemplate)"></i>
-																		<i *ngIf="emailTemplate.id==selectedEmailTemplateRow" class="fa fa-ban" id="fa-font-size" ></i>
+																	<a class="mix-preview4 icons-css"  title="Select" data-rel=""
+																	 *ngIf="emailTemplate.id!=selectedEmailTemplateRow"   (click)="setEmailTemplate(emailTemplate)">
+																		<i class="fa fa-check-circle" id="fa-font-size"></i>
+																    </a>
+																    <a class="mix-preview4 icons-css"  title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
+																		<i class="fa fa-ban" id="fa-font-size" ></i>
 																    </a>
 																    <a class="mix-preview6 icons-css"  title="Preivew" data-rel="">
 																		<i class="fa fa-eye" id="fa-font-size" (click)="getEmailTemplatePreview(emailTemplate)"></i>
