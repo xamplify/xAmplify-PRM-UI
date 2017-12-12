@@ -416,3 +416,7 @@ tr.highlight {
 .f-w-500{font-weight: 500 !important;}
 .f-w-600{font-weight: 600 !important;}
 .f-w-700{font-weight: 700 !important;}
+
+:host /deep/ .vjs-video-notice-label .vjs-hidden { 
+   display: block !important;
+}

@@ -29,7 +29,6 @@ export class VideoFileService {
     categoryNumber = 0;
     viewsCategoryNumber = 0;
     isProgressBar = false;
-    isSliderClicked =  false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -163,14 +162,13 @@ export class VideoFileService {
         xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
-            if(xtremandLog.actionId === 8) { this.isSliderClicked = true;}
+         //   if(xtremandLog.actionId === 8) { this.isSliderClicked = true;}
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
-                || (xtremandLog.actionId === 2 && this.pause360Action === true || xtremandLog.actionId === 2 && this.isSliderClicked)) {
+                || (xtremandLog.actionId === 2 && this.pause360Action === true)) {
                 console.log('skipped api calling for video log');
                 this.replyVideo = false;
-                this.isSliderClicked = false;
             }  else {
                 console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
