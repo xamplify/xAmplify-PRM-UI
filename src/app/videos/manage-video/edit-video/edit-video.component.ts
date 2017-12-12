@@ -477,6 +477,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 let isCallActionthere = false;
                 newThis.setVideoIdHeightWidth();
                 newThis.setNewPlayerIdHeightWidth();
+                $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newThis.saveVideoFile.playerColor + '!important');
                 player.ready(function () {
                     if (isValid === 'StartOftheVideo') {
                         player.play();
@@ -628,7 +629,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
-        $('.vjs-VR-control vjs-control vjs-button').css('cssText', 'color:'+this.saveVideoFile.playerColor+'!important');
+        $('.vjs-VR-control .vjs-control .vjs-button').css('cssText', 'color:'+this.saveVideoFile.playerColor+'!important');
+        $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+        $('.vjs-VR-control .vjs-control .vjs-button enable').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
     }
     changeControllerColor(event: any) {
         this.compControllerColor = this.saveVideoFile.controllerColor = event;

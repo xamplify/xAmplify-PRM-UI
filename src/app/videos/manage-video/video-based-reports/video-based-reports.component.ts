@@ -367,6 +367,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 const document: any = window.document;
                 player.ready(function () {
                     player.play();
+                    $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.selectedVideo.playerColor + '!important');
                 });
                 player.on('fullscreenchange', function () {
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;

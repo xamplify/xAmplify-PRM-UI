@@ -138,6 +138,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             callback: function () {
                 player.ready(function () {
                   player.play();
+                  $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.selectedVideo.playerColor + '!important');
                 });
             }
         });

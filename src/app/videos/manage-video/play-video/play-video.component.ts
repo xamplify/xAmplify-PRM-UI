@@ -617,6 +617,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 let isCallActionthere = false;
                 const document: any = window.document;
                 player.ready(function () {
+                    $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.selectedVideo.playerColor + '!important');
                     if (isValid === 'StartOftheVideo') {
                         $('.vjs-big-play-button').css('display', 'none');
                         self.showOverlayModal();

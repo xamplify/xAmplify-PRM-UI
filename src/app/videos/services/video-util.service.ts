@@ -3,7 +3,6 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { DefaultVideoPlayer } from '../models/default-video-player';
 declare var $: any;
 
-
 @Injectable()
 export class VideoUtilService {
     videoTempDefaultSettings: DefaultVideoPlayer;
@@ -133,6 +132,7 @@ export class VideoUtilService {
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:'+videoFile.playerColor+'!important');
+        $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
     }
     modalWindowPopUp(url, width, height) {
         let leftPosition, topPosition;
@@ -143,6 +143,4 @@ export class VideoUtilService {
         + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY="
         + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
     }
-
-
 }
