@@ -827,10 +827,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(is360){
             console.log("Loaded 360 Video");
             $('.h-video').remove();
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-            $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-            $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+            this.videoUtilService.player360VideoJsFiles();
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#"+titleId).append('Title:'+title);
             $('#'+titleId).prop('title',videoFile.title);
@@ -857,8 +854,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             console.log("Loaded Normal Video");
             $('.p-video').remove();
-            // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-hls.js" type="text/javascript" class="h-video"  />');
-            // $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs.hls.min.js" type="text/javascript"  class="h-video" />');
             this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
             $("#"+titleId).append('Title:'+title);
