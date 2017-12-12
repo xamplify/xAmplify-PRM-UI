@@ -115,3 +115,9 @@
     margin-top: 2px;
     margin-left: -7px;
  }
+
+/deep/ .video-js .vjs-control-bar .vjs-VR-control {
+cursor: pointer;
+font-size: 11px;
+margin-top: 1px;
+} 

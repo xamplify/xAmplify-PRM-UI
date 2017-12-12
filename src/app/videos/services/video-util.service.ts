@@ -55,7 +55,7 @@ export class VideoUtilService {
          $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
        
        // $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama.min.css" rel="stylesheet"  class="p-video">');
-       // $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
+       //  $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.v5.js" type="text/javascript"  class="p-video" />');
          
          $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama-test.min.css" rel="stylesheet"  class="p-video">');
          $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.min.js" type="text/javascript"  class="p-video" />');
@@ -132,14 +132,12 @@ export class VideoUtilService {
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:'+videoFile.playerColor+'!important');
     }
     modalWindowPopUp(url, width, height) {
-        var leftPosition, topPosition;
-        //Allow for borders.
+        let leftPosition, topPosition;
         leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
-        //Allow for title and status bars.
         topPosition = (window.screen.height / 2) - ((height / 2) + 50);
-        //Open the window.
         window.open(url, "Window2",
         "status=no,height=" + height + ",width=" + width + ",resizable=yes,left="
         + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY="

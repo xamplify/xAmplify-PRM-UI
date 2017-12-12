@@ -308,7 +308,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         console.log(xtremandLog.actionId);
         this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
             (result: any) => {
-                this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);
+                this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);        
+                xtremandLog.previousId = result.id;
             },
             (error: any) => {
                 console.log('successfully skipped unused logged the actions' + xtremandLog.actionId);

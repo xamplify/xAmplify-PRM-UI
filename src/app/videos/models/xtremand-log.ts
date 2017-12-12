@@ -25,4 +25,5 @@ export class XtremandLog {
     sessionId: string;
     startDurationHHMMSS: string;
     stopDurationHHMMSS: string;
+    previousId: number = null;
 }
