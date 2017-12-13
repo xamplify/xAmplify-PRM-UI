@@ -646,7 +646,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.currentTime = player.currentTime();
                     self.startTimeUpdate = self.endTimeUpdate;
                     self.endTimeUpdate = new Date();
-
             });
             this.on('seeking', function () {
                 self.videoFileService.pauseAction = true;

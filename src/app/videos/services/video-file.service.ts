@@ -167,12 +167,11 @@ export class VideoFileService {
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
-                || (xtremandLog.actionId === 2 && this.pause360Action === true ) || (xtremandLog.actionId===8 && this.isSliderClicked===true)) {
+                || (xtremandLog.actionId === 2 && this.pause360Action === true )) {
                 console.log('skipped api calling for video log');
                 this.replyVideo = false;
-                this.isSliderClicked = false;
             } else {
-                if(xtremandLog.actionId === 8 ) { this.isSliderClicked = true;}
+            //    if(xtremandLog.actionId === 8 ) { this.isSliderClicked = true;}
                 console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
                 return this.http.post(url, xtremandLog)
