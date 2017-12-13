@@ -407,6 +407,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
+                    $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {
                     selfPanorama.videoFileService.pauseAction = false;
@@ -547,11 +548,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        
-        player.on("VRModeOn", function(){
-            this.player.controlBar.fullscreenToggle.trigger("tap");
-        });
-
         $('#videoId').css('width', 'auto');
         $('#videoId').css('height', '413px');
     }
@@ -597,6 +593,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 $('.vjs-big-play-button').css('display', 'block');
                 self.xtremandLog.startDuration = 0;
                 self.xtremandLog.stopDuration = 0;
+                $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.campaignVideoFile.playerColor + '!important');
             });
             this.on('play', function () {
                 seekCheck = false;
@@ -654,10 +651,10 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             this.on('seeking', function () {
                 self.videoFileService.pauseAction = true;
                 console.log(' enter into seek bar previous time is: '+self.previousTime);
-                seekCurrentTime = true;
-                if (self.seekStart === null) {
-                    self.seekStart = self.trimCurrentTime(player.currentTime());
-                }
+                // seekCurrentTime = true;
+                // if (self.seekStart === null) {
+                //     self.seekStart = self.trimCurrentTime(player.currentTime());
+                // }
                  const timeoutTime = 300;
                  const beforeCounter = self.counter + 1;
                  if (player.cache_.currentTime === player.duration()) {
@@ -670,7 +667,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                            self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
                             self.xtremandLog.startDuration = self.previousTime;
                             self.xtremandLog.stopDuration = player.currentTime() - (timeoutTime / 1000);
-                            self.trimCurrentTime(player.currentTime()-(timeoutTime / 1000))
+                         //   self.trimCurrentTime(player.currentTime()-(timeoutTime / 1000))
                             self.xtremandLog.startTime = self.startTimeUpdate;
                             self.xtremandLog.endTime = new Date();
                             self.videoLogAction(self.xtremandLog);

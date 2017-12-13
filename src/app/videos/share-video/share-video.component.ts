@@ -255,6 +255,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 player.ready(function () {
                     player360.xtremandLog.startDuration = 0;
                     player360.xtremandLog.startDuration = 0;
+                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + player360.embedVideoFile.playerColor + '!important');
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
                     } else if (isValid !== 'StartOftheVideo') {
@@ -442,6 +443,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;
+                        $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.embedVideoFile.playerColor + '!important');
                         $('.video-js .vjs-tech').css('width', '100%');
                         $('.video-js .vjs-tech').css('height', '100%');
                         if (isValid === 'StartOftheVideo') {
