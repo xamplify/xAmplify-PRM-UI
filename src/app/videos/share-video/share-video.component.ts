@@ -204,7 +204,13 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
         $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         const player360 = this;
-        const player = videojs('videoId').ready(function () {
+        const player = videojs('videoId', {
+             "controls": true, 
+             "autoplay": false,
+             "preload": "auto",
+             "customControlsOnMobile": true, 
+             "nativeControlsForTouch": true
+        }).ready(function () {
             this.hotkeys({
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
@@ -459,6 +465,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
+                "controls": true, 
+                "autoplay": false,
+                "preload": "auto",
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue

@@ -30,6 +30,7 @@ export class VideoFileService {
     viewsCategoryNumber = 0;
     isProgressBar = false;
     isSliderClicked = false;
+    seekbarTime: any;
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -184,6 +185,7 @@ export class VideoFileService {
     }
     logCampaignVideoActions(xtremandLog: XtremandLog) {
         try {
+            if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime;}
             let skipPause: any;
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             if (xtremandLog.actionId === 8) { skipPause = true; }

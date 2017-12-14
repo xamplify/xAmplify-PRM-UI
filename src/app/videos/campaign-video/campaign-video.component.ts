@@ -75,6 +75,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     endTimeUpdate: any;
     startTimeUpdate: any;
     previousTimeSlider: any;
+    seekbarPreviousTime = false;
+    seekbarTimestored = 0;
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
@@ -304,6 +306,10 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         return Math.round(currentTime * 100) / 100;
     }
     videoLogAction(xtremandLog: XtremandLog) {
+        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
+        console.log(xtremandLog.startDuration);
+        this.videoFileService.seekbarTime = this.seekbarTimestored; 
+        }
         console.log(xtremandLog);
         console.log(xtremandLog.actionId);
         this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
@@ -453,13 +459,18 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 // });
                 player.on('seeking', function(){
                  console.log(selfPanorama.trimCurrentTime(player.currentTime()));
-                 console.log(' enter into seek bar previous time is: '+selfPanorama.previousTime);
-                 let isPreviouseTime = false;
-                 if(!isPreviouseTime){
-                 const privousTimeValue = selfPanorama.previousTime;
-                 selfPanorama.xtremandLog.startDuration = privousTimeValue;
-                  isPreviouseTime = true;
-                 }
+                 if(selfPanorama.seekbarPreviousTime === false){
+                    console.log(' enter into seek bar previous time is: '+selfPanorama.previousTime);
+                    selfPanorama.seekbarTimestored = selfPanorama.previousTime;
+                    console.log(selfPanorama.seekbarTimestored);
+                    selfPanorama.seekbarPreviousTime = true;
+                  }
+               //  let isPreviouseTime = false;
+                //  if(!isPreviouseTime){
+                //  const privousTimeValue = selfPanorama.previousTime;
+                //  selfPanorama.xtremandLog.startDuration = privousTimeValue;
+                //   isPreviouseTime = true;
+                //  }
                  selfPanorama.timeUpdateChanged = true;
                  const timeoutTime = 300;
                  const beforeCounter = selfPanorama.counter + 1;
@@ -470,10 +481,10 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                  selfPanorama.beforeTimeChange = selfPanorama.beforeTimeChange || player.cache_.currentTime;
                  setTimeout(function() {
                     if (beforeCounter === selfPanorama.counter) {
-                       selfPanorama.LogActionValue(selfPanorama.previousTime, player.currentTime()-(timeoutTime/1000));
+                   //    selfPanorama.LogActionValue(selfPanorama.previousTime, player.currentTime()-(timeoutTime/1000));
                         console.log('before seek', selfPanorama.previousTime, '\nafter seek', player.currentTime() - (timeoutTime / 1000));
                            selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
-                            selfPanorama.xtremandLog.startDuration = selfPanorama.previousTimeSlider;
+                            selfPanorama.xtremandLog.startDuration = startDuration;
                             console.log(selfPanorama.xtremandLog.startDuration);
                             selfPanorama.xtremandLog.stopDuration = player.currentTime() - (timeoutTime / 1000);
                             selfPanorama.xtremandLog.startTime = selfPanorama.startTimeUpdate;
@@ -484,6 +495,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     }
                  }, timeoutTime);
                  selfPanorama.counter++;
+                });
+                player.on('seeked', function(){
+                    selfPanorama.seekbarPreviousTime = false;
+                    selfPanorama.videoFileService.seekbarTime = 0;
+                    console.log('seeked completed'+ selfPanorama.videoFileService.seekbarTime);
                 });
                 // player.on('seeked', function () {
                 //     selfPanorama.videoFileService.pauseAction = true;
@@ -515,7 +531,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.currentTime = player.currentTime();
                     selfPanorama.startTimeUpdate = selfPanorama.endTimeUpdate;
                     selfPanorama.endTimeUpdate = new Date();
-                    startDuration = selfPanorama.trimCurrentTime(player.currentTime());
+                  //  startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                 });
                 player.on('ended', function () {
                     const whereYouAt = player.currentTime();
@@ -649,11 +665,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             });
             this.on('seeking', function () {
                 self.videoFileService.pauseAction = true;
-                console.log(' enter into seek bar previous time is: '+self.previousTime);
-                // seekCurrentTime = true;
-                // if (self.seekStart === null) {
-                //     self.seekStart = self.trimCurrentTime(player.currentTime());
-                // }
+                 if(self.seekbarPreviousTime === false){
+                    console.log(' enter into seek bar previous time is: '+self.previousTime);
+                    self.seekbarTimestored = self.previousTime;
+                    console.log(self.seekbarTimestored);
+                    self.seekbarPreviousTime = true;
+                  }
                  const timeoutTime = 300;
                  const beforeCounter = self.counter + 1;
                  if (player.cache_.currentTime === player.duration()) {
@@ -676,6 +693,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                  }, timeoutTime);
                  self.counter++;
             });
+              this.on('seeked', function(){
+                    self.seekbarPreviousTime = false;
+                    self.videoFileService.seekbarTime = 0;
+                    console.log('seeked completed'+ self.videoFileService.seekbarTime);
+                });
             // this.on('seeked', function () {
             //     self.videoFileService.pauseAction = true;
             //     console.log('seeked from', self.seekStart);
