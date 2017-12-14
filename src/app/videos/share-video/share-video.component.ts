@@ -73,6 +73,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     currentTime = 0.0;
     endTimeUpdate: any;
     startTimeUpdate: any;
+    shareURL: any;
+    seekbarPreviousTime = false;
+    seekbarTimestored = 0;
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
         public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public referService: ReferenceService,
@@ -80,8 +83,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('share component constructor called');
         console.log('url is on angular 2' + document.location.href);
         this.shareUrl = document.location.href;
-        console.log(this.shareUrl);
-        this.shareUrl =  this.shareUrl.replace('https://socialubuntu.com', 'https://aravindu.com');
         this.logVideoViewValue = true;
         this.callAction.isOverlay = true;
         console.log(this.shareUrl);
@@ -93,6 +94,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoStoppedEvent();
         return 'you have message';
     }
+
     getVideo(shortnerUrlAlias: string) {
         this.videoFileService.getVideoByShortenerUrlAlias(shortnerUrlAlias)
             .subscribe(
@@ -326,6 +328,12 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 // if (self.seekStart === null) {
                 //     self.seekStart = self.trimCurrentTime(player.currentTime());
                 // }
+                if(player360.seekbarPreviousTime === false){
+                    console.log(' enter into seek bar previous time is: '+player360.previousTime);
+                    player360.seekbarTimestored = player360.previousTime;
+                    console.log(player360.seekbarTimestored);
+                    player360.seekbarPreviousTime = true;
+                  }
                  const timeoutTime = 300;
                  const beforeCounter = player360.counter + 1;
                  if (player.cache_.currentTime === player.duration()) {
@@ -347,6 +355,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     }
                  }, timeoutTime);
                  player360.counter++;
+                });
+                 player.on('seeked', function(){
+                    player360.seekbarPreviousTime = false;
+                    player360.videoFileService.seekbarTime = 0;
+                    console.log('seeked completed'+ player360.videoFileService.seekbarTime);
                 });
                 // player.on('seeked', function () {
                 //     player360.videoFileService.pauseAction = true;
@@ -546,7 +559,12 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         // if (self.seekStart === null) {
                         //     self.seekStart = self.trimCurrentTime(player.currentTime());
                         // }
-                        console.log('enter into seeking' + self.previousTime);
+                        if(self.seekbarPreviousTime === false){
+                            console.log(' enter into seek bar previous time is: '+self.previousTime);
+                            self.seekbarTimestored = self.previousTime;
+                            console.log(self.seekbarTimestored);
+                            self.seekbarPreviousTime = true;
+                        }
                         const timeoutTime = 300;
                             const beforeCounter = self.counter + 1;
                             if (player.cache_.currentTime === player.duration()) {
@@ -568,6 +586,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                           }
                      }, timeoutTime);
                       self.counter++;
+                    });
+                     this.on('seeked', function(){
+                        self.seekbarPreviousTime = false;
+                        self.videoFileService.seekbarTime = 0;
+                        console.log('seeked completed'+ self.videoFileService.seekbarTime);
                     });
                     // this.on('seeked', function () {
                     //     self.videoFileService.pauseAction = true;
@@ -796,6 +819,10 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.deviceDectorInfo();
     }
     videoLogAction(xtremandLog: XtremandLog) {
+        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
+        console.log(xtremandLog.startDuration);
+        this.videoFileService.seekbarTime = this.seekbarTimestored; 
+        }
         this.videoFileService.logEmbedVideoActions(xtremandLog).subscribe(
             (result: any) => {
                 xtremandLog.previousId = result.previousId;

@@ -164,7 +164,7 @@ export class VideoFileService {
         xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
-        //  if(xtremandLog.actionId === 8) { this.isSliderClicked = true;}
+         if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime;}
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
