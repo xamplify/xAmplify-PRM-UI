@@ -318,16 +318,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     player360.videoLogAction(player360.xtremandLog);
                 });
                 player.on('seeking', function () {
-                    // const seekigTime = player360.trimCurrentTime(player.currentTime());
-                    // player360.videoFileService.pauseAction = true;
-                    // if (player360.seekStart360 === null) {
-                    //     player360.seekStart360 = player360.trimCurrentTime(player.currentTime());
-                    // };
-                console.log(' enter into seek bar previous time is: '+player360.previousTime);
-                // seekCurrentTime = true;
-                // if (self.seekStart === null) {
-                //     self.seekStart = self.trimCurrentTime(player.currentTime());
-                // }
                 if(player360.seekbarPreviousTime === false){
                     console.log(' enter into seek bar previous time is: '+player360.previousTime);
                     player360.seekbarTimestored = player360.previousTime;
@@ -346,7 +336,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                            player360.xtremandLog.actionId = player360.LogAction.videoPlayer_slideSlider;
                             player360.xtremandLog.startDuration = player360.previousTime;
                             player360.xtremandLog.stopDuration = player.currentTime() - (timeoutTime / 1000);
-                         //   self.trimCurrentTime(player.currentTime()-(timeoutTime / 1000))
                             player360.xtremandLog.startTime = player360.startTimeUpdate;
                             player360.xtremandLog.endTime = new Date();
                             player360.videoLogAction(player360.xtremandLog);
@@ -361,25 +350,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     player360.videoFileService.seekbarTime = 0;
                     console.log('seeked completed'+ player360.videoFileService.seekbarTime);
                 });
-                // player.on('seeked', function () {
-                //     player360.videoFileService.pauseAction = true;
-                //     console.log('seeked from', player360.seekStart360);
-                //     console.log('previous value', player360.seekStart360, 'current time:',
-                //         player360.trimCurrentTime(player.currentTime()));
-                //     player360.xtremandLog.actionId = player360.LogAction.videoPlayer_slideSlider;
-                //     player360.xtremandLog.startDuration = player360.seekStart360;
-                //     player360.xtremandLog.stopDuration = player360.trimCurrentTime(player.currentTime());
-                //     if (player360.xtremandLog.startDuration === player360.xtremandLog.stopDuration) {
-                //         player360.xtremandLog.startDuration = player360.videoFileService.campaignTimeValue;
-                //         console.log('previuse time is ' + player360.videoFileService.campaignTimeValue);
-                //     }
-                //     player360.xtremandLog.startTime = new Date();
-                //     player360.xtremandLog.endTime = new Date();
-                //     player360.videoLogAction(player360.xtremandLog);
-                //     // player360.getCurrentTimeValues(player.currentTime());
-                //     player360.seekStart360 = null;
-                //     //  self.videoFileService.pauseAction = false;
-                // });
                 player.on('timeupdate', function () {
                     player360.previousTime = player360.currentTime;
                     player360.currentTime = player.currentTime();
@@ -555,10 +525,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     });
                     this.on('seeking', function () {
                         self.videoFileService.pauseAction = true;
-                        // const seekigTime = self.trimCurrentTime(player.currentTime());
-                        // if (self.seekStart === null) {
-                        //     self.seekStart = self.trimCurrentTime(player.currentTime());
-                        // }
                         if(self.seekbarPreviousTime === false){
                             console.log(' enter into seek bar previous time is: '+self.previousTime);
                             self.seekbarTimestored = self.previousTime;
@@ -592,22 +558,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         self.videoFileService.seekbarTime = 0;
                         console.log('seeked completed'+ self.videoFileService.seekbarTime);
                     });
-                    // this.on('seeked', function () {
-                    //     self.videoFileService.pauseAction = true;
-                    //     console.log('seeked from', self.seekStart);
-                    //     console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
-                    //     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                    //     self.xtremandLog.startDuration = self.seekStart;
-                    //     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                    //     if (self.xtremandLog.startDuration === self.xtremandLog.stopDuration) {
-                    //         self.xtremandLog.startDuration = self.videoFileService.campaignTimeValue;
-                    //         console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
-                    //     }
-                    //     self.xtremandLog.startTime = new Date();
-                    //     self.xtremandLog.endTime = new Date();
-                    //     self.videoLogAction(self.xtremandLog);
-                    //     self.seekStart = null;
-                    // });
                     this.on('timeupdate', function () {
                         self.previousTime = self.currentTime;
                         self.currentTime = player.currentTime();
@@ -734,16 +684,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     });
                 });
         //    this.videoPlayListSourceM3U8();
-    }
-    getCurrentTimeValues(time: any) {
-        const whereYouAt = time;
-        const minutes = Math.floor(whereYouAt / 60);
-        const seconds = Math.floor(whereYouAt);
-        const x = minutes < 10 ? "0" + minutes : minutes;
-        const y = seconds < 10 ? "0" + seconds : seconds;
-        const timeValue = x + ":" + y;
-        console.log(timeValue);
-        this.videoFileService.timeValue = timeValue;
     }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;

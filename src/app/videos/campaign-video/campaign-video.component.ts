@@ -260,16 +260,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             },
             error => console.log(error));
     }
-    getCurrentTimeValues(time: any) {
-        const whereYouAt = time;
-        const minutes = Math.floor(whereYouAt / 60);
-        const seconds = Math.floor(whereYouAt);
-        const x = minutes < 10 ? "0" + minutes : minutes;
-        const y = seconds < 10 ? "0" + seconds : seconds;
-        const timeValue = x + ":" + y;
-        this.timeValue = timeValue;
-        console.log('enter int o get current time' + timeValue);
-    }
     loacationDetails() {
         this.videoFileService.getJSONLocation()
             .subscribe(
@@ -291,8 +281,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('public video component ngOnInit called');
         this.deviceDectorInfo();
         this.alias = this.activatedRoute.snapshot.params['alias'];
-
-        
         this.getCampaignVideo();
         //this.xtremandLogDefaultActions();
     }
@@ -326,11 +314,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             (result: any) => {
                 console.log('successfully logged view count');
             });
-    }
-
-    LogActionValue(previousTime: any, current:any) {
-      this.previousTimeSlider = previousTime;
-      console.log("privious time: "+previousTime);
     }
      play360Video() {
         this.is360Value = true;
@@ -465,13 +448,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     console.log(selfPanorama.seekbarTimestored);
                     selfPanorama.seekbarPreviousTime = true;
                   }
-               //  let isPreviouseTime = false;
-                //  if(!isPreviouseTime){
-                //  const privousTimeValue = selfPanorama.previousTime;
-                //  selfPanorama.xtremandLog.startDuration = privousTimeValue;
-                //   isPreviouseTime = true;
-                //  }
-                 selfPanorama.timeUpdateChanged = true;
                  const timeoutTime = 300;
                  const beforeCounter = selfPanorama.counter + 1;
                  if (player.cache_.currentTime === player.duration()) {
@@ -481,7 +457,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                  selfPanorama.beforeTimeChange = selfPanorama.beforeTimeChange || player.cache_.currentTime;
                  setTimeout(function() {
                     if (beforeCounter === selfPanorama.counter) {
-                   //    selfPanorama.LogActionValue(selfPanorama.previousTime, player.currentTime()-(timeoutTime/1000));
                         console.log('before seek', selfPanorama.previousTime, '\nafter seek', player.currentTime() - (timeoutTime / 1000));
                            selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
                             selfPanorama.xtremandLog.startDuration = startDuration;
@@ -501,37 +476,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.seekbarTime = 0;
                     console.log('seeked completed'+ selfPanorama.videoFileService.seekbarTime);
                 });
-                // player.on('seeked', function () {
-                //     selfPanorama.videoFileService.pauseAction = true;
-                //     console.log('seeked from', selfPanorama.seekStart360);
-                //     console.log('previous value', selfPanorama.seekStart360, 'current time:',
-                //         selfPanorama.trimCurrentTime(player.currentTime()));
-                //     console.log('previouse time update value from: ', selfPanorama.previousTimeinTimeUpdate);
-                //     selfPanorama.xtremandLog.actionId = selfPanorama.LogAction.videoPlayer_slideSlider;
-                //     selfPanorama.xtremandLog.startDuration = selfPanorama.seekStart360;
-                //     selfPanorama.xtremandLog.stopDuration = selfPanorama.trimCurrentTime(player.currentTime());
-                //     if (selfPanorama.xtremandLog.startDuration === selfPanorama.xtremandLog.stopDuration) {
-                //         selfPanorama.xtremandLog.startDuration = selfPanorama.videoFileService.campaignTimeValue;
-                //         console.log('previuse time is ' + selfPanorama.videoFileService.campaignTimeValue);
-                //     }
-                //     selfPanorama.xtremandLog.startTime = new Date();
-                //     selfPanorama.xtremandLog.endTime = new Date();
-                //     selfPanorama.videoLogAction(selfPanorama.xtremandLog);
-                //     // selfPanorama.getCurrentTimeValues(player.currentTime());
-                //     selfPanorama.seekStart360 = null;
-                //     selfPanorama.enterIntoSeeking =  false;
-                // });
                 player.on('timeupdate', function () {
-                    if(selfPanorama.timeUpdateChanged === true){
-                        selfPanorama.previousTimeinTimeUpdate = selfPanorama.trimCurrentTime(player.currentTime());
-                        selfPanorama.timeUpdateChanged = false;
-                        console.log(selfPanorama.previousTimeinTimeUpdate);
-                    }
+                    // if(selfPanorama.timeUpdateChanged === true){
+                    //     selfPanorama.previousTimeinTimeUpdate = selfPanorama.trimCurrentTime(player.currentTime());
+                    //     selfPanorama.timeUpdateChanged = false;
+                    //     console.log(selfPanorama.previousTimeinTimeUpdate);
+                    // }
                     selfPanorama.previousTime = selfPanorama.currentTime;
                     selfPanorama.currentTime = player.currentTime();
                     selfPanorama.startTimeUpdate = selfPanorama.endTimeUpdate;
                     selfPanorama.endTimeUpdate = new Date();
-                  //  startDuration = selfPanorama.trimCurrentTime(player.currentTime());
                 });
                 player.on('ended', function () {
                     const whereYouAt = player.currentTime();
@@ -633,9 +587,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.logVideoViewsCount();
                     self.logVideoViewValue = false;
                 }
-                if (seekCheck === false) {
-                    self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
-                }
+                // if (seekCheck === false) {
+                //     self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
+                // }
             });
             this.on('pause', function () {
                 seekCheck = false;
@@ -653,11 +607,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 }
             });
             this.on('timeupdate', function () {
-                 if (seekCurrentTime === true) {
-                    startDuration = self.trimCurrentTime(player.currentTime());
-                    self.videoFileService.campaignTimeValue = startDuration;
-                    console.log('time update in seek bare' + startDuration);
-                  }
+                //  if (seekCurrentTime === true) {
+                //     startDuration = self.trimCurrentTime(player.currentTime());
+                //     self.videoFileService.campaignTimeValue = startDuration;
+                //     console.log('time update in seek bare' + startDuration);
+                //   }
                     self.previousTime = self.currentTime;
                     self.currentTime = player.currentTime();
                     self.startTimeUpdate = self.endTimeUpdate;
@@ -698,24 +652,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.videoFileService.seekbarTime = 0;
                     console.log('seeked completed'+ self.videoFileService.seekbarTime);
                 });
-            // this.on('seeked', function () {
-            //     self.videoFileService.pauseAction = true;
-            //     console.log('seeked from', self.seekStart);
-            //     console.log('previous value', self.seekStart, 'current time:', self.trimCurrentTime(player.currentTime()));
-            //     self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-            //     self.xtremandLog.startDuration = self.seekStart;
-            //     self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-            //     if (self.xtremandLog.startDuration === self.xtremandLog.stopDuration) {
-            //         self.xtremandLog.startDuration = self.videoFileService.campaignTimeValue;
-            //         console.log('previuse time is ' + self.videoFileService.campaignTimeValue);
-            //     }
-            //     self.xtremandLog.startTime = new Date();
-            //     self.xtremandLog.endTime = new Date();
-            //     self.videoLogAction(self.xtremandLog);
-            //     self.getCurrentTimeValues(player.currentTime());
-            //     self.seekStart = null;
-            //     //  self.videoFileService.pauseAction = false;
-            // });
             this.on('ended', function () {
                 const whereYouAt = player.currentTime();
                 console.log(whereYouAt);
