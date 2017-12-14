@@ -63,6 +63,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hasAllAccess = this.refService.hasAllAccess();
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
+        this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
@@ -219,7 +220,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
      // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="profile-video"/>');
         this.videoUtilService.normalVideoJsFiles();
-        this.videoUrl = this.authenticationService.MEDIA_URL+'Birds0211512666857407_mobinar.m3u8';
+        this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
         this.defaultVideoSettings();
         this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
         if (this.refService.defaultPlayerSettings.enableVideoController === false) {
