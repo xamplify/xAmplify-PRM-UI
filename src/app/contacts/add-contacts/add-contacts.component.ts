@@ -1850,7 +1850,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
     
     downloadEmptyCsv(){
-        window.location.href = "https://aravindu.com/vod/UPLOAD_USER_LIST _EMPTY.csv";
+        window.location.href = this.authenticationService.MEDIA_URL+"UPLOAD_USER_LIST _EMPTY.csv";
     }
 
     ngDestroy() {

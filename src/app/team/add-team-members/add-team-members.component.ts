@@ -55,7 +55,7 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
     downloadEmptyCsv(){
-        window.location.href = "https://aravindu.com/vod/team-member-list.csv";
+        window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
     }
     
     /**********On Init()**********/
