@@ -765,7 +765,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         }
         this.videoFileService.logEmbedVideoActions(xtremandLog).subscribe(
             (result: any) => {
-                xtremandLog.previousId = result.previousId;
+                xtremandLog.previousId = result.id;
                 console.log('successfully logged the actions');
                 console.log(this.xtremandLog.actionId);
             });
