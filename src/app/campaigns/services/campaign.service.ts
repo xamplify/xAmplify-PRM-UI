@@ -48,13 +48,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaign(pagination:Pagination,userId:number) {
-        var url =this.URL+"admin/listCampaign/"+userId+"?access_token="+this.authenticationService.access_token;
+    listCampaign(pagination: Pagination, userId: number) {
+        var url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
-        .map(this.extractData)
-        .catch(this.handleError);   
-      
-       
+            .map(this.extractData)
+            .catch(this.handleError);
+
+
     }
 
     getCampaignById(data: any) {
@@ -81,116 +81,122 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getHeatMap( userId: number, campaignId: number ) {
-        return this.http.get( this.URL + 'user-video-heat-map?access_token=' + this.authenticationService.access_token + '&userId='+userId+'&campaignId='+campaignId )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    getHeatMapByUniqueSession(sessionId: string){
-        return this.http.get( this.URL + 'user-video-heat-map-by-unique-session?access_token=' + this.authenticationService.access_token + '&sessionId='+sessionId )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    campaignWatchedUsersListCount(campaignId: number){
-        return this.http.get( this.URL + 'campaign/watched-users-list-count/'+campaignId+'?access_token=' + this.authenticationService.access_token)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    usersWatchList(campaignId: number, pagination: Pagination ){
-        return this.http.post( this.URL + 'campaign/watched-users-list/'+campaignId+'?access_token=' + this.authenticationService.access_token, pagination)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    emailActionList(campaignId: number, actionType: string, pagination: Pagination ){
-        return this.http.post( this.URL + 'campaign/list-emaillogs-by-action/'+campaignId+'/'+actionType+'?access_token=' + this.authenticationService.access_token, pagination)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    listCampaignViews(campaignId: number, pagination: Pagination ) {
-        return this.http.post( this.URL + 'campaign/views/'+campaignId+'?access_token=' + this.authenticationService.access_token, pagination)
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    getCampaignViewsReportDurationWise(campaignId: number){
-        return this.http.get( this.URL + 'campaign/total-views/'+campaignId+'?access_token=' + this.authenticationService.access_token)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    getEmailLogCountByCampaign( campaignId: number ) {
-        return this.http.get( this.URL + 'campaign/emaillog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    getEmailSentCount( campaignId: number ) {
-        return this.http.get( this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    getCampaignWatchedUsersCount( campaignId: number ) {
-        return this.http.get( this.URL + 'campaign/watched-users-count/' + campaignId + '?access_token=' + this.authenticationService.access_token+'&actionId=1')
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    getCountryWiseCampaignViews( campaignId: number ) {
-        return this.http.get( this.URL + 'campaign/world-map/'+campaignId +'?access_token=' + this.authenticationService.access_token)
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    listCampaignInteractionsData(customerId: number, reportType: string){
-        return this.http.get( this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId + '&reportType='+ reportType)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    listLaunchedCampaign(userId: number){
-        return this.http.get( this.URL + 'admin/listLaunchedCampaign?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    getUserCampaignReport(userId: number){
-        return this.http.get( this.URL + 'admin/get-user-campaign-report?access_token=' + this.authenticationService.access_token + '&userId=' + userId )
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    
-    saveUserCampaignReport(data: any){
-        return this.http.post(this.URL + "admin/save-user-campaign-report?access_token=" + this.authenticationService.access_token, data)
-        .map(this.extractData)
-        .catch(this.handleError);
-    }
-    
-    listEmailLogsByCampaignAndUser( campaignId: number, userId: number ) {
-        return this.http.get( this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-    
-    createSocialCampaign( campaign: Campaign ) {
-        return this.http.post( this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, campaign )
-            .map( this.extractData )
-            .catch( this.handleError );
+    getHeatMap(userId: number, campaignId: number) {
+        return this.http.get(this.URL + 'user-video-heat-map?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
+    getHeatMapByUniqueSession(sessionId: string) {
+        return this.http.get(this.URL + 'user-video-heat-map-by-unique-session?access_token=' + this.authenticationService.access_token + '&sessionId=' + sessionId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    campaignWatchedUsersListCount(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/watched-users-list-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    usersWatchList(campaignId: number, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/watched-users-list/' + campaignId + '?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/list-emaillogs-by-action/' + campaignId + '/' + actionType + '?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listCampaignViews(campaignId: number, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/views/' + campaignId + '?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCampaignViewsReportDurationWise(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/total-views/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getEmailLogCountByCampaign(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/emaillog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getEmailSentCount(campaignId: number) {
+        return this.http.get(this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCampaignWatchedUsersCount(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/watched-users-count/' + campaignId + '?access_token=' + this.authenticationService.access_token + '&actionId=1')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCountryWiseCampaignViews(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/world-map/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listCampaignInteractionsData(customerId: number, reportType: string) {
+        return this.http.get(this.URL + 'admin/list-campaign-interactions?access_token=' + this.authenticationService.access_token + '&customerId=' + customerId + '&reportType=' + reportType)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listLaunchedCampaign(userId: number) {
+        return this.http.get(this.URL + 'admin/listLaunchedCampaign?access_token=' + this.authenticationService.access_token + '&userId=' + userId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getUserCampaignReport(userId: number) {
+        return this.http.get(this.URL + 'admin/get-user-campaign-report?access_token=' + this.authenticationService.access_token + '&userId=' + userId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveUserCampaignReport(data: any) {
+        return this.http.post(this.URL + "admin/save-user-campaign-report?access_token=" + this.authenticationService.access_token, data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
+        return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    createSocialCampaign(campaign: Campaign) {
+        return this.http.post(this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveAsCampaign(campaign: Campaign) {
+        return this.http.post(this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();
         console.log(body);
         return body || {};
     }
-    
-    
+
+
     private handleError(error: any) {
-        return Observable.throw( error );}
+        return Observable.throw(error);
+    }
 }

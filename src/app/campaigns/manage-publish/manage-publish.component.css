@@ -185,3 +185,6 @@
 	.tabbable-custom {
 		box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
 	}
+a:hover{
+	text-decoration: none;
+}
