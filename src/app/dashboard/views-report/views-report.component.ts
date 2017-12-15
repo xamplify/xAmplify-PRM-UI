@@ -169,26 +169,30 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $("#show_preview").modal({ backdrop: 'static', keyboard: false });
     }
     destroyPreview() {
-        var player = videojs("videoId");
-        if (player) {
-            console.log(player.currentType_);
-            let videoType = player.currentType_;
-            if (videoType == "application/x-mpegURL") {
-                console.log("Clearing Normal Video");
-                player.dispose();
-                $("#main_video").empty();
-            } else {
-                console.log("Clearing 360 video");
-                player.panorama({
-                    autoMobileOrientation: true,
-                    clickAndDrag: true,
-                    clickToToggle: true,
-                    callback: function () {
-                        player.pause();
-                        $("#main_video").empty();
-                    }
-                });
-            }
+      //  var player = videojs("videoId");
+        if (this.videoJSplayer) {
+            this.videoJSplayer.dispose();
+              $("#main_video").empty();
+            // console.log(player.currentType_);
+            // let videoType = player.currentType_;
+            // if (videoType == "application/x-mpegURL") {
+            //     console.log("Clearing Normal Video");
+            //     player.dispose();
+            //     $("#main_video").empty();
+            // } else {
+            //     console.log("Clearing 360 video");
+            //     player.panorama({
+            //         autoMobileOrientation: true,
+            //         clickAndDrag: true,
+            //         clickToToggle: true,
+            //         callback: function () {
+            //             player.pause();
+            //             $("#main_video").empty();
+            //         }
+            //     });
+            // }
+        } else { 
+            console.log('360 video closed');
         }
     }
      videoTitleLength(title: string) {
@@ -205,6 +209,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     appendVideoData(videoFile: SaveVideoFile, divId: string, titleId: string) {
+        $('.h-video').remove();
+        $('.p-video').remove();
         console.log(videoFile);
         const videoSelf = this;
      //   videoFile.transparency = 100; // need to get the value from db
@@ -221,7 +227,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         var is360 = videoFile.is360video;
         $("#" + divId).empty();
         $("#" + titleId).empty();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="v-video" rel="stylesheet">');
         if (is360) {
             console.log("Loaded 360 Video");
             $('.h-video').remove();
@@ -246,7 +252,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $("#videoId").css("width", "550px");
             $("#videoId").css("height", "310px");
             $("#videoId").css("max-width", "100%");
-
         } else {
             console.log("Loaded Normal Video");
             $('.p-video').remove();
@@ -264,7 +269,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $("#videoId").css("max-width", "100%");
             var document: any = window.document;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
-            var player = videojs("videoId", {
+            this.videoJSplayer = videojs("videoId", {
                 html5: {
                 hls: {
                   overrideNative: overrideNativeValue
@@ -276,8 +281,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             });
             this.videoControllColors(videoFile);
              console.log(player);
-            if (player) {
-                player.on('fullscreenchange', function () {
+            if (this.videoJSplayer) {
+                this.videoJSplayer.on('fullscreenchange', function () {
                     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     var event = state ? 'FullscreenOn' : 'FullscreenOff';
                     if (event === "FullscreenOn") {
@@ -321,6 +326,9 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         } catch (err) { }
     }
     ngOnDestroy() {
+        $('.p-video').remove();
+        $('.h-video').remove();
+        $('.v-video').remove();
         $('#show_preview').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();

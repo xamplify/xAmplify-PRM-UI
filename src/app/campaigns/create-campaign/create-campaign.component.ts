@@ -181,6 +181,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     hasInternalError:boolean =false;
     countries: Country[];
     timezones: Timezone[];
+    videojsPlayer: any;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -773,30 +774,36 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#show_preview").modal('show');
     }
     destroyPreview(){
-        var player = videojs("videoId");
-        if(player){
-            console.log(player.currentType_);
-            let videoType = player.currentType_;
-            if(videoType=="application/x-mpegURL"){
-                console.log("Clearing Normal Video");
-                player.dispose();
-                $("#main_video").empty();
-            }else{
-              console.log("Clearing 360 video");
-               $("#main_video").empty();
-                player.dispose();
-                // player.panorama({
-                //     autoMobileOrientation: true,
-                //     clickAndDrag: true,
-                //     clickToToggle: true,
-                //     callback: function () {
-                //         player.pause();
-                //         $("#main_video").empty();
-                //     }
-                //   });
+       if(this.videojsPlayer){
+          this.videojsPlayer.dispose();
+       }
+       else{
+           console.log('closed 360 video');
+       }
+        // var player = videojs("videoId");
+        // if(player){
+        //     console.log(player.currentType_);
+        //     let videoType = player.currentType_;
+        //     if(videoType=="application/x-mpegURL"){
+        //         console.log("Clearing Normal Video");
+        //         player.dispose();
+        //         $("#main_video").empty();
+        //     }else{
+        //       console.log("Clearing 360 video");
+        //        $("#main_video").empty();
+        //         player.dispose();
+        //         // player.panorama({
+        //         //     autoMobileOrientation: true,
+        //         //     clickAndDrag: true,
+        //         //     clickToToggle: true,
+        //         //     callback: function () {
+        //         //         player.pause();
+        //         //         $("#main_video").empty();
+        //         //     }
+        //         //   });
                 
-            }
-        }
+        //     }
+        // }
         
     }
     playVideo(){
@@ -823,7 +830,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         var is360 = videoFile.is360video;
         $("#"+divId).empty();
         $("#"+titleId).empty();
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" rel="stylesheet">');
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="hls-video" rel="stylesheet">');
         if(is360){
             console.log("Loaded 360 Video");
             $('.h-video').remove();
@@ -870,7 +877,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#videoId").css("max-width", "100%");
             var document:any = window.document;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
-            var player = videojs("videoId", {
+            this.videojsPlayer = videojs("videoId", {
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue
@@ -883,8 +890,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoControllColors(videoFile); 
             }
             console.log(player);
-            if(player){
-                player.on('fullscreenchange', function () {
+            if(this.videojsPlayer){
+                this.videojsPlayer.on('fullscreenchange', function () {
                     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     var event = state ? 'FullscreenOn' : 'FullscreenOff';
                     if(event==="FullscreenOn"){
@@ -1810,8 +1817,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }
                  }
             }
-        }
-       
+         }
+        $('.p-video').remove();
+        $('.h-video').remove();
+        $('.hls-video').remove();
          }
     
     saveCampaignOnDestroy(){

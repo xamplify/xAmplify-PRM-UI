@@ -19,3 +19,12 @@
 	border-radius: 0;
 	padding: 10px;
 }
+:host /deep/ .vjs-mouse-display {
+     display: none !important;
+  }
+/* /deep/ .video-js .vjs-mute-control, .video-js .vjs-volume-menu-button {
+      margin-left: -11px;
+} */  
+:host /deep/ .vjs-time-tooltip{
+    display: none !important;
+}
