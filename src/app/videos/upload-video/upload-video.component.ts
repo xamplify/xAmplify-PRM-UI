@@ -142,16 +142,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 } else {
                      this.processVideo(JSON.parse(response).path); }
             };
-            if (this.refService.uploadRetrivejsCalled === false) {
-                $('head').append('<link href="assets/js/indexjscss/videojs.record.css" rel="stylesheet"  class="r-video">');
+         //   if (this.refService.uploadRetrivejsCalled === false) {
+                $('head').append('<link href="assets/js/indexjscss/webcam-capture/videojs.record.css" rel="stylesheet"  class="r-video">');
                 $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
                 $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
                 $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
                 // $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
                 // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-                this.refService.uploadRetrivejsCalled = true;
-            }
-            $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
+             //   this.refService.uploadRetrivejsCalled = true;
+          //  }
+               $('head').append('<script src="assets/js/indexjscss/webcam-capture/videojs.record.js" type="text/javascript"  class="r-video"/>');
             if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
                 !this.browserInfo.includes('edge')) {
                 //    this.checkCameraBlock();
@@ -828,7 +828,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy() {
-        $('r-video').remove();
+        $('.r-video').remove();
         if (this.deviceNotSupported) { swal.close(); }
         console.log('Deinit - Destroyed Component');
         if (this.camera) {

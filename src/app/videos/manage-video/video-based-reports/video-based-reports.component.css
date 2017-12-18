@@ -28,3 +28,5 @@
 :host /deep/ .vjs-time-tooltip{
     display: none !important;
 }
+:host /deep/ .video-js .vjs-progress-control:hover .vjs-mouse-display {
+  display: none; }
