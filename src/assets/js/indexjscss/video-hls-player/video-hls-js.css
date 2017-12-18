@@ -663,7 +663,7 @@ body.vjs-full-window {
  to avoid a weird hitch when you roll off the hover. */
 .video-js .vjs-progress-control:hover .vjs-mouse-display:after,
 .video-js .vjs-progress-control:hover .vjs-play-progress:after {
-  display: block;
+  display: none;
   font-size: 1em; }
 
 .video-js .vjs-progress-holder .vjs-play-progress,
@@ -732,7 +732,7 @@ body.vjs-full-window {
   z-index: 0; }
 
 .video-js .vjs-progress-control:hover .vjs-mouse-display {
-  display: block; }
+  display: none; }
 
 .video-js.vjs-user-inactive .vjs-progress-control .vjs-mouse-display,
 .video-js.vjs-user-inactive .vjs-progress-control .vjs-mouse-display:after {
@@ -928,9 +928,9 @@ body.vjs-full-window {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  font-size: 1em;
+  font-size: 12px;
   line-height: 3em; 
-  margin-top: 2px;}
+  margin-top: -2px;}
 
 .vjs-live .vjs-time-control {
   display: none; }
@@ -1421,3 +1421,65 @@ video::-webkit-media-text-track-display {
 
 .video-js .vjs-volume-horizontal .vjs-menu {
   left: -2em; }
+
+/* time tool tip css*/
+.video-js .vjs-time-tooltip {
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
+  -webkit-border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+  border-radius: 0.3em;
+  color: #000;
+  float: right;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  padding: 6px 8px 8px 8px;
+  pointer-events: none;
+  position: relative;
+  top: -3.4em;
+  visibility: hidden;
+  z-index: 1; }
+
+.video-js .vjs-progress-holder:focus .vjs-time-tooltip {
+  display: none; }
+
+.video-js .vjs-progress-control:hover .vjs-time-tooltip,
+.video-js .vjs-progress-control:hover .vjs-progress-holder:focus .vjs-time-tooltip {
+  display: none;
+  font-size: 0.6em;
+  visibility: visible; }
+
+.video-js .vjs-progress-control.disabled:hover .vjs-time-tooltip {
+  font-size: 1em; }
+
+.video-js .vjs-progress-control .vjs-mouse-display {
+  display: none;
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: #000;
+  z-index: 1; }
+
+.vjs-no-flex .vjs-progress-control .vjs-mouse-display {
+  z-index: 0; }
+
+.video-js .vjs-progress-control:hover .vjs-mouse-display {
+  display: none; }
+
+.video-js.vjs-user-inactive .vjs-progress-control .vjs-mouse-display {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: visibility 1s, opacity 1s;
+  -moz-transition: visibility 1s, opacity 1s;
+  -ms-transition: visibility 1s, opacity 1s;
+  -o-transition: visibility 1s, opacity 1s;
+  transition: visibility 1s, opacity 1s; }
+
+.video-js.vjs-user-inactive.vjs-no-flex .vjs-progress-control .vjs-mouse-display {
+  display: none; }
+
+.vjs-mouse-display .vjs-time-tooltip {
+  color: #fff;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.8); }
+
