@@ -55,10 +55,7 @@
 	font-size :11px;
     background-color:transparent;
 }	
-:host /deep/ .video-js .vjs-time-control {
-    font-size: 14px;
-    margin-top: -2px; 
-}
+
 :host /deep/ .video-js .vjs-progress-holder .vjs-play-progress :hover {
 	margin-top : 5px;
 	font-size: 5px;
