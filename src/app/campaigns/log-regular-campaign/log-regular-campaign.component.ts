@@ -15,6 +15,7 @@ export class LogRegularCampaignComponent implements OnInit {
   userAlias: string;
   templateId: number;
   templatehtml: string;
+  alias: string;
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
@@ -23,19 +24,20 @@ export class LogRegularCampaignComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((param: any) => {
-      this.campaignAlias = param['campaignAlias'];
-      this.userAlias = param['userAlias'];
-      this.templateId = param['templateId'];
-    }, (error: any) => {
-      this.xtremandLogger.error(error);
-    });
+    // this.activatedRoute.queryParams.subscribe((param: any) => {
+    //   this.alias = param['alias'];
+    //   this.userAlias = param['userAlias'];
+    //   this.templateId = param['templateId'];
+    // }, (error: any) => {
+    //   this.xtremandLogger.error(error);
+    // });
+    this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
   }
 
   getRegularTemplateHtml() {
     try {
-      this.videoFileService.showCampaignEmail(this.campaignAlias, this.userAlias, this.templateId)
+      this.videoFileService.showCampaignEmail(this.alias)
         .subscribe((result: any) => {
               this.templatehtml = result.templatehtml;
               this.xtremandLogger.log(this.templatehtml);

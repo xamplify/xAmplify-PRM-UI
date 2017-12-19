@@ -52,7 +52,7 @@ export const routes: Routes = [
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
-    { path: 'user/showCampaignEmail', component: LogRegularCampaignComponent },
+    { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
     { path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },

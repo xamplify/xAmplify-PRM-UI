@@ -291,8 +291,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('public video component ngOnInit called');
         this.deviceDectorInfo();
         this.alias = this.activatedRoute.snapshot.params['alias'];
-
-        
         this.getCampaignVideo();
         //this.xtremandLogDefaultActions();
     }
