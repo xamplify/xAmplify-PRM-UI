@@ -310,7 +310,8 @@
 										</div>
 										<div class="col-xs-9 col-sm-9 col-md-9" style="top: 7px; position: relative;float:right">
 											<div *ngIf="openOwnThumbnail">
-												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" (change)="ownThumbnailfileChange($event)" *ngIf="uploader.queue.length==0">
+												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png"
+												 (change)="ownThumbnailfileChange($event)" *ngIf="uploader.queue.length==0">
 												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
 												<div>
 													<span *ngIf="imageUrlPath" class="close" style="margin-right: 283px;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
