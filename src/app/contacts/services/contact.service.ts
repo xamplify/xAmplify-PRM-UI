@@ -47,6 +47,18 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    defaultPartnerList(userId: number){
+        return this._http.get( this.url + `default-partner-list/${userId}?access_token=${this.authenticationService.access_token}` )
+        .map( this.extractData )
+        .catch( this.handleError );
+}
+
+    listContactsOfDefaultPartnerList(userId: number, pagination: Pagination){
+        return this._http.post( this.url + `partners/${userId}?access_token=${this.authenticationService.access_token}`, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
         this.logger.info( "Service class loadContact() completed" );

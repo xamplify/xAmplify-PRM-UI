@@ -59,7 +59,7 @@
 						</ul>
 					</li>
 					
-						<li *ngIf="isContact" [ngClass]="{'active':  baseRoute === 'partners'}">
+					<!-- <li *ngIf="isContact" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a>
 						<i class="fa fa-list-alt"></i>
 						<span class="title">Partners</span>
@@ -80,6 +80,14 @@
 								</a>
 							</li>
 						</ul>
+					</li> -->
+					<li *ngIf="isOrgAdmin && authService.user.hasCompany" [ngClass]="{'active':  baseRoute === 'partners'}">
+						<a  [routerLink]="['./partners']" >
+						<i class="fa fa-list-alt"></i>
+						<span class="title">Partners</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
 					</li>
 					
 					<li *ngIf="isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
