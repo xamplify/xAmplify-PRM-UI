@@ -17,6 +17,15 @@
 				<i class="fa fa-angle-right"></i></li>
 			<li><a>Manage Partners</a></li>
 		</ul>
+		<div align="right" style="margin-top: 2px;">
+			<a (click)="downloadEmptyCsv()">
+				<button type="button" class="btn green" download
+					style="color: #ffffff;">
+					Download Csv File<i class="fa fa-cloud-download" aria-hidden="true"
+						style="margin-left: 5px"></i>
+				</button>
+			</a>
+		</div>
 	</div>
 
 	<section class="clearfix">
@@ -41,11 +50,295 @@
 				<h6>Add Partner</h6>
 			</button>
 		</div>
-		<div align="right" style="margin-right: 20px;">
-			<a class="btn btn-success" (click)="downloadEmptyCsv()" download
-				style="color: white;">Download Csv File</a>
+		<div>
+		<a class="btn btn-success pull-right" (click)="saveValidEmails()"
+				style="color: white;">Save</a>
 		</div>
 	</section>
+	
+	<section class="clearfix">
+	<div>
+						<div class="col-xs-12" style="width: 103%; left: -18px;top: 15px;">
+							<!-- BEGIN EXAMPLE TABLE PORTLET-->
+							<div class="portlet box blue">
+								<div class="portlet-title">
+									<div class="caption">
+										<i class="fa fa-edit"></i>List of Partners
+									</div>
+								</div>
+								<div class="portlet-body">
+									
+
+									<div style="margin-bottom: 0px; padding-left: 1cm">
+										<table class="table" *ngIf="uploadCsvUsingFile">
+											<thead>
+											</thead>
+											<tbody>
+												<tr *ngFor="let item of uploader.queue">
+													<td width="28%"><strong>{{ item?.file?.name
+															}}</strong></td>
+													<td *ngIf="uploader.isHTML5" nowrap>{{
+														item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+													<td *ngIf="uploader.isHTML5">
+														<div class="progress" style="margin-bottom: 0;">
+															<div class="progress-bar" role="progressbar"
+																[ngStyle]="{ 'width': item.progress + '%' }"></div>
+														</div>
+													</td>
+													<td class="text-center"><span *ngIf="item.isSuccess"><i
+															class="glyphicon glyphicon-ok"></i></span> <span
+														*ngIf="item.isCancel"><i
+															class="glyphicon glyphicon-ban-circle"></i></span> <span
+														*ngIf="item.isError"><i
+															class="glyphicon glyphicon-remove"></i></span></td>
+													<td nowrap>
+														<button type="button" class="btn btn-danger btn-xs"
+															(click)="item.remove()" (click)="removeCsv()">
+															<span class="glyphicon glyphicon-trash"></span> Remove
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<div *ngIf="fileTypeError" id="csvFileTypeError"
+											class="alert alert-danger alert-dismissable"
+											style="width: 50%">
+											<b>File type not allowed please select the .csv file
+												only..</b>
+										</div>
+										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
+											class="alert alert-danger alert-dismissable"
+											style="width: 80%">
+											<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
+												and Re Upload..
+											</b>
+										</div>
+									</div>
+									<div *ngIf="dublicateEmailId" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable"
+										style="width: 100%">
+										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<h4>
+											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
+										</h4>
+									</div>
+
+									<div *ngIf="noContactsFound==true"
+										style="background-color: #3598dc" class="alert alert-info">
+										<h4 style="margin-top: 8px; color: white">No
+											Partners found..!</h4>
+									</div>
+									<div *ngIf="showInvalidMaills==true" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable">
+										<a class="close" (click)="closeShowValidMessage()"
+											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
+											email pattern Contacts found.. !!!</strong>
+									</div>
+									
+
+									
+									<div class="clearfix">
+										<div class="col-xs-12">
+											<div class="table-responsive">
+												<table class='table tgrid'>
+													<thead>
+														<tr>
+															<th class='text-center'><input type="checkbox"
+																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																[id]="checkAllExistingContacts" /></th>
+															<th style="width: 25%">NAME</th>
+															<th>CONTACT</th>
+															<th>JOB TITLE</th>
+															<th class='text-center'>ADDRESS</th>
+															<th class='text-center'>MORE</th>
+															<th class='text-center'>ACTIONS</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container
+															*ngFor="let contact of pagination.pagedItems;let i = index">
+														<tr class='row_{{i}}'>
+															<td class='text-center'
+																*ngIf="isAdd || !isCampaignDraftContactList "><input
+																type="checkbox"
+																class="chk"
+																lang="{{contact.name}}" name="campaignContact[]"
+																value="{{contact.id}}" id="{{contact.id}}"
+																(click)="highlightRow(contact.id,$event)" /></td>
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase'>{{contact.firstName |
+																			slice:0:1}}{{contact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
+																		<h6 class='m0'>
+																			<a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0'>{{contact.jobTitle}}</h5>
+																<h6 class='mt0'>{{contact.contactCompany}}</h6>
+															</td>
+															<td align="center">
+																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+																<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="contact.isShowDetails = ! contact.isShowDetails">
+																	<span *ngIf="!contact.isShowDetails">More</span> <span
+																		*ngIf="contact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center">
+																<span (click)="editUserDetails(contact)"> <i
+																	class="fa fa-pencil-square-o" aria-hidden="true"
+																	style="color: #3375af; cursor: pointer; font-size: 25px; margin-top: 14px; margin-right: 6px"></i>
+															</span> <span (click)="deleteUserShowAlert(contact.id)">
+																	<i class="fa fa-trash-o" aria-hidden="true"
+																	style="color: red; cursor: pointer; font-size: 25px; margin-top: 14px"></i>
+															</span>
+															</td>
+															<ng-template #NA>N/A</ng-template>
+														</tr>
+														<tr
+															[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
+															<td colspan="6">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='pt10 pb10 bold'>Notes:</td>
+																			<td class='pt10 pb10'>{{contact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+														</ng-container>
+														<ng-container>
+														<ng-container
+															*ngFor="let newContact of newPartnerUser; let i = index">
+														<tr class='row_{{i}}' style="background-color: #73c5be;">
+															<td align="center"><input type="checkbox"
+																checked="newContact.checked"></td>
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase textWhite'>{{newContact.firstName
+																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold textWhite'
+																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
+																		<h6 class='m0 textWhite'>
+																			<a href="mailto:ksathish@xtremand.com"
+																				class='bold textWhite'>{{newContact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="newContact?.mobileNumber; else NA"
+																		class="textWhite">{{newContact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
+																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
+															</td>
+															<td>
+																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
+																<h5 *ngIf="newContact?.city && newContact.country"
+																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+																	<span *ngIf="!newContact.isShowDetails">More</span> <span
+																		*ngIf="newContact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center"><a class="delete textWhite"
+																(click)="cancelRow(i)"> Cancel </a></td>
+															<ng-template #NA>N/A</ng-template>
+														</tr>
+														<tr
+															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
+															style="background-color: #73c5be;">
+															<td colspan="8">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
+																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+														</ng-container> </ng-container>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END EXAMPLE TABLE PORTLET-->
+							<ul
+								*ngIf="pagination.pager.pages && pagination.pager.pages.length"
+								class="pagination m0">
+								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+									<a (click)="setPage(1)"
+									[class.disabled]="pagination.pager.currentPage === 1">First</a>
+								</li>
+								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+									<a (click)="setPage(pagination.pager.currentPage - 1)"
+									[class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+								</li>
+								<li *ngFor="let page of pagination.pager.pages"
+									[ngClass]="{active:pagination.pager.currentPage === page}"><a
+									(click)="setPage(page)"
+									[class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
+								<li
+									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+									<a (click)="setPage(pagination.pager.currentPage + 1)"
+									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+								</li>
+								<li
+									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+									<a (click)="setPage(pagination.pager.totalPages)"
+									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+								</li>
+							</ul>
+							<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
+								style="left: -4px;">
+								<select class="form-control"
+									[(ngModel)]="sortOptionForPagination"
+									(ngModelChange)="onChangeAllContactUsers($event)">
+									<ng-container
+										*ngFor="let sort of sortOptionsForPagination; let i = index">
+									<option [ngValue]="sort">{{sort.value}}</option>
+									</ng-container>
+								</select> <br>
+							</div>
+						</div>
+					</div>
+	</section>
+	
 </div>
 
 <!-- Modal -->
