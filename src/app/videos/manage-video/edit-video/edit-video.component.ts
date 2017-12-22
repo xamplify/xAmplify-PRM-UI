@@ -825,6 +825,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (error) { console.log('error'); }
     }
     showEditModalDialog() {
+        if(this.videoJSplayer){
+            const self = this;
+            this.videoJSplayer.play();
+            setTimeout(()=>{
+            self.videoJSplayer.pause();
+           }, 1);
+        }
         $('#overLayDialog').append($('#overlay-modal').show());
     }
     settingImagePaths(i: number) {
