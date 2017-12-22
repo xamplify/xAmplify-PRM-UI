@@ -1094,6 +1094,7 @@ export class EditContactsComponent implements OnInit {
             })
             }
     }
+    
     showingContactDetails(contactType: string){
         this.resetResponse();
         this.contactsByType.pagination = new Pagination();

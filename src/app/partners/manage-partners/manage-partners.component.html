@@ -27,8 +27,7 @@
 			</a>
 		</div>
 	</div>
-
-	<section class="clearfix">
+<div class="clearfix" style=" margin-bottom: 17px;">
 		<div class="col-xs-6 col-sm-3">
 			<div class="btn-xs btn-info fileinput-button btn-block rounded-0"
 				style="overflow: hidden; position: relative;"
@@ -54,11 +53,28 @@
 		<a class="btn btn-success pull-right" (click)="saveValidEmails()"
 				style="color: white;">Save</a>
 		</div>
-	</section>
+	</div>
 	
-	<section class="clearfix">
-	<div>
-						<div class="col-xs-12" style="width: 103%; left: -18px;top: 15px;">
+	<div class="col-xs-12" *ngIf="response.responseType != null">
+						<div class="alert alert-dismissible" role="alert"
+							style="width: 103%; margin-left: -16px; top: 17px;"
+							[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+  									'alert-danger': response.responseType == 'ERROR'}">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close" (click)="response.responseType = null">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="flex m0" style="padding-top: 0px;">
+								<i class="fa"
+									[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+ 								 'fa-exclamation': response.responseType == 'ERROR'}"
+									aria-hidden="true" style="padding-right: 7px;"></i> <span
+									[innerHTML]="response.responseMessage"></span>
+							</h4>
+						</div>
+					</div>
+	<div class="clearfix">
+						<div class="col-xs-12" style="width: 103%; left: -18px;">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet box blue">
 								<div class="portlet-title">
@@ -337,8 +353,6 @@
 							</div>
 						</div>
 					</div>
-	</section>
-	
 </div>
 
 <!-- Modal -->
@@ -350,8 +364,10 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					(click)="addPartnerModalClose()">&times;</button>
+			<button type="button" *ngIf="!updatePartnerUser" class="close"
+						data-dismiss="modal" (click)="addPartnerModalClose()">&times;</button>
+					<button type="button" *ngIf="updatePartnerUser" class="close"
+						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button>
 				<h4 class="modal-title">Add Partner</h4>
 			</div>
 			<div class="modal-body">
@@ -469,12 +485,25 @@
 					</div>
 				</form>
 			</div>
-			<div class="modal-footer">
+			<!-- <div class="modal-footer">
 				<button type="submit" class="btn green"
 					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
 				<button type="button" class="btn green" data-dismiss="modal"
 					(click)="addPartnerModalClose()">Close</button>
-			</div>
+			</div> -->
+			<div class="modal-footer" *ngIf="!updatePartnerUser">
+					<button type="submit" class="btn green"
+						[disabled]="!checkingForEmail"
+						(click)="addRow()">Add</button>
+					<button type="button" class="btn green" data-dismiss="modal"
+						(click)="addPartnerModalClose()">Close</button>
+				</div>
+				<div class="modal-footer" *ngIf="updatePartnerUser">
+					<button type="submit" class="btn green"
+						[disabled]="!checkingForEmail" (click)="updatePartnerListUser()">Update</button>
+					<button type="button" class="btn green" data-dismiss="modal"
+						(click)="updatePartnerModalClose()">Close</button>
+				</div>
 		</div>
 
 	</div>
