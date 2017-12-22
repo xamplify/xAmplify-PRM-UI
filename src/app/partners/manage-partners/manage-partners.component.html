@@ -30,16 +30,7 @@
 <div class="clearfix" style=" margin-bottom: 17px;">
 		<div class="col-xs-6 col-sm-3">
 			<div class="btn-xs btn-info fileinput-button btn-block rounded-0"
-				style="overflow: hidden; position: relative;"
-				*ngIf="!isAddTeamMember && !isUploadCsv">
-				<h6 style="text-align: center;">Upload Csv</h6>
-				<input type="file" class="file-upload" #fileImportInput
-					name="File Upload" id="txtFileUpload" accept=".csv" style="display:none;"
-					(change)="fileChangeListener($event)" />
-			</div>
-			<div class="btn-xs btn-info fileinput-button btn-block rounded-0"
-				style="overflow: hidden; position: relative; cursor: not-allowed;"
-				disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
+				style="overflow: hidden; position: relative; cursor: pointer;">
 				<h6 style="text-align: center;">Upload Csv</h6>
 			</div>
 		</div>
@@ -85,7 +76,7 @@
 								<div class="portlet-body">
 									
 
-									<div style="margin-bottom: 0px; padding-left: 1cm">
+									<!-- <div style="margin-bottom: 0px; padding-left: 1cm">
 										<table class="table" *ngIf="uploadCsvUsingFile">
 											<thead>
 											</thead>
@@ -150,20 +141,18 @@
 											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
 											email pattern Contacts found.. !!!</strong>
 									</div>
-									
-
-									
+									 -->
 									<div class="clearfix">
 										<div class="col-xs-12">
 											<div class="table-responsive">
 												<table class='table tgrid'>
 													<thead>
 														<tr>
-															<th class='text-center'><input type="checkbox"
+															<!-- <th class='text-center'><input type="checkbox"
 																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
-																[id]="checkAllExistingContacts" /></th>
-															<th style="width: 25%">NAME</th>
+																[id]="checkAllExistingContacts" /></th> -->
+															<th style="width: 25%; text-align: center;">NAME</th>
 															<th>CONTACT</th>
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
@@ -175,13 +164,13 @@
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
-															<td class='text-center'
+															<!-- <td class='text-center'
 																*ngIf="isAdd || !isCampaignDraftContactList "><input
 																type="checkbox"
 																class="chk"
 																lang="{{contact.name}}" name="campaignContact[]"
 																value="{{contact.id}}" id="{{contact.id}}"
-																(click)="highlightRow(contact.id,$event)" /></td>
+																(click)="highlightRow(contact.id,$event)" /></td> -->
 															<td>
 																<div class="flex">
 																	<span class='profile'
@@ -246,8 +235,8 @@
 														<ng-container
 															*ngFor="let newContact of newPartnerUser; let i = index">
 														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<td align="center"><input type="checkbox"
-																checked="newContact.checked"></td>
+															<!-- <td align="center"><input type="checkbox"
+																checked="newContact.checked"></td> -->
 															<td>
 																<div class="flex">
 																	<span class='profile'
@@ -340,7 +329,7 @@
 									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 								</li>
 							</ul>
-							<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
+						<!-- 	<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
 								style="left: -4px;">
 								<select class="form-control"
 									[(ngModel)]="sortOptionForPagination"
@@ -350,7 +339,7 @@
 									<option [ngValue]="sort">{{sort.value}}</option>
 									</ng-container>
 								</select> <br>
-							</div>
+							</div> -->
 						</div>
 					</div>
 </div>
@@ -508,6 +497,7 @@
 
 	</div>
 </div>
+
 
 <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
