@@ -251,6 +251,12 @@ img:hover {
 							</h4>
 						</div>
 					</div>
+					<div *ngIf="fileTypeError" id="csvFileTypeError"
+											class="alert alert-danger alert-dismissable"
+											style="width: 50%">
+											<b>File type not allowed please select the .csv file
+												only..</b>
+										</div>
 					<div *ngIf="dublicateEmailId" class="col-md-6"
 										class="col-md-9 alert alert alert-danger alert-dismissable"
 										style="width: 100%">
@@ -336,12 +342,7 @@ img:hover {
 											</tbody>
 										</table>
 										</div>
-										<!--<div *ngIf="fileTypeError" id="csvFileTypeError"
-											class="alert alert-danger alert-dismissable"
-											style="width: 50%">
-											<b>File type not allowed please select the .csv file
-												only..</b>
-										</div>
+										<!--
 										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
 											class="alert alert-danger alert-dismissable"
 											style="width: 80%">

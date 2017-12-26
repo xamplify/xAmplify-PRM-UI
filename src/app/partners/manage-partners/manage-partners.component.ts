@@ -49,6 +49,7 @@ export class ManagePartnersComponent implements OnInit {
     duplicateEmailIds: string[] = [];
     dublicateEmailId: boolean = false;
     selectedAddPartnerOption: number = 5;
+    fileTypeError: boolean;
     
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -137,8 +138,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             
             
           this.selectedAddPartnerOption = 1;
-          /* this.fileTypeError = false;
-            this.noOptionsClickError = false;
+           this.fileTypeError = false;
+           /* this.noOptionsClickError = false;
             this.inValidCsvContacts = false;
             this.isContactsThere = false;*/
             
@@ -340,7 +341,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         if ( files[0].type == "application/vnd.ms-excel" ) {
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddPartnerOption = 2;
-            //this.fileTypeError = false;
+            this.fileTypeError = false;
             //this.noOptionsClickError = false;
             //this.model.contactListName = outputstring;
             //this.validateContactName( this.model.contactListName );
@@ -385,7 +386,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.newPartnerUser ) );
             }
         } else {
-            //this.fileTypeError = true;
+            this.fileTypeError = true;
             //$( "#file_preview" ).hide();
            // this.model.contactListName = null;
            // this.removeCsvName = false;
@@ -396,7 +397,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     copyFromClipboard() {
         this.selectedAddPartnerOption = 2;
-        //this.fileTypeError = false;
+        this.fileTypeError = false;
        // this.noOptionsClickError = false;
        // this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
