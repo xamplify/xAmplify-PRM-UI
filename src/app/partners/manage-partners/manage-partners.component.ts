@@ -37,10 +37,10 @@ export class ManagePartnersComponent implements OnInit {
     response: CustomeResponse = new CustomeResponse();
 
 public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    constructor( private authenticationService: AuthenticationService,
-        private referenceService: ReferenceService,
-        private contactService: ContactService,
-        private pagination: Pagination, private pagerService: PagerService, public xtremandLogger:XtremandLogger ) {
+    constructor( public authenticationService: AuthenticationService,
+        public referenceService: ReferenceService,
+        public contactService: ContactService,
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger:XtremandLogger ) {
         
         this.user = new User();
         this.addPartnerUser.country = (this.referenceService.countries[0]);
