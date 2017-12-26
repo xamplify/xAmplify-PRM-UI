@@ -8,6 +8,35 @@
     padding: 0;
     width: 91%;
 }
+
+.imageblurNormal {
+	-webkit-filter: grayscale(0%);
+	filter: grayscale(0%);
+	-webkit-filter: blur(0px);
+	-moz-filter: blur(0px);
+	-o-filter: blur(0px);
+	-ms-filter: blur(0px);
+	filter: blur(0px);
+}
+
+.imageblur {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	-webkit-filter: blur(1.2px);
+	-moz-filter: blur(1.2px);
+	-o-filter: blur(1.2px);
+	-ms-filter: blur(1.2px);
+	filter: blur(1.2px);
+	opacity: 0.7;
+}
+
+img:hover {
+	-webkit-filter: grayscale(0%);
+	/* background-image: url('assets/images/crm/dynamics.png'); */
+	background-color: #4dff4d;
+	filter: grayscale(0%);
+	opacity: 2;
+}
 </style>
 
 <div class="page-content">
@@ -18,6 +47,10 @@
 			<li><a>Manage Partners</a></li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
+			<a class="btn btn-success" (click)="savePartnerUsers()"
+				style="color: white;">Save</a>
+			<a class="btn btn-success" (click)="cancelPartners()"
+				style="color: white;">Cancel</a>
 			<a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
@@ -27,7 +60,7 @@
 			</a>
 		</div>
 	</div>
-<div class="clearfix" style=" margin-bottom: 17px;">
+<!-- <div class="clearfix" style=" margin-bottom: 17px;">
 		<div class="col-xs-6 col-sm-3">
 			<div class="btn-xs btn-info fileinput-button btn-block rounded-0"
 				style="overflow: hidden; position: relative; cursor: pointer;">
@@ -44,7 +77,161 @@
 		<a class="btn btn-success pull-right" (click)="saveValidEmails()"
 				style="color: white;">Save</a>
 		</div>
-	</div>
+	</div> -->
+	
+	<div class="fileupload-buttonbar clearfix page-bar">
+							<form #f="ngForm">
+							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6"
+								style="position: auto; border-right: 1px solid #999999; height: 150px;">
+								<h4 class="col-xs-12" style="right: 6px">Add your
+									partners with given options</h4>
+								<section>
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
+										<button class="btn-primary btn-block" id="addContacts"
+											(click)="addPartnerModalOpen()"
+											[disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5">
+											<i class="fa fa-user-plus"
+												style="font-size: 30px; padding-top: 15px;"></i>
+											<h6 class="uppercase" style="font-size: 11px">Add Partner</h6>
+										</button>
+									</div>
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
+										<button class="btn-success btn-block" id="copyFromClipBoard"
+											(click)="copyFromClipboard()"
+											[disabled]="selectedAddPartnerOption != 5">
+											<i class="fa fa-users"
+												style="font-size: 30px; padding-top: 15px;"></i>
+											<h6 class="uppercase" style="font-size: 11px">Copy Form
+												ClipBoard</h6>
+										</button>
+									</div>
+									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
+										<div class="btn-info fileinput-button btn-block"
+											style="height: 80px;" id="uploadCSV"
+											[class.disabled]="selectedAddPartnerOption != 5">
+											<i class="fa fa-file-excel-o"
+												style="font-size: 30px; padding-top: 22px; padding-left: 65px;"></i>
+											<h6 class="uppercase"
+												style="font-size: 11px; padding-left: 42px;">Upload a
+												CSV</h6>
+											<input type="file" ng2FileSelect
+												*ngIf="uploader.queue.length==0" [uploader]="uploader"
+												title=" " (change)="fileChange(input)" accept=".csv" #input
+												[disabled]="selectedAddPartnerOption != 5" />
+										</div>
+									</div>
+								</section>
+
+								<!-- The global file processing state -->
+								<span class="fileupload-process"> </span>
+							</div>
+							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+								<h4 class="col-xs-12" style="left: 9px">Import from
+									available cloud service</h4>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
+										style="background-color: white" (click)="salesforceContacts()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										title="Click here To access user list from your Salesforce account"
+										height="86" width="90">
+									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
+										style="background-color: white" (click)="salesforceContacts()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										title="Click here To access user list from your Salesforce account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/sf.png';">
+									</a>
+									<div id="salesforceGear" style="position: relative"
+										id="salesforceGear" *ngIf="sfImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
+											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+										</a>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a *ngIf="googleImageBlur" id="googleContact_button"
+										style="background-color: white" (click)="googleContacts()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+										src="assets/images/crm/google.png" class="googleImageClass"
+										title="Click here To access user list from your Google contacts"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/google.png';">
+									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
+										style="background-color: white" (click)="googleContacts()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+										src="assets/images/crm/google.png" class="googleImageClass"
+										title="Click here To access user list from your Google contacts"
+										height="86" width="90">
+									</a>
+									<div id="GoogleGear" style="position: relative"
+										*ngIf="googleImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
+											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+										</a>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a *ngIf="zohoImageBlur" id="zohoContact_button"
+										style="background-color: white"
+										(click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										title="Click here To access user list from your Zoho account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/Zoho.png';">
+									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+										style="background-color: white"
+										(click)="checkingZohoContactsAuthentication()"
+										[class.disabled]="selectedAddPartnerOption != 5">
+										<img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										title="Click here To access user list from your Zoho account"
+										height="86" width="90">
+									</a>
+									<div id="zohoGear" style="position: relative"
+										*ngIf="zohoImageNormal">
+										<a [class.disabled]="selectedAddContactsOption != 8"
+										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
+											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+										</a>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
+									style="top: 3px;">
+									<a id="microsoftContact_button" style="background-color: white">
+										<img src="assets/images/crm/dynamics.png"
+										class="imageClass imageblur mdImageClass"
+										title="Click here To access user list from your Microsoft CRM account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/dynamics.png';">
+										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
+									</a>
+								</div>
+							</div>
+							</form>
+						</div>
 	
 	<div class="col-xs-12" *ngIf="response.responseType != null">
 						<div class="alert alert-dismissible" role="alert"
@@ -64,6 +251,47 @@
 							</h4>
 						</div>
 					</div>
+					<div *ngIf="dublicateEmailId" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable"
+										style="width: 100%">
+										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<h4 class="m0">
+											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
+										</h4>
+									</div>
+					
+					<div class="row" *ngIf="clipBoard">
+							<div class="col-sm-12">
+								<h3 style="margin-left: 30px;">Copy from text -- paste
+									below</h3>
+								<div class="col-xs-12 col-sm-7">
+									<div class="col-xs-6" style="margin-bottom: 10px">
+										<select class="opts form-control">
+											<option selected value="DEFAULT">Delimeter Type</option>
+											<option value="CommaSeperated">Comma Seperated</option>
+											<option value="TabSeperated">Tab Seperated</option>
+										</select>
+									</div>
+									<div class="col-xs-6" style="margin-bottom: 10px">
+										<button class="btn btn-default" type="button"
+											style="background-color: #26a69a; color: white"
+											(click)="clipboardShowPreview()">SHOW PREVIEW</button>
+									</div>
+									<div class="col-xs-12">
+										<textarea id="copyFromclipTextArea" class="textareaNumber"
+											[(ngModel)]="clipboardTextareaText"
+											placeholder="firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes       firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes       firstName,lastName,company,jobtitle,email,address,city,country,mobileNumber,notes"
+											[ngModelOptions]="{standalone: true}"
+											style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+											required="required">
+									</textarea>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
+									<span id="clipBoardValidationMessage"></span>
+								</div>
+							</div>
+						</div>
 	<div class="clearfix">
 						<div class="col-xs-12" style="width: 103%; left: -18px;">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -76,7 +304,7 @@
 								<div class="portlet-body">
 									
 
-									<!-- <div style="margin-bottom: 0px; padding-left: 1cm">
+									 <div style="margin-bottom: 0px; padding-left: 1cm">
 										<table class="table" *ngIf="uploadCsvUsingFile">
 											<thead>
 											</thead>
@@ -107,7 +335,8 @@
 												</tr>
 											</tbody>
 										</table>
-										<div *ngIf="fileTypeError" id="csvFileTypeError"
+										</div>
+										<!--<div *ngIf="fileTypeError" id="csvFileTypeError"
 											class="alert alert-danger alert-dismissable"
 											style="width: 50%">
 											<b>File type not allowed please select the .csv file
