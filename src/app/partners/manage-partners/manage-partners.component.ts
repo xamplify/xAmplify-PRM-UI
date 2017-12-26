@@ -4,6 +4,8 @@ import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
 import { CustomeResponse } from '../../contacts/models/response';
 import { Pagination } from '../../core/models/pagination';
+import { SocialPagerService } from '../../contacts/services/social-pager.service';
+import { SocialContact } from '../../contacts/models/social-contact';
 
 import { ContactService } from '../../contacts/services/contact.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -20,7 +22,7 @@ declare var $,swal: any;
     templateUrl: './manage-partners.component.html',
     styleUrls: ['./manage-partners.component.css','../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
                 '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css'],
-    providers: [Pagination]
+    providers: [Pagination,SocialPagerService]
 } )
 export class ManagePartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -50,16 +52,27 @@ export class ManagePartnersComponent implements OnInit {
     dublicateEmailId: boolean = false;
     selectedAddPartnerOption: number = 5;
     fileTypeError: boolean;
+    pager: any = {};
+    pagedItems: any[];
+    public getGoogleConatacts: any;
+    isContactsThere: boolean = false;
+    public socialPartners: SocialContact;
+    public socialPartnerUsers: SocialContact[] = new Array();
+    socialPartnersAllChecked: boolean;
+    isPartner: boolean = true;
+    public socialContactsValue: boolean;
     
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
 public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor( public authenticationService: AuthenticationService,
+        public socialPagerService: SocialPagerService,
         public referenceService: ReferenceService,
         public contactService: ContactService,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger:XtremandLogger ) {
         
         this.user = new User();
+        this.socialPartners = new SocialContact();
         this.addPartnerUser.country = (this.referenceService.countries[0]);
     }
 
@@ -140,8 +153,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
           this.selectedAddPartnerOption = 1;
            this.fileTypeError = false;
            /* this.noOptionsClickError = false;
-            this.inValidCsvContacts = false;
-            this.isContactsThere = false;*/
+            this.inValidCsvContacts = false;*/
+            this.isContactsThere = false;
             
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -183,6 +196,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     };
     
     savePartnerUsers() {
+        this.selectedAddPartnerOption = 2;
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
         var testArray = [];
@@ -253,12 +267,12 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         //this.contactListNameError = false;
        // this.noOptionsClickError = false;
         //this.emailNotValid = false;
-        //this.gContacts.length = 0;
+        this.socialPartnerUsers.length = 0;
        // this.zContacts.length = 0;
         //this.salesforceContactUsers.length = 0;
         
-        //this.pager = [];
-       // this.pagedItems =[];
+       this.pager = [];
+       this.pagedItems =[];
         
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -327,7 +341,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     
     fileChange( input: any ) {
         this.readFiles( input.files );
-       // this.isContactsThere = false;
+        this.isContactsThere = false;
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -401,7 +415,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
        // this.noOptionsClickError = false;
        // this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
-        //this.isContactsThere = false;
+        this.isContactsThere = false;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -681,8 +695,222 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             );
     }
     
+    setSocialPage(page: number){
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+        this.pager = this.socialPagerService.getPager(this.socialPartnerUsers.length, page);
+        this.pagedItems = this.socialPartnerUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+    
+    googleContacts() {
+        this.fileTypeError = false;
+        this.isContactsThere = false;
+        this.socialPartners.firstName = '';
+        this.socialPartners.lastName = '';
+        this.socialPartners.emailId = '';
+        this.socialPartners.contactName = '';
+        this.socialPartners.showLogin = true;
+        this.socialPartners.statusCode = 0;
+        this.socialPartners.contactType = '';
+        this.socialPartners.alias = '';
+        this.socialPartners.socialNetwork = "GOOGLE";
+        this.contactService.googleCallBack = true;
+        this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
+        this.contactService.googleLogin()
+            .subscribe(
+            data => {
+                this.storeLogin = data;
+                console.log( data );
+                if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                    console.log( "AddContactComponent googleContacts() Authentication Success" );
+                    this.getGoogleContactsUsers();
+                    this.xtremandLogger.info( "called getGoogle contacts method:" );
+                } else {
+                    localStorage.setItem( "userAlias", data.userAlias )
+                    console.log( data.redirectUrl );
+                    console.log( data.userAlias );
+                    window.location.href = "" + data.redirectUrl;
+                }
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
+            );
+    }
+
+    getGoogleContactsUsers() {
+        this.contactService.googleCallBack = false;
+        this.socialPartners.socialNetwork = "GOOGLE";
+        var self = this;
+        this.contactService.getGoogleContacts( this.socialPartners )
+            .subscribe(
+            data => {
+                this.getGoogleConatacts = data;
+                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                }
+                for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
+                    $( "#Gfile_preview" ).show();
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
+                this.selectedAddPartnerOption = 3;
+                this.setSocialPage(1);
+                this.socialPartners.contacts = this.socialPartnerUsers;
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+    
+    selectGoogleContact( event: boolean ) {
+        this.xtremandLogger.info( "check value:" + event )
+        var all: any = document.getElementById( "select_all_google_contacts" );
+        if ( event == false ) {
+            all.checked = false;
+            
+        }
+    }
+
+    selectAllGoogleContacts( event: boolean ) {
+        this.xtremandLogger.info( "check value:" + event )
+        this.socialPartnerUsers.forEach(( socialPartnerUsers ) => {
+            if ( event == true ) {
+                socialPartnerUsers.checked = true;
+                this.socialPartnersAllChecked = true;
+                this.socialContactsValue = true;
+            }
+            else {
+                socialPartnerUsers.checked = false;
+                this.socialPartnersAllChecked = false;
+                this.socialContactsValue = false;
+            }
+        })
+    }
+    
+    saveGoogleContacts() {
+        this.socialPartners.socialNetwork = "GOOGLE";
+        this.socialPartners.isPartnerUserList = this.isPartner;
+        this.socialPartners.contactType = "CONTACT";
+        this.socialPartners.contacts = this.socialPartnerUsers;
+        this.selectedAddPartnerOption = 3;
+            if ( this.socialPartnerUsers.length > 0 ) {
+                this.contactService.saveSocialContactList( this.socialPartners )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                    },
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
+                    )
+            } else
+                this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
+    }
+
+    saveGoogleContactSelectedUsers() {
+        this.selectedAddPartnerOption = 3;
+        var selectedUserIds = new Array();
+        let selectedUsers = new Array<User>();
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var userInformation = $( this ).val().split( ',' );
+            let user = new User();
+            user.emailId = userInformation[0];
+            user.firstName = userInformation[1];
+            user.lastName = userInformation[2];
+            selectedUsers.push( user );
+        });
+        console.log( selectedUsers );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
+        if ( selectedUsers.length != 0 ) {
+            this.newPartnerUser = selectedUsers;
+            this.saveValidEmails();
+            /*this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.contactService.saveContactList( selectedUsers,'', this.isPartner )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
+                )*/
+        }
+        else {
+            this.xtremandLogger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
+        }
+    }
+
+    saveContacts() {
+        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1) {
+            this.savePartnerUsers();
+        }
+        
+        if ( this.selectedAddPartnerOption == 3 ) {
+            if ( this.socialContactsValue == true ) {
+                this.saveGoogleContacts();
+            } else
+                this.saveGoogleContactSelectedUsers();
+        }
+
+        /*if ( this.selectedAddContactsOption == 3 ) {
+            this.saveClipBoardContactList();
+        }
+
+        if ( this.selectedAddContactsOption == 4 ) {
+            this.saveCsvContactList();
+        }
+        if ( this.selectedAddContactsOption == 3 ) {
+            if ( this.salesforceContactsValue == true ) {
+                this.saveSalesforceContacts();
+            } else
+                this.saveSalesforceContactSelectedUsers();
+        }
+
+        
+
+        if ( this.selectedAddContactsOption == 5 ) {
+            if ( this.zohoContactsValue == true ) {
+                this.saveZohoContacts();
+            } else
+                this.saveZohoContactSelectedUsers();
+        }
+
+        if ( this.selectedAddContactsOption == 8 ) {
+            this.noOptionsClickError = true;
+        }*/
+    }
+    
     ngOnInit() {
         this.socialContactImage();
+        $( "#Gfile_preview" ).hide();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.defaultPartnerList( this.loggedInUserId );
 

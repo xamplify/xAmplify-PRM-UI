@@ -47,7 +47,7 @@ img:hover {
 			<li><a>Manage Partners</a></li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
-			<a class="btn btn-success" (click)="savePartnerUsers()"
+			<a class="btn btn-success" (click)="saveContacts()"
 				style="color: white;">Save</a>
 			<a class="btn btn-success" (click)="cancelPartners()"
 				style="color: white;">Cancel</a>
@@ -265,6 +265,69 @@ img:hover {
 											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
 										</h4>
 									</div>
+									
+						<div class="row" id="Gfile_preview">
+							<div class="col-md-12">
+								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								<div class="portlet box blue">
+									<div class="portlet-title">
+										<div class="caption">
+											<i class="fa fa-edit"></i>File Preview
+										</div>
+									</div>
+									<div class="portlet-body">
+
+										<table class="table table-striped table-hover table-bordered"
+											id="google-contacts-table">
+											<thead>
+												<tr>
+													<td align="center"><input type="checkbox"
+														id="select_all_google_contacts"
+														(change)="selectAllGoogleContacts($event.target.checked)"
+														checked=true></td>
+													<th>EMAIL</th>
+													<th>FIRST NAME</th>
+													<th>LAST NAME</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let user of pagedItems;let i = index">
+													<td align="center"><input type="checkbox"
+														name="selectedUserIds" id="row_{{user.id}}"
+														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
+														[(ngModel)]="user.checked"
+														(change)="selectGoogleContact($event.target.checked)"></td>
+													<td>{{user.emailId}}</td>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<ul *ngIf="pager.pages && pager.pages.length"
+											class="pagination">
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setSocialPage(1)">First</a></li>
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setSocialPage(pager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of pager.pages"
+												[ngClass]="{active:pager.currentPage === page}"><a
+												(click)="setSocialPage(page)">{{page}}</a></li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setSocialPage(pager.currentPage + 1)">Next</a>
+											</li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setSocialPage(pager.totalPages)">Last</a>
+											</li>
+										</ul>
+
+									</div>
+								</div>
+								<!-- END EXAMPLE TABLE PORTLET-->
+							</div>
+						</div>
 					
 					<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">
