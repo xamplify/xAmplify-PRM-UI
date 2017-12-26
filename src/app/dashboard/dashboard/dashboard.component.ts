@@ -41,8 +41,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
 
-    public totalRecords: number;
-
+    totalRecords: number;
+    heatMapData: any;
     campaigns: Campaign[];
     launchedCampaignsMaster: any[];
     launchedCampaignsChild: any[] = new Array<any>();
@@ -55,7 +55,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     hasCampaignRole = false;
     hasStatsRole = false;
     hasSocialStatusRole = false;
-    constructor(public router: Router, public _dashboardService: DashboardService, public pagination: Pagination,
+    categories: any;
+    constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService,
         public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
         public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -82,7 +83,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getGenderDemographics(socialConnection: SocialConnection) {
-        this._dashboardService.getGenderDemographics(socialConnection)
+        this.dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
             data => {
                 this.xtremandLogger.info(data);
@@ -92,7 +93,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             error => console.log(error),
             () => console.log('finished')
             );
-
     }
 
     viewsSparklineData() {
@@ -131,7 +131,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-
     facebookSparklineData() {
         $('.sparkline_bar_facebook').sparkline([28, 25, 24, 26, 24, 22, 26], {
             type: 'bar',
@@ -143,14 +142,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    renderMap() {
-        //   const countryData = this.countryWiseVideoViews;
-       // const data = [["in", 1], ["us", 2]];
-       const data = this.countryViewsData;
+    renderWorldMap() {
+        const data = this.countryViewsData;
         Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
             },
+            exporting: { enabled: false },
             title: {
                 text: 'The people who have watched the video'
             },
@@ -182,6 +180,137 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
 
     }
+    generatHeatMap() {
+      const data = this.heatMapData; 
+       Highcharts.chart('dashboard-heat-map', {
+            colorAxis: {
+                minColor: '#FFFFFF',
+                maxColor: Highcharts.getOptions().colors[0]
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: { enabled: false },
+            tooltip: {
+                formatter: function () {
+                    return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>users: <b>' + this.point.totalUsers + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
+                }
+            },
+            series: [{
+                type: 'treemap',
+                layoutAlgorithm: 'squarified',
+                showInLegend: false,
+                data: data
+            }],
+            title: {
+                text: ' '
+            }
+        });
+    }
+    generatFirstCampaignBarchart(openEmailData) {
+        Highcharts.chart('FirstCampaignBarchart', {
+            chart: {
+                type: 'bar'
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: { enabled: false },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: this.categories
+            },
+            yAxis: {
+                min: 0,
+                visible: false
+
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                showInLegend: false,
+                name : 'Opened',
+                data: openEmailData
+            }]
+        });
+    }
+    generatSecondCampaignBarchart(clickedEmailData) {
+        Highcharts.chart('SecondCampaignBarchart', {
+            chart: {
+                type: 'bar'
+            },
+            exporting: { enabled: false },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: this.categories
+            },
+            yAxis: {
+                min: 0,
+                visible: false
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                showInLegend: false,
+                 name : 'Clicked',
+                data: clickedEmailData
+            }]
+        });
+    }
+
+    generatThirdCampaignBarchart(watchedEmailData) {
+        Highcharts.chart('ThirdCampaignBarchart', {
+            chart: {
+                type: 'bar'
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: { enabled: false },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: this.categories
+            },
+            yAxis: {
+                min: 0,
+                visible: false
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                showInLegend: false,
+                name : 'Watched',
+                data: watchedEmailData
+            }]
+        });
+    }
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
         this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
@@ -197,14 +326,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    getPage( socialConnection: SocialConnection, pageId: string ) {
-        this.facebookService.getPage( socialConnection, pageId )
+    getPage(socialConnection: SocialConnection, pageId: string) {
+        this.facebookService.getPage(socialConnection, pageId)
             .subscribe(
             data => {
                 socialConnection.facebookFanCount = data.extraData.fan_count;
             },
-            error => console.log( error ),
-            () => {}
+            error => console.log(error),
+            () => { }
             );
     }
 
@@ -232,7 +361,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listActiveSocialAccounts(userId: number) {
-        this.socialService.listAccounts(userId, 'ALL',  'ACTIVE')
+        this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
             .subscribe(
             data => {
                 this.socialConnections = data;
@@ -247,7 +376,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             this.getTotalCountOfTFFF(this.socialConnections[i]);
                             this.getGenderDemographics(this.socialConnections[i]);
                             this.getWeeklyTweets(this.socialConnections[i]);
-                        }else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null) {
+                        } else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null) {
                             this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
                         }
                     }
@@ -259,33 +388,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getDefaultPage(userId: number) {
-        this.userService.getUserDefaultPage( userId )
-        .subscribe(
-        data => {
-            if (data['_body'].includes('dashboard')) {
-                this.userDefaultPage.isCurrentPageDefaultPage = true;
-                this.referenceService.userDefaultPage = 'DASHBOARD';
-            }
-        },
-        error => console.log( error ),
-        () => { }
-        );
-}
+        this.userService.getUserDefaultPage(userId)
+            .subscribe(
+            data => {
+                if (data['_body'].includes('dashboard')) {
+                    this.userDefaultPage.isCurrentPageDefaultPage = true;
+                    this.referenceService.userDefaultPage = 'DASHBOARD';
+                }
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
 
     setDashboardAsDefaultPage(event: any) {
-        this.referenceService.userDefaultPage = event ?  'DASHBOARD' : 'WELCOME';
+        this.referenceService.userDefaultPage = event ? 'DASHBOARD' : 'WELCOME';
         this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
-                data => {
-                    this.userDefaultPage.isCurrentPageDefaultPage = event;
-                    this.userDefaultPage.responseType = 'SUCCESS';
-                    this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
-                },
-                error => {
-                    this.userDefaultPage.responseType = 'ERROR';
-                    this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
-                },
-                () => { }
+            data => {
+                this.userDefaultPage.isCurrentPageDefaultPage = event;
+                this.userDefaultPage.responseType = 'SUCCESS';
+                this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
+            },
+            error => {
+                this.userDefaultPage.responseType = 'ERROR';
+                this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
+            },
+            () => { }
             );
     }
 
@@ -293,8 +422,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaignInteractionsData(userId, reportType)
             .subscribe(
             data => {
+                this.xtremandLogger.info(data);
                 this.campaigns = data;
+                const campaignIdArray = data.map(function(a) {return a[0];});
+                console.log(campaignIdArray);
                 this.totalCampaignsCount = this.campaigns.length;
+                this.getCampaignsEamailReports(campaignIdArray);
             },
             error => { },
             () => this.xtremandLogger.info('Finished listCampaign()')
@@ -367,7 +500,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.saveUserCampaignReport(userCampaignReport);
         } else {
             return false;
-      }
+        }
     }
 
     saveUserCampaignReport(userCampaignReport: CampaignReport) {
@@ -400,7 +533,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dashboardReportsCount() {
         this.loggedInUserId = this.authenticationService.getUserId();
-        this._dashboardService.loadDashboardReportsCount(this.loggedInUserId)
+        this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
             .subscribe(
             data => {
                 this.dashboardReport.totalViews = data.totalVideoViewsCount;
@@ -416,7 +549,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getEmailActionCount(userId: number) {
-        this._dashboardService.getEmailActionCount(userId)
+        this.dashboardService.getEmailActionCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
@@ -428,7 +561,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     emailWatchedCount(userId: number) {
-        this._dashboardService.loadEmailWatchedCount(userId)
+        this.dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
@@ -450,12 +583,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listOfEmailOpenLogs(actionId: number) {
-        this._dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
+        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
             (result: any) => {
-                    this.dashboardReport.emailOpenedList = result;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailOpenedList );
+                this.dashboardReport.emailOpenedList = result;
+                this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailOpenedList);
             },
             error => console.log(error),
             () => { }
@@ -463,12 +596,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listOfEmailClickedLogs() {
-        this._dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
+        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
-                    this.dashboardReport.emailClickedList = result;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailClickedList );
+                this.dashboardReport.emailClickedList = result;
+                this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailClickedList);
             },
             error => console.log(error),
             () => { }
@@ -477,12 +610,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
-        this._dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
+        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
                 this.dashboardReport.emailWatchedList = data;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                    this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.emailWatchedList );
+                this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailWatchedList);
             },
             error => console.log(error),
             () => console.log('finished')
@@ -490,20 +623,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getCountriesTotalViewsData() {
-        this._dashboardService.getCountryViewsDetails().
-        subscribe(result => {
-            this.countryViewsData = result.countrywiseusers;
-            this.renderMap();
-        },
-        (error: any) => {
-            this.xtremandLogger.error(error);
-            this.xtremandLogger.errorPage(error);
-        });
+        this.dashboardService.getCountryViewsDetails().
+            subscribe(result => {
+                this.countryViewsData = result.countrywiseusers;
+                this.renderWorldMap();
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            });
+    }
+    getCampaignsHeatMapData() {
+        this.dashboardService.getCampaignsHeatMapDetails().
+            subscribe(result => {
+                this.xtremandLogger.log(result);
+                this.xtremandLogger.log(result.heatMapData);
+                this.heatMapData = result.heatMapData;
+                this.generatHeatMap();
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+               // this.xtremandLogger.errorPage(error);
+            });
+    }
+    getCampaignsEamailReports(campaignIdArray){
+          this.dashboardService.getCampaignsEmailReports(campaignIdArray).
+            subscribe(result => {
+                this.xtremandLogger.log(result);
+                this.categories = result.campaignNames;
+                this.generatFirstCampaignBarchart(result.emailOpenedCount);
+                this.generatSecondCampaignBarchart(result.emailClickedCount);
+                this.generatThirdCampaignBarchart(result.watchedCount);
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                // this.xtremandLogger.errorPage(error);
+            });
     }
 
     cancelEmailStateModalPopUp() {
-      this.pagination = new Pagination();
-      this.pagination.pageIndex = 1;
+        this.pagination = new Pagination();
+        this.pagination.pageIndex = 1;
     }
 
     ngOnInit() {
@@ -515,6 +675,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getEmailActionCount(this.loggedInUserId);
             this.emailWatchedCount(this.loggedInUserId);
             this.getCountriesTotalViewsData();
+            this.getCampaignsHeatMapData();
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -533,6 +694,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listActiveSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);
+
         } catch (err) {
             console.log(err);
         }

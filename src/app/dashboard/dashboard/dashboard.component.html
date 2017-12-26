@@ -584,11 +584,64 @@ margin:2px;
 				</div>
 			</div>
 		</div>
-
 		<div class="clearfix"></div>
+				<div>
+					<div class="col-xs-12 col-sm-6" style="padding: 0">
+							<div class="col-xs-12">
+							<div class="portlet light ">
+								<div class="portlet-title">
+									<div class="caption">
+										<span class="caption-subject font-red-sunglo uppercase">heat map statistics</span>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div id="dashboard-heat-map" style="max-width: 100%; min-height: 300px;"></div>
+								</div>
+							</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="col-xs-4 p0">
+								<div class="portlet light ">
+										<div class="portlet-title">
+											<div class="caption">
+												<span class="caption-subject font-red-sunglo uppercase">Opened Email</span>
+											</div>
+										</div>
+										<div class="portlet-body">
+											<div id="FirstCampaignBarchart"></div>
+										</div>
+									</div>
+							</div>
+							<div class="col-xs-4 p0">
+								<div class="portlet light ">
+										<div class="portlet-title">
+											<div class="caption">
+												<span class="caption-subject font-red-sunglo uppercase">Clicked Email</span>
+											</div>
+										</div>
+										<div class="portlet-body">
+											<div id="SecondCampaignBarchart"></div>
+										</div>
+									</div>
+							</div>
+							<div class="col-xs-4 p0">
+							<div class="portlet light ">
+										<div class="portlet-title">
+											<div class="caption">
+												<span class="caption-subject font-red-sunglo uppercase">watched Email</span>
+											</div>
+										</div>
+										<div class="portlet-body">
+											<div id="ThirdCampaignBarchart"></div>
+										</div>
+									</div>
+							</div>
+						</div>
+					</div>
+	    <div class="clearfix"></div>
 		<div>
 			<div class="col-md-6 col-sm-6">
-				<!-- BEGIN REGIONAL STATS PORTLET-->
 				<div class="portlet light ">
 					<div class="portlet-title">
 						<div class="caption">
@@ -600,10 +653,7 @@ margin:2px;
 						<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
 					</div>
 				</div>
-				<!-- END REGIONAL STATS PORTLET-->
-
 			</div>
-
 			<div>
 				<div class="col-md-6 col-sm-6">
 					<div class="portlet light ">
@@ -640,7 +690,6 @@ margin:2px;
 						</div>
 					</div>
 				</div>
-
 				<div class="col-md-6 col-sm-6">
 					<div class="portlet light ">
 						<div class="portlet-title">
@@ -653,7 +702,7 @@ margin:2px;
 							<div class="row">
 								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailOpenedModal">
 									<div class="visual">
-										<img alt="opened" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-89-48.png" title="view emailOpened data" >
+										<img alt="opened" src="assets/images/opened.png" title="view emailOpened data" >
 									</div>
 									<div class="details">
 										<div class="number" style="color: #f36360; margin-top: 5px;">
@@ -666,7 +715,7 @@ margin:2px;
 								</div>
 								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailClickedLogs()" title="view emailUrlClicked data"  style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 									<div class="visual">
-										<img alt="Clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
+										<img alt="Clicked" src="assets/images/clicked.png">
 									</div>
 									<div class="details">
 									 <div class="number" style="color: #00a2e2; margin-top: 5px;">
@@ -679,7 +728,7 @@ margin:2px;
 								</div>
 								<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfWatchedLogs()" title="view emailWatched data"  style="cursor:pointer" data-toggle="modal" data-target="#emailWatchedModal">
 									<div class="visual">
-										<img alt="Watched" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-83-48.png">
+										<img alt="Watched" src="assets/images/watched.png">
 									</div>
 									<div class="details">
 										<div class="number" style="color: #00bb1d; margin-top: 5px;">

@@ -77,6 +77,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             title: {
                 text: ''
             },
+            exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
                     return this.y + 'visits';
@@ -122,7 +123,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             title: {
                 text: 'The people who have watched the video'
-            },
+            }, 
+            exporting: { enabled: false },
             mapNavigation: {
                 enabled: true,
                 buttonOptions: {

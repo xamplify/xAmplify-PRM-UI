@@ -131,6 +131,22 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+     getCampaignsHeatMapDetails(){
+          const url = this.authenticationService.REST_URL + 'dashboard/heatmap-data?userId=' + this.authenticationService.user.id + 
+         '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+     }   
+    getCampaignsEmailReports(campaignIdsList: any){
+        const campaignIdsLists = [1111,1108,1080,1136];
+        const userId = 9505;
+        const url = this.authenticationService.REST_URL + 'dashboard/barChart-data?userId=' + userId + 
+         '&access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, campaignIdsLists)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }  
 
     private extractData(res: Response) {
         let body = res.json();
