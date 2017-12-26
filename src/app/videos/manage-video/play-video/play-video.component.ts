@@ -167,13 +167,20 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((saveVideoFile: SaveVideoFile) => {
                 this.selectedVideo = saveVideoFile;
                 this.xtremandLogDefaultActions();  // loggin info method
-                console.log(this.selectedVideo);
-                for (let i = 0; i < this.pagination.pagedItems.length; i++) {
-                    if (this.selectedVideo.id === this.pagination.pagedItems[i].id) {
-                        this.pagination.pagedItems.splice(i, 1);
-                        break;
-                    }
+                // new code format
+                const pagedItemsIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                console.log(pagedItemsIds);
+                if(pagedItemsIds.includes(this.selectedVideo.id)){
+                    this.pagination.pagedItems = this.pagination.pagedItems.filter(i => i.id !== this.selectedVideo.id);
                 }
+                console.log(this.pagination.pagedItems);
+                // ended the new code
+                // for (let i = 0; i < this.pagination.pagedItems.length; i++) {
+                //     if (this.selectedVideo.id === this.pagination.pagedItems[i].id) {
+                //         this.pagination.pagedItems.splice(i, 1);
+                //         break;
+                //     }
+                // }
                 this.selectedPosition = position;
                 this.playVideoInfo(this.selectedVideo);
                 this.checkCallToActionAvailable();

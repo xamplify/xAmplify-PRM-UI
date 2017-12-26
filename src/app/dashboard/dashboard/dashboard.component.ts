@@ -97,15 +97,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     viewsSparklineData() {
         const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
+        const values  =  { '0': 'views: 2, DATE: 2013-01-01',
+                    '1': 'views: 2, DATE: 2013-01-01',
+                    '2': 'views: 5, DATE: 2013-01-01',
+                    '3': '14,DATE 2013-01-04',
+                    '4': '6,DATE 2013-01-05' }
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
             width: '100',
             barWidth: 5,
             height: '55',
             barColor: '#35aa47',
-            negBarColor: '#e02222'
-        });
-    }
+            negBarColor: '#e02222',
+            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:levels}}',
+            tooltipValueLookups: { levels: values } });
+
+            //  $('#sparkline_bar').bind('sparklineClick', function(ev) {
+            //     const sparkline = ev.sparklines[0],
+            //         region = sparkline.getCurrentRegionFields();
+            //     alert("Clicked chart 1 on x="+region[0].x+" y="+region[0].y);
+            // });
+                 $(document).ready(function(){
+                    $('#sparkline_bar').bind('sparklineClick', function(ev) {
+                        var sparkline = ev.sparklines[0],
+                        region = sparkline.getCurrentRegionFields();
+                    
+                        alert("Clicked on offset="+ region[0].offset+" having value="+region[0].value);
+                    });
+
+                });
+            }
 
     minutesSparklineData() {
         const myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
@@ -194,6 +215,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             tooltip: {
                 formatter: function () {
                     return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>users: <b>' + this.point.totalUsers + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
+                }
+            },
+             plotOptions: {
+                series: {
+                    shadow: false
                 }
             },
             series: [{
@@ -649,7 +675,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getCampaignsEamailReports(campaignIdArray){
           this.dashboardService.getCampaignsEmailReports(campaignIdArray).
             subscribe(result => {
-                this.xtremandLogger.log(result);
+                console.log(result);
                 this.categories = result.campaignNames;
                 this.generatFirstCampaignBarchart(result.emailOpenedCount);
                 this.generatSecondCampaignBarchart(result.emailClickedCount);
@@ -694,7 +720,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listActiveSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);
-
+          //  $('#sparkline_bar').sparkline();
+            // $('#sparkline_bar').bind('sparklineClick', function(ev) {
+            //     const sparkline = ev.sparklines[0],
+            //         region = sparkline.getCurrentRegionFields();
+            //     alert("Clicked chart 1 on x="+region.x+" y="+region.y);
+            // });
         } catch (err) {
             console.log(err);
         }

@@ -139,11 +139,12 @@ export class DashboardService {
             .catch(this.handleError);
      }   
     getCampaignsEmailReports(campaignIdsList: any){
-        const campaignIdsLists = [1111,1108,1080,1136];
-        const userId = 9505;
-        const url = this.authenticationService.REST_URL + 'dashboard/barChart-data?userId=' + userId + 
+        // const campaignIdsLists = [1111,1108,1080,1136];
+        // const userId = 9505;
+        console.log(campaignIdsList);
+        const url = this.authenticationService.REST_URL + 'dashboard/barChart-data?userId=' + this.authenticationService.user.id + 
          '&access_token=' + this.authenticationService.access_token;
-        return this.http.post(url, campaignIdsLists)
+        return this.http.post(url, campaignIdsList)
             .map(this.extractData)
             .catch(this.handleError);
     }  

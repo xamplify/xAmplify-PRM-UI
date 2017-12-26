@@ -27,11 +27,9 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     videoJSplayer: any;
     categories: Category[];
-    showDatailedData: boolean;
-    showVideoData: boolean;
+    showDatailedData: boolean = false;
     searchKey: string;
     categoryNum: number;
-    currentPageType: string = null;
     isCategoryThere: boolean;
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
@@ -117,17 +115,14 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     this.logger.errorPage(error);
                 },
                 () => console.log('load videos completed:')
-            );
+                );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
         }
     };
     setPage(page: number) {
         this.pagination.pageIndex = page;
-        if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
-            this.loadVideos(this.pagination);
-        } else if (this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "")) {
-        }
+        this.loadVideos(this.pagination);
     }
     getCategoryNumber() {
         console.log(this.categoryNum);
@@ -140,10 +135,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     }
     searchVideoTitelName() {
         this.pagination.pageIndex = 1;
-        if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
-            this.loadVideos(this.pagination);
-        } else if (this.currentPageType == "views_page" || (this.currentPageType == "views_page" && this.searchKey == "")) {
-        }
+        this.loadVideos(this.pagination);
     }
     selectedSortByValue(event: any) {
         this.videoSort = event;
@@ -159,43 +151,21 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.sortcolumn = sortcolumn;
         this.pagination.sortingOrder = sortingOrder;
-        if (this.currentPageType == null || (this.currentPageType == null && this.searchKey == "")) {
-            this.loadVideos(this.pagination);
-        } else if (this.currentPageType == "all_contacts" || (this.currentPageType == "all_contacts" && this.searchKey == "")) {
-        }
+        this.loadVideos(this.pagination);
     }
     showPreview(videoFile: SaveVideoFile) {
         this.appendVideoData(videoFile, "main_video", "modal-title");
         $("#show_preview").modal({ backdrop: 'static', keyboard: false });
     }
     destroyPreview() {
-      //  var player = videojs("videoId");
         if (this.videoJSplayer) {
             this.videoJSplayer.dispose();
-              $("#main_video").empty();
-            // console.log(player.currentType_);
-            // let videoType = player.currentType_;
-            // if (videoType == "application/x-mpegURL") {
-            //     console.log("Clearing Normal Video");
-            //     player.dispose();
-            //     $("#main_video").empty();
-            // } else {
-            //     console.log("Clearing 360 video");
-            //     player.panorama({
-            //         autoMobileOrientation: true,
-            //         clickAndDrag: true,
-            //         clickToToggle: true,
-            //         callback: function () {
-            //             player.pause();
-            //             $("#main_video").empty();
-            //         }
-            //     });
-            // }
-        } else { 
+            $("#main_video").empty();
+        } else {
             console.log('360 video closed');
         }
     }
-     videoTitleLength(title: string) {
+    videoTitleLength(title: string) {
         if (title.length > 60) { title = title.substring(0, 60) + '.....'; }
         return title;
     }
@@ -205,7 +175,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     }
     videoControllColors(videoFile: SaveVideoFile) {
         this.videoUtilService.videoColorControlls(videoFile);
-        const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
+        const rgba = this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     appendVideoData(videoFile: SaveVideoFile, divId: string, titleId: string) {
@@ -213,7 +183,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $('.p-video').remove();
         console.log(videoFile);
         const videoSelf = this;
-     //   videoFile.transparency = 100; // need to get the value from db
         if (videoFile.viewBy === 'DRAFT') {
             console.log(this.referenceService.defaultPlayerSettings);
             videoFile.playerColor = this.referenceService.defaultPlayerSettings.playerColor;
@@ -245,8 +214,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                 clickAndDrag: true,
                 clickToToggle: true,
                 callback: function () {
-                  player.ready();
-                  videoSelf.videoControllColors(videoFile);
+                    player.ready();
+                    videoSelf.videoControllColors(videoFile);
                 }
             });
             $("#videoId").css("width", "550px");
@@ -271,16 +240,16 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs("videoId", {
                 html5: {
-                hls: {
-                  overrideNative: overrideNativeValue
-                },
-                  nativeVideoTracks: !overrideNativeValue,
-                  nativeAudioTracks: !overrideNativeValue,
-                  nativeTextTracks: !overrideNativeValue
-              }
+                    hls: {
+                        overrideNative: overrideNativeValue
+                    },
+                    nativeVideoTracks: !overrideNativeValue,
+                    nativeAudioTracks: !overrideNativeValue,
+                    nativeTextTracks: !overrideNativeValue
+                }
             });
             this.videoControllColors(videoFile);
-             console.log(player);
+            console.log(player);
             if (this.videoJSplayer) {
                 this.videoJSplayer.on('fullscreenchange', function () {
                     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
@@ -299,17 +268,13 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         });
     }
     backToReport() {
-        this.showDatailedData = false;
-        this.showVideoData = true;
         this.pagination.sortcolumn = null;
         this.pagination.sortingOrder = null;
         this.loadVideos(this.pagination);
-        this.currentPageType = null;
     }
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);
-            this.showVideoData = true;
             Metronic.init();
             Layout.init();
             Demo.init();
