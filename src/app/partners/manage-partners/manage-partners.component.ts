@@ -61,6 +61,36 @@ export class ManagePartnersComponent implements OnInit {
     socialPartnersAllChecked: boolean;
     isPartner: boolean = true;
     public socialContactsValue: boolean;
+    zohoCredentialError = '';
+    selectedZohoDropDown: string = 'DEFAULT';
+    public userName: string;
+    public password: string;
+    public contactType: string;
+    zohoAuthStorageError = '';
+    public salesforceListViewName: string;
+    public salesforceListViewId: string;
+    public salesforceListViewsData: Array<any> = [];
+    public socialNetwork: string;
+    settingSocialNetwork: string;
+    isUnLinkSocialNetwork: boolean = false;
+    unlinkGoogleSuccessMessage: boolean = false;
+    unlinkSalesforceSuccessMessage: boolean = false;
+    unlinkZohoSuccessMessage: boolean = false;
+    Campaign: string;
+    deleteErrorMessage: boolean;
+    sortOptions = [
+                   { 'name': 'Sort By', 'value': ''},
+                   { 'name': 'Email(A-Z)', 'value': 'emailId-ASC'},
+                   { 'name': 'Email(Z-A)', 'value': 'emailId-DESC'},
+                   { 'name': 'First Name(ASC)', 'value': 'firstName-ASC'},
+                   { 'name': 'First Name(DESC)', 'value': 'firstName-DESC'},
+                   { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC'},
+                   { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC'},
+               ];
+    public sortOption: any = this.sortOptions[0];
+    public searchKey: string;
+    sortcolumn: string = null;
+    sortingOrder: string = null;
     
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -74,6 +104,31 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.user = new User();
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = (this.referenceService.countries[0]);
+    }
+    
+    sortByOption( event: any, selectedType: string){
+        this.sortOption = event;
+        const sortedValue = this.sortOption.value;
+        if ( sortedValue !== '' ) {
+            const options: string[] = sortedValue.split( '-' );
+            this.sortcolumn = options[0];
+            this.sortingOrder = options[1];
+        } else {
+            this.sortcolumn = null;
+            this.sortingOrder = null;
+        }
+        
+        this.pagination.pageIndex = 1;
+        this.pagination.sortcolumn = this.sortcolumn;
+        this.pagination.sortingOrder = this.sortingOrder;
+        this.loadPartnerList(this.pagination );
+        
+    }
+    
+    search(){
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+        this.loadPartnerList( this.pagination );
     }
 
     listPartners( userId: number ) {
@@ -264,12 +319,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
     
     cancelPartners(){
-        //this.contactListNameError = false;
-       // this.noOptionsClickError = false;
         //this.emailNotValid = false;
         this.socialPartnerUsers.length = 0;
-       // this.zContacts.length = 0;
-        //this.salesforceContactUsers.length = 0;
         
        this.pager = [];
        this.pagedItems =[];
@@ -816,7 +867,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialPartners.contacts = this.socialPartnerUsers;
         this.selectedAddPartnerOption = 3;
             if ( this.socialPartnerUsers.length > 0 ) {
-                this.contactService.saveSocialContactList( this.socialPartners )
+                this.newPartnerUser = this.socialPartners.contacts;
+                this.saveValidEmails();
+                /*this.contactService.saveSocialContactList( this.socialPartners )
                     .subscribe(
                     data => {
                         data = data;
@@ -827,7 +880,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                         this.xtremandLogger.errorPage( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-                    )
+                    )*/
             } else
                 this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
     }
@@ -868,6 +921,564 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }
     }
 
+    zohoContacts() {
+        this.fileTypeError = false;
+        this.isContactsThere = false;
+        let self = this;
+        self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( self.selectedZohoDropDown == "DEFAULT" ) {
+            alert( "Please Select the which you like to import from:" );
+            return false;
+        }
+        else {
+            if ( self.selectedZohoDropDown == "contact" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.xtremandLogger.log( self.selectedZohoDropDown );
+            }
+            else if ( this.selectedZohoDropDown == "lead" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.xtremandLogger.log( self.selectedZohoDropDown );
+            }
+            this.xtremandLogger.log( this.userName );
+            this.xtremandLogger.log( this.password );
+            this.getZohoContacts( self.contactType, this.userName, this.password );
+        }
+    }
+
+    hideZohoModal() {
+        $( "#zohoShowLoginPopup" ).hide();
+    }
+
+    checkingZohoContactsAuthentication() {
+        this.contactService.checkingZohoAuthentication()
+            .subscribe(
+            ( data: any ) => {
+                this.xtremandLogger.info( data );
+                if ( data.showLogin == true ) {
+                    $( "#zohoShowLoginPopup" ).show();
+                }
+                if ( data.authSuccess == true ) {
+                    $( "#zohoShowAuthorisedPopup" ).show();
+                }
+            },
+            ( error: any ) => {
+                var body = error['_body'];
+                if ( body != "" ) {
+                    var response = JSON.parse( body );
+                    if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                        this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                        setTimeout(() => {
+                            this.zohoAuthStorageError = '';
+                        }, 5000 )
+                    } else {
+                        this.xtremandLogger.errorPage( error );
+                    }
+                } else {
+                    this.xtremandLogger.errorPage( error );
+                }
+                console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+
+            },
+            () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
+            )
+    }
+
+    getZohoContacts( contactType: any, username: string, password: string ) {
+        this.socialPartners.socialNetwork = "";
+        var self = this;
+        this.contactService.getZohoContacts( this.userName, this.password, this.contactType )
+            .subscribe(
+            data => {
+                this.getGoogleConatacts = data;
+                this.zohoImageBlur = false;
+                this.zohoImageNormal = true;
+                this.socialContactImage();
+                this.hideZohoModal();
+                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                }
+                for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
+                   // $( "#Zfile_preview" ).show();
+                    $( "#Gfile_preview" ).show();
+                    $( "#myModal .close" ).click()
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
+                this.selectedAddPartnerOption = 6;
+                this.setSocialPage(1);
+            },
+            ( error: any ) => {
+                var body = error['_body'];
+                if ( body != "" ) {
+                    var response = JSON.parse( body );
+                    if ( response.message == "Username or password is incorrect" ) {
+                        this.zohoCredentialError = 'Username or password is incorrect';
+                        setTimeout(() => {
+                            this.zohoCredentialError = '';
+                        }, 5000 )
+                    }
+                    if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                        this.zohoCredentialError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                        setTimeout(() => {
+                            this.zohoCredentialError = '';
+                        }, 5000 )
+                    } else {
+                    }
+                } else {
+                    this.xtremandLogger.errorPage( error );
+                }
+                console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+
+            },
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+
+    hideZohoAuthorisedPopup() {
+        $( "#zohoShowAuthorisedPopup" ).hide();
+    }
+    authorisedZohoContacts() {
+        let self = this;
+        self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( self.selectedZohoDropDown == "DEFAULT" ) {
+            alert( "Please Select the which you like to import from:" );
+            return false;
+        }
+        else {
+            if ( self.selectedZohoDropDown == "contact" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.xtremandLogger.log( self.selectedZohoDropDown );
+            }
+            else if ( this.selectedZohoDropDown == "lead" ) {
+                self.contactType = self.selectedZohoDropDown;
+                self.xtremandLogger.log( self.selectedZohoDropDown );
+            }
+
+        }
+
+        this.socialPartners.socialNetwork = "ZOHO";
+        this.socialPartners.contactType = self.contactType;
+        this.contactService.getZohoAutherizedContacts( this.socialPartners )
+            .subscribe(
+            data => {
+                this.getGoogleConatacts = data;
+                this.hideZohoAuthorisedPopup();
+                this.selectedAddPartnerOption = 6;
+                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                }
+                for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
+                    // this.zohoImageNormal = true;
+                    $( "#Gfile_preview" ).show();
+                    $( "#myModal .close" ).click()
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
+                this.setSocialPage(1);
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+
+    saveZohoContacts() {
+        this.socialPartners.socialNetwork = "ZOHO";
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contacts = this.socialPartnerUsers;
+            if ( this.socialPartnerUsers.length > 0 ) {
+                this.newPartnerUser = this.socialPartners.contacts;
+                this.saveValidEmails();
+                /*this.contactService.saveSocialContactList( this.socialPartners )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                        $( "#uploadContactsMessage" ).show();
+                    },
+
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
+                    )*/
+            } else
+                this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
+    }
+
+    saveZohoContactSelectedUsers() {
+        var selectedUserIds = new Array();
+        let selectedUsers = new Array<User>();
+        let self = this;
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var userInformation = $( this ).val().split( ',' );
+            let user = new User();
+            user.emailId = userInformation[0];
+            user.firstName = userInformation[1];
+            user.lastName = userInformation[2];
+            selectedUsers.push( user );
+            
+        });
+        console.log( selectedUsers );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
+        if ( selectedUsers.length != 0 ) {
+            this.newPartnerUser = selectedUsers;
+            this.saveValidEmails();
+            /*this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( 'home/partners/manage' )
+                        }
+                    this.contactService.successMessage = true;
+                },
+
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                )*/
+        }
+        else {
+            this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
+        }
+    }
+    
+    onChange( item: any ) {
+        this.xtremandLogger.log( item );
+        if ( this.salesforceListViewName == "DEFAULT" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#salesforce_save_button" ).prop( 'disabled', false );
+        }
+
+        this.salesforceListViewId = item;
+        for ( var i = 0; i < this.salesforceListViewsData.length; i++ ) {
+            this.xtremandLogger.log( this.salesforceListViewsData[i].listViewId );
+            if ( item == this.salesforceListViewsData[i].listViewId ) {
+                this.salesforceListViewName = this.salesforceListViewsData[i].listViewName;
+            }
+            this.xtremandLogger.log( "listviewNameDROPDOWN" + this.salesforceListViewName );
+        }
+    }
+
+    onChangeSalesforceDropdown( event: Event ) {
+        this.contactType = event.target["value"];
+        this.socialNetwork = "salesforce";
+        this.salesforceListViewsData = [];
+        if ( this.contactType == "DEFAULT" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#salesforce_save_button" ).prop( 'disabled', false );
+        }
+
+        if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
+            $( "button#salesforce_save_button" ).prop( 'disabled', true );
+            this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
+                .subscribe(
+                data => {
+                    if ( data.listViews.length > 0 ) {
+                        for ( var i = 0; i < data.listViews.length; i++ ) {
+                            this.salesforceListViewsData.push( data.listViews[i] );
+                            this.xtremandLogger.log( data.listViews[i] );
+                        }
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.log( "onChangeSalesforceDropdown" )
+                );
+        }
+    }
+
+    showModal() {
+        $( "#salesforceModal" ).show();
+    }
+
+    hideModal() {
+        $( '#salesforceModal' ).modal( 'hide' );
+        $( 'body' ).removeClass( 'modal-open' );
+        $( '.modal-backdrop fade in' ).remove();
+
+    }
+
+    salesforceContacts() {
+        this.contactType = "";
+        this.isContactsThere = false;
+        this.fileTypeError = false;
+        this.socialPartners.socialNetwork = "salesforce";
+        this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
+        this.contactService.salesforceLogin()
+            .subscribe(
+            data => {
+                this.storeLogin = data;
+                console.log( data );
+                if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                    $( "#salesforceModal" ).modal();
+                    console.log( "AddContactComponent salesforce() Authentication Success" );
+                    this.checkingPopupValues();
+                } else {
+                    localStorage.setItem( "userAlias", data.userAlias )
+                    console.log( data.redirectUrl );
+                    console.log( data.userAlias );
+                    window.location.href = "" + data.redirectUrl;
+                }
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+            },
+            () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
+            );
+    }
+
+    checkingPopupValues() {
+        $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
+            this.getSalesforceListViewContacts( this.contactType );
+        } else {
+            this.getSalesforceContacts( this.contactType );
+        }
+    }
+
+    getSalesforceContacts( contactType: any ) {
+        this.socialPartners.firstName = '';
+        this.socialPartners.lastName = '';
+        this.socialPartners.emailId = '';
+        this.socialPartners.contactName = '';
+        this.socialPartners.showLogin = true;
+        this.socialPartners.jsonData = '';
+        this.socialPartners.statusCode = 0;
+        this.socialPartners.contactType = '';
+        this.socialPartners.alias = '';
+        this.socialNetwork = "salesforce";
+        var self = this;
+        var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( selectedDropDown == "DEFAULT" ) {
+            return false;
+        }
+        else {
+            this.contactType = selectedDropDown;
+            this.xtremandLogger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
+        }
+
+        this.contactService.getSalesforceContacts( this.socialNetwork, this.contactType )
+            .subscribe(
+            data => {
+                this.getGoogleConatacts = data;
+                this.selectedAddPartnerOption = 7;
+                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                    this.hideModal();
+                }
+                for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
+                    $( "#Gfile_preview" ).show();
+                    this.hideModal();
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
+                this.setSocialPage(1);
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+            },
+            () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+
+    getSalesforceListViewContacts( contactType: any ) {
+        this.socialPartners.firstName = '';
+        this.socialPartners.lastName = '';
+        this.socialPartners.emailId = '';
+        this.socialPartners.contactName = '';
+        this.socialPartners.showLogin = true;
+        this.socialPartners.jsonData = '';
+        this.socialPartners.statusCode = 0;
+        this.socialPartners.contactType = '';
+        this.socialPartners.alias = '';
+        this.socialNetwork = "salesforce";
+        var self = this;
+        var selectedDropDown = $( "select.opts:visible option:selected " ).val();
+        if ( selectedDropDown == "DEFAULT" ) {
+            return false;
+        }
+        else {
+            this.contactType = selectedDropDown;
+            this.xtremandLogger.log( "AddContactComponent getSalesforceContacts() selected Dropdown value:" + this.contactType )
+        }
+        this.contactService.getSalesforceListViewContacts( this.socialNetwork, this.contactType, this.salesforceListViewId, this.salesforceListViewName )
+            .subscribe(
+            data => {
+                this.getGoogleConatacts = data;
+                this.selectedAddPartnerOption = 7;
+                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                    this.isContactsThere = true;
+                    this.hideModal();
+                }
+                for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                    this.xtremandLogger.info( this.getGoogleConatacts );
+                    //this.sfImageNormal = true;
+                    $( "#Gfile_preview" ).show();
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    this.hideModal();
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
+                this.setSocialPage(1);
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+            },
+            () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+            );
+        this.isContactsThere = false;
+    }
+
+    saveSalesforceContactSelectedUsers() {
+        var selectedUserIds = new Array();
+        let selectedUsers = new Array<User>();
+        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
+            var userInformation = $( this ).val().split( ',' );
+            let user = new User();
+            user.emailId = userInformation[0];
+            user.firstName = userInformation[1];
+            user.lastName = userInformation[2];
+            selectedUsers.push( user );
+        });
+        console.log( selectedUsers );
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
+        if ( selectedUsers.length != 0 ) {
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+            this.newPartnerUser = selectedUsers;
+            this.saveValidEmails();
+            /*this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                    $( "#uploadContactsMessage" ).show();
+                    if(this.isPartner == false){
+                        this.router.navigateByUrl( '/home/contacts/manage' )
+                        }else{
+                            this.router.navigateByUrl( 'home/partners/manage' )
+                        }
+                    this.contactService.successMessage = true;
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                )*/
+        }
+        else {
+            this.xtremandLogger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
+        }
+    }
+
+    saveSalesforceContacts() {
+        this.socialPartners.socialNetwork = "salesforce";
+        this.socialPartners.isPartnerUserList = this.isPartner;
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.alias = this.salesforceListViewId;
+        this.socialPartners.contacts = this.socialPartnerUsers;
+            if ( this.socialPartnerUsers.length > 0 ) {
+                this.newPartnerUser = this.socialPartners.contacts;
+                this.saveValidEmails();
+                
+                /*this.contactService.saveSocialContactList( this.socialContact )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                        $( "#uploadContactsMessage" ).show();
+                        if(this.isPartner == false){
+                            this.router.navigateByUrl( '/home/contacts/manage' )
+                            }else{
+                                this.router.navigateByUrl( 'home/partners/manage' )
+                            }
+                    },
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
+                    )*/
+            } else
+                this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
+    }
+    
     saveContacts() {
         if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1) {
             this.savePartnerUsers();
@@ -878,6 +1489,20 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.saveGoogleContacts();
             } else
                 this.saveGoogleContactSelectedUsers();
+        }
+        
+        if ( this.selectedAddPartnerOption == 6 ) {
+            if ( this.socialContactsValue == true ) {
+                this.saveZohoContacts();
+            } else
+                this.saveZohoContactSelectedUsers();
+        }
+        
+        if ( this.selectedAddPartnerOption == 7 ) {
+            if ( this.socialContactsValue == true ) {
+                this.saveSalesforceContacts();
+            } else
+                this.saveSalesforceContactSelectedUsers();
         }
 
         /*if ( this.selectedAddContactsOption == 3 ) {
@@ -908,9 +1533,68 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }*/
     }
     
+    settingSocialNetworkOpenModal( socialNetwork: string ) {
+        this.settingSocialNetwork = socialNetwork;
+        $( '#settingSocialNetwork' ).modal();
+    }
+    
+    unlinkSocailAccount() {
+        let socialNetwork = this.settingSocialNetwork.toUpperCase();
+        console.log( "CheckBoXValueUNlink" + this.isUnLinkSocialNetwork );
+        this.contactService.unlinkSocailAccount( socialNetwork, this.isUnLinkSocialNetwork )
+            .subscribe(
+            ( data: any ) => {
+                if ( socialNetwork == 'SALESFORCE' ) {
+                    $( "#salesforceContact_buttonNormal" ).hide();
+                    $( "#salesforceGear" ).hide();
+                    this.sfImageBlur = true;
+                    this.unlinkSalesforceSuccessMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    this.socialContactImage();
+                }
+                else if ( socialNetwork == 'GOOGLE' ) {
+                    $( "#googleContact_buttonNormal" ).hide();
+                    $( "#GoogleGear" ).hide();
+                    this.googleImageBlur = true;
+                    this.unlinkGoogleSuccessMessage = true;
+                    setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                }
+                else if ( socialNetwork == 'ZOHO' ) {
+                    $( "#zohoContact_buttonNormal" ).hide();
+                    $( "#zohoGear" ).hide();
+                    this.zohoImageBlur = true;
+                    this.unlinkZohoSuccessMessage = true;
+                    setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                }
+            },
+            ( error: any ) => {
+                if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
+                    this.Campaign = error;
+                    $( "#settingsSalesforce .close" ).click()
+                    this.deleteErrorMessage = true;
+                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                } else {
+                    this.xtremandLogger.errorPage( error );
+                }
+                console.log( error );
+            },
+            () => {
+                $( "#settingSocialNetwork .close" ).click();
+                this.cancelPartners();
+                this.xtremandLogger.info( "deleted completed" );
+            }
+            );
+        this.unlinkSalesforceSuccessMessage = false;
+        this.unlinkGoogleSuccessMessage = false;
+        this.unlinkZohoSuccessMessage = false;
+        this.deleteErrorMessage = false;
+    }
+    
+    
     ngOnInit() {
         this.socialContactImage();
         $( "#Gfile_preview" ).hide();
+        this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.defaultPartnerList( this.loggedInUserId );
 
