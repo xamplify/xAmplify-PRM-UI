@@ -232,7 +232,8 @@ h1.bold {
 
 #dashboard-heat-map {
     min-width: 300px;
-    max-width: 600px;
+	max-width: 600px;
+    min-height: 214px;
     margin: 0 auto;
 }
 #FirstCampaignBarchart{

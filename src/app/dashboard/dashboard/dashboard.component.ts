@@ -38,11 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardReport: DashboardReport = new DashboardReport();
     userDefaultPage: UserDefaultPage = new UserDefaultPage();
     weeklyTweetsCount: number;
-
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
-
     totalRecords: number;
-    heatMapData: any;
     campaigns: Campaign[];
     launchedCampaignsMaster: any[];
     launchedCampaignsChild: any[] = new Array<any>();
@@ -57,11 +54,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     hasSocialStatusRole = false;
     categories: any;
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
-        public contactService: ContactService,
-        public videoFileService: VideoFileService, public twitterService: TwitterService, public facebookService: FacebookService,
-        public socialService: SocialService, public authenticationService: AuthenticationService,
-        public utilService: UtilService, public userService: UserService, public campaignService: CampaignService,
-        public referenceService: ReferenceService, public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
+        public contactService: ContactService,public videoFileService: VideoFileService, public twitterService: TwitterService, 
+        public facebookService: FacebookService, public socialService: SocialService, 
+        public authenticationService: AuthenticationService,public utilService: UtilService, public userService: UserService, 
+        public campaignService: CampaignService, public referenceService: ReferenceService, 
+        public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
@@ -201,8 +198,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
 
     }
-    generatHeatMap() {
-      const data = this.heatMapData; 
+    generatHeatMap(heatMapData) {
+      const data = heatMapData; 
        Highcharts.chart('dashboard-heat-map', {
             colorAxis: {
                 minColor: '#FFFFFF',
@@ -219,7 +216,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
              plotOptions: {
                 series: {
-                    shadow: false
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'normal',
+                             fontSize:'13px'
+                        }
+                    }
                 }
             },
             series: [{
@@ -230,113 +233,81 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }],
             title: {
                 text: ' '
+            },
+            legend: {
+                enabled: false
             }
         });
     }
-    generatFirstCampaignBarchart(openEmailData) {
-        Highcharts.chart('FirstCampaignBarchart', {
-            chart: {
-                type: 'bar'
-            },
-            credits: {
-                enabled: false
-            },
-            exporting: { enabled: false },
-            title: {
-                text: ' '
-            },
-            xAxis: {
-                categories: this.categories
-            },
-            yAxis: {
-                min: 0,
-                visible: false
+    generateBarChartForEmailLogs(names,opened,clicked,watched, maxValue:number){
+        const charts = [],
+            $containers = $('#trellis td'),
+            datasets = [
+                {
+                name: 'opened',
+                data: opened
+                },
+                {
+                name: 'clicked',
+                data: clicked
+                },
+                {
+                name: 'watched',
+                data: watched
+                },
+        ];
+        $.each(datasets, function(i, dataset) {
+            charts.push(new Highcharts.Chart({
+         chart: {
+            renderTo: $containers[i],
+            type: 'bar',
+            marginLeft: i === 0 ? 100 : 10
+        },
+        
+        title: {
+            text: dataset.name,
+            align: 'left',
+            x: i === 0 ? 90 : 0,
+            style: {
+            color: '#696666',
+            fontWeight: 'normal',
+            fontSize: '13px'
+           }
+        },
 
-            },
-            legend: {
-                reversed: true
-            },
-            plotOptions: {
-                series: {
-                    stacking: 'normal'
-                }
-            },
-            series: [{
-                showInLegend: false,
-                name : 'Opened',
-                data: openEmailData
-            }]
-        });
-    }
-    generatSecondCampaignBarchart(clickedEmailData) {
-        Highcharts.chart('SecondCampaignBarchart', {
-            chart: {
-                type: 'bar'
-            },
-            exporting: { enabled: false },
-            credits: {
-                enabled: false
-            },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: names,
+            labels: {
+                enabled: i === 0
+            }
+        },
+        exporting: { enabled: false },
+        yAxis: {
+            allowDecimals: false,
+            visible: false,
             title: {
-                text: ' '
+                text: null
             },
-            xAxis: {
-                categories: this.categories
-            },
-            yAxis: {
-                min: 0,
-                visible: false
-            },
-            legend: {
-                reversed: true
-            },
-            plotOptions: {
-                series: {
-                    stacking: 'normal'
-                }
-            },
-            series: [{
-                showInLegend: false,
-                 name : 'Clicked',
-                data: clickedEmailData
-            }]
-        });
+            min: 0,
+            max: maxValue
+        },
+        legend: {
+            enabled: false
+        },
+        labels: {
+            style: {
+                color: 'white',
+                fontSize:'25px'
+            } 
+        },
+        series: [dataset]
+        }));
+     });
     }
-
-    generatThirdCampaignBarchart(watchedEmailData) {
-        Highcharts.chart('ThirdCampaignBarchart', {
-            chart: {
-                type: 'bar'
-            },
-            credits: {
-                enabled: false
-            },
-            exporting: { enabled: false },
-            title: {
-                text: ' '
-            },
-            xAxis: {
-                categories: this.categories
-            },
-            yAxis: {
-                min: 0,
-                visible: false
-            },
-            legend: {
-                reversed: true
-            },
-            plotOptions: {
-                series: {
-                    stacking: 'normal'
-                }
-            },
-            series: [{
-                showInLegend: false,
-                name : 'Watched',
-                data: watchedEmailData
-            }]
-        });
-    }
+   
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
         this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
@@ -662,10 +633,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getCampaignsHeatMapData() {
         this.dashboardService.getCampaignsHeatMapDetails().
             subscribe(result => {
-                this.xtremandLogger.log(result);
                 this.xtremandLogger.log(result.heatMapData);
-                this.heatMapData = result.heatMapData;
-                this.generatHeatMap();
+              //  this.heatMapData = result.heatMapData;
+                this.generatHeatMap(result.heatMapData);
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
@@ -677,21 +647,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
             subscribe(result => {
                 console.log(result);
                 this.categories = result.campaignNames;
-                this.generatFirstCampaignBarchart(result.emailOpenedCount);
-                this.generatSecondCampaignBarchart(result.emailClickedCount);
-                this.generatThirdCampaignBarchart(result.watchedCount);
+                const maxNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount,result.watchedCount))
+                this.generateBarChartForEmailLogs(result.campaignNames,result.emailOpenedCount,result.emailClickedCount,result.watchedCount,maxNumber);
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 // this.xtremandLogger.errorPage(error);
             });
     }
-
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
     }
-
+    
     ngOnInit() {
         try {
             this.dashboardReportsCount();
