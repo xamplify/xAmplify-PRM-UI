@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { ContactService } from '../services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-salesforce-call-back',
@@ -10,7 +11,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
   styleUrls: ['./salesforce-call-back.component.css']
 })
 export class SalesforceCallBackComponent implements OnInit {
-    constructor(private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {}
+    constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {}
     
     salesforceCallback(){
         this.contactService.salesforceCallback()
@@ -19,7 +20,11 @@ export class SalesforceCallBackComponent implements OnInit {
                 localStorage.removeItem("userAlias");
                 this.xtremandLogger.info("result: "+result);
                 this.contactService.salesforceContactCallBack = true;
-                this.router.navigate(['/home/contacts/add']);
+                if(this.referenceService.callBackURLCondition == 'partners'){
+                    this.router.navigate(['/home/partners']);
+                }else{
+                    this.router.navigate(['/home/contacts/add']);
+                }
                 
             },
         error => {                

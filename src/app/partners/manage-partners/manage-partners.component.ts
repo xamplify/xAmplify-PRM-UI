@@ -294,7 +294,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( this ).remove();
                 });
                 
-                this.setResponseDetails('SUCCESS', 'your contacts has been saved successfully');
+                this.setResponseDetails('SUCCESS', 'your Partner has been saved successfully');
                     
                 //this.checkingLoadContactsCount = true;
                 this.newPartnerUser.length = 0;
@@ -634,7 +634,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             confirmButtonText: 'Yes, delete it!'
 
         }).then( function( myData: any ) {
-            console.log( "ManageContacts showAlert then()" + myData );
+            console.log( "ManagePartner showAlert then()" + myData );
             self.removeContactListUsers1( contactId );
         })
         }
@@ -649,7 +649,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             ( data: any ) => {
                 data = data;
                 console.log( "update Contacts ListUsers:" + data );
-                this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
+                this.setResponseDetails('SUCCESS', 'your Partner has been deleted successfully');
                 this.loadPartnerList( this.pagination );
             },
             ( error: any ) => {
@@ -681,7 +681,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
          .subscribe(
             ( data: any ) => {
                console.log(data);
-               this.setResponseDetails('SUCCESS', 'your contact has been updated successfully');
+               this.setResponseDetails('SUCCESS', 'your Partner has been updated successfully');
                this.loadPartnerList( this.pagination );
             },
             error => this.xtremandLogger.error( error ),
@@ -778,6 +778,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     this.getGoogleContactsUsers();
                     this.xtremandLogger.info( "called getGoogle contacts method:" );
                 } else {
+                    this.referenceService.callBackURLCondition = 'partners';
                     localStorage.setItem( "userAlias", data.userAlias )
                     console.log( data.redirectUrl );
                     console.log( data.userAlias );
@@ -1597,6 +1598,19 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.defaultPartnerList( this.loggedInUserId );
+        if ( this.contactService.googleCallBack == true ) {
+            this.getGoogleContactsUsers();
+        } else if ( this.contactService.salesforceContactCallBack == true ) {
+            $( "#salesforceModal" ).modal();
+            this.contactService.salesforceContactCallBack = false;
+        }
+
+    }
+    
+    ngDestroy() {
+        this.contactService.googleCallBack = false;
+        this.contactService.salesforceContactCallBack = false;
+        this.hideModal();
 
     }
 
