@@ -11,7 +11,15 @@ import { ReferenceService } from '../../core/services/reference.service';
   styleUrls: ['./salesforce-call-back.component.css']
 })
 export class SalesforceCallBackComponent implements OnInit {
-    constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {}
+    isPartner: boolean;
+    constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {
+        let currentUrl = this.router.url;
+        if(currentUrl.includes('home/contacts')){
+            this.isPartner = false;
+        }else{
+            this.isPartner = true;  
+        }
+    }
     
     salesforceCallback(){
         this.contactService.salesforceCallback()
@@ -21,7 +29,7 @@ export class SalesforceCallBackComponent implements OnInit {
                 localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
                 this.contactService.salesforceContactCallBack = true;
-                if(this.referenceService.callBackURLCondition == 'partners'){
+                if(this.isPartner == true){
                     this.router.navigate(['/home/partners']);
                 }else{
                     this.router.navigate(['/home/contacts/add']);

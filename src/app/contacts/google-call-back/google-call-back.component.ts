@@ -12,9 +12,16 @@ import { ReferenceService } from '../../core/services/reference.service';
 })
 export class GoogleCallBackComponent implements OnInit {
     
-    public googleContactCallBack:boolean;
+    public isPartner:boolean;
     
-    constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {}
+    constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {
+        let currentUrl = this.router.url;
+        if(currentUrl.includes('home/contacts')){
+            this.isPartner = false;
+        }else{
+            this.isPartner = true;  
+        }
+    }
     
     googleCallback(){
         this.contactService.googleCallback()
@@ -24,7 +31,7 @@ export class GoogleCallBackComponent implements OnInit {
                 localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
                 this.contactService.googleCallBack = true;
-                if(this.referenceService.callBackURLCondition == 'partners'){
+                if(this.isPartner == true){
                     this.router.navigate(['/home/partners']);
                 }else{
                     this.router.navigate(['/home/contacts/add']);

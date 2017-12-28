@@ -102,6 +102,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger:XtremandLogger ) {
         
         this.user = new User();
+        this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = (this.referenceService.countries[0]);
     }
@@ -1612,6 +1613,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     ngDestroy() {
         this.contactService.googleCallBack = false;
         this.contactService.salesforceContactCallBack = false;
+        this.referenceService.callBackURLCondition = '';
         this.hideModal();
 
     }
