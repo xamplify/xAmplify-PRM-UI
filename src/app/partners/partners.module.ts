@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { PartnerRoutingModule } from './partner-routing.module';
 import { ManagePartnersComponent } from './manage-partners/manage-partners.component';
+import { SharedContactsModule } from '../shared/shared-contacts.module';
 
 
 @NgModule({
   imports: [
-    CommonModule, PartnerRoutingModule, SharedModule
+    CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule
   ],
   providers: [],
   declarations: [ManagePartnersComponent]

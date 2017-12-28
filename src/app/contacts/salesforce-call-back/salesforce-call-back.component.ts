@@ -18,6 +18,7 @@ export class SalesforceCallBackComponent implements OnInit {
         .subscribe(
             result => {
                 localStorage.removeItem("userAlias");
+                localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
                 this.contactService.salesforceContactCallBack = true;
                 if(this.referenceService.callBackURLCondition == 'partners'){

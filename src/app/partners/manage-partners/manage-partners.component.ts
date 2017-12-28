@@ -768,7 +768,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialPartners.socialNetwork = "GOOGLE";
         this.contactService.googleCallBack = true;
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-        this.contactService.googleLogin()
+        this.contactService.googleLogin(this.isPartner)
             .subscribe(
             data => {
                 this.storeLogin = data;
@@ -780,6 +780,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 } else {
                     this.referenceService.callBackURLCondition = 'partners';
                     localStorage.setItem( "userAlias", data.userAlias )
+                    localStorage.setItem( "isPartner", data.isPartner )
                     console.log( data.redirectUrl );
                     console.log( data.userAlias );
                     window.location.href = "" + data.redirectUrl;
@@ -1254,7 +1255,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.fileTypeError = false;
         this.socialPartners.socialNetwork = "salesforce";
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-        this.contactService.salesforceLogin()
+        this.contactService.salesforceLogin(this.isPartner)
             .subscribe(
             data => {
                 this.storeLogin = data;
@@ -1265,6 +1266,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     this.checkingPopupValues();
                 } else {
                     localStorage.setItem( "userAlias", data.userAlias )
+                    localStorage.setItem( "isPartner", data.isPartner )
                     console.log( data.redirectUrl );
                     console.log( data.userAlias );
                     window.location.href = "" + data.redirectUrl;

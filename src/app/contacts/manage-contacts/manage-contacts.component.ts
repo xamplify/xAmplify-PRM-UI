@@ -374,7 +374,7 @@ export class ManageContactsComponent implements OnInit {
         }
         this.socialContact.contactType = this.contactType;
         this.socialContact.socialNetwork = socialNetwork;
-        this.contactService.googleLogin()
+        this.contactService.googleLogin(this.isPartner)
             .subscribe(
             data => {
                 this.storeLogin = data;
@@ -465,7 +465,7 @@ export class ManageContactsComponent implements OnInit {
         }
         this.socialContact.contactType = this.contactType;
         this.socialContact.socialNetwork = socialNetwork;
-        this.contactService.salesforceLogin()
+        this.contactService.salesforceLogin(this.isPartner)
             .subscribe(
             data => {
                 this.storeLogin = data;

@@ -191,9 +191,9 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    googleLogin() {
+    googleLogin(isPartner: boolean) {
         this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId(), "")
+        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner, "")
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -206,7 +206,7 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });
-        return this._http.get( this.authenticationService.REST_URL + "googleOauth/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' ) )
+        return this._http.get( this.authenticationService.REST_URL + "googleOauth/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -303,9 +303,9 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    salesforceLogin() {
+    salesforceLogin(isPartner: boolean) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
-        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId())
+        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -318,7 +318,7 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });
-        return this._http.get( this.authenticationService.REST_URL + "salesforceOauth/callback" + queryParam + "&access_token=" + this.authenticationService.access_token + "&userAlias=" + localStorage.getItem( 'userAlias' ) )
+        return this._http.get( this.authenticationService.REST_URL + "salesforceOauth/callback" + queryParam + "&access_token=" + this.authenticationService.access_token + "&userAlias=" + localStorage.getItem( 'userAlias' ) + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
             .map( this.extractData )
             .catch( this.handleError );
     }

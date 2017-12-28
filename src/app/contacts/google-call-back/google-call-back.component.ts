@@ -21,6 +21,7 @@ export class GoogleCallBackComponent implements OnInit {
         .subscribe(
             result => {
                 localStorage.removeItem("userAlias");
+                localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
                 this.contactService.googleCallBack = true;
                 if(this.referenceService.callBackURLCondition == 'partners'){
