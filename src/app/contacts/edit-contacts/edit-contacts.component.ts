@@ -143,7 +143,7 @@ export class EditContactsComponent implements OnInit {
                                            { 'name': '50', 'value': '50'},
                                            { 'name': 'ALL', 'value': 'ALL'},
                                            ];
-               sortOptionForPagination = this.sortOptionsForPagination[0];
+               sortOptionForPagination: any = this.sortOptionsForPagination[0];
                public sortOption: any = this.sortOptions[0];
                
                isPartner: boolean;
@@ -194,8 +194,8 @@ export class EditContactsComponent implements OnInit {
     }
 
     onChangeAllContactUsers( event: Event ) {
-        this.sortOption = event;
-        this.selectedDropDown = this.sortOption.value;
+        this.sortOptionForPagination = event;
+        this.selectedDropDown = this.sortOptionForPagination.value;
         if(this.currentContactType == "all_contacts"){
             this.pagination.maxResults = (this.selectedDropDown == 'ALL') ? this.pagination.totalRecords : parseInt(this.selectedDropDown);
             this.pagination.pageIndex = 1;

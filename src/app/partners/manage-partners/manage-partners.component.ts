@@ -78,6 +78,7 @@ export class ManagePartnersComponent implements OnInit {
     unlinkZohoSuccessMessage: boolean = false;
     Campaign: string;
     deleteErrorMessage: boolean;
+    emptyPartnerList: boolean = false;
     sortOptions = [
                    { 'name': 'Sort By', 'value': ''},
                    { 'name': 'Email(A-Z)', 'value': 'emailId-ASC'},
@@ -88,9 +89,18 @@ export class ManagePartnersComponent implements OnInit {
                    { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC'},
                ];
     public sortOption: any = this.sortOptions[0];
+    sortOptionsForPagination = [
+                                { 'name': '10', 'value': '10'},
+                                { 'name': '25', 'value': '25'},
+                                { 'name': '50', 'value': '50'},
+                                { 'name': 'ALL', 'value': 'ALL'},
+                                ];
+    public sortOptionForPagination: any = this.sortOptionsForPagination[0];
+    
     public searchKey: string;
     sortcolumn: string = null;
     sortingOrder: string = null;
+    selectedDropDown: string;
     
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -105,6 +115,15 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = (this.referenceService.countries[0]);
+    }
+    
+    onChangeAllPartnerUsers( event: Event ) {
+        this.sortOptionForPagination = event;
+        this.selectedDropDown = this.sortOptionForPagination.value;
+            this.pagination.maxResults = (this.selectedDropDown == 'ALL') ? this.pagination.totalRecords : parseInt(this.selectedDropDown);
+            this.pagination.pageIndex = 1;
+            this.loadPartnerList(this.pagination);
+        
     }
     
     sortByOption( event: any, selectedType: string){
@@ -206,11 +225,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.newPartnerUser.push( this.addPartnerUser );
             
             
-          this.selectedAddPartnerOption = 1;
+           this.selectedAddPartnerOption = 1;
            this.fileTypeError = false;
-           /* this.noOptionsClickError = false;
-            this.inValidCsvContacts = false;*/
-            this.isContactsThere = false;
+           this.isContactsThere = false;
             
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -222,7 +239,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             this.addPartnerUser = new User();
-            //this.emailNotValid = false;
     }
 
     cancelRow( rowId: number ) {
@@ -290,14 +306,12 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             ( data: any ) => {
                 data = data;
                 this.xtremandLogger.info( "update partner ListUsers:" + data );
-                //this.manageContact.editContactList( this.contactListId, this.contactListName,this.uploadedUserId);
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
                 
                 this.setResponseDetails('SUCCESS', 'your Partner has been saved successfully');
                     
-                //this.checkingLoadContactsCount = true;
                 this.newPartnerUser.length = 0;
                 this.loadPartnerList( this.pagination );
                 this.clipBoard = false;
@@ -320,7 +334,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
     
     cancelPartners(){
-        //this.emailNotValid = false;
         this.socialPartnerUsers.length = 0;
         
        this.pager = [];
@@ -353,37 +366,22 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loadPartnerList( pagination: Pagination ) {
         this.referenceService.loading(this.httpRequestLoader, true); 
         this.httpRequestLoader.isHorizontalCss = true;
-        //pagination.criterias = this.criterias;
-        //alert(this.partnerListId);
-        //alert(this.partnerListId);
-        //contactListId 1593
          this.contactService.loadUsersOfContactList( this.partnerListId, pagination ).subscribe(
             ( data: any ) => {
                 this.partners = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                /*if ( this.contacts.length !== 0 ) {
-                    this.noContactsFound = false;
-                    this.noOfContactsDropdown = true;
+                if ( this.partners.length == 0 ) {
+                    this.emptyPartnerList = true;
+                    //this.noOfContactsDropdown = true;
                 }
                 else {
-                    this.noContactsFound = true;
-                    this.noOfContactsDropdown = false;
-                    this.pagedItems = null;
-                }*/
+                    this.emptyPartnerList = false;
+                    //this.noOfContactsDropdown = false;
+                    //this.pagedItems = null;
+                }
                 this.referenceService.loading(this.httpRequestLoader, false); 
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.partners );
-                
-               /* var contactIds = this.pagination.pagedItems.map(function(a) {return a.id;});
-                var items = $.grep(this.selectedContactListIds, function(element) {
-                    return $.inArray(element, contactIds ) !== -1;
-                });
-                if(items.length==pagination.totalRecords || items.length == this.pagination.pagedItems.length){
-                    this.isHeaderCheckBoxChecked = true;
-                }else{
-                    this.isHeaderCheckBoxChecked = false;
-                }
-                */
             },
             error => this.xtremandLogger.error( error ),
             () => this.xtremandLogger.info( "MangePartnerComponent loadPartnerList() finished" )
@@ -408,10 +406,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddPartnerOption = 2;
             this.fileTypeError = false;
-            //this.noOptionsClickError = false;
-            //this.model.contactListName = outputstring;
-            //this.validateContactName( this.model.contactListName );
-            //this.removeCsvName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#file_preview" ).show();
             $( "button#cancel_button" ).prop( 'disabled', true );
@@ -453,9 +447,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             }
         } else {
             this.fileTypeError = true;
-            //$( "#file_preview" ).hide();
-           // this.model.contactListName = null;
-           // this.removeCsvName = false;
             this.uploader.queue.length = 0;
             this.selectedAddPartnerOption = 5;
         }
@@ -464,8 +455,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     copyFromClipboard() {
         this.selectedAddPartnerOption = 2;
         this.fileTypeError = false;
-       // this.noOptionsClickError = false;
-       // this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
         this.isContactsThere = false;
         $( "button#cancel_button" ).prop( 'disabled', false );
@@ -514,8 +503,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
                 isValidData = false;
             }
-           // this.clipboardUsers.length = 0;
-           // this.contacts.length = 0;
             this.newPartnerUser.length = 0;
         }
         if ( isValidData ) {
@@ -601,11 +588,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                         break;
                 }
                 this.xtremandLogger.info( user );
-                //this.clipboardUsers.push( user );
                 self.newPartnerUser.push( user );
-               /* $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                $( "#file_preview" ).show();
-                this.valilClipboardUsers = true;*/
             }
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
@@ -614,17 +597,15 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         } else {
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( "#clipBoardValidationMessage" ).show();
-            //$( "#file_preview" ).hide();
         }
         this.xtremandLogger.info( this.newPartnerUser );
     }
 
     
     deleteUserShowAlert( contactId: number ) {
-        //this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + contactId);
         let self = this;
-        if( this.totalRecords != 1){
+        //if( this.totalRecords != 1){
         swal( {
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -638,12 +619,11 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             console.log( "ManagePartner showAlert then()" + myData );
             self.removeContactListUsers1( contactId );
         })
-        }
+        //}
         
     }
     
     removeContactListUsers1( contactId: number ) {
-        //this.contactUsersId = contactId;
         this.partnerId[0] = contactId;
         this.contactService.removeContactListUsers( this.partnerListId, this.partnerId )
             .subscribe(
@@ -872,18 +852,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             if ( this.socialPartnerUsers.length > 0 ) {
                 this.newPartnerUser = this.socialPartners.contacts;
                 this.saveValidEmails();
-                /*this.contactService.saveSocialContactList( this.socialPartners )
-                    .subscribe(
-                    data => {
-                        data = data;
-                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    },
-                    ( error: any ) => {
-                        this.xtremandLogger.error( error );
-                        this.xtremandLogger.errorPage( error );
-                    },
-                    () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-                    )*/
             } else
                 this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
     }
@@ -905,19 +873,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         if ( selectedUsers.length != 0 ) {
             this.newPartnerUser = selectedUsers;
             this.saveValidEmails();
-            /*this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.contactService.saveContactList( selectedUsers,'', this.isPartner )
-                .subscribe(
-                data => {
-                    data = data;
-                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                },
-                ( error: any ) => {
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-                )*/
         }
         else {
             this.xtremandLogger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
@@ -1009,7 +964,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
-                   // $( "#Zfile_preview" ).show();
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1094,7 +1048,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
-                    // this.zohoImageNormal = true;
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1124,20 +1077,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             if ( this.socialPartnerUsers.length > 0 ) {
                 this.newPartnerUser = this.socialPartners.contacts;
                 this.saveValidEmails();
-                /*this.contactService.saveSocialContactList( this.socialPartners )
-                    .subscribe(
-                    data => {
-                        data = data;
-                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
-                    },
-
-                    ( error: any ) => {
-                        this.xtremandLogger.error( error );
-                        this.xtremandLogger.errorPage( error );
-                    },
-                    () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
-                    )*/
             } else
                 this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
     }
@@ -1160,30 +1099,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         if ( selectedUsers.length != 0 ) {
             this.newPartnerUser = selectedUsers;
             this.saveValidEmails();
-            /*this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
-                .subscribe(
-                data => {
-                    data = data;
-                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    $( "#uploadContactsMessage" ).show();
-                    if(this.isPartner == false){
-                        this.router.navigateByUrl( '/home/contacts/manage' )
-                        }else{
-                            this.router.navigateByUrl( 'home/partners/manage' )
-                        }
-                    this.contactService.successMessage = true;
-                },
-
-                ( error: any ) => {
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
-                )*/
         }
         else {
             this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
@@ -1387,7 +1302,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
-                    //this.sfImageNormal = true;
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1426,25 +1340,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
             this.newPartnerUser = selectedUsers;
             this.saveValidEmails();
-            /*this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
-                .subscribe(
-                data => {
-                    data = data;
-                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    $( "#uploadContactsMessage" ).show();
-                    if(this.isPartner == false){
-                        this.router.navigateByUrl( '/home/contacts/manage' )
-                        }else{
-                            this.router.navigateByUrl( 'home/partners/manage' )
-                        }
-                    this.contactService.successMessage = true;
-                },
-                ( error: any ) => {
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
-                )*/
         }
         else {
             this.xtremandLogger.error( "AddContactComponent saveSalesforceContactSelectedUsers() ContactList Name Error" );
@@ -1461,24 +1356,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.newPartnerUser = this.socialPartners.contacts;
                 this.saveValidEmails();
                 
-                /*this.contactService.saveSocialContactList( this.socialContact )
-                    .subscribe(
-                    data => {
-                        data = data;
-                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
-                        if(this.isPartner == false){
-                            this.router.navigateByUrl( '/home/contacts/manage' )
-                            }else{
-                                this.router.navigateByUrl( 'home/partners/manage' )
-                            }
-                    },
-                    ( error: any ) => {
-                        this.xtremandLogger.error( error );
-                        this.xtremandLogger.errorPage( error );
-                    },
-                    () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
-                    )*/
             } else
                 this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
     }
@@ -1508,33 +1385,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             } else
                 this.saveSalesforceContactSelectedUsers();
         }
-
-        /*if ( this.selectedAddContactsOption == 3 ) {
-            this.saveClipBoardContactList();
-        }
-
-        if ( this.selectedAddContactsOption == 4 ) {
-            this.saveCsvContactList();
-        }
-        if ( this.selectedAddContactsOption == 3 ) {
-            if ( this.salesforceContactsValue == true ) {
-                this.saveSalesforceContacts();
-            } else
-                this.saveSalesforceContactSelectedUsers();
-        }
-
-        
-
-        if ( this.selectedAddContactsOption == 5 ) {
-            if ( this.zohoContactsValue == true ) {
-                this.saveZohoContacts();
-            } else
-                this.saveZohoContactSelectedUsers();
-        }
-
-        if ( this.selectedAddContactsOption == 8 ) {
-            this.noOptionsClickError = true;
-        }*/
     }
     
     settingSocialNetworkOpenModal( socialNetwork: string ) {
@@ -1607,7 +1457,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             $( "#salesforceModal" ).modal();
             this.contactService.salesforceContactCallBack = false;
         }
-
     }
     
     ngDestroy() {

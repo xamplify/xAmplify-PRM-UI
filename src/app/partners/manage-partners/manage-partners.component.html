@@ -9,6 +9,11 @@
     width: 91%;
 }
 
+a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
 .imageblurNormal {
 	-webkit-filter: grayscale(0%);
 	filter: grayscale(0%);
@@ -48,7 +53,7 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a class="btn btn-success" (click)="saveContacts()"
-				style="color: white;">Save</a>
+				style="color: white;">Save <i class="fa fa-save"></i></a>
 			<a class="btn btn-success" (click)="cancelPartners()"
 				style="color: white;">Cancel</a>
 			<a (click)="downloadEmptyCsv()">
@@ -60,24 +65,6 @@ img:hover {
 			</a>
 		</div>
 	</div>
-<!-- <div class="clearfix" style=" margin-bottom: 17px;">
-		<div class="col-xs-6 col-sm-3">
-			<div class="btn-xs btn-info fileinput-button btn-block rounded-0"
-				style="overflow: hidden; position: relative; cursor: pointer;">
-				<h6 style="text-align: center;">Upload Csv</h6>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-3">
-			<button class="btn-xs btn-primary btn-block rounded-0"
-				(click)="addPartnerModalOpen()">
-				<h6>Add Partner</h6>
-			</button>
-		</div>
-		<div>
-		<a class="btn btn-success pull-right" (click)="saveValidEmails()"
-				style="color: white;">Save</a>
-		</div>
-	</div> -->
 <div class="portlet light">
 	<div class="fileupload-buttonbar clearfix page-bar m0">
 							<form #f="ngForm">
@@ -150,8 +137,8 @@ img:hover {
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"
-										id="salesforceGear" *ngIf="sfImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
+										*ngIf="sfImageNormal">
+										<a [class.disabled]="selectedAddPartnerOption != 5"
 										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
@@ -180,7 +167,7 @@ img:hover {
 									</a>
 									<div id="GoogleGear" style="position: relative"
 										*ngIf="googleImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5"
 										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
@@ -211,7 +198,7 @@ img:hover {
 									</a>
 									<div id="zohoGear" style="position: relative"
 										*ngIf="zohoImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5"
 										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
 										</a>
@@ -226,7 +213,6 @@ img:hover {
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/dynamics.png';">
-										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
 									</a>
 								</div>
 							</div>
@@ -423,79 +409,16 @@ img:hover {
 										</div>
 									</div>
 								</div>
-
-									<!-- <div style="margin-bottom: 0px; padding-left: 1cm">
-										<table class="table" *ngIf="uploadCsvUsingFile">
-											<thead>
-											</thead>
-											<tbody>
-												<tr *ngFor="let item of uploader.queue">
-													<td width="28%"><strong>{{ item?.file?.name
-															}}</strong></td>
-													<td *ngIf="uploader.isHTML5" nowrap>{{
-														item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-													<td *ngIf="uploader.isHTML5">
-														<div class="progress" style="margin-bottom: 0;">
-															<div class="progress-bar" role="progressbar"
-																[ngStyle]="{ 'width': item.progress + '%' }"></div>
-														</div>
-													</td>
-													<td class="text-center"><span *ngIf="item.isSuccess"><i
-															class="glyphicon glyphicon-ok"></i></span> <span
-														*ngIf="item.isCancel"><i
-															class="glyphicon glyphicon-ban-circle"></i></span> <span
-														*ngIf="item.isError"><i
-															class="glyphicon glyphicon-remove"></i></span></td>
-													<td nowrap>
-														<button type="button" class="btn btn-danger btn-xs"
-															(click)="item.remove()" (click)="removeCsv()">
-															<span class="glyphicon glyphicon-trash"></span> Remove
-														</button>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										</div>
-										
-										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
-											class="alert alert-danger alert-dismissable"
-											style="width: 80%">
-											<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
-												and Re Upload..
-											</b>
-										</div>
-									</div>
-									<div *ngIf="dublicateEmailId" class="col-md-6"
-										class="col-md-9 alert alert alert-danger alert-dismissable"
-										style="width: 100%">
-										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<h4>
-											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
-										</h4>
-									</div>
-
-									<div *ngIf="noContactsFound==true"
-										style="background-color: #3598dc" class="alert alert-info">
-										<h4 style="margin-top: 8px; color: white">No
-											Partners found..!</h4>
-									</div>
-									<div *ngIf="showInvalidMaills==true" class="col-md-6"
-										class="col-md-9 alert alert alert-danger alert-dismissable">
-										<a class="close" (click)="closeShowValidMessage()"
-											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
-											email pattern Contacts found.. !!!</strong>
-									</div>
-									 -->
 									<div class="clearfix">
 										<div class="col-xs-12">
+										<div *ngIf = "emptyPartnerList" id="showDeleteMessage"
+												class="alert alert-info alert-dismissable">
+												No Partners Found..
+										</div>
 											<div class="table-responsive">
 												<table class='table tgrid'>
 													<thead>
 														<tr>
-															<!-- <th class='text-center'><input type="checkbox"
-																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
-																(change)="checkAll($event)"
-																[id]="checkAllExistingContacts" /></th> -->
 															<th style="width: 25%; text-align: center;">NAME</th>
 															<th>CONTACT</th>
 															<th>JOB TITLE</th>
@@ -508,13 +431,6 @@ img:hover {
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
-															<!-- <td class='text-center'
-																*ngIf="isAdd || !isCampaignDraftContactList "><input
-																type="checkbox"
-																class="chk"
-																lang="{{contact.name}}" name="campaignContact[]"
-																value="{{contact.id}}" id="{{contact.id}}"
-																(click)="highlightRow(contact.id,$event)" /></td> -->
 															<td>
 																<div class="flex">
 																	<span class='profile'
@@ -579,8 +495,6 @@ img:hover {
 														<ng-container
 															*ngFor="let newContact of newPartnerUser; let i = index">
 														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<!-- <td align="center"><input type="checkbox"
-																checked="newContact.checked"></td> -->
 															<td>
 																<div class="flex">
 																	<span class='profile'
@@ -673,17 +587,16 @@ img:hover {
 									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 								</li>
 							</ul>
-						<!-- 	<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
+							<div class="btn-group pull-right"
 								style="left: -4px;">
 								<select class="form-control"
 									[(ngModel)]="sortOptionForPagination"
-									(ngModelChange)="onChangeAllContactUsers($event)">
-									<ng-container
-										*ngFor="let sort of sortOptionsForPagination; let i = index">
+									(ngModelChange)="onChangeAllPartnerUsers($event)">
+									<ng-container *ngFor="let sort of sortOptionsForPagination; let i = index">
 									<option [ngValue]="sort">{{sort.value}}</option>
 									</ng-container>
 								</select> <br>
-							</div> -->
+							</div>
 						</div>
 					</div>
 </div>
@@ -818,12 +731,6 @@ img:hover {
 					</div>
 				</form>
 			</div>
-			<!-- <div class="modal-footer">
-				<button type="submit" class="btn green"
-					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
-				<button type="button" class="btn green" data-dismiss="modal"
-					(click)="addPartnerModalClose()">Close</button>
-			</div> -->
 			<div class="modal-footer" *ngIf="!updatePartnerUser">
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail"
@@ -1048,40 +955,3 @@ img:hover {
 	</div>
 </div>
 </div>
-
-<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-      <form class="form-horizontal" id="add-partners-form">
-		   <div class="form-inline">
-		   <label class="control-label col-sm-2" for="firstName" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
-		   <div class="form-group col-sm-5">
-			      <input type="text" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="user.firstName" name="firstName">
-			    <div class="textCss"></div>
-		  </div> 
-		   <div class="form-group col-sm-5">
-			      <input type="text" id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="user.lastName" name="lastName">
-			       <div class="textCss"></div>
-		  </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"><span style="color:red;"> *</span></i></label>
-		    <div class="col-sm-10">
-		     <input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="user.emailId" name="emailId" (input)="referenceService.validateEmailId(user.emailId)" (blur)="referenceService.validateEmailId(user.emailId)">
-		      <div class="textCss"></div>
-		    </div>
-		  </div>
-      </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div> -->
