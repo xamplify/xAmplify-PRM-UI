@@ -103,14 +103,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    viewsSparklineData() {
+    viewsSparklineData(result, dates) {
         const self = this;
-        const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
-        const offsetValues = { 0: '12-dec-2017', 1: '13-dec-18', 2: '14-dec-19', 3: '14-dec-19', 4: '14-dec-19' }
-        this.referenceService.viewsSparklineValues = myvalues;
-        this.referenceService.viewsOffsetValues = offsetValues;
-         console.log(this.referenceService.viewsSparklineValues);
-         console.log(this.referenceService.viewsOffsetValues);
+        const myvalues = result;
+        const offsetValues = dates;
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
             width: '100',
@@ -124,21 +120,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $(document).ready(function () {
             $('#sparkline_bar').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
-                    region = sparkline.getCurrentRegionFields();
+                region = sparkline.getCurrentRegionFields();
                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-            //  self.referenceService.selectedViewsValues = offsetValues[region[0].offset];
-              self.router.navigate(['./home/dashboard/reports']);
+              self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
             });
         });
     }
+    sparklineDataWithRouter(value:number, date:string){
+     this.referenceService.viewsDate = date;
+     this.referenceService.clickedValue = value;
+     this.router.navigate(['./home/dashboard/reports']);
+    }
 
-    minutesSparklineData() {
+    minutesSparklineData(result, dates) {
         const self = this;
-        const myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
-        const offsetValues = { 0: '12-dec-2017', 1: '13-dec-18', 2: '14-dec-19', 3: '14-dec-19', 4: '14-dec-19' }
-        this.referenceService.viewsSparklineValues = null;
-        this.referenceService.viewsOffsetValues = null;
-        this.referenceService.selectedViewsValues = []
+        const myvalues = result;
+        const offsetValues = dates;
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
             width: '100',
@@ -146,29 +143,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
-            tooltipFormat: '<span >views:{{value}} <br>{{offset:offset}}</span>',
+            tooltipFormat: '<span >minutes:{{value}} <br>{{offset:offset}}</span>',
             tooltipValueLookups: { 'offset': offsetValues }
         });
          $(document).ready(function () {
             $('#sparkline_bar2').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
-                    region = sparkline.getCurrentRegionFields();
+                region = sparkline.getCurrentRegionFields();
                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-              //  this.referenceService.selectedViewsValues.push(offsetValues[region[0].offset],region[0].value)
-                self.router.navigate(['./home/dashboard/reports']);
+               self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
             });
         });
     }
 
-    averageSparklineData() {
-        const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
+    averageSparklineData(duration,dates) {
+        const myvalues = duration;
+        console.log(myvalues);
+        const offsetValues = dates;
         $('#sparkline_line').sparkline(myvalues, {
             type: 'line',
             width: '100',
             barWidth: 5,
             height: '55',
             barColor: '#35aa47',
-            negBarColor: '#e02222'
+            negBarColor: '#e02222',
+            tooltipFormat: '<span >average:{{value}} <br>{{offset:offset}}</span>',
+            tooltipValueLookups: { 'offset': offsetValues }
         });
     }
 
@@ -191,8 +191,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             exporting: { enabled: false },
             title: {
-                text: 'The people who have watched the video'
+                text: 'The people who have watched the video',
+                 style: {
+                        color: '#696666',
+                        fontWeight: 'normal',
+                        fontSize: '14px'
+                    }
             },
+            
             mapNavigation: {
                 enabled: true,
                 buttonOptions: {
@@ -694,6 +700,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => { 
                console.log(result);
+               this.referenceService.viewsSparklineValues = result;
+               this.viewsSparklineData(result.views,result.dates);
+               this.minutesSparklineData(result.minutesWatched, result.dates);
+               this.averageSparklineData(result.averageDuration,result.dates);
+               console.log(this.referenceService.viewsSparklineValues);
             },
             (error: any) => {
             this.xtremandLogger.error(error);
@@ -737,9 +748,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             Index.initChat();
             Tasks.initDashboardWidget();
 
-            this.viewsSparklineData();
-            this.minutesSparklineData();
-            this.averageSparklineData();
+            // this.viewsSparklineData();
+            // this.minutesSparklineData();
+            // this.averageSparklineData();
 
             this.facebookSparklineData();
             this.listActiveSocialAccounts(this.loggedInUserId);

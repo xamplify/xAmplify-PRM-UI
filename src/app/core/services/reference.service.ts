@@ -48,8 +48,8 @@ export class ReferenceService {
     isListView: boolean;
     callBackURLCondition = '';
     viewsSparklineValues: any;
-    viewsOffsetValues: any;
-    selectedViewsValues: any;
+    viewsDate:string;
+    clickedValue:number;
 
     countries = ["Country", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 

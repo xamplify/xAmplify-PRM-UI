@@ -10,10 +10,19 @@ import { ReferenceService } from '../../../core/services/reference.service';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor(public referenceService: ReferenceService) { }
+  resultSparkline: any;
+  viewsDate:string;
+  viewsValue:number;
+  constructor(public referenceService: ReferenceService) {
+    this.resultSparkline = this.referenceService.viewsSparklineValues;
+    console.log(this.resultSparkline);
+    this.viewsDate = this.referenceService.viewsDate;
+    this.viewsValue = this.referenceService.clickedValue;
+    console.log('views date is '+this.viewsDate +'value is '+ this.viewsValue);
+   }
   viewsSparklineData() {
-    const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
-    const offsetValues = { 0: '12-dec-2017', 1: '13-dec-18', 2: '14-dec-19', 3: '14-dec-19', 4: '14-dec-19' };
+    const myvalues = this.resultSparkline.views;
+    const offsetValues = this.resultSparkline.dates;
     // const myvalues = this.referenceService.viewsSparklineValues;
     // const offsetValues = this.referenceService.viewsOffsetValues;
     // console.log(myvalues);
@@ -38,8 +47,6 @@ export class ReportsComponent implements OnInit {
   }
   ngOnInit() {
     console.log(this.referenceService.viewsSparklineValues);
-    console.log(this.referenceService.viewsOffsetValues);
-    console.log(this.referenceService.selectedViewsValues);
     // console.log(this.utilService.barChartInfoObj)
     this.viewsSparklineData();
   }
