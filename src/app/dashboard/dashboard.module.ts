@@ -21,12 +21,13 @@ import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 import { AvarageChartComponent } from './views-report/average-chart/average-chart.component';
 import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
 import { CompanyProfileService } from './company-profile/services/company-profile.service';
+import { ReportsComponent } from './dashboard/reports/reports.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
-        FollowersComponent, SharedComponent,AvarageChartComponent,EditCompanyProfileComponent
+        FollowersComponent, SharedComponent,AvarageChartComponent,EditCompanyProfileComponent, ReportsComponent
     ],
     exports: [],
     providers: [DashboardService,CompanyProfileService]

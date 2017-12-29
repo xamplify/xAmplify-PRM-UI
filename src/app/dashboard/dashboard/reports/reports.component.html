@@ -1,0 +1,25 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
+			<li><a>reports</a> </li>
+		</ul>
+	</div>
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+		</div>
+		<div class="portlet-body" style="max-width: 100%; min-height: 200px;">
+			<div class="col-xs-4">
+				<div id="sparkline_bar_chart1">
+					<canvas width="172" height="94" style="display: inline-block; width: 172px; height: 94px; vertical-align: top;"></canvas>
+				</div>
+				<h2 style="text-align: left; color: #2f2f2f;font-weight: 400;font-size:18px;margin-left: 29px;margin-top: 9px;">Views</h2>
+			</div>
+			<div class="col-xs-8"> sparkline_bar data</div>
+		</div>
+	</div>
+</div>

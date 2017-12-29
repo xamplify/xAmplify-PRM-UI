@@ -12,6 +12,8 @@ import { ProfileHelpComponent } from './user-profile/profile-help/profile-help.c
 import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
 import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
+import { ReportsComponent } from './dashboard/reports/reports.component';
+
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
                         { path: 'table_advance', component: TableAdvanceComponent},
@@ -23,8 +25,9 @@ const routes: Routes = [
                         { path: 'profilehelp', component: ProfileHelpComponent },
                         { path: 'followers', component: FollowersComponent },
                         { path: 'shared', component: SharedComponent },
-                        {path:'add-company-profile',component:EditCompanyProfileComponent},
-                        {path:'edit-company-profile',component:EditCompanyProfileComponent}
+                        { path: 'add-company-profile', component:EditCompanyProfileComponent},
+                        { path: 'edit-company-profile', component:EditCompanyProfileComponent},
+                        { path: 'reports', component:ReportsComponent}
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

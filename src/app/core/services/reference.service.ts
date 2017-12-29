@@ -47,6 +47,10 @@ export class ReferenceService {
     deviceInfo: any;
     isListView: boolean;
     callBackURLCondition = '';
+    viewsSparklineValues: any;
+    viewsOffsetValues: any;
+    selectedViewsValues: any;
+
     countries = ["Country", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 
         "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegowina", "Botswana", "Bouvet Island", "Brazil",

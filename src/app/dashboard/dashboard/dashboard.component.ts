@@ -53,15 +53,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
     hasStatsRole = false;
     hasSocialStatusRole = false;
     categories: any;
+    heatMapData: any;
+    maxBarChartNumber: number;
+    isMaxBarChartNumber: boolean;
+    sortDates = [
+        { 'name': '7 Days', 'value': 7 },
+        { 'name': '14 Days)', 'value': 14 },
+        { 'name': '21 Days)', 'value': 21 },
+        { 'name': '30 Days)', 'value': 30 },
+    ];
+    daySort: any;
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
-        public contactService: ContactService,public videoFileService: VideoFileService, public twitterService: TwitterService, 
-        public facebookService: FacebookService, public socialService: SocialService, 
-        public authenticationService: AuthenticationService,public utilService: UtilService, public userService: UserService, 
-        public campaignService: CampaignService, public referenceService: ReferenceService, 
+        public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
+        public facebookService: FacebookService, public socialService: SocialService,
+        public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
+        public campaignService: CampaignService, public referenceService: ReferenceService,
         public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
+         this.daySort = this.sortDates[0];
     }
 
     genderDemographics(userId: number) {
@@ -93,12 +104,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     viewsSparklineData() {
+        const self = this;
         const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
-        const values  =  { '0': 'views: 2, DATE: 2013-01-01',
-                    '1': 'views: 2, DATE: 2013-01-01',
-                    '2': 'views: 5, DATE: 2013-01-01',
-                    '3': '14,DATE 2013-01-04',
-                    '4': '6,DATE 2013-01-05' }
+        const offsetValues = { 0: '12-dec-2017', 1: '13-dec-18', 2: '14-dec-19', 3: '14-dec-19', 4: '14-dec-19' }
+        this.referenceService.viewsSparklineValues = myvalues;
+        this.referenceService.viewsOffsetValues = offsetValues;
+         console.log(this.referenceService.viewsSparklineValues);
+         console.log(this.referenceService.viewsOffsetValues);
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
             width: '100',
@@ -106,34 +118,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
-            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:levels}}',
-            tooltipValueLookups: { levels: values } });
-
-            //  $('#sparkline_bar').bind('sparklineClick', function(ev) {
-            //     const sparkline = ev.sparklines[0],
-            //         region = sparkline.getCurrentRegionFields();
-            //     alert("Clicked chart 1 on x="+region[0].x+" y="+region[0].y);
-            // });
-                 $(document).ready(function(){
-                    $('#sparkline_bar').bind('sparklineClick', function(ev) {
-                        var sparkline = ev.sparklines[0],
-                        region = sparkline.getCurrentRegionFields();
-                    
-                        alert("Clicked on offset="+ region[0].offset+" having value="+region[0].value);
-                    });
-
-                });
-            }
+            tooltipFormat: '<span >views:{{value}} <br>{{offset:offset}}</span>',
+            tooltipValueLookups: { 'offset': offsetValues }
+        });
+        $(document).ready(function () {
+            $('#sparkline_bar').bind('sparklineClick', function (ev) {
+                const sparkline = ev.sparklines[0],
+                    region = sparkline.getCurrentRegionFields();
+               // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
+            //  self.referenceService.selectedViewsValues = offsetValues[region[0].offset];
+              self.router.navigate(['./home/dashboard/reports']);
+            });
+        });
+    }
 
     minutesSparklineData() {
+        const self = this;
         const myvalues = [2, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10];
+        const offsetValues = { 0: '12-dec-2017', 1: '13-dec-18', 2: '14-dec-19', 3: '14-dec-19', 4: '14-dec-19' }
+        this.referenceService.viewsSparklineValues = null;
+        this.referenceService.viewsOffsetValues = null;
+        this.referenceService.selectedViewsValues = []
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
             width: '100',
             barWidth: 5,
             height: '55',
             barColor: '#35aa47',
-            negBarColor: '#e02222'
+            negBarColor: '#e02222',
+            tooltipFormat: '<span >views:{{value}} <br>{{offset:offset}}</span>',
+            tooltipValueLookups: { 'offset': offsetValues }
+        });
+         $(document).ready(function () {
+            $('#sparkline_bar2').bind('sparklineClick', function (ev) {
+                const sparkline = ev.sparklines[0],
+                    region = sparkline.getCurrentRegionFields();
+               // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
+              //  this.referenceService.selectedViewsValues.push(offsetValues[region[0].offset],region[0].value)
+                self.router.navigate(['./home/dashboard/reports']);
+            });
         });
     }
 
@@ -199,8 +222,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     }
     generatHeatMap(heatMapData) {
-      const data = heatMapData; 
-       Highcharts.chart('dashboard-heat-map', {
+        const data = heatMapData;
+        console.log(data);
+        Highcharts.chart('dashboard-heat-map', {
             colorAxis: {
                 minColor: '#FFFFFF',
                 maxColor: Highcharts.getOptions().colors[0]
@@ -214,13 +238,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>users: <b>' + this.point.totalUsers + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
                 }
             },
-             plotOptions: {
+            plotOptions: {
                 series: {
                     dataLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'normal',
-                             fontSize:'13px'
+                            fontSize: '13px'
                         }
                     }
                 }
@@ -239,75 +263,75 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
         });
     }
-    generateBarChartForEmailLogs(names,opened,clicked,watched, maxValue:number){
+    generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],
             $containers = $('#trellis td'),
             datasets = [
                 {
-                name: 'opened',
-                data: opened
+                    name: 'opened',
+                    data: opened
                 },
                 {
-                name: 'clicked',
-                data: clicked
+                    name: 'clicked',
+                    data: clicked
                 },
                 {
-                name: 'watched',
-                data: watched
+                    name: 'watched',
+                    data: watched
                 },
-        ];
-        $.each(datasets, function(i, dataset) {
+            ];
+        $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
-         chart: {
-            renderTo: $containers[i],
-            type: 'bar',
-            marginLeft: i === 0 ? 100 : 10
-        },
-        
-        title: {
-            text: dataset.name,
-            align: 'left',
-            x: i === 0 ? 90 : 0,
-            style: {
-            color: '#696666',
-            fontWeight: 'normal',
-            fontSize: '13px'
-           }
-        },
+                chart: {
+                    renderTo: $containers[i],
+                    type: 'bar',
+                    marginLeft: i === 0 ? 100 : 10
+                },
 
-        credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: names,
-            labels: {
-                enabled: i === 0
-            }
-        },
-        exporting: { enabled: false },
-        yAxis: {
-            allowDecimals: false,
-            visible: false,
-            title: {
-                text: null
-            },
-            min: 0,
-            max: maxValue
-        },
-        legend: {
-            enabled: false
-        },
-        labels: {
-            style: {
-                color: 'white',
-                fontSize:'25px'
-            } 
-        },
-        series: [dataset]
-        }));
-     });
+                title: {
+                    text: dataset.name,
+                    align: 'left',
+                    x: i === 0 ? 90 : 0,
+                    style: {
+                        color: '#696666',
+                        fontWeight: 'normal',
+                        fontSize: '13px'
+                    }
+                },
+
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: names,
+                    labels: {
+                        enabled: i === 0
+                    }
+                },
+                exporting: { enabled: false },
+                yAxis: {
+                    allowDecimals: false,
+                    visible: false,
+                    title: {
+                        text: null
+                    },
+                    min: 0,
+                    max: maxValue
+                },
+                legend: {
+                    enabled: false
+                },
+                labels: {
+                    style: {
+                        color: 'white',
+                        fontSize: '25px'
+                    }
+                },
+                series: [dataset]
+            }));
+        });
     }
-   
+
     // TFFF == TweetsFriendsFollowersFavorites
     getTotalCountOfTFFF(socialConnection: SocialConnection) {
         this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
@@ -421,10 +445,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             data => {
                 this.xtremandLogger.info(data);
                 this.campaigns = data;
-                const campaignIdArray = data.map(function(a) {return a[0];});
+                const campaignIdArray = data.map(function (a) { return a[0]; });
                 console.log(campaignIdArray);
+                console.log(this.campaigns.length);
                 this.totalCampaignsCount = this.campaigns.length;
-                this.getCampaignsEamailReports(campaignIdArray);
+                if(this.totalCampaignsCount>=1){
+                this.getCampaignsEamailBarChartReports(campaignIdArray);}
             },
             error => { },
             () => this.xtremandLogger.info('Finished listCampaign()')
@@ -634,32 +660,62 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.getCampaignsHeatMapDetails().
             subscribe(result => {
                 this.xtremandLogger.log(result.heatMapData);
-              //  this.heatMapData = result.heatMapData;
-                this.generatHeatMap(result.heatMapData);
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-               // this.xtremandLogger.errorPage(error);
-            });
-    }
-    getCampaignsEamailReports(campaignIdArray){
-          this.dashboardService.getCampaignsEmailReports(campaignIdArray).
-            subscribe(result => {
-                console.log(result);
-                this.categories = result.campaignNames;
-                const maxNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount,result.watchedCount))
-                this.generateBarChartForEmailLogs(result.campaignNames,result.emailOpenedCount,result.emailClickedCount,result.watchedCount,maxNumber);
+                this.heatMapData = result.heatMapData;
+                console.log(this.heatMapData);
+                if(result.heatMapData.length>0){
+                  this.generatHeatMap(result.heatMapData);
+                }
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 // this.xtremandLogger.errorPage(error);
             });
     }
+    getCampaignsEamailBarChartReports(campaignIdArray) {
+        this.dashboardService.getCampaignsEmailReports(campaignIdArray).
+            subscribe(result => {
+                console.log(result);
+                this.categories = result.campaignNames;
+                console.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
+                this.maxBarChartNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
+                console.log("max number is "+this.maxBarChartNumber);
+                if(this.maxBarChartNumber>0){
+                 this.isMaxBarChartNumber = true;  
+                this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
+                }
+                else { this.isMaxBarChartNumber = false;}
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                // this.xtremandLogger.errorPage(error);
+            });
+    }
+    getVideoStatesSparklineChartsInfo(daysCount){
+          this.dashboardService.getVideoStatesInformation(daysCount).
+            subscribe(result => { 
+               console.log(result);
+            },
+            (error: any) => {
+            this.xtremandLogger.error(error);
+            // this.xtremandLogger.errorPage(error);
+            });
+
+    }   
+    selectedSortByValue(event: any){
+        console.log(event);
+        this.getVideoStatesSparklineChartsInfo(event);
+    }   
+    refreshCampaignBarcharts() {
+        this.getUserCampaignReport(this.loggedInUserId);
+    }
+    refreshHeatMapCharts() {
+        this.getCampaignsHeatMapData();
+    }
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
     }
-    
+
     ngOnInit() {
         try {
             this.dashboardReportsCount();
@@ -670,6 +726,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.emailWatchedCount(this.loggedInUserId);
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
+            this.getVideoStatesSparklineChartsInfo(7);
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -688,7 +745,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listActiveSocialAccounts(this.loggedInUserId);
 
             this.genderDemographics(this.loggedInUserId);
-          //  $('#sparkline_bar').sparkline();
+            //  $('#sparkline_bar').sparkline();
             // $('#sparkline_bar').bind('sparklineClick', function(ev) {
             //     const sparkline = ev.sparklines[0],
             //         region = sparkline.getCurrentRegionFields();
