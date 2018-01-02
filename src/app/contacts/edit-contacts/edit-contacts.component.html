@@ -541,6 +541,70 @@ a.disabled {
 														</tr>
 													</thead>
 													<tbody>
+													<ng-container *ngIf="selectedAddContactsOption == 0">
+														<ng-container
+															*ngFor="let newContact of users; let i = index">
+														<tr class='row_{{i}}' style="background-color: #73c5be;">
+															<td align="center"><input type="checkbox"
+																checked="newContact.checked"></td>
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase textWhite'>{{newContact.firstName
+																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold textWhite'
+																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
+																		<h6 class='m0 textWhite'>
+																			<a href="mailto:ksathish@xtremand.com"
+																				class='bold textWhite'>{{newContact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="newContact?.mobileNumber; else NA"
+																		class="textWhite">{{newContact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
+																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
+															</td>
+															<td>
+																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
+																<h5 *ngIf="newContact?.city && newContact.country"
+																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+																	<span *ngIf="!newContact.isShowDetails">More</span> <span
+																		*ngIf="newContact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center"><a class="delete textWhite"
+																(click)="cancelRow(i)"> Cancel </a></td>
+															<ng-template #NA>N/A</ng-template>
+														</tr>
+														<tr
+															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
+															style="background-color: #73c5be;">
+															<td colspan="8">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
+																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+														</ng-container> </ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
@@ -614,70 +678,7 @@ a.disabled {
 															</td>
 														</tr>
 														</ng-container>
-														<ng-container *ngIf="selectedAddContactsOption == 0">
-														<ng-container
-															*ngFor="let newContact of users; let i = index">
-														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<td align="center"><input type="checkbox"
-																checked="newContact.checked"></td>
-															<td>
-																<div class="flex">
-																	<span class='profile'
-																		style="background-color: #3598dc;"> <span
-																		class='uppercase textWhite'>{{newContact.firstName
-																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-																	</span> <span style="margin-left: 20px;">
-																		<h5 class='bold textWhite'
-																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-																		<h6 class='m0 textWhite'>
-																			<a href="mailto:ksathish@xtremand.com"
-																				class='bold textWhite'>{{newContact.emailId}}</a>
-																		</h6>
-																	</span>
-																</div>
-															</td>
-															<td>
-																<h5>
-																	<span *ngIf="newContact?.mobileNumber; else NA"
-																		class="textWhite">{{newContact.mobileNumber}}</span>
-																</h5>
-															</td>
-															<td>
-																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
-															</td>
-															<td>
-																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-																<h5 *ngIf="newContact?.city && newContact.country"
-																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
-															</td>
-															<td align="center">
-																<button id='more_less_button_{{i}}'
-																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
-																	<span *ngIf="!newContact.isShowDetails">More</span> <span
-																		*ngIf="newContact.isShowDetails">Less</span>
-																</button>
-															</td>
-															<td align="center"><a class="delete textWhite"
-																(click)="cancelRow(i)"> Cancel </a></td>
-															<ng-template #NA>N/A</ng-template>
-														</tr>
-														<tr
-															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
-															style="background-color: #73c5be;">
-															<td colspan="8">
-																<table cellpadding="5" cellspacing="0"
-																	style="padding-left: 50px; margin-left: 55px;">
-																	<tbody>
-																		<tr>
-																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
-																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
-																		</tr>
-																	</tbody>
-																</table>
-															</td>
-														</tr>
-														</ng-container> </ng-container>
+														
 													</tbody>
 												</table>
 											</div>

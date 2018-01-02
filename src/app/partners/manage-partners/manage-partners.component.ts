@@ -21,7 +21,7 @@ declare var $,swal: any;
     selector: 'app-manage-partners',
     templateUrl: './manage-partners.component.html',
     styleUrls: ['./manage-partners.component.css','../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
-                '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css'],
+                '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css','../../../assets/css/numbered-textarea.css'],
     providers: [Pagination,SocialPagerService]
 } )
 export class ManagePartnersComponent implements OnInit {
@@ -652,6 +652,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         $( "#addPartnerModal .close" ).click()
         this.updatePartnerUser = false;
         this.updatedUserDetails.length = 0;
+        this.addPartnerUser = new User();
     }
     
     updatePartnerListUser(){

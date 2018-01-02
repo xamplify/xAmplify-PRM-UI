@@ -113,7 +113,7 @@ img:hover {
 								<span class="fileupload-process"> </span>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-								<h4 class="col-xs-12" style="left: 9px">Import from
+								<h4 class="col-xs-12">Import from
 									available cloud service</h4>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
 									style="top: 3px;">
@@ -340,7 +340,7 @@ img:hover {
 							</div>
 						</div>
 					
-					<div class="row" *ngIf="clipBoard">
+					<div class="row" *ngIf="clipBoard" style="margin-bottom: 15px;">
 							<div class="col-sm-12">
 								<h3 style="margin-left: 30px;">Copy from text -- paste
 									below</h3>
@@ -381,12 +381,7 @@ img:hover {
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of Partners
 									</div>
-								</div>
-								<div class="portlet-body">
-									<div class="btn-group pull-right" style="margin-bottom: 10px;left: -16px;">
-									<div class="inputs" align="right" style="float: right">
-
-										<div class="inputs" align="right" style="float: right">
+										<div class="inputs" align="right" style="float: right; margin-top:4px">
 											<div style="float: left; margin-right: 10px; width: 50%">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
@@ -407,10 +402,16 @@ img:hover {
 												</div>
 											</div>
 										</div>
+								</div>
+								<div class="portlet-body">
+									<div class="btn-group pull-right" style="margin-bottom: 10px;left: -16px;">
+									<div class="inputs" align="right" style="float: right">
+
+									
 									</div>
 								</div>
 									<div class="clearfix">
-										<div class="col-xs-12">
+										<div class="col-xs-12" style="margin-top: 8px;">
 										<div *ngIf = "emptyPartnerList" id="showDeleteMessage"
 												class="alert alert-info alert-dismissable">
 												No Partners Found..
@@ -428,6 +429,68 @@ img:hover {
 														</tr>
 													</thead>
 													<tbody>
+													<ng-container>
+														<ng-container
+															*ngFor="let newContact of newPartnerUser; let i = index">
+														<tr class='row_{{i}}' style="background-color: #73c5be;">
+															<td>
+																<div class="flex">
+																	<span class='profile'
+																		style="background-color: #3598dc;"> <span
+																		class='uppercase textWhite'>{{newContact.firstName
+																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
+																	</span> <span style="margin-left: 20px;">
+																		<h5 class='bold textWhite'
+																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
+																		<h6 class='m0 textWhite'>
+																			<a href="mailto:ksathish@xtremand.com"
+																				class='bold textWhite'>{{newContact.emailId}}</a>
+																		</h6>
+																	</span>
+																</div>
+															</td>
+															<td>
+																<h5>
+																	<span *ngIf="newContact?.mobileNumber; else NA"
+																		class="textWhite">{{newContact.mobileNumber}}</span>
+																</h5>
+															</td>
+															<td>
+																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
+																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
+															</td>
+															<td>
+																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
+																<h5 *ngIf="newContact?.city && newContact.country"
+																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+															</td>
+															<td align="center">
+																<button id='more_less_button_{{i}}'
+																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+																	<span *ngIf="!newContact.isShowDetails">More</span> <span
+																		*ngIf="newContact.isShowDetails">Less</span>
+																</button>
+															</td>
+															<td align="center"><a class="delete textWhite"
+																(click)="cancelRow(i)"> Cancel </a></td>
+															<ng-template #NA>N/A</ng-template>
+														</tr>
+														<tr
+															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
+															style="background-color: #73c5be;">
+															<td colspan="8">
+																<table cellpadding="5" cellspacing="0"
+																	style="padding-left: 50px; margin-left: 55px;">
+																	<tbody>
+																		<tr>
+																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
+																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+														</ng-container> </ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
@@ -491,68 +554,7 @@ img:hover {
 															</td>
 														</tr>
 														</ng-container>
-														<ng-container>
-														<ng-container
-															*ngFor="let newContact of newPartnerUser; let i = index">
-														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<td>
-																<div class="flex">
-																	<span class='profile'
-																		style="background-color: #3598dc;"> <span
-																		class='uppercase textWhite'>{{newContact.firstName
-																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-																	</span> <span style="margin-left: 20px;">
-																		<h5 class='bold textWhite'
-																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-																		<h6 class='m0 textWhite'>
-																			<a href="mailto:ksathish@xtremand.com"
-																				class='bold textWhite'>{{newContact.emailId}}</a>
-																		</h6>
-																	</span>
-																</div>
-															</td>
-															<td>
-																<h5>
-																	<span *ngIf="newContact?.mobileNumber; else NA"
-																		class="textWhite">{{newContact.mobileNumber}}</span>
-																</h5>
-															</td>
-															<td>
-																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
-															</td>
-															<td>
-																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-																<h5 *ngIf="newContact?.city && newContact.country"
-																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
-															</td>
-															<td align="center">
-																<button id='more_less_button_{{i}}'
-																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
-																	<span *ngIf="!newContact.isShowDetails">More</span> <span
-																		*ngIf="newContact.isShowDetails">Less</span>
-																</button>
-															</td>
-															<td align="center"><a class="delete textWhite"
-																(click)="cancelRow(i)"> Cancel </a></td>
-															<ng-template #NA>N/A</ng-template>
-														</tr>
-														<tr
-															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
-															style="background-color: #73c5be;">
-															<td colspan="8">
-																<table cellpadding="5" cellspacing="0"
-																	style="padding-left: 50px; margin-left: 55px;">
-																	<tbody>
-																		<tr>
-																			<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
-																			<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
-																		</tr>
-																	</tbody>
-																</table>
-															</td>
-														</tr>
-														</ng-container> </ng-container>
+														
 													</tbody>
 												</table>
 											</div>
@@ -664,7 +666,7 @@ img:hover {
 								style="color: red;"> *</span></i></label>
 						<div class="col-sm-10">
 							<input type="email" style="border: none" class="form-control"
-								id="email" (blur)="checkingEmailPattern(addPartnerUser.emailId)"
+								id="email1" (blur)="checkingEmailPattern(addPartnerUser.emailId)"
 								(input)="validateEmail(addPartnerUser.emailId)"
 								[(ngModel)]="addPartnerUser.emailId"
 								[ngModelOptions]="{standalone: true}"
