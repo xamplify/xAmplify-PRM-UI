@@ -101,6 +101,9 @@ export class ManagePartnersComponent implements OnInit {
     sortcolumn: string = null;
     sortingOrder: string = null;
     selectedDropDown: string;
+    selectedContactListIds = [];
+    allselectedUsers = [];
+    isHeaderCheckBoxChecked:boolean = false;
     
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -313,6 +316,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.setResponseDetails('SUCCESS', 'your Partner has been saved successfully');
                     
                 this.newPartnerUser.length = 0;
+                this.allselectedUsers.length = 0;
                 this.loadPartnerList( this.pagination );
                 this.clipBoard = false;
                 this.cancelPartners();
@@ -334,8 +338,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
     
     cancelPartners(){
-        this.socialPartnerUsers.length = 0;
-        
+       this.socialPartnerUsers.length = 0;
+       this.allselectedUsers.length = 0;
+       this.selectedContactListIds.length = 0;
        this.pager = [];
        this.pagedItems =[];
         
@@ -351,12 +356,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "button#cancel_button" ).prop( 'disabled', true );
-        $( "#Sfile_preview" ).hide();
-        $( "#sample_editable_1" ).hide();
-        $( "#file_preview" ).hide();
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
-        $( "#Zfile_preview" ).hide();
         this.newPartnerUser.length = 0;
         this.dublicateEmailId = false;
         this.clipBoard = false;
@@ -859,7 +860,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
     saveGoogleContactSelectedUsers() {
         this.selectedAddPartnerOption = 3;
-        var selectedUserIds = new Array();
+       /* var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var userInformation = $( this ).val().split( ',' );
@@ -870,9 +871,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             selectedUsers.push( user );
         });
         console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( selectedUsers.length != 0 ) {
-            this.newPartnerUser = selectedUsers;
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
+        if ( this.allselectedUsers.length != 0 ) {
+            this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
         }
         else {
@@ -1083,7 +1084,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
 
     saveZohoContactSelectedUsers() {
-        var selectedUserIds = new Array();
+        this.newPartnerUser = this.allselectedUsers;
+        /*var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         let self = this;
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
@@ -1096,9 +1098,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             
         });
         console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( selectedUsers.length != 0 ) {
-            this.newPartnerUser = selectedUsers;
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
+        if ( this.allselectedUsers.length != 0 ) {
+            this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
         }
         else {
@@ -1325,7 +1327,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
 
     saveSalesforceContactSelectedUsers() {
-        var selectedUserIds = new Array();
+        this.newPartnerUser = this.allselectedUsers;
+        /*var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var userInformation = $( this ).val().split( ',' );
@@ -1336,10 +1339,10 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             selectedUsers.push( user );
         });
         console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( selectedUsers.length != 0 ) {
-            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
-            this.newPartnerUser = selectedUsers;
+        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
+        if ( this.allselectedUsers.length != 0 ) {
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
+            this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
         }
         else {
@@ -1367,21 +1370,21 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }
         
         if ( this.selectedAddPartnerOption == 3 ) {
-            if ( this.socialContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveGoogleContacts();
             } else
                 this.saveGoogleContactSelectedUsers();
         }
         
         if ( this.selectedAddPartnerOption == 6 ) {
-            if ( this.socialContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveZohoContacts();
             } else
                 this.saveZohoContactSelectedUsers();
         }
         
         if ( this.selectedAddPartnerOption == 7 ) {
-            if ( this.socialContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveSalesforceContacts();
             } else
                 this.saveSalesforceContactSelectedUsers();
@@ -1445,6 +1448,87 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.deleteErrorMessage = false;
     }
     
+    
+    removeDuplicates(originalArray, prop) {
+        var newArray = [];
+        var lookupObject = {}; 
+        for(var i in originalArray) { 
+            lookupObject[originalArray[i][prop]] = originalArray[i]; 
+            } 
+        for(i in lookupObject) {
+            newArray.push(lookupObject[i]);
+            }
+        return newArray;
+        }
+    
+    checkAll(ev:any){
+        //this.contactsNotSelectedError = false;
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#ContactListTable_'+id).addClass('contact-list-selected');
+                for ( var i = 0; i < self.pagedItems.length; i++ ) {
+                    var object = {
+                        "emailId": self.pagedItems[i].emailId,
+                        "firstName": self.pagedItems[i].firstName,
+                        "lastName": self.pagedItems[i].lastName,
+                    }
+                    console.log( object );
+                    self.allselectedUsers.push( object );
+                }
+             });
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'emailId');
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.pager.maxResults == this.totalRecords){
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            }else{
+                let paginationIdsArray = new Array;
+                for(let j=0; j< this.pagedItems.length; j++){
+                    var paginationEmail = this.pagedItems[j].emailId; 
+                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                }
+                let currentPageContactIds = this.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        ev.stopPropagation();
+    }
+    
+    highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
+        //this.contactsNotSelectedError = false;
+        let isChecked = $('#'+contactId).is(':checked');
+        console.log(this.selectedContactListIds)
+        if(isChecked){
+            $('#row_'+contactId).addClass('contact-list-selected');
+            this.selectedContactListIds.push(contactId);
+                    var object = {
+                            "emailId": email,
+                            "firstName": firstName,
+                            "lastName": lastName,
+                        }
+                    this.allselectedUsers.push( object );
+                    console.log( this.allselectedUsers );
+        }else{
+            $('#row_'+contactId).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+            this.allselectedUsers.splice($.inArray(contactId,this.allselectedUsers),1);
+        }
+        if(this.selectedContactListIds.length == this.pagedItems.length ){
+            this.isHeaderCheckBoxChecked = true;
+        }else{
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
     
     ngOnInit() {
         this.socialContactImage();

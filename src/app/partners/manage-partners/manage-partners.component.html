@@ -292,22 +292,36 @@ img:hover {
 											id="google-contacts-table">
 											<thead>
 												<tr>
-													<td align="center"><input type="checkbox"
+													<!-- <td align="center"><input type="checkbox"
 														id="select_all_google_contacts"
 														(change)="selectAllGoogleContacts($event.target.checked)"
-														checked=true></td>
+														checked=true></td> -->
+														<td align="center"><input
+															type="checkbox" name="all"
+															[(ngModel)]="isHeaderCheckBoxChecked"
+															(change)="checkAll($event)" class=""
+															id="checkAllExistingContacts" /></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr *ngFor="let user of pagedItems;let i = index">
-													<td align="center"><input type="checkbox"
+												<tr *ngFor="let user of pagedItems;let i = index" class='row_{{i}}'>
+													<!-- <td align="center"><input type="checkbox"
 														name="selectedUserIds" id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
-														(change)="selectGoogleContact($event.target.checked)"></td>
+														(change)="selectGoogleContact($event.target.checked)"></td> -->
+														<td align="center"><input
+															type="checkbox"
+															[checked]="selectedContactListIds.indexOf(user.id)>-1"
+															class="chk"
+															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+															lang="{{user.name}}" name="campaignContact[]"
+															value="{{user.id}}" id="{{user.id}}"
+															(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+														</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
