@@ -42,31 +42,31 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   selectedSortByValue(event: any) {
     console.log(event);
-    this.referenceService.daySortValue= this.daysCount = event;
+    this.referenceService.daySortValue = this.daysCount = event;
     this.getVideoSparklineGraph(this.daysCount);
-    this.viewsOrMinutesWatchedSparklineData();
-    if (this.reportName === 'views') {
-      this.getVideoViewsLevelOne(this.viewsDate, true);
-    } else {
-      this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
-    }
   }
   getVideoSparklineGraph(daysCount) {
     this.dashboardService.getVideoStatesInformation(daysCount).
       subscribe(result => {
         console.log(result);
         this.referenceService.viewsSparklineValues = result;
-        this.resultSparkline = this.referenceService.viewsSparklineValues;
+        this.resultSparkline = result;
         this.viewsDate = result.dates[0];
+        this.viewsOrMinutesWatchedSparklineData(result);
+        if (this.reportName === 'views') {
+          this.getVideoViewsLevelOne(this.viewsDate, true);
+        } else {
+          this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
+        }
       });
   }
-  viewsOrMinutesWatchedSparklineData() {
+  viewsOrMinutesWatchedSparklineData(resultSparkline) {
     const self = this;
     const customTooltipFormat = this.reportName;
     let myvalues: any;
     if (this.reportName !== 'views') { myvalues = this.resultSparkline.minutesWatched; }
-    else { myvalues = this.resultSparkline.views; }
-    const offsetValues = this.resultSparkline.dates;
+    else { myvalues = resultSparkline.views; }
+    const offsetValues = resultSparkline.dates;
     $('#sparkline_bar_chart1').sparkline(myvalues, {
       type: 'bar',
       width: '200',
@@ -163,13 +163,16 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   selectedRow(ViewData: any) {
     console.log(ViewData);
+    // $('#tabletest tr').bind('click', function(e) {
+    // $(e.currentTarget).children('td, th').css('background-color','#000');
+    // })
     this.videoViewsLevelSecond.length = 0;
     this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
   }
   ngOnInit() {
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
-    this.viewsOrMinutesWatchedSparklineData();
+    this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
     if (this.reportName.includes('views')) {
       this.getVideoViewsLevelOne(this.viewsDate, true);
     } else {
