@@ -141,13 +141,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
     });
     }
-    chartsDayStates(){
+    watchedByTenUserschartsDayStates(minutesWatched:any, names:any){
           const charts = [],
             $containers = $('#trellis td'),
             datasets = [
                 {
                      name: ' ',
-                    data: [1052, 954, 4250, 740, 38],
+                    data: minutesWatched,
                     
                 }
               
@@ -182,7 +182,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     enabled: false
                 },
                 xAxis: {
-                    categories: ['Africa', 'America', 'Asia', 'Europe','india'],
+                    categories: names,
                     labels: {
                         enabled: i === 0
                     },
@@ -216,7 +216,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         });
     }
     minutesWatchedBarcharts(){
-        var categories = [
+       const categories = [
                 '0-4', '5-9', '10-14', '15-19',
                 '20-24', '25-29', '30-34', '35-39', '40-44',
                 '45-49', '50-54', '55-59', '60-64', '65-69',
@@ -369,6 +369,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 .subscribe((result: any) => {
                     console.log(result);
                     this.watchedFully = result.video_views_count_data.watchedfullypercentage;
+                    this.watchedByTenUserschartsDayStates(result.video_views_count_data.minutesWatched, result.video_views_count_data.names);
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);
@@ -379,8 +380,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-       // this.dayStatesBarcharts();
-        this.chartsDayStates();
+      //  this.watchedByTenUserschartsDayStates();
       //  this.minutesWatchedBarcharts();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();

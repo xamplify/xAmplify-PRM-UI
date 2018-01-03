@@ -18,7 +18,7 @@ export class VideoBaseReportService {
     }
     getWatchedFullyData(alias: any) {
         try {
-            const url = this.URL + 'videos/watchedfully_minuteswatched_views/' + alias + '?access_token='
+            const url = this.authenticationService.REST_URL + 'videos/watchedfully-minuteswatched-views/' + alias + '?access_token='
                 + this.authenticationService.access_token;
             return this.http.get(url)
                 .map(this.extractData)

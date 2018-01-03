@@ -19,6 +19,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   videoViewsLevelFirst = [];
   videoViewsLevelSecond = [];
   isReport: boolean;
+  selectedRowValue: any;
   sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
   { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
   daySort: any;
@@ -163,9 +164,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   selectedRow(ViewData: any) {
     console.log(ViewData);
-    // $('#tabletest tr').bind('click', function(e) {
-    // $(e.currentTarget).children('td, th').css('background-color','#000');
-    // })
+    this.selectedRowValue = null;
+    this.selectedRowValue = ViewData.videoId;
     this.videoViewsLevelSecond.length = 0;
     this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
   }
