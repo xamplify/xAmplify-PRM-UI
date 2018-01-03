@@ -83,6 +83,7 @@
 								</div>
 								
 								<section [hidden]="!isListView">
+								<div class="table-responsive">
 									<table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
 										<thead>
 											<tr>
@@ -137,6 +138,7 @@
 											</tr>
 										</tbody>
 									</table>
+									</div>
 								</section>
 								<section [hidden]="isListView">
 								<div class="row mix-grid" style="margin-top: 10px;padding:7px" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">

@@ -58,6 +58,7 @@
 								</div>
 							</div>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+						<div class="table-responsive">
 						<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 							<thead>
 								<tr>
@@ -117,6 +118,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</div>
 					</section>
 					
 					<div class="tab-pane active" *ngIf="!isListView">
