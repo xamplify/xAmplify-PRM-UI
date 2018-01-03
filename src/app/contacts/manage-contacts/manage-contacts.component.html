@@ -287,6 +287,7 @@ rotate
 
 
 								<section [hidden]="!isListView" *ngIf="pagination.pagedItems?.length != 0">
+								<div class="table-responsive">
 									<table class='table tgrid'>
 										<thead>
 											<tr>
@@ -330,6 +331,7 @@ rotate
 											</tr>
 										</tbody>
 									</table>
+									</div>
 								</section>
 
 								<div class="row mix-grid mt10" [hidden]="isListView">
