@@ -56,12 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapData: any;
     maxBarChartNumber: number;
     isMaxBarChartNumber: boolean;
-    sortDates = [
-        { 'name': '7 Days', 'value': 7 },
-        { 'name': '14 Days)', 'value': 14 },
-        { 'name': '21 Days)', 'value': 21 },
-        { 'name': '30 Days)', 'value': 30 },
-    ];
+    sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
+    { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
     daySort: any;
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -72,7 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
-         this.daySort = this.sortDates[0];
+        this.daySort = this.sortDates[0];
     }
 
     genderDemographics(userId: number) {
@@ -120,16 +116,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $(document).ready(function () {
             $('#sparkline_bar').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
-                region = sparkline.getCurrentRegionFields();
-               // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-              self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
+                    region = sparkline.getCurrentRegionFields();
+                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
+                self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "views");
             });
         });
     }
-    sparklineDataWithRouter(value:number, date:string){
-     this.referenceService.viewsDate = date;
-     this.referenceService.clickedValue = value;
-     this.router.navigate(['./home/dashboard/reports']);
+    sparklineDataWithRouter(value: number, date: string, reportName: string) {
+        this.referenceService.viewsDate = date;
+        this.referenceService.clickedValue = value;
+        this.referenceService.reportName = reportName;
+        this.router.navigate(['./home/dashboard/reports']);
     }
 
     minutesSparklineData(result, dates) {
@@ -146,18 +143,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
             tooltipFormat: '<span >minutes:{{value}} <br>{{offset:offset}}</span>',
             tooltipValueLookups: { 'offset': offsetValues }
         });
-         $(document).ready(function () {
+        $(document).ready(function () {
             $('#sparkline_bar2').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
-                region = sparkline.getCurrentRegionFields();
-               // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-               self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
+                    region = sparkline.getCurrentRegionFields();
+                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
+                self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "minutes watched");
             });
         });
     }
 
-    averageSparklineData(duration,dates) {
-        const myvalues = duration;
+    averageSparklineData(result, dates) {
+        const myvalues = result;
         console.log(myvalues);
         const offsetValues = dates;
         $('#sparkline_line').sparkline(myvalues, {
@@ -167,8 +164,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
-            tooltipFormat: '<span >average:{{value}} <br>{{offset:offset}}</span>',
+            // tooltipFormat: '<span >average:{{value}} <br>{{offset:offset}}</span>',
             tooltipValueLookups: { 'offset': offsetValues }
+        });
+        $(document).ready(function () {
+            $('#sparkline_line').bind('sparklineClick', function (ev) {
+                const sparkline = ev.sparklines[0],
+                    region = sparkline.getCurrentRegionFields();
+                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
+                // self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
+            });
         });
     }
 
@@ -192,13 +197,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             title: {
                 text: 'The people who have watched the video',
-                 style: {
-                        color: '#696666',
-                        fontWeight: 'normal',
-                        fontSize: '14px'
-                    }
+                style: {
+                    color: '#696666',
+                    fontWeight: 'normal',
+                    fontSize: '14px'
+                }
             },
-            
+
             mapNavigation: {
                 enabled: true,
                 buttonOptions: {
@@ -455,8 +460,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 console.log(campaignIdArray);
                 console.log(this.campaigns.length);
                 this.totalCampaignsCount = this.campaigns.length;
-                if(this.totalCampaignsCount>=1){
-                this.getCampaignsEamailBarChartReports(campaignIdArray);}
+                if (this.totalCampaignsCount >= 1) {
+                    this.getCampaignsEamailBarChartReports(campaignIdArray);
+                }
             },
             error => { },
             () => this.xtremandLogger.info('Finished listCampaign()')
@@ -668,8 +674,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.log(result.heatMapData);
                 this.heatMapData = result.heatMapData;
                 console.log(this.heatMapData);
-                if(result.heatMapData.length>0){
-                  this.generatHeatMap(result.heatMapData);
+                if (result.heatMapData.length > 0) {
+                    this.generatHeatMap(result.heatMapData);
                 }
             },
             (error: any) => {
@@ -684,38 +690,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.categories = result.campaignNames;
                 console.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
                 this.maxBarChartNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
-                console.log("max number is "+this.maxBarChartNumber);
-                if(this.maxBarChartNumber>0){
-                 this.isMaxBarChartNumber = true;  
-                this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
+                console.log("max number is " + this.maxBarChartNumber);
+                if (this.maxBarChartNumber > 0) {
+                    this.isMaxBarChartNumber = true;
+                    this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
                 }
-                else { this.isMaxBarChartNumber = false;}
+                else { this.isMaxBarChartNumber = false; }
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 // this.xtremandLogger.errorPage(error);
             });
     }
-    getVideoStatesSparklineChartsInfo(daysCount){
-          this.dashboardService.getVideoStatesInformation(daysCount).
-            subscribe(result => { 
-               console.log(result);
-               this.referenceService.viewsSparklineValues = result;
-               this.viewsSparklineData(result.views,result.dates);
-               this.minutesSparklineData(result.minutesWatched, result.dates);
-               this.averageSparklineData(result.averageDuration,result.dates);
-               console.log(this.referenceService.viewsSparklineValues);
+    getVideoStatesSparklineChartsInfo(daysCount) {
+        this.dashboardService.getVideoStatesInformation(daysCount).
+            subscribe(result => {
+                console.log(result);
+                this.referenceService.viewsSparklineValues = result;
+                this.viewsSparklineData(result.views, result.dates);
+                this.minutesSparklineData(result.minutesWatched, result.dates);
+                this.averageSparklineData(result.averageDuration, result.dates);
+                console.log(this.referenceService.viewsSparklineValues);
             },
             (error: any) => {
-            this.xtremandLogger.error(error);
-            // this.xtremandLogger.errorPage(error);
+                this.xtremandLogger.error(error);
+                // this.xtremandLogger.errorPage(error);
             });
 
-    }   
-    selectedSortByValue(event: any){
+    }
+    selectedSortByValue(event: any) {
         console.log(event);
+        this.referenceService.daySortValue = event;
         this.getVideoStatesSparklineChartsInfo(event);
-    }   
+    }
     refreshCampaignBarcharts() {
         this.getUserCampaignReport(this.loggedInUserId);
     }
@@ -747,21 +754,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             Index.initCharts();
             Index.initChat();
             Tasks.initDashboardWidget();
-
-            // this.viewsSparklineData();
-            // this.minutesSparklineData();
-            // this.averageSparklineData();
-
             this.facebookSparklineData();
             this.listActiveSocialAccounts(this.loggedInUserId);
-
             this.genderDemographics(this.loggedInUserId);
-            //  $('#sparkline_bar').sparkline();
-            // $('#sparkline_bar').bind('sparklineClick', function(ev) {
-            //     const sparkline = ev.sparklines[0],
-            //         region = sparkline.getCurrentRegionFields();
-            //     alert("Clicked chart 1 on x="+region.x+" y="+region.y);
-            // });
         } catch (err) {
             console.log(err);
         }

@@ -11,17 +11,7 @@ declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, High
 @Component({
     selector: 'app-video-based-report',
     templateUrl: './video-based-reports.component.html',
-    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    styles: [`
-      chart { 
-        display: block;
-      }
-      table {
-         border: 1px solid black;
-         height: 10%;
-         width: 35%;
-        }
-    `],
+    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css']
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
@@ -46,7 +36,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     areaCharts() {
         Highcharts.chart('area-chart', {
             chart: {
-                type: 'area',
+                type: 'column',
                 plotBorderWidth: 1
             },
             credits: false,
@@ -72,7 +62,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     formatter: function () {
                         return Math.round(this.value);
                     }
-                }
+                },
+                 visible: false,
             },
             title: {
                 text: ''
@@ -89,6 +80,202 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 color: 'pink',
                 showInLegend: false,
                 data: this.campaignViews
+            }]
+        });
+    }
+    monthlyViewsBarCharts(){
+        Highcharts.chart('area-chart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ' '
+            },
+            credits: false,
+            exporting: { enabled: false },
+            xAxis: {
+                type: 'category',
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)'
+                },
+                visible: false
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+            },
+            series: [{
+                name: 'Population',
+                data: [
+                    ['Shanghai', 23.7],
+                    ['Lagos', 16.1],
+                    ['Istanbul', 14.2],
+                    ['Karachi', 14.0],
+                    ['Mumbai', 12.5]
+                
+                ],
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    y: 10, // 10 pixels down from the top
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+    });
+    }
+    chartsDayStates(){
+          const charts = [],
+            $containers = $('#trellis td'),
+            datasets = [
+                {
+                     name: ' ',
+                    data: [1052, 954, 4250, 740, 38],
+                    
+                }
+              
+            ];
+        $.each(datasets, function (i, dataset) {
+            charts.push(new Highcharts.Chart({
+                chart: {
+                    renderTo: $containers[i],
+                    type: 'bar',
+                    marginLeft: i === 0 ? 100 : 10
+                },
+
+                title: {
+                    text: dataset.name,
+                    align: 'left',
+                    x: i === 0 ? 90 : 0,
+                    style: {
+                        color: '#696666',
+                        fontWeight: 'normal',
+                        fontSize: '13px'
+                    }
+                },
+                  plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: ['Africa', 'America', 'Asia', 'Europe','india'],
+                    labels: {
+                        enabled: i === 0
+                    },
+                    lineWidth: 0,
+                    minorGridLineWidth: 0,
+                    lineColor: 'transparent',
+                    minorTickLength: 0,
+                    tickLength: 0
+                },
+                exporting: { enabled: false },
+                yAxis: {
+                    allowDecimals: false,
+                    visible: false,
+                    title: {
+                        text: null
+                    },
+                    min: 0
+                   // max: 100
+                },
+                legend: {
+                    enabled: false
+                },
+                labels: {
+                    style: {
+                        color: 'white',
+                        fontSize: '25px'
+                    }
+                },
+                series: [dataset]
+            }));
+        });
+    }
+    minutesWatchedBarcharts(){
+        var categories = [
+                '0-4', '5-9', '10-14', '15-19',
+                '20-24', '25-29', '30-34', '35-39', '40-44',
+                '45-49', '50-54', '55-59', '60-64', '65-69',
+                '70-74', '75-79', '80-84', '85-89', '90-94',
+                '95-99', '100 + '
+            ];
+     Highcharts.chart('minutesWatchedStockedChart', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: ' '
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        formatter: function () {
+                            return Math.abs(this.value) + '%';
+                        }
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                        'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
+            series: [{
+                name: 'Male',
+                data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1, -3.2,
+                    -3.0, -3.2, -4.3, -4.4, -3.6, -3.1, -2.4,
+                    -2.5, -2.3, -1.2, -0.6, -0.2, -0.0, -0.0]
+            }, {
+                name: 'Female',
+                data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0, 3.1, 2.9,
+                    3.1, 4.1, 4.3, 3.6, 3.4, 2.6, 2.9, 2.9,
+                    1.8, 1.2, 0.6, 0.1, 0.0]
             }]
         });
     }
@@ -115,14 +302,19 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
-    renderMap(countryWiseData: any) {
+    renderWorldMap(countryWiseData: any) {
         const data = countryWiseData;
         Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
             },
             title: {
-                text: 'The people who have watched the video'
+                text: 'The people who have watched the video',
+                     style: {
+                        color: '#696666',
+                        fontWeight: 'normal',
+                        fontSize: '14px'
+                    }
             }, 
             exporting: { enabled: false },
             mapNavigation: {
@@ -153,17 +345,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         });
 
     }
-    minutesSparklineData() {
-        const myvalues = this.chartsData[1];
-        $('#sparkline_bar2').sparkline(myvalues, {
-            type: 'bar',
-            width: '120',
-            barWidth: 6,
-            height: '111',
-            barColor: '#f4f91b',
-            negBarColor: '#e02222'
-        });
-    }
     getCampaignVideoCountriesAndViews(alias: any) {
         try {
             this.videoBaseReportService.getCampaignVideoCountriesAndViews(alias)
@@ -172,8 +353,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     this.categories = result.video_views_count_data.months;
                     this.campaignViews = result.video_views_count_data.monthlyViews;
                     console.log(result);
-                    this.areaCharts();
-                    this.renderMap(result.video_views_count_data.countrywiseViews);
+                    //this.areaCharts();
+                    this.monthlyViewsBarCharts();
+                    this.renderWorldMap(result.video_views_count_data.countrywiseViews);
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);
@@ -197,7 +379,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-        this.minutesSparklineData();
+       // this.dayStatesBarcharts();
+        this.chartsDayStates();
+      //  this.minutesWatchedBarcharts();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
     }

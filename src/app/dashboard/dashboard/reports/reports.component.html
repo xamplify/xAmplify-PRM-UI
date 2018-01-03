@@ -11,15 +11,74 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
+			 <div class="panel-title pull-right">
+				<span style="float:right; font-size: 13px;">
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
+						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+			</div>
 		</div>
 		<div class="portlet-body" style="max-width: 100%; min-height: 200px;">
 			<div class="col-xs-4">
 				<div id="sparkline_bar_chart1">
 					<canvas width="172" height="94" style="display: inline-block; width: 172px; height: 94px; vertical-align: top;"></canvas>
 				</div>
-				<h2 style="text-align: left; color: #2f2f2f;font-weight: 400;font-size:18px;margin-left: 29px;margin-top: 9px;">Views</h2>
+				<h2 style="text-align: left; color: #2f2f2f;font-weight: 400;font-size:18px;margin-left: 29px;margin-top: 9px;">{{reportName}}</h2>
 			</div>
-			<div class="col-xs-8"> sparkline_bar data</div>
+			<div class="col-xs-8">
+				<table class='table table-hover table-bordered' id="sample_editable_1">
+					<thead>
+						<tr style="background: #c5c5c5">
+							<th>Title</th>
+							<th>{{reportName}}</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody *ngIf="videoViewsLevelFirst">
+						 <ng-container *ngFor="let view of videoViewsLevelFirst; let i = index"> 
+						<tr style="cursor:pointer;" (click)="selectedRow(view)">
+							<td>{{view.videoTitle}}</td>
+							<td *ngIf="reportName==='views'">{{view.viewsCount}}</td>
+							<td *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
+							<td>{{view.date}}</td>
+						</tr>
+						 </ng-container> 
+					</tbody>
+					<!-- <p  *ngIf="!videoViewsLevelFirst"> No Data Found</p>	 -->
+				</table>
+				<p  *ngIf="!videoViewsLevelFirst"> No Data Found</p>
+			</div>
+		</div>
+	</div>
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+		</div>
+		<div class="portlet-body" style="max-width: 100%; min-height: 200px;">
+			<table class='table table-hover table-bordered' id="sample_editable_1">
+				<thead>
+					<tr style="background: #c5c5c5">
+						<th>Title</th>
+						<th>email id</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody  *ngIf="videoViewsLevelSecond">
+					 <ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index"> 
+					<tr>
+						<td>{{videoViews.videoTitle}}</td>
+						<td>{{videoViews.emailId}}</td>
+						<td>{{videoViews.date}}</td>
+					</tr>
+					 </ng-container>
+				</tbody>
+				<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
+			</table>
+			<p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>
 		</div>
 	</div>
 </div>
