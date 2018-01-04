@@ -502,10 +502,15 @@ background-image: url("assets/images/crm/connecting.png");
 											id="google-contacts-table" *ngIf="gContacts">
 											<thead>
 												<tr>
-													<td align="center"><input type="checkbox"
+													<!-- <td align="center"><input type="checkbox"
 														id="select_all_google_contacts"
 														(change)="selectAllGoogleContacts($event.target.checked)"
-														checked=true></td>
+														checked=true></td> -->
+														<td align="center"><input
+															type="checkbox" name="all"
+															[(ngModel)]="isHeaderCheckBoxChecked"
+															(change)="checkAll($event)" class=""
+															id="checkAllExistingContacts" /></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -513,11 +518,20 @@ background-image: url("assets/images/crm/connecting.png");
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index">
-													<td align="center"><input type="checkbox"
+													<!-- <td align="center"><input type="checkbox"
 														name="selectedUserIds" id="row_{{user.id}}"
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
-														(change)="selectGoogleContact($event.target.checked)"></td>
+														(change)="selectGoogleContact($event.target.checked)"></td> -->
+													<td align="center"><input
+															type="checkbox"
+															[checked]="selectedContactListIds.indexOf(user.id)>-1"
+															class="chk"
+															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+															lang="{{user.name}}" name="campaignContact[]"
+															value="{{user.id}}" id="{{user.id}}"
+															(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+														</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
@@ -550,9 +564,9 @@ background-image: url("assets/images/crm/connecting.png");
 							</div>
 						</div>
 
-						<div class="row" id="Zfile_preview">
+						<!-- <div class="row" id="Zfile_preview">
 							<div class="col-md-12">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								BEGIN EXAMPLE TABLE PORTLET
 								<div class="portlet box blue">
 									<div class="portlet-title">
 										<div class="caption">
@@ -569,6 +583,11 @@ background-image: url("assets/images/crm/connecting.png");
 														id="select_all_google_contacts"
 														(change)="selectAllZohoContacts($event.target.checked)"
 														checked=true></td>
+												<td align="center"><input
+													type="checkbox" name="all"
+													[(ngModel)]="isHeaderCheckBoxChecked"
+													(change)="checkAll($event)" class=""
+													id="checkAllExistingContacts" /></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -581,6 +600,15 @@ background-image: url("assets/images/crm/connecting.png");
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
 														(change)="selectZohoContact($event.target.checked)"></td>
+														<td align="center"><input
+															type="checkbox"
+															[checked]="selectedContactListIds.indexOf(user.id)>-1"
+															class="chk"
+															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+															lang="{{user.name}}" name="campaignContact[]"
+															value="{{user.id}}" id="{{user.id}}"
+															(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+														</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
@@ -607,13 +635,13 @@ background-image: url("assets/images/crm/connecting.png");
 										</ul>
 									</div>
 								</div>
-								<!-- END EXAMPLE TABLE PORTLET-->
+								END EXAMPLE TABLE PORTLET
 							</div>
-						</div>
+						</div> -->
 
-						<div class="row" id="Sfile_preview">
+						<!-- <div class="row" id="Sfile_preview">
 							<div class="col-md-12">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
+								BEGIN EXAMPLE TABLE PORTLET
 								<div class="portlet box blue">
 									<div class="portlet-title">
 										<div class="caption">
@@ -630,6 +658,11 @@ background-image: url("assets/images/crm/connecting.png");
 														id="select_all_google_contacts"
 														(change)="selectAllSalesforceContacts($event.target.checked)"
 														checked=true></td>
+														<td align="center"><input
+															type="checkbox" name="all"
+															[(ngModel)]="isHeaderCheckBoxChecked"
+															(change)="checkAll($event)" class=""
+															id="checkAllExistingContacts" /></td>
 													<th>EMAIL</th>
 													<th>FIRST NAME</th>
 													<th>LAST NAME</th>
@@ -642,6 +675,15 @@ background-image: url("assets/images/crm/connecting.png");
 														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
 														[(ngModel)]="user.checked"
 														(change)="selectSalesforceContact($event.target.checked)"></td>
+														<td align="center"><input
+															type="checkbox"
+															[checked]="selectedContactListIds.indexOf(user.id)>-1"
+															class="chk"
+															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+															lang="{{user.name}}" name="campaignContact[]"
+															value="{{user.id}}" id="{{user.id}}"
+															(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+														</td>
 													<td>{{user.emailId}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
@@ -668,10 +710,10 @@ background-image: url("assets/images/crm/connecting.png");
 										</ul>
 									</div>
 								</div>
-								<!-- END EXAMPLE TABLE PORTLET-->
+								END EXAMPLE TABLE PORTLET
 							</div>
 						</div>
-
+ -->
 						<div class="row" id="file_preview">
 							<div class="col-md-12">
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->

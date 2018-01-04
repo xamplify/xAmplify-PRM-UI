@@ -105,6 +105,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     checkingForEmail:boolean;
     isPartner: boolean;
     checkingContactTypeName: string;
+    selectedContactListIds = [];
+    allselectedUsers = [];
+    isHeaderCheckBoxChecked:boolean = false;
+    totalRecords: number;
     
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -698,21 +702,21 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             this.saveCsvContactList();
         }
         if ( this.selectedAddContactsOption == 3 ) {
-            if ( this.salesforceContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveSalesforceContacts();
             } else
                 this.saveSalesforceContactSelectedUsers();
         }
 
         if ( this.selectedAddContactsOption == 4 ) {
-            if ( this.gContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveGoogleContacts();
             } else
                 this.saveGoogleContactSelectedUsers();
         }
 
         if ( this.selectedAddContactsOption == 5 ) {
-            if ( this.zohoContactsValue == true ) {
+            if ( this.allselectedUsers.length == 0 ) {
                 this.saveZohoContacts();
             } else
                 this.saveZohoContactSelectedUsers();
@@ -730,8 +734,9 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.emailNotValid = false;
         this.gContacts.length = 0;
         this.zContacts.length = 0;
+        this.allselectedUsers.length = 0;
+        this.selectedContactListIds.length = 0;
         this.salesforceContactUsers.length = 0;
-        
         this.pager = [];
         this.pagedItems =[];
         
@@ -749,12 +754,12 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "button#cancel_button" ).prop( 'disabled', true );
         this.model.contactListName = "";
-        $( "#Sfile_preview" ).hide();
+        //$( "#Sfile_preview" ).hide();
         $( "#sample_editable_1" ).hide();
         $( "#file_preview" ).hide();
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
-        $( "#Zfile_preview" ).hide();
+        //$( "#Zfile_preview" ).hide();
         this.newUsers.length = 0;
         this.dublicateEmailId = false;
         this.clipBoard = false;
@@ -927,20 +932,55 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         if (page < 1 || page > this.pager.totalPages) {
             return;
         }
+        
         if(this.selectedAddContactsOption == 4){
             this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
             this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            
+            var contactIds1 = this.pagedItems.map(function(a) {return a.id;});
+            var items = $.grep(this.selectedContactListIds, function(element) {
+                return $.inArray(element, contactIds1 ) !== -1;
+            });
+            if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length){
+                this.isHeaderCheckBoxChecked = true;
+            }else{
+                this.isHeaderCheckBoxChecked = false;
+            }
         }
+        
         if(this.selectedAddContactsOption == 3){
             this.pager = this.socialPagerService.getPager(this.salesforceContactUsers.length, page);
             this.pagedItems = this.salesforceContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            
+            var contactIds2 = this.pagedItems.map(function(a) {return a.id;});
+            var items = $.grep(this.selectedContactListIds, function(element) {
+                return $.inArray(element, contactIds2 ) !== -1;
+            });
+            if(items.length == this.pager.pageSize || items.length == this.getSalesforceConatactList.contacts.length){
+                this.isHeaderCheckBoxChecked = true;
+            }else{
+                this.isHeaderCheckBoxChecked = false;
+            }
         }
+        
         if(this.selectedAddContactsOption == 5){
             this.pager = this.socialPagerService.getPager(this.zContacts.length, page);
             this.pagedItems = this.zContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            
+            var contactIds3 = this.pagedItems.map(function(a) {return a.id;});
+            var items = $.grep(this.selectedContactListIds, function(element) {
+                return $.inArray(element, contactIds3 ) !== -1;
+            });
+            if(items.length == this.pager.pageSize || items.length == this.getZohoConatacts.length){
+                this.isHeaderCheckBoxChecked = true;
+            }else{
+                this.isHeaderCheckBoxChecked = false;
+            }
         }
+        
     }
 
+    
     saveGoogleContacts() {
         this.socialContact.socialNetwork = "GOOGLE";
         this.socialContact.contactName = this.model.contactListName;
@@ -978,7 +1018,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveGoogleContactSelectedUsers() {
-        var selectedUserIds = new Array();
+        /*var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var userInformation = $( this ).val().split( ',' );
@@ -988,15 +1028,15 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             user.lastName = userInformation[2];
             selectedUsers.push( user );
         });
-        console.log( selectedUsers );
+        console.log( selectedUsers );*/
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+        this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
+            this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1022,7 +1062,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         }
     }
 
-    selectAllGoogleContacts( event: boolean ) {
+/*    selectAllGoogleContacts( event: boolean ) {
         this.xtremandLogger.info( "check value:" + event )
         this.gContacts.forEach(( gContacts ) => {
             if ( event == true ) {
@@ -1035,8 +1075,87 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             }
         })
     }
+    */
+    checkAll(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#ContactListTable_'+id).addClass('contact-list-selected');
+                for ( var i = 0; i < self.pagedItems.length; i++ ) {
+                    var object = {
+                        "emailId": self.pagedItems[i].emailId,
+                        "firstName": self.pagedItems[i].firstName,
+                        "lastName": self.pagedItems[i].lastName,
+                    }
+                    console.log( object );
+                    self.allselectedUsers.push( object );
+                }
+             });
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'emailId');
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.pager.maxResults == this.totalRecords){
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            }else{
+                let paginationIdsArray = new Array;
+                for(let j=0; j< this.pagedItems.length; j++){
+                    var paginationEmail = this.pagedItems[j].emailId; 
+                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                }
+                let currentPageContactIds = this.pagedItems.map(function(a) {return a.id;});
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        ev.stopPropagation();
+    }
+    
+    highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
+        let isChecked = $('#'+contactId).is(':checked');
+        console.log(this.selectedContactListIds)
+        if(isChecked){
+            $('#row_'+contactId).addClass('contact-list-selected');
+            this.selectedContactListIds.push(contactId);
+                    var object = {
+                            "emailId": email,
+                            "firstName": firstName,
+                            "lastName": lastName,
+                        }
+                    this.allselectedUsers.push( object );
+                    console.log( this.allselectedUsers );
+        }else{
+            $('#row_'+contactId).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+            this.allselectedUsers.splice($.inArray(contactId,this.allselectedUsers),1);
+        }
+        if(this.selectedContactListIds.length == this.pagedItems.length ){
+            this.isHeaderCheckBoxChecked = true;
+        }else{
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
+    
+    removeDuplicates(originalArray, prop) {
+        var newArray = [];
+        var lookupObject = {}; 
+        for(var i in originalArray) { 
+            lookupObject[originalArray[i][prop]] = originalArray[i]; 
+            } 
+        for(i in lookupObject) {
+            newArray.push(lookupObject[i]);
+            }
+        return newArray;
+        }
 
-    selectAllZohoContacts( event: boolean ) {
+/*    selectAllZohoContacts( event: boolean ) {
         this.xtremandLogger.info( "check value:" + event )
         this.zContacts.forEach(( zContacts ) => {
             if ( event == true ) {
@@ -1089,7 +1208,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             all.checked = false;
             this.salesforceContactsValue = false;
         }
-    }
+    }*/
 
     zohoContacts() {
         this.fileTypeError = false;
@@ -1180,7 +1299,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
-                    $( "#Zfile_preview" ).show();
+                    $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1266,7 +1385,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     this.xtremandLogger.info( this.getZohoConatacts );
                     // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Zfile_preview" ).show();
+                    $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1327,7 +1446,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveZohoContactSelectedUsers() {
-        var selectedUserIds = new Array();
+        /*var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var userInformation = $( this ).val().split( ',' );
@@ -1337,15 +1456,15 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             user.lastName = userInformation[2];
             selectedUsers.push( user );
         });
-        console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
+        console.log( selectedUsers );*/
+        this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
+            this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1513,7 +1632,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     this.salesforceContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Sfile_preview" ).show();
+                    $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     this.hideModal();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1575,7 +1694,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Sfile_preview" ).show();
+                    $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1598,7 +1717,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveSalesforceContactSelectedUsers() {
-        var selectedUserIds = new Array();
+        /*var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var userInformation = $( this ).val().split( ',' );
@@ -1608,15 +1727,15 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             user.lastName = userInformation[2];
             selectedUsers.push( user );
         });
-        console.log( selectedUsers );
+        console.log( selectedUsers );*/
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && selectedUsers.length != 0 ) {
-            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( selectedUsers ) );
+        this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactService.saveContactList( selectedUsers, this.model.contactListName, this.isPartner )
+            this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
                     data = data;
@@ -1812,8 +1931,8 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
 
         this.contactListName = '';
         $( "#Gfile_preview" ).hide();
-        $( "#Zfile_preview" ).hide();
-        $( "#Sfile_preview" ).hide();
+       // $( "#Zfile_preview" ).hide();
+       // $( "#Sfile_preview" ).hide();
         $( "#popupForListviews" ).hide();
         this.gContactsValue = true;
         this.zohoContactsValue = true;
