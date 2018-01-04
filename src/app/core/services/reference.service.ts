@@ -50,7 +50,7 @@ export class ReferenceService {
     viewsSparklineValues: any;
     viewsDate:string;
     clickedValue:number;
-    daySortValue: number = 7;
+    daySortValue = 7;
     reportName: string;
     
     countries = ["Country", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",

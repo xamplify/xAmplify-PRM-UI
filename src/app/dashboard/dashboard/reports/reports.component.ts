@@ -54,7 +54,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         console.log(result);
         this.referenceService.viewsSparklineValues = result;
         this.resultSparkline = result;
-        this.viewsDate = result.dates[0];
+        this.referenceService.viewsDate = this.viewsDate = result.dates[0];
+        console.log("views date is "+this.viewsDate + 'and reference date is '+ this.referenceService.viewsDate);
         this.viewsOrMinutesWatchedSparklineData(result);
         if (this.reportName === 'views') {
           this.getVideoViewsLevelOne(this.viewsDate, true);
@@ -86,7 +87,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           region = sparkline.getCurrentRegionFields();
         // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
         console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
-        if (self.viewsDate === offsetValues[region[0].offset]) {
+        const date = offsetValues[region[0].offset];
+        if (self.viewsDate === date) {
           console.log("views data is " + self.viewsDate);
         } else {
           self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
@@ -183,13 +185,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
     if (this.viewsDate === undefined || this.viewsDate === null) { this.viewsDate = this.resultSparkline.dates[0]; }
-    else {
-      this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
-      if (this.reportName.includes('views')) {
-        this.getVideoViewsLevelOne(this.viewsDate, true);
-      } else {
-        this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
-      }
+    this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
+    if (this.reportName.includes('views')) {
+      this.getVideoViewsLevelOne(this.viewsDate, true);
+    } else {
+      this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
     }
   }
   ngAfterViewInit() {

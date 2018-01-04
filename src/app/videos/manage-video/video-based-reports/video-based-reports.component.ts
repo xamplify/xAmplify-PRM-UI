@@ -47,55 +47,38 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             credits: false,
             exporting: { enabled: false },
             xAxis: {
-                type: 'category',
-                labels: {
-                    rotation: -45,
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                }
+                 categories: ['12-dec-2017', '12-nov-2017', '12-oct-2017', '12-sep-2017', '12-sep-2017']
             },
-            plotOptions: {
-                column: {
-                    minPointLength: 3
-                    }
-            },
+            
             yAxis: {
+                allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Population (millions)'
+                    text: 'Number of fruits'
                 },
-                visible: false
+                visible:false
             },
             legend: {
                 enabled: false
             },
+                
             tooltip: {
-                pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
-            },
-            series: [{
-                name: 'Population',
-                data: [
-                    ['Shanghai', 23.7],
-                    ['Lagos', 0],
-                    ['Istanbul', 14.2],
-                    ['Karachi', 14.0],
-                    ['Mumbai', 12.5]
-
-                ],
-                dataLabels: {
-                    enabled: true,
-                    rotation: -90,
-                    color: '#FFFFFF',
-                    align: 'right',
-                    format: '{point.y:.1f}', // one decimal
-                    y: 10, // 10 pixels down from the top
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        this.series.name + ': ' + this.y ;
                 }
+            },
+
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+
+            series: [{
+                name: 'John',
+                data: [5, 3, 4, 7, 2],
+                stack: 'male'
             }]
         });
     }
@@ -244,7 +227,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 map: 'custom/world'
             },
             title: {
-                text: 'The people who have watched the video',
+                text: ' ',
                 style: {
                     color: '#696666',
                     fontWeight: 'normal',
@@ -315,7 +298,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-        this.minutesWatchedBarcharts();
+      //  this.minutesWatchedBarcharts();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
     }
