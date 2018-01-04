@@ -85,16 +85,25 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         const sparkline = ev.sparklines[0],
           region = sparkline.getCurrentRegionFields();
         // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-        if (self.reportName === 'views') {
-          self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
-        } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
+        console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
+        if (self.viewsDate === offsetValues[region[0].offset]) {
+          console.log("views data is " + self.viewsDate);
+        } else {
+          self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
+          if (self.reportName === 'views') {
+            self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
+          } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
+        }
       });
     });
   }
 
   getCurrentDayFromDate(date) {
-    const res = date.split("-");
-    return res[2];
+    if (date !== undefined) {
+      this.viewsDate = date;
+      const res = date.split("-");
+      return res[2];
+    }
   }
   getVideoViewsLevelOne(dateValue, isReport) {
     this.isReport = isReport;
@@ -167,28 +176,21 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   selectedRow(ViewData: any) {
     console.log(ViewData);
-    //  if(this.selectedRowValue) {
-    //   this.color =  "lightblue";
-    // } else {
-    //   this.color =  "";
-    // }
     this.videoViewsLevelSecond.length = 0;
     this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
   }
   ngOnInit() {
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
-     if(this.viewsDate=== undefined || this.viewsDate=== null){
-       this.getVideoSparklineGraph(this.daysCount);
-     }
+    if (this.viewsDate === undefined || this.viewsDate === null) { this.viewsDate = this.resultSparkline.dates[0]; }
     else {
-    this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
-    if (this.reportName.includes('views')) {
-      this.getVideoViewsLevelOne(this.viewsDate, true);
-    } else {
-      this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
+      this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
+      if (this.reportName.includes('views')) {
+        this.getVideoViewsLevelOne(this.viewsDate, true);
+      } else {
+        this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
+      }
     }
-   }
   }
   ngAfterViewInit() {
   }

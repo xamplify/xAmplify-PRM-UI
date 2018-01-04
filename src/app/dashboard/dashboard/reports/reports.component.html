@@ -43,7 +43,7 @@
 							<th>Date</th>
 						</tr>
 					</thead>
-					<tbody *ngIf="videoViewsLevelFirst">
+					<tbody >
 						 <ng-container *ngFor="let view of videoViewsLevelFirst; let i = index"> 
 						<tr style="cursor:pointer;" (click)="selectedRow(view)">
 							<!--[class.active]="view.videoId === selectedRowValue"  -->
@@ -56,7 +56,6 @@
 					</tbody>
 					<!-- <p  *ngIf="!videoViewsLevelFirst"> No Data Found</p>	 -->
 				</table>
-				<p  *ngIf="!videoViewsLevelFirst"> No Data Found</p>
 			</div>
 		</div>
 	</div>
@@ -76,7 +75,7 @@
 						<th>Date</th>
 					</tr>
 				</thead>
-				<tbody  *ngIf="videoViewsLevelSecond">
+				<tbody>
 					 <ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index"> 
 					<tr>
 						<td>{{videoViews.videoTitle}}</td>
@@ -87,7 +86,6 @@
 				</tbody>
 				<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
 			</table>
-			<p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>
 		</div>
 	</div>
 </div>
