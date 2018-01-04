@@ -735,6 +735,18 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }
         this.pager = this.socialPagerService.getPager(this.socialPartnerUsers.length, page);
         this.pagedItems = this.socialPartnerUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        
+        var contactIds = this.pagedItems.map(function(a) {return a.id;});
+        var items = $.grep(this.selectedContactListIds, function(element) {
+            return $.inArray(element, contactIds ) !== -1;
+        });
+        this.xtremandLogger.log("partner Ids"+contactIds);
+        this.xtremandLogger.log("Selected partner Ids"+this.selectedContactListIds);
+        if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length){
+            this.isHeaderCheckBoxChecked = true;
+        }else{
+            this.isHeaderCheckBoxChecked = false;
+        }
     }
     
     googleContacts() {
@@ -820,7 +832,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.isContactsThere = false;
     }
     
-    selectGoogleContact( event: boolean ) {
+    /*selectGoogleContact( event: boolean ) {
         this.xtremandLogger.info( "check value:" + event )
         var all: any = document.getElementById( "select_all_google_contacts" );
         if ( event == false ) {
@@ -844,7 +856,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             }
         })
     }
-    
+    */
     saveGoogleContacts() {
         this.socialPartners.socialNetwork = "GOOGLE";
         this.socialPartners.isPartnerUserList = this.isPartner;
