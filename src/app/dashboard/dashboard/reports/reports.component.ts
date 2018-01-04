@@ -19,7 +19,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   videoViewsLevelFirst = [];
   videoViewsLevelSecond = [];
   isReport: boolean;
-  selectedRowValue: any;
+  selectedRowValue = false;
+  color: any;
   sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
   { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
   daySort: any;
@@ -39,6 +40,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         break;
       }
     }
+    // alert(this.viewsDate);
     console.log("day sort value " + this.daySort + 'views date is ' + this.viewsDate + 'value is ' + this.viewsValue + 'dayscount is' + this.daysCount);
   }
   selectedSortByValue(event: any) {
@@ -103,6 +105,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
     console.log("date count value is " + dateCountValue);
     if (dateCountValue !== undefined) {
+      this.videoViewsLevelFirst = null;
       this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
         (result: any) => {
           this.videoViewsLevelFirst = result;
@@ -164,21 +167,28 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   selectedRow(ViewData: any) {
     console.log(ViewData);
-    this.selectedRowValue = null;
-    this.selectedRowValue = ViewData.videoId;
+    //  if(this.selectedRowValue) {
+    //   this.color =  "lightblue";
+    // } else {
+    //   this.color =  "";
+    // }
     this.videoViewsLevelSecond.length = 0;
     this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
   }
   ngOnInit() {
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
+     if(this.viewsDate=== undefined || this.viewsDate=== null){
+       this.getVideoSparklineGraph(this.daysCount);
+     }
+    else {
     this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
     if (this.reportName.includes('views')) {
       this.getVideoViewsLevelOne(this.viewsDate, true);
     } else {
       this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
     }
-
+   }
   }
   ngAfterViewInit() {
   }

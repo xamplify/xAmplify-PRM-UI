@@ -29,61 +29,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isPlay: boolean;
     public categories: any;
     public watchedFully: number;
-    chartsData = [57, [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8], 67];
+    sortDates = [{ 'name': 'currentmonth', 'value': 7 }, { 'name': '14 Days)', 'value': 14 }];
+    daySort: any;
     campaignViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) { }
-    areaCharts() {
-        Highcharts.chart('area-chart', {
-            chart: {
-                type: 'column',
-                plotBorderWidth: 1
-            },
-            credits: false,
-            xAxis: {
-                categories: this.categories,
-                min: 0.5,
-                max: this.categories.length - 1.5,
-                startOnTick: false,
-                endOnTick: false,
-                tickLength: 0,  // lines for x-axis
-                type: 'datetime',
-                dateTimeLabelFormats: {
-                }
-            },
-            yAxis: {
-                startOnTick: false,
-                endOnTick: false,
-                min: 0,
-                title: {
-                    text: ''
-                },
-                labels: {
-                    formatter: function () {
-                        return Math.round(this.value);
-                    }
-                },
-                 visible: false,
-            },
-            title: {
-                text: ''
-            },
-            exporting: { enabled: false },
-            tooltip: {
-                formatter: function () {
-                    return this.y + 'visits';
-                },
-                backgroundColor: '#e0e0e0',
-                borderWidth: 0
-            },
-            series: [{
-                color: 'pink',
-                showInLegend: false,
-                data: this.campaignViews
-            }]
-        });
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
+        this.daySort = this.sortDates[0]
     }
-    monthlyViewsBarCharts(){
+    monthlyViewsBarCharts() {
         Highcharts.chart('area-chart', {
             chart: {
                 type: 'column'
@@ -103,6 +56,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     }
                 }
             },
+            plotOptions: {
+                column: {
+                    minPointLength: 3
+                    }
+            },
             yAxis: {
                 min: 0,
                 title: {
@@ -120,11 +78,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 name: 'Population',
                 data: [
                     ['Shanghai', 23.7],
-                    ['Lagos', 16.1],
+                    ['Lagos', 0],
                     ['Istanbul', 14.2],
                     ['Karachi', 14.0],
                     ['Mumbai', 12.5]
-                
+
                 ],
                 dataLabels: {
                     enabled: true,
@@ -139,18 +97,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     }
                 }
             }]
-    });
+        });
     }
-    watchedByTenUserschartsDayStates(minutesWatched:any, names:any){
-          const charts = [],
+    watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
+        const charts = [],
             $containers = $('#trellis td'),
             datasets = [
                 {
-                     name: ' ',
+                    name: ' ',
                     data: minutesWatched,
-                    
+
                 }
-              
+
             ];
         $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
@@ -170,11 +128,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         fontSize: '13px'
                     }
                 },
-                  plotOptions: {
+                plotOptions: {
                     bar: {
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    column: {
+                      minPointLength: 3
                     }
                 },
                 colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
@@ -200,7 +161,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         text: null
                     },
                     min: 0
-                   // max: 100
+                    // max: 100
                 },
                 legend: {
                     enabled: false
@@ -215,67 +176,41 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }));
         });
     }
-    minutesWatchedBarcharts(){
-       const categories = [
-                '0-4', '5-9', '10-14', '15-19',
-                '20-24', '25-29', '30-34', '35-39', '40-44',
-                '45-49', '50-54', '55-59', '60-64', '65-69',
-                '70-74', '75-79', '80-84', '85-89', '90-94',
-                '95-99', '100 + '
-            ];
-     Highcharts.chart('minutesWatchedStockedChart', {
+    minutesWatchedBarcharts() {
+        Highcharts.chart('container', {
             chart: {
                 type: 'bar'
+            },
+            exporting: { enabled: false },
+            credits: {
+                enabled: false
             },
             title: {
                 text: ' '
             },
-            xAxis: [{
-                categories: categories,
+            xAxis: {
+                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            },
+            yAxis: {
+                min: 0,
+                visible: false
+            },
+            legend: {
                 reversed: false,
-                labels: {
-                    step: 1
-                }
-            }, { // mirror axis on right side
-                opposite: true,
-                reversed: false,
-                categories: categories,
-                linkedTo: 0,
-                labels: {
-                    step: 1
-                }
-            }],
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        formatter: function () {
-                            return Math.abs(this.value) + '%';
-                        }
-                    }
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal'
-                    }
-                },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                        'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
                 }
             },
             series: [{
-                name: 'Male',
-                data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1, -3.2,
-                    -3.0, -3.2, -4.3, -4.4, -3.6, -3.1, -2.4,
-                    -2.5, -2.3, -1.2, -0.6, -0.2, -0.0, -0.0]
+                name: 'views',
+                data: [5, 3, 4, 7, 2]
             }, {
-                name: 'Female',
-                data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0, 3.1, 2.9,
-                    3.1, 4.1, 4.3, 3.6, 3.4, 2.6, 2.9, 2.9,
-                    1.8, 1.2, 0.6, 0.1, 0.0]
+                name: 'minutes watched',
+                data: [2, 2, 3, 2, 1],
+                color: '#98dc71'
             }]
         });
     }
@@ -310,12 +245,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             title: {
                 text: 'The people who have watched the video',
-                     style: {
-                        color: '#696666',
-                        fontWeight: 'normal',
-                        fontSize: '14px'
-                    }
-            }, 
+                style: {
+                    color: '#696666',
+                    fontWeight: 'normal',
+                    fontSize: '14px'
+                }
+            },
             exporting: { enabled: false },
             mapNavigation: {
                 enabled: true,
@@ -380,8 +315,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-      //  this.watchedByTenUserschartsDayStates();
-      //  this.minutesWatchedBarcharts();
+        this.minutesWatchedBarcharts();
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
     }
@@ -418,14 +352,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
         console.log(overrideNativeValue);
         this.videoJSplayer = videojs('videoId', {
-        html5: {
-          hls: {
-            overrideNative: overrideNativeValue
-          },
-          nativeVideoTracks: !overrideNativeValue,
-          nativeAudioTracks: !overrideNativeValue,
-          nativeTextTracks: !overrideNativeValue
-        } }, function () {
+            html5: {
+                hls: {
+                    overrideNative: overrideNativeValue
+                },
+                nativeVideoTracks: !overrideNativeValue,
+                nativeAudioTracks: !overrideNativeValue,
+                nativeTextTracks: !overrideNativeValue
+            }
+        }, function () {
             const player = this;
             const document: any = window.document;
             const isValid = self.overLayValue;

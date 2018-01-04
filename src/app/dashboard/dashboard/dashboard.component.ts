@@ -122,11 +122,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
             });
         });
     }
-    sparklineDataWithRouter(value: number, date: string, reportName: string) {
+    sparklineDataWithRouter(value: number, date: any, reportName: string) {
+        if(date === undefined || date === null ){
+          console.log("date is "+date);
+        } else {
         this.referenceService.viewsDate = date;
         this.referenceService.clickedValue = value;
         this.referenceService.reportName = reportName;
         this.router.navigate(['./home/dashboard/reports']);
+        }
     }
 
     minutesSparklineData(result, dates) {
@@ -309,10 +313,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         fontSize: '13px'
                     }
                 },
-
                 credits: {
                     enabled: false
                 },
+                plotOptions: {
+                column: {
+                    minPointLength: 10
+                    }
+                 },
                 xAxis: {
                     categories: names,
                     labels: {
