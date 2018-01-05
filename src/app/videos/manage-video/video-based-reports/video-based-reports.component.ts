@@ -30,15 +30,17 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public categories: any;
     public watchedFully: number;
     minutesWatchedUsers: number;
-    sortDates = [{ 'name': 'current month views'}]; 
+    sortMintuesDates = [{ 'name': 'today views','value':'today'},{'name':'month','value':'month'},{'name':'Quarterly','value':'Quarterly'},{'name':'yearly','value':'Yearly'}]; 
     sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' }, 
     { 'name': 'Month wise views', 'value': 'monthly' },
     {'name':'Quarterly views', 'value':'quarterly'},{'name':'Yearly views', 'value':'yearly'}];
     daySort: any;
+    minutesSort: any;
     campaignViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
-        this.daySort = this.sortMonthDates[3]
+        this.daySort = this.sortMonthDates[3];
+        this.minutesSort = this.sortMintuesDates[3];
     }
     monthlyViewsBarCharts(dates, views) {
         Highcharts.chart('monthly-views-bar', {
@@ -198,6 +200,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 color: '#98dc71'
             }]
         });
+    }
+    selectedSortByValue(event){
+    alert(event);
     }
     selectedCampaignWatchedUsers(timePeriod){
         this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)

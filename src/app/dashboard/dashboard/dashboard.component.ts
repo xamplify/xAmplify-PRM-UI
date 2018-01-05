@@ -694,6 +694,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             });
     }
     heatMapformatDateTime(){
+        if(this.heatMapData.length>0){
         for(let i=0; i<this.heatMapData.length; i++){
             const fulldate = this.heatMapData[i].launchTime;
             const fulldate2 = fulldate.split(" ");
@@ -703,6 +704,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             const fullTime = date +' '+ time;
             this.heatMapData[i].launchTime = fullTime;
        }
+      }  
     }
     formatAMPM(date) {
        const strTime =  new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")

@@ -4,8 +4,24 @@
     text-align: left;
     padding: 8px;
 }
+.td-chart {
+	 position: relative;
+}
+.bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #8ef;
+    z-index: 0;
+	text-align: center;
+}
+/* tr:nth-child(odd) {
+    background-color: #f8f8f8;
+    opacity: .999;
+} */
 
-	</style>
+</style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light">
@@ -91,26 +107,31 @@
 				</div>
 			    <div class="panel-title pull-right">
 				<span style="float:right; font-size: 13px;">
-					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
-						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
+					<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
+						<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>
 			</div>
 			</div>
 			<div class="portlet-body">
 				<div style="max-width: 100%; min-height: 300px;">
-				     <table style="width:100%">
+				     <table style="width:100%;">
 						<tr><th>name </th>
 							<th>views</th>
 							<th>minutes watched</th>
 						</tr>
 						<tr>
-							<td width="30%">santhosh</td>
-							<td style="background:lightblue;text-align:center">7</td>
-							<td>
-								<div style="width: 100%;">
-									<div id="myBar" style="width: 10%;">2.3</div>
-								</div>
+							<td class="td-new td-chart" width="30%" height="10">santhosh</td>
+							<td class="td-new td-chart" style="background:lightblue;text-align:center">7</td>
+							<td class="td-new td-chart"> 
+								 <div class="bg" style="width: 30%">3</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="td-new td-chart" width="30%" height="10">santhosh</td>
+							<td class="td-new td-chart" style="background:lightblue;text-align:center">7</td>
+							<td class="td-new td-chart"> 
+								 <div class="bg" style="width: 70%">8</div>
 							</td>
 						</tr>
 						</table>			
