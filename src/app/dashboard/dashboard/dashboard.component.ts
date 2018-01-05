@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     categories: any;
     heatMapData: any;
     maxBarChartNumber: number;
-    isMaxBarChartNumber: boolean;
+    isMaxBarChartNumber = true;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
     { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
     daySort: any;
@@ -259,7 +259,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         enabled: true,
                         style: {
                             fontWeight: 'normal',
-                            fontSize: '13px'
+                            fontSize: '13px',
+                            color:'block'
                         }
                     }
                 }
@@ -703,7 +704,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.isMaxBarChartNumber = true;
                     this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
                 }
-                else { this.isMaxBarChartNumber = false; }
+                else { 
+                    this.isMaxBarChartNumber = false; 
+                }
             },
             (error: any) => {
                 this.xtremandLogger.error(error);

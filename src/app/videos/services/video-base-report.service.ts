@@ -25,6 +25,15 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
+    getCampaignUserWatchedViews(timePeriod: string,videoId: number){
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/'+timePeriod+'/views?access_token='
+                + this.authenticationService.access_token+'&videoId='+videoId;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

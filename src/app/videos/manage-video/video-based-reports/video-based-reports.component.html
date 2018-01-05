@@ -41,7 +41,7 @@
 								<td class="first"></td>
 							</tr>
 						</table>
-						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top 10 users </h5>
+						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} users </h5>
 					</div>
 					<div class="col-xs-4 text-center">
 						<section class="percentage-circle" style="margin-top: 10px;">
@@ -61,10 +61,10 @@
 				</div>
 			</div>
 		</div>
-		<div style="background: white;box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important;">
+		<div style="background: white;box-shadow: 0 0 7px rgba(0, 0, 0, 0.4) !important;margin-top: 14px;">
 			<table class="table-new" style="width: 100%;"  height=120>
 			<tr>
-				<th>N/users</th>
+				<th>N/A users</th>
 				<th>views</th>
 				<th>minutes watched</th>
 			</tr>
@@ -87,7 +87,7 @@
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">minutes watched Views</span>
-					<span class="caption-helper">minutes watched ...</span>
+					<span class="caption-helper"></span>
 				</div>
 			    <div class="panel-title pull-right">
 				<span style="float:right; font-size: 13px;">
@@ -126,18 +126,18 @@
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">video Views</span>
-					<span class="caption-helper">monthly stats...</span>
+					<span class="caption-helper">stats...</span>
 				</div>
 			<div class="panel-title pull-right">
 				<span style="float:right; font-size: 13px;">
-					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
-						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
+						<option *ngFor="let sort of sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>
 			</div>
 			</div>
 			<div class="portlet-body">
-				<div id="area-chart" style="max-width: 100%; min-height: 300px;"></div>
+				<div id="monthly-views-bar" style="max-width: 100%; min-height: 300px;"></div>
 			</div>
 		</div>
 		<!-- END PORTLET-->

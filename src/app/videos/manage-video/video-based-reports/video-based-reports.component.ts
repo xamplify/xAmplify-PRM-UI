@@ -29,15 +29,19 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public isPlay: boolean;
     public categories: any;
     public watchedFully: number;
-    sortDates = [{ 'name': 'currentmonth', 'value': 7 }, { 'name': '14 Days)', 'value': 14 }];
+    minutesWatchedUsers: number;
+    sortDates = [{ 'name': 'current month views'}]; 
+    sortMonthDates = [{ 'name': 'current month views', 'value': 'current-month' }, 
+    { 'name': 'month wise views', 'value': 'monthly' },
+    {'name':'quarterly views', 'value':'quarterly'},{'name':'yearly views', 'value':'yearly'}];
     daySort: any;
     campaignViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
-        this.daySort = this.sortDates[0]
+        this.daySort = this.sortMonthDates[3]
     }
-    monthlyViewsBarCharts() {
-        Highcharts.chart('area-chart', {
+    monthlyViewsBarCharts(dates, views) {
+        Highcharts.chart('monthly-views-bar', {
             chart: {
                 type: 'column'
             },
@@ -47,7 +51,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             credits: false,
             exporting: { enabled: false },
             xAxis: {
-                 categories: ['12-dec-2017', '12-nov-2017', '12-oct-2017', '12-sep-2017', '12-sep-2017']
+                 categories: dates
             },
             
             yAxis: {
@@ -76,9 +80,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
 
             series: [{
-                name: 'John',
-                data: [5, 3, 4, 7, 2],
-                stack: 'male'
+                name: 'views',
+                data: views
+               // stack: 'male'
             }]
         });
     }
@@ -197,6 +201,17 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
         });
     }
+    selectedCampaignWatchedUsers(timePeriod){
+        this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.monthlyViewsBarCharts(result.dates,result.views)
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            });
+    }
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -272,7 +287,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     this.campaignViews = result.video_views_count_data.monthlyViews;
                     console.log(result);
                     //this.areaCharts();
-                    this.monthlyViewsBarCharts();
+                  //  this.monthlyViewsBarCharts();
                     this.renderWorldMap(result.video_views_count_data.countrywiseViews);
                 },
                 (error: any) => {
@@ -287,6 +302,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 .subscribe((result: any) => {
                     console.log(result);
                     this.watchedFully = result.video_views_count_data.watchedfullypercentage;
+                    this.minutesWatchedUsers = result.video_views_count_data.minutesWatched.length;
                     this.watchedByTenUserschartsDayStates(result.video_views_count_data.minutesWatched, result.video_views_count_data.names);
                 },
                 (error: any) => {
@@ -295,10 +311,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 });
         } catch (error) { console.log(error); }
     }
+    getCampaignWatchedUsersViews(){
+
+    }
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
       //  this.minutesWatchedBarcharts();
+        this.selectedCampaignWatchedUsers(this.sortMonthDates[3].value);
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
     }

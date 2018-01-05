@@ -10,25 +10,27 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
   errorCode: number;
   private subscribe: any;
   errorMap = [
-                {code: '400', message: 'Bad Request'},
-                {code: '401', message: 'Unauthorized'},
-                {code: '403', message: 'Forbidden'},
-                {code: '404', message: 'Not Found'},
-                {code: '500', message: 'Internal Server Error'},
-                {code: '502', message: 'Bad Gateway'},
-                {code: '503', message: 'Service Unavailable'},
-                {code: '504', message: 'Gateway Timeout'},
-                {code: '0', message: 'ERR_INTERNET_DISCONNECTED'}
-              ]
-  constructor(public router: Router, private route: ActivatedRoute) {}
+    { code: '400', message: 'Bad Request' },
+    { code: '401', message: 'Unauthorized' },
+    { code: '403', message: 'Forbidden' },
+    { code: '404', message: 'Not Found' },
+    { code: '405', message: 'Method Not Allowed' },
+    { code: '500', message: 'Internal Server Error' },
+    { code: '502', message: 'Bad Gateway' },
+    { code: '503', message: 'Service Unavailable' },
+    { code: '504', message: 'Gateway Timeout' },
+    { code: '0', message: 'ERR_INTERNET_DISCONNECTED' }
+  ]
+  constructor(public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.subscribe = this.route.params.subscribe(params => {
       this.errorCode = +params['errorStatusId']; // (+) converts string 'id' to a number
     });
-    
-    if(this.errorCode == 503 || this.errorCode == 0)
-        this.router.navigate( ['/serviceunavailable'] );
+
+    if (this.errorCode === 503 || this.errorCode === 0) {
+      this.router.navigate(['/serviceunavailable']);
+    }
   }
 
   ngOnDestroy() {
