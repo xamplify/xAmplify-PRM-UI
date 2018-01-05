@@ -119,10 +119,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     bar: {
                         dataLabels: {
                             enabled: true
-                        }
-                    },
-                    column: {
-                      minPointLength: 3
+                        },
+                        minPointLength: 3
                     }
                 },
                 colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],

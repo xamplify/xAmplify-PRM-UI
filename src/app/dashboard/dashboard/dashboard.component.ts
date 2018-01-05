@@ -318,8 +318,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     enabled: false
                 },
                 plotOptions: {
-                column: {
-                    minPointLength: 10
+                 bar: {
+                    minPointLength: 3
                     }
                  },
                 xAxis: {
