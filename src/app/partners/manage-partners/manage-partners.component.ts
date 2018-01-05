@@ -373,12 +373,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.totalRecords = data.totalRecords;
                 if ( this.partners.length == 0 ) {
                     this.emptyPartnerList = true;
-                    //this.noOfContactsDropdown = true;
                 }
                 else {
                     this.emptyPartnerList = false;
-                    //this.noOfContactsDropdown = false;
-                    //this.pagedItems = null;
                 }
                 this.referenceService.loading(this.httpRequestLoader, false); 
                 pagination.totalRecords = this.totalRecords;
@@ -606,7 +603,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     deleteUserShowAlert( contactId: number ) {
         this.xtremandLogger.info( "contactListId in sweetAlert() " + contactId);
         let self = this;
-        //if( this.totalRecords != 1){
         swal( {
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -832,31 +828,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.isContactsThere = false;
     }
     
-    /*selectGoogleContact( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        var all: any = document.getElementById( "select_all_google_contacts" );
-        if ( event == false ) {
-            all.checked = false;
-            
-        }
-    }
-
-    selectAllGoogleContacts( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        this.socialPartnerUsers.forEach(( socialPartnerUsers ) => {
-            if ( event == true ) {
-                socialPartnerUsers.checked = true;
-                this.socialPartnersAllChecked = true;
-                this.socialContactsValue = true;
-            }
-            else {
-                socialPartnerUsers.checked = false;
-                this.socialPartnersAllChecked = false;
-                this.socialContactsValue = false;
-            }
-        })
-    }
-    */
     saveGoogleContacts() {
         this.socialPartners.socialNetwork = "GOOGLE";
         this.socialPartners.isPartnerUserList = this.isPartner;
@@ -872,18 +843,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
     saveGoogleContactSelectedUsers() {
         this.selectedAddPartnerOption = 3;
-       /* var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-        });
-        console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
         if ( this.allselectedUsers.length != 0 ) {
             this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
@@ -1097,20 +1056,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
     saveZohoContactSelectedUsers() {
         this.newPartnerUser = this.allselectedUsers;
-        /*var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        let self = this;
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-            
-        });
-        console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
         if ( this.allselectedUsers.length != 0 ) {
             this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
@@ -1340,18 +1285,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
     saveSalesforceContactSelectedUsers() {
         this.newPartnerUser = this.allselectedUsers;
-        /*var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-        });
-        console.log( selectedUsers );
-        this.xtremandLogger.info( "SelectedUserIDs:" + selectedUserIds );*/
         if ( this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.newPartnerUser = this.allselectedUsers;
@@ -1474,7 +1407,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }
     
     checkAll(ev:any){
-        //this.contactsNotSelectedError = false;
         if(ev.target.checked){
             console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
@@ -1516,7 +1448,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     }
     
     highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
-        //this.contactsNotSelectedError = false;
         let isChecked = $('#'+contactId).is(':checked');
         console.log(this.selectedContactListIds)
         if(isChecked){

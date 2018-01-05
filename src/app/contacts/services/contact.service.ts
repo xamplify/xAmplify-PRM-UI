@@ -109,7 +109,9 @@ export class ContactService {
     }
 
     saveContactList( users: Array<User>, contactListName: string, isPartner: boolean ): Observable<User[]> {
-        this.successMessage = true;
+        if(isPartner == false){
+            this.successMessage = true;
+        }
         var requestoptions = new RequestOptions( {
             body:  users,
         })
@@ -213,7 +215,7 @@ export class ContactService {
 
     getGoogleContacts( socialContact: SocialContact ) {
         this.logger.info( "get google contacts :" + socialContact );
-        this.successMessage = true;
+        //this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,
         })
@@ -287,7 +289,7 @@ export class ContactService {
     
     getZohoAutherizedContacts( socialContact: SocialContact ) {
         this.logger.info( "get zoho contacts :" + socialContact );
-        this.successMessage = true;
+        //this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,
         })
@@ -324,7 +326,7 @@ export class ContactService {
     }
 
     getSalesforceContacts( socialNetwork: string, contactType: string ) {
-        this.successMessage = true;
+       // this.successMessage = true;
         this.salesforceContact = { "socialNetwork": socialNetwork, "contactType": contactType };
         var requestoptions = new RequestOptions( {
             body: this.salesforceContact,
@@ -342,7 +344,7 @@ export class ContactService {
     }
 
     getSalesforceListViewContacts( socialNetwork: string, contactType: string, listviewId: string, listviewName: string ) {
-        this.successMessage = true;
+       // this.successMessage = true;
         this.salesforceListViewContact = { "socialNetwork": socialNetwork, "contactType": contactType, "alias": listviewId, "contactName": listviewName };
         var requestoptions = new RequestOptions( {
             body: this.salesforceListViewContact,

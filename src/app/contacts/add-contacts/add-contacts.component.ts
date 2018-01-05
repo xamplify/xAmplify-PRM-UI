@@ -96,9 +96,9 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     public salesforceContact: SalesforceContact;
     public getSalesforceConatactList: any;
     public storeLogin: any;
-    public gContacts: SocialContact[] = new Array();
-    public zContacts: SocialContact[] = new Array();
-    public salesforceContactUsers: SocialContact[] = new Array();
+    //public gContacts: SocialContact[] = new Array();
+    //public zContacts: SocialContact[] = new Array();
+    public socialContactUsers: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     pager: any = {};
     pagedItems: any[];
@@ -732,11 +732,11 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.noOptionsClickError = false;
         this.isValidContactName = false;
         this.emailNotValid = false;
-        this.gContacts.length = 0;
-        this.zContacts.length = 0;
+        this.socialContactUsers.length = 0;
+        //this.zContacts.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
-        this.salesforceContactUsers.length = 0;
+        //this.salesforceContactUsers.length = 0;
         this.pager = [];
         this.pagedItems =[];
         
@@ -899,7 +899,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-                    this.gContacts.push( socialContact );
+                    this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -915,7 +915,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                 }
                 this.selectedAddContactsOption = 4;
                 this.setPage(1);
-                this.socialContact.contacts = this.gContacts;
+                this.socialContact.contacts = this.socialContactUsers;
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -931,24 +931,27 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             return;
         }
         
+        this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page);
+        this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        
+        var contactIds1 = this.pagedItems.map(function(a) {return a.id;});
+        var items = $.grep(this.selectedContactListIds, function(element) {
+            return $.inArray(element, contactIds1 ) !== -1;
+        });
+        if(items.length == this.pager.pageSize || items.length == this.socialContactUsers.length || items.length == this.pagedItems.length){
+            this.isHeaderCheckBoxChecked = true;
+        }else{
+            this.isHeaderCheckBoxChecked = false;
+        }
+        
+       /* 
         if(this.selectedAddContactsOption == 4){
-            this.pager = this.socialPagerService.getPager(this.gContacts.length, page);
-            this.pagedItems = this.gContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
             
-            var contactIds1 = this.pagedItems.map(function(a) {return a.id;});
-            var items = $.grep(this.selectedContactListIds, function(element) {
-                return $.inArray(element, contactIds1 ) !== -1;
-            });
-            if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length){
-                this.isHeaderCheckBoxChecked = true;
-            }else{
-                this.isHeaderCheckBoxChecked = false;
-            }
         }
         
         if(this.selectedAddContactsOption == 3){
-            this.pager = this.socialPagerService.getPager(this.salesforceContactUsers.length, page);
-            this.pagedItems = this.salesforceContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page);
+            this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
             
             var contactIds2 = this.pagedItems.map(function(a) {return a.id;});
             var items = $.grep(this.selectedContactListIds, function(element) {
@@ -962,8 +965,8 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         }
         
         if(this.selectedAddContactsOption == 5){
-            this.pager = this.socialPagerService.getPager(this.zContacts.length, page);
-            this.pagedItems = this.zContacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page);
+            this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
             
             var contactIds3 = this.pagedItems.map(function(a) {return a.id;});
             var items = $.grep(this.selectedContactListIds, function(element) {
@@ -974,7 +977,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             }else{
                 this.isHeaderCheckBoxChecked = false;
             }
-        }
+        }*/
         
     }
 
@@ -985,9 +988,9 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.socialContact.isPartnerUserList = this.isPartner;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.socialContact.contactType = "CONTACT";
-        this.socialContact.contacts = this.gContacts;
+        this.socialContact.contacts = this.socialContactUsers;
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
-            if ( this.gContacts.length > 0 ) {
+            if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
@@ -1074,7 +1077,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("contact-list-selected");
-            if(this.pager.maxResults == this.totalRecords){
+            if(this.pager.maxResults == this.pager.totalItems){
                 this.selectedContactListIds = [];
                 this.allselectedUsers.length = 0;
             }else{
@@ -1213,7 +1216,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
-                    this.zContacts.push( socialContact );
+                    this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1299,7 +1302,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
-                    this.zContacts.push( socialContact );
+                    this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1330,10 +1333,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.socialContact.contactName = this.model.contactListName;
         this.socialContact.isPartnerUserList = this.isPartner;
         this.socialContact.contactType = this.contactType;
-        this.socialContact.contacts = this.zContacts;
+        this.socialContact.contacts = this.socialContactUsers;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
-            if ( this.zContacts.length > 0 ) {
+            if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
@@ -1535,7 +1538,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
-                    this.salesforceContactUsers.push( socialContact );
+                    this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1596,7 +1599,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
-                    this.salesforceContactUsers.push( socialContact );
+                    this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1661,10 +1664,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.socialContact.isPartnerUserList = this.isPartner;
         this.socialContact.contactType = this.contactType;
         this.socialContact.alias = this.salesforceListViewId;
-        this.socialContact.contacts = this.salesforceContactUsers;
+        this.socialContact.contacts = this.socialContactUsers;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
-            if ( this.salesforceContactUsers.length > 0 ) {
+            if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
