@@ -754,12 +754,10 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         $( "button#sample_editable_1_new" ).prop( 'disabled', true );
         $( "button#cancel_button" ).prop( 'disabled', true );
         this.model.contactListName = "";
-        //$( "#Sfile_preview" ).hide();
         $( "#sample_editable_1" ).hide();
         $( "#file_preview" ).hide();
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
-        //$( "#Zfile_preview" ).hide();
         this.newUsers.length = 0;
         this.dublicateEmailId = false;
         this.clipBoard = false;
@@ -1018,17 +1016,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveGoogleContactSelectedUsers() {
-        /*var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-        });
-        console.log( selectedUsers );*/
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
@@ -1062,20 +1049,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         }
     }
 
-/*    selectAllGoogleContacts( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        this.gContacts.forEach(( gContacts ) => {
-            if ( event == true ) {
-                gContacts.checked = true;
-                this.gContactsValue = true;
-            }
-            else {
-                gContacts.checked = false;
-                this.gContactsValue = false;
-            }
-        })
-    }
-    */
     checkAll(ev:any){
         if(ev.target.checked){
             console.log("checked");
@@ -1154,61 +1127,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             }
         return newArray;
         }
-
-/*    selectAllZohoContacts( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        this.zContacts.forEach(( zContacts ) => {
-            if ( event == true ) {
-                zContacts.checked = true;
-                this.zohoContactsValue = true;
-            }
-            else {
-                zContacts.checked = false;
-                this.zohoContactsValue = false;
-            }
-        })
-    }
-
-    selectAllSalesforceContacts( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        this.salesforceContactUsers.forEach(( salesforceContactUsers ) => {
-            if ( event == true ) {
-                salesforceContactUsers.checked = true;
-                this.salesforceContactsValue = true;
-            }
-            else {
-                salesforceContactUsers.checked = false;
-                this.salesforceContactsValue = false;
-            }
-        })
-    }
-
-    selectGoogleContact( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        var all: any = document.getElementById( "select_all_google_contacts" );
-        if ( event == false ) {
-            all.checked = false;
-            this.salesforceContactsValue = false;
-        }
-    }
-
-    selectZohoContact( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        var all: any = document.getElementById( "select_all_google_contacts" );
-        if ( event == false ) {
-            all.checked = false;
-            this.zohoContactsValue = false;
-        }
-    }
-
-    selectSalesforceContact( event: boolean ) {
-        this.xtremandLogger.info( "check value:" + event )
-        var all: any = document.getElementById( "select_all_google_contacts" );
-        if ( event == false ) {
-            all.checked = false;
-            this.salesforceContactsValue = false;
-        }
-    }*/
 
     zohoContacts() {
         this.fileTypeError = false;
@@ -1383,7 +1301,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.zContacts.push( socialContact );
                     this.xtremandLogger.info( this.getZohoConatacts );
-                    // this.zohoImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
@@ -1446,17 +1363,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveZohoContactSelectedUsers() {
-        /*var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-        });
-        console.log( selectedUsers );*/
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
@@ -1692,7 +1598,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.salesforceContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getSalesforceConatactList );
-                    //this.sfImageNormal = true;
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1717,17 +1622,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     }
 
     saveSalesforceContactSelectedUsers() {
-        /*var selectedUserIds = new Array();
-        let selectedUsers = new Array<User>();
-        $( 'input[name="selectedUserIds"]:checked' ).each( function() {
-            var userInformation = $( this ).val().split( ',' );
-            let user = new User();
-            user.emailId = userInformation[0];
-            user.firstName = userInformation[1];
-            user.lastName = userInformation[2];
-            selectedUsers.push( user );
-        });
-        console.log( selectedUsers );*/
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
@@ -1931,8 +1825,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
 
         this.contactListName = '';
         $( "#Gfile_preview" ).hide();
-       // $( "#Zfile_preview" ).hide();
-       // $( "#Sfile_preview" ).hide();
         $( "#popupForListviews" ).hide();
         this.gContactsValue = true;
         this.zohoContactsValue = true;
