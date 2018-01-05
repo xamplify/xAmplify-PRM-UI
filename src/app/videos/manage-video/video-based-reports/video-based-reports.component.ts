@@ -31,9 +31,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     public watchedFully: number;
     minutesWatchedUsers: number;
     sortDates = [{ 'name': 'current month views'}]; 
-    sortMonthDates = [{ 'name': 'current month views', 'value': 'current-month' }, 
-    { 'name': 'month wise views', 'value': 'monthly' },
-    {'name':'quarterly views', 'value':'quarterly'},{'name':'yearly views', 'value':'yearly'}];
+    sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' }, 
+    { 'name': 'Month wise views', 'value': 'monthly' },
+    {'name':'Quarterly views', 'value':'quarterly'},{'name':'Yearly views', 'value':'yearly'}];
     daySort: any;
     campaignViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,

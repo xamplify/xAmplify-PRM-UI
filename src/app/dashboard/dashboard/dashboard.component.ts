@@ -682,15 +682,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
             subscribe(result => {
                 this.xtremandLogger.log(result.heatMapData);
                 this.heatMapData = result.heatMapData;
+                this.heatMapformatDateTime();
                 console.log(this.heatMapData);
                 if (result.heatMapData.length > 0) {
-                    this.generatHeatMap(result.heatMapData);
+                    this.generatHeatMap(this.heatMapData);
                 }
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 // this.xtremandLogger.errorPage(error);
             });
+    }
+    heatMapformatDateTime(){
+        for(let i=0; i<this.heatMapData.length; i++){
+            const fulldate = this.heatMapData[i].launchTime;
+            const fulldate2 = fulldate.split(" ");
+            const date =  fulldate2[0];
+            const replactime = fulldate.replace('-','/');
+            const time = this.formatAMPM(replactime);
+            const fullTime = date +' '+ time;
+            this.heatMapData[i].launchTime = fullTime;
+       }
+    }
+    formatAMPM(date) {
+       const strTime =  new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+       return strTime;
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
         this.dashboardService.getCampaignsEmailReports(campaignIdArray).
@@ -744,7 +760,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
     }
-
     ngOnInit() {
         try {
             this.dashboardReportsCount();
