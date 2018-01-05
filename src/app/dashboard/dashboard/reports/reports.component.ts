@@ -21,6 +21,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   isReport: boolean;
   selectedRowValue = false;
   color: any;
+  anotherViewDate: string;
   sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
   { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
   daySort: any;
@@ -54,8 +55,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         console.log(result);
         this.referenceService.viewsSparklineValues = result;
         this.resultSparkline = result;
-        this.referenceService.viewsDate = this.viewsDate = result.dates[0];
-        console.log("views date is "+this.viewsDate + 'and reference date is '+ this.referenceService.viewsDate);
+        this.viewsDate = result.dates[0];
+        this.referenceService.viewsDate = this.viewsDate;
+        console.log("views date is " + this.viewsDate);
         this.viewsOrMinutesWatchedSparklineData(result);
         if (this.reportName === 'views') {
           this.getVideoViewsLevelOne(this.viewsDate, true);
@@ -81,15 +83,35 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       tooltipFormat: '<span >' + customTooltipFormat + ':{{value}} <br>{{offset:offset}}</span>',
       tooltipValueLookups: { 'offset': offsetValues }
     });
-    $(document).ready(function () {
+    // $(document).ready(function () {
+    //   $('#sparkline_bar_chart1').bind('sparklineClick', function (ev) {
+    //     const sparkline = ev.sparklines[0],
+    //       region = sparkline.getCurrentRegionFields();
+    //     console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
+    //     const date = offsetValues[region[0].offset];
+    //     if (self.viewsDate === date || self.viewsDate === self.anotherViewDate) {
+    //       console.log("views data is " + self.viewsDate);
+    //       self.referenceService.viewsDate = self.viewsDate;
+    //     } else {
+    //       self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
+    //       if (self.reportName === 'views') {
+    //         self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
+    //       } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
+    //     }
+    //   });
+    // });
+  }
+  selectedChartValue(){
+      const self = this;    
+      const offsetValues = this.resultSparkline.dates;
       $('#sparkline_bar_chart1').bind('sparklineClick', function (ev) {
         const sparkline = ev.sparklines[0],
           region = sparkline.getCurrentRegionFields();
-        // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
         console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
         const date = offsetValues[region[0].offset];
         if (self.viewsDate === date) {
           console.log("views data is " + self.viewsDate);
+          self.referenceService.viewsDate = self.viewsDate;
         } else {
           self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
           if (self.reportName === 'views') {
@@ -97,7 +119,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
         }
       });
-    });
   }
 
   getCurrentDayFromDate(date) {
@@ -109,6 +130,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   getVideoViewsLevelOne(dateValue, isReport) {
     this.isReport = isReport;
+    this.anotherViewDate = dateValue;
     if (dateValue === undefined) {
       this.viewsDate = this.referenceService.viewsDate;
       console.log("date value is " + this.viewsDate);
@@ -121,7 +143,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         (result: any) => {
           this.videoViewsLevelFirst = result;
           console.log(this.videoViewsLevelFirst);
-          if (this.videoViewsLevelFirst.length === 0) { this.videoViewsLevelSecond.length = 0; }
+          if (this.videoViewsLevelFirst.length === 0) {
+            this.videoViewsLevelSecond.length = 0;
+          }
           if (this.isReport && this.videoViewsLevelFirst.length > 0) {
             this.getVideoViewsLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId);
             this.isReport = false;
