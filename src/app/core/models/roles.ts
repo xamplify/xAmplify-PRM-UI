@@ -1,6 +1,7 @@
 export class Roles {
   campaignRole = 'ROLE_CAMPAIGN';
   contactsRole = 'ROLE_CONTACT';
+  partnersRole = 'ROLE_PARTNER';
   emailTemplateRole = 'ROLE_EMAIL_TEMPLATE';
   statsRole = 'ROLE_STATS';
   videRole = 'ROLE_VIDEO_UPLOAD';

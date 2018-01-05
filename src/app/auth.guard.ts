@@ -96,6 +96,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType==this.contactBaseUrl){
             role = this.roles.contactsRole;
         }
+        if(urlType == this.partnerBaseUrl){
+            role = this.roles.partnersRole;
+        }
         if(urlType==this.videoBaseUrl){
             role = this.roles.videRole;
         }
@@ -110,6 +113,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         if(urlType==this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
+        }
+        if(url.indexOf("partners")>-1){
+            url = url+"/";
         }
         if(url.indexOf("/"+urlType+"/")>-1 && (roles.indexOf(this.roles.orgAdminRole)>-1 || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1)){
             return true;

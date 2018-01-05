@@ -941,7 +941,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             var items = $.grep(this.selectedContactListIds, function(element) {
                 return $.inArray(element, contactIds1 ) !== -1;
             });
-            if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length){
+            if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length){
                 this.isHeaderCheckBoxChecked = true;
             }else{
                 this.isHeaderCheckBoxChecked = false;
@@ -956,7 +956,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             var items = $.grep(this.selectedContactListIds, function(element) {
                 return $.inArray(element, contactIds2 ) !== -1;
             });
-            if(items.length == this.pager.pageSize || items.length == this.getSalesforceConatactList.contacts.length){
+            if(items.length == this.pager.pageSize || items.length == this.getSalesforceConatactList.contacts.length || items.length == this.pagedItems.length){
                 this.isHeaderCheckBoxChecked = true;
             }else{
                 this.isHeaderCheckBoxChecked = false;
@@ -971,7 +971,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             var items = $.grep(this.selectedContactListIds, function(element) {
                 return $.inArray(element, contactIds3 ) !== -1;
             });
-            if(items.length == this.pager.pageSize || items.length == this.getZohoConatacts.length){
+            if(items.length == this.pager.pageSize || items.length == this.getZohoConatacts.length || items.length == this.pagedItems.length){
                 this.isHeaderCheckBoxChecked = true;
             }else{
                 this.isHeaderCheckBoxChecked = false;

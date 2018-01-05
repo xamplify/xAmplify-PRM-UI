@@ -742,7 +742,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         });
         this.xtremandLogger.log("partner Ids"+contactIds);
         this.xtremandLogger.log("Selected partner Ids"+this.selectedContactListIds);
-        if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length){
+        if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length){
             this.isHeaderCheckBoxChecked = true;
         }else{
             this.isHeaderCheckBoxChecked = false;
