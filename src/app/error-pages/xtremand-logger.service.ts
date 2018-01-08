@@ -5,6 +5,7 @@ import { Logger } from 'angular2-logger/core';
 @Injectable()
 export class XtremandLogger {
 
+    errorMessage='';
 	constructor(public router: Router, public logger: Logger) { }
 
 	log(...logMessages) {
@@ -38,7 +39,8 @@ export class XtremandLogger {
 	}
 	
 	errorPage(error: any) {
-		this.router.navigate(['/home/error/', error.status]);
+        //alert(this.errorMessage);
+	    this.router.navigate(['/home/error/', error.status]);
 		this.error(JSON.parse(error['_body']).message);
 	}
 

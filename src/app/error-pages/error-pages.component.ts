@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import {XtremandLogger } from './xtremand-logger.service';
 
 @Component({
   selector: 'app-error-pages',
@@ -21,7 +22,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
     { code: '504', message: 'Gateway Timeout' },
     { code: '0', message: 'ERR_INTERNET_DISCONNECTED' }
   ]
-  constructor(public router: Router, private route: ActivatedRoute) { }
+  constructor(public router: Router, private route: ActivatedRoute, public xtremandLogger: XtremandLogger) { }
 
   ngOnInit() {
     this.subscribe = this.route.params.subscribe(params => {

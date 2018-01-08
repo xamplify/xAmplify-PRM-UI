@@ -875,6 +875,9 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
+                if(error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")){
+                    this.xtremandLogger.errorMessage = 'authentication was not successful.';
+                }
                 this.xtremandLogger.errorPage( error );
             },
             () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
