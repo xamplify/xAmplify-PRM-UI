@@ -116,7 +116,12 @@ export class AnalyticsComponent implements OnInit {
           map: 'custom/world'
         },
         title: {
-          text: 'The people who have watched the campaign video'
+          text: 'The people who have watched the campaign video',
+           style: {
+                    color: '#696666',
+                    fontWeight: 'normal',
+                    fontSize: '14px'
+                }
         },
         mapNavigation: {
           enabled: true,
@@ -130,6 +135,7 @@ export class AnalyticsComponent implements OnInit {
         credits: {
           enabled: false
         },
+        exporting: { enabled: false },
         series: [{
           data: data,
           name: 'Views',

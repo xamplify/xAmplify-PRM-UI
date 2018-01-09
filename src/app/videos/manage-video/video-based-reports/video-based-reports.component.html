@@ -1,26 +1,34 @@
 <style>
-	.td-new, th {
-    border: 2px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-.td-chart {
-	 position: relative;
-}
-.bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    background-color: #8ef;
-    z-index: 0;
-	text-align: center;
-}
-/* tr:nth-child(odd) {
+	.td-new,
+	th {
+		border: 1px solid #dddddd;
+		text-align: center;
+		padding: 2px;
+	}
+
+	.td-new-n {
+		border: 2px solid #dddddd;
+		text-align: center;
+		padding: 20px;
+	}
+
+	.td-chart {
+		position: relative;
+	}
+
+	.bg {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background-color: #8ef;
+		z-index: 0;
+		text-align: center;
+	}
+	/* tr:nth-child(odd) {
     background-color: #f8f8f8;
     opacity: .999;
 } */
-
 </style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
@@ -78,21 +86,20 @@
 			</div>
 		</div>
 		<div style="background: white;box-shadow: 0 0 7px rgba(0, 0, 0, 0.4) !important;margin-top: 14px;">
-			<table class="table-new" style="width: 100%;"  height=120>
-			<tr>
-				<th>N/A users</th>
-				<th>views</th>
-				<th>minutes watched</th>
-			</tr>
-			<tr >
-				<td class="td-new"></td>
-				<td class="td-new">5</td>
-				<td class="td-new">4.0</td>
-			</tr>
-		</table>
+			<table class="table-new" style="width: 100%;" height=120>
+				<tr>
+					<th class="td-new-n" rowspan="2">N/A users</th>
+					<th class="td-new-n">views</th>
+					<th class="td-new-n">minutes watched</th>
+				</tr>
+				<tr>
+					<td class="td-new-n">5</td>
+					<td class="td-new-n">4.0</td>
+				</tr>
+			</table>
 		</div>
 	</div>
-	
+
 </div>
 
 <div class="row">
@@ -105,36 +112,42 @@
 					<span class="caption-subject font-green-sharp uppercase">minutes watched Views</span>
 					<span class="caption-helper"></span>
 				</div>
-			    <div class="panel-title pull-right">
-				<span style="float:right; font-size: 13px;">
-					<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
-						<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
-					</select>
-				</span>
-			</div>
+				<div class="panel-title pull-right">
+					<span style="float:right; font-size: 13px;">
+						<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
+							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
+						</select>
+				   </span>
+					<span style="float:right; font-size: 13px;" *ngIf="sortInnerDates.length>0">
+						<select style="cursor: pointer" [(ngModel)]="minutesinnerSort" (ngModelChange)="selectedDropdown(minutesinnerSort)">
+							<option *ngFor="let sort of sortInnerDates; let i = index" [ngValue]="sort"> {{sort}} </option>
+						</select>
+				   </span>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<div style="max-width: 100%; min-height: 300px;">
-				     <table style="width:100%;">
-						<tr><th>name </th>
-							<th>views</th>
-							<th>minutes watched</th>
-						</tr>
+					<table style="width:100%;">
+						<thead>
 						<tr>
-							<td class="td-new td-chart" width="30%" height="10">santhosh</td>
-							<td class="td-new td-chart" style="background:lightblue;text-align:center">7</td>
-							<td class="td-new td-chart"> 
-								 <div class="bg" style="width: 30%">3</div>
-							</td>
+							<th>Name </th>
+							<th>Views</th>
+							<th>Minutes watched</th>
 						</tr>
-						<tr>
-							<td class="td-new td-chart" width="30%" height="10">santhosh</td>
-							<td class="td-new td-chart" style="background:lightblue;text-align:center">7</td>
-							<td class="td-new td-chart"> 
-								 <div class="bg" style="width: 70%">8</div>
-							</td>
-						</tr>
-						</table>			
+						</thead>
+					   <tbody>
+					    <ng-container *ngFor="let videoViews of arrayValues; let i = index">  
+							<tr>
+								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
+								<td class="td-new td-chart" [style.background]="videoViews.viewsColor">{{videoViews.views}}</td>
+								<td class="td-new td-chart">
+								 <div class="bg" [style.width.%]="(videoViews.minutes/456)*100" [style.background] ="videoViews.minutesWatchedColor">
+									{{videoViews.minutesWatched}}</div>
+								</td>
+							</tr>
+					    </ng-container>  
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -154,7 +167,7 @@
 		</div>
 	</div>
 
-</div>	
+</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<!-- BEGIN PORTLET-->
@@ -165,13 +178,13 @@
 					<span class="caption-subject font-green-sharp uppercase">video Views</span>
 					<span class="caption-helper">stats...</span>
 				</div>
-			<div class="panel-title pull-right">
-				<span style="float:right; font-size: 13px;">
+				<div class="panel-title pull-right">
+					<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
 						<option *ngFor="let sort of sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>
-			</div>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<div id="monthly-views-bar" style="max-width: 100%; min-height: 300px;"></div>

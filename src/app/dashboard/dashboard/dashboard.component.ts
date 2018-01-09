@@ -237,6 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     }
     generatHeatMap(heatMapData) {
+       const self = this;
         const data = heatMapData;
         console.log(data);
         Highcharts.chart('dashboard-heat-map', {
@@ -261,6 +262,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             fontWeight: 'normal',
                             fontSize: '13px',
                             color:'block'
+                        }
+                    },
+                     events: {
+                        click: function (event) {
+                            alert('campaign name:' 
+                            + event.point.name + 'email open count:' + event.point.value + 'users:' + event.point.totalUsers + 'launchTime:' + event.point.launchTime);
+                      //     self.router.navigate(['./home/dashboard/reports']);
                         }
                     }
                 }

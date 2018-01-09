@@ -15,11 +15,12 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
+import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.component';
 //import {CkEditor} from "../campaigns/ck-editor.directive";
 @NgModule( {
 
     imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule],
-    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent/*,CkEditor*/],
+    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent/*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
 })

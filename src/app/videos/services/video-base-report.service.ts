@@ -34,6 +34,23 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
     }
+    timePeriodSelctedDropdown(timePeriod){
+      try {
+            const url = this.authenticationService.REST_URL+'videos/timePeriod/'+timePeriod+'?access_token='+this.authenticationService.access_token;    
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }    
+    getViewsMinutesWatchedChart(dateValue:string,videoId:number,timePeriod:string){
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/'+dateValue+'/views-minuteswatched?access_token='
+                + this.authenticationService.access_token+'&videoId='+videoId+'&timePeriodValue='+timePeriod;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }   
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

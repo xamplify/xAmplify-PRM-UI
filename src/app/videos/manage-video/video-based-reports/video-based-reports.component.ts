@@ -15,28 +15,32 @@ declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, High
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
-    public videoJSplayer: any;
-    public videoUrl: string;
-    public is360Value: boolean;
-    public overLayValue: string;
-    public posterImagePath: string;
-    public isFistNameChecked: boolean;
-    public firstName: string;
-    public lastName: string;
-    public isOverlay: boolean;
-    public videoOverlaySubmit: string;
-    public isSkipChecked: boolean;
-    public isPlay: boolean;
-    public categories: any;
-    public watchedFully: number;
+    videoJSplayer: any;
+    videoUrl: string;
+    is360Value: boolean;
+    overLayValue: string;
+    posterImagePath: string;
+    isFistNameChecked: boolean;
+    firstName: string;
+    lastName: string;
+    isOverlay: boolean;
+    videoOverlaySubmit: string;
+    isSkipChecked: boolean;
+    isPlay: boolean;
+    categories: any;
+    watchedFully: number;
     minutesWatchedUsers: number;
-    sortMintuesDates = [{ 'name': 'today views','value':'today'},{'name':'month','value':'month'},{'name':'Quarterly','value':'Quarterly'},{'name':'yearly','value':'Yearly'}]; 
-    sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' }, 
+    dropdownValue: any;
+    sortMintuesDates = [{ 'name': 'today views', 'value': 'today' }, { 'name': 'monthly', 'value': 'month' }, { 'name': 'Quarterly', 'value': 'quarter' }, { 'name': 'yearly', 'value': 'year' }];
+    sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
     { 'name': 'Month wise views', 'value': 'monthly' },
-    {'name':'Quarterly views', 'value':'quarterly'},{'name':'Yearly views', 'value':'yearly'}];
+    { 'name': 'Quarterly views', 'value': 'quarterly' }, { 'name': 'Yearly views', 'value': 'yearly' }];
+    arrayValues: any = [];
     daySort: any;
     minutesSort: any;
     campaignViews: any;
+    sortInnerDates = [];
+    minutesinnerSort: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
         this.daySort = this.sortMonthDates[3];
@@ -53,25 +57,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             credits: false,
             exporting: { enabled: false },
             xAxis: {
-                 categories: dates
+                categories: dates
             },
-            
+
             yAxis: {
                 allowDecimals: false,
                 min: 0,
                 title: {
                     text: 'Number of fruits'
                 },
-                visible:false
+                visible: false
             },
             legend: {
                 enabled: false
             },
-                
+
             tooltip: {
                 formatter: function () {
                     return '<b>' + this.x + '</b><br/>' +
-                        this.series.name + ': ' + this.y ;
+                        this.series.name + ': ' + this.y;
                 }
             },
 
@@ -84,7 +88,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             series: [{
                 name: 'views',
                 data: views
-               // stack: 'male'
+                // stack: 'male'
             }]
         });
     }
@@ -201,14 +205,73 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
         });
     }
-    selectedSortByValue(event){
-    alert(event);
+    selectedSortByValue(dateValue) {
+        this.dropdownValue = dateValue;
+        if (dateValue === 'today') {
+            this.sortInnerDates.length = 0;
+            this.getViewsMinutesWatchedChart(dateValue, this.selectedVideo.id, null);
+        }
+        else {
+            this.selectedInnerDropdown(dateValue);
+        }
     }
-    selectedCampaignWatchedUsers(timePeriod){
+
+    selectedInnerDropdown(dateValue) {
+        if (dateValue !== undefined) {
+            this.videoBaseReportService.timePeriodSelctedDropdown(dateValue)
+                .subscribe((result: any) => {
+                    console.log(result);
+                    this.sortInnerDates = result;
+                    this.minutesinnerSort = this.sortInnerDates[0];
+                    console.log(this.minutesinnerSort);
+                    this.getViewsMinutesWatchedChart(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort);
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    //  this.xtremandLogger.errorPage(error);
+                });
+        }
+    }
+    selectedDropdown(dateInnerSortValue) {
+        this.minutesinnerSort = dateInnerSortValue;
+        this.videoBaseReportService.timePeriodSelctedDropdown(dateInnerSortValue)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.getViewsMinutesWatchedChart(this.dropdownValue, this.selectedVideo.id, dateInnerSortValue);
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                //  this.xtremandLogger.errorPage(error);
+            });
+    }
+
+    getViewsMinutesWatchedChart(dateValue, videoId, timeValue) {
+        if (dateValue==='quarter' &&  timeValue.includes('Q')) {
+            timeValue = timeValue.substring(1, timeValue.length);
+        }
+        this.videoBaseReportService.getViewsMinutesWatchedChart(dateValue, videoId, timeValue)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.arrayValues = result;
+                if(this.arrayValues.length>0){
+                for(let i=0;i< this.arrayValues.length; i++){
+                    const hexColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].viewsColor);
+                    const hexminutesColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].minutesWatchedColor);
+                    this.arrayValues[i].viewsColor = hexColor;
+                    this.arrayValues[i].minutesWatchedColor = hexminutesColor;
+                 }
+                }
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                //    this.xtremandLogger.errorPage(error);
+            });
+    }
+    selectedCampaignWatchedUsers(timePeriod) {
         this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
             .subscribe((result: any) => {
                 console.log(result);
-                this.monthlyViewsBarCharts(result.dates,result.views)
+                this.monthlyViewsBarCharts(result.dates, result.views)
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
@@ -290,7 +353,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     this.campaignViews = result.video_views_count_data.monthlyViews;
                     console.log(result);
                     //this.areaCharts();
-                  //  this.monthlyViewsBarCharts();
+                    //  this.monthlyViewsBarCharts();
                     this.renderWorldMap(result.video_views_count_data.countrywiseViews);
                 },
                 (error: any) => {
@@ -314,14 +377,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 });
         } catch (error) { console.log(error); }
     }
-    getCampaignWatchedUsersViews(){
+    getCampaignWatchedUsersViews() {
 
     }
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-      //  this.minutesWatchedBarcharts();
+        //  this.minutesWatchedBarcharts();
         this.selectedCampaignWatchedUsers(this.sortMonthDates[3].value);
+        this.selectedSortByValue(this.minutesSort.value);
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
     }
