@@ -6,7 +6,6 @@ import { CustomeResponse } from '../../contacts/models/response';
 import { Pagination } from '../../core/models/pagination';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { SocialContact } from '../../contacts/models/social-contact';
-
 import { ContactService } from '../../contacts/services/contact.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -15,22 +14,22 @@ import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 
-declare var $,swal: any;
+declare var $, swal: any;
 
 @Component( {
     selector: 'app-manage-partners',
     templateUrl: './manage-partners.component.html',
-    styleUrls: ['./manage-partners.component.css','../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
-                '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css','../../../assets/css/numbered-textarea.css'],
-    providers: [Pagination,SocialPagerService]
-} )
+    styleUrls: ['./manage-partners.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+        '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
+    providers: [Pagination, SocialPagerService]
+})
 export class ManagePartnersComponent implements OnInit {
     loggedInUserId: number;
     validEmailPatternSuccess: boolean = true;
     user: User;
-    checkingForEmail:boolean;
+    checkingForEmail: boolean;
     addPartnerUser: User = new User();
-    newPartnerUser=[];
+    newPartnerUser = [];
     partners: User[];
     partnerId = [];
     partnerListId: number;
@@ -73,63 +72,60 @@ export class ManagePartnersComponent implements OnInit {
     public socialNetwork: string;
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
-    /*unlinkGoogleSuccessMessage: boolean = false;
-    unlinkSalesforceSuccessMessage: boolean = false;
-    unlinkZohoSuccessMessage: boolean = false;*/
     Campaign: string;
     deleteErrorMessage: boolean;
     emptyPartnerList: boolean = false;
     sortOptions = [
-                   { 'name': 'Sort By', 'value': ''},
-                   { 'name': 'Email(A-Z)', 'value': 'emailId-ASC'},
-                   { 'name': 'Email(Z-A)', 'value': 'emailId-DESC'},
-                   { 'name': 'First Name(ASC)', 'value': 'firstName-ASC'},
-                   { 'name': 'First Name(DESC)', 'value': 'firstName-DESC'},
-                   { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC'},
-                   { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC'},
-               ];
+        { 'name': 'Sort By', 'value': '' },
+        { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+    ];
     public sortOption: any = this.sortOptions[0];
     sortOptionsForPagination = [
-                                { 'name': '10', 'value': '10'},
-                                { 'name': '25', 'value': '25'},
-                                { 'name': '50', 'value': '50'},
-                                { 'name': 'ALL', 'value': 'ALL'},
-                                ];
+        { 'name': '10', 'value': '10' },
+        { 'name': '25', 'value': '25' },
+        { 'name': '50', 'value': '50' },
+        { 'name': 'ALL', 'value': 'ALL' },
+    ];
     public sortOptionForPagination: any = this.sortOptionsForPagination[0];
-    
+
     public searchKey: string;
     sortcolumn: string = null;
     sortingOrder: string = null;
     selectedDropDown: string;
     selectedContactListIds = [];
     allselectedUsers = [];
-    isHeaderCheckBoxChecked:boolean = false;
-    
+    isHeaderCheckBoxChecked: boolean = false;
+
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
-public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor( public authenticationService: AuthenticationService,
         public socialPagerService: SocialPagerService,
         public referenceService: ReferenceService,
         public contactService: ContactService,
-        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger:XtremandLogger ) {
-        
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
+
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
-        this.addPartnerUser.country = (this.referenceService.countries[0]);
+        this.addPartnerUser.country = ( this.referenceService.countries[0] );
     }
-    
+
     onChangeAllPartnerUsers( event: Event ) {
         this.sortOptionForPagination = event;
         this.selectedDropDown = this.sortOptionForPagination.value;
-            this.pagination.maxResults = (this.selectedDropDown == 'ALL') ? this.pagination.totalRecords : parseInt(this.selectedDropDown);
-            this.pagination.pageIndex = 1;
-            this.loadPartnerList(this.pagination);
-        
+        this.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.pagination.totalRecords : parseInt( this.selectedDropDown );
+        this.pagination.pageIndex = 1;
+        this.loadPartnerList( this.pagination );
+
     }
-    
-    sortByOption( event: any, selectedType: string){
+
+    sortByOption( event: any, selectedType: string ) {
         this.sortOption = event;
         const sortedValue = this.sortOption.value;
         if ( sortedValue !== '' ) {
@@ -140,15 +136,15 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.sortcolumn = null;
             this.sortingOrder = null;
         }
-        
+
         this.pagination.pageIndex = 1;
         this.pagination.sortcolumn = this.sortcolumn;
         this.pagination.sortingOrder = this.sortingOrder;
-        this.loadPartnerList(this.pagination );
-        
+        this.loadPartnerList( this.pagination );
+
     }
-    
-    search(){
+
+    search() {
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
         this.loadPartnerList( this.pagination );
@@ -164,22 +160,22 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 () => console.log( 'loadPartner() finished' )
             );
     }
-    
-    defaultPartnerList( userId: number ){
+
+    defaultPartnerList( userId: number ) {
         this.contactService.defaultPartnerList( userId )
-        .subscribe(
-        ( data: any ) => {
-            console.log(data);
-            this.partnerListId = data.id;
-        },
-        error => this.xtremandLogger.error( error ),
+            .subscribe(
+            ( data: any ) => {
+                console.log( data );
+                this.partnerListId = data.id;
+            },
+            error => this.xtremandLogger.error( error ),
             () => {
                 console.log( 'loadContacts() finished' );
-                this.loadPartnerList(this.pagination);
+                this.loadPartnerList( this.pagination );
             }
-        );
+            );
     }
-    
+
     checkingEmailPattern( emailId: string ) {
         this.validEmailPatternSuccess = false;
         if ( this.validateEmailAddress( emailId ) ) {
@@ -193,55 +189,55 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return EMAIL_ID_PATTERN.test( emailId );
     }
-    
-    validateEmail(emailId: string){
-        if(this.validateEmailAddress( emailId )){
+
+    validateEmail( emailId: string ) {
+        if ( this.validateEmailAddress( emailId ) ) {
             this.checkingForEmail = true;
             this.validEmailPatternSuccess = true;
         }
-        else{
+        else {
             this.checkingForEmail = false;
         }
     }
-    
-    addPartnerModalOpen(){
+
+    addPartnerModalOpen() {
         $( "#addPartnerModal" ).show();
-        this.addPartnerUser.country = (this.referenceService.countries[0]);
+        this.addPartnerUser.country = ( this.referenceService.countries[0] );
     }
-    
-    addPartnerModalClose(){
-        $('#addPartnerModal').modal('toggle');
+
+    addPartnerModalClose() {
+        $( '#addPartnerModal' ).modal( 'toggle' );
         $( "#addPartnerModal .close" ).click()
     }
-    
-    downloadEmptyCsv(){
-        window.location.href = this.authenticationService.MEDIA_URL+"UPLOAD_USER_LIST _EMPTY.csv";
+
+    downloadEmptyCsv() {
+        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
     }
-    
+
     setPage( page: number, ) {
         this.pagination.pageIndex = page;
-            this.loadPartnerList( this.pagination );
+        this.loadPartnerList( this.pagination );
     }
 
     addRow() {
-            $( "#addPartnerModal .close" ).click()
-            this.newPartnerUser.push( this.addPartnerUser );
-            
-            
-           this.selectedAddPartnerOption = 1;
-           this.fileTypeError = false;
-           this.isContactsThere = false;
-            
-            $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            this.addPartnerUser = new User();
+        $( "#addPartnerModal .close" ).click()
+        this.newPartnerUser.push( this.addPartnerUser );
+
+
+        this.selectedAddPartnerOption = 1;
+        this.fileTypeError = false;
+        this.isContactsThere = false;
+
+        $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        this.addPartnerUser = new User();
     }
 
     cancelRow( rowId: number ) {
@@ -249,7 +245,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.newPartnerUser.splice( rowId, 1 );
         }
     }
-    
+
     compressArray( original ) {
         var compressed = [];
         var copy = original.slice( 0 );
@@ -269,7 +265,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         }
         return compressed;
     };
-    
+
     savePartnerUsers() {
         this.selectedAddPartnerOption = 2;
         this.duplicateEmailIds = [];
@@ -293,15 +289,15 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate" + isDuplicate );
-            if ( this.newPartnerUser[0].emailId != undefined ) {
-                if ( !isDuplicate ) {
-                    this.saveValidEmails();
-                } else {
-                    this.dublicateEmailId = true;
-                }
+        if ( this.newPartnerUser[0].emailId != undefined ) {
+            if ( !isDuplicate ) {
+                this.saveValidEmails();
+            } else {
+                this.dublicateEmailId = true;
             }
         }
-    
+    }
+
     saveValidEmails() {
         this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
         this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
@@ -312,9 +308,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
-                
-                this.setResponseDetails('SUCCESS', 'your Partner has been saved successfully');
-                    
+
+                this.setResponseDetails( 'SUCCESS', 'your Partner has been saved successfully' );
+
                 this.newPartnerUser.length = 0;
                 this.allselectedUsers.length = 0;
                 this.loadPartnerList( this.pagination );
@@ -323,12 +319,12 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             },
             ( error: any ) => {
                 let body: string = error['_body'];
-                body = body.substring(1, body.length-1);
-                if ( body.includes( 'Please Launch or Delete those campaigns first' )) {
-                    this.setResponseDetails('ERROR', body);
-                    console.log("done")
-                }else{
-                    this.xtremandLogger.errorPage(error);
+                body = body.substring( 1, body.length - 1 );
+                if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
+                    this.setResponseDetails( 'ERROR', body );
+                    console.log( "done" )
+                } else {
+                    this.xtremandLogger.errorPage( error );
                 }
                 console.log( error );
             },
@@ -336,14 +332,14 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             )
         this.dublicateEmailId = false;
     }
-    
-    cancelPartners(){
-       this.socialPartnerUsers.length = 0;
-       this.allselectedUsers.length = 0;
-       this.selectedContactListIds.length = 0;
-       this.pager = [];
-       this.pagedItems =[];
-        
+
+    cancelPartners() {
+        this.socialPartnerUsers.length = 0;
+        this.allselectedUsers.length = 0;
+        this.selectedContactListIds.length = 0;
+        this.pager = [];
+        this.pagedItems = [];
+
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -363,11 +359,11 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.clipBoard = false;
         this.selectedAddPartnerOption = 5;
     }
-    
+
     loadPartnerList( pagination: Pagination ) {
-        this.referenceService.loading(this.httpRequestLoader, true); 
+        this.referenceService.loading( this.httpRequestLoader, true );
         this.httpRequestLoader.isHorizontalCss = true;
-         this.contactService.loadUsersOfContactList( this.partnerListId, pagination ).subscribe(
+        this.contactService.loadUsersOfContactList( this.partnerListId, pagination ).subscribe(
             ( data: any ) => {
                 this.partners = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
@@ -377,7 +373,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 else {
                     this.emptyPartnerList = false;
                 }
-                this.referenceService.loading(this.httpRequestLoader, false); 
+                this.referenceService.loading( this.httpRequestLoader, false );
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.partners );
             },
@@ -385,8 +381,8 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             () => this.xtremandLogger.info( "MangePartnerComponent loadPartnerList() finished" )
         )
     }
-    
-    
+
+
     fileChange( input: any ) {
         this.readFiles( input.files );
         this.isContactsThere = false;
@@ -449,7 +445,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.selectedAddPartnerOption = 5;
         }
     }
-    
+
     copyFromClipboard() {
         this.selectedAddPartnerOption = 2;
         this.fileTypeError = false;
@@ -469,7 +465,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
     }
-    
+
     clipboardShowPreview() {
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
         var splitValue;
@@ -599,9 +595,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.xtremandLogger.info( this.newPartnerUser );
     }
 
-    
+
     deleteUserShowAlert( contactId: number ) {
-        this.xtremandLogger.info( "contactListId in sweetAlert() " + contactId);
+        this.xtremandLogger.info( "contactListId in sweetAlert() " + contactId );
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -617,9 +613,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             self.removeContactListUsers1( contactId );
         })
         //}
-        
+
     }
-    
+
     removeContactListUsers1( contactId: number ) {
         this.partnerId[0] = contactId;
         this.contactService.removeContactListUsers( this.partnerListId, this.partnerId )
@@ -627,50 +623,50 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             ( data: any ) => {
                 data = data;
                 console.log( "update Contacts ListUsers:" + data );
-                this.setResponseDetails('SUCCESS', 'your Partner has been deleted successfully');
+                this.setResponseDetails( 'SUCCESS', 'your Partner has been deleted successfully' );
                 this.loadPartnerList( this.pagination );
             },
             ( error: any ) => {
                 let body: string = error['_body'];
-                body = body.substring(1, body.length-1);
-                if ( error.includes( 'Please Launch or Delete those campaigns first' )) {
-                    this.setResponseDetails('ERROR', error);
-                }else{
-                    this.xtremandLogger.errorPage(error);
+                body = body.substring( 1, body.length - 1 );
+                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
+                    this.setResponseDetails( 'ERROR', error );
+                } else {
+                    this.xtremandLogger.errorPage( error );
                 }
                 console.log( error );
             },
             () => this.xtremandLogger.info( "deleted completed" )
             );
     }
-    
-    updatePartnerModalClose(){
-        $('#addPartnerModal').modal('toggle');
+
+    updatePartnerModalClose() {
+        $( '#addPartnerModal' ).modal( 'toggle' );
         $( "#addPartnerModal .close" ).click()
         this.updatePartnerUser = false;
         this.updatedUserDetails.length = 0;
         this.addPartnerUser = new User();
     }
-    
-    updatePartnerListUser(){
+
+    updatePartnerListUser() {
         this.editUser.pagination = this.pagination;
         this.editUser.user = this.addPartnerUser;
         $( "#addPartnerModal .close" ).click()
         this.contactService.updateContactListUser( this.partnerListId, this.editUser )
-         .subscribe(
+            .subscribe(
             ( data: any ) => {
-               console.log(data);
-               this.setResponseDetails('SUCCESS', 'your Partner has been updated successfully');
-               this.loadPartnerList( this.pagination );
+                console.log( data );
+                this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
+                this.loadPartnerList( this.pagination );
             },
             error => this.xtremandLogger.error( error ),
             () => this.xtremandLogger.info( "EditPartnerComponent updateContactListUser() finished" )
-        )
+            )
     }
-    
-    editUserDetails(contactDetails: any){
+
+    editUserDetails( contactDetails: any ) {
         this.checkingForEmail = true;
-        
+
         this.updatePartnerUser = true;
         this.addPartnerUser.userId = contactDetails.id;
         this.addPartnerUser.firstName = contactDetails.firstName;
@@ -681,21 +677,21 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.addPartnerUser.address = contactDetails.address;
         this.addPartnerUser.city = contactDetails.city;
         this.addPartnerUser.country = contactDetails.country;
-        if(this.addPartnerUser.country == null){
-            this.addPartnerUser.country = (this.referenceService.countries[0]);
+        if ( this.addPartnerUser.country == null ) {
+            this.addPartnerUser.country = ( this.referenceService.countries[0] );
         }
         this.addPartnerUser.mobileNumber = contactDetails.mobileNumber;
         this.addPartnerUser.description = contactDetails.description;
         $( "#addPartnerModal" ).show();
-        console.log(contactDetails);
+        console.log( contactDetails );
         this.updatedUserDetails = contactDetails;
     }
-    
-    setResponseDetails(responseType: string, responseMessage: string){
+
+    setResponseDetails( responseType: string, responseMessage: string ) {
         this.response.responseType = responseType;
         this.response.responseMessage = responseMessage;
     }
-    
+
     socialContactImage() {
         this.contactService.socialContactImages()
             .subscribe(
@@ -724,27 +720,27 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             () => this.xtremandLogger.log( "AddContactsComponent socialContactImage() finished." )
             );
     }
-    
-    setSocialPage(page: number){
-        if (page < 1 || page > this.pager.totalPages) {
+
+    setSocialPage( page: number ) {
+        if ( page < 1 || page > this.pager.totalPages ) {
             return;
         }
-        this.pager = this.socialPagerService.getPager(this.socialPartnerUsers.length, page);
-        this.pagedItems = this.socialPartnerUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        
-        var contactIds = this.pagedItems.map(function(a) {return a.id;});
-        var items = $.grep(this.selectedContactListIds, function(element) {
-            return $.inArray(element, contactIds ) !== -1;
+        this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page );
+        this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+        var contactIds = this.pagedItems.map( function( a ) { return a.id; });
+        var items = $.grep( this.selectedContactListIds, function( element ) {
+            return $.inArray( element, contactIds ) !== -1;
         });
-        this.xtremandLogger.log("partner Ids"+contactIds);
-        this.xtremandLogger.log("Selected partner Ids"+this.selectedContactListIds);
-        if(items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length){
+        this.xtremandLogger.log( "partner Ids" + contactIds );
+        this.xtremandLogger.log( "Selected partner Ids" + this.selectedContactListIds );
+        if ( items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
-        }else{
+        } else {
             this.isHeaderCheckBoxChecked = false;
         }
     }
-    
+
     googleContacts() {
         this.fileTypeError = false;
         this.isContactsThere = false;
@@ -759,7 +755,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialPartners.socialNetwork = "GOOGLE";
         this.contactService.googleCallBack = true;
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-        this.contactService.googleLogin(this.isPartner)
+        this.contactService.googleLogin( this.isPartner )
             .subscribe(
             data => {
                 this.storeLogin = data;
@@ -779,7 +775,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
-                if(error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")){
+                if ( error._body.includes( "JSONObject" ) && error._body.includes( "access_token" ) && error._body.includes( "not found." ) ) {
                     this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
                 }
                 this.xtremandLogger.errorPage( error );
@@ -819,7 +815,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
                 this.selectedAddPartnerOption = 3;
-                this.setSocialPage(1);
+                this.setSocialPage( 1 );
                 this.socialPartners.contacts = this.socialPartnerUsers;
             },
             ( error: any ) => {
@@ -830,18 +826,18 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             );
         this.isContactsThere = false;
     }
-    
+
     saveGoogleContacts() {
         this.socialPartners.socialNetwork = "GOOGLE";
         this.socialPartners.isPartnerUserList = this.isPartner;
         this.socialPartners.contactType = "CONTACT";
         this.socialPartners.contacts = this.socialPartnerUsers;
         this.selectedAddPartnerOption = 3;
-            if ( this.socialPartnerUsers.length > 0 ) {
-                this.newPartnerUser = this.socialPartners.contacts;
-                this.saveValidEmails();
-            } else
-                this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
+        if ( this.socialPartnerUsers.length > 0 ) {
+            this.newPartnerUser = this.socialPartners.contacts;
+            this.saveValidEmails();
+        } else
+            this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
     }
 
     saveGoogleContactSelectedUsers() {
@@ -926,7 +922,6 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.getGoogleConatacts = data;
                 this.zohoImageBlur = false;
                 this.zohoImageNormal = true;
-                //this.socialContactImage();
                 this.hideZohoModal();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
@@ -952,7 +947,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
                 this.selectedAddPartnerOption = 6;
-                this.setSocialPage(1);
+                this.setSocialPage( 1 );
             },
             ( error: any ) => {
                 var body = error['_body'];
@@ -1035,7 +1030,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
-                this.setSocialPage(1);
+                this.setSocialPage( 1 );
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -1050,11 +1045,11 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialPartners.socialNetwork = "ZOHO";
         this.socialPartners.contactType = this.contactType;
         this.socialPartners.contacts = this.socialPartnerUsers;
-            if ( this.socialPartnerUsers.length > 0 ) {
-                this.newPartnerUser = this.socialPartners.contacts;
-                this.saveValidEmails();
-            } else
-                this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
+        if ( this.socialPartnerUsers.length > 0 ) {
+            this.newPartnerUser = this.socialPartners.contacts;
+            this.saveValidEmails();
+        } else
+            this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
     }
 
     saveZohoContactSelectedUsers() {
@@ -1067,7 +1062,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
         }
     }
-    
+
     onChange( item: any ) {
         this.xtremandLogger.log( item );
         if ( this.salesforceListViewName == "DEFAULT" ) {
@@ -1134,7 +1129,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.fileTypeError = false;
         this.socialPartners.socialNetwork = "salesforce";
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-        this.contactService.salesforceLogin(this.isPartner)
+        this.contactService.salesforceLogin( this.isPartner )
             .subscribe(
             data => {
                 this.storeLogin = data;
@@ -1217,7 +1212,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
-                this.setSocialPage(1);
+                this.setSocialPage( 1 );
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -1276,7 +1271,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
-                this.setSocialPage(1);
+                this.setSocialPage( 1 );
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -1304,33 +1299,33 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
         this.socialPartners.contactType = this.contactType;
         this.socialPartners.alias = this.salesforceListViewId;
         this.socialPartners.contacts = this.socialPartnerUsers;
-            if ( this.socialPartnerUsers.length > 0 ) {
-                this.newPartnerUser = this.socialPartners.contacts;
-                this.saveValidEmails();
-                
-            } else
-                this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
+        if ( this.socialPartnerUsers.length > 0 ) {
+            this.newPartnerUser = this.socialPartners.contacts;
+            this.saveValidEmails();
+
+        } else
+            this.xtremandLogger.error( "AddContactComponent saveSalesforceContacts() Contacts Null Error" );
     }
-    
+
     saveContacts() {
-        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1) {
+        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 ) {
             this.savePartnerUsers();
         }
-        
+
         if ( this.selectedAddPartnerOption == 3 ) {
             if ( this.allselectedUsers.length == 0 ) {
                 this.saveGoogleContacts();
             } else
                 this.saveGoogleContactSelectedUsers();
         }
-        
+
         if ( this.selectedAddPartnerOption == 6 ) {
             if ( this.allselectedUsers.length == 0 ) {
                 this.saveZohoContacts();
             } else
                 this.saveZohoContactSelectedUsers();
         }
-        
+
         if ( this.selectedAddPartnerOption == 7 ) {
             if ( this.allselectedUsers.length == 0 ) {
                 this.saveSalesforceContacts();
@@ -1338,12 +1333,12 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.saveSalesforceContactSelectedUsers();
         }
     }
-    
+
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
         $( '#settingSocialNetwork' ).modal();
     }
-    
+
     unlinkSocailAccount() {
         let socialNetwork = this.settingSocialNetwork.toUpperCase();
         console.log( "CheckBoXValueUNlink" + this.isUnLinkSocialNetwork );
@@ -1354,26 +1349,20 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    //this.unlinkSalesforceSuccessMessage = true;
-                    this.setResponseDetails('SUCCESS', 'your Salesforce account has been successfully removed.');
-                    //setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
                 }
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                    //this.unlinkGoogleSuccessMessage = true;
-                    this.setResponseDetails('SUCCESS', 'your google account has been successfully removed.');
-                    //setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                    //this.unlinkZohoSuccessMessage = true;
-                    this.setResponseDetails('SUCCESS', 'your Zoho account has been successfully removed.');
-                    //setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
             },
             ( error: any ) => {
@@ -1393,35 +1382,31 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.xtremandLogger.info( "deleted completed" );
             }
             );
-        //this.unlinkSalesforceSuccessMessage = false;
-        //this.unlinkGoogleSuccessMessage = false;
-        //this.unlinkZohoSuccessMessage = false;
         this.deleteErrorMessage = false;
     }
-    
-    
-    removeDuplicates(originalArray, prop) {
+
+    removeDuplicates( originalArray, prop ) {
         var newArray = [];
-        var lookupObject = {}; 
-        for(var i in originalArray) { 
-            lookupObject[originalArray[i][prop]] = originalArray[i]; 
-            } 
-        for(i in lookupObject) {
-            newArray.push(lookupObject[i]);
-            }
-        return newArray;
+        var lookupObject = {};
+        for ( var i in originalArray ) {
+            lookupObject[originalArray[i][prop]] = originalArray[i];
         }
-    
-    checkAll(ev:any){
-        if(ev.target.checked){
-            console.log("checked");
-            $('[name="campaignContact[]"]').prop('checked', true);
+        for ( i in lookupObject ) {
+            newArray.push( lookupObject[i] );
+        }
+        return newArray;
+    }
+
+    checkAll( ev: any ) {
+        if ( ev.target.checked ) {
+            console.log( "checked" );
+            $( '[name="campaignContact[]"]' ).prop( 'checked', true );
             let self = this;
-            $('[name="campaignContact[]"]:checked').each(function(){
-                var id = $(this).val();
-                self.selectedContactListIds.push(parseInt(id));
-                console.log(self.selectedContactListIds);
-                $('#ContactListTable_'+id).addClass('contact-list-selected');
+            $( '[name="campaignContact[]"]:checked' ).each( function() {
+                var id = $( this ).val();
+                self.selectedContactListIds.push( parseInt( id ) );
+                console.log( self.selectedContactListIds );
+                $( '#ContactListTable_' + id ).addClass( 'contact-list-selected' );
                 for ( var i = 0; i < self.pagedItems.length; i++ ) {
                     var object = {
                         "emailId": self.pagedItems[i].emailId,
@@ -1431,54 +1416,54 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     console.log( object );
                     self.allselectedUsers.push( object );
                 }
-             });
-            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'emailId');
-            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
-        }else{
-            $('[name="campaignContact[]"]').prop('checked', false);
-            $('#user_list_tb tr').removeClass("contact-list-selected");
-            if(this.pager.maxResults == this.totalRecords){
+            });
+            this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'emailId' );
+            this.selectedContactListIds = this.referenceService.removeDuplicates( this.selectedContactListIds );
+        } else {
+            $( '[name="campaignContact[]"]' ).prop( 'checked', false );
+            $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
+            if ( this.pager.maxResults == this.totalRecords ) {
                 this.selectedContactListIds = [];
                 this.allselectedUsers.length = 0;
-            }else{
+            } else {
                 let paginationIdsArray = new Array;
-                for(let j=0; j< this.pagedItems.length; j++){
-                    var paginationEmail = this.pagedItems[j].emailId; 
-                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                for ( let j = 0; j < this.pagedItems.length; j++ ) {
+                    var paginationEmail = this.pagedItems[j].emailId;
+                    this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
                 }
-                let currentPageContactIds = this.pagedItems.map(function(a) {return a.id;});
-                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                let currentPageContactIds = this.pagedItems.map( function( a ) { return a.id; });
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedContactListIds, currentPageContactIds );
             }
         }
         ev.stopPropagation();
     }
-    
-    highlightRow(contactId:number,email:any,firstName:any,lastName:any,event:any){
-        let isChecked = $('#'+contactId).is(':checked');
-        console.log(this.selectedContactListIds)
-        if(isChecked){
-            $('#row_'+contactId).addClass('contact-list-selected');
-            this.selectedContactListIds.push(contactId);
-                    var object = {
-                            "emailId": email,
-                            "firstName": firstName,
-                            "lastName": lastName,
-                        }
-                    this.allselectedUsers.push( object );
-                    console.log( this.allselectedUsers );
-        }else{
-            $('#row_'+contactId).removeClass('contact-list-selected');
-            this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
-            this.allselectedUsers.splice($.inArray(contactId,this.allselectedUsers),1);
+
+    highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
+        let isChecked = $( '#' + contactId ).is( ':checked' );
+        console.log( this.selectedContactListIds )
+        if ( isChecked ) {
+            $( '#row_' + contactId ).addClass( 'contact-list-selected' );
+            this.selectedContactListIds.push( contactId );
+            var object = {
+                "emailId": email,
+                "firstName": firstName,
+                "lastName": lastName,
+            }
+            this.allselectedUsers.push( object );
+            console.log( this.allselectedUsers );
+        } else {
+            $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
+            this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
+            this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
         }
-        if(this.selectedContactListIds.length == this.pagedItems.length ){
+        if ( this.selectedContactListIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
-        }else{
+        } else {
             this.isHeaderCheckBoxChecked = false;
         }
         event.stopPropagation();
     }
-    
+
     ngOnInit() {
         this.socialContactImage();
         $( "#Gfile_preview" ).hide();
@@ -1492,7 +1477,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
             this.contactService.salesforceContactCallBack = false;
         }
     }
-    
+
     ngDestroy() {
         this.contactService.googleCallBack = false;
         this.contactService.salesforceContactCallBack = false;
