@@ -225,12 +225,14 @@
 			style="margin: 1em;"> <span class="glyphicon glyphicon-remove"
 			aria-hidden="true"></span>
 		</a>
-		<div class="frst-container" data-animation-name="slideInUp">
-			<div 
-				class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
-				<!-- <div id="analytics" ><bubble-chart ></bubble-chart> </div> -->
-				<div class="frst-timeline-block frst-even-item"
-					data-animation="slideInUp">
+		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
+			<div class="col-xs-12 col-sm-6" style="padding: 12px;">
+			    <app-bubble-chart></app-bubble-chart>
+				<!-- <div id="app-bubble-chart" style="min-width: 310px; max-width: 250px; height: 300px; margin: 0 auto"> -->
+			</div>
+			<div class="col-xs-12 col-sm-6">
+			<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
+				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding-left:0">
 					<div class="frst-timeline-img abc">
 						<div class="frst-labels frst-start-label">
 							<span>
@@ -241,9 +243,8 @@
 
 					<div class="frst-timeline-content box">
 						<div class="frst-timeline-content-inner" style="background: none;">
-							<span class="frst-date">
-								<h6>{{selectedRow.userEmail}}</h6>
-							</span> <span class="frst-date"></span>
+							<span ><h6>{{selectedRow.userEmail}}</h6></span> 
+							<span class="frst-date"></span>
 							<div class="row">
 								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
 									<a class="dashboard-stat dashboard-stat-v2 blue">
@@ -292,23 +293,21 @@
 				</div>
 
 				<div class="frst-timeline-block frst-even-item"
-					data-animation="slideInUp">
+					data-animation="slideInUp" style="padding-left:0">
 					<div class="frst-timeline-img">
 						<span><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699016-icon-3-mail-envelope-closed-20.png"></span>
 					</div>
 
 					<div class="frst-timeline-content">
 						<div class="frst-timeline-content-inner">
+							<b><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></b>
 							<h2>Campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h2>
-							<span class="frst-date">
-								<h6>{{campaign.launchTime | date: 'fullDate'}}</h6>
-							</span>
 							<h5>Email published out to <b>{{selectedRow.userEmail}}</b></h5>
 						</div>
 					</div>
 				</div>
 
-				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs">
+				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs" style="padding-left:0">
 					<div class="frst-timeline-img">
 						<span>
 							<img *ngIf="emailLog.actionId == 13" alt="opened" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698362-icon-2-mail-envelope-open-20.png">
@@ -331,7 +330,7 @@
 						 		<h6>{{emailLog.isp}}</h6>
 						 	</span>
 						 	<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg" width="24px">
-							<span class="frst-date">
+							<span>
 								<h6>{{emailLog.time | date: 'fullDate'}}</h6>
 							</span>
 							<div *ngIf="emailLog.actionId == 1">
@@ -341,7 +340,10 @@
 					</div>
 				</div>
 			</div>
+			</div>
 		</div>
+    <!-- end div  -->
+
 	</div>
 </div>
 

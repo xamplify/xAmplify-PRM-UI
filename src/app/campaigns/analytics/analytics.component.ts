@@ -151,11 +151,7 @@ export class AnalyticsComponent implements OnInit {
         }]
       });
     }
-
-
-
   }
-
   getEmailLogCountByCampaign(campaignId: number) {
     this.campaignService.getEmailLogCountByCampaign(campaignId)
       .subscribe(

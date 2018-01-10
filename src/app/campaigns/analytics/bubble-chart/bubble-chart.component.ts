@@ -1,66 +1,231 @@
-import {Directive, OnInit} from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
+declare var Highcharts: any;
 
-declare var d3: any;
-
-@Directive({
-    selector: 'bubble-chart'
+@Component({
+        selector: 'app-bubble-chart',
+        templateUrl: './bubble-chart.component.html',
+        styleUrls: []
 })
+
 export class BubbleChartComponent implements OnInit {
 
-ngOnInit(){
-   let diameter = 240,
-            format = d3.format(",d"),
-            color = d3.scale.category20c();
+        bubbleChart() {
+                const dataValue = [15, 33.2, 97];
 
-    var bubble = d3.layout.pack()
-            .sort(null)
-            .size([diameter, diameter])
-            .padding(1.5);
+                Highcharts.chart('container', {
 
-    var svg = d3.select("#analytics").append("svg")
-            .attr("width", diameter)
-            .attr("height", diameter)
-            .attr("class", "bubble");
+                        chart: {
+                                type: 'bubble',
+                                plotBorderWidth: 0,
+                                zoomType: 'xy'
+                        },
+                        title: {
+                                text: ' '
+                        },
+                        exporting: { enabled: false},
+                        credits: { enabled: false },
+                        xAxis: {
+                                lineWidth: 0,
+                                minorGridLineWidth: 0,
+                                lineColor: 'transparent',
+                                visible: false
+                        },
+
+                        yAxis: {
+                                startOnTick: false,
+                                endOnTick: false,
+                                visible: false,
+                                lineWidth: 0,
+                                minorGridLineWidth: 0,
+                                lineColor: 'transparent'
+                        },
+                        legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'top',
+                                floating: false,
+                                backgroundColor: 'transparent'
+                        },
+                        plotOptions: {
+                                bubble: {
+                                        tooltip: {
+                                                headerFormat: '<b>{series.name}</b><br>',
+                                                pointFormat: 'minutes watched:  {point.z}'
+
+                                        }
+                                },
+                                series: {
+                                        dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}'
+                                        }
+                                }
+                        },
+                        series: [{
+                                name: "chary",
+                                data: [
+                                        { x: 11, y: 35, z: 98.8 }
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,255,255,1)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+
+                        {
+                                name: "santhosh",
+                                data: [dataValue],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,255,0,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "tttttt",
+                                data: [
+                                        [0.0, 34.0, 70.5],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,255,255,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "yyyzz",
+                                data: [
+                                        [5, 36, 39],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                                                stops: [
+                                                        [0, 'rgba(255,150,255,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "new sreies",
+                                data: [
+                                        [2, 32.9, 69],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                                                stops: [
+                                                        [0, 'rgba(255,255,200,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "my name",
+                                data: [
+                                        [2, 30.1, 97],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,155,255,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "your name",
+                                data: [
+                                        [4, 35, 57],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,155,255,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "other nmes",
+                                data: [
+                                        [10, 33, 47],
+
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,200,33,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: "sathish",
+                                data: [
+                                        [1, 31.4, 99.5]
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
+                                                stops: [
+                                                        [0, 'rgba(255,255,255,1)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                name: " ",
+                                showInLegend: true,
+                                data: [
 
 
-    d3.json("https://socialubuntu.com/assets/data.json", function(error, root) {
-        if (error) throw error;
+                                ],
+                                marker: {
+                                        fillColor: {
+                                                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                                                stops: [
+                                                        [0, 'rgba(255,150,255,0.5)'],
+                                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba')]
+                                                ]
+                                        }
+                                }
+                        },
+                        ]
 
-        var node = svg.selectAll(".node")
-                .data(bubble.nodes(classes(root))
-                 .filter(function(d) { return !d.children; }))
-                .enter().append("g")
-                .attr("class", "node")
-                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-        node.append("title")
-                .text(function(d) { return d.className + ": " + format(d.value); });
-
-        node.append("circle")
-                .attr("r", function(d) { return d.size; })
-                .style("fill", function(d) { return color(d.size); });
-
-        node.append("text")
-                .attr("dy", ".3em")
-                .style("text-anchor", "middle")
-                .text(function(d) { return d.className.substring(0, d.r / 3); });
-        node.selectAll("title").remove();
-        node.on("click", click);
-        function click(d){
-            
+                });
         }
-    });
 
-    // Returns a flattened hierarchy containing all leaf nodes under the root.
-    function classes(root) {
-        var classes = [];
-        function recurse(name, node) {
-            if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-           else classes.push({packageName: name, className: node.name, value: node.size, size: node.size});
+        ngOnInit() {
+                this.bubbleChart();
         }
-        recurse(null, root);
-        return {children: classes};
-    }
-    d3.select(self.frameElement).style("height", diameter + "px");
-}
+
 }
