@@ -76,8 +76,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     $('#sparkline_bar_chart1').sparkline(myvalues, {
       type: 'bar',
       width: '200',
-      barWidth: 5,
-      height: '85',
+      barWidth: 8,
+      height: '90',
       barColor: '#35aa47',
       negBarColor: '#e02222',
       tooltipFormat: '<span >' + customTooltipFormat + ':{{value}} <br>{{offset:offset}}</span>',

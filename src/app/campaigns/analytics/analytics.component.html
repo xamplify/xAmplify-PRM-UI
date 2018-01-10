@@ -1,3 +1,8 @@
+<style type="text/css">
+.listTable tr:hover{
+background-color:lightblue;
+}
+</style>
 <div class="page-content" [hidden]="isTimeLineView">
 	<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 		<ul class="page-breadcrumb">
@@ -6,7 +11,7 @@
 				class="fa fa-angle-right"></i></li>
 			<li><a [routerLink]="['/home/campaigns/manage']">Campaigns</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li>{{campaign.campaignName}}</li>
+			<li style="color: #888;">{{campaign.campaignName}}</li>
 		</ul>
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
@@ -174,7 +179,7 @@
 					</div>
 					<div class="portlet-body">
 						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover">
+							<table class="table table-bordered table-striped table-hover listTable" >
 								<thead>
 									<tr>
 										<th>campaign</th>
@@ -187,7 +192,7 @@
 									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.userEmail)">
 										<td><h6>{{item.campaignName}}</h6></td>
 										<td><h6>{{item.userEmail}}</h6></td>
-										<td><h6>{{item.latestView}}<span *ngIf="! item?.latestView">-</span></h6></td>
+										<td><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
 										<td><h6>{{item.viewsCount}}</h6></td>
 									</tr>
 								</tbody>
@@ -226,28 +231,31 @@
 			aria-hidden="true"></span>
 		</a>
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
-			<div class="col-xs-12 col-sm-6" style="padding: 12px;">
-			    <app-bubble-chart></app-bubble-chart>
-				<!-- <div id="app-bubble-chart" style="min-width: 310px; max-width: 250px; height: 300px; margin: 0 auto"> -->
+			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;" >
+				<span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span>
+				<app-bubble-chart></app-bubble-chart>
+				<span style="color: #7d7676; font-weight: bold;">User wise views count</span>
+				<table id="trellis" style="min-width: 250px; max-width: 300px; height: 200px;">
+					<tr><td class="first"></td></tr>
+				</table>
 			</div>
 			<div class="col-xs-12 col-sm-6">
 			<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
-				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding-left:0">
+				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
 					<div class="frst-timeline-img abc">
 						<div class="frst-labels frst-start-label">
 							<span>
-								<img src="https://cdn0.iconfinder.com/data/icons/user-collection-4/512/user-128.png" style="width: auto;" alt="{{selectedRow.userEmail}}">
+								<img src="assets/images/user-new.png" style="width: auto;" alt="{{selectedRow.userEmail}}">
 							</span>
 						</div>
 					</div>
-
 					<div class="frst-timeline-content box">
 						<div class="frst-timeline-content-inner" style="background: none;">
-							<span ><h6>{{selectedRow.userEmail}}</h6></span> 
+							<span><h6 style="font-weight: bold">{{selectedRow.userEmail}}</h6></span> 
 							<span class="frst-date"></span>
-							<div class="row">
-								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 blue">
+							<div class="row" style=" padding: 74px;margin: -73px;">
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+									<!-- <a class="dashboard-stat dashboard-stat-v2 blue">
 										<div class="visual">
 											<i class="fa fa-comments"></i>
 										</div>
@@ -257,10 +265,21 @@
 											</div>
 											<div class="desc">Open</div>
 										</div>
-									</a>
+									</a> -->
+									   <a class="">
+										<div class="">
+											<span>Email Opened</span>
+											</div>
+											<div>
+											<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
+											</div>
+										<div class="number">
+											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
+										</div>
+                                      </a>
 								</div>
-								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 red">
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+									 <!-- <a class="dashboard-stat dashboard-stat-v2 red">
 										<div class="visual">
 											<i class="fa fa-bar-chart-o"></i>
 										</div>
@@ -270,10 +289,21 @@
 											</div>
 											<div class="desc">Clicked</div>
 										</div>
-									</a>
+									</a>  -->
+									 <a class="">
+										<div class="">
+											<span>Email Clicked</span>
+											</div>
+											<div>
+											<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
+											</div>
+										<div class="number">
+											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
+										</div>
+                                      </a>
 								</div>
-								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 p-5x">
-									<a class="dashboard-stat dashboard-stat-v2 purple">
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+									<!-- <a class="dashboard-stat dashboard-stat-v2 purple">
 										<div class="visual">
 											<i class="fa fa-globe"></i>
 										</div>
@@ -283,19 +313,41 @@
 											</div>
 											<div class="desc">watched</div>
 										</div>
-									</a>
+									</a> -->
+									 <a class="">
+										<div class="">
+											<span>Video watched</span>
+											</div>
+											<div>
+											<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
+											</div>
+										<div class="number">
+											<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
+										</div>
+                                      </a>
 								</div>
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x"> 
+									<a class="">
+										<div class="">
+											<span>TotalTimeSpent</span>
+											</div>
+											<div>
+											<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
+											</div>
+										<div class="number">
+											<span data-counter="counterup" style="margin: 0 33px;">#</span>
+										</div>
+                                      </a>
+									</div>
+
 							</div>
 						</div>
-
 					</div>
-
 				</div>
-
 				<div class="frst-timeline-block frst-even-item"
-					data-animation="slideInUp" style="padding-left:0">
+					data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
 					<div class="frst-timeline-img">
-						<span><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699016-icon-3-mail-envelope-closed-20.png"></span>
+						<span><img src="assets/images/campaign-launched.png"></span>
 					</div>
 
 					<div class="frst-timeline-content">
@@ -307,12 +359,12 @@
 					</div>
 				</div>
 
-				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs" style="padding-left:0">
+				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs" style="padding: 6px;margin-left: -492px;">
 					<div class="frst-timeline-img">
 						<span>
-							<img *ngIf="emailLog.actionId == 13" alt="opened" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698362-icon-2-mail-envelope-open-20.png">
-							<img *ngIf="emailLog.actionId == 14" alt="clicked" src="https://cdn1.iconfinder.com/data/icons/mail-vol-3/128/email_envelope_letter_mail_message_-80-48.png">
-							<img *ngIf="emailLog.actionId == 1" alt="watched" src="https://cdn3.iconfinder.com/data/icons/social-circle/512/social_4-20.png">
+							<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/Open_mail.png">
+							<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
+							<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
 						</span>
 					</div>
 
@@ -342,8 +394,6 @@
 			</div>
 			</div>
 		</div>
-    <!-- end div  -->
-
 	</div>
 </div>
 

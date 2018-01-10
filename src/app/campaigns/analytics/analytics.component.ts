@@ -17,7 +17,7 @@ declare var $, Highcharts: any;
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css', './timeline.css'],
+  styleUrls: ['./analytics.component.css', './timeline.css']
 })
 export class AnalyticsComponent implements OnInit {
   isTimeLineView: boolean;
@@ -38,7 +38,8 @@ export class AnalyticsComponent implements OnInit {
   campaignType: string;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
-    private authenticationService: AuthenticationService, public pagerService: PagerService, private referenceService: ReferenceService) {
+    private authenticationService: AuthenticationService, public pagerService: PagerService, 
+    private referenceService: ReferenceService) {
     this.isTimeLineView = false;
     this.campaign = new Campaign();
     if (this.referenceService.isFromTopNavBar) {
@@ -101,7 +102,96 @@ export class AnalyticsComponent implements OnInit {
       () => console.log()
       )
   }
-
+ campaignViewsbarCharts(){
+    const names = ['Gert','sathish','santhya','chary','kotha'];
+    const data = [35, 6, 4, 24, 340];
+        const charts = [],
+            $containers = $('#trellis td'),
+            datasets = [ { name: ' ', data: data}];
+          $.each(datasets, function (i, dataset) {
+            charts.push(new Highcharts.Chart({
+                chart: {
+                    renderTo: $containers[i],
+                    type: 'bar',
+                    marginLeft: i === 0 ? 100 : 10
+                },
+                title: {
+                    text: dataset.name,
+                    align: 'left',
+                    x: i === 0 ? 90 : 0,
+                    style: {
+                        color: '#696666',
+                        fontWeight: 'normal',
+                        fontSize: '13px'
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        minPointLength: 3
+                    }
+                },
+                colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: names,
+                    labels: {
+                        enabled: i === 0
+                    },
+                    lineWidth: 0,
+                    minorGridLineWidth: 0,
+                    lineColor: 'transparent',
+                    minorTickLength: 0,
+                    tickLength: 0
+                },
+                exporting: { enabled: false },
+                yAxis: {
+                    allowDecimals: false,
+                    visible: false,
+                    title: {
+                        text: null
+                    },
+                    min: 0
+                    // max: 100
+                },
+                legend: {
+                    enabled: false
+                },
+                labels: {
+                    style: {
+                        color: 'white',
+                        fontSize: '25px'
+                    }
+                },
+                series: [dataset]
+            }));
+        });
+ }
+ getCampaignUserWatchedMinutesCountes(campaignId: number){
+    this.campaignService.getCampaignUserWatchedMinutes(campaignId)
+      .subscribe(
+      data => {
+       console.log(data);
+      },
+      error => console.log(error),
+      () => console.log()
+      )
+ }
+ getCampaignUserViewsCountBarCharts(){
+    this.campaignService.getCampaignUserViewsCountBarChart()
+      .subscribe(
+      data => {
+       console.log(data);
+       this.campaignViewsbarCharts();
+      },
+      error => console.log(error),
+      () => console.log()
+      )
+ }   
   renderMap() {
     const countryData = this.countryWiseCampaignViews;
     const data = [];
@@ -324,11 +414,12 @@ export class AnalyticsComponent implements OnInit {
   ngOnInit() {
     const userId = this.authenticationService.getUserId();
     const campaignId = this.route.snapshot.params['campaignId'];
-
     this.getCampaignById(campaignId);
-
     this.getEmailSentCount(campaignId);
     this.getEmailLogCountByCampaign(campaignId);
+   // this.getCampaignUserWatchedMinutesCountes(campaignId);
+   // this.getCampaignUserViewsCountBarCharts();
+    this.campaignViewsbarCharts();
   }
 
 }

@@ -258,17 +258,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 series: {
                     dataLabels: {
                         enabled: true,
+                       // align: 'left',
+                       // verticalAlign: 'top',
                         style: {
                             fontWeight: 'normal',
                             fontSize: '13px',
                             color:'block'
                         }
+                        //  formatter: function() {
+                        //     return this.point.options.name+"<br> "+this.point.options.value
+                        // },
                     },
                      events: {
                         click: function (event) {
-                            alert('campaign name:' 
-                            + event.point.name + 'email open count:' + event.point.value + 'users:' + event.point.totalUsers + 'launchTime:' + event.point.launchTime);
-                      //     self.router.navigate(['./home/dashboard/reports']);
+                            self.router.navigate(['./home/campaigns/'+event.point.campaignId+'/details']);
                         }
                     }
                 }

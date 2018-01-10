@@ -64,7 +64,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Number of fruits'
+                    text: ' '
                 },
                 visible: false
             },
@@ -152,7 +152,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         text: null
                     },
                     min: 0
-                    // max: 100
+                    // max: 100  // findout maxmum,it is important
                 },
                 legend: {
                     enabled: false
