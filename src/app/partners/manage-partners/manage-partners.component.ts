@@ -73,9 +73,9 @@ export class ManagePartnersComponent implements OnInit {
     public socialNetwork: string;
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
-    unlinkGoogleSuccessMessage: boolean = false;
+    /*unlinkGoogleSuccessMessage: boolean = false;
     unlinkSalesforceSuccessMessage: boolean = false;
-    unlinkZohoSuccessMessage: boolean = false;
+    unlinkZohoSuccessMessage: boolean = false;*/
     Campaign: string;
     deleteErrorMessage: boolean;
     emptyPartnerList: boolean = false;
@@ -926,7 +926,7 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.getGoogleConatacts = data;
                 this.zohoImageBlur = false;
                 this.zohoImageNormal = true;
-                this.socialContactImage();
+                //this.socialContactImage();
                 this.hideZohoModal();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
@@ -1354,23 +1354,26 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    this.unlinkSalesforceSuccessMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkSalesforceSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your Salesforce account has been successfully removed.');
+                    //setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                     this.socialContactImage();
                 }
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                    this.unlinkGoogleSuccessMessage = true;
-                    setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkGoogleSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your google account has been successfully removed.');
+                    //setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                    this.unlinkZohoSuccessMessage = true;
-                    setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkZohoSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your Zoho account has been successfully removed.');
+                    //setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
                 }
             },
             ( error: any ) => {
@@ -1390,9 +1393,9 @@ public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
                 this.xtremandLogger.info( "deleted completed" );
             }
             );
-        this.unlinkSalesforceSuccessMessage = false;
-        this.unlinkGoogleSuccessMessage = false;
-        this.unlinkZohoSuccessMessage = false;
+        //this.unlinkSalesforceSuccessMessage = false;
+        //this.unlinkGoogleSuccessMessage = false;
+        //this.unlinkZohoSuccessMessage = false;
         this.deleteErrorMessage = false;
     }
     

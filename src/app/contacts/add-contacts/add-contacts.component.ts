@@ -15,6 +15,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../models/contact-option';
 import { SocialPagerService } from '../services/social-pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { CustomeResponse } from '../models/response';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -34,8 +35,7 @@ declare var $: any;
 export class AddContactsComponent implements OnInit {
     
     settingSocialNetwork: string;
-    addContactForm: FormGroup;
-    emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
+    //emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
     contactListObject: ContactList;
@@ -47,7 +47,6 @@ export class AddContactsComponent implements OnInit {
     public googleContactUser: Array<User>;
     public clipboardTextareaText: string;
     selectedZohoDropDown: string = 'DEFAULT';
-    googleCheckboxValue: boolean = false;
     zohoCredentialError = '';
     zohoAuthStorageError = '';
     model: any = {};
@@ -64,9 +63,9 @@ export class AddContactsComponent implements OnInit {
     zohoImageBlur: boolean = false;
     zohoImageNormal: boolean = false;
     noOptionsClickError: boolean = false;
-    unlinkGoogleSuccessMessage: boolean = false;
+   /* unlinkGoogleSuccessMessage: boolean = false;
     unlinkSalesforceSuccessMessage: boolean = false;
-    unlinkZohoSuccessMessage: boolean = false;
+    unlinkZohoSuccessMessage: boolean = false;*/
     inValidCsvContacts: boolean;
     duplicateEmailIds: string[] = [];
     public gContactsValue: boolean;
@@ -107,6 +106,7 @@ export class AddContactsComponent implements OnInit {
     allselectedUsers = [];
     isHeaderCheckBoxChecked:boolean = false;
     totalRecords: number;
+    response: CustomeResponse = new CustomeResponse();
     
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -1716,23 +1716,26 @@ export class AddContactsComponent implements OnInit {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    this.unlinkSalesforceSuccessMessage = true;
-                    setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkSalesforceSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your Salesforce account has been successfully removed.');
+                   // setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                     this.socialContactImage();
                 }
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                    this.unlinkGoogleSuccessMessage = true;
-                    setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkGoogleSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your google account has been successfully removed.');
+                    //setTimeout( function() { $( "#googleSuccessMessage" ).slideUp( 500 ); }, 3000 );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                    this.unlinkZohoSuccessMessage = true;
-                    setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
+                    //this.unlinkZohoSuccessMessage = true;
+                    this.setResponseDetails('SUCCESS', 'your Zoho account has been successfully removed.');
+                   // setTimeout( function() { $( "#zohoSuccessMessage" ).slideUp( 500 ); }, 3000 );
                 }
             },
             ( error: any ) => {
@@ -1752,9 +1755,9 @@ export class AddContactsComponent implements OnInit {
                 this.xtremandLogger.info( "deleted completed" );
             }
             );
-        this.unlinkSalesforceSuccessMessage = false;
-        this.unlinkGoogleSuccessMessage = false;
-        this.unlinkZohoSuccessMessage = false;
+        //this.unlinkSalesforceSuccessMessage = false;
+        //this.unlinkGoogleSuccessMessage = false;
+        //this.unlinkZohoSuccessMessage = false;
         this.deleteErrorMessage = false;
     }
 
@@ -1776,11 +1779,15 @@ export class AddContactsComponent implements OnInit {
         $('#addContactModal').modal('toggle');
         $( "#addContactModal .close" ).click()
     }
+    
+    setResponseDetails(responseType: string, responseMessage: string){
+        this.response.responseType = responseType;
+        this.response.responseMessage = responseMessage;
+    }
 
     ngOnInit() {
         this.socialContactImage();
         this.hideModal();
-        this.gContactsValue = true;
         this.loadContactListsNames();
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();

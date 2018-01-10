@@ -51,6 +51,33 @@ background-image: url("assets/images/crm/connecting.png");
 	-ms-filter: blur(0px);
 	filter: blur(0px);
 }
+
+.alert-dismissible .close {
+top: 5px;
+right: 0;
+}
+
+.alert-success, .alert-danger, .alert-warning, .alert-info {
+color: #ffffff;
+border-radius: 0;
+margin: 0;
+}
+
+.alert-success {
+background-color: #77bf81;
+}
+
+.alert-danger {
+background-color: #ec6262;
+}
+
+.alert-warning {
+background-color: #f1d43b;
+}
+
+.alert-success, .alert-danger, .alert-warning> h5 {
+font-size: 16px;
+}
 </style>
 <div class="page-content">
 	<div></div>
@@ -358,7 +385,7 @@ background-image: url("assets/images/crm/connecting.png");
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Danger!</strong>{{Campaign}}
 						</div>
-						<div *ngIf="unlinkGoogleSuccessMessage" id="googleSuccessMessage"
+						<!-- <div *ngIf="unlinkGoogleSuccessMessage" id="googleSuccessMessage"
 							class="col-xs-12 alert alert-success">
 							<strong>Success!</strong> Your Google Account successfully
 							Removed.
@@ -372,11 +399,31 @@ background-image: url("assets/images/crm/connecting.png");
 						<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage"
 							class="col-xs-12 alert alert-success">
 							<strong>Success!</strong> Your Zoho Account successfully Removed.
-						</div>
+						</div> -->
 						<div *ngIf="zohoAuthStorageError"
 							class="col-xs-12 alert alert-danger">
 							<span>{{zohoAuthStorageError}}</span>
 						</div>
+					
+						<div class="col-xs-12" *ngIf="response.responseType != null">
+							<div class="alert alert-dismissible" role="alert"
+								[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
+		  									'alert-danger': response.responseType == 'ERROR',
+		  									'alert-info': response.responseType == 'INFO'}">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-label="Close" (click)="response.responseType = null">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="flex">
+									<i class="fa"
+										[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
+		 								 'fa-exclamation': response.responseType == 'ERROR'}"
+										aria-hidden="true" style="padding-right: 7px;"></i> <span
+										[innerHTML]="response.responseMessage"></span>
+								</h4>
+							</div>
+						</div>
+						
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">
 								<h3 style="margin-left: 30px;">Copy from text -- paste
