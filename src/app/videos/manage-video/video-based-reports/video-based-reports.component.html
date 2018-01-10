@@ -11,7 +11,9 @@
 		text-align: center;
 		padding: 20px;
 	}
-
+    .td-color{
+		color: white;
+	}
 	.td-chart {
 		position: relative;
 	}
@@ -139,7 +141,7 @@
 					    <ng-container *ngFor="let videoViews of arrayValues; let i = index">  
 							<tr>
 								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
-								<td class="td-new td-chart" [style.background]="videoViews.viewsColor">{{videoViews.views}}</td>
+								<td class="td-new td-chart td-color" [style.background]="videoViews.viewsColor">{{videoViews.views}}</td>
 								<td class="td-new td-chart">
 								 <div class="bg" [style.width.%]="(videoViews.minutes/456)*100" [style.background] ="videoViews.minutesWatchedColor">
 									{{videoViews.minutesWatched}}</div>
