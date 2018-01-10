@@ -392,7 +392,7 @@ export class ManageContactsComponent implements OnInit {
             (error: any) => {
                 this.xtremandLogger.error(error);
                 if(error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")){
-                    this.xtremandLogger.errorMessage = 'authentication was not successful.';
+                    this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
                 }
                 this.xtremandLogger.errorPage(error);
             },

@@ -36,6 +36,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscribe.unsubscribe();
+    this.xtremandLogger.errorMessage = '';
   }
 
 }

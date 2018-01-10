@@ -34,8 +34,8 @@ declare var $: any;
 export class AddContactsComponent implements OnInit {
     
     settingSocialNetwork: string;
-addContactForm: FormGroup;
-emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
+    addContactForm: FormGroup;
+    emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
     contactListObject: ContactList;
@@ -96,8 +96,6 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
     public salesforceContact: SalesforceContact;
     public getSalesforceConatactList: any;
     public storeLogin: any;
-    //public gContacts: SocialContact[] = new Array();
-    //public zContacts: SocialContact[] = new Array();
     public socialContactUsers: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     pager: any = {};
@@ -733,10 +731,8 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
         this.isValidContactName = false;
         this.emailNotValid = false;
         this.socialContactUsers.length = 0;
-        //this.zContacts.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
-        //this.salesforceContactUsers.length = 0;
         this.pager = [];
         this.pagedItems =[];
         
@@ -876,7 +872,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             ( error: any ) => {
                 this.xtremandLogger.error( error );
                 if(error._body.includes("JSONObject") && error._body.includes("access_token") && error._body.includes("not found.")){
-                    this.xtremandLogger.errorMessage = 'authentication was not successful.';
+                    this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
                 }
                 this.xtremandLogger.errorPage( error );
             },
@@ -947,43 +943,7 @@ emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)
             this.isHeaderCheckBoxChecked = false;
         }
         
-       /* 
-        if(this.selectedAddContactsOption == 4){
-            
-        }
-        
-        if(this.selectedAddContactsOption == 3){
-            this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page);
-            this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
-            
-            var contactIds2 = this.pagedItems.map(function(a) {return a.id;});
-            var items = $.grep(this.selectedContactListIds, function(element) {
-                return $.inArray(element, contactIds2 ) !== -1;
-            });
-            if(items.length == this.pager.pageSize || items.length == this.getSalesforceConatactList.contacts.length || items.length == this.pagedItems.length){
-                this.isHeaderCheckBoxChecked = true;
-            }else{
-                this.isHeaderCheckBoxChecked = false;
-            }
-        }
-        
-        if(this.selectedAddContactsOption == 5){
-            this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page);
-            this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
-            
-            var contactIds3 = this.pagedItems.map(function(a) {return a.id;});
-            var items = $.grep(this.selectedContactListIds, function(element) {
-                return $.inArray(element, contactIds3 ) !== -1;
-            });
-            if(items.length == this.pager.pageSize || items.length == this.getZohoConatacts.length || items.length == this.pagedItems.length){
-                this.isHeaderCheckBoxChecked = true;
-            }else{
-                this.isHeaderCheckBoxChecked = false;
-            }
-        }*/
-        
     }
-
     
     saveGoogleContacts() {
         this.socialContact.socialNetwork = "GOOGLE";

@@ -1062,18 +1062,18 @@
 							</div>
 							</ng-container>
 							<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
-									<div class="col-md-4">
-									<input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" style="margin-top: 1em;"/>
-									<font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Please Select Date</font>
+								<div class="col-md-4">
+									<input type="text" class="form-control flatpickr square-box" placeholder="Select Date.." formControlName="launchTime" style="margin-top: 20px;"/>
+									<font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</font>
 								</div>
 								<div class="col-md-4">
-								<label style="float: left;">Select Country</label><br>
+								<label style="float: left;">Country</label><br>
 									<select	class="form-control"  style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
   											<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
 									</select>
 								</div>
 								<div class="col-md-4">
-								<label style="float: left;" >Select TimeZone </label><br>
+								<label style="float: left;" >TimeZone </label><br>
 									<select	class="form-control"  style="width: 100%" formControlName="timeZoneId">
 									<ng-container *ngIf="timezones?.length==1">
 										<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">

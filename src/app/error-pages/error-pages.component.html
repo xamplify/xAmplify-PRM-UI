@@ -6,7 +6,7 @@
 					<div class="text-center">
 						<h1>{{item.code}}</h1>
 						<h4>{{item.message}}</h4>
-						<h3>Cause:{{xtremandLogger.errorMessage}}</h3>
+						<h3 *ngIf="xtremandLogger.errorMessage.length !=0">Cause:{{xtremandLogger.errorMessage}}</h3>
 					</div>
 				</div>
 			</ng-container>
