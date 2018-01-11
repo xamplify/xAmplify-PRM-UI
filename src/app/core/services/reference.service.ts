@@ -852,7 +852,7 @@ export class ReferenceService {
     }
     getCountries() {
         return [
-            new Country(0, '', '---Please Select Country---'),
+            new Country(0, '', 'Select'),
             new Country(1, 'AF', 'Afghanistan'),
             new Country(2, 'AX', 'Aland Islands'),
             new Country(3, 'AL', 'Albania'),
@@ -1107,7 +1107,7 @@ export class ReferenceService {
 
     getTimeZones() {
         return [
-            new Timezone(0, '', '---Please Select Timezone---'),
+            new Timezone(0, '', 'Select'),
             new Timezone(1, 'Asia/Kabul', '(GMT+04:30) Kabul'),
             new Timezone(2, 'Europe/Helsinki', '(GMT+02:00) Helsinki'),
             new Timezone(3, 'Europe/Tirane', '(GMT+01:00) Tirane'),
