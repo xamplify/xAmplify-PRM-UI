@@ -33,9 +33,12 @@ export class AnalyticsComponent implements OnInit {
   campaignViewsPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
+  userWatchBarchartPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
+  bubbleChartData: any;
+  campaignId: number;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, 
@@ -57,6 +60,7 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaignViews = data.campaignviews;
+        console.log(data);
         this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
         this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
       },
@@ -102,9 +106,8 @@ export class AnalyticsComponent implements OnInit {
       () => console.log()
       )
   }
- campaignViewsbarCharts(){
-    const names = ['Gert','sathish','santhya','chary','kotha'];
-    const data = [35, 6, 4, 24, 340];
+ campaignViewsbarCharts(names, data){
+       const maxValue = Math.max.apply(null, data);
         const charts = [],
             $containers = $('#trellis td'),
             datasets = [ { name: ' ', data: data}];
@@ -128,7 +131,7 @@ export class AnalyticsComponent implements OnInit {
                 plotOptions: {
                     bar: {
                         dataLabels: {
-                            enabled: true
+                            enabled: true,
                         },
                         minPointLength: 3
                     }
@@ -140,13 +143,14 @@ export class AnalyticsComponent implements OnInit {
                 xAxis: {
                     categories: names,
                     labels: {
-                        enabled: i === 0
+                        enabled: i === 0,
+                         rotation: 0,
                     },
-                    lineWidth: 0,
-                    minorGridLineWidth: 0,
-                    lineColor: 'transparent',
-                    minorTickLength: 0,
-                    tickLength: 0
+                    // lineWidth: 0,
+                    // minorGridLineWidth: 0,
+                    // lineColor: 'transparent',
+                    // minorTickLength: 0,
+                    // tickLength: 0,
                 },
                 exporting: { enabled: false },
                 yAxis: {
@@ -155,8 +159,8 @@ export class AnalyticsComponent implements OnInit {
                     title: {
                         text: null
                     },
-                    min: 0
-                    // max: 100
+                    min: 0,
+                    max: maxValue
                 },
                 legend: {
                     enabled: false
@@ -171,22 +175,21 @@ export class AnalyticsComponent implements OnInit {
             }));
         });
  }
- getCampaignUserWatchedMinutesCountes(campaignId: number){
-    this.campaignService.getCampaignUserWatchedMinutes(campaignId)
+ getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination){
+    this.campaignService.listCampaignViews(campaignId,pagination)
       .subscribe(
       data => {
        console.log(data);
-      },
-      error => console.log(error),
-      () => console.log()
-      )
- }
- getCampaignUserViewsCountBarCharts(){
-    this.campaignService.getCampaignUserViewsCountBarChart()
-      .subscribe(
-      data => {
-       console.log(data);
-       this.campaignViewsbarCharts();
+       const names = [];
+       const views = [];
+       for(let i=0; i<data.campaignviews.length; i++){
+        names.push(data.campaignviews[i].userEmail);
+        views.push(data.campaignviews[i].viewsCount)
+       }
+       this.userWatchBarchartPagination.totalRecords = this.campaignReport.emailSentCount;
+       this.userWatchBarchartPagination = this.pagerService.getPagedItems(this.userWatchBarchartPagination, data.campaignviews);
+       console.log(this.userWatchBarchartPagination);
+       this.campaignViewsbarCharts(names, views);
       },
       error => console.log(error),
       () => console.log()
@@ -225,6 +228,15 @@ export class AnalyticsComponent implements OnInit {
         credits: {
           enabled: false
         },
+         plotOptions: {
+                series: {
+                    events: {
+                    click: function (e) { 
+                        alert(e.point.name+', views:'+e.point.value);
+                    }
+                   }
+                 }
+             },
         exporting: { enabled: false },
         series: [{
           data: data,
@@ -307,6 +319,13 @@ export class AnalyticsComponent implements OnInit {
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
       }
     }
+    else if (type === 'viewsBarChart') {
+      if (page !== this.userWatchBarchartPagination.pageIndex) {
+        this.userWatchBarchartPagination.pageIndex = page;
+        this.getCampaignUserViewsCountBarCharts(this.campaign.campaignId, this.userWatchBarchartPagination);
+      }
+    }
+    
   }
 
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
@@ -413,13 +432,13 @@ export class AnalyticsComponent implements OnInit {
 
   ngOnInit() {
     const userId = this.authenticationService.getUserId();
-    const campaignId = this.route.snapshot.params['campaignId'];
-    this.getCampaignById(campaignId);
-    this.getEmailSentCount(campaignId);
-    this.getEmailLogCountByCampaign(campaignId);
-   // this.getCampaignUserWatchedMinutesCountes(campaignId);
-   // this.getCampaignUserViewsCountBarCharts();
-    this.campaignViewsbarCharts();
+    this.campaignId = this.route.snapshot.params['campaignId'];
+    this.getCampaignById(this.campaignId);
+    this.getEmailSentCount(this.campaignId);
+    this.getEmailLogCountByCampaign(this.campaignId);
+    this.userWatchBarchartPagination.pageIndex = 1;
+    this.userWatchBarchartPagination.maxResults = 10;
+    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.userWatchBarchartPagination);
   }
 
 }

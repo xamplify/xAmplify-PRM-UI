@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { CampaignService } from '../../../campaigns/services/campaign.service';
 declare var Highcharts: any;
 
 @Component({
@@ -8,10 +9,21 @@ declare var Highcharts: any;
 })
 
 export class BubbleChartComponent implements OnInit {
+        @Input() campaignId: number;
+        constructor(public campaignService: CampaignService) { }
 
-        bubbleChart() {
-                const dataValue = [15, 33.2, 97];
+      getCampaignUserWatchedMinutesCountes(campaignId: number) {
+        this.campaignService.getCampaignUserWatchedMinutes(campaignId)
+                .subscribe(
+                data => {
+                console.log(data);
+                this.bubbleChart(data.names, data.legend, data.values);
+                },
+                error => console.log(error),
+                () => console.log() )
+        }
 
+        bubbleChart(names,legends, values) {
                 Highcharts.chart('container', {
 
                         chart: {
@@ -22,7 +34,7 @@ export class BubbleChartComponent implements OnInit {
                         title: {
                                 text: ' '
                         },
-                        exporting: { enabled: false},
+                        exporting: { enabled: false },
                         credits: { enabled: false },
                         xAxis: {
                                 lineWidth: 0,
@@ -40,11 +52,20 @@ export class BubbleChartComponent implements OnInit {
                                 lineColor: 'transparent'
                         },
                         legend: {
+                                // layout: 'vertical',
+                                // align: 'right',
+                                // verticalAlign: 'top',
+                                // floating: false,
+                                // backgroundColor: 'transparent'
+                                enabled:true,
                                 layout: 'vertical',
+                                backgroundColor: '#FFFFFF',
                                 align: 'right',
                                 verticalAlign: 'top',
+                                x: 30,
+                                y: 3,
                                 floating: false,
-                                backgroundColor: 'transparent'
+                                shadow: true
                         },
                         plotOptions: {
                                 bubble: {
@@ -62,11 +83,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         series: [{
-                                name: "chary",
-                                data: [
-                                        { x: 11, y: 35, z: 98.8 }
-
-                                ],
+                                name: names[0],
+                                showInLegend: legends[0],
+                                data: [ values[0] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -79,8 +98,9 @@ export class BubbleChartComponent implements OnInit {
                         },
 
                         {
-                                name: "santhosh",
-                                data: [dataValue],
+                                name: names[1],
+                                showInLegend: legends[1],
+                                data: [ values[1] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -92,11 +112,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "tttttt",
-                                data: [
-                                        [0.0, 34.0, 70.5],
-
-                                ],
+                                name: names[2],
+                                showInLegend: legends[2],
+                                data: [ values[2] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -108,11 +126,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "yyyzz",
-                                data: [
-                                        [5, 36, 39],
-
-                                ],
+                               name: names[3],
+                                showInLegend: legends[3],
+                                data: [ values[3] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
@@ -124,11 +140,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "new sreies",
-                                data: [
-                                        [2, 32.9, 69],
-
-                                ],
+                                name: names[4],
+                                showInLegend: legends[4],
+                                data: [ values[4] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
@@ -140,11 +154,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "my name",
-                                data: [
-                                        [2, 30.1, 97],
-
-                                ],
+                                name: names[5],
+                                showInLegend: legends[5],
+                                data: [ values[5] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -156,11 +168,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "your name",
-                                data: [
-                                        [4, 35, 57],
-
-                                ],
+                                 name: names[6],
+                                showInLegend: legends[6],
+                                data: [ values[6] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -172,11 +182,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "other nmes",
-                                data: [
-                                        [10, 33, 47],
-
-                                ],
+                                name: names[7],
+                                showInLegend: legends[7],
+                                data: [ values[7] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -188,10 +196,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: "sathish",
-                                data: [
-                                        [1, 31.4, 99.5]
-                                ],
+                                 name: names[8],
+                                showInLegend: legends[8],
+                                data: [ values[8] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.7, r: 0.9 },
@@ -203,12 +210,9 @@ export class BubbleChartComponent implements OnInit {
                                 }
                         },
                         {
-                                name: " ",
-                                showInLegend: true,
-                                data: [
-
-
-                                ],
+                                name: names[9],
+                                showInLegend: legends[9],
+                                data: [ values[9] ],
                                 marker: {
                                         fillColor: {
                                                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
@@ -225,7 +229,7 @@ export class BubbleChartComponent implements OnInit {
         }
 
         ngOnInit() {
-                this.bubbleChart();
+                this.getCampaignUserWatchedMinutesCountes(this.campaignId);
         }
 
 }

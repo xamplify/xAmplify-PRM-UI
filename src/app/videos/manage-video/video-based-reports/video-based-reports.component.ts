@@ -93,6 +93,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         });
     }
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
+       const maxValue = Math.max.apply(null, minutesWatched);
         const charts = [],
             $containers = $('#trellis td'),
             datasets = [
@@ -151,8 +152,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     title: {
                         text: null
                     },
-                    min: 0
-                    // max: 100  // findout maxmum,it is important
+                    min: 0,
+                    max: maxValue  // findout maxmum,it is important
                 },
                 legend: {
                     enabled: false
@@ -322,6 +323,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     verticalAlign: 'bottom'
                 }
             },
+             plotOptions: {
+                series: {
+                    events: {
+                    click: function (e) { 
+                        alert(e.point.name+', views:'+e.point.value);
+                    }
+                   }
+                 }
+             },
             colorAxis: {
                 min: 0
             },
@@ -352,8 +362,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     this.categories = result.video_views_count_data.months;
                     this.campaignViews = result.video_views_count_data.monthlyViews;
                     console.log(result);
-                    //this.areaCharts();
-                    //  this.monthlyViewsBarCharts();
                     this.renderWorldMap(result.video_views_count_data.countrywiseViews);
                 },
                 (error: any) => {
@@ -377,13 +385,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 });
         } catch (error) { console.log(error); }
     }
-    getCampaignWatchedUsersViews() {
-
-    }
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-        //  this.minutesWatchedBarcharts();
         this.selectedCampaignWatchedUsers(this.sortMonthDates[3].value);
         this.selectedSortByValue(this.minutesSort.value);
         this.posterImagePath = this.selectedVideo.imagePath;

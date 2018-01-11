@@ -220,6 +220,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
             credits: {
                 enabled: false
             },
+              plotOptions: {
+                series: {
+                    events: {
+                    click: function (e) { 
+                        alert(e.point.name+', views:'+e.point.value);
+                    }
+                   }
+                 }
+             },
             series: [{
                 data: data,
                 name: 'Views',
@@ -331,7 +340,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 plotOptions: {
                  bar: {
                     minPointLength: 3
+                    },
+                 series: {
+                   point: {
+                        events: {
+                            click: function () {
+                                alert('campaign: ' + this.category + ', value: ' + this.y);
+                            }
+                        }
                     }
+                 }
                  },
                 xAxis: {
                     categories: names,
@@ -681,6 +699,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.getCountryViewsDetails().
             subscribe(result => {
                 this.countryViewsData = result.countrywiseusers;
+                console.log(this.countryViewsData);
                 this.renderWorldMap();
             },
             (error: any) => {

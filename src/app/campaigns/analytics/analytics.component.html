@@ -227,17 +227,36 @@ background-color:lightblue;
 <div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
 	<div class="page-bar">
 		<a (click)="resetTopNavBarValue()" class="pull-right"
-			style="margin: 1em;"> <span class="glyphicon glyphicon-remove"
+			style="margin: 1em;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;"
 			aria-hidden="true"></span>
 		</a>
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;" >
 				<span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span>
-				<app-bubble-chart></app-bubble-chart>
+				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
 				<span style="color: #7d7676; font-weight: bold;">User wise views count</span>
-				<table id="trellis" style="min-width: 250px; max-width: 300px; height: 200px;">
+				<table id="trellis" style="min-width: 350px; max-width: 420px; height: 200px;">
 					<tr><td class="first"></td></tr>
 				</table>
+					<!--pager here  -->
+					<ul *ngIf="userWatchBarchartPagination.pager.pages && userWatchBarchartPagination.pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="userWatchBarchartPagination.pager.currentPage === 1">First</a>
+						</li>
+						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === 1}" >
+							<a (click)="setPage(userWatchBarchartPagination.pager.currentPage - 1, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === 1">Previous</a>
+						</li>
+						<li *ngFor="let page of userWatchBarchartPagination.pager.pages" [ngClass]="{active:userWatchBarchartPagination.pager.currentPage === page}">
+							<a (click)="setPage(page, 'campaignViews')">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages}">
+							<a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages">Next</a>
+						</li>
+							<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages}">
+							<a (click)="setPage(userWatchBarchartPagination.pager.totalPages, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages">Last</a>
+						</li>
+					</ul>
+						<!-- pager end here -->
 			</div>
 			<div class="col-xs-12 col-sm-6">
 			<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
@@ -250,7 +269,7 @@ background-color:lightblue;
 						</div>
 					</div>
 					<div class="frst-timeline-content box">
-						<div class="frst-timeline-content-inner" style="background: none;">
+						<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
 							<span><h6 style="font-weight: bold">{{selectedRow.userEmail}}</h6></span> 
 							<span class="frst-date"></span>
 							<div class="row" style=" padding: 74px;margin: -73px;">
@@ -329,7 +348,7 @@ background-color:lightblue;
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x"> 
 									<a class="">
 										<div class="">
-											<span>TotalTimeSpent</span>
+											<span >Time Spent</span>
 											</div>
 											<div>
 											<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
@@ -351,7 +370,7 @@ background-color:lightblue;
 					</div>
 
 					<div class="frst-timeline-content">
-						<div class="frst-timeline-content-inner">
+						<div class="frst-timeline-content-inner" style="padding: 10px">
 							<b><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></b>
 							<h2>Campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h2>
 							<h5>Email published out to <b>{{selectedRow.userEmail}}</b></h5>
@@ -369,7 +388,7 @@ background-color:lightblue;
 					</div>
 
 					<div class="frst-timeline-content">
-						<div class="frst-timeline-content-inner">
+						<div class="frst-timeline-content-inner" style="padding:10px">
 							<h4>
 								<span *ngIf="emailLog.actionId == 13">Campaign Email Opened</span>
 								<span *ngIf="emailLog.actionId == 14">Email GIF Clicked</span>
