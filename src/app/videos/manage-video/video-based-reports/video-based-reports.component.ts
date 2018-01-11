@@ -41,6 +41,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     campaignViews: any;
     sortInnerDates = [];
     minutesinnerSort: any;
+    maxValueViews: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
         this.daySort = this.sortMonthDates[3];
@@ -254,13 +255,17 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             .subscribe((result: any) => {
                 console.log(result);
                 this.arrayValues = result;
+                const maxValue = [];
                 if(this.arrayValues.length>0){
                 for(let i=0;i< this.arrayValues.length; i++){
                     const hexColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].viewsColor);
                     const hexminutesColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].minutesWatchedColor);
                     this.arrayValues[i].viewsColor = hexColor;
                     this.arrayValues[i].minutesWatchedColor = hexminutesColor;
+                     maxValue.push(this.arrayValues[i].minutesWatched);
                  }
+                 this.maxValueViews = Math.max.apply(null, maxValue)
+                console.log(this.maxValueViews);
                 }
             },
             (error: any) => {
