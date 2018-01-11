@@ -81,7 +81,7 @@
 							</li>
 						</ul>
 					</li> -->
-					<li *ngIf="isOrgAdmin && authService.user.hasCompany" [ngClass]="{'active':  baseRoute === 'partners'}">
+					<li *ngIf="(isOrgAdmin && authService.user.hasCompany) || isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a  [routerLink]="['./partners']" >
 						<i class="fa fa-list-alt"></i>
 						<span class="title">Partners</span>

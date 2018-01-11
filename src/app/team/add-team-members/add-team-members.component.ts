@@ -281,7 +281,6 @@ export class AddTeamMembersComponent implements OnInit {
                         }else{
                             this.hideErrorMessage();
                         }
-                        
                     }
                     
                 }
@@ -293,7 +292,6 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
     validateEmailIdOnBlur(emailId:string){
-        alert("tab clikce");
     }
     
     
@@ -378,6 +376,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.stats = true;
         team.contact = true;
         team.socialShare = true;
+        team.partners = true;
 
     }
     removeAllRoles(team:TeamMember){
@@ -387,12 +386,13 @@ export class AddTeamMembersComponent implements OnInit {
         team.stats = false;
         team.contact = false;
         team.socialShare = false;
+        team.partners = false;
     }
     
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if(length==6){
+           if(length==7){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -469,7 +469,7 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-            if(headers.length==8){
+            if(headers.length==9){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
@@ -493,7 +493,7 @@ export class AddTeamMembersComponent implements OnInit {
       };
       
          validateHeaders(headers){
-          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE");
+          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
          }
       
       readCsvData(csvRecordsArray,rowLength){
@@ -593,6 +593,7 @@ export class AddTeamMembersComponent implements OnInit {
                   teamMember.stats = this.setDefaultValue(row[5]);
                   teamMember.emailTemplate = this.setDefaultValue(row[6]);
                   teamMember.socialShare = this.setDefaultValue(row[7]);
+                  teamMember.partners = this.setDefaultValue(row[8]);
               }
               this.teamMembers.push(teamMember);
           }

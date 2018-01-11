@@ -10,6 +10,7 @@ export class TeamMember{
     video:boolean = false;
     stats:boolean = false;
     socialShare:boolean = false;
+    partners:boolean = false;
     all:boolean = false;
     status:string;
     teamMemberId:number;

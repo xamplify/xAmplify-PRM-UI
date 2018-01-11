@@ -19,6 +19,7 @@ export class LeftsidebarComponent implements OnInit {
     isStats = false;
     isVideo = false;
     isOrgAdmin = false;
+    isPartner = false;
     roleName: Roles= new Roles();
     constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
         this.location = location;
@@ -61,11 +62,19 @@ export class LeftsidebarComponent implements OnInit {
             roles.indexOf(this.roleName.allRole) > -1) {
             this.isStats = true;
         }
+        
+        if (roles.indexOf(this.roleName.partnersRole) > -1 ||
+                roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                roles.indexOf(this.roleName.allRole) > -1) {
+                this.isPartner = true;
+            }
         if (roles.indexOf(this.roleName.videRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
             this.isVideo = true;
         }
+        
+        
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
             this.isOrgAdmin = true;
         }

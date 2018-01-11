@@ -133,6 +133,9 @@
 									<th class="rest-header">
 										<i class="fa fa-share-square-o" aria-hidden="true"></i><br>Social Share
 									</th>
+									<th class="rest-header">
+										<i class="fa fa-users" aria-hidden="true"></i><br>Partners
+									</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -147,6 +150,7 @@
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><em	class="fa fa-times"></em></a></td>
 							</tr>
 							</ng-container>
@@ -209,6 +213,9 @@
 									<th class="rest-header">
 										<i class="fa fa-share-square-o" aria-hidden="true"></i><br>Social Share
 									</th>
+									<th class="rest-header">
+										<i class="fa fa-users" aria-hidden="true"></i><br>Partners
+									</th>
 									<th *ngIf="pagination.totalRecords>0" (click)="deleteAll()">
 										<a style="color: black;"><i class="fa fa-trash" aria-hidden="true"></i><br>Delete</a>
 									</th>
@@ -226,6 +233,7 @@
 								<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 								<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 								<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
+								<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 								<td><a class="btn-sm" (click)="delete(teamMember)"><em	class="fa fa-times"></em></a></td>
 							</tr>
 							</ng-container>
