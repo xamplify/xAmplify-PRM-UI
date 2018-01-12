@@ -327,6 +327,13 @@ rotate
 														(click)="showAlert(contactList.id)" title="Delete List">
 														<i class="fa fa-trash mr5" style="font-size: 22px;color:red"></i>
 													</a>
+													<span *ngIf="contactList.synchronisedList == true">
+													<a title="sychronizeContactList"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
+															<i class="fa fa-refresh" aria-hidden="true" style="font-size: 22px;color:#0057a6"></i>
+														</a>
+													</span>
 												</td>
 											</tr>
 										</tbody>
