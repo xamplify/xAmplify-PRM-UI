@@ -798,7 +798,7 @@
 														</div>
 													<div class="mix-inner css" [class.template-selected]="emailTemplateId == selectedEmailTemplateRow">
 														<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="{{campaign.emailTemplate.name}}" id="emailtemplate-image">										
-														<div class="mix-details" id="mix-details">
+														<div class="mix-details" id="mix-details" style="height:199px">
 															<h4 class="ellipsis" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
 															<div style="top: 2%; position: relative; margin-left: 5px;">
 															</div>
@@ -836,8 +836,8 @@
 														</div>
 													<div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
 														<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">										
-														<div class="mix-details" id="mix-details">
-															<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+														<div class="mix-details" id="mix-details" style="height:199px">
+															<h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
 															<div style="top: 2%; position: relative; margin-left: 5px;">
 															</div>
 															<div id="template-action-div">
@@ -859,7 +859,7 @@
 																<b>{{emailTemplate.createdDate}}</b>
 													 		</span>
 													 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-													 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
+													 			<b  *ngIf="emailTemplate.createdBy?.length>15">{{emailTemplate.createdBy|slice:0:15}}...</b>
 																<b  *ngIf="emailTemplate.createdBy?.length<=20">{{emailTemplate.createdBy}}</b>
 													 		</span>
 													 		<span align="left" class="template-created-by-value"><b>Created By</b></span>

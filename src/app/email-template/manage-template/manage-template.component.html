@@ -134,7 +134,7 @@
 												<b>{{emailTemplate.createdDate}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-									 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
+									 			<b  *ngIf="emailTemplate.createdBy?.length>16">{{emailTemplate.createdBy|slice:0:16}}...</b>
 												<b  *ngIf="emailTemplate.createdBy?.length<=20">{{emailTemplate.createdBy}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-value"><b>Created By</b></span>
