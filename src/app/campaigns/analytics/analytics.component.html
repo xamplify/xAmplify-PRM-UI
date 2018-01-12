@@ -2,6 +2,25 @@
 .listTable tr:hover{
 background-color:lightblue;
 }
+.bg {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background-color:lightseagreen;
+		z-index: 0;
+		text-align: center;
+	}
+		.td-new,
+	th {
+		border: 1px solid #dddddd;
+		text-align: center;
+		padding: 2px;
+	}
+	.td-chart {
+		position: relative; 
+		}
+	
 </style>
 <div class="page-content" [hidden]="isTimeLineView">
 	<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
@@ -190,10 +209,13 @@ background-color:lightblue;
 								</thead>
 								<tbody>
 									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.userEmail)">
-										<td><h6>{{item.campaignName}}</h6></td>
-										<td><h6>{{item.userEmail}}</h6></td>
-										<td><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
-										<td><h6>{{item.viewsCount}}</h6></td>
+										<td class="td-new td-chart"><h6>{{item.campaignName}}</h6></td>
+										<td class="td-new td-chart"><h6>{{item.userEmail}}</h6></td>
+										<td class="td-new td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
+										<td  class="td-new td-chart">
+											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100">
+											<span style="text-align: center">{{item.viewsCount}}</span> </div>
+										</td>
 									</tr>
 								</tbody>
 							</table>

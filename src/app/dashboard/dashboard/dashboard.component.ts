@@ -272,7 +272,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         style: {
                             fontWeight: 'normal',
                             fontSize: '13px',
-                            color:'block'
+                            color:'block',
                         }
                         //  formatter: function() {
                         //     return this.point.options.name+"<br> "+this.point.options.value

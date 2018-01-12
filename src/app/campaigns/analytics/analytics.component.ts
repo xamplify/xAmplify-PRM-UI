@@ -39,7 +39,7 @@ export class AnalyticsComponent implements OnInit {
   campaignType: string;
   bubbleChartData: any;
   campaignId: number;
-
+  maxViewsValue: number;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, 
     private referenceService: ReferenceService) {
@@ -186,6 +186,7 @@ export class AnalyticsComponent implements OnInit {
         names.push(data.campaignviews[i].userEmail);
         views.push(data.campaignviews[i].viewsCount)
        }
+       this.maxViewsValue =  Math.max.apply(null, views);
        this.userWatchBarchartPagination.totalRecords = this.campaignReport.emailSentCount;
        this.userWatchBarchartPagination = this.pagerService.getPagedItems(this.userWatchBarchartPagination, data.campaignviews);
        console.log(this.userWatchBarchartPagination);
