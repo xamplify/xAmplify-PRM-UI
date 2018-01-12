@@ -254,9 +254,9 @@ background-color:lightblue;
 		</a>
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;" >
-				<span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span>
+				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span></div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
-				<span style="color: #7d7676; font-weight: bold;">User wise views count</span>
+				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">User wise views count</span></div>
 				<table id="trellis" style="min-width: 350px; max-width: 420px; height: 200px;">
 					<tr><td class="first"></td></tr>
 				</table>
@@ -292,7 +292,7 @@ background-color:lightblue;
 					</div>
 					<div class="frst-timeline-content box">
 						<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
-							<span><h6 style="font-weight: bold">{{selectedRow.userEmail}}</h6></span> 
+							<span><h6 style="font-weight: bold; margin-top:-2px;">{{selectedRow.userEmail}}</h6></span> 
 							<span class="frst-date"></span>
 							<div class="row" style=" padding: 74px;margin: -73px;">
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
