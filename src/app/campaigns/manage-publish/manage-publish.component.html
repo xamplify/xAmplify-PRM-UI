@@ -96,10 +96,12 @@
 									</td>
 									<td>{{campaign.createdDate}}</td>
 									<td>
+									<ng-container *ngIf="!campaign.launched">
 										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)" 
 											(click)="editCampaign(campaign.campaignId)" title="Edit Campaign" class='mr5'> 
 											<i class="fa fa-pencil-square-o" style="font-size: 22px;color:#1982dc"></i>
 										</a> 
+										</ng-container>
 										<ng-container *ngIf="campaign.launched">
 										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole)" data-rel="fancybox-button"
 										 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
