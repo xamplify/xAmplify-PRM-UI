@@ -1,4 +1,7 @@
 <style type="text/css">
+tspan.highcharts-text-outline{
+	fill: #000;
+}
 .social-profile-name{
     font-size: 13px;
     text-transform: uppercase;
@@ -383,10 +386,11 @@ margin:2px;
 			<div class="portlet light">
 				<div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo uppercase">Social Accounts</span>
+						<span class="caption-subject font-red-sunglo f-w-600">Social Accounts</span>
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
+					<div class="clearfix">
 					<section *ngFor="let socialConnection of socialConnections">
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="padding: 5px !important;"
 							*ngIf="socialConnection.source === 'TWITTER'">
@@ -461,143 +465,54 @@ margin:2px;
 							</div>
 						</div>
 					</section>				
+					</div>
+				<!--Gender Demographics-->
+				<div class="clearfix">
+					<div class="col-xs-6">
+						<div class="facebook-color text-right">
+							<div class="visual">
+								<i class="fa fa-male fa1"></i>
+							</div>
+							<div class="details">
+								<div class="number">
+									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+										<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+									</span>
+										<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="google-color text-left">
+							<div class="visual">
+								<i class="fa fa-female fa1"></i>
+							</div>
+							<div class="details">
+								<div class="number">
+									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+										<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+									</span>
+									<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>				
 				</div>
+
 			</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-4 col-xs-12"  *ngIf="socialConnections?.length > 0">
-			<div class="portlet light ">
-				<div class="portlet-title">
-					<div class="caption">
-						<i class="icon-equalizer font-purple-plum hide"></i> 
-						<span class="caption-subject font-red-sunglo uppercase">Gender Demographics</span>
-					</div>
-				</div>
-				<div class="portlet-body" style="min-height: 115px;">
-					<div class="clearfix" style="margin-top: 15px;">
-						<div class="col-xs-6">
-							<div class="facebook-color text-center">
-								<div class="visual">
-									<i class="fa fa-male fa1"></i>
-								</div>
-								<div class="details">
-									<div class="number">
-										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-											<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
-										</span>
-											<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
-											<h5>Male</h5>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-6">
-							<div class="google-color text-center">
-								<div class="visual">
-									<i class="fa fa-female fa1"></i>
-								</div>
-								<div class="details">
-									<div class="number">
-										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-											<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
-										</span>
-										<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
-										<h5>Female</h5>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-8 col-xs-12" *ngIf="socialConnections?.length > 0">
-			<div class="portlet light ">
-				<div class="portlet-title">
-					<div class="caption">
-						<i class="icon-cursor font-purple-intense hide"></i> 
-						<span class="caption-subject font-purple-intense uppercase">Social Followers</span>
-					</div>
-				</div>
-				<div class="portlet-body">
-					<div class="clearfix" style="margin-top: 15px;">
-						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-xs-4 col-sm-3" *ngIf="socialConnection.source == 'TWITTER'" style="padding: 5px;">
-								<a [routerLink]="['/home/social/twitter-followers', socialConnection.profileId]"
-									style="text-decoration: none;">
-									<div class="twitter-color text-center">
-										<div class="visual ">
-											<i class="fa fa-twitter fa1"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<h6 class="spn">{{socialConnection.profileName}}</h6>
-												<h6><span class="spn bold">{{socialConnection.twitterTotalFollowersCount}}</span> Followers</h6>
-											</div>
-										</div>
-									</div>
-								</a>
-							</div>
-						</section>
-						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-xs-4 col-sm-3" *ngIf="(socialConnection.source == 'FACEBOOK') && (socialConnection.emailId === null)" style="padding: 5px;">
-								<a [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]"
-									style="text-decoration: none;">
-									<div class="facebook-color text-center">
-										<div class="visual ">
-											<i class="fa fa-facebook fa1"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<h6 class="spn">{{socialConnection.profileName}}</h6>
-												<h6><span class="spn bold">{{socialConnection.facebookFanCount}}</span> Fans</h6>
-											</div>
-										</div>
-									</div>
-								</a>
-							</div>
-						</section>
-						<!-- 
-						<div class="col-xs-4 col-sm-3" style="padding: 5px;">
-							<div class="text-center google-color social-disable">
-								<div class="visual">
-									<i class="fa fa-google-plus fa1"></i>
-								</div>
-								<div class="details">
-									<div class="number">
-										<h4><b>100 K</b></h4>
-										<h5>Followers</h5>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-xs-4 col-sm-3" style="padding: 5px;">
-							<div class="text-center linkedin-color social-disable">
-								<div class="visual">
-									<i class="fa fa-linkedin fa1"></i>
-								</div>
-								<div class="details">
-									<div class="number">
-										<h4><b>1.3 K</b></h4>
-										<h5>Followers</h5>
-									</div>
-								</div>
-							</div>
-						</div>
-						 -->
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="clearfix"></div>
 		<div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
 				<div class="portlet-title">
 					<div class="caption flex">
 						<div class="col-xs-6">
-						<h4 *ngIf="totalCampaignsCount >= 4">Top 4 Campaigns</h4>
+						<span class="caption-subject font-red-sunglo f-w-600">Campaigns</span>
+						<!--<h4 *ngIf="totalCampaignsCount >= 4">Top 4 Campaigns</h4>
 						<h4 *ngIf="totalCampaignsCount < 4 && totalCampaignsCount > 1">Top {{totalCampaignsCount}} Campaigns</h4>
-						<h4 *ngIf="totalCampaignsCount === 1">Top {{totalCampaignsCount}} Campaign</h4>
+						<h4 *ngIf="totalCampaignsCount === 1">Top {{totalCampaignsCount}} Campaign</h4>-->
 						</div>
 						<div class="col-xs-6" style="padding: 5px 10px;" *ngIf="hasCampaignRole ">
 						<a><i style="font-size: 1.3em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
@@ -605,10 +520,10 @@ margin:2px;
 						</div>
 					</div>
 				</div>
-				<div class="portlet-body">
+				<div class="portlet-body clearfix">
 					<section *ngFor="let campaign of campaigns; let i=index">
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-							<div class="portlet light border-radius-0 campaign-div" [routerLink]="['/home/campaigns/', campaign[0], 'details']" [class.disabled]="!hasStatsRole ? true : null">
+							<div class="portlet light border-radius-0" [routerLink]="['/home/campaigns/', campaign[0], 'details']" [class.disabled]="!hasStatsRole ? true : null">
 								<div class="portlet-title">
 									<div class="caption">
 										<h3 class="caption-subject" style="margin: 0;color: #909090 !important;">
@@ -619,8 +534,8 @@ margin:2px;
 								<div class="portlet-body text-center">
 									<section class="percentage-circle">
 										<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
-											<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
-											<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12"
+											<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
+											<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5"
 												stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaign[3]/campaign[4])}"/>
 										</svg>
 										<h2 class="percentage-value">{{campaign[5]}}%</h2>
@@ -633,7 +548,7 @@ margin:2px;
 					</section>
 					<section>
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && hasCampaignRole">
-							<div class="portlet light border-radius-0 campaign-div" >
+							<div class="portlet light border-radius-0">
 								<div class="portlet-body">
 									<div class="text-center" style="margin: 3.7em 0.5em;">
 										<h5 style="color: rgb(119, 119, 119);">create campaign of your choice</h5>
@@ -645,62 +560,56 @@ margin:2px;
 						</div>
 					</section>
 				</div>
-
+<div class="clearfix">
+	<div class="col-xs-12 col-sm-6" style="padding: 0">
+			<div class="col-xs-12">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<span class="caption-subject">Email Statistics</span>
+					</div>
+					<div>
+						<div class="panel-title pull-right">
+								<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshHeatMapCharts()"></i></span>
+						</div>
+					</div>
 				</div>
-		<div class="clearfix"></div>
-		<!-- Dashboard heat map and bar charts -->
-				 <div >
-					<div class="col-xs-12 col-sm-6" style="padding: 0">
-							<div class="col-xs-12">
-							<div class="portlet light ">
-								<div class="portlet-title">
-									<div class="caption">
-										<span class="caption-subject font-red-sunglo uppercase">email statistics</span>
-								 	</div>
-									<div>
-										<div class="panel-title pull-right">
-											 <span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshHeatMapCharts()"></i></span>
-										</div>
-									</div>
-								</div>
-								<div class="portlet-body">
-									<div id="dashboard-heat-map" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
-								</div>
+				<div class="portlet-body">
+					<div id="dashboard-heat-map" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			<div class="col-xs-12 p0">
+				<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-bar-chart" ></i> 
+								<span class="caption-subject">Email Clicked Statistics</span>
 							</div>
+							<div>
+								<div class="panel-title pull-right">
+									<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i></span>
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6">
-							<div class="col-xs-12 p0">
-								<div class="portlet light ">
-										<div class="portlet-title">
-											<div class="caption">
-												<i class="fa fa-bar-chart" ></i> 
-												<span class="caption-subject font-red-sunglo uppercase">Email clicked statistics</span>
-											</div>
-											<div>
-												<div class="panel-title pull-right">
-													<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i></span>
-												</div>
-											</div>
-										</div>
-										<div class="portlet-body" style="min-height: 220px;  max-height: 100%; max-width: 100%">
-											<div class="table-responsive">
-											  <table id="trellis"><tr><td class="first"></td><td></td><td></td></tr></table> 
-										    </div>
-										</div>
-									</div>
+						<div class="portlet-body" style="min-height: 220px;  max-height: 100%; max-width: 100%">
+							<div class="table-responsive">
+								<table id="trellis"><tr><td class="first"></td><td></td><td></td></tr></table> 
 							</div>
 						</div>
-					</div> 
-				<!-- dashboard heat map and bar chart end -->
-	    <div class="clearfix"></div>
-		<div>
+					</div>
+			</div>
+		</div>
+</div>
+		<div class="clearfix">
 			<div class="col-md-6 col-sm-6">
 				<div class="portlet light ">
 					<div class="portlet-title">
 						<div class="caption">
 							<i class="fa fa-globe"></i> 
-							<span class="caption-subject font-red-sunglo uppercase">regional statistics</span>
+							<span class="caption-subject">Regional Statistics</span>
 						</div>
 					</div>
 					<div class="portlet-body">
@@ -709,12 +618,12 @@ margin:2px;
 				</div>
 			</div>
 			<div>
-				<div class="col-md-6 col-sm-6">
+				<div class="col-sm-6">
 					<div class="portlet light ">
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="fa fa-bar-chart" ></i> 
-								<span class="caption-subject font-red-sunglo uppercase">Video Stats</span>
+								<span class="caption-subject">Video Stats</span>
 							</div>
 							<div>
 							 <div class="panel-title pull-right">
@@ -753,12 +662,12 @@ margin:2px;
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-sm-6">
+				<div class="col-sm-6">
 					<div class="portlet light ">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="icon-cursor font-purple-intense hide"></i> 
-								<span class="caption-subject font-purple-intense uppercase">Email Stats</span>
+								<i class="icon-cursor font-purple-intense"></i> 
+								<span class="caption-subject">Email Stats</span>
 							</div>
 						</div>
 						<div class="portlet-body">
@@ -806,13 +715,12 @@ margin:2px;
 						</div>
 					</div>
 				</div>
-
 			</div>
 			<div class="portlet-body form" style="margin-top: 5px;">
 				<div style="padding-bottom: 0px; padding-top: 10px;"></div>
 			</div>
-
 		</div>
+				</div>
 	</div>
 </div>
 <div class="modal fade" id="emailOpenedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">

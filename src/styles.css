@@ -162,12 +162,12 @@ nav a.active {
 .percentage-circle>.percentage-value {
 	margin: -3em 0 0 0;
 	font-weight: 600;
-	color: #00b3b3;
+	color: #54a7e9;
 }
 
 .percentage-circle>.percentage-text {
 	margin: 0;
-	color: #00b3b3;
+	color: #54a7e9;
 }
 .fa-linkedin-color {
 	color: #007bb5;
@@ -280,7 +280,7 @@ nav a.active {
 
 .portlet.light, 
 .dashboard-stat2 {
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) !important;
 }
 
 .ellipsis {
