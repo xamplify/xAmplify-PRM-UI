@@ -1573,7 +1573,7 @@ ngOnInit() {
             url: URL + "userlist/" + this.selectedContactListId + "/update?&access_token=" + this.authenticationService.access_token
         });
         this.uploader.onBuildItemForm = function( fileItem: any, form: FormData ) {
-            form.append( 'userListId', self.selectedContactListId );
+            form.append( 'userListId', this.selectedContactListId );
             return { fileItem, form }
         };
         try {
