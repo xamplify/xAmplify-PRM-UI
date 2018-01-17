@@ -44,16 +44,14 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li *ngIf="hasVideoRole || (authenticationService.user.hasCompany &&isOrgAdmin)" style="margin-top: 10px;margin-right: 25px;"><!-- refService.hasCompany -->
-					<a class="btn btn-warning2" routerLink="/home/videos" style="padding: 10px 10px;margin-right: -15px;position:relative;border-radius:6px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);background-color: #00a6e8;color: white;">
+					<li *ngIf="hasVideoRole || (authenticationService.user.hasCompany &&isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;"><!-- refService.hasCompany -->
+					<a class="btn btn-header" routerLink="/home/videos">
 					Upload Video
 					<i class="fa fa-upload" data-toggle="tooltip"></i>
 					</a>
 					</li>
-					<li style="margin-top: 10px;margin-right: 50px;"  *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)"><!-- *ngIf="refService.hasCompany" -->
-				        <a class="btn btn-warning2" routerLink="/home/social/update-status"
-						style="padding: 10px 10px; margin-right: -15px; position: relative; border-radius: 6px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.4); background-color: #00a6e8; color: white;">Update
-							Status <i class="fa fa-share" data-toggle="tooltip"></i>
+					<li style="margin-top: 17px;margin-right: 25px;"  *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)"><!-- *ngIf="refService.hasCompany" -->
+				        <a class="btn btn-header" routerLink="/home/social/update-status">Update Status <i class="fa fa-share" data-toggle="tooltip"></i>
 						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->

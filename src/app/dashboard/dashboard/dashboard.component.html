@@ -308,7 +308,7 @@ margin:2px;
 	<!-- BEGIN DASHBOARD STATS -->
 	<div class="row">
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft"
+			<a class="dashboard-stat dashboard-stat-lighter red-soft"
 				[routerLink]="['./views_report']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-eye"></i>
@@ -320,7 +320,7 @@ margin:2px;
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter red-soft"
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold"
 				[routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-cloud-upload"></i>
@@ -333,7 +333,7 @@ margin:2px;
 		</div>
 
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold"
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
 				[routerLink]="['../../contacts/manage']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
@@ -345,7 +345,7 @@ margin:2px;
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft"
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft"
 				[routerLink]="['../../emailtemplates']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-smile-o"></i>
@@ -357,7 +357,7 @@ margin:2px;
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter blue-sharp"
+			<a class="dashboard-stat dashboard-stat-lighter green-soft"
 				[routerLink]="['../../campaigns/manage']" [class.disabled]="!hasStatsRole ? true : null">
 				<div class="visual">
 					<i class="fa fa-user-secret"></i>
@@ -369,7 +369,7 @@ margin:2px;
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6" [class.disabled]="!hasSocialStatusRole?true:null">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft"
+			<a class="dashboard-stat dashboard-stat-lighter blue-sharp"
 				[routerLink]="['/home/social/manage/all']">
 				<div class="visual">
 					<i class="fa fa-share"></i>
@@ -383,7 +383,7 @@ margin:2px;
 	</div>
 	<!-- END DASHBOARD STATS -->
 	<div class="clearfix" *ngIf="socialConnections?.length > 0">
-			<div class="portlet light">
+			<div class="portlet light shadow">
 				<div class="portlet-title">
 					<div class="caption">
 						<span class="caption-subject font-red-sunglo f-w-600">Social Accounts</span>
@@ -468,10 +468,11 @@ margin:2px;
 					</div>
 				<!--Gender Demographics-->
 				<div class="clearfix">
+					<h4 class="gd-title">Gender Demographics</h4>
 					<div class="col-xs-6">
 						<div class="facebook-color text-right">
 							<div class="visual">
-								<i class="fa fa-male fa1"></i>
+								<span class="gd-male"><i class="fa fa-male fa1"></i></span>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -486,7 +487,7 @@ margin:2px;
 					<div class="col-xs-6">
 						<div class="google-color text-left">
 							<div class="visual">
-								<i class="fa fa-female fa1"></i>
+								<span class="gd-female"><i class="fa fa-female fa1"></i></span>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -505,7 +506,7 @@ margin:2px;
 	</div>
 	<div class="row">
 		<div class="clearfix"></div>
-		<div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
+		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
 				<div class="portlet-title">
 					<div class="caption flex">
 						<div class="col-xs-6">
@@ -563,7 +564,7 @@ margin:2px;
 <div class="clearfix">
 	<div class="col-xs-12 col-sm-6" style="padding: 0">
 			<div class="col-xs-12">
-			<div class="portlet light ">
+			<div class="portlet light">
 				<div class="portlet-title">
 					<div class="caption">
 						<span class="caption-subject">Email Statistics</span>
@@ -582,7 +583,7 @@ margin:2px;
 		</div>
 		<div class="col-xs-12 col-sm-6">
 			<div class="col-xs-12 p0">
-				<div class="portlet light ">
+				<div class="portlet light">
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="fa fa-bar-chart" ></i> 
@@ -605,7 +606,7 @@ margin:2px;
 </div>
 		<div class="clearfix">
 			<div class="col-md-6 col-sm-6">
-				<div class="portlet light ">
+				<div class="portlet light">
 					<div class="portlet-title">
 						<div class="caption">
 							<i class="fa fa-globe"></i> 
@@ -619,7 +620,7 @@ margin:2px;
 			</div>
 			<div>
 				<div class="col-sm-6">
-					<div class="portlet light ">
+					<div class="portlet light">
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="fa fa-bar-chart" ></i> 
@@ -663,7 +664,7 @@ margin:2px;
 					</div>
 				</div>
 				<div class="col-sm-6">
-					<div class="portlet light ">
+					<div class="portlet light">
 						<div class="portlet-title">
 							<div class="caption">
 								<i class="icon-cursor font-purple-intense"></i> 

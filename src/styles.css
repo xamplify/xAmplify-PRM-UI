@@ -278,11 +278,9 @@ nav a.active {
 .pl20{ padding-left: 20px; }
 .pr20{ padding-right: 20px; }
 
-.portlet.light, 
-.dashboard-stat2 {
-	box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) !important;
+.portlet.light, .dashboard-stat2 {
+	border: 1px solid #CCC;
 }
-
 .ellipsis {
 	width: 100%;
 	overflow: hidden;
@@ -419,4 +417,25 @@ tr.highlight {
 
 :host /deep/ .vjs-video-notice-label .vjs-hidden { 
    display: block !important;
+}
+
+
+/* CSS Added Nagesh */
+.portlet.light > .portlet-title > .caption {
+    padding: 10px 0 !important;
+}
+
+.portlet.light > .portlet-title > .caption > .caption-subject {
+     font-size:18px !important;
+}
+.gd-title{text-align: center;	font-weight: 500;	color: #4d4d4f;	margin-bottom: 25px;}
+.gd-male{ background:#54a7e9; border-radius:50%; height:50px; width:50px; color:#FFF;display: block; float: right; text-align: center;}
+.gd-male i { margin-top: 15px}
+.gd-female { background:red; border-radius:50%; height:50px; width:50px; color:#FFF;display: block; float: left; text-align: center;}
+.gd-female i { margin-top: 15px}
+.visual{height: 50px}
+.shadow {
+  -webkit-box-shadow: 0 1px 10px 0 #777 !important;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    0 1px 10px 0 #777 !important;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         0 1px 10px 0 #777 !important;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }

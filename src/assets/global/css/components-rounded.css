@@ -375,11 +375,11 @@ body {
   margin-top: -20px;
 }
 .form-group.form-md-line-input .input-group .input-group-btn .btn {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .form-group.form-md-line-input .input-group .input-group-btn.btn-left .btn {
   margin-right: 10px;
@@ -2631,11 +2631,11 @@ Dropdown Menu
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
   border: 1px solid #eee;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .dropdown-menu li.divider {
   background: #f1f3f6;
@@ -3349,11 +3349,11 @@ Forms
   border: 1px solid #e5e5e5;
   box-shadow: none;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .form-control:focus {
   border-color: #999;
@@ -3992,11 +3992,11 @@ UI Loading
 .loading-message.loading-message-boxed {
   border: 1px solid #ddd;
   background-color: #eee;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
@@ -4007,11 +4007,11 @@ UI Loading
 }
 
 .page-loading {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -4590,11 +4590,11 @@ Portlets
   margin-top: 0px;
   margin-bottom: 10px;
   padding: 0px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .portlet.portlet-fullscreen {
   z-index: 10060;
@@ -4901,7 +4901,6 @@ Portlets
 .portlet.light {
   padding: 5px 5px 10px 10px;
   background-color: #fff;
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
 }
 .portlet.light.bordered {
   border: 1px solid #e1e1e1 !important;
@@ -5094,11 +5093,11 @@ Dashboard Stats
   display: block;
   margin-bottom: 25px;
   overflow: hidden;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .dashboard-stat:before, .dashboard-stat:after {
   content: " ";
@@ -5201,15 +5200,14 @@ Dashboard Stats
 Dashboard Stats 2
 ***/
 .dashboard-stat2 {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background: #fff;
   padding: 15px 15px 1px 15px;
   margin-bottom: 20px;
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
 }
 .dashboard-stat2 .display {
   margin-bottom: 0px;
@@ -6172,11 +6170,11 @@ Customized Bootstrap Tabs
   border-bottom-color: transparent;
 }
 .tabs-below > .nav-tabs > li > a .dropdown-menu {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 .tabs-below > .nav-tabs .active a,
 .tabs-below > .nav-tabs .active a:hover
