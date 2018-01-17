@@ -243,21 +243,6 @@ img:hover {
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Danger!</strong>{{Campaign}}
 						</div>
-						<!-- <div *ngIf="unlinkGoogleSuccessMessage" id="googleSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Google Account successfully
-							Removed.
-						</div>
-						<div *ngIf="unlinkSalesforceSuccessMessage"
-							id="salesforceSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Salesforce Account successfully
-							Removed.
-						</div>
-						<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Zoho Account successfully Removed.
-						</div> -->
 						<div *ngIf="zohoAuthStorageError"
 							class="col-xs-12 alert alert-danger">
 							<span>{{zohoAuthStorageError}}</span>
@@ -292,10 +277,6 @@ img:hover {
 											id="google-contacts-table">
 											<thead>
 												<tr>
-													<!-- <td align="center"><input type="checkbox"
-														id="select_all_google_contacts"
-														(change)="selectAllGoogleContacts($event.target.checked)"
-														checked=true></td> -->
 														<td align="center"><input
 															type="checkbox" name="all"
 															[(ngModel)]="isHeaderCheckBoxChecked"
@@ -308,11 +289,6 @@ img:hover {
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index" class='row_{{i}}'>
-													<!-- <td align="center"><input type="checkbox"
-														name="selectedUserIds" id="row_{{user.id}}"
-														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
-														[(ngModel)]="user.checked"
-														(change)="selectGoogleContact($event.target.checked)"></td> -->
 														<td align="center"><input
 															type="checkbox"
 															[checked]="selectedContactListIds.indexOf(user.id)>-1"

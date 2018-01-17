@@ -729,6 +729,7 @@ margin:2px;
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						 <h4 align="center">People who opened Emails</h4>
+     						 <button (click)="download()">export to excel</button>
      						 </div>
      					 <div class="modal-body clearfix">
      					 	<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width:100%">

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import { SocialConnection } from '../../social/models/social-connection';
 import { Campaign } from '../../campaigns/models/campaign';
@@ -29,7 +30,7 @@ declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcha
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService, Pagination]
+    providers: [DashboardService, Pagination, DatePipe]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -56,6 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapData: any;
     maxBarChartNumber: number;
     isMaxBarChartNumber = true;
+    downloadDataList = [];
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
     { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
     daySort: any;
@@ -64,7 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public facebookService: FacebookService, public socialService: SocialService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public campaignService: CampaignService, public referenceService: ReferenceService,
-        public pagerService: PagerService, public xtremandLogger: XtremandLogger) {
+        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
@@ -707,6 +709,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
             });
     }
+    
     getCampaignsHeatMapData() {
         this.dashboardService.getCampaignsHeatMapDetails().
             subscribe(result => {
@@ -723,6 +726,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // this.xtremandLogger.errorPage(error);
             });
     }
+    
     heatMapformatDateTime(){
         if(this.heatMapData.length>0){
         for(let i=0; i<this.heatMapData.length; i++){
@@ -761,6 +765,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // this.xtremandLogger.errorPage(error);
             });
     }
+        
     getVideoStatesSparklineChartsInfo(daysCount) {
         this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => {
@@ -777,21 +782,88 @@ export class DashboardComponent implements OnInit, OnDestroy {
             });
 
     }
+    
     selectedSortByValue(event: any) {
         console.log(event);
         this.referenceService.daySortValue = event;
         this.getVideoStatesSparklineChartsInfo(event);
     }
+    
     refreshCampaignBarcharts() {
         this.getUserCampaignReport(this.loggedInUserId);
     }
+    
     refreshHeatMapCharts() {
         this.getCampaignsHeatMapData();
     }
+    
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
+        this.downloadDataList.length = 0;
     }
+    
+    ConvertToCSV(objArray) {
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+          var str = '';
+        var row = "";
+
+        for (var index in objArray[0]) {
+            //Now convert each value to string and comma-separated
+            row += index + ',';
+        }
+        row = row.slice(0, -1);
+        //append Label row with line break
+        str += row + '\r\n';
+
+        for (var i = 0; i < array.length; i++) {
+            var line = '';
+            for (var index in array[i]) {
+                if (line != '') line += ','
+
+                line += array[i][index];
+            }
+            str += line + '\r\n';
+        }
+        return str;
+    }
+    
+    download(){    
+        
+        for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
+            this.transformDate(this.dashboardReport.emailOpenedList[i].time);
+            let date=new Date(this.dashboardReport.emailOpenedList[i].time);
+           // alert('above '+ date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+            var object = {
+                    "EmailId": this.dashboardReport.emailOpenedList[i].emailId,
+                    "First Name": this.dashboardReport.emailOpenedList[i].firstName,
+                    "Last Name": this.dashboardReport.emailOpenedList[i].lastName,
+                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
+                    "Campaign Name": this.dashboardReport.emailOpenedList[i].campaignName
+            }
+            //alert('date '+(new Date(this.dashboardReport.emailOpenedList[i].time)| 'MM/dd/yyyy @ h:mma'));
+            this.downloadDataList.push(object);
+        }
+        
+        //this.dashboardReport.emailOpenedList.time |date:'MM/dd/yyyy @ h:mma';
+        var csvData = this.ConvertToCSV(this.downloadDataList);
+                               var a = document.createElement("a");
+                               a.setAttribute('style', 'display:none;');
+                               document.body.appendChild(a);
+                               var blob = new Blob([csvData], { type: 'text/csv' });
+                               var url= window.URL.createObjectURL(blob);
+                               a.href = url;
+                               a.download = 'User_Results.csv';/* your file name*/
+                               a.click();
+                               return 'success';
+       }
+    
+    transformDate(date) {
+        for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
+           this.datePipe.transform(this.dashboardReport.emailOpenedList.time, 'MM/dd/yyyy @ h:mma');
+        }
+      }
+    
     ngOnInit() {
         try {
             this.dashboardReportsCount();
