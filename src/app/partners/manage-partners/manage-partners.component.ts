@@ -74,7 +74,6 @@ export class ManagePartnersComponent implements OnInit {
     isUnLinkSocialNetwork: boolean = false;
     Campaign: string;
     deleteErrorMessage: boolean;
-    emptyPartnerList: boolean = false;
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -367,12 +366,6 @@ export class ManagePartnersComponent implements OnInit {
             ( data: any ) => {
                 this.partners = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
-                if ( this.partners.length == 0 ) {
-                    this.emptyPartnerList = true;
-                }
-                else {
-                    this.emptyPartnerList = false;
-                }
                 this.referenceService.loading( this.httpRequestLoader, false );
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.partners );

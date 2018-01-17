@@ -426,13 +426,13 @@ img:hover {
 								</div>
 									<div class="clearfix">
 										<div class="col-xs-12" style="margin-top: 8px;">
-										<div *ngIf = "emptyPartnerList" id="showDeleteMessage"
+										<div *ngIf = "pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0"
 												class="alert alert-info alert-dismissable">
 												No Partners Found..
 										</div>
 											<div class="table-responsive">
 												<table class='table tgrid'>
-													<thead>
+													<thead *ngIf="pagination.pagedItems?.length != 0">
 														<tr>
 															<th style="width: 25%; text-align: center;">NAME</th>
 															<th>CONTACT</th>
@@ -604,7 +604,7 @@ img:hover {
 								</li>
 							</ul>
 							<div class="btn-group pull-right"
-								style="left: -4px;">
+								style="left: -4px;" *ngIf="pagination.pagedItems?.length != 0">
 								<select class="form-control"
 									[(ngModel)]="sortOptionForPagination"
 									(ngModelChange)="onChangeAllPartnerUsers($event)">
