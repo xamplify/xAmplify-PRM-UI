@@ -277,7 +277,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
             .subscribe((result: any) => {
                 console.log(result);
-                this.monthlyViewsBarCharts(result.dates, result.views)
+                this.monthlyViewsBarCharts(result.dates, result.views);
             },
             (error: any) => {
                 this.xtremandLogger.error(error);

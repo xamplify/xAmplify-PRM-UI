@@ -40,6 +40,8 @@ background-color:lightblue;
 					<div class="caption">
 						<span class="caption-subject font-red-sunglo">VIEWERSHIP MAP</span>
 					</div>
+					<div><span style="float: right;font-size: 14px;font-weight: 800;color: #00a6e8;margin-right: 7px;">{{campaignType}}</span>
+				</div>
 				</div>
 				<div class="portlet-body text-center">
 					<div id="world-map" style="max-width: 100%; min-height: 292px;"></div>
@@ -52,7 +54,7 @@ background-color:lightblue;
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
-						<h3>{{campaign.campaignName}}</h3>
+						<h3>{{campaign.campaignName}}<span style="float: right;font-size: 14px;font-weight: 800;margin-top: -22px;color: #00a6e8;">{{campaignType}}</span></h3>
 						<h5 class="text-info" style="margin-bottom: 24px;">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 				</div>
@@ -257,10 +259,8 @@ background-color:lightblue;
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span></div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">User wise views count</span></div>
-				<table id="trellis" style="min-width: 350px; max-width: 420px; height: 200px;">
-					<tr><td class="first"></td></tr>
-				</table>
-					<!--pager here  -->
+				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 300px; margin: 0 auto"></div>
+				<!--pager here  -->
 					<ul *ngIf="userWatchBarchartPagination.pager.pages && userWatchBarchartPagination.pager.pages.length" class="pagination">
 						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === 1}">
 							<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="userWatchBarchartPagination.pager.currentPage === 1">First</a>
@@ -292,95 +292,61 @@ background-color:lightblue;
 					</div>
 					<div class="frst-timeline-content box">
 						<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
-							<span><h6 style="font-weight: bold; margin-top:-2px;">{{selectedRow.userEmail}}</h6></span> 
+							<span><h6 style="font-weight: bold; margin-top:-2px;font-size: 13px;">{{selectedRow.userEmail}}</h6></span> 
 							<span class="frst-date"></span>
 							<div class="row" style=" padding: 74px;margin: -73px;">
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									<!-- <a class="dashboard-stat dashboard-stat-v2 blue">
-										<div class="visual">
-											<i class="fa fa-comments"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<span data-counter="counterup">{{userCampaignReport.emailOpenCount}}</span>
-											</div>
-											<div class="desc">Open</div>
-										</div>
-									</a> -->
 									   <a class="">
-										<div class="">
+										<div style="text-align: center">
+											<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
+										</div>
+										 <div class="">
 											<span>Email Opened</span>
 											</div>
-											<div>
-											<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
-											</div>
-										<div class="number">
+										<div class="number" style="text-align: center">
 											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
 										</div>
                                       </a>
 								</div>
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									 <!-- <a class="dashboard-stat dashboard-stat-v2 red">
-										<div class="visual">
-											<i class="fa fa-bar-chart-o"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<span data-counter="counterup">{{userCampaignReport.emailClickedCount}}</span>
-											</div>
-											<div class="desc">Clicked</div>
-										</div>
-									</a>  -->
 									 <a class="">
+										<div style="text-align: center">
+											<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
+										</div>
 										<div class="">
 											<span>Email Clicked</span>
-											</div>
-											<div>
-											<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
-											</div>
-										<div class="number">
+										</div>
+										<div class="number" style="text-align: center">
 											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
 										</div>
                                       </a>
 								</div>
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									<!-- <a class="dashboard-stat dashboard-stat-v2 purple">
-										<div class="visual">
-											<i class="fa fa-globe"></i>
-										</div>
-										<div class="details">
-											<div class="number">
-												<span data-counter="counterup">{{userCampaignReport.totalUniqueWatchCount}}</span>
-											</div>
-											<div class="desc">watched</div>
-										</div>
-									</a> -->
 									 <a class="">
+										<div style="text-align: center">
+											<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
+										</div>
 										<div class="">
 											<span>Video watched</span>
 											</div>
-											<div>
-											<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
-											</div>
-										<div class="number">
+										<div class="number" style="text-align: center">
 											<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
 										</div>
                                       </a>
 								</div>
 								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x"> 
 									<a class="">
-										<div class="">
-											<span >Time Spent</span>
-											</div>
-											<div>
+										<div style="text-align: center">
 											<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
-											</div>
-										<div class="number">
-											<span data-counter="counterup" style="margin: 0 33px;">#</span>
+										</div>
+										<div style="text-align: center;">
+											<span >Time Spent</span>
+										</div>
+										<div class="number" style="text-align: center">
+											<span data-counter="counterup" style="margin: 0 33px;">0</span>
 										</div>
                                       </a>
 									</div>
-
 							</div>
 						</div>
 					</div>

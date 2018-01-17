@@ -24,11 +24,11 @@ export class BubbleChartComponent implements OnInit {
         }
 
         bubbleChart(names,legends, values) {
-                Highcharts.chart('container', {
+                Highcharts.chart('bubble-chart', {
 
                         chart: {
                                 type: 'bubble',
-                                plotBorderWidth: 0,
+                                plotBorderWidth: 1,
                                 zoomType: 'xy'
                         },
                         title: {
@@ -57,6 +57,7 @@ export class BubbleChartComponent implements OnInit {
                                 // verticalAlign: 'top',
                                 // floating: false,
                                 // backgroundColor: 'transparent'
+                                // 2nd one //
                                 enabled:true,
                                 layout: 'vertical',
                                 backgroundColor: '#FFFFFF',

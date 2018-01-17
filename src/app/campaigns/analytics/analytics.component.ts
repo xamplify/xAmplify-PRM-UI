@@ -37,7 +37,6 @@ export class AnalyticsComponent implements OnInit {
 
   socialStatus: SocialStatus;
   campaignType: string;
-  bubbleChartData: any;
   campaignId: number;
   maxViewsValue: number;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -106,75 +105,63 @@ export class AnalyticsComponent implements OnInit {
       () => console.log()
       )
   }
- campaignViewsbarCharts(names, data){
-       const maxValue = Math.max.apply(null, data);
-        const charts = [],
-            $containers = $('#trellis td'),
-            datasets = [ { name: ' ', data: data}];
-          $.each(datasets, function (i, dataset) {
-            charts.push(new Highcharts.Chart({
-                chart: {
-                    renderTo: $containers[i],
-                    type: 'bar',
-                    marginLeft: i === 0 ? 100 : 10
-                },
+ campaignViewsCountBarchart( names, data){
+  const maxValue = Math.max.apply(null, data);
+   Highcharts.chart('campaign-views-barchart', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: ' '
+            },
+            xAxis: {
+                categories: names,
                 title: {
-                    text: dataset.name,
-                    align: 'left',
-                    x: i === 0 ? 90 : 0,
-                    style: {
-                        color: '#696666',
-                        fontWeight: 'normal',
-                        fontSize: '13px'
-                    }
+                    text: null
                 },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true,
-                        },
-                        minPointLength: 3
-                    }
-                },
-                colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
-                credits: {
-                    enabled: false
-                },
-                xAxis: {
-                    categories: names,
-                    labels: {
-                        enabled: i === 0,
-                         rotation: 0,
+                  lineWidth: 0,
+                  minorGridLineWidth: 0,
+                  lineColor: 'transparent',
+                  minorTickLength: 0,
+                  tickLength: 0
+            },
+            exporting: { enabled: false },
+            credits: { enabled: false },
+            yAxis: {
+              min: 0,
+             // max: maxValue,
+              visible: false
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+           plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
                     },
-                    // lineWidth: 0,
-                    // minorGridLineWidth: 0,
-                    // lineColor: 'transparent',
-                    // minorTickLength: 0,
-                    // tickLength: 0,
-                },
-                exporting: { enabled: false },
-                yAxis: {
-                    allowDecimals: false,
-                    visible: false,
-                    title: {
-                        text: null
-                    },
-                    min: 0,
-                    max: maxValue
-                },
-                legend: {
-                    enabled: false
-                },
-                labels: {
-                    style: {
-                        color: 'white',
-                        fontSize: '25px'
-                    }
-                },
-                series: [dataset]
-            }));
+                    minPointLength: 3,
+                    allowOverlap: true,
+                }
+               },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            series: [ {
+                showInLegend: false,
+                name: 'views',
+                data: data
+            }]
         });
- }
+ }   
  getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination){
     this.campaignService.listCampaignViews(campaignId,pagination)
       .subscribe(
@@ -190,7 +177,7 @@ export class AnalyticsComponent implements OnInit {
        this.userWatchBarchartPagination.totalRecords = this.campaignReport.emailSentCount;
        this.userWatchBarchartPagination = this.pagerService.getPagedItems(this.userWatchBarchartPagination, data.campaignviews);
        console.log(this.userWatchBarchartPagination);
-       this.campaignViewsbarCharts(names, views);
+      this.campaignViewsCountBarchart(names, views);
       },
       error => console.log(error),
       () => console.log()
@@ -388,6 +375,7 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaign = data;
+        console.log(this.campaign);
       },
       error => console.log(error),
       () => {
