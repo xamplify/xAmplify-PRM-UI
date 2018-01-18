@@ -2,7 +2,7 @@ import { Component, OnInit,OnDestroy} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -20,7 +20,7 @@ export class SelectCampaignTypeComponent implements OnInit{
     roleName:Roles=new Roles();
     hasSocialStatusRole:boolean = false;
     isOrgAdmin:boolean = false;
-    constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:Logger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
+    constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:XtremandLogger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
         this.logger.info("select-campaign-type constructor loaded");
         let roles = this.authenticationService.getRoles();
         if(roles.indexOf(this.roleName.socialShare)>-1|| roles.indexOf(this.roleName.allRole)>-1){

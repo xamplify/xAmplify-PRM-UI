@@ -7,7 +7,7 @@ import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import {AuthenticationService} from '../../core/services/authentication.service';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic , Layout , Demo, swal , Portfolio: any;
 @Component({
   selector: 'app-select-template',
@@ -26,7 +26,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: Logger,private refService:ReferenceService) {
+        private logger: XtremandLogger,private refService:ReferenceService) {
 
      }
      

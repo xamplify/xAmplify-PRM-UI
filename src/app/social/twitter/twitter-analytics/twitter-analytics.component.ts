@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 
 import { TwitterProfile } from '../../models/twitter-profile';
 import { KloutScore } from '../../models/klout-score';
@@ -40,7 +40,7 @@ export class TwitterAnalyticsComponent implements OnInit {
     socialConnection: SocialConnection;
     userId: number;
 
-    constructor( private route: ActivatedRoute, private twitterService: TwitterService, private logger: Logger,
+    constructor( private route: ActivatedRoute, private twitterService: TwitterService, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, private socialService: SocialService ) { }
 
     getAnalytics( socialConnection: SocialConnection ) {

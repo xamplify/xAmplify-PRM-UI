@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../../contacts/services/contact.service';
 import { Pagination } from '../../core/models/pagination';
 import { DashboardService } from '../dashboard.service';
-import { Logger } from 'angular2-logger/core';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ContactList } from '../../contacts/models/contact-list';
 
@@ -33,7 +33,7 @@ sortContactUsers = [
             public contactsUsersSort: any = this.sortContactUsers[0];
 
 constructor(private dashboardService: DashboardService,public pagination: Pagination,private contactService: ContactService,
-      private pagerService: PagerService,private logger: Logger) { 
+      private pagerService: PagerService,private logger: XtremandLogger) { 
   this.allFollowers = new Array<ContactList>();
 }
 

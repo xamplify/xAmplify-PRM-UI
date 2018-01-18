@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Logger} from 'angular2-logger/core';
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import {SaveVideoFile} from '../../../videos/models/save-video-file';
 
 import {SocialStatusDto} from '../../models/social-status-dto';
@@ -53,7 +53,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     private facebookService: FacebookService, private videoFileService: VideoFileService,
     private authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
-    private logger: Logger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute) {
+    private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute) {
 
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();

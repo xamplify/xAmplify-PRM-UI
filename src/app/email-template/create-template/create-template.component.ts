@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
-import { Logger } from 'angular2-logger/core';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
