@@ -25,6 +25,7 @@ export class AnalyticsComponent implements OnInit {
   selectedRow: any = new Object();
   videoLength: number;
   campaignViews: any;
+  campaignBarViews: any;
   countryWiseCampaignViews: any;
   emailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
@@ -53,6 +54,7 @@ export class AnalyticsComponent implements OnInit {
   showTimeline() {
     this.isTimeLineView = !this.isTimeLineView;
   }
+  
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
     this.campaignService.listCampaignViews(campaignId, pagination)
@@ -107,6 +109,7 @@ export class AnalyticsComponent implements OnInit {
   }
  campaignViewsCountBarchart( names, data){
   const maxValue = Math.max.apply(null, data);
+  const self = this;
    Highcharts.chart('campaign-views-barchart', {
             chart: {
                 type: 'bar'
@@ -142,7 +145,16 @@ export class AnalyticsComponent implements OnInit {
                     },
                     minPointLength: 3,
                     allowOverlap: true,
-                }
+                },
+                 series: {
+                    cursor: 'pointer',
+                    events: {
+                    click: function (e) { 
+                     //   alert(e.point.category+', views:'+e.point.y);
+                      self.userWatchedviewsInfo(e.point.category);
+                    }
+                   }
+                 }
                },
             legend: {
                 layout: 'vertical',
@@ -167,6 +179,7 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
        console.log(data);
+       this.campaignBarViews = data.campaignviews;
        const names = [];
        const views = [];
        for(let i=0; i<data.campaignviews.length; i++){
@@ -341,6 +354,7 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.emailLogs = data;
+        console.log(data);
       },
       error => console.log(error),
       () => {
@@ -368,7 +382,13 @@ export class AnalyticsComponent implements OnInit {
     this.selectedRow.userEmail = emailId;
     this.isTimeLineView = !this.isTimeLineView;
   }
-
+  userWatchedviewsInfo(emailId: string){
+    const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
+    console.log(obj.campaignId +' user id is '+obj.userId+'email id '+ obj.userEmail);
+    this.userTimeline(obj.campaignId, obj.userId,obj.userEmail);
+    this.isTimeLineView = true;
+  }
+   
   getCampaignById(campaignId: number) {
     const obj = {'campaignId': campaignId}
     this.campaignService.getCampaignById(obj)
