@@ -17,6 +17,7 @@
 	}
 	.td-chart {
 		position: relative;
+		cursor: pointer;
 	}
 
 	.bg {
@@ -136,8 +137,8 @@
 						</tr>
 						</thead>
 					   <tbody>
-					    <ng-container *ngFor="let videoViews of arrayValues; let i = index">  
-							<tr>
+					    <ng-container *ngFor="let videoViews of viewsMinutesData; let i = index">  
+							<tr (click)="clickedMinutesWatched(videoViews)">
 								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
 								<td class="td-new td-chart td-color" [style.opacity]="(videoViews.views/viewsMaxValues)">{{videoViews.views}}</td>
 								<td class="td-new td-chart">

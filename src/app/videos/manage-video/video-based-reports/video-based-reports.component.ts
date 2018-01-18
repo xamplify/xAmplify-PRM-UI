@@ -35,7 +35,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
     { 'name': 'Month wise views', 'value': 'monthly' },
     { 'name': 'Quarterly views', 'value': 'quarterly' }, { 'name': 'Yearly views', 'value': 'yearly' }];
-    arrayValues: any = [];
+    viewsMinutesData: any = [];
     daySort: any;
     minutesSort: any;
     campaignViews: any;
@@ -208,6 +208,37 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
         });
     }
+    videoPlayedandSkippedDuration(){
+      Highcharts.chart('video-skipped', {
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: ' '
+            },
+            exporting : { enabled: false},
+            xAxis: {
+               // categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            },
+            yAxis : { 
+                title : '',
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+              {
+                name: 'Jane',
+                showInLegend: false,
+                color: 'lightgreen',
+                data: [2, -2, -3, 2, 1]
+              }, {
+                name: 'Joe',
+                showInLegend: false,
+                data: [3, 4, 4, -2, 5]
+            }]
+        });
+    }
     selectedSortByValue(dateValue) {
         this.dropdownValue = dateValue;
         if (dateValue === 'today') {
@@ -255,21 +286,21 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.getViewsMinutesWatchedChart(dateValue, videoId, timeValue)
             .subscribe((result: any) => {
                 console.log(result);
-                this.arrayValues = result;
+                this.viewsMinutesData = result;
                 const maxValue = [];
                 const viewsMax = [];
-                if(this.arrayValues.length>0){
-                for(let i=0;i< this.arrayValues.length; i++){
-                    let hexColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].viewsColor);
-                    let hexminutesColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].minutesWatchedColor);
+                if(this.viewsMinutesData.length>0){
+                for(let i=0;i< this.viewsMinutesData.length; i++){
+                    let hexColor = this.videoUtilService.convertRgbToHex(this.viewsMinutesData[i].viewsColor);
+                    let hexminutesColor = this.videoUtilService.convertRgbToHex(this.viewsMinutesData[i].minutesWatchedColor);
                     console.log(hexColor+'and '+hexminutesColor);
-                    this.arrayValues[i].viewsColor = hexColor;
-                    this.arrayValues[i].minutesWatchedColor = hexminutesColor;
-                    maxValue.push(this.arrayValues[i].minutesWatched);
-                    viewsMax.push(this.arrayValues[i].views)
+                    this.viewsMinutesData[i].viewsColor = hexColor;
+                    this.viewsMinutesData[i].minutesWatchedColor = hexminutesColor;
+                    maxValue.push(this.viewsMinutesData[i].minutesWatched);
+                    viewsMax.push(this.viewsMinutesData[i].views)
                     hexColor = hexminutesColor = null;
                  }
-                 console.log(this.arrayValues);   
+                 console.log(this.viewsMinutesData);   
                  this.maxValueViews = Math.max.apply(null, maxValue)
                  this.viewsMaxValues = Math.max.apply(null,viewsMax);
                 console.log(this.maxValueViews);
@@ -397,6 +428,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 });
         } catch (error) { console.log(error); }
     }
+
+    clickedMinutesWatched(minutesData: any){
+     alert('clicked minutes watched');
+     console.log(minutesData);
+    }
     ngOnInit() {
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
@@ -404,6 +440,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.selectedSortByValue(this.minutesSort.value);
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
+        this.videoPlayedandSkippedDuration();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');
