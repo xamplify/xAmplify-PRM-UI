@@ -661,9 +661,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
             (result: any) => {
-                this.dashboardReport.emailOpenedList = result;
+                this.dashboardReport.emailLogsList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailOpenedList);
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogsList);
             },
             error => console.log(error),
             () => { }
@@ -674,9 +674,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
-                this.dashboardReport.emailClickedList = result;
+                this.dashboardReport.emailLogsList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailClickedList);
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogsList);
             },
             error => console.log(error),
             () => { }
@@ -688,9 +688,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
-                this.dashboardReport.emailWatchedList = data;
+                this.dashboardReport.emailLogsList = data;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailWatchedList);
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogsList);
             },
             error => console.log(error),
             () => console.log('finished')
@@ -801,6 +801,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
         this.downloadDataList.length = 0;
+        this.dashboardReport.emailLogsList.length = 0;
     }
     
     ConvertToCSV(objArray) {
@@ -828,20 +829,38 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return str;
     }
     
-    downloadEmailOpenList(){    
+    downloadEmailLogs(logListName:string){    
         this.downloadDataList.length = 0;
-        for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
-            let date=new Date(this.dashboardReport.emailOpenedList[i].time);
-            var object = {
-                    "EmailId": this.dashboardReport.emailOpenedList[i].emailId,
-                    "First Name": this.dashboardReport.emailOpenedList[i].firstName,
-                    "Last Name": this.dashboardReport.emailOpenedList[i].lastName,
+        for(let i=0;i< this.dashboardReport.emailLogsList.length;i++){
+            let date=new Date(this.dashboardReport.emailLogsList[i].time);
+             if(logListName != 'Email_Open_Logs.csv'){
+               var object = {
+                    "EmailId": this.dashboardReport.emailLogsList[i].emailId,
+                    "First Name": this.dashboardReport.emailLogsList[i].firstName,
+                    "Last Name": this.dashboardReport.emailLogsList[i].lastName,
                     "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailOpenedList[i].campaignName
-            }
+                    "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName,
+                    "City": this.dashboardReport.emailLogsList[i].city,
+                    "State": this.dashboardReport.emailLogsList[i].state,
+                    "Country": this.dashboardReport.emailLogsList[i].country,
+                    "Plateform": this.dashboardReport.emailLogsList[i].os
+              }
+             }
+             else {
+                   var object1 = {
+                           "EmailId": this.dashboardReport.emailLogsList[i].emailId,
+                           "First Name": this.dashboardReport.emailLogsList[i].firstName,
+                           "Last Name": this.dashboardReport.emailLogsList[i].lastName,
+                           "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
+                           "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName
+               }
+             }
+             if(logListName == 'Email_Open_Logs.csv'){
+               this.downloadDataList.push(object1);
+             }else
             this.downloadDataList.push(object);
+         
         }
-        
         var csvData = this.ConvertToCSV(this.downloadDataList);
                    var a = document.createElement("a");
                    a.setAttribute('style', 'display:none;');
@@ -849,71 +868,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                    var blob = new Blob([csvData], { type: 'text/csv' });
                    var url= window.URL.createObjectURL(blob);
                    a.href = url;
-                   a.download = 'Email_Open_Logs.csv';/* your file name*/
+                   a.download = logListName;/* your file name*/
                    a.click();
                    return 'success';
        }
-    
-    downloadEmailClickedList(){    
-        this.downloadDataList.length = 0;
-        for(let i=0;i< this.dashboardReport.emailClickedList.length;i++){
-            let date=new Date(this.dashboardReport.emailClickedList[i].time);
-            var object = {
-                    "EmailId": this.dashboardReport.emailClickedList[i].emailId,
-                    "First Name": this.dashboardReport.emailClickedList[i].firstName,
-                    "Last Name": this.dashboardReport.emailClickedList[i].lastName,
-                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailClickedList[i].campaignName,
-                    "City": this.dashboardReport.emailClickedList[i].city,
-                    "State": this.dashboardReport.emailClickedList[i].state,
-                    "Country": this.dashboardReport.emailClickedList[i].country,
-                    "Plateform": this.dashboardReport.emailClickedList[i].os
-            }
-            this.downloadDataList.push(object);
-        }
-        
-        var csvData = this.ConvertToCSV(this.downloadDataList);
-                   var a = document.createElement("a");
-                   a.setAttribute('style', 'display:none;');
-                   document.body.appendChild(a);
-                   var blob = new Blob([csvData], { type: 'text/csv' });
-                   var url= window.URL.createObjectURL(blob);
-                   a.href = url;
-                   a.download = 'Email_Clicked_Logs.csv';/* your file name*/
-                   a.click();
-                   return 'success';
-       }
-    
-    downloadEmailWatchedList(){    
-        this.downloadDataList.length = 0;
-        for(let i=0;i< this.dashboardReport.emailWatchedList.length;i++){
-            let date=new Date(this.dashboardReport.emailWatchedList[i].time);
-            var object = {
-                    "EmailId": this.dashboardReport.emailWatchedList[i].emailId,
-                    "First Name": this.dashboardReport.emailWatchedList[i].firstName,
-                    "Last Name": this.dashboardReport.emailWatchedList[i].lastName,
-                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailWatchedList[i].campaignName,
-                    "City": this.dashboardReport.emailWatchedList[i].city,
-                    "State": this.dashboardReport.emailWatchedList[i].state,
-                    "Country": this.dashboardReport.emailWatchedList[i].country,
-                    "Plateform": this.dashboardReport.emailWatchedList[i].os
-            }
-            this.downloadDataList.push(object);
-        }
-        
-        var csvData = this.ConvertToCSV(this.downloadDataList);
-                   var a = document.createElement("a");
-                   a.setAttribute('style', 'display:none;');
-                   document.body.appendChild(a);
-                   var blob = new Blob([csvData], { type: 'text/csv' });
-                   var url= window.URL.createObjectURL(blob);
-                   a.href = url;
-                   a.download = 'Email_Watched_Logs.csv';/* your file name*/
-                   a.click();
-                   return 'success';
-       }
-    
     
     ngOnInit() {
         try {
@@ -926,6 +884,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
             this.getVideoStatesSparklineChartsInfo(7);
+            
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -942,6 +901,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             console.log(err);
         }
     }
+    
     ngOnDestroy() {
         $('#emailOpenedModal').modal('hide');
         $('#emailClickedModal').modal('hide');
