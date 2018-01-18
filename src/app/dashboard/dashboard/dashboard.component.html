@@ -730,7 +730,6 @@ margin:2px;
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						 <h4 align="center">People who opened Emails</h4>
-     						 <button (click)="downloadEmailOpenList()">export to excel</button>
      						 </div>
      					 <div class="modal-body clearfix">
      					 	<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width:100%">
@@ -775,6 +774,7 @@ margin:2px;
 		</ul>					
                         </div>
       					<div class="modal-footer">
+      						<button type="button" class="btn btn-default" (click)="downloadEmailOpenList()" style="background-color: #eae8e8;">export to excel</button>
         					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>
@@ -787,7 +787,6 @@ margin:2px;
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						<h4 align="center">People who clicked Emails</h4>
-     						<button (click)="downloadEmailClickedList()">export to excel</button>
      						 </div>
      					 <div class="modal-body clearfix">
      					 <div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width:100%">
@@ -841,6 +840,7 @@ margin:2px;
                      </ul>  					
                         </div>
       					<div class="modal-footer">
+      						<button type="button" class="btn btn-default" (click)="downloadEmailClickedList()" style="background-color: #eae8e8;">export to excel</button>
         					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>
@@ -853,7 +853,6 @@ margin:2px;
       						<div class="modal-header">
         						<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelEmailStateModalPopUp()"><span aria-hidden="true">&times;</span></button>
      						<h4 align="center">People who watched videos</h4>
-     						<button (click)="downloadEmailWatchedList()">export to excel</button>
      						 </div>
      					 <div class="modal-body clearfix">
      					 <div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width:100%">
@@ -907,6 +906,7 @@ margin:2px;
                          </ul>					
                         </div>
       					<div class="modal-footer">
+      					<button type="button" class="btn btn-default" (click)="downloadEmailWatchedList()" style="background-color: #eae8e8;">export to excel</button>
         					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
      		 			</div>
     				</div>

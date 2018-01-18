@@ -863,7 +863,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     "First Name": this.dashboardReport.emailClickedList[i].firstName,
                     "Last Name": this.dashboardReport.emailClickedList[i].lastName,
                     "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailClickedList[i].campaignName
+                    "Campaign Name": this.dashboardReport.emailClickedList[i].campaignName,
+                    "City": this.dashboardReport.emailClickedList[i].city,
+                    "State": this.dashboardReport.emailClickedList[i].state,
+                    "Country": this.dashboardReport.emailClickedList[i].country,
+                    "Plateform": this.dashboardReport.emailClickedList[i].os
             }
             this.downloadDataList.push(object);
         }
@@ -889,7 +893,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     "First Name": this.dashboardReport.emailWatchedList[i].firstName,
                     "Last Name": this.dashboardReport.emailWatchedList[i].lastName,
                     "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailWatchedList[i].campaignName
+                    "Campaign Name": this.dashboardReport.emailWatchedList[i].campaignName,
+                    "City": this.dashboardReport.emailWatchedList[i].city,
+                    "State": this.dashboardReport.emailWatchedList[i].state,
+                    "Country": this.dashboardReport.emailWatchedList[i].country,
+                    "Plateform": this.dashboardReport.emailWatchedList[i].os
             }
             this.downloadDataList.push(object);
         }
