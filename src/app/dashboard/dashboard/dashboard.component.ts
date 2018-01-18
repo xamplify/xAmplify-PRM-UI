@@ -828,7 +828,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return str;
     }
     
-    download(){    
+    downloadEmailOpenList(){    
         this.downloadDataList.length = 0;
         for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
             let date=new Date(this.dashboardReport.emailOpenedList[i].time);
@@ -849,10 +849,63 @@ export class DashboardComponent implements OnInit, OnDestroy {
                    var blob = new Blob([csvData], { type: 'text/csv' });
                    var url= window.URL.createObjectURL(blob);
                    a.href = url;
-                   a.download = 'User_Results.csv';/* your file name*/
+                   a.download = 'Email_Open_Logs.csv';/* your file name*/
                    a.click();
                    return 'success';
        }
+    
+    downloadEmailClickedList(){    
+        this.downloadDataList.length = 0;
+        for(let i=0;i< this.dashboardReport.emailClickedList.length;i++){
+            let date=new Date(this.dashboardReport.emailClickedList[i].time);
+            var object = {
+                    "EmailId": this.dashboardReport.emailClickedList[i].emailId,
+                    "First Name": this.dashboardReport.emailClickedList[i].firstName,
+                    "Last Name": this.dashboardReport.emailClickedList[i].lastName,
+                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
+                    "Campaign Name": this.dashboardReport.emailClickedList[i].campaignName
+            }
+            this.downloadDataList.push(object);
+        }
+        
+        var csvData = this.ConvertToCSV(this.downloadDataList);
+                   var a = document.createElement("a");
+                   a.setAttribute('style', 'display:none;');
+                   document.body.appendChild(a);
+                   var blob = new Blob([csvData], { type: 'text/csv' });
+                   var url= window.URL.createObjectURL(blob);
+                   a.href = url;
+                   a.download = 'Email_Clicked_Logs.csv';/* your file name*/
+                   a.click();
+                   return 'success';
+       }
+    
+    downloadEmailWatchedList(){    
+        this.downloadDataList.length = 0;
+        for(let i=0;i< this.dashboardReport.emailWatchedList.length;i++){
+            let date=new Date(this.dashboardReport.emailWatchedList[i].time);
+            var object = {
+                    "EmailId": this.dashboardReport.emailWatchedList[i].emailId,
+                    "First Name": this.dashboardReport.emailWatchedList[i].firstName,
+                    "Last Name": this.dashboardReport.emailWatchedList[i].lastName,
+                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
+                    "Campaign Name": this.dashboardReport.emailWatchedList[i].campaignName
+            }
+            this.downloadDataList.push(object);
+        }
+        
+        var csvData = this.ConvertToCSV(this.downloadDataList);
+                   var a = document.createElement("a");
+                   a.setAttribute('style', 'display:none;');
+                   document.body.appendChild(a);
+                   var blob = new Blob([csvData], { type: 'text/csv' });
+                   var url= window.URL.createObjectURL(blob);
+                   a.href = url;
+                   a.download = 'Email_Watched_Logs.csv';/* your file name*/
+                   a.click();
+                   return 'success';
+       }
+    
     
     ngOnInit() {
         try {
