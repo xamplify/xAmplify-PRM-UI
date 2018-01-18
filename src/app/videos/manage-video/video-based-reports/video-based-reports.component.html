@@ -13,6 +13,7 @@
 	}
     .td-color{
 		color: white;
+		background-color:rgb(0,0,255);
 	}
 	.td-chart {
 		position: relative;
@@ -23,7 +24,8 @@
 		left: 0;
 		top: 0;
 		bottom: 0;
-		background-color: #8ef;
+		color: #000;
+		background-color: rgb(255,255,0);
 		z-index: 0;
 		text-align: center;
 	}
@@ -137,9 +139,9 @@
 					    <ng-container *ngFor="let videoViews of arrayValues; let i = index">  
 							<tr>
 								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
-								<td class="td-new td-chart td-color" [style.background]="videoViews.viewsColor">{{videoViews.views}}</td>
+								<td class="td-new td-chart td-color" [style.opacity]="(videoViews.views/viewsMaxValues)">{{videoViews.views}}</td>
 								<td class="td-new td-chart">
-								 <div class="bg" [style.width.%]="(videoViews.minutesWatched/maxValueViews)*100" [style.background] ="videoViews.minutesWatchedColor">
+								 <div class="bg" [style.width.%]="(videoViews.minutesWatched/maxValueViews)*100" [style.opacity] ="(videoViews.minutesWatched/maxValueViews)">
 									{{videoViews.minutesWatched}}</div>
 								</td>
 							</tr>

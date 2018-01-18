@@ -42,6 +42,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     sortInnerDates = [];
     minutesinnerSort: any;
     maxValueViews: any;
+    viewsMaxValues: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
         this.daySort = this.sortMonthDates[3];
@@ -256,15 +257,21 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 console.log(result);
                 this.arrayValues = result;
                 const maxValue = [];
+                const viewsMax = [];
                 if(this.arrayValues.length>0){
                 for(let i=0;i< this.arrayValues.length; i++){
-                    const hexColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].viewsColor);
-                    const hexminutesColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].minutesWatchedColor);
+                    let hexColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].viewsColor);
+                    let hexminutesColor = this.videoUtilService.convertRgbToHex(this.arrayValues[i].minutesWatchedColor);
+                    console.log(hexColor+'and '+hexminutesColor);
                     this.arrayValues[i].viewsColor = hexColor;
                     this.arrayValues[i].minutesWatchedColor = hexminutesColor;
-                     maxValue.push(this.arrayValues[i].minutesWatched);
+                    maxValue.push(this.arrayValues[i].minutesWatched);
+                    viewsMax.push(this.arrayValues[i].views)
+                    hexColor = hexminutesColor = null;
                  }
+                 console.log(this.arrayValues);   
                  this.maxValueViews = Math.max.apply(null, maxValue)
+                 this.viewsMaxValues = Math.max.apply(null,viewsMax);
                 console.log(this.maxValueViews);
                 }
             },
