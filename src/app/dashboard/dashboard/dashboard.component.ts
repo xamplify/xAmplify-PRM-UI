@@ -829,11 +829,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     
     download(){    
-        
+        this.downloadDataList.length = 0;
         for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
-            this.transformDate(this.dashboardReport.emailOpenedList[i].time);
             let date=new Date(this.dashboardReport.emailOpenedList[i].time);
-           // alert('above '+ date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
             var object = {
                     "EmailId": this.dashboardReport.emailOpenedList[i].emailId,
                     "First Name": this.dashboardReport.emailOpenedList[i].firstName,
@@ -841,28 +839,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
                     "Campaign Name": this.dashboardReport.emailOpenedList[i].campaignName
             }
-            //alert('date '+(new Date(this.dashboardReport.emailOpenedList[i].time)| 'MM/dd/yyyy @ h:mma'));
             this.downloadDataList.push(object);
         }
         
-        //this.dashboardReport.emailOpenedList.time |date:'MM/dd/yyyy @ h:mma';
         var csvData = this.ConvertToCSV(this.downloadDataList);
-                               var a = document.createElement("a");
-                               a.setAttribute('style', 'display:none;');
-                               document.body.appendChild(a);
-                               var blob = new Blob([csvData], { type: 'text/csv' });
-                               var url= window.URL.createObjectURL(blob);
-                               a.href = url;
-                               a.download = 'User_Results.csv';/* your file name*/
-                               a.click();
-                               return 'success';
+                   var a = document.createElement("a");
+                   a.setAttribute('style', 'display:none;');
+                   document.body.appendChild(a);
+                   var blob = new Blob([csvData], { type: 'text/csv' });
+                   var url= window.URL.createObjectURL(blob);
+                   a.href = url;
+                   a.download = 'User_Results.csv';/* your file name*/
+                   a.click();
+                   return 'success';
        }
-    
-    transformDate(date) {
-        for(let i=0;i< this.dashboardReport.emailOpenedList.length;i++){
-           this.datePipe.transform(this.dashboardReport.emailOpenedList.time, 'MM/dd/yyyy @ h:mma');
-        }
-      }
     
     ngOnInit() {
         try {
