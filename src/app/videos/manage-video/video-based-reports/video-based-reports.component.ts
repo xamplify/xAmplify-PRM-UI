@@ -5,13 +5,16 @@ import { VideoUtilService } from '../../services/video-util.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoBaseReportService } from '../../services/video-base-report.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
+import { Pagination } from '../../../core/models/pagination';
+import { PagerService } from '../../../core/services/pager.service';
 import { ChartModule } from 'angular2-highcharts';
 declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
     templateUrl: './video-based-reports.component.html',
-    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css']
+    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+    providers: [Pagination]
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
@@ -43,8 +46,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     minutesinnerSort: any;
     maxValueViews: any;
     viewsMaxValues: any;
+    userMinutesWatched: any;
+    userId: number;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService) {
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
+        public pagination: Pagination, public pagerService: PagerService) {
         this.daySort = this.sortMonthDates[3];
         this.minutesSort = this.sortMintuesDates[3];
     }
@@ -429,11 +435,38 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         } catch (error) { console.log(error); }
     }
 
-    clickedMinutesWatched(minutesData: any){
-     alert('clicked minutes watched');
-     console.log(minutesData);
+    clickedMinutesWatched(userId: any){
+     console.log(this.dropdownValue+'and inner data'+this.minutesinnerSort);
+     this.userId = userId;
+     this.videoBaseReportService.getUsersMinutesWatchedInfo(this.dropdownValue,this.selectedVideo.id,this.minutesinnerSort,userId,this.pagination).
+      subscribe(
+         data=>{
+            console.log(data);
+            this.userMinutesWatched = data.data;
+            this.pagination.totalRecords = data.totalRecords;
+            this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
+            console.log(this.pagination);
+            $('#usersMinutesModelPopup').modal('show'); 
+         },
+         error => { 
+             this.xtremandLogger.error(error);
+             this.xtremandLogger.errorPage(error);
+         }
+        );
+    }
+    setPage(page: number, type: string) {
+      if (page !== this.pagination.pageIndex) {
+        this.pagination.pageIndex = page;
+        this.clickedMinutesWatched(this.userId);
+      }
+    }
+    clearPaginationValues(){
+        this.pagination = new Pagination();
+        this.pagination.pageIndex = 1;
     }
     ngOnInit() {
+        this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 8;
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.selectedCampaignWatchedUsers(this.sortMonthDates[3].value);

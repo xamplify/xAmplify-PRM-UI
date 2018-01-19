@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Pagination } from '../../core/models/pagination';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Injectable()
@@ -51,6 +52,15 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
     }   
+    getUsersMinutesWatchedInfo(timePeriod:string,videoId:number,timePeriodValue:any,userId:number,pagination:Pagination){
+         try {
+            const url =this.authenticationService.REST_URL+'videos/'+timePeriod+'/views-minuteswatched-detail-report?userId='+userId+'&videoId='
+            +videoId+'&timePeriodValue='+timePeriodValue+'&access_token='+this.authenticationService.access_token;    
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }    
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

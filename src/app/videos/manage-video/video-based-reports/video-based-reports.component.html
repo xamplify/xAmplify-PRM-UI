@@ -138,7 +138,7 @@
 						</thead>
 					   <tbody>
 					    <ng-container *ngFor="let videoViews of viewsMinutesData; let i = index">  
-							<tr (click)="clickedMinutesWatched(videoViews)">
+							<tr (click)="clickedMinutesWatched(videoViews.userId)">
 								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
 								<td class="td-new td-chart td-color" [style.opacity]="(videoViews.views/viewsMaxValues)">{{videoViews.views}}</td>
 								<td class="td-new td-chart">
@@ -202,6 +202,68 @@
 			</div>
 			<div class="portlet-body text-center">
 				<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--  model popup for donuts analytics page  -->
+<div class="modal fade" id="usersMinutesModelPopup" tabindex="-1" role="dialog" >
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Users Minutes watched Views</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive" style="padding: 0px 7px;">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>user name</th>
+									<th>video Title</th>
+									<th>mintimestamo without time zone</th>
+									<th>minutes_watched</th>
+									<th>device</th>
+									<th>location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of userMinutesWatched">
+									<td><h6>{{item.name}}</h6></td>
+									<td><h6>{{item.videoTitle}}</h6></td>
+									<td><h6>{{item.date | date: 'fullDate'}}</h6></td>
+									<td><h6>{{item.minutesWatched }}</h6></td>
+									<td><h6>{{item.device }}</h6></td>
+									<td><h6>{{item.location }}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+						<!--pager here  -->
+			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, 'userMinutesWatched')">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.totalPages, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+						<!-- pager end here -->
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
