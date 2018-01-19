@@ -41,6 +41,9 @@ export class AnalyticsComponent implements OnInit {
   campaignId: number;
   maxViewsValue: number;
   barChartCliked = false;
+  donutCampaignViews:any;
+  donultModelpopupTitle: string;
+
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService) {
@@ -332,6 +335,12 @@ export class AnalyticsComponent implements OnInit {
         this.getCampaignUserViewsCountBarCharts(this.campaign.campaignId, this.pagination);
       }
     }
+    else if (type==='donutCampaign'){
+      if (page !== this.pagination.pageIndex) {
+        this.pagination.pageIndex = page;
+        this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
+      }
+    }
     
   }
 
@@ -455,15 +464,25 @@ export class AnalyticsComponent implements OnInit {
     this.pagination = new Pagination();
     this.pagination.pageIndex = 1;
     this.barChartCliked = false;
+    this.donultModelpopupTitle = '';
   }
-  campaignViewsDonut(timePeriod: string){
-   this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod).
+  campaignViewsDonut(timePeriod: string, pagination){
+   this.donultModelpopupTitle = timePeriod;
+   this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
    subscribe(
      (data:any) => {
       console.log(data);
-      this.pagination.pageIndex = 1;
-      this.pagination.maxResults =10;
-      $('#donutModelPopup').modal('show'); 
+      this.donutCampaignViews = data;
+        if (timePeriod === 'today') {
+          this.pagination.totalRecords = this.campaignReport.todayViewsCount;
+        } else if(timePeriod === 'current-month'){
+         this.pagination.totalRecords = this.campaignReport.thisMonthViewsCount;
+        }  
+        else {
+          this.pagination.totalRecords = this.campaignReport.lifetimeViewsCount;
+        }
+        this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
+        $('#donutModelPopup').modal('show'); 
    },
       error => console.log(error),
       () => {});
@@ -475,7 +494,6 @@ export class AnalyticsComponent implements OnInit {
     this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
-    this.pagination.maxResults = 10;
     // this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
   }
 

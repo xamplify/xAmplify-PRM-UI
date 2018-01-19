@@ -27,7 +27,7 @@ export class BubbleChartComponent implements OnInit {
                 this.bubbleChart(data.names, data.legend, data.values);
                 for(let i=0; i< data.names.length; i++){
                         if(data.names[i].length > 0){
-                        let obj = {'name': data.names[i],'color': colors[i]}; 
+                        const obj = {'name': data.names[i],'color': colors[i]}; 
                         this.namesArray.push(obj);
                         } else { }
                 }

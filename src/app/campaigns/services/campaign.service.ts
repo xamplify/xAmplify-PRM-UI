@@ -194,9 +194,9 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    donutCampaignInnerViews(campaignId: number, timePeriod: string){
+    donutCampaignInnerViews(campaignId: number, timePeriod: string, pagination: Pagination){
          const url  = this.URL+'campaign/'+campaignId+'/'+timePeriod+'/views-detail-report?access_token='+this.authenticationService.access_token;
-        return this.http.post(url,'')
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }    

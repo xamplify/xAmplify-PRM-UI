@@ -252,10 +252,10 @@
 		</a>
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;" >
-				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">Top Users Minutes watched</span></div>
+				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">Top Users Minutes Watched</span></div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
-				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">User wise views count</span></div>
-				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 300px; margin: 0 auto"></div>
+				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">User wise Views Count</span></div>
+				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
 				<!--pager here  -->
 					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
@@ -585,7 +585,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">{{donultModelpopupTitle}}</h4>
+				<h4 class="modal-title">{{donultModelpopupTitle}} Views</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -595,33 +595,39 @@
 								<tr>
 									<th>campaign</th>
 									<th>email address</th>
-									<th>sent time</th>
+									<th>location</th>
+									<th>time</th>
+									<th>device</th>
+									<th>views</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let item of campaignViews">
+								<tr *ngFor="let item of donutCampaignViews">
 									<td><h6>{{item.campaignName}}</h6></td>
 									<td><h6>{{item.userEmail}}</h6></td>
-									<td><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></td>
+									<td><h6>{{item.location }}</h6></td>
+									<td><h6>{{item.time | date: 'fullDate'}}</h6></td>
+									<td><h6>{{item.deviceType }}</h6></td>
+									<td><h6>{{item.viewsCount }}</h6></td>
 								</tr>
 							</tbody>
 						</table>
 						<!--pager here  -->
 			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, donutSetmesg)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                          <a (click)="setPage(1, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
 	                       </li>
 	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(pagination.pager.currentPage - 1, donutSetMesg)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 	                        </li>
 	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, donutSetmesg)">{{page}}</a>
+	                           <a (click)="setPage(page, 'donutCampaign')">{{page}}</a>
 	                        </li>
 	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'campaignViews')"  [class.disabled]="pagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
+	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
 	                        </li>
 	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.totalPages, donutSetmesg)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                            <a (click)="setPage(pagination.pager.totalPages, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 	                        </li>
 	                    </ul>
 						<!-- pager end here -->
