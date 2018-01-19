@@ -9,10 +9,10 @@ export class DashboardReport {
 
     totalEmailOpenedCount: number = 0;
     totalEmailClickedCount: number = 0;
-   // totalEmailGifClickedCount: number = 0;
     totalEmailWatchedCount: number = 0;
 
     emailLogList: any;
+    allEmailLogList: any;
 
     totalViews: number = 0;
     toalEmailTemplates: number = 0;

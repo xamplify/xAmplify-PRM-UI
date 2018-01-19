@@ -641,6 +641,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
             data => {
                 this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
+                this.listOfAllWatchedLogs();
             },
             error => console.log(error),
             () => console.log('emailWatchedCount completed')
@@ -874,6 +875,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.click();
         return 'success';
        }
+    
+    listOfAllWatchedLogs() {
+        this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
+        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
+            .subscribe(
+            (data: any) => {
+                this.dashboardReport.allEmailLogList = data;
+                this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailLogList);
+            },
+            error => console.log(error),
+            () => console.log('finished')
+            );
+    }
     
     ngOnInit() {
         try {
