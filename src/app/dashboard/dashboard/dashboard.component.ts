@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     maxBarChartNumber: number;
     isMaxBarChartNumber = true;
     downloadDataList = [];
+    paginationType: string;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
     { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
     daySort: any;
@@ -646,18 +647,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    setPage(page: number, currentPage: string) {
+    setPage(page: number) {
         this.pagination.pageIndex = page;
-        if (currentPage === 'emailOpened') {
+        if (this.paginationType === 'open') {
             this.listOfEmailOpenLogs(13);
-        } else if (currentPage === 'emailClicked') {
+        } else if (this.paginationType === 'clicked') {
             this.listOfEmailClickedLogs();
-        } else if (currentPage === 'emailWatched') {
+        } else if (this.paginationType === 'watched') {
             this.listOfWatchedLogs();
         }
     }
 
     listOfEmailOpenLogs(actionId: number) {
+        this.paginationType = 'open';
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
             (result: any) => {
@@ -671,6 +673,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listOfEmailClickedLogs() {
+        this.paginationType = 'clicked';
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
@@ -685,6 +688,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
+        this.paginationType = 'watched';
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
@@ -804,7 +808,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardReport.emailLogsList.length = 0;
     }
     
-    ConvertToCSV(objArray) {
+    convertToCSV(objArray) {
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
           var str = '';
         var row = "";
@@ -829,48 +833,56 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return str;
     }
     
-    downloadEmailLogs(logListName:string){    
+    downloadEmailLogs() {
+        let logListName: string;
+            if ( this.paginationType === 'open' ) {
+                logListName = 'Email_Open_Logs.csv';
+            } else if ( this.paginationType === 'clicked' ) {
+                logListName = 'Email_Clicked_Logs.csv';
+            } else if ( this.paginationType === 'watched' ) {
+                logListName = 'Email_Watched_Logs.csv';
+            }
         this.downloadDataList.length = 0;
-        for(let i=0;i< this.dashboardReport.emailLogsList.length;i++){
-            let date=new Date(this.dashboardReport.emailLogsList[i].time);
-             if(logListName != 'Email_Open_Logs.csv'){
-               var object = {
-                    "EmailId": this.dashboardReport.emailLogsList[i].emailId,
-                    "First Name": this.dashboardReport.emailLogsList[i].firstName,
-                    "Last Name": this.dashboardReport.emailLogsList[i].lastName,
-                    "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                    "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName,
-                    "City": this.dashboardReport.emailLogsList[i].city,
-                    "State": this.dashboardReport.emailLogsList[i].state,
-                    "Country": this.dashboardReport.emailLogsList[i].country,
-                    "Plateform": this.dashboardReport.emailLogsList[i].os
-              }
-             }
-             else {
-                   var object1 = {
-                           "EmailId": this.dashboardReport.emailLogsList[i].emailId,
-                           "First Name": this.dashboardReport.emailLogsList[i].firstName,
-                           "Last Name": this.dashboardReport.emailLogsList[i].lastName,
-                           "Date and Time": date.toDateString()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-                           "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName
-               }
-             }
-             if(logListName == 'Email_Open_Logs.csv'){
-               this.downloadDataList.push(object1);
-             }else
-            this.downloadDataList.push(object);
-         
-        }
-        var csvData = this.ConvertToCSV(this.downloadDataList);
-                   var a = document.createElement("a");
-                   a.setAttribute('style', 'display:none;');
-                   document.body.appendChild(a);
-                   var blob = new Blob([csvData], { type: 'text/csv' });
-                   var url= window.URL.createObjectURL(blob);
-                   a.href = url;
-                   a.download = logListName;/* your file name*/
-                   a.click();
-                   return 'success';
+            for ( let i = 0; i < this.dashboardReport.emailLogsList.length; i++ ) {
+                let date = new Date( this.dashboardReport.emailLogsList[i].time );
+                if ( this.paginationType != 'open' ) {
+                    var object = {
+                        "EmailId": this.dashboardReport.emailLogsList[i].emailId,
+                        "First Name": this.dashboardReport.emailLogsList[i].firstName,
+                        "Last Name": this.dashboardReport.emailLogsList[i].lastName,
+                        "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                        "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName,
+                        "City": this.dashboardReport.emailLogsList[i].city,
+                        "State": this.dashboardReport.emailLogsList[i].state,
+                        "Country": this.dashboardReport.emailLogsList[i].country,
+                        "Plateform": this.dashboardReport.emailLogsList[i].os
+                    }
+                }
+                else {
+                    var emailOpenList = {
+                        "EmailId": this.dashboardReport.emailLogsList[i].emailId,
+                        "First Name": this.dashboardReport.emailLogsList[i].firstName,
+                        "Last Name": this.dashboardReport.emailLogsList[i].lastName,
+                        "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                        "Campaign Name": this.dashboardReport.emailLogsList[i].campaignName
+                    }
+                }
+                if ( this.paginationType == 'open' ) {
+                    this.downloadDataList.push( emailOpenList );
+                } else
+                    this.downloadDataList.push( object );
+    
+            }
+        var csvData = this.convertToCSV( this.downloadDataList );
+        var a = document.createElement( "a" );
+        a.setAttribute( 'style', 'display:none;' );
+        document.body.appendChild( a );
+        var blob = new Blob( [csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL( blob );
+        a.href = url;
+        a.download = logListName;
+        a.click();
+        return 'success';
        }
     
     ngOnInit() {
