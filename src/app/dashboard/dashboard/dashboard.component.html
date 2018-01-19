@@ -468,7 +468,8 @@ margin:2px;
 				<div class="portlet-body clearfix">
 					<section *ngFor="let campaign of campaigns; let i=index">
 						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-							<div class="portlet light border-radius-0" [routerLink]="['/home/campaigns/', campaign[0], 'details']" [class.disabled]="!hasStatsRole ? true : null">
+							<div class="portlet light border-radius-0" [routerLink]="['/home/campaigns/', campaign[0], 'details']" 
+							[class.disabled]="!hasStatsRole ? true : null" style="cursor: pointer">
 								<div class="portlet-title">
 									<div class="caption">
 										<h3 class="caption-subject" style="margin: 0;color: #909090 !important;">
