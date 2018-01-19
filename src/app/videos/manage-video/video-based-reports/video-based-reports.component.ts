@@ -463,6 +463,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     clearPaginationValues(){
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 8;
     }
     ngOnInit() {
         this.pagination.pageIndex = 1;

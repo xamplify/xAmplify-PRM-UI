@@ -30,10 +30,10 @@
 		z-index: 0;
 		text-align: center;
 	}
-	/* tr:nth-child(odd) {
-    background-color: #f8f8f8;
-    opacity: .999;
-} */
+	a.disabled {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
 </style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
@@ -227,7 +227,7 @@
 									<th>user name</th>
 									<th>video Title</th>
 									<th>mintimestamo without time zone</th>
-									<th>minutes_watched</th>
+									<th>minutes watched</th>
 									<th>device</th>
 									<th>location</th>
 								</tr>
