@@ -403,13 +403,17 @@ export class AnalyticsComponent implements OnInit {
     }
   }
   userWatchedviewsInfo(emailId: string){
+    if(emailId !== this.selectedRow.userEmail){
+    this.userCampaignReport.emailOpenCount = 0;
+    this.userCampaignReport.emailClickedCount = 0;
+    this.userCampaignReport.totalUniqueWatchCount = 0;  
     this.barChartCliked = true;
     const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
     console.log(obj.campaignId +' user id is '+obj.userId+'email id '+ obj.userEmail);
     this.userTimeline(obj.campaignId, obj.userId,obj.userEmail);
     this.isTimeLineView = true;
+   }
   }
-   
   getCampaignById(campaignId: number) {
     const obj = {'campaignId': campaignId}
     this.campaignService.getCampaignById(obj)
