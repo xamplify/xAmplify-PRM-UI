@@ -1,13 +1,13 @@
 <style>
     td,
     th {
-        border: 1px solid #dddddd;
+        border: 0px solid #dddddd;
     }
 </style>
 <div class="col-xs-12">
     <div class="col-xs-6 m0 p0" id="bubble-chart" style="height: 250px;z-index: 555"></div>
     <div class="col-xs-6" style="padding: 9px;margin: auto -15px;">
-        <table style="border-collapse: collapse;font-family:Arial, Verdana, sans-serif; min-height: 228px;">
+        <table style="border-collapse: collapse;">
             <tr *ngFor="let array of namesArray">
                 <td style="width: 30px" [style.background]="array.color"></td>
                 <td style="text-align: center">{{array.name}}</td>

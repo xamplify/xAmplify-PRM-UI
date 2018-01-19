@@ -71,8 +71,8 @@
 					<div class="col-xs-3 text-center" style="padding: 0">
 						<section class="percentage-circle" style="margin-top: 10px;">
 							<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
-								<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
-								<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"
+								<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
+								<circle cx="60" cy="60" r="54" fill="none" stroke-width= "5" stroke="#00a6e8" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"
 								/>
 							</svg>
 							<h2 class="percentage-value">{{watchedFully}}%</h2>
@@ -86,7 +86,7 @@
 				</div>
 			</div>
 		</div>
-		<div style="background: white;box-shadow: 0 0 7px rgba(0, 0, 0, 0.4) !important;margin-top: 14px;">
+		<div style="background: white;box-shadow: none;margin-top: 14px;">
 			<table class="table-new" style="width: 100%;" height=120>
 				<tr>
 					<th class="td-new-n" rowspan="2">N/A users</th>

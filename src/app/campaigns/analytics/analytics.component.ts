@@ -17,7 +17,8 @@ declare var $, Highcharts: any;
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css', './timeline.css']
+  styleUrls: ['./analytics.component.css', './timeline.css'],
+  providers: [Pagination]
 })
 export class AnalyticsComponent implements OnInit {
   isTimeLineView: boolean;
@@ -34,14 +35,14 @@ export class AnalyticsComponent implements OnInit {
   campaignViewsPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
-  userWatchBarchartPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
   campaignId: number;
   maxViewsValue: number;
+  barChartCliked = false;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
-    private authenticationService: AuthenticationService, public pagerService: PagerService, 
+    private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService) {
     this.isTimeLineView = false;
     this.campaign = new Campaign();
@@ -62,6 +63,11 @@ export class AnalyticsComponent implements OnInit {
       data => {
         this.campaignViews = data.campaignviews;
         console.log(data);
+        const views = [];
+        for(let i=0; i<data.campaignviews.length; i++){
+          views.push(data.campaignviews[i].viewsCount)
+        }
+        this.maxViewsValue =  Math.max.apply(null, views);
         this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
         this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
       },
@@ -187,9 +193,9 @@ export class AnalyticsComponent implements OnInit {
         views.push(data.campaignviews[i].viewsCount)
        }
        this.maxViewsValue =  Math.max.apply(null, views);
-       this.userWatchBarchartPagination.totalRecords = this.campaignReport.emailSentCount;
-       this.userWatchBarchartPagination = this.pagerService.getPagedItems(this.userWatchBarchartPagination, data.campaignviews);
-       console.log(this.userWatchBarchartPagination);
+       this.pagination.totalRecords = this.campaignReport.emailSentCount;
+       this.pagination = this.pagerService.getPagedItems(this.pagination, data.campaignviews);
+       console.log(this.pagination);
       this.campaignViewsCountBarchart(names, views);
       },
       error => console.log(error),
@@ -321,9 +327,9 @@ export class AnalyticsComponent implements OnInit {
       }
     }
     else if (type === 'viewsBarChart') {
-      if (page !== this.userWatchBarchartPagination.pageIndex) {
-        this.userWatchBarchartPagination.pageIndex = page;
-        this.getCampaignUserViewsCountBarCharts(this.campaign.campaignId, this.userWatchBarchartPagination);
+      if (page !== this.pagination.pageIndex) {
+        this.pagination.pageIndex = page;
+        this.getCampaignUserViewsCountBarCharts(this.campaign.campaignId, this.pagination);
       }
     }
     
@@ -381,8 +387,14 @@ export class AnalyticsComponent implements OnInit {
     this.listEmailLogsByCampaignAndUser(campaignId, userId);
     this.selectedRow.userEmail = emailId;
     this.isTimeLineView = !this.isTimeLineView;
+    if(!this.barChartCliked){
+    this.pagination.pageIndex = 1;
+    this.pagination.maxResults =10;
+    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+    }
   }
   userWatchedviewsInfo(emailId: string){
+    this.barChartCliked = true;
     const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
     console.log(obj.campaignId +' user id is '+obj.userId+'email id '+ obj.userEmail);
     this.userTimeline(obj.campaignId, obj.userId,obj.userEmail);
@@ -437,17 +449,34 @@ export class AnalyticsComponent implements OnInit {
     this.userCampaignReport.emailOpenCount = 0;
     this.userCampaignReport.emailClickedCount = 0;
     this.userCampaignReport.totalUniqueWatchCount = 0;
+    this.clearPaginationValues();
   }
-
+  clearPaginationValues(){
+    this.pagination = new Pagination();
+    this.pagination.pageIndex = 1;
+    this.barChartCliked = false;
+  }
+  campaignViewsDonut(timePeriod: string){
+   this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod).
+   subscribe(
+     (data:any) => {
+      console.log(data);
+      this.pagination.pageIndex = 1;
+      this.pagination.maxResults =10;
+      $('#donutModelPopup').modal('show'); 
+   },
+      error => console.log(error),
+      () => {});
+  }
   ngOnInit() {
     const userId = this.authenticationService.getUserId();
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
     this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
-    this.userWatchBarchartPagination.pageIndex = 1;
-    this.userWatchBarchartPagination.maxResults = 10;
-    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.userWatchBarchartPagination);
+    this.pagination.pageIndex = 1;
+    this.pagination.maxResults = 10;
+    // this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
   }
 
 }

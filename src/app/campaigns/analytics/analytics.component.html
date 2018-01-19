@@ -1,7 +1,4 @@
 <style type="text/css">
-.listTable tr:hover{
-background-color:lightblue;
-}
 .bg {
 		position: absolute;
 		left: 0;
@@ -11,15 +8,14 @@ background-color:lightblue;
 		z-index: 0;
 		text-align: center;
 	}
-		.td-new,
-	th {
+ .td-new,th {
 		border: 1px solid #dddddd;
 		text-align: center;
 		padding: 2px;
 	}
-	.td-chart {
-		position: relative; 
-		}
+.td-chart {
+	position: relative; 
+	}
 	
 </style>
 <div class="page-content" [hidden]="isTimeLineView">
@@ -40,7 +36,7 @@ background-color:lightblue;
 					<div class="caption">
 						<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">VIEWERSHIP MAP</span>
 					</div>
-					<div><span style="float: right;font-size: 14px;font-weight: 800;color: #00a6e8;margin-right: 7px;">{{campaignType}}</span>
+					<div><span style="float: right;font-size: 14px;font-weight: 600;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}} CAMPAIGN</span>
 				</div>
 				</div>
 				<div class="portlet-body text-center">
@@ -54,7 +50,7 @@ background-color:lightblue;
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
-						<h3>{{campaign.campaignName}}<span style="float: right;font-size: 14px;font-weight: 800;margin-top: -22px;color: #00a6e8;">{{campaignType}}</span></h3>
+						<h3>{{campaign.campaignName}}<span style="float: right;font-size: 14px;font-weight: 600;margin-top: -24px;color: #fff;background: #00a6e8;padding: 2px 14px;margin-right: -10px;">{{campaignType}} CAMPAIGN</span></h3>
 						<h5 class="text-info" style="margin-bottom: 24px;">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 				</div>
@@ -140,13 +136,13 @@ background-color:lightblue;
 				</div>
 				<div class="portlet-body flex" style="padding: 1em 0;">
 					<div class="col-xs-4 text-center">
-						<section class="percentage-circle">
+						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="10" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="10" stroke-dasharray="339.292006588"
+									stroke-width="5" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
+									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.lifetimeViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -155,13 +151,13 @@ background-color:lightblue;
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
 					<div class="col-xs-4 text-center">
-						<section class="percentage-circle">
+						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('current-month')">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="10" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="10" stroke-dasharray="339.292006588"
+									stroke-width="5" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
+									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.thisMonthViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -171,13 +167,13 @@ background-color:lightblue;
 							Month</h5>
 					</div>
 					<div class="col-xs-4 text-center">
-						<section class="percentage-circle">
+						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="10" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3"
-									stroke-width="10" stroke-dasharray="339.292006588"
+									stroke-width="5" />
+						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
+									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.todayViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
 							<h2 class="percentage-value">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -200,7 +196,7 @@ background-color:lightblue;
 					</div>
 					<div class="portlet-body">
 						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover listTable" >
+							<table class="table table-bordered table-striped table-hover" >
 								<thead>
 									<tr>
 										<th>campaign</th>
@@ -215,8 +211,8 @@ background-color:lightblue;
 										<td class="td-new td-chart"><h6>{{item.userEmail}}</h6></td>
 										<td class="td-new td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
 										<td  class="td-new td-chart">
-											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-											<span style="text-align: center">{{item.viewsCount}}</span> </div>
+											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 3px 0px;">
+											<span style="text-align: center;vertical-align: middle;">{{item.viewsCount}}</span> </div>
 										</td>
 									</tr>
 								</tbody>
@@ -261,21 +257,21 @@ background-color:lightblue;
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold;">User wise views count</span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 300px; margin: 0 auto"></div>
 				<!--pager here  -->
-					<ul *ngIf="userWatchBarchartPagination.pager.pages && userWatchBarchartPagination.pager.pages.length" class="pagination">
-						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === 1}">
-							<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="userWatchBarchartPagination.pager.currentPage === 1">First</a>
+					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
 						</li>
-						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === 1}" >
-							<a (click)="setPage(userWatchBarchartPagination.pager.currentPage - 1, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === 1">Previous</a>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+							<a (click)="setPage(pagination.pager.currentPage - 1, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 						</li>
-						<li *ngFor="let page of userWatchBarchartPagination.pager.pages" [ngClass]="{active:userWatchBarchartPagination.pager.currentPage === page}">
+						<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
 							<a (click)="setPage(page, 'campaignViews')">{{page}}</a>
 						</li>
-						<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages}">
-							<a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages">Next</a>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.currentPage + 1, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
 						</li>
-							<li [ngClass]="{disabled:userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages}">
-							<a (click)="setPage(userWatchBarchartPagination.pager.totalPages, 'viewsBarChart')"  [class.disabled]="userWatchBarchartPagination.pager.currentPage === userWatchBarchartPagination.pager.totalPages">Last</a>
+							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.totalPages, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 						</li>
 					</ul>
 						<!-- pager end here -->
@@ -411,7 +407,7 @@ background-color:lightblue;
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button type="button" class="close" data-dismiss="modal"  (click)="clearPaginationValues()"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -474,7 +470,7 @@ background-color:lightblue;
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -530,7 +526,7 @@ background-color:lightblue;
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -571,6 +567,61 @@ background-color:lightblue;
 	                        </li>
 	                         <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
 	                            <a (click)="setPage(campaignViewsPagination.pager.totalPages, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+						<!-- pager end here -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  model popup for donuts analytics page  -->
+<div class="modal fade" id="donutModelPopup" tabindex="-1" role="dialog" >
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">{{donultModelpopupTitle}}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>campaign</th>
+									<th>email address</th>
+									<th>sent time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of campaignViews">
+									<td><h6>{{item.campaignName}}</h6></td>
+									<td><h6>{{item.userEmail}}</h6></td>
+									<td><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+						<!--pager here  -->
+			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, donutSetmesg)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(pagination.pager.currentPage - 1, donutSetMesg)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, donutSetmesg)">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'campaignViews')"  [class.disabled]="pagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.totalPages, donutSetmesg)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 	                        </li>
 	                    </ul>
 						<!-- pager end here -->
