@@ -91,19 +91,19 @@ export class DashboardService {
     }
 
     listEmailOpenLogs(userId: number, actionId: number, pagination: Pagination) {
-        return this.http.get(this.authenticationService.REST_URL + "dashboard/email-logs-by-user-and-action/" + userId + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId + "&pageSize=" + 10 + "&pageNumber=" + pagination.pageIndex)
+        return this.http.get(this.authenticationService.REST_URL + "dashboard/email-logs-by-user-and-action/" + userId + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     listEmailClickedLogs(userId: number, pagination: Pagination) {
-        return this.http.get(this.authenticationService.REST_URL + "dashboard/email-click-logs-by-user/" + userId + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + 10 + "&pageNumber=" + pagination.pageIndex)
+        return this.http.get(this.authenticationService.REST_URL + "dashboard/email-click-logs-by-user/" + userId + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     listOfWatchedLogs(userId: number, pagination: Pagination) {
-        return this.http.get(this.authenticationService.REST_URL + "dashboard/watched-users/" + userId + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + 10 + "&pageNumber=" + pagination.pageIndex)
+        return this.http.get(this.authenticationService.REST_URL + "dashboard/watched-users/" + userId + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex)
             .map(this.extractData)
             .catch(this.handleError);
     }

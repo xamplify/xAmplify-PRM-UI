@@ -630,6 +630,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             data => {
                 this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
                 this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
+                this.listOfAllEmailClickedLogs();
+                this.listOfAllEmailOpenLogs();
             },
             error => console.log(error),
             () => console.log('emailOpenedCount completed')
@@ -690,6 +692,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
         this.paginationType = 'watched';
+        this.pagination.maxResults = 10;
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
@@ -838,27 +841,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
         let logListName: string;
             if ( this.paginationType === 'open' ) {
                 logListName = 'Email_Open_Logs.csv';
+                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
             } else if ( this.paginationType === 'clicked' ) {
                 logListName = 'Email_Clicked_Logs.csv';
+                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
             } else if ( this.paginationType === 'watched' ) {
                 logListName = 'Email_Watched_Logs.csv';
+                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
             }
         this.downloadDataList.length = 0;
-            for ( let i = 0; i < this.dashboardReport.emailLogList.length; i++ ) {
-                let date = new Date( this.dashboardReport.emailLogList[i].time );
+            for ( let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++ ) {
+                let date = new Date( this.dashboardReport.downloadEmailLogList[i].time );
                 var object = {
-                        "EmailId": this.dashboardReport.emailLogList[i].emailId,
-                        "First Name": this.dashboardReport.emailLogList[i].firstName,
-                        "Last Name": this.dashboardReport.emailLogList[i].lastName,
+                        "EmailId": this.dashboardReport.downloadEmailLogList[i].emailId,
+                        "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
+                        "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
                         "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-                        "Campaign Name": this.dashboardReport.emailLogList[i].campaignName
+                        "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
                 }
                 
                 if( this.paginationType != 'open' ) {
-                    object["City"] = this.dashboardReport.emailLogList[i].city;
-                    object["State"] = this.dashboardReport.emailLogList[i].state;
-                    object["Country"] = this.dashboardReport.emailLogList[i].country;
-                    object["Platform"] = this.dashboardReport.emailLogList[i].os;
+                    object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
+                    object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
+                    object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;
+                    object["Platform"] = this.dashboardReport.downloadEmailLogList[i].os;
 
                 }
                 
@@ -874,16 +880,44 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.download = logListName;
         a.click();
         return 'success';
-       }
+  }
+    
+    listOfAllEmailOpenLogs() {
+        this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
+        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
+            .subscribe(
+            (result: any) => {
+                this.dashboardReport.allEmailOpenLogList = result;
+                this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
+
+    listOfAllEmailClickedLogs() {
+        this.pagination.maxResults = this.dashboardReport.totalEmailClickedCount;
+        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
+            .subscribe(
+            result => {
+                this.dashboardReport.allEmailClickedLogList = result;
+                this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
     
     listOfAllWatchedLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             (data: any) => {
-                this.dashboardReport.allEmailLogList = data;
+                this.dashboardReport.allEmailWatchedLogList = data;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailLogList);
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
             },
             error => console.log(error),
             () => console.log('finished')

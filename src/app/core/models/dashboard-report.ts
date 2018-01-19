@@ -12,7 +12,11 @@ export class DashboardReport {
     totalEmailWatchedCount: number = 0;
 
     emailLogList: any;
-    allEmailLogList: any;
+    allEmailOpenLogList: any;
+    allEmailClickedLogList: any;
+    allEmailWatchedLogList: any;
+    
+    downloadEmailLogList: any;
 
     totalViews: number = 0;
     toalEmailTemplates: number = 0;

@@ -735,7 +735,7 @@ margin:2px;
 						</tbody>
 					</table>
 				</div>
-				<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length"
+				<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length && pagination.pagedItems?.length != 0"
 					class="pagination">
 					<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
 						<a (click)="setPage(1)"
