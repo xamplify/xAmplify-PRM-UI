@@ -663,6 +663,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfEmailOpenLogs(actionId: number) {
         this.paginationType = 'open';
+        this.pagination.maxResults = 10;
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
             (result: any) => {
@@ -677,6 +678,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfEmailClickedLogs() {
         this.paginationType = 'clicked';
+        this.pagination.maxResults = 10;
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
