@@ -371,6 +371,9 @@ img:hover {
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of Partners
 									</div>
+									<a (click)="downloadPartnerList()" title="Dowload List" data-rel="fancybox-button"> 
+														<i class="fa fa-cloud-download mr5" style="font-size: 22px;color:#f9f7f7;padding: 13px;"></i>
+													</a>
 										<div class="inputs" align="right" style="float: right; margin-top:4px">
 											<div style="float: left; margin-right: 10px; width: 50%">
 												<select class="form-control" [(ngModel)]="sortOption"

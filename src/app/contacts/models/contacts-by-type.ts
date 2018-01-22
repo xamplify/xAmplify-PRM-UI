@@ -10,8 +10,10 @@ export class ContactsByType {
     inactiveContactsCount: number = 0;
 
     contacts: Array<User> = new Array<User>();
+    listOfAllContacts: Array<User> = new Array<User>();
     selectedCategory: string;
     pagination: Pagination = new Pagination();
+    contactPagination: Pagination = new Pagination();
     isLoading: boolean = false;
 
     invalidRemovableContacts = [];

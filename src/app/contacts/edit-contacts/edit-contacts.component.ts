@@ -127,6 +127,7 @@ export class EditContactsComponent implements OnInit {
     public searchDisable = true;
     public invalidPattenMail = false;
     showInvalidMaills = false;
+    downloadDataList = [];
     sortOptions = [
                    { 'name': 'Sort By', 'value': ''},
                    { 'name': 'Email(A-Z)', 'value': 'emailId-ASC'},
@@ -1100,6 +1101,7 @@ export class EditContactsComponent implements OnInit {
         this.contactsByType.pagination = new Pagination();
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.contactsByType.selectedCategory = null;
+        this.listOfAllSelectedContactListByType(contactType);
         this.listOfSelectedContactListByType(contactType);
     }
     
@@ -1440,7 +1442,7 @@ export class EditContactsComponent implements OnInit {
    
    loadAllContactListUsers( contactSelectedListId: number) {
        this.selectedContactListId = contactSelectedListId;
-       this.gettingAllUserspagination.maxResults = 500;
+       this.gettingAllUserspagination.maxResults = 50000;
        this.gettingAllUserspagination.pageIndex = 1;
         this.contactService.loadUsersOfContactList( contactSelectedListId, this.gettingAllUserspagination )
         .subscribe(
@@ -1547,7 +1549,6 @@ export class EditContactsComponent implements OnInit {
            .subscribe(
            ( data: any ) => {
                this.xtremandLogger.info( data );
-              // this.contactLists = data.listOfUserLists;
                this.names.length = 0; 
                for(let i=0;i< data.names.length;i++){
                    this.names.push( data.names[i].replace(/\s/g, '') );
@@ -1560,6 +1561,118 @@ export class EditContactsComponent implements OnInit {
            },
            () => this.xtremandLogger.info( "MangeContactsComponent loadContactListsName() finished" )
            )
+   }
+   
+   downloadFile(data: any) {
+       let parsedResponse = data.text();
+       let blob = new Blob([parsedResponse], { type: 'text/csv' });
+       let url = window.URL.createObjectURL(blob);
+
+       if(navigator.msSaveOrOpenBlob) {
+           navigator.msSaveBlob(blob, 'Contact_List.csv');
+       } else {
+           let a = document.createElement('a');
+           a.href = url;
+           a.download = 'Contact_List.csv';
+           document.body.appendChild(a);
+           a.click();        
+           document.body.removeChild(a);
+       }
+       window.URL.revokeObjectURL(url);
+   }
+   
+   downloadList() {
+       this.contactService.downloadContactList( this.contactListId )
+           .subscribe(
+           data => {
+               this.downloadFile( data );
+           },
+           (error: any) => {
+               this.xtremandLogger.error(error);
+               this.xtremandLogger.errorPage(error);
+           },
+           () => this.xtremandLogger.info( "download completed" )
+           );
+   }
+   
+   convertToCSV(objArray) {
+       var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+       var str = '';
+       var row = "";
+       for (var index in objArray[0]) {
+           row += index + ',';
+       }
+       row = row.slice(0, -1);
+       str += row + '\r\n';
+       for (var i = 0; i < array.length; i++) {
+           var line = '';
+           for (var index in array[i]) {
+               if (line != '') line += ','
+               line += array[i][index];
+           }
+           str += line + '\r\n';
+       }
+       return str;
+   }
+   
+   downloadContactTypeList() {
+       let logListName: string;
+           if ( this.contactsByType.selectedCategory === 'active' ) {
+               logListName = 'Active_Users_of_ContactList.csv';
+           } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
+               logListName = 'InActive_Users_of_ContactList.csv';
+           } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
+               logListName = 'Invalid_Users_of_ContactList.csv';
+           } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
+               logListName = 'Unsubscribed_Users_of_ContactList.csv';
+           }
+       this.downloadDataList.length = 0;
+           for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
+               var object = {
+                       "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
+                       "First Name": this.contactsByType.listOfAllContacts[i].firstName,
+                       "Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+                       "Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+                       "Address": this.contactsByType.listOfAllContacts[i].address,
+                       "City": this.contactsByType.listOfAllContacts[i].city,
+                       "Country": this.contactsByType.listOfAllContacts[i].country,
+                       "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
+                       "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
+                       "Notes": this.contactsByType.listOfAllContacts[i].description
+               }
+               
+               this.downloadDataList.push( object );
+           }
+       var csvData = this.convertToCSV( this.downloadDataList );
+       var a = document.createElement( "a" );
+       a.setAttribute( 'style', 'display:none;' );
+       document.body.appendChild( a );
+       var blob = new Blob( [csvData], { type: 'text/csv' });
+       var url = window.URL.createObjectURL( blob );
+       a.href = url;
+       a.download = logListName;
+       a.click();
+       return 'success';
+ }
+   
+   listOfAllSelectedContactListByType(contactType: string){
+       this.currentContactType = '';
+       this.resetListContacts();
+       this.resetResponse();
+       this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
+       this.contactService.listOfSelectedContactListByType(this.selectedContactListId,contactType, this.contactsByType.contactPagination)
+       .subscribe(
+           data => {
+               this.contactsByType.selectedCategory = contactType;
+               this.contactsByType.listOfAllContacts = data.listOfUsers;
+               this.contactsByType.contactPagination.totalRecords = data.totalRecords;
+               this.contactsByType.contactPagination = this.pagerService.getPagedItems( this.contactsByType.contactPagination, this.contactsByType.contacts );
+           },
+           error => console.log( error ),
+           () => {
+               this.contactsByType.isLoading = false;
+               }
+       );
    }
    
 ngOnInit() {

@@ -334,6 +334,9 @@ a.disabled {
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="saveAs()">Save As </a></li>
+															<li><a id="exportToExcel"
+																*ngIf="selectedAddContactsOption == 8"
+																(click)="downloadList()">Export To Excel</a></li>
 															<li><a id="delete_button"
 																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
@@ -759,13 +762,15 @@ a.disabled {
 								</div>
 								<div class="btn-group pull-right"
 									style="margin-top: 4px; color: #000000;"
-									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || ( hasContactRole && loggedInUserId == uploadedUserId )">
 									<button class="btn dropdown-toggle" data-toggle="dropdown">
 										Tools <i class="fa fa-angle-down"></i>
 									</button>
 									<ul class="dropdown-menu pull-right">
-										<li><a id="delete_button"
+										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()"> Delete </a></li>
+										<li><a id="delete_button"
+										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
 									</ul>
 								</div>
 							</div>

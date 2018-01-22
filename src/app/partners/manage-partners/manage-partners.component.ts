@@ -1456,6 +1456,36 @@ export class ManagePartnersComponent implements OnInit {
         }
         event.stopPropagation();
     }
+    
+    downloadFile(data: any) {
+        let parsedResponse = data.text();
+        let blob = new Blob([parsedResponse], { type: 'text/csv' });
+        let url = window.URL.createObjectURL(blob);
+
+        if(navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(blob, 'Partner_List.csv');
+        } else {
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'Partner_List.csv';
+            document.body.appendChild(a);
+            a.click();        
+            document.body.removeChild(a);
+        }
+        window.URL.revokeObjectURL(url);
+    }
+    
+    downloadPartnerList() {
+        this.contactService.downloadContactList( this.partnerListId )
+            .subscribe(
+            data => this.downloadFile( data ),
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info( "download partner List completed" )
+            );
+    }
 
     ngOnInit() {
         this.socialContactImage();

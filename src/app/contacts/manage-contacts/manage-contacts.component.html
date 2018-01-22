@@ -486,6 +486,9 @@ rotate
 								<span class="capitalize" style="color: #888888" *ngIf="contactsByType.selectedCategory =='non-active'">Inactive
 									contacts</span>
 							</h4>
+							<a (click)="downloadContactTypeList()" title="Dowload List" data-rel="fancybox-button"> 
+									<i class="fa fa-cloud-download mr5" style="font-size: 22px;color:#26a69a;padding: 13px;"></i>
+							</a>
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
