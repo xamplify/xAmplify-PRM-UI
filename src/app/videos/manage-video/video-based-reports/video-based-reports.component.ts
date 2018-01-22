@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router} from '@angular/router';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
@@ -47,11 +48,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     userId: number;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
-        public pagination: Pagination, public pagerService: PagerService) {
+        public pagination: Pagination, public pagerService: PagerService, public router: Router) {
         this.daySort = this.videoUtilService.sortMonthDates[3];
         this.minutesSort = this.sortMintuesDates[3];
     }
     monthlyViewsBarCharts(dates, views) {
+        const self = this;
         Highcharts.chart('monthly-views-bar', {
             chart: {
                 type: 'column'
@@ -87,7 +89,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             plotOptions: {
                 column: {
                     stacking: 'normal'
-                }
+                },
+                  series: {
+                   point: {
+                        events: {
+                            click: function () {
+                               // alert('campaign: ' + this.category + ', value: ' + this.y);
+                               self.videoUtilService.selectedVideo = self.selectedVideo;
+                               self.router.navigate(['./home/videos/manage/reports']);
+                            }
+                        }
+                    }
+                 }
             },
 
             series: [{
@@ -221,7 +234,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             exporting : { enabled: false},
             xAxis: {
-               // categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+                categories: [1,2,2,3,5,6,6,7,8,8,7,6,6,4,3,3]
             },
             yAxis : { 
                 title : '',
@@ -315,9 +328,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
     selectedCampaignWatchedUsers(timePeriod) {
+        this.videoUtilService.timePeriod = timePeriod;
         this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
             .subscribe((result: any) => {
                 console.log(result);
+                this.videoUtilService.videoViewsData = result;
                 this.monthlyViewsBarCharts(result.dates, result.views);
             },
             (error: any) => {
@@ -472,6 +487,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
         this.videoPlayedandSkippedDuration();
+        this.videoUtilService.selectedVideoId = this.selectedVideo.id;
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

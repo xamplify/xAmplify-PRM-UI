@@ -99,6 +99,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.checkTotalRecords = true;
             this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
+            if(this.videoUtilService.selectedVideo){ 
+                this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
+            }
         } catch (error) {
             this.xtremandLogger.error('error in ng oninit :' + error);
         }
@@ -243,6 +246,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.selectedVideo = campaignVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.showVideosPage(false, false, false, true);
+                this.videoUtilService.selectedVideo = null;
             },
             (error: any) => {
                 this.xtremandLogger.error(' Error In :show video campaign videos ():' + error);
@@ -366,11 +370,17 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     backToManageVideos() {
         console.log('come to goto manage videos :');
+        this.videoUtilService.selectedVideo = null;
         if (!this.manageVideos) { this.loadVideos(this.pagination); }
         this.showVideosPage(true, false, false, false);
         this.defaultBannerMessageValues();
         this.deletedVideo = this.campaignVideo = false;
         this.videoFileService.actionValue = '';
+    }
+    gotoHome(){
+        this.videoUtilService.selectedVideo = null;
+        this.videoUtilService.checkVideo = false;
+        this.router.navigate(['./home/dashboard']);
     }
     ngOnDestroy() {
         swal.close();

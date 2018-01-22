@@ -1,0 +1,89 @@
+<style type="text/css">
+  .active{
+	  background: lightblue;
+   }
+    #tabletest tr:hover { 
+      background-color: lightblue;
+    }
+	</style>
+<div class="page-content">
+  	<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
+				<li><a (click)="goToMangeVideos()">Manage Videos</a> </li>
+      </ul>
+       <div><button (click)="goBackToLastPage()" style="float: right; background: blue;margin:2px 4px;">BACK</button></div> 
+		</div>
+	<div class="portlet light" style="min-height: 268px;">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video views</span>
+			</div>
+			<div class="panel-title pull-right">
+					<span style="float:right; font-size: 13px;">
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
+						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+				</div>
+		</div>
+		<div class="portlet-body" style="max-width: 100%;">
+			<div class="col-xs-5">
+				<div id="monthly-views-bar-chart" style="cursor: pointer; height:200px;"></div>
+			</div>
+			<div class="col-xs-7">
+				<table class='table table-hover table-bordered' id="tabletest">
+					<thead>
+						<tr style="background: #c5c5c5">
+							<th>Title</th>
+							<th>views</th>
+							<th>Year</th>
+						</tr>
+					</thead>
+					<tbody >
+						 <!-- <ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">  -->
+						<tr style="cursor:pointer;" (click)="selectedRow(view)">
+							<td>bird video</td>
+							<td>33</td>
+							<td>2017</td>
+						</tr>
+						 <!-- </ng-container>  -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i>
+				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+		</div>
+		<div class="portlet-body" style="max-width: 100%; min-height: auto;">
+			<table class='table table-hover table-bordered' id="sample_editable_1">
+				<thead>
+					<tr style="background: #c5c5c5">
+						<th>Title</th>
+						<th>email id</th>
+            <th>views</th>
+            <th>device type</th>
+						<th>country</th>
+					</tr>
+				</thead>
+				<tbody>
+					 <!-- <ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index">  -->
+					<tr>
+						<td>asdgasd</td>
+            <td>asdg@gmail.com</td>
+            <td>544</td>
+            <td>computer</td>
+						<td>india</td>
+					</tr>
+					 <!-- </ng-container> -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
