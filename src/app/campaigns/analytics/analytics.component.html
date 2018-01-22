@@ -1,12 +1,12 @@
 <style type="text/css">
 .bg {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		background-color:lightseagreen;
-		z-index: 0;
-		text-align: center;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background-color:lightseagreen;
+	z-index: 0;
+	text-align: center;
 	}
  .td-new,th {
 		border: 1px solid #dddddd;
@@ -16,6 +16,10 @@
 .td-chart {
 	position: relative; 
 	}
+.disabled{
+	pointer-events: none;;
+	cursor: not-allowed;
+}
 	
 </style>
 <div class="page-content" [hidden]="isTimeLineView">
@@ -135,8 +139,8 @@
 					</div>
 				</div>
 				<div class="portlet-body flex" style="padding: 1em 0;">
-					<div class="col-xs-4 text-center">
-						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
+					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.lifetimeViewsCount < 1 ? true : null">
+						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')" >
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
@@ -150,7 +154,7 @@
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center">
+					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('current-month')">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
@@ -166,7 +170,7 @@
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This
 							Month</h5>
 					</div>
-					<div class="col-xs-4 text-center">
+					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.todayViewsCount < 1 ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
@@ -403,7 +407,7 @@
 
 <!-- Users Watch List Modal -->
 <div class="modal fade" id="usersWatchListModal" tabindex="-1"
-	role="dialog" aria-labelledby="usersWatchListModalLabel">
+	role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -466,7 +470,7 @@
 
 <!-- Email Opened/ Clicked List Modal -->
 <div class="modal fade" id="emailActionListModal" tabindex="-1"
-	role="dialog" aria-labelledby="emailActionListModalLabel">
+	role="dialog" aria-labelledby="emailActionListModalLabel" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -522,7 +526,7 @@
 
 <!-- Email Sent List Modal -->
 <div class="modal fade" id="emailSentListModal" tabindex="-1"
-	role="dialog" aria-labelledby="emailSentListModalLabel">
+	role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -577,7 +581,7 @@
 	</div>
 </div>
 <!--  model popup for donuts analytics page  -->
-<div class="modal fade" id="donutModelPopup" tabindex="-1" role="dialog" >
+<div class="modal fade" id="donutModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

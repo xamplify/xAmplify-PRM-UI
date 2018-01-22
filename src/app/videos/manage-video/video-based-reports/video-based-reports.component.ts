@@ -35,9 +35,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     minutesWatchedUsers: number;
     dropdownValue: any;
     sortMintuesDates = [{ 'name': 'today views', 'value': 'today' }, { 'name': 'monthly', 'value': 'month' }, { 'name': 'Quarterly', 'value': 'quarter' }, { 'name': 'yearly', 'value': 'year' }];
-    sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
-    { 'name': 'Month wise views', 'value': 'monthly' },
-    { 'name': 'Quarterly views', 'value': 'quarterly' }, { 'name': 'Yearly views', 'value': 'yearly' }];
     viewsMinutesData: any = [];
     daySort: any;
     minutesSort: any;
@@ -51,7 +48,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService) {
-        this.daySort = this.sortMonthDates[3];
+        this.daySort = this.videoUtilService.sortMonthDates[3];
         this.minutesSort = this.sortMintuesDates[3];
     }
     monthlyViewsBarCharts(dates, views) {
@@ -470,7 +467,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.pagination.maxResults = 8;
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
-        this.selectedCampaignWatchedUsers(this.sortMonthDates[3].value);
+        this.selectedCampaignWatchedUsers(this.videoUtilService.sortMonthDates[3].value);
         this.selectedSortByValue(this.minutesSort.value);
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();

@@ -28,6 +28,9 @@ export class VideoUtilService {
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
+     sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
+        { 'name': 'Month wise views', 'value': 'monthly' },
+        { 'name': 'Quarterly views', 'value': 'quarterly' }, { 'name': 'Yearly views', 'value': 'yearly' }];
     validationMessages = {
         'title': {
             'required': 'Title is required.',

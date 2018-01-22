@@ -174,14 +174,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             // tooltipFormat: '<span >average:{{value}} <br>{{offset:offset}}</span>',
             tooltipValueLookups: { 'offset': offsetValues }
         });
-        $(document).ready(function () {
-            $('#sparkline_line').bind('sparklineClick', function (ev) {
-                const sparkline = ev.sparklines[0],
-                    region = sparkline.getCurrentRegionFields();
-                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
-                // self.sparklineDataWithRouter(region[0].value,offsetValues[region[0].offset]);
-            });
-        });
     }
 
     facebookSparklineData() {
@@ -227,7 +219,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 series: {
                     events: {
                     click: function (e) { 
-                        alert(e.point.name+', views:'+e.point.value);
+                     //   alert(e.point.name+', views:'+e.point.value);
                     }
                    }
                  }
@@ -348,7 +340,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                    point: {
                         events: {
                             click: function () {
-                                alert('campaign: ' + this.category + ', value: ' + this.y);
+                              //  alert('campaign: ' + this.category + ', value: ' + this.y);
                             }
                         }
                     }

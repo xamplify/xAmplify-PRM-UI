@@ -72,6 +72,7 @@ export class AnalyticsComponent implements OnInit {
         }
         this.maxViewsValue =  Math.max.apply(null, views);
         this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+        console.log(this.campaignReport)
         this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
       },
       error => console.log(error),
