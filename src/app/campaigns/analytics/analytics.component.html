@@ -415,7 +415,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="usersWatchListModalLabel">Users who have watched the campaign</h4>
+				<h4 class="modal-title" id="usersWatchListModalLabel" style="text-align: center;">Users who have watched the campaign</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -491,8 +491,8 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Users who opened the email</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Users who clicked the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'" style="text-align: center;">Users who opened the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'" style="text-align: center;">Users who clicked the email</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -547,7 +547,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+				<h4 class="modal-title" id="emailSentListModalLabel" style="text-align: center;">Sent Email Details</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -602,7 +602,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">{{donultModelpopupTitle}} Views</h4>
+				<h4 class="modal-title" style="text-align: center;">{{donultModelpopupTitle}} Views</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -624,7 +624,20 @@
 									<td><h6>{{item.userEmail}}</h6></td>
 									<td><h6>{{item.location }}</h6></td>
 									<td><h6>{{item.time | date: 'fullDate'}}</h6></td>
-									<td><h6>{{item.deviceType }}</h6></td>
+									<!-- <td><h6>{{item.deviceType }}</h6></td> -->
+									<td class="center" *ngIf="item.os == 'windows'"><i
+										class="fa fa-windows" aria-hidden="true"
+										style="color: #0085d5; font-size: 18px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'mac'"><i
+										class="fa fa fa-apple" aria-hidden="true"
+										style="color: green; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'linux'"><i
+										class="fa fa fa-linux" aria-hidden="true"
+										style="color: #2b247d; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'android'"><i
+										class="fa fa-android" aria-hidden="true"
+										style="color: #a4ca39; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == null">-</td>
 									<td><h6>{{item.viewsCount }}</h6></td>
 								</tr>
 							</tbody>

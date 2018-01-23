@@ -403,6 +403,7 @@ export class AnalyticsComponent implements OnInit {
     this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
   }
+  
   userWatchedviewsInfo(emailId: string){
     if(emailId !== this.selectedRow.userEmail){
     this.userCampaignReport.emailOpenCount = 0;
@@ -415,6 +416,7 @@ export class AnalyticsComponent implements OnInit {
     this.isTimeLineView = true;
    }
   }
+  
   getCampaignById(campaignId: number) {
     const obj = {'campaignId': campaignId}
     this.campaignService.getCampaignById(obj)
@@ -465,12 +467,14 @@ export class AnalyticsComponent implements OnInit {
     this.userCampaignReport.totalUniqueWatchCount = 0;
     this.clearPaginationValues();
   }
+  
   clearPaginationValues(){
-    this.pagination = new Pagination();
     this.pagination.pageIndex = 1;
+    this.pagination = new Pagination();
     this.barChartCliked = false;
     this.donultModelpopupTitle = '';
   }
+  
   campaignViewsDonut(timePeriod: string, pagination){
    this.donultModelpopupTitle = timePeriod;
    this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
@@ -492,6 +496,7 @@ export class AnalyticsComponent implements OnInit {
       error => console.log(error),
       () => {});
   }
+  
   ngOnInit() {
     const userId = this.authenticationService.getUserId();
     this.campaignId = this.route.snapshot.params['campaignId'];
