@@ -20,6 +20,12 @@ export class FacebookService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getWeeklyPosts(socialConnection: SocialConnection){
+        return this.http.post(this.URL + 'weekly-posts' + '?access_token=' + this.authenticationService.access_token,socialConnection)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     getReactions(postId: string, facebookAccessToken: string) {
         return this.http.get(this.URL + 'reactions' + '?access_token=' + this.authenticationService.access_token + '&facebookAccessToken='

@@ -176,17 +176,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    facebookSparklineData() {
-        $('.sparkline_bar_facebook').sparkline([28, 25, 24, 26, 24, 22, 26], {
-            type: 'bar',
-            padding: '5px',
-            barWidth: '4',
-            height: '20',
-            barColor: '#3b5998',
-            barSpacing: '3'
-        });
-    }
-
     renderWorldMap() {
         const data = this.countryViewsData;
         Highcharts.mapChart('world-map', {
@@ -401,18 +390,56 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
+    
+    getWeeklyPosts(socialConnection: SocialConnection){
+        this.facebookService.getWeeklyPosts(socialConnection)
+        .subscribe(
+        data => {
+            const dates = [];
+            const values = [];
+            for (const i of Object.keys(data)){
+                dates.push(i);
+                values.push(data[i]);
+            }
+            
+            $('#sparkline_'+socialConnection.profileId).sparkline(values, {
+                type: 'bar',
+                padding: '5px',
+                barWidth: '4',
+                height: '20',
+                barColor: '#00ACED',
+                barSpacing: '3',
+                negBarColor: '#e02222',
+                tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                tooltipValueLookups: { 'offset': dates }
+                
+            });
+        },
+        error => console.log(error),
+        () => console.log('getWeeklyTweets() method invoke started finished.')
+        );
+}
 
     getWeeklyTweets(socialConnection: SocialConnection) {
         this.twitterService.getWeeklyTweets(socialConnection)
             .subscribe(
             data => {
-                $('#sparkline_bar_twitter').sparkline(data, {
+            const dates = [];
+            const values = [];
+            for (const i of Object.keys(data)){
+                dates.push(i);
+                values.push(data[i]);
+            }
+                $('#sparkline_'+socialConnection.profileId).sparkline(values, {
                     type: 'bar',
                     padding: '5px',
                     barWidth: '4',
                     height: '20',
                     barColor: '#00ACED',
-                    barSpacing: '3'
+                    barSpacing: '3',
+                    negBarColor: '#e02222',
+                    tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipValueLookups: { 'offset': dates }
                 });
                 let count = 0;
                 $.each(data, function (index: number, value: number) {
@@ -441,8 +468,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             this.getTotalCountOfTFFF(this.socialConnections[i]);
                             this.getGenderDemographics(this.socialConnections[i]);
                             this.getWeeklyTweets(this.socialConnections[i]);
-                        } else if (this.socialConnections[i].source === 'FACEBOOK' && this.socialConnections[i].emailId === null) {
-                            this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                        } else if(this.socialConnections[i].source === 'FACEBOOK') {
+                            this.getWeeklyPosts(this.socialConnections[i]);
+                            if(this.socialConnections[i].emailId === null){
+                                this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                            }
                         }
                     }
                 }
@@ -939,7 +969,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             Index.initCharts();
             Index.initChat();
             Tasks.initDashboardWidget();
-            this.facebookSparklineData();
             this.listActiveSocialAccounts(this.loggedInUserId);
             this.genderDemographics(this.loggedInUserId);
         } catch (err) {
