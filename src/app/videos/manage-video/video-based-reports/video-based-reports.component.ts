@@ -46,6 +46,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     viewsMaxValues: any;
     userMinutesWatched: any;
     userId: number;
+    paginationValue: string;
+    watchedFullyReportData: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -85,7 +87,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         this.series.name + ': ' + this.y;
                 }
             },
-
             plotOptions: {
                 column: {
                     stacking: 'normal'
@@ -104,11 +105,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     }
                  }
             },
-
             series: [{
                 name: 'views',
                 data: views
-                // stack: 'male'
             }]
         });
     }
@@ -116,22 +115,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
        const maxValue = Math.max.apply(null, minutesWatched);
         const charts = [],
             $containers = $('#trellis td'),
-            datasets = [
-                {
-                    name: ' ',
-                    data: minutesWatched,
-
-                }
-
-            ];
-        $.each(datasets, function (i, dataset) {
+            datasets = [  {  name: ' ',  data: minutesWatched, } ];
+          $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
                 chart: {
                     renderTo: $containers[i],
                     type: 'bar',
                     marginLeft: i === 0 ? 100 : 10
                 },
-
                 title: {
                     text: dataset.name,
                     align: 'left',
@@ -342,6 +333,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.xtremandLogger.errorPage(error);
             });
     }
+    watchedFullyDetailReport(){
+        this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
+         (result:any)=> {
+            console.log(result);
+           this.paginationValue = 'watchedFully';
+           this.watchedFullyReportData = result.data;
+           this.pagination.totalRecords = result.totalRecords;
+           this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
+           if(this.watchedFullyReportData.length > 0 ){
+           $('#watchedFullyModelPopup').modal('show'); 
+           }
+        },
+        (err:any)=> { console.log(err);})
+    }    
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -456,6 +461,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
       subscribe(
          data=>{
             console.log(data);
+            this.paginationValue = 'userMinutesWatched';
             this.userMinutesWatched = data.data;
             this.pagination.totalRecords = data.totalRecords;
             this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
@@ -468,16 +474,22 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
          }
         );
     }
-    setPage(page: number, type: string) {
+    setPage(page: number) {
       if (page !== this.pagination.pageIndex) {
         this.pagination.pageIndex = page;
-        this.clickedMinutesWatched(this.userId);
+        if(this.paginationValue = 'userMinutesWatched'){
+           this.clickedMinutesWatched(this.userId);
+        }
+        else if(this.paginationValue='watchedFully'){
+           this.watchedFullyDetailReport();
+        }
       }
     }
     clearPaginationValues(){
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
+        this.paginationValue = '';
     }
     getVideoPlayedSkippedInfo(){
         this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(

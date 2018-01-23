@@ -89,7 +89,15 @@ export class VideoBaseReportService {
                 .map(this.extractData)
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
-    }    
+    }   
+    watchedFullyReport(videoId: number, pagination: Pagination){
+          try {
+          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/watched-fully-report?access_token='+this.authenticationService.access_token;
+           return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }     
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

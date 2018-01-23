@@ -4,6 +4,7 @@ import { VideoBaseReportService } from '../../../services/video-base-report.serv
 import { XtremandLogger } from '../../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../../services/video-util.service';
 import { Pagination } from '../../../../core/models/pagination';
+import { PagerService } from '../../../../core/services/pager.service';
 declare var Highcharts: any;
 
 @Component({
@@ -22,12 +23,17 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   videoViewsLevelOne = [];
   videoViewsLevelTwo = [];
   constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
-    public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination) {
-    this.daySort = this.videoUtilService.sortMonthDates[3];
+    public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     this.selectedVideoId = this.videoUtilService.selectedVideoId;
     this.videoViewsData = this.videoUtilService.videoViewsData;
     this.timePeriod = this.videoUtilService.timePeriod;
     this.timePeriodValue = this.videoUtilService.timePeriodValue;
+    for (let i = 0; i < this.videoUtilService.sortMonthDates.length; i++) {
+      if (this.videoUtilService.timePeriod === this.videoUtilService.sortMonthDates[i].value) {
+        this.daySort = this.videoUtilService.sortMonthDates[i];
+        break;
+      }
+    }
   }
   videoViewsBarchart(){
     if(this.selectedVideoId && this.timePeriodValue){
@@ -35,7 +41,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
      .subscribe(
        (result:any)=>  {
        console.log(result);
-       this.videoViewsLevelOne.push(result);
+       this.videoViewsLevelOne = result;
        this.videoViewsBarChartLevelTwo();
       });
     }
@@ -46,18 +52,33 @@ export class ChartReportComponent implements OnInit, OnDestroy {
      .subscribe(
        (result:any)=>  {
        console.log(result);
-       this.videoViewsLevelTwo.push(result);
+       this.videoViewsLevelTwo = result.data;
+       this.pagination.totalRecords = result.totalRecords;
+       this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelTwo);
       });
     }
   }  
-  selectedCampaignWatchedUsers(timePeriod) {
+  selectedCampaignWatchedUsers(timePeriod, checkValue) {
     this.timePeriod = timePeriod;
+    console.log(checkValue);
     try{
     this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideoId)
       .subscribe((result: any) => {
         console.log(result);
         this.videoViewsData = result;
+        if(!checkValue){
+          this.timePeriodValue = this.videoViewsData.dates[0];
+          if(this.timePeriodValue && this.timePeriodValue.includes('Q')){ 
+            this.timePeriodValue = this.timePeriodValue.substring(1,this.timePeriodValue.length);}
+          console.log(this.timePeriodValue);
+        }
         this.monthlyViewsBarCharts(result.dates, result.views);
+        if(result.dates.length > 0 && result.views.length > 0){ 
+          this.videoViewsBarchart(); 
+        } else {
+          this.videoViewsLevelOne = [];
+          this.videoViewsLevelTwo = [];
+        }
       },
       (error: any) => {
         this.xtremandLogger.error(error);
@@ -113,8 +134,11 @@ export class ChartReportComponent implements OnInit, OnDestroy {
             point: {
                 events: {
                     click: function () {
-                        if(this.category.includes('Q')){ this.category = this.category.substring(1,this.category.length);}
-                        self.timePeriodValue = this.category;
+                        if(this.category.includes('Q')){
+                           const timePeriod = this.category.substring(1,this.category.length);
+                           self.timePeriodValue = timePeriod;
+                          }
+                        else { self.timePeriodValue = this.category; }
                         self.videoViewsBarchart();
                     }
                 }
@@ -142,9 +166,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     if (!this.timePeriod) {
       this.router.navigate(['/home/videos/manage']);
     }
-    this.selectedCampaignWatchedUsers(this.timePeriod);
-    this.videoViewsBarchart();
-
+    this.selectedCampaignWatchedUsers(this.timePeriod, true);
   }
   ngOnDestroy() {
     if (!this.checkVideo) {

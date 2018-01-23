@@ -30,7 +30,7 @@
 		z-index: 0;
 		text-align: center;
 	}
-	a.disabled {
+	.disabled {
 		pointer-events: none;
 		cursor: not-allowed;
 	}
@@ -68,8 +68,8 @@
 						<table id="trellis" style="min-width: 250px; max-width: 300px; height: 200px;"><tr><td class="first"></td></tr></table>
 						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} users </h5>
 					</div>
-					<div class="col-xs-3 text-center" style="padding: 0">
-						<section class="percentage-circle" style="margin-top: 10px;">
+					<div class="col-xs-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
+						<section class="percentage-circle" style="margin-top: 10px;cursor: pointer">
 							<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 								<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
 								<circle cx="60" cy="60" r="54" fill="none" stroke-width= "5" stroke="#00a6e8" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - watchedFully/100)}"
@@ -245,19 +245,79 @@
 						<!--pager here  -->
 			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                          <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
 	                       </li>
 	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                           <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 	                        </li>
 	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, 'userMinutesWatched')">{{page}}</a>
+	                           <a (click)="setPage(page)">{{page}}</a>
 	                        </li>
 	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+	                            <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
 	                        </li>
 	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.totalPages, 'userMinutesWatched')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                            <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+						<!-- pager end here -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- model popup for watched fully  -->
+<div class="modal fade" id="watchedFullyModelPopup" tabindex="-1" role="dialog" >
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">watched fully Reports</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive" style="padding: 0px 7px;">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Campaign Name</th>
+									<th>email id</th>
+									<th>date</th>
+									<th>device</th>
+									<th>location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of watchedFullyReportData">
+									<td><h6>{{item.campaignName}}</h6></td>
+									<td><h6>{{item.name}}</h6></td>
+									<td><h6>{{item.date | date: 'fullDate'}}</h6></td>
+									<td><h6>{{item.device }}</h6></td>
+									<td><h6>{{item.location }}</h6></td>
+								</tr>
+							</tbody>
+						</table>
+						<!--pager here  -->
+			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(pagination.pager.currentPage - 1)"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page)">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.currentPage + 1)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.totalPages)"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 	                        </li>
 	                    </ul>
 						<!-- pager end here -->
