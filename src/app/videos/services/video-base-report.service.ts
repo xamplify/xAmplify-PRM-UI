@@ -98,6 +98,14 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
     }     
+    totlaMinutesWatchedByMostUsers(videoId:number){
+         try {
+          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/total-minutes-watched-by-top-10-users-detailreport?access_token='+this.authenticationService.access_token;
+           return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }    
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

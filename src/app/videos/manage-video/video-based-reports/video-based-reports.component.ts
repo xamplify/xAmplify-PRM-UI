@@ -48,6 +48,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     userId: number;
     paginationValue: string;
     watchedFullyReportData: any;
+    totalUsersWatched: any;
+
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -113,6 +115,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
        const maxValue = Math.max.apply(null, minutesWatched);
+       const self = this;
         const charts = [],
             $containers = $('#trellis td'),
             datasets = [  {  name: ' ',  data: minutesWatched, } ];
@@ -138,8 +141,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         dataLabels: {
                             enabled: true
                         },
-                        minPointLength: 3
-                    }
+                        minPointLength: 3,
+                    },
+                      series: {
+                        point: {
+                                events: {
+                                    click: function () {
+                                       // alert('campaign: ' + this.category + ', value: ' + this.y);
+                                       self.totalMinutesWatchedByMostUsers();
+                                    }
+                                }
+                          }
+                     }
                 },
                 colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
                 credits: {
@@ -179,44 +192,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }));
         });
     }
-    minutesWatchedBarcharts() {
-        Highcharts.chart('container', {
-            chart: {
-                type: 'bar'
-            },
-            exporting: { enabled: false },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: ' '
-            },
-            xAxis: {
-                categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-            },
-            yAxis: {
-                min: 0,
-                visible: false
-            },
-            legend: {
-                reversed: false,
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    stacking: 'normal'
-                }
-            },
-            series: [{
-                name: 'views',
-                data: [5, 3, 4, 7, 2]
-            }, {
-                name: 'minutes watched',
-                data: [2, 2, 3, 2, 1],
-                color: '#98dc71'
-            }]
-        });
-    }
     videoPlayedandSkippedDuration(views, skipped){
       Highcharts.chart('video-skipped', {
             chart: {
@@ -227,13 +202,28 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             exporting : { enabled: false},
             xAxis: {
-              //  categories: [1,2,2,3,5,6,6,7,8,8,7,6,6,4,3,3]
             },
             yAxis : { 
                 title : '',
             },
             credits: {
                 enabled: false
+            },
+             plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    events: {
+                        click: function (event) {
+                            alert(
+                                this.name + ' clicked\n' +
+                                'Alt: ' + event.altKey + '\n' +
+                                'Control: ' + event.ctrlKey + '\n' +
+                                'Meta: ' + event.metaKey + '\n' +
+                                'Shift: ' + event.shiftKey
+                            );
+                        }
+                    }
+                }
             },
             series: [
               {
@@ -346,7 +336,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
            }
         },
         (err:any)=> { console.log(err);})
-    }    
+    }   
+    totalMinutesWatchedByMostUsers(){
+         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
+         (result:any)=> {
+            console.log(result);  
+            this.totalUsersWatched = result;
+            if(this.totalUsersWatched.length > 0){
+             $('#totalwatchedUsersModelPopup').modal('show'); 
+            }
+        },
+        (err:any)=> { console.log(err);})
+    } 
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
