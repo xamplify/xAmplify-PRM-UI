@@ -3,102 +3,151 @@ import { Router } from '@angular/router';
 import { VideoBaseReportService } from '../../../services/video-base-report.service';
 import { XtremandLogger } from '../../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../../services/video-util.service';
-declare var Highcharts:any; 
+import { Pagination } from '../../../../core/models/pagination';
+declare var Highcharts: any;
 
 @Component({
   selector: 'app-chart-report',
   templateUrl: './chart-report.component.html',
-  styleUrls: ['./chart-report.component.css']
+  styleUrls: ['./chart-report.component.css'],
+  providers: [Pagination]
 })
 export class ChartReportComponent implements OnInit, OnDestroy {
   selectedVideoId: number;
   videoViewsData: any;
   daySort: any;
   timePeriod: any;
+  checkVideo = false;
+  timePeriodValue: any;
+  videoViewsLevelOne = [];
+  videoViewsLevelTwo = [];
   constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
-     public videoUtilService: VideoUtilService, public router: Router) {
-       this.daySort = this.videoUtilService.sortMonthDates[3];
-       this.selectedVideoId = this.videoUtilService.selectedVideoId;
-       this.videoViewsData = this.videoUtilService.videoViewsData;
-       this.timePeriod = this.videoUtilService.timePeriod;
-      }
-
-  selectedCampaignWatchedUsers(timePeriod) {
-      this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideoId)
-          .subscribe((result: any) => {
-              console.log(result);
-              this.videoViewsData = result;
-              this.monthlyViewsBarCharts(result.dates, result.views);
-          },
-          (error: any) => {
-              this.xtremandLogger.error(error);
-             // this.xtremandLogger.errorPage(error);
-          });
-     }
-      monthlyViewsBarCharts(dates, views) {
-        Highcharts.chart('monthly-views-bar-chart', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ' '
-            },
-            credits: false,
-            exporting: { enabled: false },
-            xAxis: {
-                categories: dates
-            },
-
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                title: {
-                    text: ' '
-                },
-                visible: false
-            },
-            legend: {
-                enabled: false
-            },
-
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +
-                        this.series.name + ': ' + this.y;
-                }
-            },
-
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                }
-            },
-
-            series: [{
-                name: 'views',
-                data: views
-                // stack: 'male'
-            }]
-        });
+    public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination) {
+    this.daySort = this.videoUtilService.sortMonthDates[3];
+    this.selectedVideoId = this.videoUtilService.selectedVideoId;
+    this.videoViewsData = this.videoUtilService.videoViewsData;
+    this.timePeriod = this.videoUtilService.timePeriod;
+    this.timePeriodValue = this.videoUtilService.timePeriodValue;
+  }
+  videoViewsBarchart(){
+    if(this.selectedVideoId && this.timePeriodValue){
+    this.videoBaseReportService.getVideoViewsDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue)
+     .subscribe(
+       (result:any)=>  {
+       console.log(result);
+       this.videoViewsLevelOne.push(result);
+       this.videoViewsBarChartLevelTwo();
+      });
     }
-  goToMangeVideos(){
+    }
+  videoViewsBarChartLevelTwo(){
+      if(this.selectedVideoId && this.timePeriodValue){ 
+    this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.pagination)
+     .subscribe(
+       (result:any)=>  {
+       console.log(result);
+       this.videoViewsLevelTwo.push(result);
+      });
+    }
+  }  
+  selectedCampaignWatchedUsers(timePeriod) {
+    this.timePeriod = timePeriod;
+    try{
+    this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideoId)
+      .subscribe((result: any) => {
+        console.log(result);
+        this.videoViewsData = result;
+        this.monthlyViewsBarCharts(result.dates, result.views);
+      },
+      (error: any) => {
+        this.xtremandLogger.error(error);
+        // this.xtremandLogger.errorPage(error);
+      });
+    }catch(err){
+       console.log(err);
+    }
+  }
+  setPage(page:number){
+    this.pagination.pageIndex = page;
+    this.videoViewsBarChartLevelTwo();
+  }
+  monthlyViewsBarCharts(dates, views) {
+    const self = this;
+    Highcharts.chart('monthly-views-bar-chart', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ' '
+      },
+      credits: false,
+      exporting: { enabled: false },
+      xAxis: {
+        categories: dates
+      },
+
+      yAxis: {
+        allowDecimals: false,
+        min: 0,
+        title: {
+          text: ' '
+        },
+        visible: false
+      },
+      legend: {
+        enabled: false
+      },
+
+      tooltip: {
+        formatter: function () {
+          return '<b>' + this.x + '</b><br/>' +
+            this.series.name + ': ' + this.y;
+        }
+      },
+
+      plotOptions: {
+        column: {
+          stacking: 'normal'
+        },
+          series: {
+            point: {
+                events: {
+                    click: function () {
+                        if(this.category.includes('Q')){ this.category = this.category.substring(1,this.category.length);}
+                        self.timePeriodValue = this.category;
+                        self.videoViewsBarchart();
+                    }
+                }
+            }
+          }
+      },
+      series: [{
+        name: 'views',
+        data: views
+        // stack: 'male'
+      }]
+    });
+  }
+  goToMangeVideos() {
     this.videoUtilService.selectedVideo = null;
-    this.videoUtilService.checkVideo = false;
+    this.checkVideo = false;
     this.router.navigate(['../home/videos/manage']);
-  }    
-  goBackToLastPage(){
-    this.videoUtilService.checkVideo = true;
+  }
+  goBackToLastPage() {
+    this.checkVideo = true;
     this.router.navigate(['../home/videos/manage']);
-  }    
+  }
   ngOnInit() {
     console.log(this.videoViewsData);
-    if(!this.timePeriod){
+    if (!this.timePeriod) {
       this.router.navigate(['/home/videos/manage']);
     }
     this.selectedCampaignWatchedUsers(this.timePeriod);
+    this.videoViewsBarchart();
+
   }
-  ngOnDestroy(){
-    if(!this.videoUtilService.checkVideo){
+  ngOnDestroy() {
+    if (!this.checkVideo) {
       this.videoUtilService.selectedVideo = null;
     }
 

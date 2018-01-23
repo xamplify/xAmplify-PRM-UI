@@ -9,7 +9,7 @@ export class VideoUtilService {
     selectedVideoId: number;
     videoViewsData: any;
     timePeriod: string;
-    checkVideo = false;
+    timePeriodValue: string;
     selectedVideo: SaveVideoFile = null;
     videoSizes = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
     publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];

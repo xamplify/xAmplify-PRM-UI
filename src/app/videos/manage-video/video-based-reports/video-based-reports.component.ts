@@ -96,6 +96,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                             click: function () {
                                // alert('campaign: ' + this.category + ', value: ' + this.y);
                                self.videoUtilService.selectedVideo = self.selectedVideo;
+                               if(this.category.includes('Q')){ this.category = this.category.substring(1,this.category.length);}
+                               self.videoUtilService.timePeriodValue = this.category;
                                self.router.navigate(['./home/videos/manage/reports']);
                             }
                         }
@@ -224,7 +226,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }]
         });
     }
-    videoPlayedandSkippedDuration(){
+    videoPlayedandSkippedDuration(views, skipped){
       Highcharts.chart('video-skipped', {
             chart: {
                 type: 'area'
@@ -234,7 +236,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             exporting : { enabled: false},
             xAxis: {
-                categories: [1,2,2,3,5,6,6,7,8,8,7,6,6,4,3,3]
+              //  categories: [1,2,2,3,5,6,6,7,8,8,7,6,6,4,3,3]
             },
             yAxis : { 
                 title : '',
@@ -244,14 +246,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             series: [
               {
-                name: 'Jane',
+                name: 'views',
                 showInLegend: false,
                 color: 'lightgreen',
-                data: [2, -2, -3, 2, 1]
+                data: views
               }, {
-                name: 'Joe',
+                name: 'skipped',
                 showInLegend: false,
-                data: [3, 4, 4, -2, 5]
+                data: skipped
             }]
         });
     }
@@ -477,6 +479,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
     }
+    getVideoPlayedSkippedInfo(){
+        this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(
+        (result:any) =>{ 
+        console.log(result);
+        this.videoPlayedandSkippedDuration(result.views, result.skipped);
+        },
+         error => { 
+             this.xtremandLogger.error(error);
+           //  this.xtremandLogger.errorPage(error);
+         }
+      );
+    }
     ngOnInit() {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
@@ -486,7 +500,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.selectedSortByValue(this.minutesSort.value);
         this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
-        this.videoPlayedandSkippedDuration();
+        this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
     }
     ngAfterViewInit() {

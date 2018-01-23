@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class VideoBaseReportService {
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(public http: Http, public authenticationService: AuthenticationService) { }
+
     getCampaignVideoCountriesAndViews(alias: any) {
         try {
             const url = this.URL + 'videos/monthwise_countrywise_views/' + alias + '?access_token='
@@ -57,6 +58,34 @@ export class VideoBaseReportService {
             const url =this.authenticationService.REST_URL+'videos/'+timePeriod+'/views-minuteswatched-detail-report?userId='+userId+'&videoId='
             +videoId+'&timePeriodValue='+timePeriodValue+'&access_token='+this.authenticationService.access_token;    
             return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }
+    getVideoViewsDetails(timePeriod: string, videoId:number, timePeriodValue:string){
+      try {
+            const url = this.authenticationService.REST_URL+'videos/views/'+timePeriod+'/detail-report?access_token='+this.authenticationService.access_token+
+            '&videoId='+videoId+'&timePeriodValue='+timePeriodValue;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }  
+    getVideoViewsInnerDetails(timePeriod: string, videoId:number, timePeriodValue:string, pagination:Pagination){
+       console.log(timePeriod+'video'+videoId+'2nd'+timePeriodValue);
+        console.log(pagination);
+        try {
+            const url = this.authenticationService.REST_URL+'videos/views/'+timePeriod+'/detail-report?access_token='+this.authenticationService.access_token+
+            '&videoId='+videoId+'&timePeriodValue='+timePeriodValue;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    }    
+    getVideoPlayedSkippedInfo(videoId: number){
+         try {
+           const url  =  this.authenticationService.REST_URL+'videos/'+videoId+'/skipped-duration?access_token='+this.authenticationService.access_token;
+            return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);
             } catch (error) { console.log(error); }

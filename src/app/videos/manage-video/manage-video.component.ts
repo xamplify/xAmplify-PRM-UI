@@ -379,7 +379,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     gotoHome(){
         this.videoUtilService.selectedVideo = null;
-        this.videoUtilService.checkVideo = false;
         this.router.navigate(['./home/dashboard']);
     }
     ngOnDestroy() {
