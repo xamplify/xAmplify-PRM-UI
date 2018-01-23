@@ -29,12 +29,14 @@ export class AnalyticsComponent implements OnInit {
   campaignBarViews: any;
   countryWiseCampaignViews: any;
   emailLogs: any;
+  totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
   userCampaignReport: CampaignReport = new CampaignReport;
 
   campaignViewsPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
+  emailLogPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
@@ -42,7 +44,11 @@ export class AnalyticsComponent implements OnInit {
   maxViewsValue: number;
   barChartCliked = false;
   donutCampaignViews:any;
+  totalListOfemailLog: any;
   donultModelpopupTitle: string;
+  downloadDataList = [];
+  downloadCsvList: any;
+  downloadTypeName = '';
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -346,7 +352,8 @@ export class AnalyticsComponent implements OnInit {
   }
 
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
-    this.campaignService.emailActionList(campaignId, actionType, pagination)
+    this.emailActionTotalList(campaignId, actionType);
+      this.campaignService.emailActionList(campaignId, actionType, pagination)
       .subscribe(
       data => {
         this.campaignReport.emailActionList = data;
@@ -462,6 +469,7 @@ export class AnalyticsComponent implements OnInit {
     this.referenceService.isFromTopNavBar = false;
     this.isTimeLineView = !this.isTimeLineView;
     this.emailLogs = [];
+    this.totalEmailLogs = [];
     this.userCampaignReport.emailOpenCount = 0;
     this.userCampaignReport.emailClickedCount = 0;
     this.userCampaignReport.totalUniqueWatchCount = 0;
@@ -473,6 +481,7 @@ export class AnalyticsComponent implements OnInit {
     this.pagination = new Pagination();
     this.barChartCliked = false;
     this.donultModelpopupTitle = '';
+    this.emailLogPagination = new Pagination();
   }
   
   campaignViewsDonut(timePeriod: string, pagination){
@@ -492,9 +501,102 @@ export class AnalyticsComponent implements OnInit {
         }
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
         $('#donutModelPopup').modal('show'); 
+        this.totalCampaignViewsDonut(timePeriod);
    },
       error => console.log(error),
       () => {});
+  }
+  
+  totalCampaignViewsDonut(timePeriod: string){
+      this.emailLogPagination.maxResults = 5000;
+      this.downloadTypeName = 'donut';
+      this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.emailLogPagination).
+      subscribe(
+        (data:any) => {
+         this.totalListOfemailLog = data;
+           this.emailLogPagination = this.pagerService.getPagedItems(this.emailLogPagination, this.totalListOfemailLog);
+      },
+         error => console.log(error),
+         () => {});
+     }
+  
+  emailActionTotalList(campaignId: number, actionType: string) {
+      this.emailLogPagination.maxResults = 5000;
+      this.downloadTypeName = 'emailAction';
+      this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
+        .subscribe(
+        data => {
+          this.campaignReport.totalEmailActionList = data;
+          this.campaignReport.emailActionType = actionType;
+          this.emailLogPagination = this.pagerService.getPagedItems(this.emailLogPagination, this.campaignReport.totalEmailActionList);
+        },
+        error => console.log(error),
+        () => console.log()
+        )
+    }
+
+  convertToCSV( objArray ) {
+      var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
+      var str = '';
+      var row = "";
+      for ( var index in objArray[0] ) {
+          row += index + ',';
+      }
+      row = row.slice( 0, -1 );
+      str += row + '\r\n';
+      for ( var i = 0; i < array.length; i++ ) {
+          var line = '';
+          for ( var index in array[i] ) {
+              if ( line != '' ) line += ','
+              line += array[i][index];
+          }
+          str += line + '\r\n';
+      }
+      return str;
+  }
+
+  downloadEmailLogs() {
+      let logListName: string;
+      if ( this.downloadTypeName === 'donut' ) {
+          logListName = 'Campaign_Views_Logs.csv';
+          this.downloadCsvList = this.totalListOfemailLog;
+      } else if ( this.downloadTypeName === 'emailAction' ) {
+          logListName = 'Email_Action_Logs.csv';
+          this.downloadCsvList = this.campaignReport.totalEmailActionList;
+      } /*else if ( this.paginationType === 'watched' ) {
+          logListName = 'Email_Watched_Logs.csv';
+          this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
+      }*/
+      this.downloadDataList.length = 0;
+      for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
+          let date = new Date( this.downloadCsvList[i].time );
+          var object = {
+              "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+          }
+
+          if ( this.downloadTypeName === 'donut' ) {
+              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+              object["Email Id"] = this.downloadCsvList[i].userEmail;
+              object["Platform"] = this.downloadCsvList[i].os;
+              object["Location"] = this.downloadCsvList[i].location;
+          }
+          if ( this.downloadTypeName === 'emailAction' ) {
+              object["Email Id"] = this.downloadCsvList[i].emailId;
+
+          }
+
+          this.downloadDataList.push( object );
+      }
+      var csvData = this.convertToCSV( this.downloadDataList );
+      var a = document.createElement( "a" );
+      a.setAttribute( 'style', 'display:none;' );
+      document.body.appendChild( a );
+      var blob = new Blob( [csvData], { type: 'text/csv' });
+      var url = window.URL.createObjectURL( blob );
+      a.href = url;
+      a.download = logListName;
+      a.click();
+      return 'success';
   }
   
   ngOnInit() {

@@ -22,4 +22,5 @@ export class CampaignReport {
 
     emailActionType: string;
     emailActionList: any;
+    totalEmailActionList: any;
 }

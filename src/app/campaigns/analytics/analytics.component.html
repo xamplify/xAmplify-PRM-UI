@@ -203,10 +203,10 @@
 							<table class="table table-bordered table-striped table-hover" >
 								<thead>
 									<tr>
-										<th>campaign</th>
-										<th>email address</th>
-										<th>latest view</th>
-										<th>views count</th>
+										<th>CAMPAIGN NAME</th>
+										<th>EMAIL ADDRESS</th>
+										<th>LATEST VIEW</th>
+										<th>TOTAL VIEWS</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -475,6 +475,9 @@
                         </li>
                     </ul>
 					<!-- pager end here -->
+					<!-- <button type="button" class="btn btn-default pull-right"
+					(click)="downloadEmailLogs()"
+					style="background-color: #eae8e8;">export to excel</button> -->
 				</div>
 			</div>
 		</div>
@@ -531,6 +534,9 @@
                         </li>
                     </ul>
 					<!-- pager end here -->
+					<button type="button" class="btn btn-default pull-right"
+					(click)="downloadEmailLogs()"
+					style="background-color: #eae8e8;">export to excel</button>
 				</div>
 			</div>
 		</div>
@@ -587,6 +593,9 @@
 	                        </li>
 	                    </ul>
 						<!-- pager end here -->
+					<!-- <button type="button" class="btn btn-default pull-right"
+					(click)="downloadEmailLogs()"
+					style="background-color: #eae8e8;">export to excel</button> -->
 					</div>
 				</div>
 			</div>
@@ -660,6 +669,9 @@
 	                            <a (click)="setPage(pagination.pager.totalPages, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 	                        </li>
 	                    </ul>
+	                    <button type="button" class="btn btn-default pull-right"
+					(click)="downloadEmailLogs()"
+					style="background-color: #eae8e8;">export to excel</button>
 						<!-- pager end here -->
 					</div>
 				</div>
