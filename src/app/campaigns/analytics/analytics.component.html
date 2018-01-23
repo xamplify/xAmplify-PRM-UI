@@ -439,25 +439,19 @@
 									<td><h6>{{item.ipAddress}}</h6></td>
 									<td><h6>{{item.state}}, {{item.country}}</h6></td>
 									<!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
-									<td class="center"
-									*ngIf="item.os == 'windows'"><i
-									class="fa fa-windows" aria-hidden="true"
-									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center"
-									*ngIf="item.os == 'mac'"><i
-									class="fa fa fa-apple" aria-hidden="true"
-									style="color: green; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="item.os == 'linux'"><i
-									class="fa fa fa-linux" aria-hidden="true"
-									style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="item.os == 'android'"><i
-									class="fa fa-android" aria-hidden="true"
-									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="item.os == null">
-									-</td>
+									<td class="center" *ngIf="item.os == 'windows'"><i
+										class="fa fa-windows" aria-hidden="true"
+										style="color: #0085d5; font-size: 18px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'mac'"><i
+										class="fa fa fa-apple" aria-hidden="true"
+										style="color: green; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'linux'"><i
+										class="fa fa fa-linux" aria-hidden="true"
+										style="color: #2b247d; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'android'"><i
+										class="fa fa-android" aria-hidden="true"
+										style="color: #a4ca39; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == null">-</td>
 								</tr>
 							</tbody>
 						</table>
