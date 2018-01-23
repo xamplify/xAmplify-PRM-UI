@@ -1108,57 +1108,57 @@ export class ManageContactsComponent implements OnInit {
         }
     }
     
-    convertToCSV(objArray) {
-        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    convertToCSV( objArray ) {
+        var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
         var str = '';
         var row = "";
-        for (var index in objArray[0]) {
+        for ( var index in objArray[0] ) {
             row += index + ',';
         }
-        row = row.slice(0, -1);
+        row = row.slice( 0, -1 );
         str += row + '\r\n';
-        for (var i = 0; i < array.length; i++) {
+        for ( var i = 0; i < array.length; i++ ) {
             var line = '';
-            for (var index in array[i]) {
-                if (line != '') line += ','
+            for ( var index in array[i] ) {
+                if ( line != '' ) line += ','
                 line += array[i][index];
             }
             str += line + '\r\n';
         }
         return str;
     }
-    
+
     downloadContactTypeList() {
         let logListName: string;
-            if ( this.contactsByType.selectedCategory === 'all' ) {
-                logListName = 'All_Users_List.csv';
-            }        
-            else if ( this.contactsByType.selectedCategory === 'active' ) {
-                logListName = 'Active_Users_List.csv';
-            } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
-                logListName = 'InActive_Users_List.csv';
-            } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
-                logListName = 'Invalid_Users_List.csv';
-            } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
-                logListName = 'Unsubscribed_Users_List.csv';
-            }
+        if ( this.contactsByType.selectedCategory === 'all' ) {
+            logListName = 'All_Users_List.csv';
+        }
+        else if ( this.contactsByType.selectedCategory === 'active' ) {
+            logListName = 'Active_Users_List.csv';
+        } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
+            logListName = 'InActive_Users_List.csv';
+        } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
+            logListName = 'Invalid_Users_List.csv';
+        } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
+            logListName = 'Unsubscribed_Users_List.csv';
+        }
         this.downloadDataList.length = 0;
-            for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
-                var object = {
-                        "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
-                        "First Name": this.contactsByType.listOfAllContacts[i].firstName,
-                        "Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-                        "Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-                        "Address": this.contactsByType.listOfAllContacts[i].address,
-                        "City": this.contactsByType.listOfAllContacts[i].city,
-                        "Country": this.contactsByType.listOfAllContacts[i].country,
-                        "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
-                        "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
-                        "Notes": this.contactsByType.listOfAllContacts[i].description
-                }
-                
-                this.downloadDataList.push( object );
+        for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
+            var object = {
+                "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
+                "First Name": this.contactsByType.listOfAllContacts[i].firstName,
+                "Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+                "Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+                "Address": this.contactsByType.listOfAllContacts[i].address,
+                "City": this.contactsByType.listOfAllContacts[i].city,
+                "Country": this.contactsByType.listOfAllContacts[i].country,
+                "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
+                "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
+                "Notes": this.contactsByType.listOfAllContacts[i].description
             }
+
+            this.downloadDataList.push( object );
+        }
         var csvData = this.convertToCSV( this.downloadDataList );
         var a = document.createElement( "a" );
         a.setAttribute( 'style', 'display:none;' );
@@ -1169,29 +1169,29 @@ export class ManageContactsComponent implements OnInit {
         a.download = logListName;
         a.click();
         return 'success';
-  }
-    
-    listAllContactsByType(contactType: string){
+    }
+
+    listAllContactsByType( contactType: string ) {
         this.response.responseType = null;
         this.response.responseMessage = null;
         this.resetListContacts();
         this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
-        this.contactService.listContactsByType(contactType, this.contactsByType.contactPagination)
-        .subscribe(
+        this.contactService.listContactsByType( contactType, this.contactsByType.contactPagination )
+            .subscribe(
             data => {
                 this.contactsByType.selectedCategory = contactType;
                 this.contactsByType.listOfAllContacts = data.listOfUsers;
                 this.contactsByType.contactPagination.totalRecords = data.totalRecords;
                 this.contactsByType.contactPagination = this.pagerService.getPagedItems( this.contactsByType.contactPagination, this.contactsByType.contacts );
             },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
             },
             () => {
                 this.contactsByType.isLoading = false;
-                }
-        );
+            }
+            );
     }
     
     ngOnInit() {

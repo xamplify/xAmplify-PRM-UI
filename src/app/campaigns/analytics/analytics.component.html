@@ -423,12 +423,12 @@
 						<table class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>email address</th>
-									<th>Start Duration</th>
-									<th>Stop Duration</th>
-									<th>IP Address</th>
-									<th>Location</th>
-									<th>Device</th>
+									<th>EMAIL ADDRESS</th>
+									<th>START DURATION</th>
+									<th>STOP DURATION</th>
+									<th>IP ADDRESS</th>
+									<th>LOCATION</th>
+									<th>PLATFORM</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -438,7 +438,26 @@
 									<td><h6>{{item.endTime | date: 'short'}}</h6></td>
 									<td><h6>{{item.ipAddress}}</h6></td>
 									<td><h6>{{item.state}}, {{item.country}}</h6></td>
-									<td><h6>{{item.deviceType}}, {{item.os}}</h6></td>
+									<!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
+									<td class="center"
+									*ngIf="item.os == 'windows'"><i
+									class="fa fa-windows" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center"
+									*ngIf="item.os == 'mac'"><i
+									class="fa fa fa-apple" aria-hidden="true"
+									style="color: green; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="item.os == 'linux'"><i
+									class="fa fa fa-linux" aria-hidden="true"
+									style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="item.os == 'android'"><i
+									class="fa fa-android" aria-hidden="true"
+									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="item.os == null">
+									-</td>
 								</tr>
 							</tbody>
 						</table>
@@ -487,8 +506,8 @@
 						<table class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>email address</th>
-									<th>Time</th>
+									<th>EMAIL ADDRESS</th>
+									<th>TIME</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -542,9 +561,9 @@
 						<table class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>campaign</th>
-									<th>email address</th>
-									<th>sent time</th>
+									<th>CAMPAIGN NAME</th>
+									<th>EMAIL ADDRESS</th>
+									<th>SENT TIME</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -597,12 +616,12 @@
 						<table class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>campaign</th>
-									<th>email address</th>
-									<th>location</th>
-									<th>time</th>
-									<th>device</th>
-									<th>views</th>
+									<th>CAMPAIGN NAME</th>
+									<th>EMAIL ADDRESS</th>
+									<th>LOCATION</th>
+									<th>TIME</th>
+									<th>PLATFORM</th>
+									<th>VIEWS</th>
 								</tr>
 							</thead>
 							<tbody>

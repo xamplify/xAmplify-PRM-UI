@@ -806,23 +806,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardReport.emailLogList.length = 0;
     }
     
-    convertToCSV(objArray) {
-        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-          var str = '';
+    convertToCSV( objArray ) {
+        var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
+        var str = '';
         var row = "";
 
-        for (var index in objArray[0]) {
+        for ( var index in objArray[0] ) {
             //Now convert each value to string and comma-separated
             row += index + ',';
         }
-        row = row.slice(0, -1);
+        row = row.slice( 0, -1 );
         //append Label row with line break
         str += row + '\r\n';
 
-        for (var i = 0; i < array.length; i++) {
+        for ( var i = 0; i < array.length; i++ ) {
             var line = '';
-            for (var index in array[i]) {
-                if (line != '') line += ','
+            for ( var index in array[i] ) {
+                if ( line != '' ) line += ','
 
                 line += array[i][index];
             }
@@ -830,40 +830,40 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
         return str;
     }
-    
+
     downloadEmailLogs() {
         let logListName: string;
-            if ( this.paginationType === 'open' ) {
-                logListName = 'Email_Open_Logs.csv';
-                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
-            } else if ( this.paginationType === 'clicked' ) {
-                logListName = 'Email_Clicked_Logs.csv';
-                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
-            } else if ( this.paginationType === 'watched' ) {
-                logListName = 'Email_Watched_Logs.csv';
-                this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
-            }
+        if ( this.paginationType === 'open' ) {
+            logListName = 'Email_Open_Logs.csv';
+            this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
+        } else if ( this.paginationType === 'clicked' ) {
+            logListName = 'Email_Clicked_Logs.csv';
+            this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
+        } else if ( this.paginationType === 'watched' ) {
+            logListName = 'Email_Watched_Logs.csv';
+            this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
+        }
         this.downloadDataList.length = 0;
-            for ( let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++ ) {
-                let date = new Date( this.dashboardReport.downloadEmailLogList[i].time );
-                var object = {
-                        "EmailId": this.dashboardReport.downloadEmailLogList[i].emailId,
-                        "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
-                        "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
-                        "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-                        "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
-                }
-                
-                if( this.paginationType != 'open' ) {
-                    object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
-                    object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
-                    object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;
-                    object["Platform"] = this.dashboardReport.downloadEmailLogList[i].os;
-
-                }
-                
-                this.downloadDataList.push( object );
+        for ( let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++ ) {
+            let date = new Date( this.dashboardReport.downloadEmailLogList[i].time );
+            var object = {
+                "EmailId": this.dashboardReport.downloadEmailLogList[i].emailId,
+                "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
+                "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
+                "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
+
+            if ( this.paginationType != 'open' ) {
+                object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
+                object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
+                object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;
+                object["Platform"] = this.dashboardReport.downloadEmailLogList[i].os;
+
+            }
+
+            this.downloadDataList.push( object );
+        }
         var csvData = this.convertToCSV( this.downloadDataList );
         var a = document.createElement( "a" );
         a.setAttribute( 'style', 'display:none;' );
@@ -874,47 +874,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.download = logListName;
         a.click();
         return 'success';
-  }
-    
+    }
+
     listOfAllEmailOpenLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
-        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
+        this.dashboardService.listEmailOpenLogs( this.loggedInUserId, 13, this.pagination )
             .subscribe(
-            (result: any) => {
+            ( result: any ) => {
                 this.dashboardReport.allEmailOpenLogList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
+                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailOpenLogList );
             },
-            error => console.log(error),
+            error => console.log( error ),
             () => { }
             );
     }
 
     listOfAllEmailClickedLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailClickedCount;
-        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
+        this.dashboardService.listEmailClickedLogs( this.loggedInUserId, this.pagination )
             .subscribe(
             result => {
                 this.dashboardReport.allEmailClickedLogList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
+                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailClickedLogList );
             },
-            error => console.log(error),
+            error => console.log( error ),
             () => { }
             );
     }
     
     listOfAllWatchedLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
-        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
+        this.dashboardService.listOfWatchedLogs( this.loggedInUserId, this.pagination )
             .subscribe(
-            (data: any) => {
+            ( data: any ) => {
                 this.dashboardReport.allEmailWatchedLogList = data;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
+                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailWatchedLogList );
             },
-            error => console.log(error),
-            () => console.log('finished')
+            error => console.log( error ),
+            () => console.log( 'finished' )
             );
     }
     
