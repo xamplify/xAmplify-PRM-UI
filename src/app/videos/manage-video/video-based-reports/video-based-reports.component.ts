@@ -475,13 +475,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
          }
         );
     }
-    setPage(page: number) {
+    setPage(page: number, type: string) {
+        console.log(this.paginationValue);
       if (page !== this.pagination.pageIndex) {
         this.pagination.pageIndex = page;
-        if(this.paginationValue = 'userMinutesWatched'){
+        console.log()
+        if(type === 'userMinutesWatched'){
            this.clickedMinutesWatched(this.userId);
         }
-        else if(this.paginationValue='watchedFully'){
+        else if(type==='watchedFully'){
            this.watchedFullyDetailReport();
         }
       }
@@ -504,6 +506,29 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
          }
       );
     }
+    videoSkippedDurationInfo(){
+        this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id,this.pagination).subscribe(
+        (result:any) =>{ 
+        console.log(result);
+
+         },
+         error => { 
+             this.xtremandLogger.error(error);
+           //  this.xtremandLogger.errorPage(error);
+         }
+      );
+    }
+     videoPlayedDurationInfo(){
+        this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id,this.pagination).subscribe(
+        (result:any) =>{ 
+        console.log(result);
+         },
+         error => { 
+             this.xtremandLogger.error(error);
+           //  this.xtremandLogger.errorPage(error);
+         }
+      );
+    }
     ngOnInit() {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
@@ -515,6 +540,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         QuickSidebar.init();
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
+        this.videoSkippedDurationInfo();
+        this.videoPlayedDurationInfo();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

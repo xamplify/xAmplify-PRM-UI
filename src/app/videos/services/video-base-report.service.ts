@@ -106,6 +106,22 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
     }    
+    videoSkippedDurationInfo(videoId:number, pagination:Pagination){
+         try {
+          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/video-duration-skipped-ysers?access_token='+this.authenticationService.access_token;
+           return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    } 
+     videoPlayedDurationInfo(videoId:number, pagination:Pagination){
+         try {
+          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/video-duration-played-ysers?access_token='+this.authenticationService.access_token;
+           return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+            } catch (error) { console.log(error); }
+    } 
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
