@@ -368,3 +368,137 @@
 	</div>
 </div>
 
+<!-- video skipped and played durations -->
+
+
+<!-- most users watched -->
+<div class="modal fade" id="videoSkippedPlayed" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearPaginationValues()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Users video skipped and played duration reports</h4>
+			</div>
+			<div class="modal-body" style="padding: 18px;margin: -11px 2px;">
+				<div class="row">
+					<div style="text-align: center;font-size: 14px;text-transform: uppercase;">video Played Duration</div>
+					<div class="table-responsive" style="padding: 0px 7px;">
+					<table class="table table-striped table-hover table-bordered" style="margin-bottom:0px"
+						id="sample_editable_1">
+						<thead>
+							<tr>
+								<th class="center">EMAILID</th>
+								<th class="text-center">DATE & TIME</th>
+								<th class="center">DEVICE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let emailClicked of videoPlayedPagination.pagedItems;let i = index">
+								<td class="center"><h5>{{emailClicked.name}}</h5></td>
+								<td class="center"><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								<!-- <td class="center"
+									*ngIf="emailClicked.device == 'windows'"><i
+									class="fa fa-windows" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'mac'"><i
+									class="fa fa fa-apple" aria-hidden="true"
+									style="color: green; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'linux'"><i
+									class="fa fa fa-linux" aria-hidden="true"
+									style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'android'"><i
+									class="fa fa-android" aria-hidden="true"
+									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="emailClicked.device == null">-</td> -->
+								<td>{{emailClicked.device}}</td>
+							</tr>
+						</tbody>
+					</table>
+						<ul *ngIf="videoPlayedPagination.pager.pages && videoPlayedPagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, 'videoPlayed')" [class.disabled]="videoPlayedPagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(videoPlayedPagination.pager.currentPage - 1, 'videoPlayed')"  [class.disabled]="videoPlayedPagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of videoPlayedPagination.pager.pages" [ngClass]="{active:videoPlayedPagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, 'videoPlayed')">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages}">
+	                            <a (click)="setPage(videoPlayedPagination.pager.currentPage + 1, 'videoPlayed')"  [class.disabled]="videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages}">
+	                            <a (click)="setPage(videoPlayedPagination.pager.totalPages, 'videoPlayed')"  [class.disabled]="videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+					</div>
+				</div>
+				<div class="row">
+					<div style="text-align: center;font-size: 14px;text-transform: uppercase;">video skipped duration</div>
+					<div class="table-responsive" style="padding: 0px 7px;">
+						<table class="table table-striped table-hover table-bordered" style="margin-bottom:0px"
+						id="sample_editable_1">
+						<thead>
+							<tr>
+								<th class="center">EMAILID</th>
+								<th class="text-center">DATE & TIME</th>
+								<th class="center">DEVICE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let emailClicked of pagination.pagedItems;let i = index">
+								<td class="center"><h5>{{emailClicked.name}}</h5></td>
+								<td class="center"><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								<!-- <td class="center"
+									*ngIf="emailClicked.device == 'windows'"><i
+									class="fa fa-windows" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'mac'"><i
+									class="fa fa fa-apple" aria-hidden="true"
+									style="color: green; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'linux'"><i
+									class="fa fa fa-linux" aria-hidden="true"
+									style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="emailClicked.device == 'android'"><i
+									class="fa fa-android" aria-hidden="true"
+									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="emailClicked.device == null">-</td> -->
+								<td>{{emailClicked.device}}</td>
+							</tr>
+						</tbody>
+					</table>
+						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, 'videoSkipped')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'videoSkipped')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, 'videoSkipped')">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'videoSkipped')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.totalPages, 'videoSkipped')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
