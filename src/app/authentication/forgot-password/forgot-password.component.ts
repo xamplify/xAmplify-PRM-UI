@@ -23,6 +23,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
     passwordSuccess = false;
+    error = '';
     emailRegEx:any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     
   constructor(private router: Router,
