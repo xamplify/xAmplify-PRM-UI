@@ -94,8 +94,8 @@
 					<th class="td-new-n">minutes watched</th>
 				</tr>
 				<tr>
-					<td class="td-new-n">5</td>
-					<td class="td-new-n">4.0</td>
+					<td class="td-new-n">{{nonApplicableUsersViews}}</td>
+					<td class="td-new-n">{{nonApplicableUsersMinutes}}</td>
 				</tr>
 			</table>
 		</div>
@@ -396,9 +396,9 @@
 						</thead>
 						<tbody>
 							<tr
-								*ngFor="let emailClicked of videoPlayedPagination.pagedItems;let i = index">
-								<td class="center"><h5>{{emailClicked.name}}</h5></td>
-								<td class="center"><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								*ngFor="let item of videoPlayedPagination.pagedItems;let i = index">
+								<td class="center"><h5>{{item.name}}</h5></td>
+								<td class="center"><h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
 								<!-- <td class="center"
 									*ngIf="emailClicked.device == 'windows'"><i
 									class="fa fa-windows" aria-hidden="true"
@@ -416,7 +416,7 @@
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
 								<td class="center" *ngIf="emailClicked.device == null">-</td> -->
-								<td>{{emailClicked.device}}</td>
+								<td>{{item.device}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -453,9 +453,9 @@
 						</thead>
 						<tbody>
 							<tr
-								*ngFor="let emailClicked of pagination.pagedItems;let i = index">
-								<td class="center"><h5>{{emailClicked.name}}</h5></td>
-								<td class="center"><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								*ngFor="let item of pagination.pagedItems;let i = index">
+								<td class="center"><h5>{{item.name}}</h5></td>
+								<td class="center"><h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
 								<!-- <td class="center"
 									*ngIf="emailClicked.device == 'windows'"><i
 									class="fa fa-windows" aria-hidden="true"
@@ -473,7 +473,7 @@
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
 								<td class="center" *ngIf="emailClicked.device == null">-</td> -->
-								<td>{{emailClicked.device}}</td>
+								<td>{{item.device}}</td>
 							</tr>
 						</tbody>
 					</table>

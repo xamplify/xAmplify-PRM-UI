@@ -50,6 +50,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     totalUsersWatched: any;
     videoSkippedDuration: any;
     videoPlayedDuration: any;
+    nonApplicableUsersMinutes: any;
+    nonApplicableUsersViews:any;
     videoPlayedPagination: Pagination = new Pagination();
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
@@ -475,25 +477,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             );
     }
     setPage(page: number, type: string) {
-            this.pagination.pageIndex = page;
-            console.log()
-            if (type === 'userMinutesWatched') {
-                this.clickedMinutesWatched(this.userId);
-            }
-            else if (type === 'watchedFully') {
-                this.watchedFullyDetailReport();
-            }
-            else if (type === 'videoPlayed') {
-                this.videoPlayedPagination.pageIndex = page;
-                this.videoPlayedDurationInfo();
-            }
-            else if (type === 'videoSkipped') {
-                this.videoSkippedDurationInfo();
-            }
+        this.pagination.pageIndex = page;
+        console.log()
+        if (type === 'userMinutesWatched') {
+            this.clickedMinutesWatched(this.userId);
+        }
+        else if (type === 'watchedFully') {
+            this.watchedFullyDetailReport();
+        }
+        else if (type === 'videoPlayed') {
+            this.videoPlayedPagination.pageIndex = page;
+            this.videoPlayedDurationInfo();
+        }
+        else if (type === 'videoSkipped') {
+            this.videoSkippedDurationInfo();
+        }
     }
     clearPaginationValues() {
         this.pagination = new Pagination();
-        this.videoPlayedPagination =  new Pagination();
+        this.videoPlayedPagination = new Pagination();
         this.videoPlayedPagination.pageIndex = 1;
         this.videoPlayedPagination.maxResults = 5;
         this.pagination.pageIndex = 1;
@@ -541,6 +543,19 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
+    nonApplicableUsersMinutesWatched() {
+        this.videoBaseReportService.nonApplicableUsersMinutes(this.selectedVideo.id).subscribe(
+            (result: any) => {
+                console.log(result);
+                this.nonApplicableUsersMinutes = result.minutesWatched;
+                this.nonApplicableUsersViews = result.views;
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //  this.xtremandLogger.errorPage(error);
+            }
+        );
+    }
     ngOnInit() {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
@@ -552,6 +567,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         QuickSidebar.init();
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
+        this.nonApplicableUsersMinutesWatched();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

@@ -27,105 +27,113 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
-    getCampaignUserWatchedViews(timePeriod: string,videoId: number){
-        if(timePeriod === undefined || videoId === undefined){
+    getCampaignUserWatchedViews(timePeriod: string, videoId: number) {
+        if (timePeriod === undefined || videoId === undefined) {
             console.log("undefined values ");
         } else {
-        try {
-            const url = this.authenticationService.REST_URL + 'videos/'+timePeriod+'/views?access_token='
-                + this.authenticationService.access_token+'&videoId='+videoId;
-            return this.http.get(url)
-                .map(this.extractData)
-                .catch(this.handleError);
+            try {
+                const url = this.authenticationService.REST_URL + 'videos/' + timePeriod + '/views?access_token='
+                    + this.authenticationService.access_token + '&videoId=' + videoId;
+                return this.http.get(url)
+                    .map(this.extractData)
+                    .catch(this.handleError);
             } catch (error) { console.log(error); }
         }
     }
-    timePeriodSelctedDropdown(timePeriod){
-      try {
-            const url = this.authenticationService.REST_URL+'videos/timePeriod/'+timePeriod+'?access_token='+this.authenticationService.access_token;    
-            return this.http.get(url)
-                .map(this.extractData)
-                .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }    
-    getViewsMinutesWatchedChart(dateValue:string,videoId:number,timePeriod:string){
+    timePeriodSelctedDropdown(timePeriod) {
         try {
-            const url = this.authenticationService.REST_URL + 'videos/'+dateValue+'/views-minuteswatched?access_token='
-                + this.authenticationService.access_token+'&videoId='+videoId+'&timePeriodValue='+timePeriod;
+            const url = this.authenticationService.REST_URL + 'videos/timePeriod/' + timePeriod + '?access_token=' + this.authenticationService.access_token;
             return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }   
-    getUsersMinutesWatchedInfo(timePeriod:string,videoId:number,timePeriodValue:any,userId:number,pagination:Pagination){
-         try {
-            const url =this.authenticationService.REST_URL+'videos/'+timePeriod+'/views-minuteswatched-detail-report?userId='+userId+'&videoId='
-            +videoId+'&timePeriodValue='+timePeriodValue+'&access_token='+this.authenticationService.access_token;    
+        } catch (error) { console.log(error); }
+    }
+    getViewsMinutesWatchedChart(dateValue: string, videoId: number, timePeriod: string) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + dateValue + '/views-minuteswatched?access_token='
+                + this.authenticationService.access_token + '&videoId=' + videoId + '&timePeriodValue=' + timePeriod;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    getUsersMinutesWatchedInfo(timePeriod: string, videoId: number, timePeriodValue: any, userId: number, pagination: Pagination) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + timePeriod + '/views-minuteswatched-detail-report?userId=' + userId + '&videoId='
+                + videoId + '&timePeriodValue=' + timePeriodValue + '&access_token=' + this.authenticationService.access_token;
             return this.http.post(url, pagination)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
+        } catch (error) { console.log(error); }
     }
-    getVideoViewsDetails(timePeriod: string, videoId:number, timePeriodValue:string){
-      try {
-            const url = this.authenticationService.REST_URL+'videos/views/'+timePeriod+'/detail-report?access_token='+this.authenticationService.access_token+
-            '&videoId='+videoId+'&timePeriodValue='+timePeriodValue;
+    getVideoViewsDetails(timePeriod: string, videoId: number, timePeriodValue: string) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/views/' + timePeriod + '/detail-report?access_token=' + this.authenticationService.access_token +
+                '&videoId=' + videoId + '&timePeriodValue=' + timePeriodValue;
             return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }  
-    getVideoViewsInnerDetails(timePeriod: string, videoId:number, timePeriodValue:string, pagination:Pagination){
-       console.log(timePeriod+'video'+videoId+'2nd'+timePeriodValue);
+        } catch (error) { console.log(error); }
+    }
+    getVideoViewsInnerDetails(timePeriod: string, videoId: number, timePeriodValue: string, pagination: Pagination) {
+        console.log(timePeriod + 'video' + videoId + '2nd' + timePeriodValue);
         console.log(pagination);
         try {
-            const url = this.authenticationService.REST_URL+'videos/views/'+timePeriod+'/detail-report?access_token='+this.authenticationService.access_token+
-            '&videoId='+videoId+'&timePeriodValue='+timePeriodValue;
+            const url = this.authenticationService.REST_URL + 'videos/views/' + timePeriod + '/detail-report?access_token=' + this.authenticationService.access_token +
+                '&videoId=' + videoId + '&timePeriodValue=' + timePeriodValue;
             return this.http.post(url, pagination)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }    
-    getVideoPlayedSkippedInfo(videoId: number){
-         try {
-           const url  =  this.authenticationService.REST_URL+'videos/'+videoId+'/skipped-duration?access_token='+this.authenticationService.access_token;
+        } catch (error) { console.log(error); }
+    }
+    getVideoPlayedSkippedInfo(videoId: number) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/skipped-duration?access_token=' + this.authenticationService.access_token;
             return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }   
-    watchedFullyReport(videoId: number, pagination: Pagination){
+        } catch (error) { console.log(error); }
+    }
+    watchedFullyReport(videoId: number, pagination: Pagination) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/watched-fully-report?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    totlaMinutesWatchedByMostUsers(videoId: number) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/total-minutes-watched-by-top-10-users-detailreport?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    videoSkippedDurationInfo(videoId: number, pagination: Pagination) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-skipped-ysers?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    videoPlayedDurationInfo(videoId: number, pagination: Pagination) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-played-ysers?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    nonApplicableUsersMinutes(videoId: number){
           try {
-          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/watched-fully-report?access_token='+this.authenticationService.access_token;
-           return this.http.post(url, pagination)
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/N/A-users-views-minuteswatched?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }     
-    totlaMinutesWatchedByMostUsers(videoId:number){
-         try {
-          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/total-minutes-watched-by-top-10-users-detailreport?access_token='+this.authenticationService.access_token;
-           return this.http.get(url)
-                .map(this.extractData)
-                .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    }    
-    videoSkippedDurationInfo(videoId:number, pagination:Pagination){
-         try {
-          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/video-duration-skipped-ysers?access_token='+this.authenticationService.access_token;
-           return this.http.post(url, pagination)
-                .map(this.extractData)
-                .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    } 
-     videoPlayedDurationInfo(videoId:number, pagination:Pagination){
-         try {
-          const url = this.authenticationService.REST_URL+'videos/'+videoId+'/video-duration-played-ysers?access_token='+this.authenticationService.access_token;
-           return this.http.post(url, pagination)
-                .map(this.extractData)
-                .catch(this.handleError);
-            } catch (error) { console.log(error); }
-    } 
+        } catch (error) { console.log(error); }
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
