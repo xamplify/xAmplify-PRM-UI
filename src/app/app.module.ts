@@ -13,13 +13,13 @@ import { ContactService } from './contacts/services/contact.service';
 
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
 import { Logger, Options } from 'angular2-logger/core';
-import { LoginComponent } from './login/login.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 
@@ -44,7 +44,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { XtremandLogger } from './error-pages/xtremand-logger.service';
 import { VideoUtilService} from './videos/services/video-util.service';
 
-import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
+//import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
@@ -54,13 +54,13 @@ import { AccessDeniedComponent } from './error-pages/access-denied/access-denied
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, SocialLoginComponent, SocialCallbackComponent,
-        ShareVideoComponent, CampaignVideoComponent, ActivateAccountComponent,LogEmailClickComponent,
+    declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent,
+        ShareVideoComponent, CampaignVideoComponent, LogEmailClickComponent,
         LogUnsubscribeComponent, ServiceUnavailableComponent,PageNotFoundComponent, AccessDeniedComponent,
         LogRegularCampaignComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule,HttpClientJsonpModule, 
-              AppRoutingModule, DashboardModule, CoreModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+              AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
               Ng2DeviceDetectorModule.forRoot()],
     providers: [{
         provide: Http,

@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './authentication/login/login.component';
+import { SignupComponent } from './authentication/signup/signup.component';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
+
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './core/home/home.component';
 import { VideosModule } from './videos/videos.module';
@@ -19,7 +23,7 @@ import { SocialLoginComponent } from './social/common/social-login/social-login.
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
-import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
+//import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
@@ -30,6 +34,9 @@ import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/lo
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'verify-email', component: VerifyEmailComponent },
     { path: '', redirectTo: 'home/dashboard/default', pathMatch: 'full', canActivate: [AuthGuard] },
     {
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
@@ -53,7 +60,7 @@ export const routes: Routes = [
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
-    { path: 'register/verifyemail/user', component: ActivateAccountComponent },
+    //{ path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },
