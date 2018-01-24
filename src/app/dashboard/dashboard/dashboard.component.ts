@@ -127,13 +127,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
     sparklineDataWithRouter(value: number, date: any, reportName: string) {
-        if(date === undefined || date === null ){
-          console.log("date is "+date);
+        if (date === undefined || date === null) {
+            console.log("date is " + date);
         } else {
-        this.referenceService.viewsDate = date;
-        this.referenceService.clickedValue = value;
-        this.referenceService.reportName = reportName;
-        this.router.navigate(['./home/dashboard/reports']);
+            this.referenceService.viewsDate = date;
+            this.referenceService.clickedValue = value;
+            this.referenceService.reportName = reportName;
+            this.router.navigate(['./home/dashboard/reports']);
         }
     }
 
@@ -206,17 +206,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
             credits: {
                 enabled: false
             },
-              plotOptions: {
+            plotOptions: {
                 series: {
+                    cursor: 'pointer',
                     events: {
-                    click: function (e) { 
-                        console.log(e);
-                        self.worldMapCampaignDetails(e.point['hc-key'])
-                        // alert(e.point['hc-key'] +', views:'+e.point.value);
+                        click: function (e) {
+                            console.log(e);
+                            self.worldMapCampaignDetails(e.point['hc-key'])
+                        }
                     }
-                   }
-                 }
-             },
+                }
+            },
             series: [{
                 data: data,
                 name: 'Views',
@@ -234,7 +234,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     }
     generatHeatMap(heatMapData) {
-       const self = this;
+        const self = this;
         const data = heatMapData;
         console.log(data);
         Highcharts.chart('dashboard-heat-map', {
@@ -255,20 +255,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 series: {
                     dataLabels: {
                         enabled: true,
-                       // align: 'left',
-                       // verticalAlign: 'top',
+                        // align: 'left',
+                        // verticalAlign: 'top',
                         style: {
                             fontWeight: 'normal',
                             fontSize: '13px',
-                            color:'block',
+                            color: 'block',
                         }
                         //  formatter: function() {
                         //     return this.point.options.name+"<br> "+this.point.options.value
                         // },
                     },
-                     events: {
+                    events: {
                         click: function (event) {
-                            self.router.navigate(['./home/campaigns/'+event.point.campaignId+'/details']);
+                            self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
                         }
                     }
                 }
@@ -326,19 +326,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     enabled: false
                 },
                 plotOptions: {
-                 bar: {
-                    minPointLength: 3
+                    bar: {
+                        minPointLength: 3
                     },
-                 series: {
-                   point: {
-                        events: {
-                            click: function () {
-                              //  alert('campaign: ' + this.category + ', value: ' + this.y);
+                    series: {
+                        point: {
+                            events: {
+                                click: function () {
+                                    //  alert('campaign: ' + this.category + ', value: ' + this.y);
+                                }
                             }
                         }
                     }
-                 }
-                 },
+                },
                 xAxis: {
                     categories: names,
                     labels: {
@@ -394,47 +394,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
-    
-    getWeeklyPosts(socialConnection: SocialConnection){
+
+    getWeeklyPosts(socialConnection: SocialConnection) {
         this.facebookService.getWeeklyPosts(socialConnection)
-        .subscribe(
-        data => {
-            const dates = [];
-            const values = [];
-            for (const i of Object.keys(data)){
-                dates.push(i);
-                values.push(data[i]);
-            }
-            
-            $('#sparkline_'+socialConnection.profileId).sparkline(values, {
-                type: 'bar',
-                padding: '5px',
-                barWidth: '4',
-                height: '20',
-                barColor: '#00ACED',
-                barSpacing: '3',
-                negBarColor: '#e02222',
-                tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
-                tooltipValueLookups: { 'offset': dates }
-                
-            });
-        },
-        error => console.log(error),
-        () => console.log('getWeeklyTweets() method invoke started finished.')
-        );
-}
+            .subscribe(
+            data => {
+                const dates = [];
+                const values = [];
+                for (const i of Object.keys(data)) {
+                    dates.push(i);
+                    values.push(data[i]);
+                }
+
+                $('#sparkline_' + socialConnection.profileId).sparkline(values, {
+                    type: 'bar',
+                    padding: '5px',
+                    barWidth: '4',
+                    height: '20',
+                    barColor: '#00ACED',
+                    barSpacing: '3',
+                    negBarColor: '#e02222',
+                    tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipValueLookups: { 'offset': dates }
+
+                });
+            },
+            error => console.log(error),
+            () => console.log('getWeeklyTweets() method invoke started finished.')
+            );
+    }
 
     getWeeklyTweets(socialConnection: SocialConnection) {
         this.twitterService.getWeeklyTweets(socialConnection)
             .subscribe(
             data => {
-            const dates = [];
-            const values = [];
-            for (const i of Object.keys(data)){
-                dates.push(i);
-                values.push(data[i]);
-            }
-                $('#sparkline_'+socialConnection.profileId).sparkline(values, {
+                const dates = [];
+                const values = [];
+                for (const i of Object.keys(data)) {
+                    dates.push(i);
+                    values.push(data[i]);
+                }
+                $('#sparkline_' + socialConnection.profileId).sparkline(values, {
                     type: 'bar',
                     padding: '5px',
                     barWidth: '4',
@@ -472,9 +472,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             this.getTotalCountOfTFFF(this.socialConnections[i]);
                             this.getGenderDemographics(this.socialConnections[i]);
                             this.getWeeklyTweets(this.socialConnections[i]);
-                        } else if(this.socialConnections[i].source === 'FACEBOOK') {
+                        } else if (this.socialConnections[i].source === 'FACEBOOK') {
                             this.getWeeklyPosts(this.socialConnections[i]);
-                            if(this.socialConnections[i].emailId === null){
+                            if (this.socialConnections[i].emailId === null) {
                                 this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
                             }
                         }
@@ -745,7 +745,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
             });
     }
-    
+
     getCampaignsHeatMapData() {
         this.dashboardService.getCampaignsHeatMapDetails().
             subscribe(result => {
@@ -762,23 +762,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // this.xtremandLogger.errorPage(error);
             });
     }
-    
-    heatMapformatDateTime(){
-        if(this.heatMapData.length>0){
-        for(let i=0; i<this.heatMapData.length; i++){
-            const fulldate = this.heatMapData[i].launchTime;
-            const fulldate2 = fulldate.split(" ");
-            const date =  fulldate2[0];
-            const replactime = fulldate.replace('-','/');
-            const time = this.formatAMPM(replactime);
-            const fullTime = date +' '+ time;
-            this.heatMapData[i].launchTime = fullTime;
-       }
-      }  
+
+    heatMapformatDateTime() {
+        if (this.heatMapData.length > 0) {
+            for (let i = 0; i < this.heatMapData.length; i++) {
+                const fulldate = this.heatMapData[i].launchTime;
+                const fulldate2 = fulldate.split(" ");
+                const date = fulldate2[0];
+                const replactime = fulldate.replace('-', '/');
+                const time = this.formatAMPM(replactime);
+                const fullTime = date + ' ' + time;
+                this.heatMapData[i].launchTime = fullTime;
+            }
+        }
     }
     formatAMPM(date) {
-       const strTime =  new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-       return strTime;
+        const strTime = new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+        return strTime;
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
         this.dashboardService.getCampaignsEmailReports(campaignIdArray).
@@ -792,8 +792,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.isMaxBarChartNumber = true;
                     this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
                 }
-                else { 
-                    this.isMaxBarChartNumber = false; 
+                else {
+                    this.isMaxBarChartNumber = false;
                 }
             },
             (error: any) => {
@@ -801,7 +801,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // this.xtremandLogger.errorPage(error);
             });
     }
-        
+
     getVideoStatesSparklineChartsInfo(daysCount) {
         this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => {
@@ -818,45 +818,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
             });
 
     }
-    
+
     selectedSortByValue(event: any) {
         console.log(event);
         this.referenceService.daySortValue = event;
         this.getVideoStatesSparklineChartsInfo(event);
     }
-    
+
     refreshCampaignBarcharts() {
         this.getUserCampaignReport(this.loggedInUserId);
     }
-    
+
     refreshHeatMapCharts() {
         this.getCampaignsHeatMapData();
     }
-    
+
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
         this.downloadDataList.length = 0;
         this.dashboardReport.emailLogList.length = 0;
     }
-    
-    convertToCSV( objArray ) {
-        var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
+
+    convertToCSV(objArray) {
+        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         var str = '';
         var row = "";
 
-        for ( var index in objArray[0] ) {
+        for (var index in objArray[0]) {
             //Now convert each value to string and comma-separated
             row += index + ',';
         }
-        row = row.slice( 0, -1 );
+        row = row.slice(0, -1);
         //append Label row with line break
         str += row + '\r\n';
 
-        for ( var i = 0; i < array.length; i++ ) {
+        for (var i = 0; i < array.length; i++) {
             var line = '';
-            for ( var index in array[i] ) {
-                if ( line != '' ) line += ','
+            for (var index in array[i]) {
+                if (line != '') line += ','
 
                 line += array[i][index];
             }
@@ -867,19 +867,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     downloadEmailLogs() {
         let logListName: string;
-        if ( this.paginationType === 'open' ) {
+        if (this.paginationType === 'open') {
             logListName = 'Email_Open_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
-        } else if ( this.paginationType === 'clicked' ) {
+        } else if (this.paginationType === 'clicked') {
             logListName = 'Email_Clicked_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
-        } else if ( this.paginationType === 'watched' ) {
+        } else if (this.paginationType === 'watched') {
             logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
         }
         this.downloadDataList.length = 0;
-        for ( let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++ ) {
-            let date = new Date( this.dashboardReport.downloadEmailLogList[i].time );
+        for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
+            let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
             var object = {
                 "EmailId": this.dashboardReport.downloadEmailLogList[i].emailId,
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
@@ -888,7 +888,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
 
-            if ( this.paginationType != 'open' ) {
+            if (this.paginationType != 'open') {
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
                 object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
                 object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;
@@ -896,14 +896,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             }
 
-            this.downloadDataList.push( object );
+            this.downloadDataList.push(object);
         }
-        var csvData = this.convertToCSV( this.downloadDataList );
-        var a = document.createElement( "a" );
-        a.setAttribute( 'style', 'display:none;' );
-        document.body.appendChild( a );
-        var blob = new Blob( [csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL( blob );
+        var csvData = this.convertToCSV(this.downloadDataList);
+        var a = document.createElement("a");
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = logListName;
         a.click();
@@ -912,57 +912,57 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfAllEmailOpenLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
-        this.dashboardService.listEmailOpenLogs( this.loggedInUserId, 13, this.pagination )
+        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
             .subscribe(
-            ( result: any ) => {
+            (result: any) => {
                 this.dashboardReport.allEmailOpenLogList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailOpenLogList );
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => { }
             );
     }
 
     listOfAllEmailClickedLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailClickedCount;
-        this.dashboardService.listEmailClickedLogs( this.loggedInUserId, this.pagination )
+        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
             result => {
                 this.dashboardReport.allEmailClickedLogList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailClickedLogList );
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => { }
             );
     }
-    
+
     listOfAllWatchedLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
-        this.dashboardService.listOfWatchedLogs( this.loggedInUserId, this.pagination )
+        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
-            ( data: any ) => {
+            (data: any) => {
                 this.dashboardReport.allEmailWatchedLogList = data;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems( this.pagination, this.dashboardReport.allEmailWatchedLogList );
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
             },
-            error => console.log( error ),
-            () => console.log( 'finished' )
+            error => console.log(error),
+            () => console.log('finished')
             );
     }
-    worldMapCampaignDetails(countryCode){
-          countryCode = countryCode.toUpperCase();
-          this.dashboardService.worldMapCampaignDetails( this.loggedInUserId, countryCode )
+    worldMapCampaignDetails(countryCode) {
+        countryCode = countryCode.toUpperCase();
+        this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, countryCode)
             .subscribe(
-            ( data: any ) => {
+            (data: any) => {
                 console.log(data);
                 this.worldMapUserData = data;
                 $('#worldMapModal').modal('show');
             },
-            error => console.log( error ),
-            () => console.log( 'finished' )
-        );
+            error => console.log(error),
+            () => console.log('finished')
+            );
     }
 
     ngOnInit() {
@@ -976,7 +976,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
             this.getVideoStatesSparklineChartsInfo(7);
-            
+
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -992,7 +992,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             console.log(err);
         }
     }
-    
+
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
         $('body').removeClass('modal-open');

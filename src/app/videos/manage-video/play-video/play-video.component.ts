@@ -190,7 +190,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('#newPlayerVideo').empty();
                     $('#videoId').remove();
                     this.playNormalVideoFiles();
-                    const str = '<video id="videoId"  poster=' + this.posterImg + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
+                    const str = '<video id="videoId"  poster=' + this.posterImg + ' preload="none" class="video-js vjs-default-skin" controls></video>';
                     $('#newPlayerVideo').append(str);
                     this.videoUrl = this.selectedVideo.videoPath;
                     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -218,21 +218,28 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         let isCallActionthere = false;
                         const isValid = self.callAction.overLayValue;
                         this.ready(function () {
+                            this.pause();
                             $('.video-js .vjs-tech').css('width', '100%');
                             $('.video-js .vjs-tech').css('height', '100%');
                             if (isValid === 'StartOftheVideo') {
                                 $('.vjs-big-play-button').css('display', 'none');
                                 self.showOverlayModal();
-                                player.pause();
+                                this.pause();
+                             //   self.videoJSplayer.pause();
                             } else if (isValid !== 'StartOftheVideo') {
                                 $('#overlay-modal').hide();
                                 $('.vjs-big-play-button').css('display', 'none');
-                                player.play();
+                                 this.play();
                             } else {
                                 $('#overlay-modal').hide();
                                 $('.vjs-big-play-button').css('display', 'none');
-                                player.play();
+                               // player.play();
                             }
+                             $('#skipOverlay').click(function () {
+                                $('#overlay-modal').hide();
+                                player.play();
+                            });
+
                         });
                         this.on('seeking', function () {
                             const seekigTime = self.trimCurrentTime(player.currentTime());
