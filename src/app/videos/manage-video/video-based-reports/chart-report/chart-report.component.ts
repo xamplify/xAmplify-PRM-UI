@@ -20,8 +20,11 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   timePeriod: any;
   checkVideo = false;
   timePeriodValue: any;
-  videoViewsLevelOne = [];
-  videoViewsLevelTwo = [];
+  videoViewsLevelOne: any;
+  videoViewsLevelTwo: any;
+  videoTitle:string;
+  date: any;
+  views: number;
   constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     this.selectedVideoId = this.videoUtilService.selectedVideoId;
@@ -42,6 +45,9 @@ export class ChartReportComponent implements OnInit, OnDestroy {
        (result:any)=>  {
        console.log(result);
        this.videoViewsLevelOne = result;
+       this.videoTitle = this.videoViewsLevelOne.videoTitle;
+       this.date = this.videoViewsLevelOne.date;
+       this.views = this.videoViewsLevelOne.views;
        this.videoViewsBarChartLevelTwo();
       });
     }
@@ -76,7 +82,10 @@ export class ChartReportComponent implements OnInit, OnDestroy {
         if(result.dates.length > 0 && result.views.length > 0){ 
           this.videoViewsBarchart(); 
         } else {
-          this.videoViewsLevelOne = [];
+          this.videoViewsLevelOne = {};
+          this.videoTitle = null;
+          this.views = null;
+          this.date = null;
           this.videoViewsLevelTwo = [];
         }
       },

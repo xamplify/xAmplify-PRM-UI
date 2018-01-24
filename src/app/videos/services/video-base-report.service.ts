@@ -28,6 +28,9 @@ export class VideoBaseReportService {
         } catch (error) { console.log(error); }
     }
     getCampaignUserWatchedViews(timePeriod: string,videoId: number){
+        if(timePeriod === undefined || videoId === undefined){
+            console.log("undefined values ");
+        } else {
         try {
             const url = this.authenticationService.REST_URL + 'videos/'+timePeriod+'/views?access_token='
                 + this.authenticationService.access_token+'&videoId='+videoId;
@@ -35,6 +38,7 @@ export class VideoBaseReportService {
                 .map(this.extractData)
                 .catch(this.handleError);
             } catch (error) { console.log(error); }
+        }
     }
     timePeriodSelctedDropdown(timePeriod){
       try {

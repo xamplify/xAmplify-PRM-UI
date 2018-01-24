@@ -311,6 +311,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
     selectedCampaignWatchedUsers(timePeriod) {
+        if(timePeriod !== undefined){
         this.videoUtilService.timePeriod = timePeriod;
         this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
             .subscribe((result: any) => {
@@ -322,6 +323,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.xtremandLogger.error(error);
                 this.xtremandLogger.errorPage(error);
             });
+        }
     }
     watchedFullyDetailReport(){
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
