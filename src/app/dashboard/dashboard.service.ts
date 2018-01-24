@@ -146,49 +146,56 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getVideoStatesInformation(daysCount){
-          const url = this.authenticationService.REST_URL + 'dashboard/videostats-data?userId=' + this.authenticationService.user.id +
-            '&access_token=' + this.authenticationService.access_token+'&&daysInterval='+daysCount;
+    getVideoStatesInformation(daysCount) {
+        const url = this.authenticationService.REST_URL + 'dashboard/videostats-data?userId=' + this.authenticationService.user.id +
+            '&access_token=' + this.authenticationService.access_token + '&&daysInterval=' + daysCount;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getVideoViewsLevelOneReports(daysInterval:number,dateValue:any){
-       console.log("data value is "+dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level1?userId='+
-         this.authenticationService.user.id+'&daysInterval='+daysInterval+'&selectedDate='+dateValue+
-         '&access_token=' + this.authenticationService.access_token;
-         return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
-    } 
-    getVideoViewsLevelTwoReports(daysInterval:number,dateValue:any, videoId:number){
-     console.log("data value is "+dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level2?videoId='+videoId+'&userId='+
-         this.authenticationService.user.id+'&daysInterval='+daysInterval+'&selectedDate='+dateValue+
-         '&access_token=' + this.authenticationService.access_token;
-         return this.http.get(url)
+    getVideoViewsLevelOneReports(daysInterval: number, dateValue: any) {
+        console.log("data value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level1?userId=' +
+            this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
+            '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getVideoMinutesWatchedLevelOneReports(daysInterval:any, dateValue:number){
-        console.log("data value is "+dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level1?userId='+
-         this.authenticationService.user.id+'&daysInterval='+daysInterval+'&selectedDate='+dateValue+
-         '&access_token=' + this.authenticationService.access_token;
-         return this.http.get(url)
+    getVideoViewsLevelTwoReports(daysInterval: number, dateValue: any, videoId: number) {
+        console.log("data value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level2?videoId=' + videoId + '&userId=' +
+            this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
+            '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
-    } 
-     getVideoMinutesWatchedLevelTwoReports(daysInterval:any, dateValue:number,videoId:number){
-        console.log("data value is "+dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level2?videoId='+videoId+'&userId='+
-         this.authenticationService.user.id+'&daysInterval='+daysInterval+'&selectedDate='+dateValue+
-         '&access_token=' + this.authenticationService.access_token;
-         return this.http.get(url)
+    }
+    getVideoMinutesWatchedLevelOneReports(daysInterval: any, dateValue: number) {
+        console.log("data value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level1?userId=' +
+            this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
+            '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
-     }   
+    }
+    getVideoMinutesWatchedLevelTwoReports(daysInterval: any, dateValue: number, videoId: number) {
+        console.log("data value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level2?videoId=' + videoId + '&userId=' +
+            this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
+            '&access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    worldMapCampaignDetails(userId: number, countryCode: string){
+        const url = this.authenticationService.REST_URL+ 'dashboard/world-map-detail-report?access_token='+this.authenticationService.access_token+
+        '&userId='+userId+'&countryCode='+countryCode;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);

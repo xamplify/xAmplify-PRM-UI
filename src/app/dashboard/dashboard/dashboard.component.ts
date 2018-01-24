@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isMaxBarChartNumber = true;
     downloadDataList = [];
     paginationType: string;
+    worldMapUserData: any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
     { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
     daySort: any;
@@ -178,6 +179,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     renderWorldMap() {
         const data = this.countryViewsData;
+        const self = this;
         Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
@@ -208,7 +210,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 series: {
                     events: {
                     click: function (e) { 
-                     //   alert(e.point.name+', views:'+e.point.value);
+                        console.log(e);
+                        self.worldMapCampaignDetails(e.point['hc-key'])
+                        // alert(e.point['hc-key'] +', views:'+e.point.value);
                     }
                    }
                  }
@@ -947,7 +951,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => console.log( 'finished' )
             );
     }
-    
+    worldMapCampaignDetails(countryCode){
+          countryCode = countryCode.toUpperCase();
+          this.dashboardService.worldMapCampaignDetails( this.loggedInUserId, countryCode )
+            .subscribe(
+            ( data: any ) => {
+                console.log(data);
+                this.worldMapUserData = data;
+                $('#worldMapModal').modal('show');
+            },
+            error => console.log( error ),
+            () => console.log( 'finished' )
+        );
+    }
+
     ngOnInit() {
         try {
             this.dashboardReportsCount();
@@ -977,9 +994,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     
     ngOnDestroy() {
-        $('#emailOpenedModal').modal('hide');
         $('#emailClickedModal').modal('hide');
-        $('#emailWatchedModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();
     }
