@@ -415,7 +415,7 @@ export class ManagePartnersComponent implements OnInit {
                 var allTextLines = contents.split( /\r\n|\n/ );
                 for ( var i = 1; i < allTextLines.length; i++ ) {
                     var data = allTextLines[i].split( ',' );
-                    if ( data[0].trim().length > 0 ) {
+                    if ( data[4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = data[4];
                         user.firstName = data[0];

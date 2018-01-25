@@ -184,6 +184,38 @@ export class AddContactsComponent implements OnInit {
     changEvents( event: any ) {
         this.uploadvalue = false;
     }
+    
+    /*public changeListener(files: FileList){
+        console.log(files);
+        if(files && files.length > 0) {
+           let file : File = files.item(0); 
+             console.log(file.name);
+             console.log(file.size);
+             console.log(file.type);
+             let reader: FileReader = new FileReader();
+             reader.readAsText(file);
+             reader.onload = (e) => {
+                let csv: string = reader.result;
+                console.log(csv);
+             }
+          }
+      }*/
+    
+   /*processData( allText ) {
+    var record_num = 5; // or however many elements there are in each row 
+    var allTextLines = allText.split(/\r\n|\n/); 
+    var entries = allTextLines[0].split(','); 
+    var lines = [];
+    var headings = entries.splice(0,record_num); 
+    while (entries.length>0) { 
+        var tarr = []; 
+        for (var j=0; j< record_num; j++) { 
+        tarr.push(headings[j]+":"+entries.shift());
+        } 
+        lines.push(tarr); 
+        } // alert(lines);
+    }*/
+
 
     fileChange( input: any ) {
         this.readFiles( input.files );
@@ -215,7 +247,7 @@ export class AddContactsComponent implements OnInit {
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#GgearIcon' ).attr(  'style', 'opacity: 0.5;position: relative;top: -86px; left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             let reader = new FileReader();
@@ -228,7 +260,7 @@ export class AddContactsComponent implements OnInit {
                 var allTextLines = contents.split( /\r\n|\n/ );
                 for ( var i = 1; i < allTextLines.length; i++ ) {
                     var data = allTextLines[i].split( ',' );
-                    if ( data[0].trim().length > 0 ) {
+                    if ( data[4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = data[4];
                         user.firstName = data[0];
@@ -1691,7 +1723,6 @@ export class AddContactsComponent implements OnInit {
             () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
     }
-
 
     unlinkSocailAccount() {
         let socialNetwork = this.settingSocialNetwork.toUpperCase();
