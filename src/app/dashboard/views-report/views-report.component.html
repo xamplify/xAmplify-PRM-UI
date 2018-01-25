@@ -1,45 +1,4 @@
 <style type="text/css">
-	svg {
-		height: auto;
-		transform: rotate(-90deg);
-	}
-
-	.bar {
-		fill: #aaa;
-		height: 21px;
-		transition: fill 0.3s ease;
-		cursor: pointer;
-		font-family: Helvetica, sans-serif;
-	}
-
-	.bar text {
-		fill: #555;
-	}
-
-	.chart:hover .bar,
-	.chart:focus .bar {
-		fill: #aaa;
-	}
-
-	.bar:hover,
-	.bar:focus {
-		fill: red !important;
-	}
-
-	.bar:hover text,
-	.bar:focus text {
-		fill: red;
-	}
-
-	figcaption {
-		font-weight: bold;
-		color: #000;
-		margin-bottom: 20px;
-	}
-
-	body {
-		font-family: 'Open Sans', sans-serif;
-	}
 
 	a.disabled {
 		pointer-events: none;
@@ -49,11 +8,6 @@
 	.portlet.light {
 		border-radius: 0;
 		padding: 15px;
-		/* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); */
-	}
-
-	.portlet.light:hover {
-		/* box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.4); */
 	}
 
 	.videoTitle {
@@ -140,7 +94,7 @@
 	</div>
 		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 			<div class="col-xs-12" style="box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); margin-top: 23px;">
-				<div class="col-xs-12 col-sm-6 p0" style="margin-top: 10px;">
+				<div class="col-xs-12 col-md-6 p0" style="margin-top: 10px;">
 					<div class="col-xs-12 col-sm-6 p0">
 						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
 							<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:280px; height:147px">
@@ -151,13 +105,13 @@
 						<h5 class="block-with-text" title={{videoFile.description}}>{{videoFile.description}}</h5>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6" style="margin-bottom: 9px;margin-top: 22px;">
+				<div class="col-xs-12 col-md-6" style="margin-bottom: -2px;margin-top: 22px;">
 					<div>
-						<div class="col-xs-4 text-center">
+						<div class="col-xs-12 col-md-4 text-center">
 							<h1 style="margin-top:34px">{{videoUtilService.nFormatter(videoFile.views)}}</h1>
-							<h5 style="text-align: center; color: #2f2f2f; margin-top: 52px;font-size: 14px;font-weight: 400;">Views</h5>
+							<h5 style="text-align: center; color: #2f2f2f; margin-top: 48px;font-size: 14px;font-weight: 400;">Views</h5>
 						</div>
-						<div class="col-xs-4 text-center">
+						<div class="col-xs-12 col-md-4 text-center">
 							<section class="percentage-circle" style="margin-top: -4px;">
 								<svg width="100" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
@@ -166,13 +120,13 @@
 								</svg>
 								<h2 class="percentage-value" style="margin: -2.856em 0 0 0;">{{videoFile.watchedFully}}%</h2>
 							</section>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: 53px;font-size: 14px;font-weight: 400;">Watched Fully</h5>
+							<h5 style="text-align: center; color: #2f2f2f;margin-top: 48px;font-size: 14px;font-weight: 400;">Watched Fully</h5>
 						</div>
-						<div class="col-xs-4 text-center">
+						<div class="col-xs-12 col-md-4 text-center">
 								<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
 							       <canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
 								</div>
-							 <h5 style="text-align: center; color: #2f2f2f;margin-top: 44px;font-size: 14px;font-weight: 400;">AverageDuration</h5>
+							 <h5 style="text-align: center; color: #2f2f2f;margin-top: 38px;font-size: 14px;font-weight: 400;">AverageDuration</h5>
 						</div>
 					</div>
 				</div>
