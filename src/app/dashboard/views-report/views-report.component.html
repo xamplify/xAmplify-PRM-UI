@@ -1,5 +1,4 @@
 <style type="text/css">
-
 	a.disabled {
 		pointer-events: none;
 		cursor: not-allowed;
@@ -60,38 +59,37 @@
 	</div>
 	<div class="portlet light clearfix">
 		<div>
-		<div class="col-xs-12" style="padding:0">
-			<div class="col-xs-12 col-md-4"  style="padding:0">
-				<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()" style="cursor: pointer">
+			<div class="col-xs-12" style="padding:0">
+				<div class="col-xs-12 col-md-4" style="padding:0">
+					<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()" style="cursor: pointer">
 					<option  [value]="0" class="form-control" style="cursor: pointer">All Categories</option>
 					<option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
 				</select>
-			</div>
-			<div class="col-xs-12 col-md-8" style="padding:0">
-				<div class="btn-group pull-right">
-					<div class="inputs" align="right" style="float: right">
-						<div style="float: left; margin-right: 10px" >
-							<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
+				</div>
+				<div class="col-xs-12 col-md-8" style="padding:0">
+					<div class="btn-group pull-right">
+						<div class="inputs" align="right" style="float: right">
+							<div style="float: left; margin-right: 10px">
+								<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
 							 <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
 						  </select>
-						</div>
-						<div class="portlet-input input-inline input-small">
-							<div class="input-icon right">
-								<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-								<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-								 class="form-control input-circle" (input)="searchKeyValue()"
-								 placeholder="search...">
+							</div>
+							<div class="portlet-input input-inline input-small">
+								<div class="input-icon right">
+									<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
+									<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control input-circle" (input)="searchKeyValue()"
+									 placeholder="search...">
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div *ngIf="noVideos" class="col-xs-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
+				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>No Views found.. !!!</strong>
+			</div>
 		</div>
-		<div *ngIf="noVideos" class="col-xs-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
-		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>No Views found.. !!!</strong>
-	   </div>
-	</div>
 		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 			<div class="col-xs-12" style="box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); margin-top: 23px;">
 				<div class="col-xs-12 col-md-6 p0" style="margin-top: 10px;">
@@ -123,31 +121,31 @@
 							<h5 style="text-align: center; color: #2f2f2f;margin-top: 48px;font-size: 14px;font-weight: 400;">Watched Fully</h5>
 						</div>
 						<div class="col-xs-12 col-md-4 text-center">
-								<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
-							       <canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
-								</div>
-							 <h5 style="text-align: center; color: #2f2f2f;margin-top: 38px;font-size: 14px;font-weight: 400;">AverageDuration</h5>
+							<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
+								<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+							</div>
+							<h5 style="text-align: center; color: #2f2f2f;margin-top: 38px;font-size: 14px;font-weight: 400;">Average Duration</h5>
 						</div>
 					</div>
 				</div>
 			</div>
 		</ng-container>
 		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-		<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-			<a (click)="setPage(1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-		</li>
-		<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-			<a (click)="setPage(pagination.pager.currentPage - 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-		</li>
-		<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-			<a (click)="setPage(page,currentPageType)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
-		</li>
-		<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-			<a (click)="setPage(pagination.pager.currentPage + 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-		</li>
-		<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-			<a (click)="setPage(pagination.pager.totalPages,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-		</li>
-	</ul>
+			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+				<a (click)="setPage(1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+			</li>
+			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+				<a (click)="setPage(pagination.pager.currentPage - 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+			</li>
+			<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+				<a (click)="setPage(page,currentPageType)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
+			</li>
+			<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+				<a (click)="setPage(pagination.pager.currentPage + 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+			</li>
+			<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+				<a (click)="setPage(pagination.pager.totalPages,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+			</li>
+		</ul>
 	</div>
 </div>

@@ -78,7 +78,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     height: '55',
                     barColor: '#7cb5ec',
                     negBarColor: '#e02222',
-                    tooltipFormat: '<span>average:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipFormat: '<span>average:{{offset:offset}}</span>',
                     tooltipValueLookups: { 'offset': values }
 
                 });
