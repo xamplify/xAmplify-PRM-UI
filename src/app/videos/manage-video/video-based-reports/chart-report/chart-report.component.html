@@ -10,9 +10,11 @@
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
-			<li><a (click)="goToMangeVideos()">Manage Videos</a> </li>
+			<li><a (click)="goToMangeVideos()">Manage Videos</a> <i class="fa fa-angle-right"></i> </li>
+			<li><a (click)="goBackToLastPage()">video based report</a> <i class="fa fa-angle-right"></i></li>
+			<li><a>reports</a> </li>
 		</ul>
-		<div><button (click)="goBackToLastPage()" style="float: right; background: #00a6e8;margin: 5px 5px;color: white;">BACK</button></div>
+		<!-- <div><button (click)="goBackToLastPage()" style="float: right; background: #00a6e8;margin: 5px 5px;color: white;">BACK</button></div> -->
 	</div>
 	<div class="portlet light" style="min-height: 268px;">
 		<div class="portlet-title">
