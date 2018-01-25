@@ -21,6 +21,12 @@ export class FacebookService {
             .catch(this.handleError);
     }
     
+    getFriends(socialConnection: SocialConnection) {
+        return this.http.post(this.URL + 'friends' + '?access_token=' + this.authenticationService.access_token,socialConnection)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     getWeeklyPosts(socialConnection: SocialConnection){
         return this.http.post(this.URL + 'weekly-posts' + '?access_token=' + this.authenticationService.access_token,socialConnection)
         .map(this.extractData)

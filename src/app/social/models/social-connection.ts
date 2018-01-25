@@ -17,6 +17,8 @@ export class SocialConnection {
 
     twitterTotalTweetsCount: any = '-';
     twitterTotalFollowersCount: any = '-';
+    twitterTotalFriendsCount: any = '-';
 
     facebookFanCount: any = '-';
+    facebookFriendsCount: any = '_';
 }

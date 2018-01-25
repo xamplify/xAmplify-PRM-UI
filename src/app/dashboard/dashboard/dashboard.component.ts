@@ -376,8 +376,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
             data => {
                 this.xtremandLogger.log(data);
-                socialConnection.twitterTotalFollowersCount = data['followersCount'];
                 socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
+                socialConnection.twitterTotalFollowersCount = data['followersCount'];
+                socialConnection.twitterTotalFriendsCount = data['friendsCount'];
             },
             error => console.log(error),
             () => console.log('getTotalCountOfTFFF() method invoke started finished.')
@@ -393,6 +394,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
             error => console.log(error),
             () => { }
             );
+    }
+    
+    getFriends(socialConnection: SocialConnection) {
+        this.facebookService.getFriends(socialConnection)
+            .subscribe(
+            data => {
+                console.log(data);
+                // socialConnection.facebookFriendsCount = data.extraData.fan_count;
+            },
+            error => console.log(error),
+            () => { }
+            );
+    }
+    
+    getPosts( socialConnection: SocialConnection ) {
+        this.facebookService.getPosts( socialConnection )
+        .subscribe(
+            data => {
+                console.log( data );
+            },
+            error => console.log( error ),
+            () => console.log( 'getPosts() Finished.' )
+        );
     }
 
     getWeeklyPosts(socialConnection: SocialConnection) {
@@ -458,33 +482,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listActiveSocialAccounts(userId: number) {
         this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
-            .subscribe(
-            data => {
-                this.socialConnections = data;
-                this.socialService.socialConnections = data;
-                this.socialService.setDefaultAvatar(this.socialConnections);
-            },
-            error => console.log(error),
-            () => {
-                if (this.socialConnections.length > 0) {
-                    for (const i in this.socialConnections) {
-                        if (this.socialConnections[i].source === 'TWITTER') {
-                            this.getTotalCountOfTFFF(this.socialConnections[i]);
-                            this.getGenderDemographics(this.socialConnections[i]);
-                            this.getWeeklyTweets(this.socialConnections[i]);
-                        } else if (this.socialConnections[i].source === 'FACEBOOK') {
-                            this.getWeeklyPosts(this.socialConnections[i]);
-                            if (this.socialConnections[i].emailId === null) {
-                                this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
-                            }
+        .subscribe(
+        data => {
+            this.socialConnections = data;
+            this.socialService.socialConnections = data;
+            this.socialService.setDefaultAvatar(this.socialConnections);
+        },
+        error => console.log(error),
+        () => {
+            if (this.socialConnections.length > 0) {
+                for (const i in this.socialConnections) {
+                    if (this.socialConnections[i].source === 'TWITTER') {
+                        this.getTotalCountOfTFFF(this.socialConnections[i]);
+                        this.getGenderDemographics(this.socialConnections[i]);
+                        this.getWeeklyTweets(this.socialConnections[i]);
+                    } else if(this.socialConnections[i].source === 'FACEBOOK') {
+                        this.getWeeklyPosts(this.socialConnections[i]);
+                        this.getPosts(this.socialConnections[i]);
+                        if(this.socialConnections[i].emailId === null){
+                            this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                        }else{
+                            this.getFriends(this.socialConnections[i]);
                         }
+                        
                     }
                 }
-                console.log('getFacebookAccounts() Finished.');
             }
-            );
+            console.log('getFacebookAccounts() Finished.');
+        }
+        );
 
-    }
+}
 
     getDefaultPage(userId: number) {
         this.userService.getUserDefaultPage(userId)

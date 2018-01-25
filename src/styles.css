@@ -421,7 +421,7 @@ tr.highlight {
 
 
 /* CSS Added Nagesh */
-.gd-title{text-align: center;	font-weight: 500;	color: #4d4d4f;	margin-bottom: 25px;}
+.gd-title{text-align: center;font-weight: 500;color: #808080;margin: 10px 0;}
 .gd-male{ background:#54a7e9; border-radius:50%; height:50px; width:50px; color:#FFF;display: block; float: right; text-align: center;}
 .gd-male i { margin-top: 15px}
 .gd-female { background:red; border-radius:50%; height:50px; width:50px; color:#FFF;display: block; float: left; text-align: center;}
