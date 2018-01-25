@@ -438,7 +438,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     barColor: '#00ACED',
                     barSpacing: '3',
                     negBarColor: '#e02222',
-                    tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipFormat: '<span>Posts:{{value}}<br>{{offset:offset}}</span>',
                     tooltipValueLookups: { 'offset': dates }
 
                 });
@@ -466,7 +466,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     barColor: '#00ACED',
                     barSpacing: '3',
                     negBarColor: '#e02222',
-                    tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
                     tooltipValueLookups: { 'offset': dates }
                 });
                 let count = 0;
