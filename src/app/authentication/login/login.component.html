@@ -56,7 +56,7 @@
 				<input class="form-control form-control-solid placeholder-no-fix"
 					name="password" [(ngModel)]="model.password" #password="ngModel"
 					required type="password" autocomplete="off" placeholder="Password"
-					name="password" />
+					name="password" (keypress)="eventHandler($event.keyCode)" />
 			</div>
 			<button type="submit" class="btn btn-success uppercase">Login</button>
 		</form>

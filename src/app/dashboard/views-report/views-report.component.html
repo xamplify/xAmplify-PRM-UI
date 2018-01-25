@@ -49,11 +49,11 @@
 	.portlet.light {
 		border-radius: 0;
 		padding: 15px;
-		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+		/* box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); */
 	}
 
 	.portlet.light:hover {
-		box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.4);
+		/* box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.4); */
 	}
 
 	.videoTitle {
@@ -150,72 +150,32 @@
 						<h4 class="videoTitle block-with-text" style="color:#333333" title={{videoFile.title}}>{{videoFile.title}}</h4>
 						<h5 class="block-with-text" title={{videoFile.description}}>{{videoFile.description}}</h5>
 					</div>
-					<hr>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="margin-bottom: 9px;margin-top: 22px;">
 					<div>
 						<div class="col-xs-4 text-center">
-							<h1 style="margin-top:28px">{{videoUtilService.nFormatter(videoFile.views)}}</h1>
-							<h5 style="text-align: center; color: #2f2f2f; margin-top: 60px;font-size: 17px;font-weight: 400;">Views</h5>
+							<h1 style="margin-top:34px">{{videoUtilService.nFormatter(videoFile.views)}}</h1>
+							<h5 style="text-align: center; color: #2f2f2f; margin-top: 52px;font-size: 14px;font-weight: 400;">Views</h5>
 						</div>
 						<div class="col-xs-4 text-center">
 							<section class="percentage-circle" style="margin-top: -4px;">
 								<svg width="100" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
-									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="12" />
-									<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="12" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"
+									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
+									<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"
 									/>
 								</svg>
 								<h2 class="percentage-value" style="margin: -2.856em 0 0 0;">{{videoFile.watchedFully}}%</h2>
 							</section>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: 53px;font-size: 17px;font-weight: 400;">Watched Fully</h5>
+							<h5 style="text-align: center; color: #2f2f2f;margin-top: 53px;font-size: 14px;font-weight: 400;">Watched Fully</h5>
 						</div>
 						<div class="col-xs-4 text-center">
-							<figure style="margin-top: -18px;">
-								<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart" width="auto"
-								 height="150" aria-labelledby="title" role="img">
-									 <g class="bar">
-										<rect [ngStyle]="{'width': videoFile.id}" height="16"></rect>
-										<text [ngStyle]="{'x': '45'}" y="9.5" dy=".35em">{{videoFile.id}}</text>
-									</g>
-									<g class="bar">
-										<rect width="80" height="16" y="20"></rect>
-										<text x="85" y="28" dy=".35em">8 </text>
-									</g>
-									<g class="bar">
-										<rect width="150" height="16" y="40"></rect>
-										<text x="150" y="48" dy=".35em">15 </text>
-									</g>
-									<g class="bar">
-										<rect width="160" height="16" y="60"></rect>
-										<text x="161" y="68" dy=".35em">16 </text>
-									</g>
-									<g class="bar">
-										<rect width="230" height="16" y="80"></rect>
-										<text x="235" y="88" dy=".35em">23 </text>
-									</g>
-									<g class="bar">
-										<rect width="120" height="16" y="100"></rect>
-										<text x="120" y="110" dy=".35em">19 </text>
-									</g>
-									<g class="bar">
-										<rect width="150" height="16" y="120"></rect>
-										<text x="150" y="128" dy=".35em">20 </text>
-									</g>
-								</svg>
-							</figure>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: -11px;font-size: 17px;font-weight: 400;">AverageDuration</h5>
-							<!-- <app-avarage-chart [videoFileId]=videoFile.id></app-avarage-chart>  -->
-							<!-- <div class="sparkline-chart">
-							<div class="number" #elem id={{videoFile.id}}>
-								<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
-							</div>
-							<a class="title" href="javascript:;"> Average Duration </a>
-							</div> -->
+								<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
+							       <canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+								</div>
+							 <h5 style="text-align: center; color: #2f2f2f;margin-top: 44px;font-size: 14px;font-weight: 400;">AverageDuration</h5>
 						</div>
 					</div>
-					<hr>
 				</div>
-				<hr>
 			</div>
 		</ng-container>
 		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">

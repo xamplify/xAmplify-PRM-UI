@@ -206,7 +206,7 @@
 		</div>
 	</div>
 </div>
-<!--  model popup for donuts analytics page  -->
+<!--  model popup for donut video based report page  -->
 <div class="modal fade" id="usersMinutesModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -328,7 +328,7 @@
 	</div>
 </div>
 
-<!-- most users watched -->
+<!--total minutes watched by top 10 most users -->
 <div class="modal fade" id="totalwatchedUsersModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -344,7 +344,6 @@
 						<table class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr style="background: #e4e4e4">
-									<!-- <th>Campaign Name</th> -->
 									<th>email id</th>
 									<th>date</th>
 									<th>device</th>
@@ -353,7 +352,6 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of totalUsersWatched">
-									<!-- <td><h6>{{item.campaignName}}</h6></td> -->
 									<td><h6>{{item.name}}</h6></td>
 									<td><h6>{{item.date | date: 'fullDate'}}</h6></td>
 									<td><h6>{{item.device }}</h6></td>
@@ -369,9 +367,6 @@
 </div>
 
 <!-- video skipped and played durations -->
-
-
-<!-- most users watched -->
 <div class="modal fade" id="videoSkippedPlayed" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">

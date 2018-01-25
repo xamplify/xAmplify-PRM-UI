@@ -86,7 +86,11 @@ export class LoginComponent implements OnInit {
             }
         }
     }
-
+    eventHandler(keyCode:any){
+      if(keyCode=== 13){
+        this.login();
+      }
+    }
     logError() {
         this.error = 'Username or password is incorrect';
         console.log( "error : " + this.error );

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -37,6 +37,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     videotitle: string;
     noVideos = false;
     length1 = 60;
+    totalVideos: any;
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -56,43 +57,35 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         this.categoryNum = 0;
         this.isCategoryThere = false;
     }
+    showAverageDuration(id: number, pagination: Pagination) {  // need to modify with dynamic api values
+        this.videoFileService.loadVideoForViewsReport(pagination)
+            .subscribe(
+            data => {
+                const values = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
+                //  const dates = [];
+                // const values = [];
+                // for (const i of Object.keys(data)) {
+                //     dates.push(i);
+                //     values.push(data[i]);
+                // }
 
-    viewsSparklineData() {
-        const myvalues = [2, 6, 12, 13, 12, 13, 7, 14, 13, 11, 11, 12, 17, 11, 11, 12, 15, 10];
-        $('#sparkline_bar2').sparkline(myvalues, {
-            type: 'bar',
-            width: '100',
-            barWidth: 5,
-            height: '55',
-            barColor: '#35aa47',
-            negBarColor: '#e02222'
-        });
-    }
+                $('#sparkline_bar' + id).sparkline(values, {
+                    type: 'bar',
+                    padding: '5px',
+                    barSpacing: '3',
+                    width: '100',
+                    barWidth: 6,
+                    height: '55',
+                    barColor: '#7cb5ec',
+                    negBarColor: '#e02222',
+                    tooltipFormat: '<span>views:{{value}}<br>{{offset:offset}}</span>',
+                    tooltipValueLookups: { 'offset': values }
 
-    minutesSparklineData() {
-        const myvalues = [2, 11, 12, 13, 18, 13, 10, 4, 1, 11, 11, 12, 11, 4, 10, 12, 11, 8];
-        $('#sparkline_bar2').sparkline(myvalues, {
-            type: 'bar',
-            width: '120',
-            barWidth: 6,
-            height: '111',
-            barColor: '#f4f91b',
-            negBarColor: '#e02222'
-        });
-    }
-
-    averageSparklineData(videos: any) {
-        const myvalues = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
-        for (let i = 0; i < videos.length; i++) {
-            $('#' + videos.id).sparkline(myvalues, {
-                type: 'bar',
-                width: '100',
-                barWidth: 5,
-                height: '55',
-                barColor: '#35aa47',
-                negBarColor: '#e02222'
-            });
-        }
+                });
+            },
+            error => console.log(error),
+            () => console.log('getWeeklyTweets() method invoke started finished.')
+            );
     }
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 5;
@@ -100,6 +93,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoForViewsReport(pagination)
                 .subscribe((result: any) => {
+                    this.totalVideos = result.listOfMobinars;
                     pagination.totalRecords = result.totalRecords;
                     this.noVideos = result.listOfMobinars.length === 0 ? true : false;
                     this.referenceService.loading(this.httpRequestLoader, false);
@@ -114,7 +108,12 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     this.logger.error('error in videos: views report page' + error);
                     this.logger.errorPage(error);
                 },
-                () => console.log('load videos completed:')
+                () => {
+                    console.log(pagination.pagedItems)
+                    for (let i = 0; i < pagination.pagedItems.length; i++) {
+                        this.showAverageDuration(pagination.pagedItems[i].id, pagination)
+                    }
+                }
                 );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -283,11 +282,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             // Index.initDashboardDaterange();
             // Index.initCharts();
             // Index.initChat();
-            // Index.initMiniCharts();
-            // Tasks.initDashboardWidget();
-            //  this.viewsSparklineData();
-            this.minutesSparklineData();
-            // this.averageSparklineData(videoFile);
         } catch (err) { }
     }
     ngOnDestroy() {
