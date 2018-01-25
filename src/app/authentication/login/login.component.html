@@ -25,6 +25,13 @@
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="content">
+<div *ngIf="refService.signUpSuccess"
+		class="alert alert-success alert-dismissable"
+		id="user-created">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Thank you for signing up with the platform! A
+			verification link has been sent to your email account</strong>
+	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
 		<form class="login-form" (ngSubmit)="login()">

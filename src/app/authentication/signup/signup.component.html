@@ -28,12 +28,6 @@
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	<div *ngIf="userActive"
-		class="alert alert-success alert-dismissable fade in"
-		id="user-created">
-		<strong>Thank you for signing up with the platform! A
-			verification link has been sent to your email account</strong>
-	</div>
 	<div>
 		<form class="register" [formGroup]="signUpForm" (ngSubmit)="signUp()">
 			<h3>Sign Up</h3>

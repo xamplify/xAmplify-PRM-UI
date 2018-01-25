@@ -96,7 +96,8 @@ export class SignupComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "USER CREATED SUCCESSFULLY" ) {
-                        this.userActive = true;
+                        this.refService.signUpSuccess = true;
+                        this.router.navigate(['/login']);
                     }
                 } else {
                     this.logger.error( this.refService.errorPrepender + " signUp():" + data );
