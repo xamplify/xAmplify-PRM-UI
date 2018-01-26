@@ -13,7 +13,7 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
 @Component( {
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css', '../../../assets/css/default.css'],
+    styleUrls: ['./login.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
     providers: [User]
 })
 

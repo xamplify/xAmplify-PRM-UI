@@ -14,7 +14,7 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
 @Component( {
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
-    styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css'],
+    styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
     providers: [User]
 })
 export class ForgotPasswordComponent implements OnInit {

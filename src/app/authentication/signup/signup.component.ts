@@ -15,7 +15,7 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
 @Component( {
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.css', '../../../assets/css/default.css'],
+    styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
     providers: [User]
 })
 export class SignupComponent implements OnInit {
