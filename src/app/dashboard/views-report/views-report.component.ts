@@ -14,6 +14,7 @@ import { Category } from '../../videos/models/category';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { VideoBaseReportService } from '../../videos/services/video-base-report.service';
 
 declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 
@@ -21,7 +22,7 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
     selector: 'app-views-report',
     templateUrl: './views-report.component.html',
     styleUrls: ['./views-report.component.css'],
-    providers: [Pagination, HttpRequestLoader, DashboardService]
+    providers: [Pagination, HttpRequestLoader, DashboardService, VideoBaseReportService]
 })
 export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -48,10 +49,13 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
     ];
     public contactsUsersSort: any = this.sortContactUsers[0];
+    watchedFullyDetailReportData: any;
+    public watchedPagination = new Pagination();
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
-        public logger: XtremandLogger, public pagination: Pagination, public authenticationService: AuthenticationService,
-        public videoUtilService: VideoUtilService) {
+        public logger: XtremandLogger, public pagination: Pagination,
+        public authenticationService: AuthenticationService,
+        public videoUtilService: VideoUtilService, public videoBaseReportService: VideoBaseReportService) {
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
         this.categoryNum = 0;
@@ -86,6 +90,23 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             error => console.log(error),
             () => console.log('getWeeklyTweets() method invoke started finished.')
             );
+    }
+    watchedFullyDetailReport(videoId: number) {
+        this.videoBaseReportService.watchedFullyReport(videoId, this.watchedPagination).subscribe(
+            (result: any) => {
+                console.log(result);
+                this.watchedFullyDetailReportData = result.data;
+                this.watchedPagination.totalRecords = result.totalRecords;
+                this.watchedPagination = this.pagerService.getPagedItems(this.watchedPagination, result.data);
+             //   if (result.length > 0) {
+                    $('#watchedFullyModelPopup').modal('show');
+              //  }
+            },
+            (err: any) => { console.log(err); })
+    }
+    clearPaginationValues(){
+        this.watchedPagination = new Pagination();
+        this.watchedPagination.pageIndex =1;
     }
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 5;

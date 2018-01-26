@@ -555,6 +555,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 const campaignIdArray = data.map(function (a) { return a[0]; });
                 console.log(campaignIdArray);
                 console.log(this.campaigns.length);
+                console.log(data[data.length - 1]);
                 this.totalCampaignsCount = this.campaigns.length;
                 if (this.totalCampaignsCount >= 1) {
                     this.getCampaignsEamailBarChartReports(campaignIdArray);

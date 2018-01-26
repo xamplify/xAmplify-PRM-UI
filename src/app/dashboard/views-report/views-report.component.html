@@ -86,7 +86,7 @@
 				<strong>No Views found.. !!!</strong>
 			</div>
 		</div>
-		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+		<ng-container *ngFor="let videoFile of totalVideos ;let i =index">
 			<div class="col-xs-12 views-box">
 				<div class="col-xs-12 col-md-6 p0 m0">
 					<div class="col-xs-12 col-sm-4 thumb-bg">
@@ -109,7 +109,7 @@
 							<h5 class="views-report-heading" style="margin-top: 47px;">Views</h5>
 						</div>
 						<div class="col-xs-6 col-sm-4 text-center">
-							<section class="percentage-circle" style="margin-top: -4px;">
+							<section class="percentage-circle" style="margin-top: -4px;" (click)="watchedFullyDetailReport(videoFile.id)">
 								<svg width="100" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"
@@ -148,3 +148,88 @@
 		</ul>
 	</div>
 </div>
+
+<!--  watched modal popup -->
+<div class="modal fade" id="watchedFullyModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
+	<div class="modal-dialog modal-lg" role="document" style="width: 80%; margin: 1em auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title center">watched fully Reports</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive" style="padding: 0px 7px;">
+						<table class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="center text-uppercase">Campaign Name</th>
+									<th class="center text-uppercase" >email id</th>
+									<th class="center text-uppercase" >date</th>
+									<th class="center text-uppercase">device</th>
+									<th class="center text-uppercase">location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of watchedFullyDetailReportData">
+									<td class="center">{{item.campaignName}}</td>
+									<td class="center">{{item.name}}</td>
+									<td class="center">{{item.date | date: 'fullDate'}}</td>
+								<td class="center"
+									*ngIf="item.device == 'computer'"><i
+									class="fa fa-desktop" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center"
+									*ngIf="item.device == 'windows'"><i
+									class="fa fa-windows" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center"
+									*ngIf="item.device == 'mac'"><i
+									class="fa fa fa-apple" aria-hidden="true"
+									style="color: green; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="item.device == 'linux'"><i
+									class="fa fa fa-linux" aria-hidden="true"
+									style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center"
+									*ngIf="item.device == 'android'"><i
+									class="fa fa-android" aria-hidden="true"
+									style="color: #a4ca39; font-size: 22px !important"></i></td>
+									<td class="center">{{item.location }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<!--pager here  -->
+			 			<ul *ngIf="watchedPagination.pager.pages && watchedPagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:watchedPagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, 'watchedFully')" [class.disabled]="watchedPagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:watchedPagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(watchedPagination.pager.currentPage - 1, 'watchedFully')"  [class.disabled]="watchedPagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of watchedPagination.pager.pages" [ngClass]="{active:watchedPagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, 'watchedFully')">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:watchedPagination.pager.currentPage === watchedPagination.pager.totalPages}">
+	                            <a (click)="setPage(watchedPagination.pager.currentPage + 1, 'watchedFully')"  [class.disabled]="watchedPagination.pager.currentPage === watchedPagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:watchedPagination.pager.currentPage === watchedPagination.pager.totalPages}">
+	                            <a (click)="setPage(watchedPagination.pager.totalPages, 'watchedFully')"  [class.disabled]="watchedPagination.pager.currentPage === watchedPagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+						<!-- pager end here -->
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
