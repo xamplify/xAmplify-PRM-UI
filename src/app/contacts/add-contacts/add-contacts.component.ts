@@ -20,7 +20,7 @@ declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
 declare var swal: any;
-declare var $: any;
+declare var $, Papa: any;
 
 @Component( {
     selector: 'app-add-contacts',
@@ -257,21 +257,24 @@ export class AddContactsComponent implements OnInit {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
-                var allTextLines = contents.split( /\r\n|\n/ );
+                
+                var csvResult = Papa.parse(contents);
+                
+                var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
-                    var data = allTextLines[i].split( ',' );
-                    if ( data[4].trim().length > 0 ) {
+                  // var data = allTextLines[i].split( ',' );
+                    if ( allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
-                        user.emailId = data[4];
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.country = data[7];
-                        user.mobileNumber = data[8];
-                        user.description = data[9];
+                        user.emailId = allTextLines[i][4];
+                        user.firstName = allTextLines[i][0];
+                        user.lastName = allTextLines[i][1];
+                        user.contactCompany = allTextLines[i][2];
+                        user.jobTitle = allTextLines[i][3];
+                        user.address = allTextLines[i][5];
+                        user.city = allTextLines[i][6];
+                        user.country = allTextLines[i][7];
+                        user.mobileNumber = allTextLines[i][8];
+                        user.description = allTextLines[i][9];
                         self.contacts.push( user );
                     }
                 }
