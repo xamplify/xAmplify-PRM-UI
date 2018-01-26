@@ -551,6 +551,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             data => {
                 this.xtremandLogger.info(data);
                 this.campaigns = data;
+                console.log(data);
                 const campaignIdArray = data.map(function (a) { return a[0]; });
                 console.log(campaignIdArray);
                 console.log(this.campaigns.length);

@@ -1,5 +1,5 @@
 <div class="page-header navbar navbar-fixed-top">
-		<ng2-slim-loading-bar [color]="'blue'" [height]="'4px'" style="position: fixed;
+	<ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed;
     top: 0px;
     margin: 0px;
     padding: 0px;
@@ -28,7 +28,7 @@
 		<div class="page-top">
 			<!-- BEGIN HEADER SEARCH BOX -->
 			<!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-			
+
 			<!-- SEARCH IS HIDDEN -->
 			<form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
 				<div class="input-group">
@@ -38,20 +38,22 @@
 					</span>
 				</div>
 			</form>
-			
+
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li *ngIf="hasVideoRole || (authenticationService.user.hasCompany &&isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;"><!-- refService.hasCompany -->
-					<a class="btn btn-header" routerLink="/home/videos">
+					<li *ngIf="hasVideoRole || (authenticationService.user.hasCompany &&isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;">
+						<!-- refService.hasCompany -->
+						<a class="btn btn-header" routerLink="/home/videos">
 					Upload Video
 					<i class="fa fa-upload" data-toggle="tooltip"></i>
 					</a>
 					</li>
-					<li style="margin-top: 17px;margin-right: 25px;"  *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)"><!-- *ngIf="refService.hasCompany" -->
-				        <a class="btn btn-header" routerLink="/home/social/update-status">Update Status <i class="fa fa-share" data-toggle="tooltip"></i>
+					<li style="margin-top: 17px;margin-right: 25px;" *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)">
+						<!-- *ngIf="refService.hasCompany" -->
+						<a class="btn btn-header" routerLink="/home/social/update-status">Update Status <i class="fa fa-share" data-toggle="tooltip"></i>
 						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
@@ -97,17 +99,17 @@
 							</li>
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 275px;overflow-y: auto;" data-handle-color="#637283">
-								<ng-container *ngFor="let emailNotification of campaignEmailNotifications;let i=index">
-								<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
-										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
+									<ng-container *ngFor="let emailNotification of campaignEmailNotifications;let i=index">
+										<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
+											<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
 										</a>
-									</li>
-									<li *ngIf="emailNotification.openCount==0" class="unread-notification"  id="email-notification-{{i}}">
-										<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');markItAsRead(i,'email-notification-');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
+										</li>
+										<li *ngIf="emailNotification.openCount==0" class="unread-notification" id="email-notification-{{i}}">
+											<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');markItAsRead(i,'email-notification-');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
 										</a>
-									</li>
+										</li>
 									</ng-container>
 								</ul>
 							</li>
@@ -126,25 +128,25 @@
 							</li>
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 275px;overflow: auto" data-handle-color="#637283">
-								<ng-container *ngFor="let videoNotification of campaignVideoWatchedNotifications;let i=index">
-									<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}" >
-										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
+									<ng-container *ngFor="let videoNotification of campaignVideoWatchedNotifications;let i=index">
+										<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}">
+											<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}} ( {{videoNotification.campaignName}} ) </b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
-									</li>
-									<li *ngIf="videoNotification.openCount==0" class="unread-notification" id="video-notification-{{i}}" >
-										<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');markItAsRead(i,'video-notification-');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
+										</li>
+										<li *ngIf="videoNotification.openCount==0" class="unread-notification" id="video-notification-{{i}}">
+											<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');markItAsRead(i,'video-notification-');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}}( {{videoNotification.campaignName}} )</b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
 										</a>
-									</li>
-								</ng-container>
+										</li>
+									</ng-container>
 								</ul>
 							</li>
 						</ul>
 					</li>
 					<!-- END INBOX DROPDOWN -->
 					<!-- BEGIN TODO DROPDOWN -->
-					
+
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -153,7 +155,7 @@
 						<ul class="dropdown-menu extended tasks">
 							<li class="external">
 								<h3> <span class="bold">Frequently Asked Questions</span></h3>
-								<a routerLink ="/home/dashboard/extrafaq">view all</a>
+								<a routerLink="/home/dashboard/extrafaq">view all</a>
 							</li>
 							<li>
 								<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
@@ -214,10 +216,8 @@
 					<!-- BEGIN USER LOGIN DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
-					<li class="dropdown dropdown-user"><a href="javascript:;"
-						class="dropdown-toggle" data-toggle="dropdown"
-						data-hover="dropdown" data-close-others="true"> <img alt=""
-							class="img-circle" src="{{model.profilePicutrePath}}" /> <span
+					<li class="dropdown dropdown-user"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						 <img alt="" style="height: 40px;width: 40px;" class="img-circle" src="{{model.profilePicutrePath}}" /> <span
 							class="username username-hide-on-mobile">
 								{{model.displayName}}</span> <i class="fa fa-angle-down"></i>
 					</a>
@@ -226,11 +226,11 @@
 									class="icon-user"></i> My Profile
 							</a></li>
 							<li *ngIf="isOrgAdmin">
-							<a [routerLink]="['/home/dashboard/edit-company-profile']"> <i
+								<a [routerLink]="['/home/dashboard/edit-company-profile']"> <i
 									class="fa fa-building-o"></i>Company Profile
 							</a>
 							</li>
-							<li *ngIf="refService.hasAllAccess()" >
+							<li *ngIf="refService.hasAllAccess()">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
 							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']"> 
@@ -244,7 +244,8 @@
 							<li><a (click)="logout()"> <i class="icon-key"></i>
 									Log Out
 							</a></li>
-						</ul></li>
+						</ul>
+					</li>
 					<!-- END USER LOGIN DROPDOWN -->
 					<!-- BEGIN USER LOGIN DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->

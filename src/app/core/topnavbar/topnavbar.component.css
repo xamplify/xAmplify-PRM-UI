@@ -22,4 +22,5 @@ padding: 7px 15px;
     background-color: #2b85b4;
 }
 
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default{background-color: #00a8e7 !important;}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default{
+    background-color: #00a8e7 !important;}
