@@ -17,4 +17,5 @@ export class CallActionSwitch {
     onTextValueView = 'LIST';
     offTextValueView = 'GRID';
     isListView = true;
+    disabled  ='disabled';
 }

@@ -26,8 +26,8 @@ export class TeamMemberService{
         .catch(this.handleError);
     }
     
-    update(teams:Array<TeamMember>){
-        var url =this.URL+"admin/updateTeamMembers?access_token="+this.authenticationService.access_token;
+    update(teams:Array<TeamMember>,userId:number){
+        var url =this.URL+"admin/updateTeamMembers/"+userId+"?access_token="+this.authenticationService.access_token;
         return this.http.post(url,teams)
         .map(this.extractData)
         .catch(this.handleError);
@@ -46,6 +46,12 @@ export class TeamMemberService{
             .catch(this.handleError);
     }
     
+    listDisabledTeamMemberEmailIds() {
+        return this.http.get(this.URL + "admin/listDisabledTeamMemberEmailIds?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     listAllOrgAdminsEmailIds() {
         return this.http.get(this.URL + "admin/listAllOrgAdminEmailIds?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
@@ -55,6 +61,13 @@ export class TeamMemberService{
     
     delete(teamMember:TeamMember) {
         return this.http.post(this.URL + "admin/deleteTeamMember?access_token=" + this.authenticationService.access_token,teamMember)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    changeStatus(teamMember:TeamMember) {
+        console.log(teamMember.status);
+        return this.http.post(this.URL + "admin/changeTeamMemberStatus?access_token=" + this.authenticationService.access_token,teamMember)
             .map(this.extractData)
             .catch(this.handleError);
     }

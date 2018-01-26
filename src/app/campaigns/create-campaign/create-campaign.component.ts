@@ -1516,7 +1516,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if( this.campaignLaunchForm.value.scheduleCampaign=="NOW"){
             timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
         }else{
-            timeZoneId = this.campaignLaunchForm.value.timeZoneId;
+         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
+            timeZoneId = $('#timezoneId option:selected').val()
         }
         let campaignType = CampaignType.REGULAR;
         if("regular"==this.campaignType){

@@ -1,3 +1,4 @@
+import { Status } from '../../team/models/status.enum';
 export class TeamMember{
   
     id:number;
@@ -12,7 +13,10 @@ export class TeamMember{
     socialShare:boolean = false;
     partners:boolean = false;
     all:boolean = false;
-    status:string;
     teamMemberId:number;
     allSelected:boolean =false;
+    orgAdmin:boolean = false;
+    status:Status;
+    enabled:boolean = true;
+    orgAdminId:number;
 }

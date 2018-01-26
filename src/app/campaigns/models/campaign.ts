@@ -23,7 +23,7 @@ export class Campaign {
     optionForSendingMials: string;
     launchTime: Date;
     endTime: Date;
-    scheduleCampaign: string;
+    scheduleCampaign: string = "";
     isChecked: boolean;
     campaignId = 0;
     campaignVideoFile: SaveVideoFile;

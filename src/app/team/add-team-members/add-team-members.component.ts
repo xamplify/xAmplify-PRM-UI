@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy,ViewChild} from '@angular/core';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FileUtil } from '../../core/models/file-util';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TeamMember } from '../models/team-member';
+import { Status } from '../models/status.enum';
 import { TeamMemberUi } from '../models/team-member-ui';
 import { TeamMemberService } from '../services/team-member.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -16,7 +18,7 @@ declare var $,swal :any ;
   selector: 'app-table-editable',
   templateUrl: './add-team-members.component.html',
   styleUrls: ['./add-team-members.component.css'],
-  providers:[Pagination,HttpRequestLoader,FileUtil]
+  providers:[Pagination,HttpRequestLoader,FileUtil,CallActionSwitch]
 })
 export class AddTeamMembersComponent implements OnInit {
    
@@ -28,6 +30,7 @@ export class AddTeamMembersComponent implements OnInit {
     deleteMessage:string = "";
     orgAdminEmailIds:string[]=[];
     existingEmailIds:string[] = [];
+    disabledEmailIds:string[] = [];
     teamMemberUi:TeamMemberUi;
     team:TeamMember;
     teamMembers: Array<TeamMember> = new Array<TeamMember>();
@@ -37,6 +40,7 @@ export class AddTeamMembersComponent implements OnInit {
     csvRecords = [];
     /**********Pagination&Loading***********/
     userId:number;
+    secondOrgAdminId:number = 0;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     isProcessing:boolean = false;
     /*****Form Related**************/
@@ -46,9 +50,12 @@ export class AddTeamMembersComponent implements OnInit {
     successClass:string = "form-group has-success has-feedback";
     defaultClass:string = "form-group";
     uiError:string = "";
+    addTeamMemeberTableId = "add-team-member-table";
+    listTeamMemberTableId = "list-team-member-table";
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
-            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination,private fileUtil:FileUtil) {
+            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination,
+            private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
         
@@ -81,7 +88,9 @@ export class AddTeamMembersComponent implements OnInit {
             this.teamMemberService.list(pagination,this.userId)
             .subscribe(
                 data => {
+                    console.log(data);
                     this.teamMembersList = data.teamMembers;
+                    this.secondOrgAdminId = data.secondOrgAdminId;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination,this.teamMembersList);
                     this.referenceService.loading(this.httpRequestLoader, false); 
@@ -116,13 +125,25 @@ export class AddTeamMembersComponent implements OnInit {
             () => this.logger.info("Finished listEmailIds()")
         );
     }
+    /***********Disabled TeamMember EmailIds****************/
+    listDisabledEmailIds(){
+        this.teamMemberService.listDisabledTeamMemberEmailIds()
+        .subscribe(
+            data => {
+                this.listDisabledEmailIds = data;
+            },
+            error => {
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished listDisabledEmailIds()")
+        );
+    }
     
     listAllOrgAdminsEmailIds(){
         this.teamMemberService.listAllOrgAdminsEmailIds()
         .subscribe(
             data => {
                 this.orgAdminEmailIds = data;
-                console.log(this.orgAdminEmailIds);
             },
             error => {
                 this.logger.errorPage(error);
@@ -138,17 +159,24 @@ export class AddTeamMembersComponent implements OnInit {
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
             this.isProcessing = true;
+            console.log(this.teamMembers);
             this.teamMemberService.save(this.teamMembers,this.userId)
             .subscribe(
             data => {
-               this.isProcessing = false;
-               this.successMessage = "Team Member(s) Added Successfully";
-               $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
-               this.pagination.pageIndex = 1;
-               this.listTeamMembers(this.pagination);
-               this.listEmailIds();
-               this.clearRows();
+                this.isProcessing = false;
+                if(data.statusCode==3000){
+                    this.successMessage = "Team Member(s) Added Successfully";
+                    $( "#team-member-success-div" ).show();
+                    setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+                    this.pagination.pageIndex = 1;
+                    this.listTeamMembers(this.pagination);
+                    this.listEmailIds();
+                    this.listAllOrgAdminsEmailIds();
+                    this.clearRows();
+                }else{
+                    this.showErrorMessageDiv(data.message);
+                }
+              
             },
             error => {
                 this.logger.errorPage(error);
@@ -168,17 +196,25 @@ export class AddTeamMembersComponent implements OnInit {
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
             this.isProcessing = true;
-            this.teamMemberService.update(this.teamMembersList)
+            console.log(this.teamMembersList);
+            this.teamMemberService.update(this.teamMembersList,this.userId)
             .subscribe(
             data => {
-               this.isProcessing = false;
-               this.successMessage = "Team Member(s) Updated Successfully";
-               $( "#team-member-success-div" ).show();
-               setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
-               this.pagination.pageIndex = 1;
-               this.listTeamMembers(this.pagination);
-               this.listEmailIds();
-               this.clearRows();
+                console.log(data);
+                this.isProcessing = false;
+                if(data.statusCode==3002){
+                    this.successMessage = "Team Member(s) Updated Successfully";
+                    $( "#team-member-success-div" ).show();
+                    setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+                    this.pagination.pageIndex = 1;
+                    this.listTeamMembers(this.pagination);
+                    this.listEmailIds();
+                    this.listAllOrgAdminsEmailIds();
+                    this.clearRows();
+                }else{
+                   this.showErrorMessageDiv(data.message);
+                }
+              
             },
             error => {
                 this.logger.errorPage(error);
@@ -213,7 +249,7 @@ export class AddTeamMembersComponent implements OnInit {
         let self = this;
         swal( {
             title: 'Are you sure?',
-            text: self.deleteText,
+            //text: self.deleteText,
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -221,10 +257,11 @@ export class AddTeamMembersComponent implements OnInit {
             confirmButtonText: 'Yes, Delete it!'
 
         }).then(function() {
-            teamMember.id =  self.userId;
+            teamMember.orgAdminId =  self.userId;
             self.teamMemberService.delete(teamMember)
             .subscribe(
             data => {
+                self.referenceService.goToTop();
                 if(teamMember.teamMemberId==0){
                     self.successMessage ="All Team Members Deleted Successfully";
                     self.pagination.pageIndex = 0;
@@ -256,42 +293,60 @@ export class AddTeamMembersComponent implements OnInit {
   
     validateEmailId(emailId:string,isTabChangeEvent:boolean){
         try{
-            this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
-            if(!this.teamMemberUi.validEmailId){
-                if(isTabChangeEvent){
-                  this.showErrorMessage("Invalid Email Id");
-                }else{
-                    this.teamMemberUi.isValidForm = false;
-                }
-            }else{
-                /**********Method To Check Whether Org Admin Or Not***********/
-                console.log(this.orgAdminEmailIds);
-                if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                    console.log(emailId.toLowerCase()+" is an org admin")
-                    this.showErrorMessage("Org Admin Cannot be added as a team member");
-                }else{
-                 /********************Check Duplicate Email Ids*******************/
-                    let addedEmailIds = this.teamMembers.map(function(a) {return a.emailId.toLowerCase();});
-                    if(addedEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.showErrorMessage("Already Exists");
+            console.log($.trim(emailId).length);
+            if($.trim(emailId).length>0){
+                this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
+                if(!this.teamMemberUi.validEmailId){
+                    if(isTabChangeEvent){
+                      this.showErrorMessage("Invalid Email Id");
                     }else{
-                  /*******************Check If Already Added As A Team Member***************************/
-                        if( this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                            this.showErrorMessage("Already Added ");
+                        this.teamMemberUi.isValidForm = false;
+                    }
+                }else{
+                    /**********Method To Check Whether Org Admin Or Not***********/
+                    if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
+                        console.log(emailId.toLowerCase()+" is an org admin")
+                        this.showErrorMessage("Org Admin Cannot be added as a team member");
+                    }else{
+                        if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
+                            this.showErrorMessage("Already Added As Team Member ");
                         }else{
                             this.hideErrorMessage();
                         }
+                      //  this.validateDisableEmailIds(emailId);
+                        
+                     /********************Check Duplicate Email Ids*******************//*
+                        let addedEmailIds = this.teamMembers.map(function(a) {return a.emailId.toLowerCase();});
+                        if(addedEmailIds.indexOf(emailId.toLowerCase())>-1){
+                            this.showErrorMessage("Duplicate Entry");
+                        }else{
+                      *//*******************Check If Already Added As A Team Member***************************//*
+                            if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
+                                this.showErrorMessage("Already Added As Team Member ");
+                            }else{
+                                this.hideErrorMessage();
+                            }
+                            this.validateDisableEmailIds(emailId);
+                        }*/
                     }
-                    
                 }
-                
+            }else{
+                this.teamMemberUi.errorMessage = '';
+                $(".col-md-12 span").text('');
+                this.removeErrorClass();
             }
+            
         }catch(error){
             this.showUIError(error);
         }
     }
     
-    validateEmailIdOnBlur(emailId:string){
+    validateDisableEmailIds(emailId:string){
+        if(this.disabledEmailIds.indexOf(emailId.toLowerCase())>-1){
+            this.showErrorMessage("Disabled Team Member Cannot Be Added");
+        }else{
+            this.hideErrorMessage();
+        }
     }
     
     
@@ -614,5 +669,61 @@ export class AddTeamMembersComponent implements OnInit {
       closePopup(){
           $('#addTeamMember').hide();
           $('#add-team-member-form')[0].reset();
+      }
+      v:boolean = false
+      changeOrgAdminStatus(event:any,index:number,team:TeamMember){
+          $('#empty-roles-div').hide();
+          if(event){
+             this.enableAsOrgAdmin(event, index, team);
+          }else{
+              this.disableAsAnOrgAdmin(event, index, team);
+          }
+          /*if(this.getEnabledOrgAdminsCount()>1){
+             this.disableAsAnOrgAdmin(event, index, team);
+             $('#empty-roles-div').show('600');
+             this.errorMessage = "More than two org admins are not allowed";
+          }*/
+        
+      }
+      
+      disableAsAnOrgAdmin(event:any,index:number,team:TeamMember){
+          //this.removeAllRoles(team);
+          //team.all = false;
+          team.orgAdmin = false;
+          $('.module-checkbox-'+index).prop('disabled',false);
+          $('.check-all-'+index).prop('disabled',false);
+      }
+      
+      enableAsOrgAdmin(event:any,index:number,team:TeamMember){
+          this.setAllRoles(team);
+          team.all = true;
+          team.orgAdmin = event;
+          $('.module-checkbox-'+index).prop('disabled',true);
+          $('.check-all-'+index).prop('disabled',true);
+      }
+
+      getEnabledOrgAdminsCount(){
+          let enabledOrgAdmin = this.teamMembersList.map(function(a) {return a.orgAdmin;});
+          console.log(this.teamMembersList);
+          var counts = {};
+          $.each(enabledOrgAdmin, function(key,value) {
+            if (!counts.hasOwnProperty(value)) {
+              counts[value] = 1;
+            } else {
+              counts[value]++;
+            }
+          });
+          var orgAdminsCount = counts['true'];
+          return orgAdminsCount;
+      }
+      
+      changeTeamMemberStatus(teamMember:TeamMember,event:any){
+          if(event){
+              teamMember.status = Status.APPROVE;
+              teamMember.enabled = event;
+          }else{
+              teamMember.status = Status.DECLINE;
+              teamMember.enabled = event;
+          }
       }
 }

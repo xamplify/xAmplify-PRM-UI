@@ -113,7 +113,7 @@
 									<div class="form-group" [attr.class]="campaignNameDivClass">
 										<label class="control-label col-md-3">Publish As
 											<small>(Save as)</small>
-											<font style="color: red"><b>*</b></font>
+											<font style="color: red">*</font>
 										</label>
 										<div class="col-md-9">
 											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
@@ -1075,7 +1075,7 @@
 								</div>
 								<div class="col-md-4">
 								<label style="float: left;" >TimeZone </label><br>
-									<select	class="form-control"  style="width: 100%" formControlName="timeZoneId">
+									<select	class="form-control"  style="width: 100%" formControlName="timeZoneId" id="timezoneId">
 									<ng-container *ngIf="timezones?.length==1">
 										<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
 										    {{timeZone.cityName}}
