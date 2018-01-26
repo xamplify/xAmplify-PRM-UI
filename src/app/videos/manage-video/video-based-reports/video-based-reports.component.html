@@ -1,42 +1,8 @@
 <style>
-	.td-new,
-	th {
-		border: 1px solid #dddddd;
-		text-align: center;
-		padding: 2px;
-	}
-
-	.td-new-n {
-		border: 2px solid #dddddd;
-		text-align: center;
-		padding: 20px;
-	}
-    .td-color{
-		color: white;
-		background-color:rgb(0,0,255);
-	}
-	.td-chart {
-		position: relative;
-		cursor: pointer;
-	}
-
-	.bg {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		color: #000;
-		background-color: rgb(255,255,0);
-		z-index: 0;
-		text-align: center;
-	}
-	.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
-	.center {
-		text-align: center;
-	}
+.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}
 </style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
@@ -145,7 +111,7 @@
 								<td class="td-new td-chart" width="30%" height="10">{{videoViews.name}}</td>
 								<td class="td-new td-chart td-color" [style.opacity]="(videoViews.views/viewsMaxValues)">{{videoViews.views}}</td>
 								<td class="td-new td-chart">
-								 <div class="bg" [style.width.%]="(videoViews.minutesWatched/maxValueViews)*100" [style.opacity] ="(videoViews.minutesWatched/maxValueViews)">
+								 <div class="minutes-color" [style.width.%]="(videoViews.minutesWatched/maxValueViews)*100" [style.opacity] ="(videoViews.minutesWatched/maxValueViews)">
 									{{videoViews.minutesWatched}}</div>
 								</td>
 							</tr>

@@ -1,32 +1,63 @@
 .p-5x {
-	padding: 2px 5px;
+padding: 2px 5px;
 }
 #newPlayerVideo {
-	width: auto;
+width: auto;
 }
 
 .videoTitle {
-	word-break: break-all;
-	color: #5a5a5a;
-	font-weight: 500;
+word-break: break-all;
+color: #5a5a5a;
+font-weight: 500;
 }
 
 .p5 {
-	padding: -1px;
+padding: -1px;
 }
 
 .portlet {
-	border-radius: 0;
-	padding: 10px;
+border-radius: 0;
+padding: 10px;
 }
 :host /deep/ .vjs-mouse-display {
-     display: none !important;
-  }
-/* /deep/ .video-js .vjs-mute-control, .video-js .vjs-volume-menu-button {
-      margin-left: -11px;
-} */  
+	display: none !important;
+}
 :host /deep/ .vjs-time-tooltip{
-    display: none !important;
+display: none !important;
 }
 :host /deep/ .video-js .vjs-progress-control:hover .vjs-mouse-display {
-  display: none; }
+display: none; }
+
+.td-new,
+th {
+border: 1px solid #dddddd;
+text-align: center;
+padding: 2px;
+}
+.center {
+	text-align: center;
+}
+.td-new-n {
+border: 2px solid #dddddd;
+text-align: center;
+padding: 20px;
+}
+.td-color{
+color: white;
+background-color:rgb(0, 166, 232);
+}
+.td-chart {
+position: relative;
+cursor: pointer;
+}
+
+.minutes-color {
+position: absolute;
+left: 0;
+top: 0;
+bottom: 0;
+color: #000;
+background-color: rgb(144, 238, 144);
+z-index: 0;
+text-align: center;
+}

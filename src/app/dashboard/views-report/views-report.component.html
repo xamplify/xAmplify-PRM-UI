@@ -96,11 +96,14 @@
 					<div class="col-xs-12 col-sm-6 p0">
 						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
 							<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:280px; height:147px">
+					     	<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 						</a>
 					</div>
 					<div class="col-xs-12 col-sm-6 p0" style="left: 20px;">
 						<h4 class="videoTitle block-with-text" style="color:#333333" title={{videoFile.title}}>{{videoFile.title}}</h4>
 						<h5 class="block-with-text" title={{videoFile.description}}>{{videoFile.description}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedBy}}>By: {{videoFile.uploadedBy}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedDate}}>Uploaded Date: {{videoFile.uploadedDate}}</h5>
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-6" style="margin-bottom: -2px;margin-top: 22px;">
