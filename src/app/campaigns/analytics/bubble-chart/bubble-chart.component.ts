@@ -42,7 +42,7 @@ export class BubbleChartComponent implements OnInit {
 
                         chart: {
                                 type: 'bubble',
-                                plotBorderWidth: 1,
+                                plotBorderWidth: 0,
                                 zoomType: 'xy'
                         },
                         title: {
