@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     error = '';
 
     constructor( private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
-        private refService: ReferenceService, private logger: XtremandLogger ) {
+        public refService: ReferenceService, private logger: XtremandLogger ) {
 
     }
 
