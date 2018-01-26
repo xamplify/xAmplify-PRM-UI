@@ -149,7 +149,8 @@
 									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.lifetimeViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
@@ -164,7 +165,8 @@
 									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.thisMonthViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value"  *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This
@@ -180,7 +182,8 @@
 									stroke-width="5" stroke-dasharray="339.292006588"
 									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.todayViewsCount/campaignReport.emailSentCount)}"/>
 						</svg>
-							<h2 class="percentage-value">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Today</h5>
