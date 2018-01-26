@@ -19,6 +19,12 @@ export class SalesforceCallBackComponent implements OnInit {
         }else{
             this.isPartner = true;  
         }
+        
+        if(currentUrl.includes('error=access_denied') && this.isPartner == false){
+            this.router.navigate(['/home/contacts/add']);
+        }else{
+            this.router.navigate(['/home/partners']);
+        }
     }
     
     salesforceCallback(){
