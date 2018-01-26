@@ -36,7 +36,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
-    { path: 'verify-email', component: VerifyEmailComponent },
+    { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', redirectTo: 'home/dashboard/default', pathMatch: 'full', canActivate: [AuthGuard] },
     {
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
@@ -60,7 +60,6 @@ export const routes: Routes = [
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
-    //{ path: 'register/verifyemail/user', component: ActivateAccountComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'serviceunavailable', component: ServiceUnavailableComponent },
