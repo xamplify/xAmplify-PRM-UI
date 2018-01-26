@@ -1,7 +1,19 @@
 .duration {
-    position: relative;
-    left: 219px;
+        position: absolute;
+    bottom: 5px;
     padding: 1px 5px;
     background: #ffffff;
-    bottom: 20px;
+    right: 5px;
+}
+
+h2.views-report {
+    font-weight: 600;color: #54a7e9;font-size: 30px;
+}
+.views-report-heading {text-align: center; color: dimgrey; margin-top: 50px;font-size: 13px;font-weight: 600;
+}
+.thumb-bg{background: #f1f1f1;padding:0;height: 150px;position:relative}
+.thumb-vid{height: 150px; width: auto; margin: 0 auto; display: block;}
+.views-box{border: 1px solid #e7e6e3; padding:5px; margin-bottom:10px;}
+.input-icon > .form-control {
+    padding: 10px !important;
 }

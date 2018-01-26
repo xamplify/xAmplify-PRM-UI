@@ -345,67 +345,64 @@ margin:2px;
 						<div class="col-xs-12 col-sm-6 col-md-4 p10" [class.disabled]="!hasSocialStatusRole?true:null">							
 								<div class="dashboard-stat2 m0">
 									<div class="display">
-										<div class="col-xs-3 p0 text-center">
-											<img class="img-circle" alt="{{socialConnection.profileName}}"
-												src="{{socialConnection.profileImage}}" width="52px"
-												height="52px" style="border: 1px solid rgba(17, 17, 17, 0.2); padding: 2px;">
+										<div class="col-xs-3 p0">
+											<div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
 											<ng-container *ngIf="socialConnection.source === 'TWITTER'">
 												<img class="img-circle" alt="{{socialConnection.profileName}}"
-												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png"
-												style="position: absolute;bottom: 0;right: 15px;">
+												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
 											</ng-container>
 											<ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
 												<img class="img-circle" alt="{{socialConnection.profileName}}"
-												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png"
-												style="position: absolute;bottom: 0;right: 15px;">
+												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
 											</ng-container>
 											<ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
 												<img class="img-circle" alt="{{socialConnection.profileName}}"
-												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png"
-												style="position: absolute;bottom: 0;right: 15px;">
+												src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
 											</ng-container>
+											</div>
+
 											
 										</div>
 										<div class="col-xs-9 p0">											
-											<h5 class="col-xs-12 f-w-600 mt0 mb5">
+											<h5 class="profile-name">
 												<span *ngIf="socialConnection.source === 'TWITTER'">@</span>{{socialConnection.profileName}}
 											</h5>
-											<section *ngIf="socialConnection.source === 'TWITTER'">
-												<a class="col-xs-4" [routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
+											<section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
 													<b>Tweets</b>
-													<h4 class="m0 f-w-700">{{socialConnection.twitterTotalTweetsCount}}</h4>
+													<h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
 												</a>
-												<a class="col-xs-4" [routerLink]="['/home/social/twitter-followers', socialConnection.profileId]">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-followers', socialConnection.profileId]">
 													<b>Followers</b>
-													<h4 class="m0 f-w-700">{{socialConnection.twitterTotalFollowersCount}}</h4>
+													<h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
 												</a>
-												<a class="col-xs-4" [routerLink]="['/home/social/twitter-friends', socialConnection.profileId]">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-friends', socialConnection.profileId]">
 													<b>Friends</b>
-													<h4 class="m0 f-w-700">{{socialConnection.twitterTotalFriendsCount}}</h4>
+													<h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
 												</a>
 											</section>
-											<section *ngIf="socialConnection.source === 'FACEBOOK'">
-												<a class="col-xs-4" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+											<section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Posts</b>
-													<h4 class="m0 f-w-700">-</h4>
+													<h4>-</h4>
 												</a>
-												<a *ngIf="socialConnection.emailId === null" class="col-xs-4" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+												<a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Fans</b>
-													<h4 class="m0 f-w-700">{{socialConnection.facebookFanCount}}</h4>
+													<h4>{{socialConnection.facebookFanCount}}</h4>
 												</a>
-												<a *ngIf="socialConnection.emailId !== null" class="col-xs-4" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+												<a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Friends</b>
-													<h4 class="m0 f-w-700">{{socialConnection.facebookFriendsCount}}</h4>
+													<h4>{{socialConnection.facebookFriendsCount}}</h4>
 												</a>
 											</section>
-											<section *ngIf="socialConnection.source === 'LINKEDIN'">
-												<a class="col-xs-4" [routerLink]="['/home/social/linkedin-posts', socialConnection.profileId]">
+											<section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/linkedin-posts', socialConnection.profileId]">
 													<b>Posts</b>
-													<h4 class="m0 f-w-700">-</h4>
+													<h4>-</h4>
 												</a>
-												<a class="col-xs-4" [routerLink]="['/home/social/linkedin-posts', socialConnection.profileId]">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/linkedin-posts', socialConnection.profileId]">
 													<b>Connections</b>
-													<h4 class="m0 f-w-700">-</h4>
+													<h4>-</h4>
 												</a>
 											</section>
 										</div>

@@ -20,7 +20,6 @@
 	}
 
 	.block-with-text {
-		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
@@ -57,30 +56,27 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light clearfix">
-		<div>
-			<div class="col-xs-12" style="padding:0">
-				<div class="col-xs-12 col-md-4" style="padding:0">
+	<div class="portlet light clearfix shadow" style="min-height: 600px;">
+		<div class="clearfix" style="margin-bottom: 10px;">
+			<div class="col-xs-12 p0">
+				<div class="col-xs-12 col-sm-3 p0">
 					<select class="form-control" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()" style="cursor: pointer">
 					<option  [value]="0" class="form-control" style="cursor: pointer">All Categories</option>
 					<option *ngFor="let category of categories" [ngValue]="category.id" class="form-control">{{category.name}}</option>
 				</select>
 				</div>
-				<div class="col-xs-12 col-md-8" style="padding:0">
-					<div class="btn-group pull-right">
-						<div class="inputs" align="right" style="float: right">
-							<div style="float: left; margin-right: 10px">
-								<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
-							 <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
-						  </select>
-							</div>
-							<div class="portlet-input input-inline input-small">
-								<div class="input-icon right">
-									<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-									<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control input-circle" (input)="searchKeyValue()"
-									 placeholder="search...">
-								</div>
-							</div>
+				<div class="col-sm-3"></div>
+				<div class="col-xs-12 col-sm-6 p0">
+					<div class="col-xs-12 col-sm-5">
+						<select class="form-control" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)" style="cursor: pointer">
+							<option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-7 p0">
+						<div class="input-icon">
+							<i class="icon-magnifier m10" style="cursor:pointer;font-size:18px;right: 0;" (click)="searchVideoTitelName()"></i>
+							<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control p10" (input)="searchKeyValue()"
+								placeholder="search...">
 						</div>
 					</div>
 				</div>
@@ -91,49 +87,49 @@
 			</div>
 		</div>
 		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-			<div class="col-xs-12" style="box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); margin-top: 23px;">
-				<div class="col-xs-12 col-md-6 p0" style="margin-top: 10px;">
-					<div class="col-xs-12 col-sm-6 p0">
+			<div class="col-xs-12 views-box">
+				<div class="col-xs-12 col-md-6 p0 m0">
+					<div class="col-xs-12 col-sm-4 thumb-bg">
 						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
-							<img class="img-responsive" src="{{videoFile.gifImagePath}}" alt="" style="width:280px; height:147px">
-					     	<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+							<img class="thumb-vid" src="{{videoFile.gifImagePath}}">
 						</a>
+					<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 					</div>
-					<div class="col-xs-12 col-sm-6 p0" style="left: 20px;">
+					<div class="col-xs-12 col-sm-8">
 						<h4 class="videoTitle block-with-text" style="color:#333333" title={{videoFile.title}}>{{videoFile.title}}</h4>
 						<h5 class="block-with-text" title={{videoFile.description}}>{{videoFile.description}}</h5>
-						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedBy}}>By: {{videoFile.uploadedBy}}</h5>
-						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedDate}}>Uploaded Date: {{videoFile.uploadedDate}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedBy}}><span class="f-w-600">Uploaded By:</span> {{videoFile.uploadedBy}}</h5>
+						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedDate}}><span class="f-w-600">Uploaded Date:</span> {{videoFile.uploadedDate}}</h5>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-6" style="margin-bottom: -2px;margin-top: 22px;">
+				<div class="col-xs-12 col-md-6">
 					<div>
-						<div class="col-xs-12 col-md-4 text-center">
-							<h1 style="margin-top:34px">{{videoUtilService.nFormatter(videoFile.views)}}</h1>
-							<h5 style="text-align: center; color: #2f2f2f; margin-top: 48px;font-size: 14px;font-weight: 400;">Views</h5>
+						<div class="col-xs-6 col-sm-4 text-center">
+							<h2 class="views-report" style="margin-top:42px">{{videoUtilService.nFormatter(videoFile.views)}}</h2>
+							<h5 class="views-report-heading" style="margin-top: 47px;">Views</h5>
 						</div>
-						<div class="col-xs-12 col-md-4 text-center">
+						<div class="col-xs-6 col-sm-4 text-center">
 							<section class="percentage-circle" style="margin-top: -4px;">
 								<svg width="100" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 									<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
-									<circle cx="60" cy="60" r="54" fill="none" stroke="#00B3B3" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"
+									<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - videoFile.watchedFully/100)}"
 									/>
 								</svg>
 								<h2 class="percentage-value" style="margin: -2.856em 0 0 0;">{{videoFile.watchedFully}}%</h2>
 							</section>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: 48px;font-size: 14px;font-weight: 400;">Watched Fully</h5>
+							<h5 class="views-report-heading">Watched Fully</h5>
 						</div>
-						<div class="col-xs-12 col-md-4 text-center">
+						<div class="col-xs-12 col-sm-4 text-center">
 							<div id="sparkline_bar{{videoFile.id}}" class="sparkline-chart" style="margin-top:27px">
 								<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
 							</div>
-							<h5 style="text-align: center; color: #2f2f2f;margin-top: 38px;font-size: 14px;font-weight: 400;">Average Duration</h5>
+							<h5 class="views-report-heading" style="margin-top:40px">Average Duration</h5>
 						</div>
 					</div>
 				</div>
 			</div>
 		</ng-container>
-		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: 0 10px 0 0;">
 			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
 				<a (click)="setPage(1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
 			</li>

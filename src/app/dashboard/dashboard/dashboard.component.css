@@ -250,3 +250,10 @@ h1.bold {
     border-bottom: 13px solid transparent;
 }	
 .campaign-box{position: relative}
+.profile-name{font-weight: 600;margin: 0 0 5px 0; font-size: 14px;}
+.profile-details b{color: #333;}
+.profile-details a{color: #333;}
+.profile-img{width:60px; height:60px;border: 1px solid #ccc; border-radius: 100%;background-repeat: no-repeat; background-size: 60px 60px; position:relative}
+.profile-img img{position: absolute;bottom: 0;right: -5px;}
+a.social-stats h4{font-weight: 700; text-align: center; margin: 0;}
+a.social-stats{text-align: center;}
