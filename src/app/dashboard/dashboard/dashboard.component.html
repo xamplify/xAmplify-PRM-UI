@@ -706,7 +706,7 @@ margin:2px;
 					aria-label="Close" (click)="cancelEmailStateModalPopUp()">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 align="center">People who {{paginationType}} Emails</h4>
+				<h4 align="center" class="m0">People who {{paginationType}} Emails</h4>
 			</div>
 			<div class="modal-body clearfix">
 				<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6"
@@ -715,30 +715,41 @@ margin:2px;
 				</div>
 				<div class="table-responsive"
 					*ngIf="pagination.pagedItems?.length != 0">
-					<table class="table table-striped table-hover table-bordered"
+					<table class="table tgrid"
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="center">NAME</th>
-								<th class="center">EMAILID</th>
-								<th class="text-center">DATE & TIME</th>
-								<th class="center">CAMPAIGN NAME</th>
-								<th class="center" *ngIf="paginationType != 'open'">LOCATION</th>
-								<th class="center" *ngIf="paginationType != 'open'">PLATFORM</th>
+								<th >NAME</th>
+								<th >CAMPAIGN NAME</th>
+								<th >DATE & TIME</th>
+								<th  *ngIf="paginationType != 'open'">LOCATION</th>
+								<th  *ngIf="paginationType != 'open'">PLATFORM</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
 								*ngFor="let emailClicked of pagination.pagedItems;let i = index">
-								<td class="center"><h5>{{emailClicked.firstName}}
-										{{emailClicked.lastName}}</h5></td>
-								<td class="center"><h5>{{emailClicked.emailId}}</h5></td>
-								<td class="center"><h5>{{emailClicked.time
+								<!-- <td class="center"><h5>{{emailClicked.firstName}}
+										{{emailClicked.lastName}}</h5></td> -->
+										<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{emailClicked.firstName |
+												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5 class='bold' style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com" class='bold'>{{emailClicked.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
+								<td ><h5>{{emailClicked.campaignName}}</h5></td>
+								<td ><h5>{{emailClicked.time
 										|date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-								<td class="center"><h5>{{emailClicked.campaignName}}</h5></td>
-								<td class="center" *ngIf="paginationType != 'open'"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
+								<td  *ngIf="paginationType != 'open'"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
 								<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
-								<td class="center"
+								<td 
 									*ngIf="emailClicked.os == 'windows' && paginationType != 'open'"><i
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
