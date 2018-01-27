@@ -211,7 +211,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     events: {
                         click: function (e) {
                             console.log(e);
-                            self.worldMapCampaignDetails(e.point['hc-key'])
+                            self.getCampaignUsersWatchedInfo(e.point['hc-key']);
                         }
                     }
                 }
@@ -981,7 +981,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => console.log('finished')
             );
     }
-    worldMapCampaignDetails(countryCode) {
+    getCampaignUsersWatchedInfo(countryCode) {
         countryCode = countryCode.toUpperCase();
         this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, countryCode)
             .subscribe(

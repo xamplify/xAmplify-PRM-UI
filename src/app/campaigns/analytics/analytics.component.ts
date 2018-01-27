@@ -27,7 +27,6 @@ export class AnalyticsComponent implements OnInit {
   videoLength: number;
   campaignViews: any;
   campaignBarViews: any;
-  countryWiseCampaignViews: any;
   emailLogs: any;
   totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
@@ -50,6 +49,8 @@ export class AnalyticsComponent implements OnInit {
   downloadCsvList: any;
   downloadTypeName = '';
   totalTimeSpent = 0;
+  worldMapUserData: any;
+  countryCode: string;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -113,13 +114,9 @@ export class AnalyticsComponent implements OnInit {
   getCountryWiseCampaignViews(campaignId: number) {
     this.campaignService.getCountryWiseCampaignViews(campaignId)
       .subscribe(
-      data => {
-        this.countryWiseCampaignViews = data;
-        this.renderMap();
-      },
+      data => { this.renderMap(data); },
       error => console.log(error),
-      () => console.log()
-      )
+      () => console.log());
   }
   campaignViewsCountBarchart(names, data) {
     const maxValue = Math.max.apply(null, data);
@@ -210,9 +207,10 @@ export class AnalyticsComponent implements OnInit {
       () => console.log()
       )
   }
-  renderMap() {
-    const countryData = this.countryWiseCampaignViews;
+  renderMap(worldData: any) {
+    const countryData = worldData;
     const data = [];
+    const self = this;
     if (countryData != null) {
       for (const i of Object.keys(countryData)) {
         const arr = [countryData[i][0].toLowerCase(), countryData[i][1]];
@@ -247,7 +245,8 @@ export class AnalyticsComponent implements OnInit {
           series: {
             events: {
               click: function (e) {
-                alert(e.point.name + ', views:' + e.point.value);
+               // alert(e.point.name + ', views:' + e.point.value);
+                self.getCampaignUsersWatchedInfo(e.point['hc-key'])
               }
             }
           }
@@ -268,6 +267,21 @@ export class AnalyticsComponent implements OnInit {
         }]
       });
     }
+  }
+  getCampaignUsersWatchedInfo(countryCode) {
+    this.countryCode = countryCode.toUpperCase();
+    this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
+      .subscribe(
+      (data: any) => {
+        console.log(data);
+        this.worldMapUserData = data.data;
+        this.pagination.totalRecords = data.totalRecords;
+        this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
+        $('#worldMapModal').modal('show');
+      },
+      error => console.log(error),
+      () => console.log('finished')
+      );
   }
   getEmailLogCountByCampaign(campaignId: number) {
     this.campaignService.getEmailLogCountByCampaign(campaignId)
@@ -344,6 +358,12 @@ export class AnalyticsComponent implements OnInit {
       if (page !== this.pagination.pageIndex) {
         this.pagination.pageIndex = page;
         this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
+      }
+    }
+    else if(type === 'coutrywiseUsers'){
+      if(page !== this.pagination.pageIndex){
+          this.pagination.pageIndex = page;
+          this.getCampaignUsersWatchedInfo(this.countryCode);
       }
     }
 
@@ -446,10 +466,7 @@ export class AnalyticsComponent implements OnInit {
         if (campaignType.includes('VIDEO')) {
           this.campaignType = 'VIDEO';
           this.getCountryWiseCampaignViews(campaignId);
-          this.renderMap();
-
           this.getCampaignViewsReportDurationWise(campaignId);
-
           this.getCampaignWatchedUsersCount(campaignId);
           this.campaignWatchedUsersListCount(campaignId);
         } else if (campaignType.includes('SOCIAL')) {
