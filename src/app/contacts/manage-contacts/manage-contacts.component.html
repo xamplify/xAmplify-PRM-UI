@@ -1,123 +1,26 @@
 <style type="text/css">
-.dashboard-stat{margin: 0 !important;}
-a:hover{
-	text-decoration: none;
-}
-a.disabled {
-	pointer-events: none;
-	cursor: not-allowed;
-}
-
-.pagination {
-        margin: 10px 4px 1px;
-    }
-
-    .tabbable-custom {
-        box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
-    }
-
-.custom-error-message {
-	padding: 5px;
-	border: 1px solid rgba(255, 0, 0, 0.21);
-	color: rgba(255, 0, 0, 0.7);
-	margin: 5px 0;
-	text-transform: capitalize;
-}
-
-.flex {
-	display: flex;
-}
-
-.alert-info {
-	background-color: #00a6e8;
-	border-color: #00a6e8;
-	border-radius: 0;
-}
-
-.capitalize {
-	text-transform: capitalize;
-}
-
-.dashboard-stat {
-	margin: 8px;
-}
-
-.alert h4 {
-	margin: 5px;
-	color: inherit;
-	color: #ffffff;
-	font-size: 15px;
-}
-.alert{
-padding: 10px;
-}
-.loader {
-	border: 2px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 3px solid #00a6e8;
-	width: 20px;
-	height: 20px;
-	-webkit-animation: spin 2s linear infinite;
-	animation: spin 2s linear infinite;
-}
-.alert-dismissible .close {
-top: 5px;
-right: 0;
-}
-
-.alert-success, .alert-danger, .alert-warning, .alert-info {
-color: #ffffff;
-border-radius: 0;
-margin: 0;
-}
-
-.alert-success {
-background-color: #77bf81;
-}
-
-.alert-danger {
-background-color: #ec6262;
-}
-
-.alert-warning {
-background-color: #f1d43b;
-}
-
-.alert-success, .alert-danger, .alert-warning> h5 {
-font-size: 16px;
-}
-
-@
--webkit-keyframes spin { 0% {
-	-webkit-transform: rotate(0deg);
-}
-
-100%
-{
--webkit-transform
-:
- 
-rotate
-(360deg);
- 
-}
-}
-@
-keyframes spin { 0% {
-	transform: rotate(0deg);
-}
-100%
-{
-transform
-:
- 
-rotate
-(360deg);
- 
-}
-}
-.btn-tools{font-size:28px; color:#FFF; margin-top:10px; cursor:pointer}
-.dashboard-stat .details .number{font-weight: 600 !important}
+.dashboard-stat{margin:0!important}
+a:hover{text-decoration:none}
+a.disabled{pointer-events:none;cursor:not-allowed}
+.pagination{margin:10px 4px 1px}
+.tabbable-custom{box-shadow:0 0 5px rgba(0,0,0,.4)!important}
+.custom-error-message{padding:5px;border:1px solid rgba(255,0,0,0.21);color:rgba(255,0,0,0.7);margin:5px 0;text-transform:capitalize}
+.flex{display:flex}
+.alert-info{background-color:#00a6e8;border-color:#00a6e8;border-radius:0}
+.capitalize{text-transform:capitalize}
+.dashboard-stat{margin:8px}
+.alert h4{margin:5px;color:inherit;color:#fff;font-size:15px}
+.alert{padding:10px}
+.loader{border:2px solid #f3f3f3;border-radius:50%;border-top:3px solid #00a6e8;width:20px;height:20px;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite}
+.alert-dismissible .close{top:5px;right:0}
+.alert-success,.alert-danger,.alert-warning,.alert-info{color:#fff;border-radius:0;margin:0}
+.alert-success{background-color:#77bf81}
+.alert-danger{background-color:#ec6262}
+.alert-warning{background-color:#f1d43b}
+.alert-success,.alert-danger,.alert-warning> h5{font-size:16px}
+100%{-webkit-transform:rotate (360deg);transform:rotate (360deg)}
+.btn-tools{font-size:28px;color:#FFF;margin-top:10px;cursor:pointer}
+.dashboard-stat .details .number{font-weight:600!important}
 </style>
 
 <div class="page-content">
@@ -185,7 +88,7 @@ rotate
 </div>
 <!-- END DASHBOARD STATS -->
 <div class="clearfix"></div>
-<div class="row mt5">
+<div class="row mt5 mb10">
 	<div class="col-sm-5ths">
 		<button class="btn-block dashboard-stat blue-soft" (click)="listContactsByType('all')" [disabled]="contactsByType.allContactsCount == 0">
 			<div class="visual">

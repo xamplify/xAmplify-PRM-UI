@@ -255,3 +255,4 @@ h1.bold {
 .profile-img img{position: absolute;bottom: 0;right: -5px;}
 a.social-stats h4{font-weight: 700; text-align: center; margin: 0;}
 a.social-stats{text-align: center;}
+.dashboard-stat-lighter {margin: 7px 0 14px 0 !important;}

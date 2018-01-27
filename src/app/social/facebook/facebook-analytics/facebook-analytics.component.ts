@@ -79,8 +79,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             },
             exporting: { enabled: false },
             title: {
-                text: 'Gender Demographics',
-                style: { "color": "#666", "fontSize": "16px" }
+                text: 'Gender Demographics'
             },
             colors: ['#007bb6', '#ff2c82'],
             xAxis: {
@@ -89,7 +88,7 @@ export class FacebookAnalyticsComponent implements OnInit {
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Gender Demographics'
+                    text: ''
                 }
             },
             legend: {
@@ -148,8 +147,7 @@ export class FacebookAnalyticsComponent implements OnInit {
                 map: 'custom/world'
             },
             title: {
-                text: 'The people who like your Page',
-                style: { "color": "#666", "fontSize": "16px" }
+                text: 'The people who like your Page'
             },
             mapNavigation: {
                 enabled: true,
@@ -310,7 +308,7 @@ export class FacebookAnalyticsComponent implements OnInit {
                 }
             },
             title: {
-                style: { "color": "#666", "fontSize": "16px" }
+                style: { "color": "#666", "fontSize": "13px" }
             },
             credits: {
                 enabled: false
