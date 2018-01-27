@@ -153,6 +153,11 @@ margin:2px;
 .pointer {
    cursor:pointer;
 }
+
+.headerCss {
+font-size: 12px; 
+font-weight: 500;
+}
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -706,7 +711,11 @@ margin:2px;
 					aria-label="Close" (click)="cancelEmailStateModalPopUp()">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 align="center" class="m0">People who {{paginationType}} Emails</h4>
+				<h4 class="m0">People who {{paginationType}} Emails</h4>
+			<a class="pull-right" style="margin: -17px 16px 0 0" (click)="downloadEmailLogs()" title="Dowload List"
+				data-rel="fancybox-button"> <i class="fa fa-cloud-download mr5"
+				style="font-size: 22px; color: #3598dc;"></i>
+			</a>
 			</div>
 			<div class="modal-body clearfix">
 				<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6"
@@ -719,11 +728,11 @@ margin:2px;
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th >NAME</th>
-								<th >CAMPAIGN NAME</th>
-								<th >DATE & TIME</th>
-								<th  *ngIf="paginationType != 'open'">LOCATION</th>
-								<th  *ngIf="paginationType != 'open'">PLATFORM</th>
+								<th class="headerCss">NAME</th>
+								<th class="headerCss">CAMPAIGN NAME</th>
+								<th class="headerCss">DATE & TIME</th>
+								<th class="headerCss" *ngIf="paginationType != 'open'">LOCATION</th>
+								<th class="headerCss" *ngIf="paginationType != 'open'">PLATFORM</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -737,9 +746,9 @@ margin:2px;
 											<span class='uppercase'>{{emailClicked.firstName |
 												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
 										</span> <span style="margin-left: 20px;">
-											<h5 class='bold' style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
+											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
 											<h6 class='m0'>
-												<a href="mailto:ksathish@xtremand.com" class='bold'>{{emailClicked.emailId}}</a>
+												<a href="mailto:ksathish@xtremand.com">{{emailClicked.emailId}}</a>
 											</h6>
 										</span>
 									</div>
@@ -798,9 +807,6 @@ margin:2px;
 				</ul>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal"
 					(click)="cancelEmailStateModalPopUp()">Close</button>
 			</div>
@@ -819,45 +825,52 @@ margin:2px;
 					aria-label="Close" >
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 align="center">People who have watched video</h4>
+				<h4 class="m0">People who have watched video</h4>
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
-					<table class="table table-striped table-hover table-bordered">
+					<table class="table tgrid">
 						<thead>
 							<tr>
-								<th class="center">EMAILID</th>
-								<th class="text-center">DATE & TIME</th>
-								<th class="center">DEVICE</th>
-							    <th class="center">LOCATION</th>
+								<th class="headerCss">NAME</th>
+								<th class="headerCss">DATE & TIME</th>
+								<th class="headerCss">DEVICE</th>
+							    <th class="headerCss">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
 								*ngFor="let emailClicked of worldMapUserData;let i = index">
-								<td class="center"><h5>{{emailClicked.name}}</h5></td>
-								<td class="center"><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-								 <td class="center"
-									*ngIf="emailClicked.device == 'computer'"><i
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{emailClicked.firstName |
+												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com">{{emailClicked.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
+								<td><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								 <td *ngIf="emailClicked.device == 'computer'"><i
 									class="fa fa-desktop" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center"
-									*ngIf="emailClicked.device == 'windows'"><i
+								<td *ngIf="emailClicked.device == 'windows'"><i
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center"
-									*ngIf="emailClicked.device == 'mac'"><i
+								<td *ngIf="emailClicked.device == 'mac'"><i
 									class="fa fa fa-apple" aria-hidden="true"
 									style="color: green; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="emailClicked.device == 'linux' "><i
+								<td *ngIf="emailClicked.device == 'linux' "><i
 									class="fa fa fa-linux" aria-hidden="true"
 									style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="emailClicked.device == 'android'"><i
+								<td *ngIf="emailClicked.device == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center"><h5>{{emailClicked.location}}</h5></td>
+								<td><h5>{{emailClicked.location}}</h5></td>
 							</tr>
 						</tbody>
 					</table>
