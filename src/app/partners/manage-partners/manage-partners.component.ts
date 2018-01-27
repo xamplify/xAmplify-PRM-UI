@@ -433,7 +433,7 @@ export class ManagePartnersComponent implements OnInit {
                         self.newPartnerUser.push( user );
                     }
                 }
-                console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.newPartnerUser ) );
+                console.log( "ManagePartnerComponent : readFiles() Partners " + JSON.stringify( self.newPartnerUser ) );
             }
         } else {
             this.fileTypeError = true;

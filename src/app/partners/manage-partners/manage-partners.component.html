@@ -34,6 +34,9 @@ a.disabled {
 	filter: blur(1.2px);
 	opacity: 0.7;
 }
+.textWhite {
+color:white;
+}
 
 img:hover {
 	-webkit-filter: grayscale(0%);
@@ -102,13 +105,12 @@ img:hover {
 												style="font-size: 11px; padding-left: 42px;">Upload a
 												CSV</h6>
 											<input type="file" ng2FileSelect
-												*ngIf="uploader.queue.length==0" [uploader]="uploader"
+												[uploader]="uploader"
 												title=" " (change)="fileChange(input)" accept=".csv" #input
 												[disabled]="selectedAddPartnerOption != 5" />
 										</div>
 									</div>
 								</section>
-
 								<!-- The global file processing state -->
 								<span class="fileupload-process"> </span>
 							</div>
