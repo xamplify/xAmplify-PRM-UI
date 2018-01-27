@@ -2,19 +2,12 @@
 	<div>  <!-- class="page-content" -->
 		<div class="row">
 			<div class="col-xs-12">
-				<div class="portlet light">
+				<div class="portlet light fb-post-box">
 					<div class="portlet-title" *ngIf='fanCount > 0'>
-						<div class="caption">
-							<div class="number col-xs-12 text-left" style="padding-left: 15px; padding-right: 0px;">
-								<div class="col-xs-2">
-									<img alt="{{page.name}}" class="img-circle img-responsive" src="{{socialConnection.profileImage}}" style="margin-top: 5px;" />
-								</div>
-								<div class="col-xs-10">
-									<h4>{{page.name}}</h4> 
-									<small style="color: #3b5998;"><b>{{fanCount}}</b> Total Likes</small>
-								</div>
-							</div>
-						</div>
+									<img alt="{{page.name}}" class="img-circle img-responsive" src="{{socialConnection.profileImage}}" />								
+								
+									<h5 class="fb-profile-name">{{page.name}}</h5> 
+									<h5 class="likes-count"><b>{{fanCount}}</b> Total Likes</h5>
 					</div>
 					<div class="portlet-body" [hidden]="fanCount <= 30">
 						<div id="insight-fan-adds-removes" style="height: 250px;"></div>
@@ -33,9 +26,7 @@
 			<div class="col-xs-12" [hidden]="fanCount <= 30">
 				<div class="portlet light ">
 					<div class="portlet-title">
-						<div class="caption">
-							<span class="caption-subject font-red-sunglo bold uppercase"><h4>PAGE IMPRESSIONS</h4></span>
-						</div>
+						<h4>Page Impressions</h4>						
 					</div>
 					<div class="portlet-body">
 						<div id="page-impressions" style="height: 250px;"></div>
@@ -46,33 +37,32 @@
 			<div class="col-xs-12" [hidden]="fanCount <= 30">
 				<div class="portlet light ">
 					<div class="portlet-title">
-						<div class="caption">
-							<span class="caption-subject font-red-sunglo bold uppercase"><h4>Impressions by Age And Gender</h4></span>
-						</div>
+						<h4>Impressions by Age And Gender</h4>
 					</div>
 					<div class="portlet-body clearfix">
-						<div class="col-xs-12 col-sm-6">
-							<div class="col-xs-12"><h4 style="text-align: center;font-weight: 500;padding: 1em;">Ratio</h4></div>
+						<div class="col-xs-12 col-sm-6 ratio-m-top">
 							<div class="col-xs-6">
 								<div class="sparkline-chart">
-									<div class="visual" style="color: #007bb6; font-size: 72px;">
-										<i class="fa fa-male" style="color: #007bb6; font-size: 80px;"></i>
+									<div class="visual">
+										<i class="fa fa-male"></i>
 									</div>
 									<div class="details">
-										<div class="number" style="color: #007bb6; font-size: 18px; font-weight: bold">
-											{{facebookFansGenderAge.maleFollowers/facebookFansGenderAge.totalFollowers | percent:'2.1-2'}}<small>Male Followers</small>
+										<div class="number" style="color: #007bb6; font-size: 16px;">
+											<b>{{facebookFansGenderAge.maleFollowers/facebookFansGenderAge.totalFollowers | percent:'2.1-2'}}</b>
+											<h6>Male Followers</h6>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="col-xs-6">
 								<div class="sparkline-chart">
-									<div class="visual" style="color: #dd4b39; font-size: 72px;">
-										<i class="fa fa-female" style="color: #ff2c82; font-size: 80px;"></i>
+									<div class="visual" style="color: #dd4b39;">
+										<i class="fa fa-female" style="color: #ff2c82;"></i>
 									</div>
 									<div class="details">
-										<div class="number" style="color: #ff2c82; font-size: 18px; font-weight: bold">
-											{{facebookFansGenderAge.femaleFollowers/facebookFansGenderAge.maleFollowers | percent:'2.1-2'}}<small>Female Followers</small>
+										<div class="number" style="color: #ff2c82; font-size: 16px;">
+											<b>{{facebookFansGenderAge.femaleFollowers/facebookFansGenderAge.maleFollowers | percent:'2.1-2'}}</b>
+											<h6>Female Followers</h6>
 										</div>
 									</div>
 								</div>
@@ -88,9 +78,7 @@
 			<div class="col-xs-12" [hidden]="fanCount <= 30">
 				<div class="portlet light ">
 					<div class="portlet-title">
-						<div class="caption">
-							<span class="caption-subject font-red-sunglo bold uppercase"><h4>World Map</h4></span>
-						</div>
+						<h4>World Map</h4>
 					</div>
 					<div class="portlet-body">
 						<div id="insight-fans-country" style="min-height: 400px;"></div>

@@ -14,19 +14,12 @@
       <app-social-loader ></app-social-loader>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6" *ngIf="posts?.length > 0">
-      <div class="portlet light block rounded-0" *ngFor="let post of posts">
+      <div class="portlet light block fb-post-box" *ngFor="let post of posts">
         <div class="portlet-title">
-          <div class="caption">
-            <div class="col-xs-12 flex">
-              <img class="profile-image" alt="{{post.from.name}}" src="{{socialConnection.profileImage}}">
-              <div  class='pl10'>
-                <h4 *ngIf="post.type == 'video' || post.type == 'photo'"
-                  class="caption-subject text-left m0">{{post.story}}</h4>
-                <h5 *ngIf="post.type == 'link' || post.type == 'status'" class="caption-subject text-left m0 spn">{{post.from.name}}</h5>
-                <h5>{{post.createdTime | date: 'short'}}</h5>
-              </div>
-            </div>
-          </div>
+              <img alt="{{post.from.name}}" src="{{socialConnection.profileImage}}">
+                <h4 *ngIf="post.type == 'video' || post.type == 'photo'" class="fb-profile-desc">{{post.story}}</h4>
+                <h5 class="fb-profile-name" *ngIf="post.type == 'link' || post.type == 'status'">{{post.from.name}}</h5>
+                <h5 class="date">{{post.createdTime | date: 'short'}}</h5>
         </div>
         <div class="portlet-body container-fluid">
           <div *ngIf="post.type == 'video'" class='pt10'>
@@ -40,16 +33,14 @@
           </div>
           <div *ngIf="post.type == 'photo'">
             <h4 [innerHTML]="post.message"></h4>
-            <img alt="{{post.description}}" src="{{post.fullPicture}}"
-              class="img-responsive">
+            <img alt="{{post.description}}" src="{{post.fullPicture}}" class="img-responsive img-post">
           </div>
           <div *ngIf="post.type == 'link'">
             <h4 [innerHTML]="post.message"></h4>
             <a target="_blank" href="{{post.link}}"
               style="text-decoration: none">
               <div class="portlet-body">
-                <img alt="{{post.name}}" src="{{post.fullPicture}}"
-                  class="img-responsive">
+                <img alt="{{post.name}}" src="{{post.fullPicture}}" class="img-responsive img-post">
                 <h4>{{post.name}}</h4>
                 <p>{{post.description}}</p>
                 <h5 class="uppercase bold">{{post.caption}}</h5>

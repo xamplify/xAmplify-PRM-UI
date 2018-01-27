@@ -77,8 +77,10 @@ export class FacebookAnalyticsComponent implements OnInit {
             chart: {
                 type: 'bar'
             },
+            exporting: { enabled: false },
             title: {
-                text: 'People who have liked your page'
+                text: 'Gender Demographics',
+                style: { "color": "#666", "fontSize": "16px" }
             },
             colors: ['#007bb6', '#ff2c82'],
             xAxis: {
@@ -146,7 +148,8 @@ export class FacebookAnalyticsComponent implements OnInit {
                 map: 'custom/world'
             },
             title: {
-                text: 'The people who like your Page'
+                text: 'The people who like your Page',
+                style: { "color": "#666", "fontSize": "16px" }
             },
             mapNavigation: {
                 enabled: true,
@@ -299,10 +302,27 @@ export class FacebookAnalyticsComponent implements OnInit {
         );
   }
 
+    setGlobalFontStyle() {
+        Highcharts.setOptions({
+            chart: {
+                style: {
+                    fontFamily: 'Open Sans,sans-serif'
+                }
+            },
+            title: {
+                style: { "color": "#666", "fontSize": "16px" }
+            },
+            credits: {
+                enabled: false
+            },
+        });
+    }
+
     ngOnInit() {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.user.id;
+            this.setGlobalFontStyle();
             this.getSocialConnection( profileId, 'FACEBOOK' );
 
         } catch ( err ) {
