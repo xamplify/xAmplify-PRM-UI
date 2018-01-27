@@ -9,8 +9,6 @@
 	text-align: center;
 	}
  .td-new,th {
-		border: 1px solid #dddddd;
-		text-align: center;
 		padding: 2px;
 	}
 .td-chart {
@@ -219,10 +217,10 @@
 								</thead>
 								<tbody>
 									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.userEmail)">
-										<td class="td-new td-chart"><h6>{{item.campaignName}}</h6></td>
-										<td class="td-new td-chart"><h6>{{item.userEmail}}</h6></td>
-										<td class="td-new td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
-										<td  class="td-new td-chart">
+										<td class="td-chart"><h6>{{item.campaignName}}</h6></td>
+										<td class="td-chart"><h6>{{item.userEmail}}</h6></td>
+										<td class="td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
+										<td  class="td-chart">
 											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 3px 0px;">
 											<span style="text-align: center;vertical-align: middle;color:white">{{item.viewsCount}}</span> </div>
 										</td>
@@ -431,17 +429,29 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th>EMAIL ADDRESS</th>
-									<th>START DURATION</th>
-									<th>STOP DURATION</th>
-									<th>IP ADDRESS</th>
-									<th>LOCATION</th>
-									<th>PLATFORM</th>
+									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">START DURATION</th>
+									<th style="font-size: 12px; font-weight: 500;">STOP DURATION</th>
+									<th style="font-size: 12px; font-weight: 500;">IP ADDRESS</th>
+									<th style="font-size: 12px; font-weight: 500;">LOCATION</th>
+									<th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaignReport.usersWatchList">
-									<td><h6>{{item.emailId}}</h6></td>
+										<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com">{{item.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 									<td><h6>{{item.startTime | date: 'short'}}</h6></td>
 									<td><h6>{{item.endTime | date: 'short'}}</h6></td>
 									<td><h6>{{item.ipAddress}}</h6></td>
@@ -502,8 +512,18 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'" style="text-align: center;">Users who opened the email</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'" style="text-align: center;">Users who clicked the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Users who opened the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Users who clicked the email</h4>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -22px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadEmailLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -511,13 +531,25 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th>EMAIL ADDRESS</th>
-									<th>TIME</th>
+									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">TIME</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaignReport.emailActionList">
-									<td><h6>{{item.emailId}}</h6></td>
+										<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com">{{item.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 									<td><h6>{{item.time | date: 'short'}}</h6></td>
 								</tr>
 							</tbody>
@@ -542,9 +574,9 @@
                         </li>
                     </ul>
 					<!-- pager end here -->
-					<button type="button" class="btn btn-default pull-right"
+					<!-- <button type="button" class="btn btn-default pull-right"
 					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button>
+					style="background-color: #eae8e8;">export to excel</button> -->
 				</div>
 			</div>
 		</div>
@@ -561,7 +593,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="emailSentListModalLabel" style="text-align: center;">Sent Email Details</h4>
+				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -569,15 +601,27 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th>CAMPAIGN NAME</th>
-									<th>EMAIL ADDRESS</th>
-									<th>SENT TIME</th>
+									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaignViews">
+									<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com">{{item.userEmail}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 									<td><h6>{{item.campaignName}}</h6></td>
-									<td><h6>{{item.userEmail}}</h6></td>
 									<td><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></td>
 								</tr>
 							</tbody>
@@ -620,10 +664,17 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title">{{donultModelpopupTitle}} Views</h4>
-				<a class="pull-right" style="margin: -24px 16px 0 0" (click)="downloadEmailLogs()" title="Dowload List"
-				data-rel="fancybox-button"> <i class="fa fa-cloud-download mr5"
-				style="font-size: 22px; color: #3598dc;"></i>
-			</a>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -22px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadEmailLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
+			
 			</div>
 			<div class="modal-body clearfix">
 				<!-- <div class="row"> -->
