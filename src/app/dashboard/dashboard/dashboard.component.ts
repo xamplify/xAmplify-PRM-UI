@@ -38,7 +38,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     socialeMedia: any;
     dashboardReport: DashboardReport = new DashboardReport();
     userDefaultPage: UserDefaultPage = new UserDefaultPage();
-    weeklyTweetsCount: number;
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
     totalRecords: number;
     campaigns: Campaign[];
@@ -442,6 +441,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     tooltipValueLookups: { 'offset': dates }
 
                 });
+                
+                var sum = values.reduce((a, b) => a + b, 0);
+                socialConnection.weeklyPostsCount = sum;
             },
             error => console.log(error),
             () => console.log('getWeeklyTweets() method invoke started finished.')
@@ -469,11 +471,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
                     tooltipValueLookups: { 'offset': dates }
                 });
-                let count = 0;
-                $.each(data, function (index: number, value: number) {
-                    count += value;
-                });
-                this.weeklyTweetsCount = count;
+                
+                var sum = values.reduce((a, b) => a + b, 0);
+                socialConnection.weeklyPostsCount = sum;
             },
             error => console.log(error),
             () => console.log('getWeeklyTweets() method invoke started finished.')

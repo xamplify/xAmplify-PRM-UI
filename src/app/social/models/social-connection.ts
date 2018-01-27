@@ -21,4 +21,6 @@ export class SocialConnection {
 
     facebookFanCount: any = '-';
     facebookFriendsCount: any = '_';
+
+    weeklyPostsCount: number;
 }
