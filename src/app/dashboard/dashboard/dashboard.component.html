@@ -712,10 +712,20 @@ font-weight: 500;
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="m0">People who {{paginationType}} Emails</h4>
-			<a class="pull-right" style="margin: -17px 16px 0 0" (click)="downloadEmailLogs()" title="Dowload List"
+			<!-- <a class="pull-right" style="margin: -17px 16px 0 0" (click)="downloadEmailLogs()" title="Dowload List"
 				data-rel="fancybox-button"> <i class="fa fa-cloud-download mr5"
 				style="font-size: 22px; color: #3598dc;"></i>
-			</a>
+			</a> -->
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -22px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadEmailLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body clearfix">
 				<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6"
