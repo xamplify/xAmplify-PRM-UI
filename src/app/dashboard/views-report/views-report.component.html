@@ -89,13 +89,13 @@
 		<ng-container *ngFor="let videoFile of totalVideos ;let i =index">
 			<div class="col-xs-12 views-box">
 				<div class="col-xs-12 col-md-6 p0 m0">
-					<div class="col-xs-12 col-sm-4 thumb-bg">
+					<div class="col-xs-12 col-sm-6 thumb-bg">
 						<a href="javascript:void(0)" (click)="showPreview(videoFile)">
-							<img class="thumb-vid" src="{{videoFile.gifImagePath}}">
+							<img class="thumb-vid img-responsive" src="{{videoFile.gifImagePath}}">
 						</a>
 					<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 					</div>
-					<div class="col-xs-12 col-sm-8">
+					<div class="col-xs-12 col-sm-6">
 						<h4 class="videoTitle block-with-text" style="color:#333333" title={{videoFile.title}}>{{videoFile.title}}</h4>
 						<h5 class="block-with-text" title={{videoFile.description}}>{{videoFile.description}}</h5>
 						<h5 style="color: dimgrey;font-weight: 400;" title={{videoFile.uploadedBy}}><span class="f-w-600">Uploaded By:</span> {{videoFile.uploadedBy}}</h5>
@@ -131,19 +131,19 @@
 		</ng-container>
 		<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: 0 10px 0 0;">
 			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-				<a (click)="setPage(1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+				<a (click)="setPage(1,viewsReport)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
 			</li>
 			<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-				<a (click)="setPage(pagination.pager.currentPage - 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+				<a (click)="setPage(pagination.pager.currentPage - 1,viewsReport)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
 			</li>
 			<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-				<a (click)="setPage(page,currentPageType)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
+				<a (click)="setPage(page,viewsReport)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
 			</li>
 			<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-				<a (click)="setPage(pagination.pager.currentPage + 1,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+				<a (click)="setPage(pagination.pager.currentPage + 1,viewsReport)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
 			</li>
 			<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-				<a (click)="setPage(pagination.pager.totalPages,currentPageType)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+				<a (click)="setPage(pagination.pager.totalPages,viewsReport)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
 			</li>
 		</ul>
 	</div>

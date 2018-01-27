@@ -39,6 +39,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     noVideos = false;
     length1 = 60;
     totalVideos: any;
+    videoId: number;
+
     sortContactUsers = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -92,6 +94,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             );
     }
     watchedFullyDetailReport(videoId: number) {
+        this.videoId = videoId;
         this.videoBaseReportService.watchedFullyReport(videoId, this.watchedPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -140,9 +143,14 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.logger.error('erro in load videos :' + error);
         }
     };
-    setPage(page: number) {
+    setPage(page: number, type: string) {
+        if(type==='viewsReport'){
         this.pagination.pageIndex = page;
         this.loadVideos(this.pagination);
+        } else if(type==='watchedFully'){
+          this.watchedPagination.pageIndex = page;
+          this.watchedFullyDetailReport(this.videoId);
+        }
     }
     getCategoryNumber() {
         console.log(this.categoryNum);
