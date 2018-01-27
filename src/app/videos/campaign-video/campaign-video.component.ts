@@ -197,8 +197,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
                         else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
-                            $('#videoId').css('cssText', 'margin-left:-60px !important');
-                            $('#videoId').css('cssText', 'width: 617px !important');
+                            // $('#videoId').css('cssText', 'margin-left:-60px !important');
+                            // $('#videoId').css('cssText', 'width: 617px !important');
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo"></div> <a ');
@@ -572,7 +572,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     }
      cssOverride(){
     //    $('#videoId').css({'width': '570px','height': '401px', 'margin-left': '-24px'});
-     $('#videoId').css({'width': '570px','height': '327px', 'margin-left': '-42px'});
+    //  $('#videoId').css({'width': '570px','height': '327px', 'margin-left': '-42px'});
+      $('#videoId').css({'width': '490px','height': '327px', 'margin-left': '-2px'});
+      $('.nl-container').css({'table-layout': 'auto'});
      }
       playNormalVideoCampaign() {
         $('.p-video').remove();
