@@ -27,6 +27,7 @@ declare let jsPDF;
 @Component( {
     selector: 'app-manage-contacts',
     templateUrl: './manage-contacts.component.html',
+    styleUrls: ['./manage-contacts.component.css'],
     providers: [SocialContact, Pagination]
 })
 

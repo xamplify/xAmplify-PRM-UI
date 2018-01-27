@@ -1,80 +1,4 @@
 <!-- BEGIN PAGE CONTENT-->
-<style type="text/css">
-a.disabled {
-	pointer-events: none;
-	cursor: not-allowed;
-}
-
-.pagination {
-	margin: 10px 4px 1px;
-}
-
-.tabbable-custom {
-	box-shadow: 0 0 5px rgba(0, 0, 0, .4) !important;
-}
-
-.textWhite {
-	color: #ffffff;
-}
-
-a.disabled {
-	pointer-events: none;
-	cursor: not-allowed;
-}
-
-.textCss {
-	background-color: rgba(0, 0, 0, 0.12);
-	bottom: -2px;
-	height: 1px;
-	left: 13;
-	margin: 0;
-	padding: 0;
-	/*  position: absolute; */
-	width: 91%;
-}
-
-.capitalize {
-	text-transform: capitalize;
-}
-
-.alert-dismissible .close {
-	top: 13px;
-	right: 10px;
-}
-
-.alert-success, .alert-danger, .alert-warning {
-	color: #ffffff;
-	border-radius: 0;
-}
-
-.alert-success {
-	background-color: #77bf81;
-}
-
-.alert-danger {
-	background-color: #ec6262;
-}
-
-.alert-warning {
-	background-color: #f1d43b;
-}
-
-.alert {
-	padding: 6px;
-}
-
-.alert-success, .alert-danger, .alert-warning>h5 {
-	font-size: 14px;
-}
-
-.page-breadcrumb div{
-  visibility:hidden;
-}
-.page-breadcrumb:hover div {
- visibility:visible;
-}
-
-</style>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
@@ -607,7 +531,8 @@ a.disabled {
 																</table>
 															</td>
 														</tr>
-														</ng-container> </ng-container>
+														</ng-container> 
+														</ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
@@ -656,13 +581,14 @@ a.disabled {
 															</td>
 															<td align="center"
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
-																<span (click)="editUserDetails(contact)"> <i
-																	class="fa fa-pencil-square-o" aria-hidden="true"
-																	style="color: #3375af; cursor: pointer; font-size: 25px; margin-top: 14px; margin-right: 6px"></i>
-															</span> <span (click)="deleteUserShowAlert(contact.id)">
-																	<i class="fa fa-trash-o" aria-hidden="true"
-																	style="color: red; cursor: pointer; font-size: 25px; margin-top: 14px"></i>
-															</span>
+															<div class="actions-block">
+																<a (click)="editUserDetails(contact)"> 
+																	<i class="fa fa-pencil-square-o"></i>
+																</a> 
+																<a (click)="deleteUserShowAlert(contact.id)">
+																	<i class="fa fa-trash-o"></i>
+																</a>
+															</div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
 														</tr>
