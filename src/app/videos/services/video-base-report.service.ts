@@ -112,7 +112,7 @@ export class VideoBaseReportService {
     }
     videoSkippedDurationInfo(videoId: number, pagination: Pagination) {
         try {
-            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-skipped-years?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-skipped-users?access_token=' + this.authenticationService.access_token;
             return this.http.post(url, pagination)
                 .map(this.extractData)
                 .catch(this.handleError);
@@ -120,7 +120,7 @@ export class VideoBaseReportService {
     }
     videoPlayedDurationInfo(videoId: number, pagination: Pagination) {
         try {
-            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-played-years?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/video-duration-played-users?access_token=' + this.authenticationService.access_token;
             return this.http.post(url, pagination)
                 .map(this.extractData)
                 .catch(this.handleError);

@@ -739,11 +739,11 @@ font-weight: 500;
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="headerCss">NAME</th>
-								<th class="headerCss">CAMPAIGN NAME</th>
-								<th class="headerCss">DATE & TIME</th>
-								<th class="headerCss" *ngIf="paginationType != 'open'">LOCATION</th>
-								<th class="headerCss" *ngIf="paginationType != 'open'">PLATFORM</th>
+								<th class="headerCss center">NAME</th>
+								<th class="headerCss center">CAMPAIGN NAME</th>
+								<th class="headerCss center">DATE & TIME</th>
+								<th class="headerCss center" *ngIf="paginationType != 'open'">LOCATION</th>
+								<th class="headerCss center" *ngIf="paginationType != 'open'">PLATFORM</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -764,12 +764,12 @@ font-weight: 500;
 										</span>
 									</div>
 								</td>
-								<td ><h5>{{emailClicked.campaignName}}</h5></td>
-								<td ><h5>{{emailClicked.time
+								<td class="center"><h5>{{emailClicked.campaignName}}</h5></td>
+								<td class="center"><h5>{{emailClicked.time
 										|date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-								<td  *ngIf="paginationType != 'open'"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
+								<td class="center" *ngIf="paginationType != 'open'"><h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5></td>
 								<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
-								<td 
+								<td class="center"
 									*ngIf="emailClicked.os == 'windows' && paginationType != 'open'"><i
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
