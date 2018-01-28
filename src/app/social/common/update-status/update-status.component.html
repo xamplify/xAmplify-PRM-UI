@@ -9,14 +9,26 @@
         </ul>
     </div>
     <div class="row">
-
         <div class="col-md-3 col-sm-12">
-            <div class="col-sm-12 portlet light">
+            <div class="col-sm-12 dashboard-stat2 pt0">
 				<h6 class="caption-subject font-red-sunglo uppercase bold text-center">Social Account</h6>
 				<div class="clearfix">
 					<div class="col-md-6 col-sm-4 col-xs-4 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
+								
+
 						<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}" 
 						(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
+
+							<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+							</span>
+
 							<div class="portlet-title col-xs-12">
 
 								<h6 *ngIf="socialStatusProvider.socialConnection.profileName"
@@ -30,11 +42,7 @@
 									<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
 								</h6>
 
-								<i class="fa fa-social pull-right"
-									[ngClass]="{'fa-facebook fa-facebook-color': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
-									'fa-twitter fa-twitter-color': socialStatusProvider.socialConnection.source ==='TWITTER',
-									'fa-linkedin fa-linkedin-color': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-									'fa-google fa-google-color': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+
 							</div>
 							<div class="portlet-body">
 								<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
@@ -50,13 +58,13 @@
             <div class="col-sm-12 alert alert-info rounded-0">
                 <h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
                 <h5><strong>Image specifications:</strong></h5>
-                <ul>
+                <ul style="margin-left: -23px; margin-bottom:5px">
                 	<li>Supported image media types: JPG, PNG, GIF, WEBP</li>
 	                <li>Image Size <=3 MB</li>
                 </ul>
 
                	<h5><strong>Video specifications:</strong></h5>
-                <ul>	
+                <ul style="margin-left: -23px;">	
                 	<li>Duration should be between 0.5 seconds and 30 seconds</li>
                 </ul>
             </div>
@@ -85,7 +93,7 @@
 				</div>
 			</div>
 			
-			<div class="col-sm-12 portlet light clearfix">
+			<div class="col-sm-12 dashboard-stat2 p0">
                 <section class='col-sm-12 pt10 pb10' *ngIf="customResponse.statusText !== null">
 	                <div class="alert alert-dismissible m0" role="alert"
 	                	[ngClass]="{'alert-info': customResponse.type === 0,
@@ -111,22 +119,22 @@
 	                    <span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px" 
 	                    	[ngClass]="{'inline-grid': socialStatusProvider.selected,
 										'hidden': !socialStatusProvider.selected}">
-							<div class="btn btn-xs rounded-0" style="color: #FFF;" *ngIf="socialStatusProvider.selected" 
+							<div class="btn btn-social-selected" *ngIf="socialStatusProvider.selected" 
 								[ngClass]="{
 										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
 										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 										'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-								<div class="col-xs-12" style="display: inline-flex;">
-									<i class="fa fa-social pull-right" 
+								
+									<i class="fa" 
 											[ngClass]="{
 												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
 												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 												'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
-									<h6 *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</h6>
-									<h6 *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</h6>
-								</div>
+									<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
+									<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
+								
 							</div>
 						</span>
 					</section>
@@ -134,10 +142,10 @@
                 <div class="col-sm-12">
 					<section [hidden]="isSocialCampaign && alias">
 						<textarea placeholder="What's happening?" rows="4"
-							class="form-control form-group rounded-0 margin-bottom-10px"
+							class="form-control form-group rounded-0 mb5"
 							[(ngModel)]="socialStatus.statusMessage"
 							maxlength="140"></textarea>
-						<h6 class="pull-right mt0"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+						<h6 class="text-count"><b>{{140 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 					</section>
 					<section *ngIf="isSocialCampaign && alias">
 						<h4>{{socialStatus.statusMessage}}</h4>
@@ -154,7 +162,8 @@
                 </div>
                 <div class="col-sm-12" [hidden]="isSocialCampaign && alias">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
-                        <span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>
+                        <!--<span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>-->
+						<span (click)="removeItem(i, socialStatusContent)"><i class="fa fa-times-circle"></i></span>
                         <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
 							<source src="{{socialStatusContent.filePath}}" type="video/mp4">
@@ -302,7 +311,7 @@
 				</div>
 			</div>
             <div [hidden]="isSocialCampaign">
-            	<div class="col-sm-12 dashboard-stat2 rounded-0" style="padding: 25px;">
+            	<div class="col-sm-12 dashboard-stat2">
 					<div id='full-calendar'></div>
 				</div>
             </div>
