@@ -645,7 +645,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     
     videoSkippedDurationTotalInfo() {
         this.reportsPagination.maxResults = 50000000;
-        this.downloadTypeName = 'skippedDuration';
+       // this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -658,7 +658,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationTotalInfo() {
         this.reportsPagination.maxResults = 5000000;
-        this.downloadTypeName = 'playedDuration';
+        //this.downloadTypeName = 'playedDuration';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);

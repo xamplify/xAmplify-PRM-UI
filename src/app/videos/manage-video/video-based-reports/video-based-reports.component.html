@@ -458,7 +458,7 @@ font-weight: 500;
 				</span>
 				<ul class="dropdown-menu pull-right">
 					<li><a id="delete_button"
-					(click)="downloadLogs()"> Export To Excel </a></li>
+					(click)="downloadTypeName = 'playedDuration'; downloadLogs()"> Export To Excel </a></li>
 				</ul>
 			</div>
 					</div>
@@ -528,7 +528,7 @@ font-weight: 500;
 				</span>
 				<ul class="dropdown-menu pull-right">
 					<li><a id="delete_button"
-					(click)="downloadLogs()"> Export To Excel </a></li>
+					(click)="downloadTypeName = 'skippedDuration'; downloadLogs()"> Export To Excel </a></li>
 				</ul>
 			</div>
 					</div>
