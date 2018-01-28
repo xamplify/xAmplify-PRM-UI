@@ -3,6 +3,11 @@
 	pointer-events: none;
 	cursor: not-allowed;
 }
+
+.headerCss {
+font-size: 12px; 
+font-weight: 500;
+}
 </style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
@@ -185,19 +190,29 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" style="text-align: center">Users Minutes watched Views</h4>
+				<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive" style="padding: 0px 7px;">
-						<table class="table table-bordered table-striped table-hover">
+						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th class="center text-uppercase">user name</th>
-									<th class="center text-uppercase">video Title</th>
-									<th class="center text-uppercase">mintimestamo without time zone</th>
-									<th class="center text-uppercase">minutes watched</th>
-									<th class="center text-uppercase">device</th>
-									<th class="center text-uppercase">location</th>
+									<th class="center text-uppercase headerCss">user name</th>
+									<th class="center text-uppercase headerCss">video Title</th>
+									<th class="center text-uppercase headerCss">mintimestamo without time zone</th>
+									<th class="center text-uppercase headerCss">minutes watched</th>
+									<th class="center text-uppercase headerCss">device</th>
+									<th class="center text-uppercase headerCss">location</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -268,19 +283,29 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title center">watched fully Reports</h4>
+				<h4 class="modal-title m0">watched fully Reports</h4>
+				<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive" style="padding: 0px 7px;">
-						<table class="table table-bordered table-striped table-hover">
+						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th class="center text-uppercase">Campaign Name</th>
-									<th class="center text-uppercase" >email id</th>
-									<th class="center text-uppercase" >date</th>
-									<th class="center text-uppercase">device</th>
-									<th class="center text-uppercase">location</th>
+									<th class="center text-uppercase headerCss">Campaign Name</th>
+									<th class="center text-uppercase headerCss" >email id</th>
+									<th class="center text-uppercase headerCss" >date</th>
+									<th class="center text-uppercase headerCss">device</th>
+									<th class="center text-uppercase headerCss">location</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -353,17 +378,27 @@
 					aria-label="Close" >
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 align="center">Total minutes watched by most users Reports</h4>
+				<h4 align="center" class="m0">Total minutes watched by most users Reports</h4>
+				<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
-					<table class="table table-striped table-hover table-bordered">
+					<table class="table tgrid">
 						<thead>
 							<tr>
-								<th class="center text-uppercase">email id</th>
-								<th class="center text-uppercase">date</th>
-								<th class="center text-uppercase">device</th>
-								<th class="center text-uppercase">location</th>
+								<th class="center text-uppercase headerCss">EMAIL ID</th>
+								<th class="center text-uppercase headerCss">DATE</th>
+								<th class="center text-uppercase headerCss">DEVICE</th>
+								<th class="center text-uppercase headerCss">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -417,13 +452,13 @@
 				<div class="row">
 					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video Played Duration</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
-					<table class="table table-striped table-hover table-bordered"
+					<table class="table tgrid"
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="center">EMAILID</th>
-								<th class="text-center">DATE & TIME</th>
-								<th class="center">DEVICE</th>
+								<th class="center headerCss">EMAILID</th>
+								<th class="text-center headerCss">DATE & TIME</th>
+								<th class="center headerCss">DEVICE</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -476,13 +511,13 @@
 				<div class="row">
 					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video skipped duration</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
-						<table class="table table-striped table-hover table-bordered"
+						<table class="table tgrid"
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="center">EMAILID</th>
-								<th class="text-center">DATE & TIME</th>
-								<th class="center">DEVICE</th>
+								<th class="center headerCss">EMAILID</th>
+								<th class="text-center headerCss">DATE & TIME</th>
+								<th class="center headerCss">DEVICE</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -553,6 +588,16 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="m0">People who have watched video</h4>
+				<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
