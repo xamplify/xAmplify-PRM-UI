@@ -340,13 +340,11 @@ font-size:14px
 
 .box .ribbon {
 position:absolute;
-right:0;
+right: 2px;
 position:absolute;
 top:0;
 width:0;
 height:30px;
-border-right:10px solid #3c5998;
-border-left:10px solid #3c5998;
 border-bottom:10px solid transparent;
 z-index:1
 }
