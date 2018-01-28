@@ -450,7 +450,18 @@ font-weight: 500;
 			</div>
 			<div class="modal-body clearfix">
 				<div class="row">
-					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video Played Duration</div>
+					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video Played Duration
+					<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -7px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
+					</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 					<table class="table tgrid"
 						id="sample_editable_1">
@@ -509,7 +520,18 @@ font-weight: 500;
 					</div>
 				</div>
 				<div class="row">
-					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video skipped duration</div>
+					<div style="text-align: center;font-size: 13px;text-transform: uppercase;">video skipped duration
+					<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -7px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
+					</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 						<table class="table tgrid"
 						id="sample_editable_1">

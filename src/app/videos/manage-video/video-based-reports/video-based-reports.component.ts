@@ -52,6 +52,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     totalUsersWatched: any;
     videoSkippedDuration: any;
     videoPlayedDuration: any;
+    videoSkippedDurationTotalList: any;
+    videoPlayedDurationTotalList: any;
     nonApplicableUsersMinutes: any;
     nonApplicableUsersViews:any;
     videoPlayedPagination: Pagination = new Pagination();
@@ -533,6 +535,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoSkippedDurationInfo() {
         this.pagination.maxResults = 5;
+        this.videoSkippedDurationTotalInfo();
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -548,6 +551,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationInfo() {
         this.videoPlayedPagination.maxResults = 5;
+        this.videoPlayedDurationTotalInfo();
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.videoPlayedPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -561,6 +565,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
+    
     nonApplicableUsersMinutesWatched() {
         this.videoBaseReportService.nonApplicableUsersMinutes(this.selectedVideo.id).subscribe(
             (result: any) => {
@@ -637,6 +642,34 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
+    
+    videoSkippedDurationTotalInfo() {
+        this.reportsPagination.maxResults = 50000000;
+        this.downloadTypeName = 'skippedDuration';
+        this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
+            (result: any) => {
+                console.log(result);
+                this.videoSkippedDurationTotalList = result.data;
+            },
+            error => {
+                this.xtremandLogger.error(error);
+            }
+        );
+    }
+    videoPlayedDurationTotalInfo() {
+        this.reportsPagination.maxResults = 5000000;
+        this.downloadTypeName = 'playedDuration';
+        this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
+            (result: any) => {
+                console.log(result);
+                this.videoPlayedDurationTotalList = result.data;
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //  this.xtremandLogger.errorPage(error);
+            }
+        );
+    }
       convertToCSV(objArray) {
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         var str = '';
@@ -676,6 +709,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
           } else if ( this.downloadTypeName === 'clickedMenetsWatched' ) {
               logListName = 'Clicked_Menetes_logs.csv';
               this.downloadCsvList = this.userMinutesWatchedTotalList;
+          }
+          else if ( this.downloadTypeName === 'playedDuration' ) {
+              logListName = 'Played_Duration_logs.csv';
+              this.downloadCsvList = this.videoPlayedDurationTotalList;
+          }
+          else if ( this.downloadTypeName === 'skippedDuration' ) {
+              logListName = 'Skipped_Duration_logs.csv';
+              this.downloadCsvList = this.videoSkippedDurationTotalList;
           }
           
           this.downloadDataList.length = 0;
@@ -718,6 +759,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                   object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
                   object["Device"] = this.downloadCsvList[i].device;
                   object["Location"] = this.downloadCsvList[i].location;
+              }
+              else if ( this.downloadTypeName === 'playedDuration' ) {
+                  object["Email Id"] = this.downloadCsvList[i].name;
+                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                  object["Device"] = this.downloadCsvList[i].device;
+              }
+              else if ( this.downloadTypeName === 'skippedDuration' ) {
+                  object["Email Id"] = this.downloadCsvList[i].name;
+                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                  object["Device"] = this.downloadCsvList[i].device;
               }
               
             
