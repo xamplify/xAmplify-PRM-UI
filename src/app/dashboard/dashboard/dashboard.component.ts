@@ -906,7 +906,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else if (this.paginationType === 'watched') {
             logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
-        }
+        } 
         this.downloadDataList.length = 0;
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
@@ -939,6 +939,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.click();
         return 'success';
     }
+    
+    downloadcountryWiseLogs() {
+        this.downloadDataList.length = 0;
+        this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
+        for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
+            let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
+            var object = {
+                "EmailId": this.dashboardReport.downloadEmailLogList[i].name,
+                "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
+                "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
+                "Date and Time": this.dashboardReport.downloadEmailLogList[i].date,
+                "Device": this.dashboardReport.downloadEmailLogList[i].device
+            }
+            this.downloadDataList.push(object);
+        }
+        var csvData = this.convertToCSV(this.downloadDataList);
+        var a = document.createElement("a");
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'Coutry_wise_views_logs.csv';
+        a.click();
+        return 'success';
+    }
+
 
     listOfAllEmailOpenLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
@@ -983,6 +1010,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     getCampaignUsersWatchedInfo(countryCode) {
         countryCode = countryCode.toUpperCase();
+        this.paginationType = "countryWiseUsers";
         this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, countryCode)
             .subscribe(
             (data: any) => {
