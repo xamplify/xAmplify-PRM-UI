@@ -66,7 +66,7 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x">
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#emailSentListModal" [disabled]="campaignReport.emailSentCount < 1">
+			<button class="portlet light color1-invert crcb" (click) = "downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [disabled]="campaignReport.emailSentCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailSentCount}}</b>
@@ -422,6 +422,16 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="usersWatchListModalLabel" style="text-align: center;">Users who have watched the campaign</h4>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -22px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadEmailLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -594,6 +604,16 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+				<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -22px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadEmailLogs()"> Export To Excel </a></li>
+				</ul>
+			</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">

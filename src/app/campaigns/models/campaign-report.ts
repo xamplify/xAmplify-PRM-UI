@@ -19,6 +19,7 @@ export class CampaignReport {
 
     emailSentList: any;
     usersWatchList: any;
+    totalWatchedList: any;
 
     emailActionType: string;
     emailActionList: any;
