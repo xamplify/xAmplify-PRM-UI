@@ -53,6 +53,8 @@ export class ReferenceService {
     daySortValue = 7;
     reportName: string;
     signUpSuccess: boolean;
+    accountDisabled:string = "";
+    isDisabling:boolean = false;
     
     countries = ["---Please Select Country---", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 

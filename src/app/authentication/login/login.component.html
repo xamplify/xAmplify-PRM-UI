@@ -32,6 +32,11 @@
 		<strong>Thank you for signing up with the platform! A
 			verification link has been sent to your email account</strong>
 	</div>
+	
+	<div *ngIf="refService.accountDisabled?.length>0" class="alert alert-success alert-dismissable"	id="org-admin-deactivated">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>{{refService.accountDisabled}}</strong>
+	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
 		<form class="login-form" (ngSubmit)="login()">

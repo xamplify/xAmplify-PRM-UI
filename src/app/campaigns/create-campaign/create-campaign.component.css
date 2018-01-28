@@ -1,3 +1,8 @@
+.form-group label {
+    font-weight: 500 !important;
+    color: #999 !important;
+}
+
 .btn-reply {
 	margin: 7px 0;
 	background-color: #1c7d74;

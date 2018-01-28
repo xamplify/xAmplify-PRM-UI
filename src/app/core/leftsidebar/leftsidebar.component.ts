@@ -22,6 +22,10 @@ export class LeftsidebarComponent implements OnInit {
     isPartner = false;
     roleName: Roles= new Roles();
     constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
+        this.updateLeftSideBar(location);
+    }
+
+    updateLeftSideBar(location:Location){
         this.location = location;
         const url = this.location.path();
         if ( url.indexOf('dashboard') >= 0) {
@@ -42,6 +46,7 @@ export class LeftsidebarComponent implements OnInit {
             this.baseRoute = 'upgrade';
         }
         const roles = this.authService.getRoles();
+        console.log(roles);
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
@@ -79,7 +84,7 @@ export class LeftsidebarComponent implements OnInit {
             this.isOrgAdmin = true;
         }
     }
-
+    
 
   ngOnInit() {
 

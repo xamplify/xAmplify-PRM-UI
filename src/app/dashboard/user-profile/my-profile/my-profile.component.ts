@@ -29,6 +29,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
     busy: Subscription;
+    status:boolean = true;
     updatePasswordBusy: Subscription;
     updatePlayerBusy: Subscription;
     updatePasswordSuccess = false;
@@ -53,10 +54,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hasAllAccess = false;
     hasCompany: boolean;
     defaultViewSuccess = false;
+    orgAdminCount:number = 0;
+    infoMessage:string = "";
+    currentUser:User;
+    roles:string[]=[];
+    isOrgAdmin:boolean = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
         this.userData = this.authenticationService.userProfile;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -64,6 +71,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
         this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+        this.hasOrgAdminRole();
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
@@ -107,6 +115,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
+    }
+    
+
+    hasOrgAdminRole(){
+        this.roles = this.authenticationService.getRoles();
+        if(this.roles.indexOf('ROLE_ORG_ADMIN')>-1){
+            this.isOrgAdmin = true;
+        }else{
+            this.isOrgAdmin = false;
+        }
     }
     clearImage() {
         $('div#previewImage > img').remove();
@@ -206,7 +224,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             Metronic.init();
             Layout.init();
             Demo.init();
-            this.getVideoDefaultSettings();
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             if (this.userData.firstName != null) {
@@ -214,18 +231,42 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.userData.displayName = this.userData.emailId;
             }
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if(currentUser.roles.length>1){
+                this.getOrgAdminsCount(this.loggedInUserId);
+                this.getVideoDefaultSettings();
+                this.defaultVideoSettings();
+                this.refService.isDisabling = false;
+                this.status = true;
+            }else{
+                this.refService.isDisabling = true;
+                if(this.authenticationService.isCompanyAdded){
+                    this.status = true;
+                }else{
+                    this.status = false;
+                }
+               
+            }
+            
+            
 
         } catch (err) { }
     }
     ngAfterViewInit() {
-     // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="profile-video"/>');
-        this.videoUtilService.normalVideoJsFiles();
-        this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-        this.defaultVideoSettings();
-        this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
-        if (this.refService.defaultPlayerSettings.enableVideoController === false) {
-            this.defaultVideoControllers();
+        
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if(currentUser.roles.length>1){
+            this.videoUtilService.normalVideoJsFiles();
+            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+            this.defaultVideoSettings();
+            this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
+            if (this.refService.defaultPlayerSettings.enableVideoController === false) {
+                this.defaultVideoControllers();
+            }
+            
         }
+       
     }
 
     updatePassword() {
@@ -730,6 +771,83 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
     
+    changeStatus(){
+        $('#org-admin-info').hide();
+        if (!($('#status').is(":checked"))){
+            if(this.currentUser.roles.length>1){
+                this.status = true;
+                $('#status').prop("checked",true);
+                let self = this;
+                swal({
+                    title: 'Are you sure?',
+                    text:'Once you change status,it cannot be undone.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick:false,
+                    preConfirm: () => {
+                        if(self.orgAdminCount>1){
+                            $('a').addClass('disabled');
+                            self.refService.isDisabling = true;
+                            self.disableOrgAdmin();
+                        }else{
+                            self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+                            $('#org-admin-info').show(600);
+                            swal.close();
+                            
+                        }
+                    }
+                  });
+         
+            }
+        }else{
+            this.router.navigate(["/home/dashboard/edit-company-profile"]);
+        }
+    }
+    
+    getOrgAdminsCount(userId:number){
+        this.userService.getOrgAdminsCount(userId)
+        .subscribe(
+            data => {
+                var body = data['_body'];
+                this.orgAdminCount = body;
+            },
+            error => {
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished getOrgAdminsCount()")
+        );
+    
+    }
+    
+    disableOrgAdmin(){
+        this.userService.disableOrgAdmin(this.loggedInUserId)
+        .subscribe(
+            data => {
+                var body = data['_body'];
+                var response = JSON.parse(body);
+                if(response.statusCode==1048){
+                    $('a').removeClass('disabled');
+                    this.refService.isDisabling  = false;
+                    $('#status').prop("checked",true);
+                    this.status = false;
+                    this.refService.accountDisabled = "OrgAdmin Deactivation Successfully Done.";
+                    this.authenticationService.logout();
+                    this.router.navigate(["/login"]);
+                }
+            },
+            error => {
+                this.logger.errorPage(error);
+                $('a').removeClass('disabled');
+            },
+            () => this.logger.info("Finished enableOrDisableOrgAdmin()")
+        );
+    
+        
+    }
+    
     ngOnDestroy() {
         if (this.isPlayed === true) {
             this.videoJSplayer.dispose();
@@ -738,4 +856,5 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         this.refService.defaulgVideoMethodCalled = false;
     }
+    
 }

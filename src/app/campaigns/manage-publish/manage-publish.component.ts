@@ -228,7 +228,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let campaign = new Campaign();
         campaign.campaignName = this.saveAsCampaignName;
         campaign.campaignId = this.saveAsCampaignId;
-        
+        campaign.scheduleCampaign = "SAVE";
+        console.log(campaign);
         this.campaignService.saveAsCampaign(campaign)
             .subscribe(
             data => {

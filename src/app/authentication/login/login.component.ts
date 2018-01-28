@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from '../../core/models/user';
-
+import { Role } from '../../core/models/role';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -17,11 +17,11 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
     providers: [User]
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
     model: any = {};
     loading = false;
     error = '';
-
+    roles:Array<Role>;
     constructor( private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
         public refService: ReferenceService, private logger: XtremandLogger ) {
 
@@ -32,7 +32,15 @@ export class LoginComponent implements OnInit {
             this.logErrorEmpty()
         } else {
             if ( localStorage.getItem( 'currentUser' ) ) {
-                this.router.navigate( ['/home/dashboard/default'] );
+                let currentUser = JSON.parse( localStorage.getItem( 'currentUser' ) );
+                let roles = currentUser.roles;
+                 console.log(currentUser);
+                if(roles.length==1){
+                    this.router.navigate( ['/home/dashboard/myprofile'] );
+                }else{
+                    this.router.navigate( ['/home/dashboard/default'] );
+                }
+               
                 return false
             } else {
                 this.loading = true;
@@ -51,7 +59,13 @@ export class LoginComponent implements OnInit {
                         if ( currentUser.hasCompany ) {
                             this.router.navigate( ['/home/dashboard/default'] );
                         } else {
-                            this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                            let roles = currentUser.roles;
+                            if(roles.length==1){
+                                this.router.navigate( ['/home/dashboard/myprofile'] );
+                            }else{
+                                this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                            }
+                            
                         }
                         // if user is coming from any link
                         if ( this.authenticationService.redirectUrl ) {
@@ -122,6 +136,11 @@ export class LoginComponent implements OnInit {
         Layout.init();
         Login.init();
         Demo.init();*/
+    }
+    
+    ngOnDestroy() {
+        this.refService.accountDisabled = "";
+        $('#org-admin-deactivated').hide();
     }
 
 }

@@ -1826,7 +1826,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        if(data.scheduleCampaign=="NOW"){
+        if(data.scheduleCampaign=="NOW" || $.trim(data.scheduleCampaign.length==0)){
             data['scheduleCampaign'] = "SAVE";
         }
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;

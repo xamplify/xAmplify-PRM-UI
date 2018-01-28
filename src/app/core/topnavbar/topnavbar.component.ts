@@ -28,6 +28,7 @@ export class TopnavbarComponent implements OnInit {
   roleName: Roles = new Roles();
   hasSocialStatusRole = false;
   isOrgAdmin = false;
+  isUser = false;
   @Input() model = {'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
   constructor(public router: Router, public userService: UserService,
               public twitterService: TwitterService, public utilService: UtilService,
@@ -71,6 +72,9 @@ export class TopnavbarComponent implements OnInit {
     }
     if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
       this.isOrgAdmin = true;
+    }
+    if(roles.length==1){
+        this.isUser = true;
     }
   }
 

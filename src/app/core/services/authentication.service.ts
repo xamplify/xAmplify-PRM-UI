@@ -26,8 +26,10 @@ export class AuthenticationService {
     userToken: UserToken = new UserToken();
     redirectUrl: string;
     map: any;
+    isCompanyAdded:boolean = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = 'https://aravindu.com/';
+       // this.SERVER_URL = "http://localhost:8080/";
         this.APP_URL = 'https://socialubuntu.com/';
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
@@ -114,6 +116,7 @@ export class AuthenticationService {
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
         this.utilService.topnavBareLoading = false;
+        this.isCompanyAdded = false;
         swal.close();
     }
 }

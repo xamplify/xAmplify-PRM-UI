@@ -111,6 +111,18 @@ export class UserService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    getOrgAdminsCount( userId: number ) {
+        return this.http.get( this.URL + "admin/getOrgAdminCount/" + userId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    disableOrgAdmin( userId: number ) {
+        return this.http.get( this.URL + "admin/disableAsOrgAdmin/" + userId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
  
     private extractData( res: Response ) {
         console.log( res );

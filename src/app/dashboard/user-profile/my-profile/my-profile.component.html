@@ -1,4 +1,5 @@
 <style type="text/css">
+.profile-usermenu{padding-bottom: 10px;}
 .page-bar{ border-radius: 0;}
 .portlet.light{
 	padding: 20px;
@@ -7,6 +8,64 @@
 		pointer-events: none;
 		opacity: 0.6;
 	}
+	
+	
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider-new {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider-new:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider-new {
+  background-color: #5cb85c;
+}
+
+input:focus + .slider-new {
+  box-shadow: 0 0 1px #5cb85c;
+}
+
+input:checked + .slider-new:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider-new.round {
+  border-radius: 34px;
+}
+
+.slider-new.round:before {
+  border-radius: 50%;
+}
+.profile-usertitle-name{font-size: 14px;}	
 </style>
 			<div class="page-content">
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -22,6 +81,10 @@
 							<a>User Account</a>
 						</li>
 					</ul>
+				</div>
+				<div id="org-admin-info" class="alert alert-info" style="display: none;">
+					<a (click)="hideDiv('org-admin-info')" class="close" aria-label="close">x</a>
+					<strong>{{infoMessage}} <a routerLink="../../team/add-team" style="color: green;">Click Here</a></strong>
 				</div>
 				<!-- END PAGE HEADER-->
 				<!-- BEGIN PAGE CONTENT-->
@@ -52,10 +115,25 @@
 											<i class="icon-settings"></i>
 											Account Settings </a>
 										</li>
-										<li>
+										<!-- <li>
 											<a routerLink="../profilehelp">
 											<i class="icon-info"></i>
 											Help </a>
+										</li> -->
+										<li *ngIf="(currentUser.roles?.length==1 || isOrgAdmin)">
+										<a> 
+											<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
+											<div class="col-xs-5 p0">
+												<h4 class="m0">Enable/Disable</h4>
+												<h6 class='bold'>(Org Admin)</h6>											
+											</div>
+											<div class="col-xs-5">
+												<label class="switch" style="top: 0px;left: 20px;">
+	  												<input type="checkbox" [(ngModel)]="status" (change)="changeStatus()" id="status">
+	  												<span class="slider-new round"></span>
+												</label>											
+											</div>
+										 </a>		
 										</li>
 									</ul>
 								</div>
