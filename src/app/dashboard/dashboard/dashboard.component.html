@@ -437,10 +437,12 @@ font-weight: 500;
 				<!--Gender Demographics-->
 				<div class="clearfix">
 					<h4 class="gd-title">Gender Demographics</h4>
-					<div class="col-xs-3"></div>
-					<div class="col-xs-3 text-right p0">
+					<div class="col-xs-6 text-right p0">
 						<div class="facebook-color">
-							<div class="col-xs-10" style="padding: 5px 20px;">
+							<div class="col-xs-12">
+								<span class="gd-male"><i class="fa fa-male fa1"></i></span>
+							</div>							
+							<div class="col-xs-12">
 								<div class="number">
 									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
 										<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
@@ -448,17 +450,14 @@ font-weight: 500;
 										<ng-template #default_gender_demographics><h4><b>N/A</b></h4></ng-template>
 								</div>
 							</div>
-							<div class="col-xs-2">
-								<span class="gd-male"><i class="fa fa-male fa1"></i></span>
-							</div>							
 						</div>
 					</div>
-					<div class="col-xs-3 p0">
+					<div class="col-xs-6 p0">
 						<div class="google-color">
-							<div class="col-xs-2">
+							<div class="col-xs-12">
 								<span class="gd-female"><i class="fa fa-female fa1"></i></span>
 							</div>							
-							<div class="col-xs-10" style="padding: 5px 20px;">
+							<div class="col-xs-12">
 								<div class="number">
 									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
 										<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
@@ -468,7 +467,6 @@ font-weight: 500;
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-3"></div>
 				</div>				
 				</div>
 

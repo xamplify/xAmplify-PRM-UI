@@ -54,12 +54,12 @@ h5 {
 }
 
 .checked {
-	border: 2px solid rgba(0, 166, 231, 0.77);
+	border: 1px solid #00a8e7;
 }
 
 .unchecked {
 	opacity: 0.5;
-	border: 2px solid #FFF;
+	border: 1px solid #FFF;
 }
 
 .alert-success {

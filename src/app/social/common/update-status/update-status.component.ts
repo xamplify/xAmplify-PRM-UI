@@ -74,15 +74,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
   }
   previewVideo(videoFile: SaveVideoFile) {
-    // $('head').append('<script src=" assets/js/indexjscss/webcam-capture/video.min.js"" type="text/javascript" class="profile-video"/>');
-   // this.videoJSplayer = videojs('videojs-video');
+    this.resetCustomResponse();
     this.selectedVideo = videoFile;
     this.posterImage = videoFile.imagePath;
     this.videoUrl = this.selectedVideo.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-   // this.videoControllColors(videoFile);
-   // this.videoJSplayer.play();
     if (this.selectedVideo.is360video) {
          this.play360video(this.selectedVideo);
     } else {
@@ -120,6 +117,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     );
     }
      play360video(videoFile) {
+        this.resetCustomResponse();
         $('#newPlayerVideo').empty();
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
@@ -147,6 +145,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         $('#videoId').css('height', '315px');
     }
   addVideo() {
+    this.resetCustomResponse();
     console.log(this.socialStatus.socialStatusContents.length);
     if (this.socialStatus.socialStatusContents.length > 0 &&
       (Array.from(this.socialStatus.socialStatusContents)[0].fileType !== 'video')) {
@@ -164,6 +163,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   removeItem(i: number, socialStatusContent: SocialStatusContent) {
+    this.resetCustomResponse();    
     console.log(socialStatusContent + '' + i);
     this.socialService.removeMedia(socialStatusContent.fileName)
       .subscribe(
@@ -178,6 +178,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   validateImageUpload(files: any) {
+    this.resetCustomResponse();    
     this.customResponse.statusArray = [];
     const uploadedFilesCount = files.length;
     const existingFilesCount = this.socialStatus.socialStatusContents.length;

@@ -52,8 +52,8 @@ export class SocialManageComponent implements OnInit {
                 text: 'Do you really want to deselect it!',
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#f04844',
+                cancelButtonColor: '#8a8681',
                 confirmButtonText: 'Yes'
 
             }).then( function() {
