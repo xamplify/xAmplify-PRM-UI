@@ -54,7 +54,7 @@ export class VideoFileService {
         const formData: FormData = new FormData();
         formData.append('file', file);
         const headers = new Headers();
-        headers.append('Content-Type', 'multipart/form-data');
+       // headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
         console.log(formData);
         const options = new RequestOptions({ headers: headers });

@@ -134,6 +134,14 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
+    getCampaignCoutryViewsDetailsReport(videoId:number,countryCode: string, pagination:Pagination){
+          try {
+            const url = this.authenticationService.REST_URL +'videos/'+videoId+'/countrywise-users-report?access_token='+this.authenticationService.access_token+'&countryCode='+countryCode;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

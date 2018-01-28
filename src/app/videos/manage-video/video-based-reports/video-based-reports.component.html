@@ -540,4 +540,97 @@
 	</div>
 </div>
 
+<!-- campagin world map users info  -->
+<div class="modal fade" id="worldMapModal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog" role="document"
+		style="width: 80%; margin: 1em auto">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" (click)="clearPaginationValues()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="m0">People who have watched video</h4>
+			</div>
+			<div class="modal-body clearfix">
+				<div class="table-responsive">
+					<table class="table tgrid">
+						<thead>
+							<tr>
+								<th class="headerCss">NAME</th>
+								<th class="headerCss">CAMPAIGN NAME</th>
+								<th class="headerCss">DATE & TIME</th>
+								<th class="headerCss">DEVICE</th>
+								<th class="headerCss">CITY</th>
+							    <th class="headerCss">COUNTRY</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let item of worldMapCampaignUsersInfo;let i = index">
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href="mailto:ksathish@xtremand.com">{{item.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
+								<td class="center"><h5>{{item.campaignName}}</h5></td>
+								<td class="center"><h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								 <td class="center" *ngIf="item.os == 'computer'"><i
+									class="fa fa-desktop" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'windows'"><i
+									class="fa fa-windows" aria-hidden="true"
+									style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'mac'"><i
+									class="fa fa fa-apple" aria-hidden="true"
+									style="color: green; font-size: 22px !important"></i></td>
+								<td *ngIf="item.os == 'linux' "><i
+									class="fa fa fa-linux" aria-hidden="true"
+									style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'android'"><i
+									class="fa fa-android" aria-hidden="true"
+									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center"><h5>{{item.city}}</h5></td>
+								<td class="center"><h5>{{item.country}}</h5></td>
+							</tr>
+						</tbody>
+					</table>
+					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+	                          <a (click)="setPage(1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+	                       </li>
+	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
+	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+	                        </li>
+	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+	                           <a (click)="setPage(page, 'coutrywiseUsers')">{{page}}</a>
+	                        </li>
+	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+	                        </li>
+	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+	                            <a (click)="setPage(pagination.pager.totalPages, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+	                        </li>
+	                    </ul>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<!-- <button type="button" class="btn btn-default"
+					(click)="downloadEmailLogs()"
+					style="background-color: #eae8e8;">export to excel</button> -->
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 

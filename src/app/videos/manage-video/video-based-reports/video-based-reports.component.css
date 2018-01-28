@@ -63,3 +63,10 @@ background-color: rgb(144, 238, 144);
 z-index: 0;
 text-align: center;
 }
+.headerCss {
+   font-size: 12px; 
+   font-weight: 500;
+}
+.center {
+	text-align: center;
+}

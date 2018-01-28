@@ -53,7 +53,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     nonApplicableUsersMinutes: any;
     nonApplicableUsersViews:any;
     videoPlayedPagination: Pagination = new Pagination();
-
+    countryCode: string;
+    worldMapCampaignUsersInfo: any; 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -375,6 +376,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     renderWorldMap(countryWiseData: any) {
         const data = countryWiseData;
+        const self = this;
         Highcharts.mapChart('world-map', {
             chart: {
                 map: 'custom/world'
@@ -398,7 +400,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 series: {
                     events: {
                         click: function (e) {
-                            alert(e.point.name + ', views:' + e.point.value);
+                           // alert(e.point.name + ', views:' + e.point.value);
+                            self.getCampaignCoutryViewsDetailsReport(e.point['hc-key']);
                         }
                     }
                 }
@@ -477,12 +480,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             );
     }
     setPage(page: number, type: string) {
-        this.pagination.pageIndex = page;
         console.log()
         if (type === 'userMinutesWatched') {
+            this.pagination.pageIndex = page;
             this.clickedMinutesWatched(this.userId);
         }
         else if (type === 'watchedFully') {
+            this.pagination.pageIndex = page;
             this.watchedFullyDetailReport();
         }
         else if (type === 'videoPlayed') {
@@ -490,7 +494,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             this.videoPlayedDurationInfo();
         }
         else if (type === 'videoSkipped') {
+            this.pagination.pageIndex = page;
             this.videoSkippedDurationInfo();
+        }else if(type === 'coutrywiseUsers'){
+            this.pagination.pageIndex = page;
+            this.getCampaignCoutryViewsDetailsReport(this.countryCode);
         }
     }
     clearPaginationValues() {
@@ -549,6 +557,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 console.log(result);
                 this.nonApplicableUsersMinutes = result.minutesWatched;
                 this.nonApplicableUsersViews = result.views;
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //  this.xtremandLogger.errorPage(error);
+            }
+        );
+    }
+    getCampaignCoutryViewsDetailsReport(countryCode:string){
+         this.countryCode = countryCode.toUpperCase();
+         this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id,this.countryCode, this.pagination).
+         subscribe(
+            (result: any) => {
+                console.log(result);
+                this.worldMapCampaignUsersInfo = result.data;
+                this.pagination.totalRecords = result.totalRecords;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
+                if(this.worldMapCampaignUsersInfo.length > 0){
+                    $('#worldMapModal').modal('show');
+                }
             },
             error => {
                 this.xtremandLogger.error(error);
