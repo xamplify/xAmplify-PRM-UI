@@ -1,11 +1,17 @@
 <style type="text/css">
-  .active{
-	  background: lightblue;
-  }
-#tabletest tr:hover { 
-   background-color: lightblue;
-}
-	</style>
+	.active {
+		background: lightblue;
+	}
+
+	.headerCss {
+		font-size: 12px;
+		font-weight: 500;
+	}
+
+	.center {
+		text-align: center;
+	}
+</style>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -19,7 +25,7 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			 <div class="panel-title pull-right">
+			<div class="panel-title pull-right">
 				<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
 						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -32,27 +38,26 @@
 				<div id="sparkline_bar_chart1" style="cursor: pointer" (click)="selectedChartValue()">
 					<canvas width="172" height="94" style="display: inline-block; width: 172px; height: 94px; vertical-align: top;"></canvas>
 				</div>
-				<h2 style="text-align: left; color: #2f2f2f;font-weight: 400;font-size:18px;margin-left: 29px;margin-top: 9px;">{{reportName}}</h2>
+				<h2 style="text-align: left; color: #8e8e8e;font-weight: 400;font-size:13px;margin-left: 29px;margin-top: 9px;">{{reportName}}</h2>
 			</div>
 			<div class="col-xs-8">
-				<table class='table table-hover table-bordered' id="tabletest">
+				<table class='table tgrid' id="tabletest">
 					<thead>
-						<tr style="background: #c5c5c5">
-							<th>Title</th>
-							<th>{{reportName}}</th>
-							<th>Date</th>
+						<tr>
+							<th class="headerCss center">Title</th>
+							<th class="headerCss center">{{reportName}}</th>
+							<th class="headerCss center">Date</th>
 						</tr>
 					</thead>
-					<tbody >
-						 <ng-container *ngFor="let view of videoViewsLevelFirst; let i = index"> 
-						<tr style="cursor:pointer;" (click)="selectedRow(view)">
-							<!--[class.active]="view.videoId === selectedRowValue"  -->
-							<td>{{view.videoTitle}}</td>
-							<td *ngIf="reportName==='views'">{{view.viewsCount}}</td>
-							<td *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
-							<td>{{view.date}}</td>
-						</tr>
-						 </ng-container> 
+					<tbody>
+						<ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">
+							<tr style="cursor:pointer;" (click)="selectedRow(view)">
+								<td class="center">{{view.videoTitle}}</td>
+								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
+								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
+								<td class="center">{{view.date}}</td>
+							</tr>
+						</ng-container>
 					</tbody>
 					<!-- <p  *ngIf="!videoViewsLevelFirst"> No Data Found</p>	 -->
 				</table>
@@ -67,22 +72,22 @@
 			</div>
 		</div>
 		<div class="portlet-body" style="max-width: 100%; min-height: auto;">
-			<table class='table table-hover table-bordered' id="sample_editable_1">
+			<table class='table tgrid' id="sample_editable_1">
 				<thead>
-					<tr style="background: #c5c5c5">
-						<th>Title</th>
-						<th>email id</th>
-						<th>Date</th>
+					<tr>
+						<th class="headerCss center">Title</th>
+						<th class="headerCss center">email id</th>
+						<th class="headerCss center">Date</th>
 					</tr>
 				</thead>
 				<tbody>
-					 <ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index"> 
-					<tr>
-						<td>{{videoViews.videoTitle}}</td>
-						<td>{{videoViews.emailId}}</td>
-						<td>{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
-					</tr>
-					 </ng-container>
+					<ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index">
+						<tr>
+							<td class="center">{{videoViews.videoTitle}}</td>
+							<td class="center">{{videoViews.emailId}}</td>
+							<td class="center">{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
+						</tr>
+					</ng-container>
 				</tbody>
 				<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
 			</table>

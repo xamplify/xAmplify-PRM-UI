@@ -222,7 +222,7 @@
 										<td class="td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
 										<td  class="td-chart">
 											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 3px 0px;">
-											<span style="text-align: center;vertical-align: middle;color:white">{{item.viewsCount}}</span> </div>
+											<span style="text-align: center;vertical-align: middle;color:white;position: absolute; bottom: 9px;font-size:16px">{{item.viewsCount}}</span> </div>
 										</td>
 									</tr>
 								</tbody>

@@ -22,8 +22,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   selectedRowValue = false;
   color: any;
   anotherViewDate: string;
-  sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
-  { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
+  sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
+  { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
   daySort: any;
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService) {
     this.resultSparkline = this.referenceService.viewsSparklineValues;
@@ -41,7 +41,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         break;
       }
     }
-    // alert(this.viewsDate);
     console.log("day sort value " + this.daySort + 'views date is ' + this.viewsDate + 'value is ' + this.viewsValue + 'dayscount is' + this.daysCount);
   }
   selectedSortByValue(event: any) {
@@ -83,23 +82,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       tooltipFormat: '<span >' + customTooltipFormat + ':{{value}} <br>{{offset:offset}}</span>',
       tooltipValueLookups: { 'offset': offsetValues }
     });
-    // $(document).ready(function () {
-    //   $('#sparkline_bar_chart1').bind('sparklineClick', function (ev) {
-    //     const sparkline = ev.sparklines[0],
-    //       region = sparkline.getCurrentRegionFields();
-    //     console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
-    //     const date = offsetValues[region[0].offset];
-    //     if (self.viewsDate === date || self.viewsDate === self.anotherViewDate) {
-    //       console.log("views data is " + self.viewsDate);
-    //       self.referenceService.viewsDate = self.viewsDate;
-    //     } else {
-    //       self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
-    //       if (self.reportName === 'views') {
-    //         self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
-    //       } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
-    //     }
-    //   });
-    // });
   }
   selectedChartValue(){
       const self = this;    
