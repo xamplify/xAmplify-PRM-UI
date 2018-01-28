@@ -158,6 +158,9 @@ margin:2px;
 font-size: 12px; 
 font-weight: 500;
 }
+.center {
+ text-align: center;
+}
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -756,7 +759,7 @@ font-weight: 500;
 										</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
 											<h6 class='m0'>
-												<a href="mailto:ksathish@xtremand.com">{{emailClicked.emailId}}</a>
+												<a href="mailto:{{emailClicked.emailId}}">{{emailClicked.emailId}}</a>
 											</h6>
 										</span>
 									</div>
@@ -850,45 +853,45 @@ font-weight: 500;
 					<table class="table tgrid">
 						<thead>
 							<tr>
-								<th class="headerCss">NAME</th>
-								<th class="headerCss">DATE & TIME</th>
-								<th class="headerCss">DEVICE</th>
-							    <th class="headerCss">LOCATION</th>
+								<th class="headerCss center">NAME</th>
+								<th class="headerCss center">DATE & TIME</th>
+								<th class="headerCss center">DEVICE</th>
+							    <th class="headerCss center">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
-								*ngFor="let emailClicked of worldMapUserData;let i = index">
+								*ngFor="let item of worldMapUserData;let i = index">
 								<td>
 									<div class="flex">
 										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{emailClicked.firstName |
-												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
 										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
-												<a href="mailto:ksathish@xtremand.com">{{emailClicked.name}}</a>
+												<a href="mailto:{{item.emailId}}">{{item.emailId}}</a>
 											</h6>
 										</span>
 									</div>
 								</td>
-								<td><h5>{{emailClicked.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-								 <td *ngIf="emailClicked.device == 'computer'"><i
-									class="fa fa-desktop" aria-hidden="true"
+								<td class="center"><h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
+								 <td  style="text-align: center" *ngIf="item.os == 'computer'"><i
+									class="fa fa-desktop " aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td *ngIf="emailClicked.device == 'windows'"><i
+								<td  style="text-align: center" *ngIf="item.os == 'windows'"><i
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td *ngIf="emailClicked.device == 'mac'"><i
+								<td style="text-align: center" *ngIf="item.os == 'mac'"><i
 									class="fa fa fa-apple" aria-hidden="true"
 									style="color: green; font-size: 22px !important"></i></td>
-								<td *ngIf="emailClicked.device == 'linux' "><i
+								<td style="text-align: center" *ngIf="item.os == 'linux' "><i
 									class="fa fa fa-linux" aria-hidden="true"
 									style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td *ngIf="emailClicked.device == 'android'"><i
+								<td  style="text-align: center" *ngIf="item.os == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td><h5>{{emailClicked.location}}</h5></td>
+								<td style="text-align: center"><h5>{{item.location}}</h5></td>
 							</tr>
 						</tbody>
 					</table>
