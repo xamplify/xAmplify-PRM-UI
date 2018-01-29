@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CampaignService } from '../../../campaigns/services/campaign.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 declare var Highcharts: any;
 
 @Component({
@@ -10,11 +11,13 @@ declare var Highcharts: any;
 
 export class BubbleChartComponent implements OnInit {
         @Input() campaignId: number;
+        campaignType: any;
         namesArray = [];
-        constructor(public campaignService: CampaignService) { }
+        constructor(public campaignService: CampaignService, public referenceService: ReferenceService) { }
 
-      getCampaignUserWatchedMinutesCountes(campaignId: number) {
-        this.campaignService.getCampaignUserWatchedMinutes(campaignId)
+      getCampaignUserWatchedMinutesCountes(campaignId: number, campaignType) {
+        console.log(this.campaignType);
+        this.campaignService.getCampaignUserWatchedMinutes(campaignId, campaignType)
                 .subscribe(
                 data => {
                 console.log(data);
@@ -226,9 +229,30 @@ export class BubbleChartComponent implements OnInit {
 
                 });
         }
+      getCampaignById(campaignId: number) {
+        const obj = { 'campaignId': campaignId }
+        this.campaignService.getCampaignById(obj)
+        .subscribe(
+         data => {  
+          console.log(data);
+          const campaignType = data.campaignType.toLocaleString();
+          if(campaignType.includes('VIDEO')){
+                this.campaignType = 'VIDEO';
+                } else if (campaignType.includes('SOCIAL')) {
+                this.campaignType = 'SOCIAL';
+                } else {
+                this.campaignType = 'REGULAR';
+                }
+           
+          this.getCampaignUserWatchedMinutesCountes(this.campaignId, this.campaignType);
 
+          }
+          );
+       }
         ngOnInit() {
-                this.getCampaignUserWatchedMinutesCountes(this.campaignId);
+                console.log(this.campaignType);
+                // this.getCampaignUserWatchedMinutesCountes(this.campaignId);
+                this.getCampaignById(this.campaignId)
         }
 
 }

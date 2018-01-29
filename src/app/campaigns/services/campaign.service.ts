@@ -188,8 +188,8 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getCampaignUserWatchedMinutes(campaignId: number){
-        const url = this.URL+ 'campaign/'+campaignId+'/bubble-chart-data?access_token='+this.authenticationService.access_token;
+    getCampaignUserWatchedMinutes(campaignId: number, type:string){
+        const url = this.URL+ 'campaign/'+campaignId+'/bubble-chart-data?type='+type+'&access_token='+this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

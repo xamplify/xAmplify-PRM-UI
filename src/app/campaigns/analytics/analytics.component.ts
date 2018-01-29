@@ -55,7 +55,8 @@ export class AnalyticsComponent implements OnInit {
   worldMapUserData: any;
   worldMapUserTotalData: any;
   countryCode: string;
-
+  campaignTypeValue: string;
+  
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService) {
@@ -486,10 +487,10 @@ export class AnalyticsComponent implements OnInit {
           this.getCampaignWatchedUsersCount(campaignId);
           this.campaignWatchedUsersListCount(campaignId);
         } else if (campaignType.includes('SOCIAL')) {
-          this.campaignType = 'SOCIAL';
+            this.campaignType = 'SOCIAL';
           this.getSocialCampaignByCampaignId(campaignId);
         } else {
-          this.campaignType = 'REGULAR';
+            this.campaignType = 'REGULAR';
         }
       }
       )
