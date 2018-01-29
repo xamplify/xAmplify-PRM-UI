@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,66 +10,63 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
-@Component( {
+@Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
     providers: [User]
 })
 
-export class LoginComponent implements OnInit,OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
     loading = false;
     error = '';
-    roles:Array<Role>;
-    constructor( private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
-        public refService: ReferenceService, private logger: XtremandLogger ) {
+    roles: Array<Role>;
+    constructor(private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
+        public refService: ReferenceService, private logger: XtremandLogger) {
 
     }
 
     public login() {
-        if ( this.model.username.length === 0 || this.model.password.length === 0 ) {
+        if (this.model.username.length === 0 || this.model.password.length === 0) {
             this.logErrorEmpty()
         } else {
-            if ( localStorage.getItem( 'currentUser' ) ) {
-                let currentUser = JSON.parse( localStorage.getItem( 'currentUser' ) );
+            if (localStorage.getItem('currentUser')) {
+                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 let roles = currentUser.roles;
-                 console.log(currentUser);
-                if(roles.length==1){
-                    this.router.navigate( ['/home/dashboard/myprofile'] );
-                }else{
-                    this.router.navigate( ['/home/dashboard/default'] );
+                console.log(currentUser);
+                if (roles.length == 1) {
+                    this.router.navigate(['/home/dashboard/myprofile']);
+                } else {
+                    this.router.navigate(['/home/dashboard/default']);
                 }
-               
+
                 return false
             } else {
                 this.loading = true;
                 const userName = this.model.username.toLowerCase();
                 this.refService.userName = userName;
-                const authorization = 'Basic ' + btoa( 'my-trusted-client:' );
+                const authorization = 'Basic ' + btoa('my-trusted-client:');
                 const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-                this.authenticationService.login( authorization, body, userName ).subscribe( result => {
-                    if ( localStorage.getItem( 'currentUser' ) ) {
-                        this.initializeTwitterNotification();
+                this.authenticationService.login(authorization, body, userName).subscribe(result => {
+                    if (localStorage.getItem('currentUser')) {
                         // if user is coming from login
-                        //   this.getLoggedInUserDetails();
-                        let currentUser = JSON.parse( localStorage.getItem( 'currentUser' ) );
-                        console.log( currentUser );
-                        console.log( currentUser.hasCompany );
-                        if ( currentUser.hasCompany ) {
-                            this.router.navigate( ['/home/dashboard/default'] );
+                        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                        console.log(currentUser);
+                        console.log(currentUser.hasCompany);
+                        if (currentUser.hasCompany) {
+                            this.router.navigate(['/home/dashboard/default']);
                         } else {
                             let roles = currentUser.roles;
-                            if(roles.length==1){
-                                this.router.navigate( ['/home/dashboard/myprofile'] );
-                            }else{
-                                this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                            if (roles.length == 1) {
+                                this.router.navigate(['/home/dashboard/myprofile']);
+                            } else {
+                                this.router.navigate(['/home/dashboard/add-company-profile']);
                             }
-                            
                         }
                         // if user is coming from any link
-                        if ( this.authenticationService.redirectUrl ) {
-                            this.router.navigate( [this.authenticationService.redirectUrl] );
+                        if (this.authenticationService.redirectUrl) {
+                            this.router.navigate([this.authenticationService.redirectUrl]);
                             this.authenticationService.redirectUrl = null;
                         }
 
@@ -77,59 +74,49 @@ export class LoginComponent implements OnInit,OnDestroy {
                         this.logError();
                     }
                 },
-                    ( error: any ) => {
+                    (error: any) => {
                         var body = error['_body'];
-                        if ( body != "" ) {
-                            var response = JSON.parse( body );
-                            if ( response.error_description == "Bad credentials" ) {
+                        if (body != "") {
+                            var response = JSON.parse(body);
+                            if (response.error_description == "Bad credentials") {
                                 this.error = 'Username or password is incorrect';
                                 setTimeout(() => {
                                     this.error = '';
-                                }, 5000 )
-                            } else if ( response.error_description == "User is disabled" ) {
+                                }, 5000)
+                            } else if (response.error_description == "User is disabled") {
                                 this.error = 'Your account is not activated.!';
                                 setTimeout(() => {
                                     this.error = '';
-                                }, 5000 )
+                                }, 5000)
                             }
                         }
-                        console.log( "error:" + error )
+                        console.log("error:" + error)
 
                     });
                 return false;
             }
         }
     }
-    eventHandler(keyCode:any){
-      if(keyCode=== 13){
-        this.login();
-      }
+    eventHandler(keyCode: any) {
+        if (keyCode === 13) {
+            this.login();
+        }
     }
     logError() {
         this.error = 'Username or password is incorrect';
-        console.log( "error : " + this.error );
-        // this.router.navigate(['/login']);
+        console.log("error : " + this.error);
         setTimeout(() => {
             this.error = '';
-        }, 5000 )
+        }, 5000)
     }
 
     logErrorEmpty() {
         this.error = 'Username or password can\'t be empty';
-        console.log( "error : " + this.error );
+        console.log("error : " + this.error);
         setTimeout(() => {
             this.error = '';
-        }, 5000 )
+        }, 5000)
     }
-
-    public initializeTwitterNotification() {/*
-       this.twitterService.initializeNotification()
-           .subscribe(
-           data => {console.log(data)},
-           error => console.log(error),
-           () => console.log("finished")
-           );
-   */}
 
     ngOnInit() {
         /*Metronic.init();
@@ -137,8 +124,9 @@ export class LoginComponent implements OnInit,OnDestroy {
         Login.init();
         Demo.init();*/
     }
-    
+
     ngOnDestroy() {
+        this.refService.signUpSuccess = false;
         this.refService.accountDisabled = "";
         $('#org-admin-deactivated').hide();
     }
