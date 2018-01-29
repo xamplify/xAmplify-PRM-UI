@@ -11,7 +11,8 @@ declare var $:any;
 })
 
 export class HomeComponent implements OnInit {
-        public refcategories: any;
+		public refcategories: any;
+		public currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	    constructor(public referenceService: ReferenceService, public userService: UserService,private router:Router) { 
 	        this.isAuthorized();
 	    }
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
         ngOnInit() {
         //  this.getCategorisService();
 		//  this.getVideoTitles();
-			if (this.referenceService.defaulgVideoMethodCalled === false) {
+			if (this.referenceService.defaulgVideoMethodCalled === false && this.currentUser.roles.length>1) {
 			this.getVideoDefaultSettings();
 			this.referenceService.defaulgVideoMethodCalled = true;
 			}
