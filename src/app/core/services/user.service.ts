@@ -18,6 +18,7 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
+    currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     constructor(
         private http: Http,
@@ -31,15 +32,26 @@ export class UserService {
     }
 
     getVideoDefaultSettings() {
+        if(this.currentUser.roles.length>1){
         return this.http.get( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
+        }
+        else {
+            console.log("user role ");
+        }
     }
     updatePlayerSettings( defaultVideoSettings: DefaultVideoPlayer ) {
+        alert(this.currentUser.roles.length);
+        if(this.currentUser.roles.length>1){
         return this.http.post( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
             , defaultVideoSettings )
             .map( this.extractData )
             .catch( this.handleError );
+        }  
+         else {
+            console.log("user role ");
+        } 
     }
 
     signUp( data: User ) {

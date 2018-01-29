@@ -402,7 +402,7 @@ font-weight: 500;
 					aria-label="Close" >
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 align="center" class="m0">Total minutes watched by most users Reports</h4>
+				<h4 align="center" class="m0">Total minutes watched by Top users Reports</h4>
 				<div class="btn-group pull-right"
 				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
@@ -420,6 +420,7 @@ font-weight: 500;
 						<thead>
 							<tr>
 								<th class="center text-uppercase headerCss">NAME</th>
+								<th class="center text-uppercase headerCss">MINUTES</th>
 								<th class="center text-uppercase headerCss">DATE</th>
 								<th class="center text-uppercase headerCss">DEVICE</th>
 								<th class="center text-uppercase headerCss">LOCATION</th>
@@ -440,6 +441,7 @@ font-weight: 500;
 										</span>
 									</div>
 								</td>
+								<td class="center">{{item.minutesWatched }}</td>
 								<td class="center">{{item.date | date: 'fullDate'}}</td>
 								<td class="center"
 									*ngIf="item.device == 'computer'"><i
