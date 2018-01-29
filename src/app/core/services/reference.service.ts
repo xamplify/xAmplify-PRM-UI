@@ -17,6 +17,10 @@ declare var $: any;
 
 @Injectable()
 export class ReferenceService {
+    
+    
+    swalConfirmButtonColor: '#54a7e9';
+    swalCancelButtonColor: '#999';
 
     refcategories: Category[];
     userName: any;

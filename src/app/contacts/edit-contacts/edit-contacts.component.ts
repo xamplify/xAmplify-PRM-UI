@@ -480,8 +480,8 @@ export class EditContactsComponent implements OnInit {
                 text: "You won't be able to revert this!",
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function( myData: any ) {
@@ -495,8 +495,8 @@ export class EditContactsComponent implements OnInit {
                     text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
+                    swalConfirmButtonColor: '#54a7e9',
+                    swalCancelButtonColor: '#999',
                     confirmButtonText: 'Yes, delete it!'
 
                 }).then( function( myData: any ) {
@@ -992,8 +992,8 @@ export class EditContactsComponent implements OnInit {
                 text: "You won't be able to revert this!",
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function( myData: any ) {
@@ -1069,8 +1069,8 @@ export class EditContactsComponent implements OnInit {
             text: "You won't be able to revert this!",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
 
         }).then( function( myData: any ) {
@@ -1085,8 +1085,8 @@ export class EditContactsComponent implements OnInit {
                 text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function( myData: any ) {

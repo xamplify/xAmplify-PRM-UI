@@ -600,8 +600,8 @@ export class ManagePartnersComponent implements OnInit {
             text: "You won't be able to revert this!",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
 
         }).then( function( myData: any ) {

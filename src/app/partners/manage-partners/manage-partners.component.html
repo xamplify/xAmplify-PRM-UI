@@ -416,7 +416,7 @@ img:hover {
 							<div class="inputs" align="right" style="float: right"></div>
 						</div>
 						<div class="clearfix">
-							<div class="col-xs-12" style="margin-top: 8px;">
+							<div class="col-xs-12" style="padding: 10px 0;">
 								<div
 									*ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0"
 									class="alert alert-info alert-dismissable">No Partners
@@ -529,14 +529,16 @@ img:hover {
 															*ngIf="contact.isShowDetails">Less</span>
 													</button>
 												</td>
-												<td align="center"><span
-													(click)="editUserDetails(contact)"> <i
-														class="fa fa-pencil-square-o" aria-hidden="true"
-														style="color: #3375af; cursor: pointer; font-size: 25px; margin-top: 14px; margin-right: 6px"></i>
-												</span> <span (click)="deleteUserShowAlert(contact.id)"> <i
-														class="fa fa-trash-o" aria-hidden="true"
-														style="color: red; cursor: pointer; font-size: 25px; margin-top: 14px"></i>
-												</span></td>
+												<td align="center">
+												<div class="actions-block">
+												<a (click)="editUserDetails(contact)"> 
+													<i class="fa fa-pencil-square-o" ></i>
+												</a> 
+												<a (click)="deleteUserShowAlert(contact.id)"> 
+													<i class="fa fa-trash-o" ></i>
+												</a>
+												</div>
+												</td>
 												<ng-template #NA>N/A</ng-template>
 											</tr>
 											<tr
