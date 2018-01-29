@@ -1,12 +1,15 @@
 <div class="page-content">
 	  <div *ngIf="campaignSuccessMessage?.length > 0" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
+	  	<a (click)="refService.hideDiv('lanchSuccess')" class="close" aria-label="close">x</a>
 	 	<strong>{{campaignSuccessMessage}}</strong>
 	 </div>
 	  <div *ngIf="isCampaignDeleted" id="deleteSuccess" class="alert alert-success alert-dismissable fade in">
+	  <a (click)="refService.hideDiv('deleteSuccess')" class="close" aria-label="close">x</a>
 	 	<strong>Campaign Deleted Successfully</strong>
 	 </div>
 	 
 	   <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
+	    <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
 	 	<strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
 	 </div>
 	<div class="page-bar">

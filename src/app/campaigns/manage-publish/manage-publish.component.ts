@@ -233,10 +233,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignService.saveAsCampaign(campaign)
             .subscribe(
             data => {
+                console.log(data);
+                this.campaignSuccessMessage = "Campaign Copied Successfully";
+                $('#lanchSuccess').show(600);
+                $('#saveAsModal').modal('hide');
+                this.showMessageOnTop();
+                setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully")
             },
-            error => { this.logger.errorPage(error) },
+            error => {$('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
             () => console.log("saveAsCampaign Successfully")
             );
     }

@@ -116,6 +116,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     partnerVideosStyle = this.styleHiddenClass;
     myVideosStyle = this.styleHiddenClass;
     partnerVideoSelected:boolean = false;
+    isMyVideosActive:boolean = true;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -2139,7 +2140,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          return arr;
      }
      
-     showTab(evt, cityName) {
+     showTab(evt, tabName) {
          let i, tabcontent, tablinks;
          tabcontent = document.getElementsByClassName("tabcontent");
          for (i = 0; i < tabcontent.length; i++) {
@@ -2149,8 +2150,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          for (i = 0; i < tablinks.length; i++) {
              tablinks[i].className = tablinks[i].className.replace("active", "");
          }
-         document.getElementById(cityName).style.display = "block";
+         document.getElementById(tabName).style.display = "block";
          evt.currentTarget.className += " active";
+         if(tabName=="my-videos"){
+             this.isMyVideosActive = true;
+         }else{
+             this.isMyVideosActive  = false;
+         }
      }
      
      resetTabClass(){

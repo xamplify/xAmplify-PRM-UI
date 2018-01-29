@@ -247,11 +247,11 @@
 								<div class="tab">
 									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab">My Videos</button>
 									  <button  [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
-										<div class="input-icon right pull-right m10">
+										<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
 											<input type="text"  class="form-control" placeholder="search in My videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 										</div>
-										<div class="input-icon right pull-right m10">
+										<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
 											<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
 											<input type="text"  class="form-control" placeholder="search in Partner videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 										</div>
@@ -590,7 +590,7 @@
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="destroyPreview()">x</button>
+	                  <a class="close-circle" data-dismiss="modal" (click)="destroyPreview()"><i class="fa fa-times" style="padding-top:0; font-size:15px"></i></a>
 	                 <h4 class="modal-title" id="modal-title"></h4>
 	            </div>
 	            <div class="modal-body"><div id = "main_video"></div></div>
@@ -1411,7 +1411,7 @@
 	    <div class="modal-dialog modal-lg" style="width: 75%;">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+	                <button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
 	                 <h4 class="modal-title" id="email-template-title" style="text-align: center;"></h4>
 	
 	            </div>
@@ -1427,7 +1427,7 @@
   					<div class="modal-dialog" role="document">
     					<div class="modal-content">
       						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
         							<div>
         							<h4 class="modal-title" id="user-list-name" align="center"><b>List Of Users</b></h4>
         							</div>
