@@ -38,6 +38,7 @@ export class AnalyticsComponent implements OnInit {
   usersWatchListPagination: Pagination = new Pagination();
   emailLogPagination: Pagination = new Pagination();
   campaignTotalViewsPagination: Pagination = new Pagination();
+  campaignsWorldMapPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
@@ -52,6 +53,7 @@ export class AnalyticsComponent implements OnInit {
   downloadTypeName = '';
   totalTimeSpent = 0;
   worldMapUserData: any;
+  worldMapUserTotalData: any;
   countryCode: string;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -277,6 +279,7 @@ export class AnalyticsComponent implements OnInit {
   }
   getCampaignUsersWatchedInfo(countryCode) {
     this.countryCode = countryCode.toUpperCase();
+    this.getCampaignUsersWatchedTotalInfo(countryCode);
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
       .subscribe(
       (data: any) => {
@@ -597,6 +600,21 @@ export class AnalyticsComponent implements OnInit {
         )
     }
   
+  getCampaignUsersWatchedTotalInfo(countryCode) {
+      this.downloadTypeName = 'worldMap';
+      this.countryCode = countryCode.toUpperCase();
+      this.campaignsWorldMapPagination.maxResults = 500000000;
+      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
+        .subscribe(
+        (data: any) => {
+          console.log(data);
+          this.worldMapUserTotalData = data.data;
+        },
+        error => console.log(error),
+        () => console.log('finished')
+        );
+    }
+  
   convertToCSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
@@ -631,6 +649,9 @@ export class AnalyticsComponent implements OnInit {
       } else if ( this.downloadTypeName === 'campaignViews' ) {
           logListName = 'Campaign_report_logs.csv';
           this.downloadCsvList = this.campaignTotalViewsData;
+      } else if ( this.downloadTypeName === 'worldMap' ) {
+          logListName = 'World_Map_logs.csv';
+          this.downloadCsvList = this.worldMapUserTotalData;
       }
       
       this.downloadDataList.length = 0;
@@ -674,6 +695,13 @@ export class AnalyticsComponent implements OnInit {
           if ( this.downloadTypeName === 'emailAction' ) {
               object["Email Id"] = this.downloadCsvList[i].emailId;
               object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+          }
+          
+          if ( this.downloadTypeName === 'worldMap' ) {
+              object["Email Id"] = this.downloadCsvList[i].emailId;
+              object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+              object["Device"] = this.downloadCsvList[i].deviceType;
+              object["Location"] = this.downloadCsvList[i].location;
           }
 
           this.downloadDataList.push( object );
