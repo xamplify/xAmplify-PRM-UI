@@ -1,4 +1,9 @@
 <style type="text/css">
+
+.numberCss{
+   font-weight: 300 !important;
+}
+
 </style>
 
 <div class="page-content">
@@ -90,7 +95,7 @@
 													<i class="fa fa-users"></i>
 												</div>
 												<div class="details">
-													<div class="number">{{contactsByType.allContactsCount}}</div>
+													<div class="number" style="font-weight: 300 !important;">{{contactsByType.allContactsCount}}</div>
 													<div class="desc">All {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
@@ -103,7 +108,7 @@
 													<i class="fa fa-eye"></i>
 												</div>
 												<div class="details">
-													<div class="number">{{contactsByType.activeContactsCount}}</div>
+													<div class="number numberCss" style="font-weight: 300 !important;">{{contactsByType.activeContactsCount}}</div>
 													<div class="desc">Active {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
@@ -116,7 +121,7 @@
 													<i class="fa fa-eye-slash"></i>
 												</div>
 												<div class="details">
-													<div class="number">{{contactsByType.inactiveContactsCount}}</div>
+													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
 													<div class="desc">Inactive
 														{{checkingContactTypeName}}s</div>
 												</div>
@@ -130,7 +135,7 @@
 													<i class="fa fa-user-times"></i>
 												</div>
 												<div class="details">
-													<div class="number">{{contactsByType.invalidContactsCount}}</div>
+													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
 													<div class="desc">Invalid
 														{{checkingContactTypeName}}s</div>
 												</div>
@@ -145,7 +150,7 @@
 												</div>
 												<div class="details">
 													<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-													<div class="desc">Unsubscribed
+													<div class="desc" style="font-weight: 300 !important;">Unsubscribed
 														{{checkingContactTypeName}}s</div>
 												</div>
 											</button>
