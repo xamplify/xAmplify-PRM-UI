@@ -196,8 +196,9 @@ font-weight: 500;
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button> -->
+		<a class="close-circle" data-dismiss="modal"  (click)="userCampaignReport.response = null"><i class="fa fa-times"></i></a>
+		<h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
       </div>
       <div class="modal-body">
 		<div class="clearfix">

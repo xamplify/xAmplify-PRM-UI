@@ -782,8 +782,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     title: 'Are you sure?',
                     text:'Once you change status,it cannot be undone.',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
+                    confirmButtonColor: '#54a7e9',
+                    cancelButtonColor: '#999',
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
                     allowOutsideClick:false
