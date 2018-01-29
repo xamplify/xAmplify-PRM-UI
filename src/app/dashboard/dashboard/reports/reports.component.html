@@ -54,7 +54,7 @@
 				<table class='table tgrid' id="tabletest">
 					<thead>
 						<tr>
-							<th class="headerCss center">Name</th>
+							<!-- <th class="headerCss center">Name</th> -->
 							<th class="headerCss center">Title</th>
 							<th class="headerCss center">{{reportName}}</th>
 							<th class="headerCss center">Date</th>
@@ -63,7 +63,7 @@
 					<tbody>
 						<ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">
 							<tr style="cursor:pointer;" (click)="selectedRow(view)">
-							<td>
+						<!-- 	<td>
 									<div class="flex">
 										<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{view.firstName |
@@ -75,7 +75,7 @@
 											</h6>
 										</span>
 									</div>
-								</td>
+								</td> -->
 								<td class="center">{{view.videoTitle}}</td>
 								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
 								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>

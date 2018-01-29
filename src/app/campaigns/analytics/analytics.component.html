@@ -221,7 +221,6 @@
 									<tr>
 										<th style="font-size: 12px;font-weight: 500;">NAME</th>
 										<th style="font-size: 12px;font-weight: 500;">CAMPAIGN NAME</th>
-										<th style="font-size: 12px;font-weight: 500;">EMAIL ADDRESS</th>
 										<th style="font-size: 12px;font-weight: 500;">LATEST VIEW</th>
 										<th style="font-size: 12px;font-weight: 500;">TOTAL VIEWS</th>
 									</tr>
@@ -236,13 +235,13 @@
 										</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
-												<a href="mailto:{{item.emailId}}">{{item.emailId}}</a>
+												<a href="mailto:{{item.userEmail}}">{{item.userEmail}}</a>
 											</h6>
 										</span>
 									</div>
 								</td>
 										<td class="td-chart"><h6>{{item.campaignName}}</h6></td>
-										<td class="td-chart"><h6>{{item.userEmail}}</h6></td>
+										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart"><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
 										<td  class="td-chart">
 											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
@@ -735,7 +734,7 @@
 										</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
-												<a href="mailto:{{item.emailId}}">{{item.emailId}}</a>
+												<a href="mailto:{{item.userEmail}}">{{item.userEmail}}</a>
 											</h6>
 										</span>
 									</div>
