@@ -613,12 +613,11 @@ img:hover {
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" *ngIf="!updatePartnerUser" class="close"
+					<!-- <button type="button" *ngIf="!updatePartnerUser" class="close"
 						data-dismiss="modal" (click)="addPartnerModalClose()">&times;</button>
 					<button type="button" *ngIf="updatePartnerUser" class="close"
-						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button>
-					<!-- <a class="close-circle close" data-dismiss="modal" *ngIf="!updatePartnerUser" (click)="addPartnerModalClose()"><i class="fa fa-times"></i></a>
-					<a class="close-circle close" data-dismiss="modal" *ngIf="updatePartnerUser" (click)="updatePartnerModalClose()"><i class="fa fa-times"></i></a> -->
+						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button> -->
+						<a class="close-circle" data-dismiss="modal" (click)="addPartnerModalClose(); updatePartnerModalClose()"><i class="fa fa-times"></i></a>
 					<h4 class="modal-title">Add Partner</h4>
 				</div>
 				<div class="modal-body">
