@@ -248,8 +248,8 @@ export class AddTeamMembersComponent implements OnInit {
     sweetAlertWarning(teamMember:TeamMember){
         let self = this;
         swal( {
-            title: 'Are you sure?',
-            //text: self.deleteText,
+            title: 'Are you sure you want to delete?',
+           // text: "Once deleted,changes can",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
