@@ -124,14 +124,14 @@
 															title="Video Based Reports"> 
 															<i class="fa fa-line-chart"></i>
 														</a>
-														<span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
+														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
 															<a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;">
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
-														</span>
+														</ng-container>
 														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
 															<i class="fa fa-trash"></i>
 														</a>

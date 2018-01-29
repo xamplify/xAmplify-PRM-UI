@@ -96,26 +96,28 @@
 									</td>
 									<td>{{campaign.createdDate}}</td>
 									<td>
+									<div class="actions-block">
 									<ng-container *ngIf="!campaign.launched">
 										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)" 
 											(click)="editCampaign(campaign.campaignId)" title="Edit Campaign" class='mr5'> 
-											<i class="fa fa-pencil-square-o" style="font-size: 22px;color:#1982dc"></i>
+											<i class="fa fa-pencil-square-o"></i>
 										</a> 
 										</ng-container>
 										<ng-container *ngIf="campaign.launched">
 										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole)" data-rel="fancybox-button"
 										 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
-												<i class="fa fa-line-chart" style="font-size: 20px;color:#673AB7"></i>
+												<i class="fa fa-line-chart"></i>
 										</a>
 										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole)" data-rel="fancybox-button" 
 											title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
-												<i class="fa fa-files-o" style="font-size: 20px;color:#03A9F4"></i>
+												<i class="fa fa-files-o"></i>
 										</a>
 										</ng-container>
 										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId)" 
 											(click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
-											<i class="fa fa-trash" style="font-size: 22px;color:red"></i>
+											<i class="fa fa-trash"></i>
 										</a>
+										</div>
 									</td>
 								</tr>
 							</tbody>

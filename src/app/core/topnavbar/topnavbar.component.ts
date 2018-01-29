@@ -120,7 +120,7 @@ export class TopnavbarComponent implements OnInit {
   }
 
   markAllAsRead() {
-    this.twitterService.markAllAsRead(null)
+    this.twitterService.markAllAsRead(this.authenticationService.getUserId())
       .subscribe(
       data => {
         this.notificationsCount = 0;

@@ -476,3 +476,11 @@ tr.highlight {
 }
 
 .pagination>li:last-child>a, .pagination>li:last-child>span {border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important;}
+
+a{text-decoration: none !important;}
+.actions-block {float:right;}
+.actions-block a{border: 1px solid #e7e6e3;padding: 3px;margin-right: 5px;width: 32px;height: 32px;display: block;float: left;color: #5bb2f5;text-decoration: none;}
+.actions-block a:last-child{color: #ff0000;}
+.actions-block i{font-size: 16px !important; text-align: center;vertical-align: middle;display: block;margin: 5px;}
+.actions-block a:hover{border: 1px solid #5bb2f5; background: #5bb2f5;color: #FFF;}
+.actions-block a:last-child:hover{background-color: #ff0000;border: 1px solid #ff0000;}
