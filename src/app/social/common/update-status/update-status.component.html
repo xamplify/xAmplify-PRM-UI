@@ -162,7 +162,6 @@
                 </div>
                 <div class="col-sm-12" [hidden]="isSocialCampaign && alias">
                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents; let i = index" id="preview-{{i}}">
-                        <!--<span class="close" (click)="removeItem(i, socialStatusContent)">&times;</span>-->
 						<span (click)="removeItem(i, socialStatusContent)"><i class="fa fa-times-circle"></i></span>
                         <img async *ngIf="socialStatusContent.fileType != 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 120px; width: auto;">
                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
@@ -323,7 +322,7 @@
         <div class="modal-dialog" role="document" style="width: 90%; margin: 1em auto">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" (click)="closeListVideosModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<a class="close-circle" (click)="closeListVideosModal()"><i class="fa fa-times"></i></a>
                     <h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
                 </div>
                 <div class="modal-body clearfix">
@@ -405,7 +404,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+		<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
        	<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name}}</h4>
       </div>
       <div class="modal-body">
