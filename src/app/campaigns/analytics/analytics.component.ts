@@ -37,6 +37,7 @@ export class AnalyticsComponent implements OnInit {
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
   emailLogPagination: Pagination = new Pagination();
+  campaignTotalViewsPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
@@ -68,7 +69,7 @@ export class AnalyticsComponent implements OnInit {
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
       this.downloadTypeName === 'campaignViews';
-      this.listTotalCampaignViews(campaignId, pagination);
+      this.listTotalCampaignViews(campaignId);
       this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
@@ -576,10 +577,10 @@ export class AnalyticsComponent implements OnInit {
         )
     }
 
-  listTotalCampaignViews(campaignId: number, pagination: Pagination) {
+  listTotalCampaignViews(campaignId: number) {
       this.downloadTypeName === 'campaignViews';
-      pagination.maxResults = this.campaignReport.emailSentCount;
-      this.campaignService.listCampaignViews(campaignId, pagination)
+      this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
+      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
         .subscribe(
         data => {
           this.campaignTotalViewsData = data.campaignviews;
