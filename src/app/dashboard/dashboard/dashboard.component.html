@@ -721,17 +721,10 @@ font-weight: 500;
 		style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close" (click)="cancelEmailStateModalPopUp()">
-					<span aria-hidden="true">&times;</span>
-				</button>
+			   <a class="close-circle" data-dismiss="modal"  (click)="cancelEmailStateModalPopUp()"><i class="fa fa-times"></i></a>
 				<h4 class="m0">People who {{paginationType}} Emails</h4>
-			<!-- <a class="pull-right" style="margin: -17px 16px 0 0" (click)="downloadEmailLogs()" title="Dowload List"
-				data-rel="fancybox-button"> <i class="fa fa-cloud-download mr5"
-				style="font-size: 22px; color: #3598dc;"></i>
-			</a> -->
 			<div class="btn-group pull-right"
-				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
@@ -845,13 +838,10 @@ font-weight: 500;
 		style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close" >
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
 				<h4 class="m0">People who have watched video</h4>
 				<div class="btn-group pull-right"
-				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
@@ -912,9 +902,6 @@ font-weight: 500;
 				</div>
 			</div>
 			<div class="modal-footer">
-				<!-- <button type="button" class="btn btn-default"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button> -->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>

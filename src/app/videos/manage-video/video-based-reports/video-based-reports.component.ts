@@ -344,9 +344,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.watchedFullyReportData = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
-                if (this.watchedFullyReportData.length > 0) {
+                // if (this.watchedFullyReportData.length > 0) {
                     $('#watchedFullyModelPopup').modal('show');
-                }
+                // }
             },
             (err: any) => { console.log(err); })
     }

@@ -24,8 +24,9 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content" style="border-radius:0">
 				<div class="modal-header">
-					<button [class.customDisableCss]="closeModalId ==false" [disabled]="closeModalId ==false" type="button" class="closeModal"
-					 data-dismiss="modal" aria-hidden="true" (click)="closeRecordPopup()">×</button>
+					<button [class.customDisableCss]="closeModalId ==false" [disabled]="closeModalId ==false" type="button" class="closeModal close-circle"
+					 data-dismiss="modal" aria-hidden="true" (click)="closeRecordPopup()"><i class="fa fa-times"></i></button>
+					 <!-- <a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a> -->
 					<h4 class="modal-title" id="myModalLabel"><strong>Record Video from WebCam</strong></h4>
 				</div>
 				<div class="modal-body" style="padding: 0px 10px 0px 10px;">
