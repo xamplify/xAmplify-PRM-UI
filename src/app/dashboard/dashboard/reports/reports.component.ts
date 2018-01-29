@@ -224,7 +224,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             let date = new Date( this.downloadCsvList[i].date );
             
             var object = {
-               'Video Title': this.downloadCsvList[i].videoTitle,
+                    'First Name': this.downloadCsvList[i].firstName,
+                    'Last Name': this.downloadCsvList[i].lastName,
+                    'Email Id': this.downloadCsvList[i].emailId,
+                    'Video Title': this.downloadCsvList[i].videoTitle,
+               
             }
 
             if ( level === 'one' ) {
@@ -237,7 +241,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             }
             
             if ( level === 'two' ) {
-                object["Email Id"] = this.downloadCsvList[i].emailId;
                 object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
             }
 

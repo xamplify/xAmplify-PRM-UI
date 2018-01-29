@@ -54,6 +54,7 @@
 				<table class='table tgrid' id="tabletest">
 					<thead>
 						<tr>
+							<th class="headerCss center">Name</th>
 							<th class="headerCss center">Title</th>
 							<th class="headerCss center">{{reportName}}</th>
 							<th class="headerCss center">Date</th>
@@ -62,6 +63,19 @@
 					<tbody>
 						<ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">
 							<tr style="cursor:pointer;" (click)="selectedRow(view)">
+							<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{view.firstName |
+												slice:0:1}}{{view.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{view.firstName}}&nbsp;{{view.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{view.emailId}}>{{view.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 								<td class="center">{{view.videoTitle}}</td>
 								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
 								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
@@ -95,16 +109,28 @@
 			<table class='table tgrid' id="sample_editable_1">
 				<thead>
 					<tr>
+				    	<th class="headerCss center">Name</th>
 						<th class="headerCss center">Title</th>
-						<th class="headerCss center">email id</th>
 						<th class="headerCss center">Date</th>
 					</tr>
 				</thead>
 				<tbody>
 					<ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index">
 						<tr>
+						<td>
+							<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{videoViews.firstName |
+												slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{videoViews.name}}>{{videoViews.emailId}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 							<td class="center">{{videoViews.videoTitle}}</td>
-							<td class="center">{{videoViews.emailId}}</td>
 							<td class="center">{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
 						</tr>
 					</ng-container>
