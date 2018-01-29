@@ -185,10 +185,11 @@ font-weight: 500;
 	<div class="modal-dialog modal-lg" role="document" style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+				<!-- <button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
-				</button>
+				</button> -->
+				<a class="close-circle"  (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" style="text-align: center">Users Minutes watched Views</h4>
 				<div class="btn-group pull-right"
 				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
@@ -291,10 +292,11 @@ font-weight: 500;
 	<div class="modal-dialog modal-lg" role="document" style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
+				<!-- <button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
-				</button>
+				</button> -->
+				<a class="close-circle"  (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title m0">watched fully Reports</h4>
 				<div class="btn-group pull-right"
 				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
@@ -481,9 +483,10 @@ font-weight: 500;
 	<div class="modal-dialog modal-lg" role="document" 	style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearPaginationValues()">
+				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearPaginationValues()">
 					<span aria-hidden="true">&times;</span>
-				</button>
+				</button> -->
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" style="text-align: center">Users video skipped and played duration reports</h4>
 			</div>
 			<div class="modal-body clearfix">
@@ -629,6 +632,7 @@ font-weight: 500;
 									*ngIf="item.device == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == null">-</td>
 							</tr>
 						</tbody>
 					</table>
@@ -667,11 +671,12 @@ font-weight: 500;
 		style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<!-- <button type="button" class="close" data-dismiss="modal"
 					aria-label="Close" (click)="clearPaginationValues()">
 					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="m0">People who have watched video</h4>
+				</button> -->
+				<a class="close-circle"  (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+				<h4 class="m0" style="text-align: center">People who have watched video</h4>
 				<div class="btn-group pull-right"
 				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
@@ -729,6 +734,7 @@ font-weight: 500;
 								<td class="center" *ngIf="item.os == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == null">-</td>
 								<td class="center"><h5>{{item.city}}</h5></td>
 								<td class="center"><h5>{{item.country}}</h5></td>
 							</tr>

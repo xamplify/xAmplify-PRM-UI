@@ -905,6 +905,7 @@ font-weight: 500;
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
 								<td style="text-align: center"><h5>{{item.location}}</h5></td>
+								<td class="center" *ngIf="item.os == null">-</td>
 							</tr>
 						</tbody>
 					</table>
