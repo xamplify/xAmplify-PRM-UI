@@ -369,7 +369,7 @@ img:hover {
 						</a>
 					</div>
 					<div class="portlet-body">
-					<div class="inputs" align="right"
+					<!-- <div class="inputs" align="right"
 							style="float: right; margin-top: 4px">
 							<div style="float: left; margin-right: 10px; width: 50%">
 								<select class="form-control" [(ngModel)]="sortOption"
@@ -388,7 +388,29 @@ img:hover {
 										class="form-control input-circle" placeholder="search...">
 								</div>
 							</div>
-						</div>
+						</div> -->
+						<div class="inputs" align="right" style="float: right">
+													<div style="float: left; margin: 0 10px;">
+														<select class="form-control" [(ngModel)]="sortOption"
+															(ngModelChange)="sortByOption($event)">
+															<ng-container
+																*ngFor="let sort of sortOptions; let i = index">
+															<option [ngValue]="sort">{{sort.name}}</option>
+															</ng-container>
+														</select>
+													</div> 
+													<div class="portlet-input input-inline input-small">
+														<div class="input-icon right">
+															<i class="icon-magnifier"
+																style="cursor: pointer; font-size: 18px;"
+																(click)="search()"> </i> <input type="text"
+																[(ngModel)]="searchKey"
+																[ngModelOptions]="{standalone: true}"
+																(input)="searchKeyValue('contactList')"
+																class="form-control" placeholder="Search...">
+														</div>
+													</div>
+												</div>
 						<div class="btn-group pull-right"
 							style="margin-bottom: 10px; left: -16px;">
 							<div class="inputs" align="right" style="float: right"></div>
