@@ -629,7 +629,7 @@ export class AnalyticsComponent implements OnInit {
           logListName = 'Users_watched_Logs.csv';
           this.downloadCsvList = this.campaignReport.totalWatchedList;
       } else if ( this.downloadTypeName === 'campaignViews' ) {
-          logListName = 'Email_Sent_logs.csv';
+          logListName = 'Campaign_report_logs.csv';
           this.downloadCsvList = this.campaignTotalViewsData;
       }
       
@@ -639,22 +639,26 @@ export class AnalyticsComponent implements OnInit {
           let startTime = new Date( this.downloadCsvList[i].startTime );
           let endTime = new Date( this.downloadCsvList[i].endTime );
           let sentTime = new Date( this.campaign.launchTime );
+          let latestView = new Date( this.downloadCsvList[i].latestView );
           
           var object = {
+                  "First Name": this.downloadCsvList[i].firstName,
+                  "Last Name": this.downloadCsvList[i].lastName,
           }
 
           if ( this.downloadTypeName === 'donut' ) {
-              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Email Id"] = this.downloadCsvList[i].userEmail;
+              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
               object["Platform"] = this.downloadCsvList[i].os;
               object["Location"] = this.downloadCsvList[i].location;
           }
           
           if ( this.downloadTypeName === 'campaignViews' ) {
-              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Email Id"] = this.downloadCsvList[i].userEmail;
+              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
+              object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
           }
           
           if ( this.downloadTypeName === 'usersWatchedList' ) {
