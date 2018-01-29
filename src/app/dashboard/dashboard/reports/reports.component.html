@@ -26,8 +26,8 @@
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
 			<div class="btn-group pull-right"
-				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 0px;margin-right: 21px; float:right;padding-left: 10px;">
+				style="margin-top: 6px; cursor:pointer; color: #7d8c98;margin-right: -18px;">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 3px;margin-right: 21px; float:right;padding-left: 6px;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 				<ul class="dropdown-menu pull-right">
@@ -35,7 +35,7 @@
 					(click)="downloadLogs('one')"> Export To Excel </a></li>
 				</ul>
 			</div>
-			<div class="panel-title pull-right">
+			<div class="panel-title pull-right" style="margin-top: 5px;">
 				<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
 						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -43,7 +43,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="portlet-body" style="max-width: 100%; min-height: 128px;">
+		<div class="portlet-body clearfix" style="max-width: 100%;">
 			<div class="col-xs-4">
 				<div id="sparkline_bar_chart1" style="cursor: pointer" (click)="selectedChartValue()">
 					<canvas width="172" height="94" style="display: inline-block; width: 172px; height: 94px; vertical-align: top;"></canvas>
@@ -96,7 +96,7 @@
 			</div>
 			<div class="btn-group pull-right"
 				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 5px;margin-right: 21px; float:right;padding-left: 10px;">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 5px;margin-right: 6px; float:right;padding-left: 10px;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 				<ul class="dropdown-menu pull-right">
@@ -105,7 +105,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="portlet-body" style="max-width: 100%; min-height: auto;">
+		<div class="portlet-body clearfix" style="max-width: 100%;">
 			<table class='table tgrid' id="sample_editable_1">
 				<thead>
 					<tr>
@@ -125,7 +125,7 @@
 										</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
 											<h6 class='m0'>
-												<a href={{videoViews.name}}>{{videoViews.emailId}}</a>
+												<a href={{videoViews.emailId}}>{{videoViews.emailId}}</a>
 											</h6>
 										</span>
 									</div>

@@ -11,7 +11,7 @@ export class VideoUtilService {
     timePeriod: string;
     timePeriodValue: string;
     selectedVideo: SaveVideoFile = null;
-    videoSizes = ['1280 × 720', '560 × 315', '853 × 480', '640 × 360'];
+    videoSizes = ['1280 × 720', '853 × 480', '640 × 360','560 × 315'];
     publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
     formErrors = {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',

@@ -123,6 +123,8 @@ export class AnalyticsComponent implements OnInit {
       () => console.log());
   }
   campaignViewsCountBarchart(names, data) {
+    console.log(names);
+    console.log(data);
     const maxValue = Math.max.apply(null, data);
     const self = this;
     Highcharts.chart('campaign-views-barchart', {
@@ -206,6 +208,7 @@ export class AnalyticsComponent implements OnInit {
         this.pagination = this.pagerService.getPagedItems(this.pagination, data.campaignviews);
         console.log(this.pagination);
         this.campaignViewsCountBarchart(names, views);
+        this.referenceService.goToTop();
       },
       error => console.log(error),
       () => console.log()
@@ -432,6 +435,9 @@ export class AnalyticsComponent implements OnInit {
     if (!this.barChartCliked) {
       this.pagination.pageIndex = 1;
       this.pagination.maxResults = 10;
+      if(this.campaignId === null){
+         this.campaignId = this.route.snapshot.params['campaignId'];}
+         console.log('campaign id : '+this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
   }
@@ -453,6 +459,7 @@ export class AnalyticsComponent implements OnInit {
       this.barChartCliked = true;
       const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
       console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+      
       this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
       this.isTimeLineView = true;
     }
@@ -686,7 +693,9 @@ export class AnalyticsComponent implements OnInit {
     this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
-    // this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+    if(this.isTimeLineView ===true){
+    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+    }
   }
 
 }
