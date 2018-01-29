@@ -207,7 +207,7 @@ font-weight: 500;
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th class="center text-uppercase headerCss">user name</th>
+									<th class="center text-uppercase headerCss">NAME</th>
 									<th class="center text-uppercase headerCss">video Title</th>
 									<th class="center text-uppercase headerCss">mintimestamo without time zone</th>
 									<th class="center text-uppercase headerCss">minutes watched</th>
@@ -217,7 +217,19 @@ font-weight: 500;
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of userMinutesWatched">
-									<td class="center">{{item.name}}</td>
+									<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{item.name}}>{{item.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 									<td class="center">{{item.videoTitle}}</td>
 									<td class="center">{{item.date | date: 'fullDate'}}</td>
 									<td class="center">{{item.minutesWatched }}</td>
@@ -301,8 +313,8 @@ font-weight: 500;
 						<table class="table tgrid">
 							<thead>
 								<tr>
+									<th class="center text-uppercase headerCss" >NAME</th>
 									<th class="center text-uppercase headerCss">Campaign Name</th>
-									<th class="center text-uppercase headerCss" >email id</th>
 									<th class="center text-uppercase headerCss" >date</th>
 									<th class="center text-uppercase headerCss">device</th>
 									<th class="center text-uppercase headerCss">location</th>
@@ -310,8 +322,20 @@ font-weight: 500;
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of watchedFullyReportData">
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{item.name}}>{{item.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 									<td class="center">{{item.campaignName}}</td>
-									<td class="center">{{item.name}}</td>
 									<td class="center">{{item.date | date: 'fullDate'}}</td>
 								<td class="center"
 									*ngIf="item.device == 'computer'"><i
@@ -395,7 +419,7 @@ font-weight: 500;
 					<table class="table tgrid">
 						<thead>
 							<tr>
-								<th class="center text-uppercase headerCss">EMAIL ID</th>
+								<th class="center text-uppercase headerCss">NAME</th>
 								<th class="center text-uppercase headerCss">DATE</th>
 								<th class="center text-uppercase headerCss">DEVICE</th>
 								<th class="center text-uppercase headerCss">LOCATION</th>
@@ -403,7 +427,19 @@ font-weight: 500;
 						</thead>
 						<tbody>
 							<tr *ngFor="let item of totalUsersWatched">
-								<td class="center">{{item.name}}</td>
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{item.name}}>{{item.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 								<td class="center">{{item.date | date: 'fullDate'}}</td>
 								<td class="center"
 									*ngIf="item.device == 'computer'"><i
@@ -467,7 +503,7 @@ font-weight: 500;
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="center headerCss">EMAILID</th>
+								<th class="center headerCss">NAME</th>
 								<th class="text-center headerCss">DATE & TIME</th>
 								<th class="center headerCss">DEVICE</th>
 							</tr>
@@ -475,7 +511,19 @@ font-weight: 500;
 						<tbody>
 							<tr
 								*ngFor="let item of videoPlayedPagination.pagedItems;let i = index">
-								<td class="center"><h5>{{item.name}}</h5></td>
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{item.name}}>{{item.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 								<td class="center"><h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
 								<td class="center"
 									*ngIf="item.device == 'computer'"><i
@@ -537,7 +585,7 @@ font-weight: 500;
 						id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="center headerCss">EMAILID</th>
+								<th class="center headerCss">NAME</th>
 								<th class="text-center headerCss">DATE & TIME</th>
 								<th class="center headerCss">DEVICE</th>
 							</tr>
@@ -545,7 +593,19 @@ font-weight: 500;
 						<tbody>
 							<tr
 								*ngFor="let item of pagination.pagedItems;let i = index">
-								<td class="center"><h5>{{item.name}}</h5></td>
+								<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{item.firstName |
+												slice:0:1}}{{item.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{item.name}}>{{item.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 								<td class="center"><h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
 								<td class="center"
 									*ngIf="item.device == 'computer'"><i
