@@ -126,7 +126,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.refService.signUpSuccess = false;
+        this.refService.signUpSuccess = '';
+        this.refService.forgotMessage = '';
         this.refService.accountDisabled = "";
         $('#org-admin-deactivated').hide();
     }

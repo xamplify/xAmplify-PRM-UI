@@ -51,9 +51,8 @@ export class ForgotPasswordComponent implements OnInit {
                     var response = JSON.parse( body );
                     if ( response.message == "An email has been sent. Please login with the credentials" ) {
                         this.forgotPasswordForm.reset();
-                        this.passwordSuccess = true;
-                        $( '#password-success' ).show();
-                        setTimeout( function() { $( "#password-success" ).hide( 500 ); }, 5000 );
+                        this.refService.forgotMessage = 'Password has been sent to your registered Email Id';
+                        this.router.navigate(['./login']);
                     }
                 } else {
                     this.logger.error( this.refService.errorPrepender + " sendPassword():" + data );

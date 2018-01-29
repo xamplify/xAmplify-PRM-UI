@@ -52,9 +52,10 @@ export class ReferenceService {
     clickedValue:number;
     daySortValue = 7;
     reportName: string;
-    signUpSuccess: boolean;
+    signUpSuccess = '';
     accountDisabled:string = "";
     isDisabling:boolean = false;
+    forgotMessage = '';
     
     countries = ["---Please Select Country---", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 
