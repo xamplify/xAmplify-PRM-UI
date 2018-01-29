@@ -64,13 +64,23 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px;margin-right: 21px; float:right;padding-left: 10px;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs('one')"> Export To Excel </a></li>
+				</ul>
+			</div>
 		</div>
 		<div class="portlet-body" style="max-width: 100%; min-height: auto;">
 			<table class='table tgrid' id="sample_editable_1">
 				<thead>
 					<tr>
+						<th  class="headerCss center">NAME</th>
 						<th  class="headerCss center">TITLE</th>
-						<th  class="headerCss center">EMAIL ID</th>
 						<th  class="headerCss center">VIEWS</th>
 						<th  class="headerCss center">DATE</th>
 						<th  class="headerCss center">DEVICE</th>
@@ -80,8 +90,20 @@
 				<tbody>
 					<ng-container *ngFor="let videoViews of videoViewsLevelTwo; let i = index">
 						<tr>
+						<td>
+									<div class="flex">
+										<span class='profile' style="background-color: #3598dc;">
+											<span class='uppercase'>{{videoViews.firstName |
+												slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
+										</span> <span style="margin-left: 20px;">
+											<h5  style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
+											<h6 class='m0'>
+												<a href={{videoViews.name}}>{{videoViews.name}}</a>
+											</h6>
+										</span>
+									</div>
+								</td>
 							<td  class="center">{{videoViews.videoTitle}}</td>
-							<td  class="center">{{videoViews.name}}</td>
 							<td  class="center">{{videoViews.views}}</td>
 							<td  class="center">{{videoViews.date}}</td>
 							 <td class="center"

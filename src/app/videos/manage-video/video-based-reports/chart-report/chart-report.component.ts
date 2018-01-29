@@ -22,9 +22,12 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   timePeriodValue: any;
   videoViewsLevelOne: any;
   videoViewsLevelTwo: any;
+  reportPagination: Pagination = new Pagination();
   videoTitle:string;
   date: any;
   views: number;
+  downloadDataList = [];
+  downloadCsvList: any;
   constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     this.selectedVideoId = this.videoUtilService.selectedVideoId;
@@ -53,6 +56,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     }
     }
   videoViewsBarChartLevelTwo(){
+     this.videoViewsBarChartLevelTwoTotalList();
       if(this.selectedVideoId && this.timePeriodValue){ 
     this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.pagination)
      .subscribe(
@@ -170,6 +174,69 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     this.checkVideo = true;
     this.router.navigate(['../home/videos/manage']);
   }
+  
+  videoViewsBarChartLevelTwoTotalList(){
+      this.reportPagination.maxResults = 5000000;
+      if(this.selectedVideoId && this.timePeriodValue){ 
+    this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.reportPagination)
+     .subscribe(
+       (result:any)=>  {
+       console.log(result);
+       this.downloadCsvList = result.data;
+      });
+    }
+  }  
+  
+  convertToCSV(objArray) {
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      var str = '';
+      var row = "";
+      for (var index in objArray[0]) {
+        row += index + ',';
+      }
+      row = row.slice(0, -1);
+      str += row + '\r\n';
+      for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+          if (line != '') line += ','
+          line += array[i][index];
+        }
+        str += line + '\r\n';
+      }
+      return str;
+    }
+
+    downloadLogs() {
+        this.downloadDataList.length = 0;
+        for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
+            let date = new Date( this.downloadCsvList[i].date );
+            
+            var object = {
+                    'First Name': this.downloadCsvList[i].firstName,
+                    'Last Name': this.downloadCsvList[i].lastName,
+                    'Email Id': this.downloadCsvList[i].name,
+                    'Video Title': this.downloadCsvList[i].videoTitle,
+                    'Views': this.downloadCsvList[i].views,
+                    'Date': this.downloadCsvList[i].date,
+                    'Device': this.downloadCsvList[i].device,
+                    'Location': this.downloadCsvList[i].location,
+            }
+            this.downloadDataList.push( object );
+        }
+        var csvData = this.convertToCSV( this.downloadDataList );
+        var a = document.createElement( "a" );
+        a.setAttribute( 'style', 'display:none;' );
+        document.body.appendChild( a );
+        var blob = new Blob( [csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL( blob );
+        a.href = url;
+        a.download = 'Video_Chart_Statestics.csv';
+        a.click();
+        return 'success';
+    }
+  
+  
   ngOnInit() {
     console.log(this.videoViewsData);
     if (!this.timePeriod) {
