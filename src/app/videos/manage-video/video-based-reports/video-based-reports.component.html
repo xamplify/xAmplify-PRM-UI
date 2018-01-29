@@ -429,7 +429,7 @@ font-weight: 500;
 						<thead>
 							<tr>
 								<th class="center text-uppercase headerCss">NAME</th>
-								<th class="center text-uppercase headerCss">MINUTES</th>
+								<th class="center text-uppercase headerCss">MINUTES watched</th>
 								<th class="center text-uppercase headerCss">DATE</th>
 								<th class="center text-uppercase headerCss">DEVICE</th>
 								<th class="center text-uppercase headerCss">LOCATION</th>
@@ -472,8 +472,8 @@ font-weight: 500;
 									*ngIf="item.device == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.device == null">-</td>
 									<td class="center">{{item.location }}</td>
-									<td class="center" *ngIf="item.device == null">-</td>
 								</tr>
 						</tbody>
 					</table>
@@ -640,7 +640,7 @@ font-weight: 500;
 									*ngIf="item.device == 'android'"><i
 									class="fa fa-android" aria-hidden="true"
 									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == null">-</td>
+								<td class="center" *ngIf="item.device == null">-</td>
 							</tr>
 						</tbody>
 					</table>
