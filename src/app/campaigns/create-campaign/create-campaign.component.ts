@@ -1569,7 +1569,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('message-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
-            if(reply.actionId!=16){
+            if(reply.actionId!=16 && reply.actionId!=17){
                 this.validateReplyInDays(reply);
                 this.validateReplyTime(reply);
                 this.validateEmailTemplateForAddReply(reply);
