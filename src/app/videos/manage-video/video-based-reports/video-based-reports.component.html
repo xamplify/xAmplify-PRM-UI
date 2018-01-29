@@ -337,7 +337,7 @@ font-weight: 500;
 										</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
-												<a href={{item.name}}>{{item.name}}</a>
+												<a href={{item.emailId}}>{{item.emailId}}</a>
 											</h6>
 										</span>
 									</div>
@@ -353,7 +353,7 @@ font-weight: 500;
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
 								<td class="center"
-									*ngIf="item.device == 'mac'"><i
+									*ngIf="item.device == 'mac' || item.device == 'iphone' "><i
 									class="fa fa fa-apple" aria-hidden="true"
 									style="color: green; font-size: 22px !important"></i></td>
 								<td class="center"
