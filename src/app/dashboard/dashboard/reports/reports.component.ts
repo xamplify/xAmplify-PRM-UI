@@ -22,6 +22,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   selectedRowValue = false;
   color: any;
   anotherViewDate: string;
+  downloadDataList = [];
+  downloadCsvList: any;
+  
   sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
   { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
   daySort: any;
@@ -187,6 +190,71 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.videoViewsLevelSecond.length = 0;
     this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
   }
+  
+  convertToCSV(objArray) {
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      var str = '';
+      var row = "";
+      for (var index in objArray[0]) {
+        row += index + ',';
+      }
+      row = row.slice(0, -1);
+      str += row + '\r\n';
+      for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+          if (line != '') line += ','
+          line += array[i][index];
+        }
+        str += line + '\r\n';
+      }
+      return str;
+    }
+
+    downloadLogs(level : string) {
+        let logListName = 'Video_Statestics.csv';
+        if ( level === 'one' ) {
+            this.downloadCsvList = this.videoViewsLevelFirst;
+        } else if ( level === 'two' ) {
+            this.downloadCsvList = this.videoViewsLevelSecond;
+        } 
+        
+        this.downloadDataList.length = 0;
+        for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
+            let date = new Date( this.downloadCsvList[i].date );
+            
+            var object = {
+               'Video Title': this.downloadCsvList[i].videoTitle,
+            }
+
+            if ( level === 'one' ) {
+               if(this.reportName == 'views'){
+                object[this.reportName] = this.downloadCsvList[i].viewsCount;
+               } else {
+                   object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
+               }
+                object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            }
+            
+            if ( level === 'two' ) {
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            }
+
+            this.downloadDataList.push( object );
+        }
+        var csvData = this.convertToCSV( this.downloadDataList );
+        var a = document.createElement( "a" );
+        a.setAttribute( 'style', 'display:none;' );
+        document.body.appendChild( a );
+        var blob = new Blob( [csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL( blob );
+        a.href = url;
+        a.download = logListName;
+        a.click();
+        return 'success';
+    }
+  
   ngOnInit() {
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);

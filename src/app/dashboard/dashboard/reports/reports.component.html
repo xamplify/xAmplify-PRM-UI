@@ -25,6 +25,16 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 0px;margin-right: 21px; float:right;padding-left: 10px;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs('one')"> Export To Excel </a></li>
+				</ul>
+			</div>
 			<div class="panel-title pull-right">
 				<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
@@ -69,6 +79,16 @@
 			<div class="caption">
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
+			</div>
+			<div class="btn-group pull-right"
+				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 5px;margin-right: 21px; float:right;padding-left: 10px;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+				<ul class="dropdown-menu pull-right">
+					<li><a id="delete_button"
+					(click)="downloadLogs('two')"> Export To Excel </a></li>
+				</ul>
 			</div>
 		</div>
 		<div class="portlet-body" style="max-width: 100%; min-height: auto;">
