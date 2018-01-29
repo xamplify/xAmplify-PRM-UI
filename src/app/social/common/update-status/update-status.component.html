@@ -13,9 +13,7 @@
             <div class="col-sm-12 dashboard-stat2 pt0">
 				<h6 class="caption-subject font-red-sunglo uppercase bold text-center">Social Account</h6>
 				<div class="clearfix">
-					<div class="col-md-6 col-sm-4 col-xs-4 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
-								
-
+					<div class="col-md-6 col-sm-4 col-xs-4 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">								
 						<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}" 
 						(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
 
@@ -28,9 +26,7 @@
 									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
 							</span>
-
 							<div class="portlet-title col-xs-12">
-
 								<h6 *ngIf="socialStatusProvider.socialConnection.profileName"
 									title="{{socialStatusProvider.socialConnection.profileName}}"
 									class="ellipsis pull-left">
@@ -41,8 +37,6 @@
 									class="ellipsis pull-left">
 									<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
 								</h6>
-
-
 							</div>
 							<div class="portlet-body">
 								<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
@@ -404,7 +398,6 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
 		<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
        	<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name}}</h4>
       </div>

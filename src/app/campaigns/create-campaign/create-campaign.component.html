@@ -32,24 +32,24 @@
 		</ul>
 	</div><!-- End of Line 2 -->
 	<div class="page-bar">
-	<div class="container" style="width: 100%;border-radius: 5px;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);">
+	<div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
 		<div style="display: flex;padding-top: 1em;">
 		    <div id="step2" [attr.class]="campaignDetailsTabClass" (click) ="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-th-list"></span>
+					<span><i class="fa fa-th-list"></i></span>
                 	<h5 class="hidden-xs">Campaign Details</h5>
                 </div>
 		    </div>
 		    
 		    <div *ngIf="!isCampaignDetailsFormValid && campaignType=='video'"  [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-video-camera"></span>
+		        	<span><i class="fa fa-video-camera"></i></span>
                 	<h5 class="hidden-xs">Select a Video</h5>
                 </div>
 		    </div>
 		     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'"  id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-video-camera"></span>
+		        	<span><i class="fa fa-video-camera"></i></span>
                 	<h5 class="hidden-xs">Select a Video</h5>
                 </div>
 		    </div>
@@ -58,14 +58,14 @@
 		    
 		    <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-users"></span>
+		        	<span><i class="fa fa-users"></i></span>
                 	<h5 class="hidden-xs">Contact Lists</h5>
                 </div>
 		    </div>
 		    
 		    <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 60, 'step-4');">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-users"></span>
+		        	<span><i class="fa fa-users"></i></span>
                 	<h5 class="hidden-xs">Contact Lists</h5>
                 </div>
 		    </div>
@@ -74,28 +74,28 @@
 		    
 		    <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-envelope"></span>
+		        	<span><i class="fa fa-envelope"></i></span>
                 	<h5 class="hidden-xs">Email Template</h5>
                 </div>
 		    </div>
 		    
 		    <div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 80, 'step-5');">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-envelope"></span>
+		        	<span><i class="fa fa-envelope"></i></span>
                 	<h5 class="hidden-xs">Email Template</h5>
                 </div>
 		    </div>
 		    
 		    <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-flag"></span>
+		        	<span><i class="fa fa-flag"></i></span>
                 	<h5 class="hidden-xs">Launch</h5>
                 </div>
 		    </div>
 		    
 		    <div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate" [attr.class]="launchCampaignTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
 		        <div class="cenetered-block">
-		        	<span class="fa fa-flag"></span>
+		        	<span><i class="fa fa-flag"></i></span>
                 	<h5 class="hidden-xs">Launch</h5>
                 </div>
 		    </div>
@@ -105,58 +105,58 @@
 		<!-- <br> -->
 			<div class="col-xs-12">
 				<form role="form"  class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm">
-					<div class="col-xs-12 well text-center" style="margin-top: 10px;">
+					<div style="margin-top: 10px;">
 						<div class="portlet box">
 							<div class="portlet-body form">
 								<!-- BEGIN FORM-->
-								<div class="form-body" style="text-align: left;">
+								<div class="form-body col-sm-6 col-sm-offset-3">
 									<div class="form-group" [attr.class]="campaignNameDivClass">
-										<label class="control-label col-md-3">Publish As
+										<label class="control-label col-sm-4">Publish As
 											<small>(Save as)</small>
 											<font style="color: red">*</font>
 										</label>
-										<div class="col-md-9">
+										<div class="col-sm-8">
 											<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
-											<span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
+											<span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3">Partner Campaign</label>
-										<div class="col-md-9">
-											<switch [status]="campaign.channelCampaign"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+										<label class="control-label col-sm-4">Partner Campaign</label>
+										<div class="col-sm-8">
+											<switch class="pull-left" [status]="campaign.channelCampaign"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
 														   (statusChange)="setChannelCampaign($event)">
 											</switch>
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="fromNameDivClass">
-										<label class="control-label col-md-3">From Name<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">From Name<font style="color: red"><b>*</b></font></label>
+										<div class="col-sm-8">
 											<input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200"  />
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="subjectLineDivClass">
-										<label class="control-label col-md-3">Subject Line<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">Subject Line<font style="color: red"><b>*</b></font></label>
+										<div class="col-sm-8">
 											<input type="text" id="subjectLine"	placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="200" />
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="fromEmaiDivClass">
-										<label class="control-label col-md-3">From Email<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">From Email<font style="color: red"><b>*</b></font></label>
+										<div class="col-sm-8">
 											<input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');" maxlength="200" />
-											<span *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span>
+											<span class="pull-left" *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span>
 										</div>
 									</div>
 									<div class="form-group" [attr.class]="preHeaderDivClass">
-										<label class="control-label col-md-3">Pre Header<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">Pre Header<font style="color: red"><b>*</b></font></label>
+										<div class="col-sm-8">
 											<input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200"  />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3">Notify Me When</label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">Notify Me When</label>
+										<div class="col-sm-8">
 											<div class="email-options-checkbox-group email-options-notify">
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
@@ -167,7 +167,7 @@
 													</switch>
 													</div>
 													<div class="col-sm-11" style="padding: 0;">
-														<label style="margin-top: 10px;margin-left: 35px;">Email is opened</label>
+														<label style="margin-top: 10px;margin-left: 75px;">Email is opened</label>
 													</div>
 												</div>
 												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
@@ -179,15 +179,15 @@
 												<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch> -->
 												</div>
 												<div class="col-sm-11" style="padding: 0;">	
-														<label style="margin-top: 10px;margin-left: 35px;">Video is played</label>
+														<label style="margin-top: 10px;margin-left: 75px;">Video is played</label>
 												</div>		
 												</div>
 											</div>
 										</div>
 									</div>
 								<!-- 	<div class="form-group">
-										<label class="control-label col-md-3">Sharing Options</label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">Sharing Options</label>
+										<div class="col-sm-8">
 											<div class="email-options-checkbox-group email-options-notify">
 												<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
 													<div class="col-sm-1 ui-switch-custom-div">
@@ -209,8 +209,8 @@
 										</div>
 									</div> -->
 									<div class="form-group last" [attr.class]="messageDivClass">
-										<label class="control-label col-md-3">Notification Message<font style="color: red"><b>*</b></font></label>
-										<div class="col-md-9">
+										<label class="control-label col-sm-4">Notification Message<font style="color: red"><b>*</b></font></label>
+										<div class="col-sm-8">
 											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm();validateField('message');" maxlength="200" />
 										</div>
 									</div>
@@ -236,31 +236,29 @@
 	 <div class="row setup-content step hiddenStepInfo" id="step-3">
 	 <!-- <br> -->
         <div class="col-xs-12">
-            <div class="col-xs-12 well text-center" style="margin-top: 10px;">
-				<div class="row" id="user_list_table_view">
+            <div class="col-xs-12 text-center" style="margin-top: 10px;">
+				<div class="row pb10" id="user_list_table_view">
 				          <div class="col-lg-12" style="padding-left: 0px;padding-right: 0px;">
-				            <div class="portlet box blue-hoki">
-				            <div class="portlet-title">
-       		 					<div class="caption">Video: Pick your video to be streamed
-								</div>
-								</div> 
-								<div class="portlet-body" style="background-color: white;">
+				           
+				            
+									<div class="note-vid">Video: Pick your video to be streamed</div>
+								
 							<div id="home" class="tab-pane fade in active">
 								<div class="tab">
 									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab">My Videos</button>
 									  <button  [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
+										<div class="input-icon right pull-right m10">
+											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
+											<input type="text"  class="form-control" placeholder="search in My videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+										</div>
+										<div class="input-icon right pull-right m10">
+											<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
+											<input type="text"  class="form-control" placeholder="search in Partner videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+										</div>
 								</div>
 							
 							<div id="my-videos" class="tabcontent" [style.display]="myVideosStyle">
 								<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
-							    <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-									<div class="portlet-input input-inline input-large">
-										<div class="input-icon right">
-											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
-										</div>
-									</div>
-								</div>
 						    	<table class="table table-filter" cellspacing="0" width="100%"  style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
 								<thead style="background-color: #B7B7B7;">
 									<tr role="row">
@@ -317,21 +315,17 @@
 										</td>
 										
 										<!-- --------------Title--------------------------- -->
-										<td style="text-align: center">
+										<td class="text-left">
 										<div class="row">
 											<div class="col-md-12" title="{{savedVideoFile.title}}">
 												<p style="margin: 0;">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">
-																	{{savedVideoFile.title|slice:0:50}}....
-														</b>
-														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">
-																	{{savedVideoFile.title}}
-														</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">{{savedVideoFile.title|slice:0:50}}....</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
 													</a>
 												</p>
 												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
-												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
+												<p>  <span>{{savedVideoFile.uploadedDate}} </span></p>
 											</div>
 										</div>
 										</td>
@@ -368,7 +362,7 @@
 												</a>
 										</td>
 										<!-- --------------Title--------------------------- -->
-										<td style="text-align: center" *ngIf="videoFile.id!==videoId">
+										<td *ngIf="videoFile.id!==videoId">
 										<div class="row">
 											<div class="col-md-12">
 												<p style="margin: 0;" title="{{videoFile.title}}">
@@ -431,10 +425,7 @@
 									<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
 							    <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
 									<div class="portlet-input input-inline input-large">
-										<div class="input-icon right">
-											<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
-										</div>
+
 									</div>
 								</div>
 						    	<table class="table table-filter" cellspacing="0" width="100%"  style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
@@ -489,21 +480,17 @@
 													<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
 												</a>
 										</td>
-										<td style="text-align: center">
+										<td class="text-left">
 										<div class="row">
 											<div class="col-md-12" title="{{savedVideoFile.title}}">
 												<p style="margin: 0;">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">
-																	{{savedVideoFile.title|slice:0:50}}....
-														</b>
-														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">
-																	{{savedVideoFile.title}}
-														</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length>50">{{savedVideoFile.title|slice:0:50}}....</b>
+														<b style="font-size: 13px;"  *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
 													</a>
 												</p>
-												<p>by <b>{{savedVideoFile.uploadedBy}}</b> </p>
-												<p>  <span style="float:right">{{savedVideoFile.uploadedDate}} </span></p>
+												<p>by <b>{{savedVideoFile.uploadedBy}}</b></p>
+												<p><span>{{savedVideoFile.uploadedDate}}</span></p>
 											</div>
 										</div>
 										</td>
@@ -537,21 +524,17 @@
 												</a>
 										</td>
 										<!-- --------------Title--------------------------- -->
-										<td style="text-align: center" *ngIf="videoFile.id!==videoId">
+										<td class="text-left" *ngIf="videoFile.id!==videoId">
 										<div class="row">
 											<div class="col-md-12">
 												<p style="margin: 0;" title="{{videoFile.title}}">
 													<a href="javascript:void(0)" class="not-active">
-														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length>50">
-																	{{videoFile.title|slice:0:50}}....
-														</b>
-														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length<=50">
-																	{{videoFile.title}}
-														</b>
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length>50">{{videoFile.title|slice:0:50}}....</b>
+														<b style="font-size: 13px;"  *ngIf="videoFile.title?.length<=50">{{videoFile.title}}</b>
 													</a>
 												</p>
 												<p>by <b>{{videoFile.uploadedBy}}</b> </p>
-												<p>  <span style="float:right">{{videoFile.uploadedDate}} </span></p>
+												<p><span>{{videoFile.uploadedDate}}</span></p>
 											</div>
 										</div>
 										</td>
@@ -596,7 +579,7 @@
 							</div>
 							</div>
 						  </div>
-                        	</div></div></div></div>
+                        	</div></div>
                         	 <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2');">Previous</button>
         					<button type="button"  style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4');"  [disabled]="!isVideo"  title="Please Select Video">Next</button>
                 </div>
@@ -621,23 +604,18 @@
     <div class="row setup-content step hiddenStepInfo" id="step-4">
     <!-- <br> -->
         <div class="col-xs-12" >
-            <div class="col-xs-12 well text-center" style="margin-top: 10px;">
-                <div class="row" id="user_list_table_view">
+            <div class="col-xs-12 text-center" style="margin-top: 10px;">
+                <div class="row pb10" id="user_list_table_view">
 						<app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss"  *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
 						<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
 						<ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-				          <div class="col-lg-12">
-				            <div class="portlet box blue-hoki">
-				            <div class="portlet-title">
-       		 					<div class="caption">Contact Lists </div>
-								</div> 
-								<div class="portlet-body" style="background-color: white;">
-				                <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+				                <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
+       		 					<div class="note-vid pull-left">Contact Lists </div>
 				                   <div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
 									<div class="portlet-input input-inline input-large">
 										<div class="input-icon right">
 											<i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
-											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
+											<input type="text"  class="form-control" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
 										</div>
 									</div>
 								</div>
@@ -698,7 +676,7 @@
 					                </tbody>
                             	 </table>
                             		 <div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination">
+									    <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination pull-left">
                                              <li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
                                                 <a (click)="setPage(1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
                                              </li>
@@ -725,10 +703,7 @@
 											</select> 		
 										</div>
                          </div>
-                       </div>
-                    </div><!-- End Of Portlet body -->
-                 </div>
-              </div>
+                       </div>                    
               </ng-container>
               
             </div>
@@ -743,14 +718,9 @@
     <div class="row setup-content step hiddenStepInfo" id="step-5">
     <!-- <br> -->
       	<!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
-		<div class="col-xs-12">
-		 <div class="col-xs-12 well text-center" style="margin-top: 10px;">
+		 <div class="col-xs-12 text-center" style="margin-top: 10px;">
 	    	<div class="portlet light">
-				<div class="portlet-title">
-					<div class="caption">
-						<div class="row">
-							<div class="col-xs-12 col-sm-8 text-left">
-								<ul class="mix-filter">
+					<ul class="mix-filter pull-left" style="padding: 10px 10px 0 10px;">
 									<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex">All Email Templates</li>
 									<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
 									<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>
@@ -761,20 +731,10 @@
 									<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
 									<li class="filter" (click)="filterTemplates('PARTNER',7)"  [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Partner Templates</li>
 								</ul>
-							</div>
-							<div class="col-xs-12 col-sm-4">
-								<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-									<div class="portlet-input input-inline input-large">
-										<div class="input-icon right">
+								<div class="input-icon right pull-right" style="padding-top: 10px;right: 15px;">
 											<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
-											<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" style="width: 217px;height: 34px;">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+											<input type="text"  class="form-control" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" style="width: 217px;height: 34px;">
+							    </div>
 				<div class="portlet-body">
 					<div class="row">
 						<form role="form" class="form-horizontal form-bordered form-label-stripped">
@@ -782,11 +742,10 @@
 								<app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-									<div class="row" id="user_list_table_view">
-										<div class="portlet-body" style="background-color: white;">
-											<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
-											<div class="row-fluid">
-											<div class="row mix-grid" style="margin-top: 10px">
+									<div class="row pb10" id="user_list_table_view">
+										<div class="portlet-body">
+											<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
+											<div class="mix-grid">
 											<ng-container *ngIf="showSelectedEmailTemplate">
 												<div (click)="setEmailTemplate(campaign.emailTemplate)" 
 												*ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
@@ -870,7 +829,6 @@
 											
 											</div>
 											</div>
-											</div>
 										</div>
 									</div>
 									</ng-container>
@@ -902,7 +860,6 @@
 				</div>
 			</div>
 		</div>
-		</div>
     </div><!-- End of step 5 -->
      <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
         <div class="row setup-content step hiddenStepInfo" id="step-6">
@@ -923,7 +880,7 @@
 					<div *ngIf="socialStatus.socialStatusProviders?.length > 0">
 						<div class="col-sm-6 border-right">
 							<div class="col-xs-12"><h2>Social Account</h2></div>
-							<div class="col-xs-12">
+							<!--<div class="col-xs-12">
 								<div class="col-xs-4" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
 									<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}"
 										(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
@@ -941,7 +898,40 @@
 										</div>
 									</div>
 								</div>
+							</div>-->
+
+				<div class="clearfix">
+					<div class="col-sm-4 col-xs-6 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">								
+						<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}" 
+						(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
+
+							<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+									'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+							</span>
+							<div class="portlet-title col-xs-12">
+								<h6 *ngIf="socialStatusProvider.socialConnection.profileName"
+									title="{{socialStatusProvider.socialConnection.profileName}}"
+									class="ellipsis pull-left">
+									<b>{{socialStatusProvider.socialConnection.profileName}}</b>
+								</h6>
+								<h6 *ngIf="!socialStatusProvider.socialConnection.profileName"
+									title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+									class="ellipsis pull-left">
+									<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
+								</h6>
 							</div>
+							<div class="portlet-body">
+								<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
+							</div>
+						</div>
+					</div>
+				</div>
 						</div>
 						<div class="col-sm-6">
 			                <div class="col-sm-12">
@@ -994,19 +984,18 @@
 				</div>
 				<div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0" style="padding: 1.5em;">
-						<div class="portlet-title border-none text-left">
-							<div class="col-xs-4">
-								<div class="flex">
-									<i class="fa fa-users fa-2x" aria-hidden="true" style="color: #86dcfc"></i>
+						
+							
+							<table width="100%">
+<tr>
+	<td style="text-align: left" width="30%">
+											<i class="fa fa-users fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0px;"></i>
 									<h5 class="h4-text" *ngIf="campaignType == 'video'">Contact List</h5>
 									<h4 class="h4-text" *ngIf="campaignType == 'regular'">Contact List</h4>
-								</div>
-							</div>
-							<div class="col-xs-8 flex">
-								<div class="col-xs-9">
-									<div *ngFor="let contactList of selectedContactLists;let i=index;">
-										<h5 class="h4-text">
-											<a	(click)="loadUsers(contactList.id,contactsUsersPagination)"	data-toggle="modal" data-target="#myModal" title="{{contactList.name}}">
+	</td>
+	<td width="50%">
+											<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
+										<a	(click)="loadUsers(contactList.id,contactsUsersPagination)"	data-toggle="modal" data-target="#myModal" title="{{contactList.name}}" style="display: block;">
 												<ng-container *ngIf="contactList.name?.length>50">
 													{{contactList.name | slice:0:50}}...
 												</ng-container>
@@ -1014,28 +1003,23 @@
 													{{contactList.name}}
 												</ng-container>
 											</a>
-										</h5>
-									</div>
-								</div>
-								<div class="col-xs-3 text-right" style="padding-top: 1.3em;">
-									<a class="btn btn-default btn-sm" href="javascript:void(0)"
+									</ng-container>
+	</td>
+	<td style="text-align: right" width="20%">
+		<a class="btn btn-default btn-sm" href="javascript:void(0)"
 										(click)="resetActive($event, 40, 'step-4')">Change</a>
-								</div>
-							</div>
-						</div>
+	</td>
+</tr>
+							</table>
+							
 					</div>
 					<div class="portlet light border-0" style="padding: 1.5em;" id="email-template-preview-div">
-						<div class="portlet-title border-none text-left">
-							<div class="col-xs-4">
-								<div class="flex">
-									<i class="fa fa-envelope fa-2x" aria-hidden="true" style="color: #86dcfc"></i>
+						<table  width="100%">
+							<tr>
+								<td style="text-align: left" width="30%"><i class="fa fa-envelope fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0"></i>
 									<h5 class="h4-text" *ngIf="campaignType == 'video'">Email Template</h5>
-									<h4 class="h4-text" *ngIf="campaignType == 'regular'">Email Template</h4>
-								</div>
-							</div>
-							<div class="col-xs-8">
-								<div class="col-xs-9" >
-									<h4 class="h4-text">
+									<h4 class="h4-text" *ngIf="campaignType == 'regular'">Email Template</h4></td>
+								<td width="50%">
 										<a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
 										<ng-container *ngIf="emailTemplate.name?.length>50">
 													{{emailTemplate.name | slice:0:50}}...
@@ -1044,16 +1028,13 @@
 													{{emailTemplate.name}}
 												</ng-container>
 										</a>
-									</h4>
-								</div>
-								<div class="col-xs-3 text-right">
-									<a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a>
-								</div>
-							</div>
-						</div>
+									</td>
+								<td style="text-align: right" width="20%"><a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a></td>
+							</tr>
+						</table>
+
 					</div>
-					<div class="portlet light border-0" style="padding: 1.5em;">
-						<div class="portlet-title border-none text-left">
+					<div class="portlet light border-0 portlet light border-0 clearfix" style="padding: 1.5em;">
 							<ng-container *ngFor="let schedule of sheduleCampaignValues">
 							<div class="col-xs-4" [class.sclass]="schedule==='SCHEDULE'">
 		                		 <label class="label-radio">
@@ -1089,7 +1070,6 @@
 									</select>
 								</div>
 							</div>
-						</div>
 					</div>
 			</div>
 		</div>
@@ -1110,7 +1090,7 @@
         		</div>
 					<div class="panel-body">
 						<form class="role" id="form-{{reply.divId}}">
-						<div *ngIf="reply.actionId!=16">	
+						<div *ngIf="reply.actionId!=16 && reply.actionId!=17">	
 							<div class="form-group col-md-3">
 								<label for="days" id="reply-days-{{reply.divId}}">Reply In X Days<b  style="color: red">*</b></label>
 								<input	type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
@@ -1123,9 +1103,11 @@
 							<div class="form-group col-md-3">
 								<label for="reason">Reason</label> 
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
-						            <option  [value]="13" [selected]="reply.actionId ==13">Email Opened</option>
-						            <option  [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
-						            <option  [value]="16" [selected]="reply.actionId ==16">Send immediately After Email Opened</option>
+						            <option  [value]="13" [selected]="reply.actionId==13">Email Opened</option>
+						           <option  [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
+						           <option  [value]="16" [selected]="reply.actionId ==16">Send immediately After Email Opened</option>
+						            <option  [value]="1" [selected]="reply.actionId==1">Video Opened</option>
+						            <option  [value]="17" [selected]="reply.actionId==17">Send immediately After Video Opened</option>
 					          </select>
 							</div>
 							<div class="form-group col-md-3" style="padding-top: 1.9em;">
@@ -1147,9 +1129,6 @@
 								<label for="days" id="email-template-{{reply.divId}}">Select Email Template<b  style="color: red">*</b></label>
 							</div>
 								<div class="portlet-title">
-									<div class="caption">
-										<div class="row">
-											<div class="col-xs-12 col-sm-8 text-left">
 												<ul class="mix-filter">
 													<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
 													<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
@@ -1161,19 +1140,10 @@
 													<li class="filter" (click)="filterReplyTemplates('UPLOADED',6,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== reply.selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
 													<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)"  [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
 												</ul>
-											</div>
-											<div class="col-xs-12 col-sm-4">
-												<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-													<div class="portlet-input input-inline input-large">
-														<div class="input-icon right">
+											<div class="input-icon pull-right">
 															<i class="icon-magnifier" (click)="searchReplyEmailTemplate(reply)" style="cursor: pointer;"></i>
-															<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" style="width: 217px;height: 34px;">
+															<input type="text"  class="form-control" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" style="width: 217px;height: 34px;">
 														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
 								</div>
 							<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss"  *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 							<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
@@ -1464,7 +1434,7 @@
      						 </div>
      					 <div class="modal-body" id="users-modal-body">
       					</div>
-      					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination" style="margin-left: 10px;">
+      					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left" style="margin-left: 10px;">
                              <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
                                 <a (click)="setPage(1,'contactUsers')">First</a>
                              </li>

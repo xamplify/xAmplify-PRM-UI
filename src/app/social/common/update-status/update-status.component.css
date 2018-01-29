@@ -340,7 +340,7 @@ font-size:14px
 
 .box .ribbon {
 position:absolute;
-right: 2px;
+right:2px;
 position:absolute;
 top:0;
 width:0;
@@ -351,23 +351,24 @@ z-index:1
 
 .box .ribbon-facebook {
 border-right:10px solid #3b5998;
-border-left:10px solid #3b5998;
+border-left:10px solid #3b5998
 }
 
 .box .ribbon-twitter {
 border-right:10px solid #55acee;
-border-left:10px solid #55acee;
+border-left:10px solid #55acee
 }
 
 .box .ribbon-linkedin {
 border-right:10px solid #007bb5;
-border-left:10px solid #007bb5;
+border-left:10px solid #007bb5
 }
 
 .box .ribbon-google {
 border-right:10px solid #dd4b39;
-border-left:10px solid #dd4b39;
+border-left:10px solid #dd4b39
 }
+
 .box .ribbon i {
 color:#FFF;
 margin-left:-3px;
@@ -444,19 +445,34 @@ width:100%
 display:inline-grid!important
 }
 
-.text-count {    
-	position: absolute;
-    right: 25px;
-    bottom: 5px;
-    color: #CCC;}
-.dashboard-stat2{padding: 15px;}
+.text-count {
+position:absolute;
+right:25px;
+bottom:5px;
+color:#CCC
+}
 
-.btn-social-selected{color:#FFF; font-size:12px; margin-bottom:5px;padding: 5px 10px;}
-.btn-social-selected i {font-size:12px}
+.dashboard-stat2 {
+padding:15px
+}
 
-.img-thumbnail span{
-    width: 16px;
-    height: 16px;
-    display: block;
-    position: absolute;
-    right: 0px; color:#00a6e8; cursor: pointer}
+.btn-social-selected {
+color:#FFF;
+font-size:12px;
+margin-bottom:5px;
+padding:5px 10px
+}
+
+.btn-social-selected i {
+font-size:12px
+}
+
+.img-thumbnail span {
+width:16px;
+height:16px;
+display:block;
+position:absolute;
+right:0;
+color:#00a6e8;
+cursor:pointer
+}
