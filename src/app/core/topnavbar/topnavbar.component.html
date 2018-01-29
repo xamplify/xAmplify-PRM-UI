@@ -47,14 +47,14 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li *ngIf="hasVideoRole || (authenticationService.user.hasCompany &&isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;">
+					<li *ngIf="authenticationService.module.hasVideoRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/videos">
 					Upload Video
 					<i class="fa fa-upload" data-toggle="tooltip"></i>
 					</a>
 					</li>
-					<li style="margin-top: 17px;margin-right: 25px;" *ngIf="hasSocialStatusRole || (authenticationService.user.hasCompany &&isOrgAdmin)">
+					<li style="margin-top: 17px;margin-right: 25px;" *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
 						<!-- *ngIf="refService.hasCompany" -->
 						<a class="btn btn-header" routerLink="/home/social/update-status">Update Status <i class="fa fa-share" data-toggle="tooltip"></i>
 						</a>
@@ -106,6 +106,7 @@
 										<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
+										 	<i class="fa fa-check-circle-o" aria-hidden="true"></i>
 										</a>
 										</li>
 										<li *ngIf="emailNotification.openCount==0" class="unread-notification" id="email-notification-{{i}}">
@@ -228,7 +229,7 @@
 							<li><a [routerLink]="['/home/dashboard/myprofile']"> <i
 									class="icon-user"></i> My Profile
 							</a></li>
-							<li *ngIf="(isOrgAdmin || isUser)">
+							<li *ngIf="(authenticationService.module.isOrgAdmin || isUser)">
 								<a [routerLink]="['/home/dashboard/edit-company-profile']"> <i
 									class="fa fa-building-o"></i>Company Profile
 							</a>

@@ -24,10 +24,7 @@ export class TopnavbarComponent implements OnInit {
   campaignEmailNotificationCount = 0;
   campaignVideoWatchedNotifications: any;
   campaignVideoWatchedNotificationCount = 0;
-  hasVideoRole = false;
   roleName: Roles = new Roles();
-  hasSocialStatusRole = false;
-  isOrgAdmin = false;
   isUser = false;
   @Input() model = {'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
   constructor(public router: Router, public userService: UserService,
@@ -65,13 +62,13 @@ export class TopnavbarComponent implements OnInit {
     }
     const roles = this.authenticationService.getRoles();
     if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.hasVideoRole = true;
+      this.authenticationService.module.hasVideoRole = true;
     }
     if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.hasSocialStatusRole = true;
+        this.authenticationService.module.hasSocialStatusRole = true;
     }
     if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-      this.isOrgAdmin = true;
+        this.authenticationService.module.isOrgAdmin = true;
     }
     if(roles.length==1){
         this.isUser = true;

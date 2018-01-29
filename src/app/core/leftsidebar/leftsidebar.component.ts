@@ -13,13 +13,13 @@ export class LeftsidebarComponent implements OnInit {
 
     location: Location;
     baseRoute: string;
-    isCampaign = false;
+   /* isCampaign = false;
     isContact = false;
     isEmailTemplate = false;
     isStats = false;
     isVideo = false;
     isOrgAdmin = false;
-    isPartner = false;
+    isPartner = false;*/
     roleName: Roles= new Roles();
     constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
         this.updateLeftSideBar(location);
@@ -46,42 +46,48 @@ export class LeftsidebarComponent implements OnInit {
             this.baseRoute = 'upgrade';
         }
         const roles = this.authService.getRoles();
-        console.log(roles);
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
-            this.isCampaign = true;
+            this.authService.module.isCampaign = true;
+           // this.isCampaign = true;
         }
         if (roles.indexOf(this.roleName.contactsRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
-            this.isContact = true;
+            this.authService.module.isContact = true;
+           // this.isContact = true;
         }
         if (roles.indexOf(this.roleName.emailTemplateRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
-           this.isEmailTemplate = true;
+           //this.isEmailTemplate = true;
+            this.authService.module.isEmailTemplate = true;
        }
         if (roles.indexOf(this.roleName.statsRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
-            this.isStats = true;
+            this.authService.module.isStats = true;
+            //this.isStats = true;
         }
         
         if (roles.indexOf(this.roleName.partnersRole) > -1 ||
                 roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                 roles.indexOf(this.roleName.allRole) > -1) {
-                this.isPartner = true;
+            this.authService.module.isPartner = true;
+               // this.isPartner = true;
             }
         if (roles.indexOf(this.roleName.videRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
-            this.isVideo = true;
+            this.authService.module.isVideo = true;
+           // this.isVideo = true;
         }
         
         
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-            this.isOrgAdmin = true;
+            this.authService.module.isOrgAdmin = true;
+           // this.isOrgAdmin = true;
         }
     }
     

@@ -13,7 +13,7 @@
 						</a>
 					</li>
 					
-					<li *ngIf="isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
+					<li *ngIf="authService.module.isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
 						<a>
 						<i class="fa fa-video-camera"></i>
 						<!--  <i class="icon-camcorder"></i>-->
@@ -36,7 +36,7 @@
 							</li>
 						</ul>
 					</li>
-					<li *ngIf="isContact" [ngClass]="{'active':  baseRoute === 'contacts'}">
+					<li *ngIf="authService.module.isContact" [ngClass]="{'active':  baseRoute === 'contacts'}">
 						<a>
 						<i class="fa fa-list-ul"></i>
 						<span class="title">Contacts</span>
@@ -81,7 +81,7 @@
 							</li>
 						</ul>
 					</li> -->
-					<li *ngIf="(isOrgAdmin && authService.user.hasCompany) || isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
+					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a  [routerLink]="['./partners']" >
 						<i class="fa fa-list-alt"></i>
 						<span class="title">Partners</span>
@@ -90,7 +90,7 @@
 						</a>
 					</li>
 					
-					<li *ngIf="isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
+					<li *ngIf="authService.module.isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a>
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
@@ -114,7 +114,7 @@
 							</li>
 						</ul>
 					</li>
-					<li *ngIf="isCampaign" [ngClass]="{'active':  baseRoute === 'campaigns'}">
+					<li *ngIf="authService.module.isCampaign" [ngClass]="{'active':  baseRoute === 'campaigns'}">
 						<a>
 						<i class="fa fa-bullhorn"></i>
 						<span class="title">Campaign</span>
@@ -137,7 +137,7 @@
 						</ul>
 					</li>
 					
-					<li *ngIf="isOrgAdmin && authService.user.hasCompany" [ngClass]="{'active':  baseRoute === 'team'}">
+					<li *ngIf="authService.module.isOrgAdmin && authService.user.hasCompany" [ngClass]="{'active':  baseRoute === 'team'}">
 						<a  [routerLink]="['./team/add-team']" >
 						<i class="fa fa-users"></i>
 						<span class="title">Team</span>
@@ -145,7 +145,7 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<li *ngIf="isOrgAdmin" [ngClass]="{'active':  baseRoute === 'upgrade'}">
+					<li *ngIf="authService.module.isOrgAdmin" [ngClass]="{'active':  baseRoute === 'upgrade'}">
 						<a  [routerLink]="['./upgrade']">
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>

@@ -786,8 +786,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
-                    allowOutsideClick:false,
-                    preConfirm: () => {
+                    allowOutsideClick:false
+               /*     preConfirm: () => {
                         if(self.orgAdminCount>1){
                             $('a').addClass('disabled');
                             self.refService.isDisabling = true;
@@ -798,8 +798,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             swal.close();
                             
                         }
-                    }
-                  });
+                    }*/
+                  }).then(function() {
+                      if(self.orgAdminCount>1){
+                          $('a').addClass('disabled');
+                          self.refService.isDisabling = true;
+                          self.disableOrgAdmin();
+                      }else{
+                          self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+                          $('#org-admin-info').show(600);
+                          swal.close();
+                          
+                      }
+                  },function (dismiss) {
+                      if (dismiss === 'cancel') {
+                          
+                      }
+                  })
          
             }
         }else{

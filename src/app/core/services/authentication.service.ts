@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { User } from '../models/user';
 import { Role } from '../models/role';
+import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
 declare var swal: any;
@@ -27,9 +28,10 @@ export class AuthenticationService {
     redirectUrl: string;
     map: any;
     isCompanyAdded:boolean = false;
+    module:Module = new Module();
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = 'https://aravindu.com/';
-       // this.SERVER_URL = "http://localhost:8080/";
+        //this.SERVER_URL = "http://localhost:8080/";
         this.APP_URL = 'https://socialubuntu.com/';
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
@@ -117,6 +119,15 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
+        let module = this.module;
+        module.isOrgAdmin = false;
+        module.isContact = false;
+        module.isPartner = false;
+        module.isEmailTemplate = false;
+        module.isCampaign = false;
+        module.isStats = false;
+        module.hasVideoRole = false;
+        module.hasSocialStatusRole = false;
         swal.close();
     }
 }

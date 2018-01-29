@@ -74,6 +74,15 @@ export class EditCompanyProfileComponent implements OnInit {
                         $('#saveOrUpdateCompanyButton').prop('disabled',true);
                         self.authenticationService.user.hasCompany = true;
                         self.authenticationService.isCompanyAdded = true;
+                        let module = self.authenticationService.module;
+                        module.isOrgAdmin = true;
+                        module.isContact = true;
+                        module.isPartner = true;
+                        module.isEmailTemplate = true;
+                        module.isCampaign = true;
+                        module.isStats = true;
+                        module.hasVideoRole = true;
+                        module.hasSocialStatusRole = true;
                         self.router.navigate(["/home/dashboard/welcome"]);
                         self.processor.set(this.processor);
                       }, 3000);
@@ -87,6 +96,8 @@ export class EditCompanyProfileComponent implements OnInit {
       
        
     }
+    
+   
     
     update(){
         $('#edit-sucess').hide();
