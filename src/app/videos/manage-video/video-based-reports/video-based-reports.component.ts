@@ -724,9 +724,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
               let date = new Date( this.downloadCsvList[i].date );
               let time = new Date( this.downloadCsvList[i].time );
               let endTime = new Date( this.downloadCsvList[i].endTime );
-            //  let sentTime = new Date( this.campaign.launchTime );
               
               var object = {
+                      "First Name": this.downloadCsvList[i].firstName,
+                      "Last Name": this.downloadCsvList[i].lastName,
               }
 
               if ( this.downloadTypeName === 'minetesWatched' ) {
@@ -736,15 +737,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                   object["Location"] = this.downloadCsvList[i].location;
               } 
               else if ( this.downloadTypeName === 'watchedFully' ) {
-                  object["Campaign Name"] = this.downloadCsvList[i].campaignName;
                   object["Email Id"] = this.downloadCsvList[i].name;
+                  object["Campaign Name"] = this.downloadCsvList[i].campaignName;
                   object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
                   object["Device"] = this.downloadCsvList[i].device;
                   object["Location"] = this.downloadCsvList[i].location;
               }
               else if ( this.downloadTypeName === 'worldMapData' ) {
-                  object["First Name"] = this.downloadCsvList[i].firstName;
-                  object["Last Name"] = this.downloadCsvList[i].lastName;
                   object["Email Id"] = this.downloadCsvList[i].emailId;
                   object["Campaign Name"] = this.downloadCsvList[i].campaignName;
                   object["Date and Time"] = time.toDateString() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
