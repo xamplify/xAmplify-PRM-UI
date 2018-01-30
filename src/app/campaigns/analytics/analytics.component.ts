@@ -56,6 +56,7 @@ export class AnalyticsComponent implements OnInit {
   worldMapUserTotalData: any;
   countryCode: string;
   campaignTypeValue: string;
+  firstName: string;
   
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -200,6 +201,11 @@ export class AnalyticsComponent implements OnInit {
       data => {
         console.log(data);
         this.campaignBarViews = data.campaignviews;
+       // alert(this.selectedRow.userEmail);
+        const self = this;
+        const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+        this.firstName = obj.firstName;
         const names = [];
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
@@ -463,10 +469,15 @@ export class AnalyticsComponent implements OnInit {
       this.barChartCliked = true;
       const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
       console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+      this.firstName = obj.firstName;
       
       this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
       this.isTimeLineView = true;
     }
+  }
+  onchange(firstName: string){
+    this.firstName = firstName;
+    alert(firstName);
   }
 
   getCampaignById(campaignId: number) {
