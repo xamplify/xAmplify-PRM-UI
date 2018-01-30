@@ -314,8 +314,8 @@ export class ManageContactsComponent implements OnInit {
             text: "You won't be able to revert this!",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
 
         }).then( function( myData: any ) {
@@ -822,8 +822,8 @@ export class ManageContactsComponent implements OnInit {
                 text: "You won't be able to revert this!",
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function( myData: any ) {
