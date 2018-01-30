@@ -1628,7 +1628,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             console.log(url);
-            if(url.scheduled==true){
+            if(url.scheduled){
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
