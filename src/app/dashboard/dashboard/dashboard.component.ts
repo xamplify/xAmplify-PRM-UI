@@ -247,7 +247,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                    return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>users: <b>' + this.point.totalUsers + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
+                  //  <br>users: <b>' + this.point.totalUsers + '</b>
+                    return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
                 }
             },
             plotOptions: {
