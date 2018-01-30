@@ -1803,8 +1803,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                             text: "You have unchanged Campaign data",
                             type: 'warning',
                             showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
+                            confirmButtonColor: '#54a7e9',
+                            cancelButtonColor: '#999',
                             confirmButtonText: 'Yes, Save it!'
 
                         }).then(function() {
