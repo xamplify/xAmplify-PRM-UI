@@ -1332,7 +1332,8 @@ export class ManagePartnersComponent implements OnInit {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        $( '#settingSocialNetwork' ).modal();
+       // $( '#settingSocialNetwork' ).modal();
+        $('#settingSocialNetwork').appendTo("body").modal('show');
     }
 
     unlinkSocailAccount() {
