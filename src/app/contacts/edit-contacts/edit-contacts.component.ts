@@ -1490,10 +1490,6 @@ export class EditContactsComponent implements OnInit {
    updateContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
-          $( "#addContactModal" ).hide();
-            $( "#addContactModal .close" ).click()
-            $('#addContactModal').modal('toggle'); 
-                $('#addContactModal').removeClass('show');
        this.updateContactUser = false;
        this.updatedUserDetails.length = 0;
    }
@@ -1502,10 +1498,6 @@ export class EditContactsComponent implements OnInit {
        this.editUser.pagination = this.pagination;
        this.editUser.user = this.addContactuser;
        $( "#addContactModal .close" ).click()
-          $( "#addContactModal" ).hide();
-            $( "#addContactModal .close" ).click()
-            $('#addContactModal').modal('toggle'); 
-                $('#addContactModal').removeClass('show');
        this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
         .subscribe(
            ( data: any ) => {
