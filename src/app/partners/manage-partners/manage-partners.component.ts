@@ -220,11 +220,6 @@ export class ManagePartnersComponent implements OnInit {
 
     addRow() {
         $( "#addPartnerModal .close" ).click()
-          $('#addPartnerModal').modal('toggle'); 
-            $("#addPartnerModal .close").click()
-            $('#addPartnerModal').removeClass('show');
-            
-            $('#addPartnerModal').modal('hide');
         this.newPartnerUser.push( this.addPartnerUser );
 
 
@@ -1121,10 +1116,6 @@ export class ManagePartnersComponent implements OnInit {
         $( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
-        $( "#salesforceModal .close" ).click()
-        $('#salesforceModal').modal('toggle'); 
-          $("#salesforceModal .close").click()
-          $('#salesforceModal').removeClass('show');
 
     }
 
@@ -1141,10 +1132,6 @@ export class ManagePartnersComponent implements OnInit {
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                     $( "#salesforceModal" ).modal();
-                    $( "#salesforceModal .close" ).click()
-                    $('#salesforceModal').modal('toggle'); 
-                      $('#salesforceModal').removeClass('show');
-
                     console.log( "AddContactComponent salesforce() Authentication Success" );
                     this.checkingPopupValues();
                 } else {
@@ -1357,9 +1344,6 @@ export class ManagePartnersComponent implements OnInit {
                 if ( socialNetwork == 'SALESFORCE' ) {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
-                    $( "#salesforceGear .close" ).click()
-                    $('#salesforceGear').modal('toggle'); 
-                      $('#salesforceGear').removeClass('show');
                     this.sfImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
@@ -1367,19 +1351,12 @@ export class ManagePartnersComponent implements OnInit {
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
-                    $( "#GoogleGear" ).hide();
-                    $( "#GoogleGear .close" ).click()
-                    $('#GoogleGear').modal('toggle'); 
-                      $('#GoogleGear').removeClass('show');
                     this.googleImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
-                    $( "#zohoGear .close" ).click()
-                    $('#zohoGear').modal('toggle'); 
-                      $('#zohoGear').removeClass('show');
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
@@ -1388,10 +1365,6 @@ export class ManagePartnersComponent implements OnInit {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
                     $( "#settingsSalesforce .close" ).click()
-                      $( "#settingsSalesforce .close" ).click()
-                    $('#settingsSalesforce').modal('toggle'); 
-                      $('#settingsSalesforce').removeClass('show');
-                    
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
@@ -1527,12 +1500,6 @@ export class ManagePartnersComponent implements OnInit {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
             $( "#salesforceModal" ).modal();
-            $( "#salesforceModal .close" ).click()
-            $('#salesforceModal').modal('toggle'); 
-              $("#salesforceModal .close").click()
-              $('#salesforceModal').removeClass('show');
-              
-              $('#salesforceModal').modal('hide');
             this.contactService.salesforceContactCallBack = false;
         }
     }

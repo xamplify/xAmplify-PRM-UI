@@ -805,12 +805,7 @@ export class AddContactsComponent implements OnInit {
 
     addRow() {
         if ( this.emailNotValid == true ) {
-            $('#addContactModal').modal('toggle'); 
-            $("#addContactModal .close").click()
-            $('#addContactModal').removeClass('show');
-            
-            $('#addContactModal').modal('hide');
-
+            $( "#addContactModal .close" ).click()
             this.newUsers.push( this.addContactuser );
         }
         this.selectedAddContactsOption = 0;
@@ -1741,9 +1736,6 @@ export class AddContactsComponent implements OnInit {
                 if ( socialNetwork == 'SALESFORCE' ) {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
-                    $( "#salesforceGear .close" ).click()
-                    $('#salesforceGear').modal('toggle'); 
-                      $('#salesforceGear').removeClass('show');
                     this.sfImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
@@ -1751,18 +1743,12 @@ export class AddContactsComponent implements OnInit {
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
-                    $( "#GoogleGear .close" ).click()
-                    $('#GoogleGear').modal('toggle'); 
-                      $('#GoogleGear').removeClass('show');
                     this.googleImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
-                    $( "#zohoGear .close" ).click()
-                    $('#zohoGear').modal('toggle'); 
-                      $('#zohoGear').removeClass('show');
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
@@ -1771,10 +1757,6 @@ export class AddContactsComponent implements OnInit {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
                     $( "#settingsSalesforce .close" ).click()
-                        $( "#settingsSalesforce" ).hide();
-                    $( "#settingsSalesforce .close" ).click()
-                    $('#settingsSalesforce').modal('toggle'); 
-                      $('#settingsSalesforce').removeClass('show');
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {

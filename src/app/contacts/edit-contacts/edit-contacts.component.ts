@@ -1541,10 +1541,6 @@ export class EditContactsComponent implements OnInit {
    
    updateContactListName(newContactListName: string){
        $( "#addContactModal .close" ).click()
-          $( "#addContactModal" ).hide();
-            $( "#addContactModal .close" ).click()
-            $('#addContactModal').modal('toggle'); 
-                $('#addContactModal').removeClass('show');
        this.contactService.updateContactListName( this.selectedContactListId, newContactListName )
         .subscribe(
            ( data: any ) => {

@@ -762,7 +762,9 @@ img:hover {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<a class="close-circle" data-dismiss="modal" (click)="hideZohoModal()"><i class="fa fa-times"></i></a>
+					<button type="button" class="close"  (click)="hideZohoModal()"
+						data-dismiss="modal">&times;</button>
+						<!-- <a class="close-circle" data-dismiss="modal" (click)="hideZohoModal()"><i class="fa fa-times"></i></a> -->
 						<div>
 							<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
 								style="height: 65px" width="90px" />
@@ -822,7 +824,10 @@ img:hover {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
+				<button type="button" class="close" (click)="hideZohoAuthorisedPopup()"
+						data-dismiss="modal">&times;</button>
+					<div>
+					<!-- <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a> -->
 					<div>
 						<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
 							style="height: 65px" width="90px" />
@@ -919,7 +924,9 @@ img:hover {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
+					<!-- <a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a> -->
+					<button type="button" class="close"
+						data-dismiss="modal">&times;</button>
 					<div>
 						<h4 class="modal-title" id="settingSocialNetworkModalLabel">{{settingSocialNetwork}}
 							Account Settings</h4>
