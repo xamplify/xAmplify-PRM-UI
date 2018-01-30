@@ -510,6 +510,12 @@ export class EditContactsComponent implements OnInit {
     addRow() {
         if(this.emailNotValid == true ){
             $( "#addContactModal .close" ).click()
+             $( "#addContactModal" ).hide();
+            $( "#addContactModal .close" ).click()
+            $('#addContactModal').modal('toggle'); 
+                $('#addContactModal').removeClass('show');
+
+
             this.users.push( this.addContactuser );
            }
         this.fileTypeError = false;
@@ -1224,7 +1230,10 @@ export class EditContactsComponent implements OnInit {
    addContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
-       
+          $( "#addContactModal" ).hide();
+            $( "#addContactModal .close" ).click()
+            $('#addContactModal').modal('toggle'); 
+                $('#addContactModal').removeClass('show');
    }
    validateEmail(emailId: string){
        if(this.validateEmailAddress( emailId )){
@@ -1481,6 +1490,10 @@ export class EditContactsComponent implements OnInit {
    updateContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
+          $( "#addContactModal" ).hide();
+            $( "#addContactModal .close" ).click()
+            $('#addContactModal').modal('toggle'); 
+                $('#addContactModal').removeClass('show');
        this.updateContactUser = false;
        this.updatedUserDetails.length = 0;
    }
@@ -1489,6 +1502,10 @@ export class EditContactsComponent implements OnInit {
        this.editUser.pagination = this.pagination;
        this.editUser.user = this.addContactuser;
        $( "#addContactModal .close" ).click()
+          $( "#addContactModal" ).hide();
+            $( "#addContactModal .close" ).click()
+            $('#addContactModal').modal('toggle'); 
+                $('#addContactModal').removeClass('show');
        this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
         .subscribe(
            ( data: any ) => {
@@ -1532,6 +1549,10 @@ export class EditContactsComponent implements OnInit {
    
    updateContactListName(newContactListName: string){
        $( "#addContactModal .close" ).click()
+          $( "#addContactModal" ).hide();
+            $( "#addContactModal .close" ).click()
+            $('#addContactModal').modal('toggle'); 
+                $('#addContactModal').removeClass('show');
        this.contactService.updateContactListName( this.selectedContactListId, newContactListName )
         .subscribe(
            ( data: any ) => {
