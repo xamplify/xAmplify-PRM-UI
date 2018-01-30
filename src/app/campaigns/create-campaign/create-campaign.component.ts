@@ -1627,13 +1627,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('click-email-template-'+url.divId);
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
-            console.log(url);
+            console.log(url.scheduled);
             if(url.scheduled){
+                console.log("1632");
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
                 this.validateEmailTemplateForAddOnClick(url);
             }else{
+                console.log("1637");
                 this.validateOnClickSubject(url);
                 this.validateEmailTemplateForAddOnClick(url);
             }
@@ -1641,6 +1643,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if(errorLength==0){
                 this.addOnClickScheduledDaysSum(url, i);
             }
+            console.log(errorLength);
         }
     }
     
@@ -1654,6 +1657,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     validateOnClickSubject(url:Url){
         if( url.subject==null||url.subject==undefined ||url.subject.trim().length==0){
             this.addReplyDivError(url.divId);
+            console.log("Added Subject Eror");
             $('#click-subject-'+url.divId).css('color','red');
         }
     }
@@ -1674,9 +1678,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     validateEmailTemplateForAddOnClick(url:Url){
         if(url.defaultTemplate && url.selectedEmailTemplateId==0){
+            console.log("Email Template Error Added For Choose Template On");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-email-template-'+url.divId).css('color','red');
         }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || url.body.trim().length==0)){
+            console.log("Email Template Error Added For Choose Template Off");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
         }
@@ -1714,8 +1720,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     setUrlScheduleType(event,url:Url){
-       url.scheduled = event.target.value;
-    }
+       //url.scheduled = event.target.value;
+       if(event.target.value=="true"){
+           url.scheduled = true;
+       }else{
+           url.scheduled = false;
+       }
+       
+  }
     sendTestEmail(emailId:string){
         let self = this;
         var data = this.getCampaignData(emailId);
@@ -1726,7 +1738,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            console.log(data);
            if(data.message=="CAMPAIGN_FOUND"){
                swal("Mail Sent Successfully", "", "success");
-           }else{
+    }else{
                
            }
         },
