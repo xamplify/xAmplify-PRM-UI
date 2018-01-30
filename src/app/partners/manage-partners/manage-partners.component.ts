@@ -1109,7 +1109,7 @@ export class ManagePartnersComponent implements OnInit {
     }
 
     showModal() {
-        $( "#salesforceModal" ).show();
+        $('#salesforceModal').appendTo("body").modal('show');
     }
 
     hideModal() {
@@ -1131,7 +1131,7 @@ export class ManagePartnersComponent implements OnInit {
                 this.storeLogin = data;
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                    $( "#salesforceModal" ).modal();
+                    $('#salesforceModal').appendTo("body").modal('show');
                     console.log( "AddContactComponent salesforce() Authentication Success" );
                     this.checkingPopupValues();
                 } else {
@@ -1361,13 +1361,12 @@ export class ManagePartnersComponent implements OnInit {
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
-                  $('body').removeClass('modal-open');
-                  $('.modal-backdrop fade in').remove();
+                $('#settingSocialNetwork').modal('hide');
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
-                    $( "#settingsSalesforce .close" ).click()
+                    $('#settingSocialNetwork').modal('hide');
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
@@ -1376,7 +1375,7 @@ export class ManagePartnersComponent implements OnInit {
                 console.log( error );
             },
             () => {
-                $( "#settingSocialNetwork .close" ).click();
+                $('#settingSocialNetwork').modal('hide');
                 this.cancelPartners();
                 this.xtremandLogger.info( "deleted completed" );
             }
@@ -1502,7 +1501,7 @@ export class ManagePartnersComponent implements OnInit {
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
-            $( "#salesforceModal" ).modal();
+            $('#salesforceModal').appendTo("body").modal('show');
             this.contactService.salesforceContactCallBack = false;
         }
     }

@@ -1752,13 +1752,14 @@ export class AddContactsComponent implements OnInit {
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
-                  $('body').removeClass('modal-open');
-                  $('.modal-backdrop fade in').remove();
+                  /*$('body').removeClass('modal-open');
+                  $('.modal-backdrop fade in').remove();*/
+                $('#settingSocialNetwork').modal('hide');
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
-                    $( "#settingsSalesforce .close" ).click()
+                    $('#settingSocialNetwork').modal('hide');
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
@@ -1767,7 +1768,7 @@ export class AddContactsComponent implements OnInit {
                 console.log( error );
             },
             () => {
-                $( "#settingSocialNetwork .close" ).click();
+                $('#settingSocialNetwork').modal('hide');
                 this.cancelContacts();
                 this.xtremandLogger.info( "deleted completed" );
             }
@@ -1781,7 +1782,8 @@ export class AddContactsComponent implements OnInit {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        $( '#settingSocialNetwork' ).modal();
+      //  $( '#settingSocialNetwork' ).modal();
+        $('#settingSocialNetwork').appendTo("body").modal('show');
     }
 
     addContactModalOpen() {
