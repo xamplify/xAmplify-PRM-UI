@@ -59,8 +59,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     downloadDataList = [];
     paginationType: string;
     worldMapUserData: any;
-    sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days)', 'value': 14 },
-    { 'name': '21 Days)', 'value': 21 }, { 'name': '30 Days)', 'value': 30 }];
+    sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
+    { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
