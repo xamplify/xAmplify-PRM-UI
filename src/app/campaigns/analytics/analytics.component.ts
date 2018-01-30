@@ -368,9 +368,10 @@ export class AnalyticsComponent implements OnInit {
       }
     }
     else if (type === 'viewsBarChart') {
+      console.log(this.campaignId);
       if (page !== this.pagination.pageIndex) {
         this.pagination.pageIndex = page;
-        this.getCampaignUserViewsCountBarCharts(this.campaign.campaignId, this.pagination);
+        this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
       }
     }
     else if (type === 'donutCampaign') {

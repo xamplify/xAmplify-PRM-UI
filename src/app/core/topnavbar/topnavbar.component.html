@@ -136,6 +136,7 @@
 										<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}} ( {{videoNotification.campaignName}} ) </b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
+												<i class="fa fa-check-circle-o" aria-hidden="true"></i>
 										</a>
 										</li>
 										<li *ngIf="videoNotification.openCount==0" class="unread-notification" id="video-notification-{{i}}">
