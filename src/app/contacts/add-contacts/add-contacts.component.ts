@@ -1752,6 +1752,8 @@ export class AddContactsComponent implements OnInit {
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop fade in').remove();
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {

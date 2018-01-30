@@ -510,11 +510,8 @@ export class EditContactsComponent implements OnInit {
     addRow() {
         if(this.emailNotValid == true ){
             $( "#addContactModal .close" ).click()
-             $( "#addContactModal" ).hide();
-            $( "#addContactModal .close" ).click()
-            $('#addContactModal').modal('toggle'); 
-                $('#addContactModal').removeClass('show');
-
+            //   $('body').removeClass('modal-open');
+            //       $('.modal-backdrop fade in').remove();
 
             this.users.push( this.addContactuser );
            }
@@ -1230,10 +1227,6 @@ export class EditContactsComponent implements OnInit {
    addContactModalClose(){
        $('#addContactModal').modal('toggle');
        $( "#addContactModal .close" ).click()
-          $( "#addContactModal" ).hide();
-            $( "#addContactModal .close" ).click()
-            $('#addContactModal').modal('toggle'); 
-                $('#addContactModal').removeClass('show');
    }
    validateEmail(emailId: string){
        if(this.validateEmailAddress( emailId )){
