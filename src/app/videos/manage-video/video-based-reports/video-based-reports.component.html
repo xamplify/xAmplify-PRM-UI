@@ -38,11 +38,11 @@ font-weight: 500;
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-xs-6 text-center">
+					<div class="col-xs-12 col-md-6 text-center">
 						<table id="trellis" style="min-width: 250px; max-width: 300px; height: 200px;"><tr><td class="first"></td></tr></table>
 						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} users </h5>
 					</div>
-					<div class="col-xs-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
+					<div class="col-xs-12 col-md-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
 						<section class="percentage-circle" style="margin-top: 30px;cursor: pointer">
 							<svg width="120" height="100" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 								<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
@@ -53,7 +53,7 @@ font-weight: 500;
 						</section>
 						<h5 style="margin-top: 108px;font-weight: 400;">Watched Fully</h5>
 					</div>
-					<div class="col-xs-3 text-center">
+					<div class="col-xs-12 col-md-3 text-center">
 						<h1 style="margin-top: 48px;">{{videoUtilService.nFormatter(selectedVideo.views)}}</h1>
 						<h5 style="margin-top: 8.8em; font-weight: 400;">Total Views</h5>
 					</div>
