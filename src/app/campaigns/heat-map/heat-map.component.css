@@ -4,7 +4,8 @@ rect:hover {
 
 .heatmap {
 	min-width: 100%;
-	background: rgba(0, 166, 232, 0.5);
+	/*background: rgba(0, 166, 232, 0.5);*/
+	background: #eee url("https://i.stack.imgur.com/GIHQn.jpg") repeat; 
 	min-height: 35px;
 	margin-top: 2em;
 	display: flex;
