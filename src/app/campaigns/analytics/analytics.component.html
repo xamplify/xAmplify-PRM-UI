@@ -158,8 +158,8 @@
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null">
-						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('current-month')">
+					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null"  (click)="campaignViewsDonut('current-month')">
+						 <section class="percentage-circle" style="cursor: pointer">
 							<svg width="120" height="120" viewBox="0 0 120 120"
 								style="transform: rotate(-90deg)">
 						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
@@ -171,7 +171,8 @@
 							<h2 class="percentage-value"  *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
 							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
-						</section>
+						</section> 
+				 	<!-- <app-donut-chart > </app-donut-chart> -->
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This
 							Month</h5>
 					</div>

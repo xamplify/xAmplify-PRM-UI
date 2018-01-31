@@ -8,11 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DonutChartComponent implements OnInit {
  
   @Input() percentageValue: any;
+  @Input() totalValue: any;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.percentageValue);
+    console.log(this.percentageValue+'and'+this.totalValue);
   }
-
 }
 

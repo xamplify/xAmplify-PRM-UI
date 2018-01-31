@@ -47,7 +47,10 @@
 						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} users </h5>
 					</div>
 					<div class="col-xs-12 col-md-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
-						<app-donut-chart [percentageValue]="watchedFully"></app-donut-chart>
+						<section class="percentage-circle" style="margin-top: 15px;cursor: pointer">
+						<app-donut-chart [percentageValue]="watchedFully" [totalValue]="100"></app-donut-chart>
+						  <h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{watchedFully}}%</h2>
+					    </section>
 						<h5 style="margin-top: 122px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="col-xs-12 col-md-3 text-center">
