@@ -122,58 +122,69 @@ font-size: 16px;
 		<div class="portlet-body">
 			<form #f="ngForm">
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="fileupload-buttonbar">
-							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6"
-								style="position: auto; border-right: 1px solid #999999; height: 150px;">
-								<h4 class="col-xs-12" style="right: 6px">Add your
-									{{checkingContactTypeName}}s with given options</h4>
-								<section>
-									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height:570px">
+						<div class="row">
+							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+								<div class="portlet light add-options">
+								<div class="portlet-title">Add your
+									{{checkingContactTypeName}}s with given options</div>
+								<div class="portlet-body">
+									<div class="row">		
+									<div class="col-xs-12 col-sm-4 col-md-4">
 										<button class="btn-primary btn-block" id="addContacts"
 											(click)="addContactModalOpen()"
 											[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-											<i class="fa fa-user-plus"
-												style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase" style="font-size: 11px">Add
-												{{checkingContactTypeName}}</h6>
+											<i class="fa fa-user-plus"></i>
+											<span>Add
+												{{checkingContactTypeName}}</span>
 										</button>
 									</div>
-									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
+									<div class="col-xs-12 col-sm-4 col-md-4">
 										<button class="btn-success btn-block" id="copyFromClipBoard"
 											(click)="copyFromClipboard()"
 											[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-											<i class="fa fa-users"
-												style="font-size: 30px; padding-top: 15px;"></i>
-											<h6 class="uppercase" style="font-size: 11px">Copy Form
-												ClipBoard</h6>
+											<i class="fa fa-users"></i>
+											<span>Copy Form
+												ClipBoard</span>
 										</button>
 									</div>
-									<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 7px">
-										<div class="btn-info fileinput-button btn-block"
-											style="height: 80px;" id="uploadCSV"
+									<div class="col-xs-12 col-sm-4 col-md-4">
+										<button class="btn-info fileinput-button btn-block" id="uploadCSV"
 											[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-											<i class="fa fa-file-excel-o"
-												style="font-size: 30px; padding-top: 22px; padding-left: 65px;"></i>
-											<h6 class="uppercase"
-												style="font-size: 11px; padding-left: 42px;">Upload a
-												CSV</h6>
+											<i class="fa fa-file-excel-o"></i>
+											<span>Upload a	CSV</span>
 											<input type="file" ng2FileSelect
 												*ngIf="uploader.queue.length==0" [uploader]="uploader"
 												title=" " (change)="fileChange(input)" accept=".csv" #input
 												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
-										</div>
+										</button>
 									</div>
-								</section>
+								
 
 								<!-- The global file processing state -->
 								<span class="fileupload-process"> </span>
+								
+								<div class="clearfix"></div>	
+								</div>	
+								</div>
+								</div>
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
-								<h4 class="col-xs-12">Import from
-									available cloud service</h4>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
-									style="top: 3px;">
+								
+									
+									
+									
+									
+									
+									
+									
+									
+									<div class="portlet light cloud-services">
+									<div class="portlet-title">Import from	available cloud service</div>
+									<div class="portlet-body">
+									<div class="row">
+									
+											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 										style="background-color: white" (click)="salesforceContacts()"
 										[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
@@ -193,16 +204,14 @@ font-size: 16px;
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
-									<div id="salesforceGear" style="position: relative"
-										id="salesforceGear" *ngIf="sfImageNormal">
+									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
 										<a [class.disabled]="selectedAddContactsOption != 8"
 										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
-									style="top: 3px;">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
 										style="background-color: white" (click)="googleContacts()"
 										[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
@@ -226,12 +235,11 @@ font-size: 16px;
 										*ngIf="googleImageNormal">
 										<a [class.disabled]="selectedAddContactsOption != 8"
 										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
-									style="top: 3px;">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button"
 										style="background-color: white"
 										(click)="checkingZohoContactsAuthentication()"
@@ -253,16 +261,14 @@ font-size: 16px;
 										title="Click here To access user list from your Zoho account"
 										height="86" width="90">
 									</a>
-									<div id="zohoGear" style="position: relative"
-										*ngIf="zohoImageNormal">
+									<div id="zohoGear" style="position: relative"	*ngIf="zohoImageNormal">
 										<a [class.disabled]="selectedAddContactsOption != 8"
 										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 70px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"
-									style="top: 3px;">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamics.png"
 										class="imageClass imageblur mdImageClass"
@@ -273,11 +279,16 @@ font-size: 16px;
 										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
 									</a>
 								</div>
-							</div>
+										
+									</div>
+									<div class="clearfix"></div>
+									
+									</div>
+									</div>
+								</div>
 						</div>
-						<hr class="col-xs-12" style="width: 97%; padding-bottom: 17px;">
 						<!-- Contact List Name Text Box -->
-						<div class="contact-list-form">
+						<div class="row">
 							<div class="col-xs-12 col-md-6">
 								<div class="form-group">
 									<label for="name" class="col-xs-12 col-sm-4 control-label">{{checkingContactTypeName}}

@@ -19,7 +19,7 @@ declare var $, Papa, swal: any;
 @Component( {
     selector: 'app-manage-partners',
     templateUrl: './manage-partners.component.html',
-    styleUrls: ['./manage-partners.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+    styleUrls: ['./manage-partners.component.css','../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
     providers: [Pagination, SocialPagerService]
 })

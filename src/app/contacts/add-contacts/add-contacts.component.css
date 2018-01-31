@@ -1,0 +1,11 @@
+.add-options button{min-height:85px}
+.add-options .portlet-title {min-height: 0; padding: 5px 0 10px; margin-bottom:0px; font-size:15px}
+.add-options i{display:block; font-size:24px; margin:0 auto 10px}
+.add-options span{display:block; font-size:12px; text-align:center}
+.add-options .portlet-body {padding: 15px 0 5px;}
+
+
+.cloud-services .portlet-title {min-height: 0; padding: 5px 0 10px; margin-bottom:0px; font-size:15px}
+.cloud-services img{display:block; margin:0 auto;}
+.cloud-services .portlet-body {padding: 10px 0 0px;}
+.cloud-services.portlet.light {padding-bottom: 0px;}
