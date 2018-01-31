@@ -78,6 +78,11 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaignViews = data.campaignviews;
+         try{
+          const self = this;
+          const obj = this.campaignViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+         this.firstName = obj.firstName; 
+         } catch(err){ console.log(err); }
         console.log(data);
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
@@ -203,9 +208,11 @@ export class AnalyticsComponent implements OnInit {
         this.campaignBarViews = data.campaignviews;
        // alert(this.selectedRow.userEmail);
         const self = this;
-        const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
-        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
-        this.firstName = obj.firstName;
+        try{
+         const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+         console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+         this.firstName = obj.firstName; 
+        } catch(err){ this.firstName = ''; console.log(err); }
         const names = [];
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
@@ -468,12 +475,15 @@ export class AnalyticsComponent implements OnInit {
       this.userCampaignReport.emailClickedCount = 0;
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.barChartCliked = true;
+      try{
       const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
       console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
       this.firstName = obj.firstName;
-      
       this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
       this.isTimeLineView = true;
+      }catch(err){
+      console.log(err);
+      }
     }
   }
   onchange(firstName: string){
@@ -607,6 +617,11 @@ export class AnalyticsComponent implements OnInit {
         .subscribe(
         data => {
           this.campaignTotalViewsData = data.campaignviews;
+         try{
+          const self = this;
+          const obj = this.campaignTotalViewsData.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+         this.firstName = obj.firstName; 
+         } catch(err){ console.log(err); }
         },
         error => console.log(error),
         () => console.log()
