@@ -9,6 +9,7 @@ import { ExtraFaqComponent } from './extra-faq/extra-faq.component';
 import { DasboardRoutingModule } from './dashboard-routing.module';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { CommonComponentModule } from '../common/common.module';
 
 import { DashboardService } from './dashboard.service';
 import { ProfileLockComponent } from './user-profile/profile-lock/profile-lock.component';
@@ -23,7 +24,7 @@ import { CompanyProfileService } from './company-profile/services/company-profil
 import { ReportsComponent } from './dashboard/reports/reports.component';
 
 @NgModule({
-    imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule],
+    imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent

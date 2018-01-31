@@ -12,9 +12,9 @@ import { PlayVideoComponent } from './manage-video/play-video/play-video.compone
 import { VideoBasedReportsComponent } from './manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from './services/video-base-report.service';
 import { ChartReportComponent } from './manage-video/video-based-reports/chart-report/chart-report.component';
-
+import { CommonComponentModule } from '../common/common.module';
 @NgModule({
-  imports: [SharedModule, VideosRoutingModule],
+  imports: [SharedModule, VideosRoutingModule, CommonComponentModule],
   declarations: [ManageVideoComponent, PlayStreamerComponent, UploadVideoComponent, UserVideoComponent,
     EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent, ChartReportComponent],
   providers: [VideoBaseReportService]

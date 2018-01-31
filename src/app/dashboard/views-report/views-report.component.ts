@@ -101,9 +101,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                 this.watchedFullyDetailReportData = result.data;
                 this.watchedPagination.totalRecords = result.totalRecords;
                 this.watchedPagination = this.pagerService.getPagedItems(this.watchedPagination, result.data);
-               if (result.length > 0) {
-                    $('#watchedFullyModelPopup').modal('show');
-               }
+                $('#watchedFullyModelPopup').modal('show');
             },
             (err: any) => { console.log(err); })
     }

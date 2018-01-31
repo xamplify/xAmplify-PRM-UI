@@ -17,3 +17,23 @@ h2.views-report {
 .input-icon > .form-control {
     padding: 10px !important;
 }
+
+.portlet.light {
+border-radius: 0;
+padding: 15px;
+}
+
+.videoTitle {
+word-break: break-all;
+color: #5a5a5a;
+font-weight: 500;
+}
+
+.p0 {
+padding: 0
+}
+
+.block-with-text {
+white-space: nowrap;
+text-overflow: ellipsis;
+}
