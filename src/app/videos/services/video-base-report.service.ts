@@ -58,6 +58,7 @@ export class VideoBaseReportService {
         } catch (error) { console.log(error); }
     }
     getUsersMinutesWatchedDetailReports(timePeriod: string, videoId: number, timePeriodValue: any, userId: number, pagination: Pagination) {
+        if(timePeriodValue.includes('Q')){ timePeriodValue = timePeriodValue.substring(1, timePeriodValue.length); }
         try {
             const url = this.authenticationService.REST_URL + 'videos/' + timePeriod + '/views-minuteswatched-detail-report?userId=' + userId + '&videoId='
                 + videoId + '&timePeriodValue=' + timePeriodValue + '&access_token=' + this.authenticationService.access_token;

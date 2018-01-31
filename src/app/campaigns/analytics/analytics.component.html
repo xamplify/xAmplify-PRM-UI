@@ -1,36 +1,38 @@
 <style type="text/css">
-.bg {
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	background-color:lightseagreen;
-	z-index: 0;
-	text-align: center;
+	.bg {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background-color: lightseagreen;
+		z-index: 0;
+		text-align: center;
 	}
- .td-new,th {
+
+	.td-new,
+	th {
 		padding: 2px;
 	}
-.td-chart {
-	position: relative; 
-	}
-.disabled{
-	pointer-events: none;;
-	cursor: not-allowed;
-}
 
-.headerCss {
-   font-size: 12px; 
-   font-weight: 500;
-}
-	
+	.td-chart {
+		position: relative;
+	}
+
+	.disabled {
+		pointer-events: none;
+		;
+		cursor: not-allowed;
+	}
+
+	.headerCss {
+		font-size: 12px;
+		font-weight: 500;
+	}
 </style>
 <div class="page-content" [hidden]="isTimeLineView">
 	<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="['/']">Home</a> <i
-				class="fa fa-angle-right"></i></li>
+			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
 			<li><a [routerLink]="['/home/campaigns/manage']">Campaigns</a>
 				<i class="fa fa-angle-right"></i></li>
 			<li style="color: #888;">{{campaign.campaignName}}</li>
@@ -44,10 +46,10 @@
 						<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">VIEWERSHIP MAP</span>
 					</div>
 					<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}} CAMPAIGN</span>
-				</div>
+					</div>
 				</div>
 				<div class="portlet-body text-center">
-					<div id="world-map" style="max-width: 100%; min-height: 292px;"></div>
+					<div id="world-map" style="max-width: 100%; min-height: 282px;"></div>
 				</div>
 			</div>
 		</div>
@@ -66,7 +68,8 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x">
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color1-invert crcb" (click) = "downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [disabled]="campaignReport.emailSentCount < 1">
+			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal"
+			 [disabled]="campaignReport.emailSentCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailSentCount}}</b>
@@ -76,7 +79,8 @@
 			</button>
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color2-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)" [disabled]="campaignReport.emailOpenCount < 1">
+			<button class="portlet light color2-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
+			 [disabled]="campaignReport.emailOpenCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailOpenCount}}</b>
@@ -86,7 +90,8 @@
 			</button>
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color3-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)" [disabled]="campaignReport.emailClickedCount < 1">
+			<button class="portlet light color3-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
+			 [disabled]="campaignReport.emailClickedCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.emailClickedCount}}</b>
@@ -96,7 +101,8 @@
 			</button>
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'">
-			<button class="portlet light color2-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)" [disabled]="campaignReport.usersWatchCount < 1">
+			<button class="portlet light color2-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
+			 [disabled]="campaignReport.usersWatchCount < 1">
 				<div class="portlet-body text-center">
 					<h1>
 						<b>{{campaignReport.usersWatchCount}}</b>
@@ -118,8 +124,9 @@
 					<div class='col-xs-12 col-sm-6'>
 						<h4>{{socialStatus.statusMessage}}</h4>
 						<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-	                        <img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}" style="height: 240px; width: auto;">
-	                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+							<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+							 style="height: 240px; width: auto;">
+							<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
 								<source src="{{socialStatusContent.filePath}}" type="video/mp4">
 							</video>
 						</div>
@@ -142,52 +149,30 @@
 					</div>
 				</div>
 				<div class="portlet-body flex" style="padding: 1em 0;">
-					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.lifetimeViewsCount < 1 ? true : null">
-						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')" >
-							<svg width="120" height="120" viewBox="0 0 120 120"
-								style="transform: rotate(-90deg)">
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="5" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
-									stroke-width="5" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.lifetimeViewsCount/campaignReport.emailSentCount)}"/>
-						</svg>
-							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
-							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
+					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.lifetimeViewsCount < 1 ? true : null">
+						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
+							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null"  (click)="campaignViewsDonut('current-month')">
-						 <section class="percentage-circle" style="cursor: pointer">
-							<svg width="120" height="120" viewBox="0 0 120 120"
-								style="transform: rotate(-90deg)">
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="5" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
-									stroke-width="5" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.thisMonthViewsCount/campaignReport.emailSentCount)}"/>
-						</svg>
-							<h2 class="percentage-value"  *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
-							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
+					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null" (click)="campaignViewsDonut('current-month')">
+						<section class="percentage-circle" style="cursor: pointer">
+							<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
-						</section> 
-				 	<!-- <app-donut-chart > </app-donut-chart> -->
-						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This
-							Month</h5>
+						</section>
+						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
+						</h5>
 					</div>
-					<div class="col-xs-4 text-center"  [class.disabled]="campaignReport.todayViewsCount < 1 ? true : null">
+					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.todayViewsCount < 1 ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
-							<svg width="120" height="120" viewBox="0 0 120 120"
-								style="transform: rotate(-90deg)">
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-									stroke-width="5" />
-						    <circle cx="60" cy="60" r="54" fill="none" stroke="#00a6e8"
-									stroke-width="5" stroke-dasharray="339.292006588"
-									[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaignReport.todayViewsCount/campaignReport.emailSentCount)}"/>
-						</svg>
-							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
-							<h2 class="percentage-value" *ngIf="campaignReport.emailSentCount===0">0%</h2>
+							<app-donut-chart [percentageValue]="campaignReport.todayViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
+							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
 							<h6 class="percentage-text">views</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Today</h5>
@@ -204,20 +189,18 @@
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 						</div>
-						<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
+						<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+							<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadTypeName = 'campaignViews'; downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
+							<ul class="dropdown-menu pull-right">
+								<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadEmailLogs()"> Export To Excel </a></li>
+							</ul>
+						</div>
 					</div>
 					<div class="portlet-body clearfix">
 						<div class="table-responsive">
-							<table class="table tgrid" >
+							<table class="table tgrid">
 								<thead>
 									<tr>
 										<th style="font-size: 12px;font-weight: 500;">NAME</th>
@@ -228,48 +211,52 @@
 								</thead>
 								<tbody>
 									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.userEmail);">
-										<td >
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
+										<td>
+											<div class="flex">
+												<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{item.firstName |
 												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
+												</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
 												<a href="mailto:{{item.userEmail}}">{{item.userEmail}}</a>
 											</h6>
 										</span>
-									</div>
-								</td>
-										<td class="td-chart"><h6>{{item.campaignName}}</h6></td>
+											</div>
+										</td>
+										<td class="td-chart">
+											<h6>{{item.campaignName}}</h6>
+										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
-										<td class="td-chart" ><h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6></td>
-										<td  class="td-chart">
+										<td class="td-chart">
+											<h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6>
+										</td>
+										<td class="td-chart">
 											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
-											<span style="text-align: center;vertical-align: middle;color:white;position: absolute; bottom: 9px;font-size:16px">{{item.viewsCount}}</span> </div>
+												<span style="text-align: center;vertical-align: middle;color:white;position: absolute; bottom: 9px;font-size:16px">{{item.viewsCount}}</span>												</div>
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<!--pager here  -->
-			 			<ul *ngIf="campaignViewsPagination.pager.pages && campaignViewsPagination.pager.pages.length" class="pagination">
-	                       <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">First</a>
-	                       </li>
-	                       <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(campaignViewsPagination.pager.currentPage - 1, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === 1">Previous</a>
-	                        </li>
-	                        <li *ngFor="let page of campaignViewsPagination.pager.pages" [ngClass]="{active:campaignViewsPagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, 'campaignViews')">{{page}}</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
-	                            <a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
-	                        </li>
-	                         <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
-	                            <a (click)="setPage(campaignViewsPagination.pager.totalPages, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Last</a>
-	                        </li>
-	                    </ul>
+						<ul *ngIf="campaignViewsPagination.pager.pages && campaignViewsPagination.pager.pages.length" class="pagination">
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
+								<a (click)="setPage(1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">First</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
+								<a (click)="setPage(campaignViewsPagination.pager.currentPage - 1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">Previous</a>
+							</li>
+							<li *ngFor="let page of campaignViewsPagination.pager.pages" [ngClass]="{active:campaignViewsPagination.pager.currentPage === page}">
+								<a (click)="setPage(page, 'campaignViews')">{{page}}</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
+								<a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
+								<a (click)="setPage(campaignViewsPagination.pager.totalPages, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Last</a>
+							</li>
+						</ul>
 						<!-- pager end here -->
 					</div>
 				</div>
@@ -280,160 +267,154 @@
 
 <div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
 	<div class="page-bar">
-		 <!-- <a (click)="resetTopNavBarValue()" class="pull-right"
-			style="margin: 1em;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;"
-			aria-hidden="true"></span></a>
-			 -->
-       <a (click)="resetTopNavBarValue()" class="pull-right close-circle"
-			style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
-			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;" >
+			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;">
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">Top Users Minutes Watched</span></div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">User wise Views Count</span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
 				<!--pager here  -->
-					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-							<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-						</li>
-						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-							<a (click)="setPage(pagination.pager.currentPage - 1, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-						</li>
-						<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-							<a (click)="setPage(page, 'viewsBarChart')">{{page}}</a>
-						</li>
-						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-							<a (click)="setPage(pagination.pager.currentPage + 1, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-						</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-							<a (click)="setPage(pagination.pager.totalPages, 'viewsBarChart')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-						</li>
-					</ul>
-						<!-- pager end here -->
+				<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+					<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+						<a (click)="setPage(1, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+					</li>
+					<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+						<a (click)="setPage(pagination.pager.currentPage - 1, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+					</li>
+					<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+						<a (click)="setPage(page, 'viewsBarChart')">{{page}}</a>
+					</li>
+					<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+						<a (click)="setPage(pagination.pager.currentPage + 1, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+					</li>
+					<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+						<a (click)="setPage(pagination.pager.totalPages, 'viewsBarChart')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+					</li>
+				</ul>
+				<!-- pager end here -->
 			</div>
 			<div class="col-xs-12 col-sm-6">
-			<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
-				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
-					<div class="frst-timeline-img abc">
-						<div class="frst-labels frst-start-label">
-							<span>
+				<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
+					<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
+						<div class="frst-timeline-img abc">
+							<div class="frst-labels frst-start-label">
+								<span>
 								<img src="assets/images/user-new.png" style="width: auto;" alt="{{selectedRow.userEmail}}">
 							</span>
+							</div>
 						</div>
-					</div>
-					<div class="frst-timeline-content box">
-						<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
-							<h5 *ngIf="firstName" style="font-weight: 700;margin-top: -7px;">{{firstName}}</h5>
-							<span><h6 style="font-weight: 600; margin-top:-2px;font-size: 13px;">{{selectedRow.userEmail}}</h6></span> 
-							<span class="frst-date"></span>
-							<div class="row" style=" padding: 74px;margin: -73px;">
-								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									   <a class="">
-										<div style="text-align: center">
-											<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
-										</div>
-										 <div class="">
-											<span>Email Opened</span>
+						<div class="frst-timeline-content box">
+							<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
+								<h5 *ngIf="firstName" style="font-weight: 700;margin-top: -7px;">{{firstName}}</h5>
+								<span><h6 style="font-weight: 600; margin-top:-2px;font-size: 13px;">{{selectedRow.userEmail}}</h6></span>
+								<span class="frst-date"></span>
+								<div class="row" style=" padding: 74px;margin: -73px;">
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+										<a class="">
+											<div style="text-align: center">
+												<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
 											</div>
-										<div class="number" style="text-align: center">
-											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
-										</div>
-                                      </a>
-								</div>
-								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									 <a class="">
-										<div style="text-align: center">
-											<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
-										</div>
-										<div class="">
-											<span>Email Clicked</span>
-										</div>
-										<div class="number" style="text-align: center">
-											<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
-										</div>
-                                      </a>
-								</div>
-								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-									 <a class="">
-										<div style="text-align: center">
-											<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
-										</div>
-										<div class="">
-											<span>Video watched</span>
+											<div class="">
+												<span>Email Opened</span>
 											</div>
-										<div class="number" style="text-align: center">
-											<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
-										</div>
-                                      </a>
-								</div>
-								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x"> 
-									<a class="">
-										<div style="text-align: center">
-											<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
-										</div>
-										<div style="text-align: center;">
-											<span >Time Spent</span>
-										</div>
-										<div class="number" style="text-align: center">
-											<span data-counter="counterup" style="margin: 0 33px;">{{totalTimeSpent}}</span>
-										</div>
-                                      </a>
+											<div class="number" style="text-align: center">
+												<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
+											</div>
+										</a>
 									</div>
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+										<a class="">
+											<div style="text-align: center">
+												<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
+											</div>
+											<div class="">
+												<span>Email Clicked</span>
+											</div>
+											<div class="number" style="text-align: center">
+												<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+										<a class="">
+											<div style="text-align: center">
+												<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
+											</div>
+											<div class="">
+												<span>Video watched</span>
+											</div>
+											<div class="number" style="text-align: center">
+												<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+										<a class="">
+											<div style="text-align: center">
+												<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
+											</div>
+											<div style="text-align: center;">
+												<span>Time Spent</span>
+											</div>
+											<div class="number" style="text-align: center">
+												<span data-counter="counterup" style="margin: 0 33px;">{{totalTimeSpent}}</span>
+											</div>
+										</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="frst-timeline-block frst-even-item"
-					data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
-					<div class="frst-timeline-img">
-						<span><img src="assets/images/campaign-launched.png"></span>
-					</div>
+					<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
+						<div class="frst-timeline-img">
+							<span><img src="assets/images/campaign-launched.png"></span>
+						</div>
 
-					<div class="frst-timeline-content">
-						<div class="frst-timeline-content-inner" style="padding: 10px">
-							<b><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></b>
-							<h2>Campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h2>
-							<h5>Email published out to <b>{{selectedRow.userEmail}}</b></h5>
+						<div class="frst-timeline-content">
+							<div class="frst-timeline-content-inner" style="padding: 10px">
+								<b><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></b>
+								<h2>Campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h2>
+								<h5>Email published out to <b>{{selectedRow.userEmail}}</b></h5>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs" style="padding: 6px;margin-left: -492px;">
-					<div class="frst-timeline-img">
-						<span>
+					<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" *ngFor="let emailLog of emailLogs" style="padding: 6px;margin-left: -492px;">
+						<div class="frst-timeline-img">
+							<span>
 							<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/Open_mail.png">
 							<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 							<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
 						</span>
-					</div>
+						</div>
 
-					<div class="frst-timeline-content">
-						<div class="frst-timeline-content-inner" style="padding:10px">
-							<h4>
-								<span *ngIf="emailLog.actionId == 13">Campaign Email Opened</span>
-								<span *ngIf="emailLog.actionId == 14">Email GIF Clicked</span>
-								<span *ngIf="emailLog.actionId == 15">Email URL Clicked</span>
-								<span *ngIf="emailLog.actionId == 1">Video Played</span>
-							 at {{emailLog.time | date: 'mediumTime'}}
-						 	</h4>
-						 	<span *ngIf="emailLog.countryCode">
+						<div class="frst-timeline-content">
+							<div class="frst-timeline-content-inner" style="padding:10px">
+								<h4>
+									<span *ngIf="emailLog.actionId == 13">Campaign Email Opened</span>
+									<span *ngIf="emailLog.actionId == 14">Email GIF Clicked</span>
+									<span *ngIf="emailLog.actionId == 15">Email URL Clicked</span>
+									<span *ngIf="emailLog.actionId == 1">Video Played</span> at {{emailLog.time | date: 'mediumTime'}}
+								</h4>
+								<span *ngIf="emailLog.countryCode">
 						 		<h6>{{emailLog.city}}, {{emailLog.country}}</h6>
 						 		<h6>{{emailLog.isp}}</h6>
 						 	</span>
-						 	<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg" width="24px">
-							<span>
+								<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
+								 width="24px">
+								<span>
 								<h6>{{emailLog.time | date: 'fullDate'}}</h6>
 							</span>
-							<div *ngIf="emailLog.actionId == 1">
-								<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
+								<div *ngIf="emailLog.actionId == 1">
+									<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 		</div>
 	</div>
@@ -441,23 +422,21 @@
 
 
 <!-- Users Watch List Modal -->
-<div class="modal fade" id="usersWatchListModal" tabindex="-1"
-	role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="usersWatchListModal" tabindex="-1" role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static"
+ data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" id="usersWatchListModalLabel" style="text-align: center;">Users who have watched the campaign</h4>
-			<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -475,63 +454,60 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaignReport.usersWatchList">
-										<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
+									<td>
+										<div class="flex">
+											<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{item.firstName |
 												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
+											</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
 												<a >{{item.emailId}}</a>
 											</h6>
 										</span>
-									</div>
-								</td>
-									<td><h6>{{item.startTime | date: 'short'}}</h6></td>
-									<td><h6>{{item.endTime | date: 'short'}}</h6></td>
-									<td><h6>{{item.ipAddress}}</h6></td>
-									<td><h6>{{item.state}}, {{item.country}}</h6></td>
+										</div>
+									</td>
+									<td>
+										<h6>{{item.startTime | date: 'short'}}</h6>
+									</td>
+									<td>
+										<h6>{{item.endTime | date: 'short'}}</h6>
+									</td>
+									<td>
+										<h6>{{item.ipAddress}}</h6>
+									</td>
+									<td>
+										<h6>{{item.state}}, {{item.country}}</h6>
+									</td>
 									<!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
-									<td class="center" *ngIf="item.os == 'windows'"><i
-										class="fa fa-windows" aria-hidden="true"
-										style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'mac' || item.os == 'iphone'"><i
-										class="fa fa fa-apple" aria-hidden="true"
-										style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'linux'"><i
-										class="fa fa fa-linux" aria-hidden="true"
-										style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'android'"><i
-										class="fa fa-android" aria-hidden="true"
-										style="color: #a4ca39; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'mac' || item.os == 'iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
+									<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.os == null">-</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<!--pager here  -->
-		 			<ul *ngIf="usersWatchListPagination.pager.pages && usersWatchListPagination.pager.pages.length" class="pagination">
-                       <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}">
-                          <a (click)="setPage(1, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === 1">First</a>
-                       </li>
-                       <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}" >
-                           <a (click)="setPage(usersWatchListPagination.pager.currentPage - 1, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === 1">Previous</a>
-                        </li>
-                        <li *ngFor="let page of usersWatchListPagination.pager.pages" [ngClass]="{active:usersWatchListPagination.pager.currentPage === page}">
-                           <a (click)="setPage(page, 'usersWatch')">{{page}}</a>
-                        </li>
-                        <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
-                            <a (click)="setPage(usersWatchListPagination.pager.currentPage + 1, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Next</a>
-                        </li>
-                         <li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
-                            <a (click)="setPage(usersWatchListPagination.pager.totalPages, 'usersWatch')"  [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Last</a>
-                        </li>
-                    </ul>
+					<ul *ngIf="usersWatchListPagination.pager.pages && usersWatchListPagination.pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === 1">First</a>
+						</li>
+						<li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === 1}">
+							<a (click)="setPage(usersWatchListPagination.pager.currentPage - 1, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === 1">Previous</a>
+						</li>
+						<li *ngFor="let page of usersWatchListPagination.pager.pages" [ngClass]="{active:usersWatchListPagination.pager.currentPage === page}">
+							<a (click)="setPage(page, 'usersWatch')">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
+							<a (click)="setPage(usersWatchListPagination.pager.currentPage + 1, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Next</a>
+						</li>
+						<li [ngClass]="{disabled:usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages}">
+							<a (click)="setPage(usersWatchListPagination.pager.totalPages, 'usersWatch')" [class.disabled]="usersWatchListPagination.pager.currentPage === usersWatchListPagination.pager.totalPages">Last</a>
+						</li>
+					</ul>
 					<!-- pager end here -->
-					<!-- <button type="button" class="btn btn-default pull-right"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button> -->
 				</div>
 			</div>
 		</div>
@@ -539,24 +515,22 @@
 </div>
 
 <!-- Email Opened/ Clicked List Modal -->
-<div class="modal fade" id="emailActionListModal" tabindex="-1"
-	role="dialog" aria-labelledby="emailActionListModalLabel" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="emailActionListModal" tabindex="-1" role="dialog" aria-labelledby="emailActionListModalLabel"
+ data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Users who opened the email</h4>
 				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Users who clicked the email</h4>
-			<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -571,48 +545,50 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaignReport.emailActionList">
-										<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
+									<td>
+										<div class="flex">
+											<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{item.firstName |
 												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
+											</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
 												<a >{{item.emailId}}</a>
 											</h6>
 										</span>
-									</div>
-								</td>
-								<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null"><h6>{{item.url}}</h6></td>
-								<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null"><h6>Clicked on the video thumbnail</h6></td>
-									<td><h6>{{item.time | date: 'short'}}</h6></td>
+										</div>
+									</td>
+									<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
+										<h6>{{item.url}}</h6>
+									</td>
+									<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
+										<h6>Clicked on the video thumbnail</h6>
+									</td>
+									<td>
+										<h6>{{item.time | date: 'short'}}</h6>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<!--pager here  -->
-		 			<ul *ngIf="emailActionListPagination.pager.pages && emailActionListPagination.pager.pages.length" class="pagination">
-                       <li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === 1}">
-                          <a (click)="setPage(1, 'emailAction')" [class.disabled]="emailActionListPagination.pager.currentPage === 1">First</a>
-                       </li>
-                       <li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === 1}" >
-                           <a (click)="setPage(emailActionListPagination.pager.currentPage - 1, 'emailAction')"  [class.disabled]="emailActionListPagination.pager.currentPage === 1">Previous</a>
-                        </li>
-                        <li *ngFor="let page of emailActionListPagination.pager.pages" [ngClass]="{active:emailActionListPagination.pager.currentPage === page}">
-                           <a (click)="setPage(page, 'emailAction')">{{page}}</a>
-                        </li>
-                        <li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages}">
-                            <a (click)="setPage(emailActionListPagination.pager.currentPage + 1, 'emailAction')"  [class.disabled]="emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages">Next</a>
-                        </li>
-                         <li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages}">
-                            <a (click)="setPage(emailActionListPagination.pager.totalPages, 'emailAction')"  [class.disabled]="emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages">Last</a>
-                        </li>
-                    </ul>
-					<!-- pager end here -->
-					<!-- <button type="button" class="btn btn-default pull-right"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button> -->
+					<ul *ngIf="emailActionListPagination.pager.pages && emailActionListPagination.pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'emailAction')" [class.disabled]="emailActionListPagination.pager.currentPage === 1">First</a>
+						</li>
+						<li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === 1}">
+							<a (click)="setPage(emailActionListPagination.pager.currentPage - 1, 'emailAction')" [class.disabled]="emailActionListPagination.pager.currentPage === 1">Previous</a>
+						</li>
+						<li *ngFor="let page of emailActionListPagination.pager.pages" [ngClass]="{active:emailActionListPagination.pager.currentPage === page}">
+							<a (click)="setPage(page, 'emailAction')">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages}">
+							<a (click)="setPage(emailActionListPagination.pager.currentPage + 1, 'emailAction')" [class.disabled]="emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages">Next</a>
+						</li>
+						<li [ngClass]="{disabled:emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages}">
+							<a (click)="setPage(emailActionListPagination.pager.totalPages, 'emailAction')" [class.disabled]="emailActionListPagination.pager.currentPage === emailActionListPagination.pager.totalPages">Last</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -620,23 +596,21 @@
 </div>
 
 <!-- Email Sent List Modal -->
-<div class="modal fade" id="emailSentListModal" tabindex="-1"
-	role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="emailSentListModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
+ data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
-				<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -652,45 +626,45 @@
 							<tbody>
 								<tr *ngFor="let item of campaignViews">
 									<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
+										<div class="flex">
+											<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{item.firstName |
 												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
+											</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
 											<h6 class='m0'>
 												<a >{{item.userEmail}}</a>
 											</h6>
 										</span>
-									</div>
-								</td>
-									<td><h6>{{item.campaignName}}</h6></td>
-									<td><h6>{{campaign.launchTime | date: 'fullDate'}}</h6></td>
+										</div>
+									</td>
+									<td>
+										<h6>{{item.campaignName}}</h6>
+									</td>
+									<td>
+										<h6>{{campaign.launchTime | date: 'fullDate'}}</h6>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 						<!--pager here  -->
-			 			<ul *ngIf="campaignViewsPagination.pager.pages && campaignViewsPagination.pager.pages.length" class="pagination">
-	                       <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">First</a>
-	                       </li>
-	                       <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(campaignViewsPagination.pager.currentPage - 1, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === 1">Previous</a>
-	                        </li>
-	                        <li *ngFor="let page of campaignViewsPagination.pager.pages" [ngClass]="{active:campaignViewsPagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, 'campaignViews')">{{page}}</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
-	                            <a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
-	                        </li>
-	                         <li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
-	                            <a (click)="setPage(campaignViewsPagination.pager.totalPages, 'campaignViews')"  [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Last</a>
-	                        </li>
-	                    </ul>
-						<!-- pager end here -->
-					<!-- <button type="button" class="btn btn-default pull-right"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button> -->
+						<ul *ngIf="campaignViewsPagination.pager.pages && campaignViewsPagination.pager.pages.length" class="pagination">
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
+								<a (click)="setPage(1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">First</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === 1}">
+								<a (click)="setPage(campaignViewsPagination.pager.currentPage - 1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === 1">Previous</a>
+							</li>
+							<li *ngFor="let page of campaignViewsPagination.pager.pages" [ngClass]="{active:campaignViewsPagination.pager.currentPage === page}">
+								<a (click)="setPage(page, 'campaignViews')">{{page}}</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
+								<a (click)="setPage(campaignViewsPagination.pager.currentPage + 1, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Next</a>
+							</li>
+							<li [ngClass]="{disabled:campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages}">
+								<a (click)="setPage(campaignViewsPagination.pager.totalPages, 'campaignViews')" [class.disabled]="campaignViewsPagination.pager.currentPage === campaignViewsPagination.pager.totalPages">Last</a>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -704,34 +678,32 @@
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title">{{donultModelpopupTitle}} Views</h4>
-			<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
-			
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
+
 			</div>
 			<div class="modal-body clearfix">
 				<!-- <div class="row"> -->
-					<div class="table-responsive">
-						<table class="table tgrid">
-							<thead>
-								<tr>
-									<th style="font-size: 12px; font-weight: 500;">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-									<th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-									<th style="font-size: 12px; font-weight: 500;">TIME</th>
-									<th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
-									<th style="font-size: 12px; font-weight: 500;">VIEWS</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let item of donutCampaignViews">
+				<div class="table-responsive">
+					<table class="table tgrid">
+						<thead>
+							<tr>
+								<th style="font-size: 12px; font-weight: 500;">NAME</th>
+								<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+								<th style="font-size: 12px; font-weight: 500;">LOCATION</th>
+								<th style="font-size: 12px; font-weight: 500;">TIME</th>
+								<th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
+								<th style="font-size: 12px; font-weight: 500;">VIEWS</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of donutCampaignViews">
 								<td>
 									<div class="flex">
 										<span class='profile' style="background-color: #3598dc;">
@@ -745,73 +717,69 @@
 										</span>
 									</div>
 								</td>
-									<td><h6>{{item.campaignName}}</h6></td>
-									<td><h6>{{item.location }}</h6></td>
-									<td><h6>{{item.time | date: 'fullDate'}}</h6></td>
-									<!-- <td><h6>{{item.deviceType }}</h6></td> -->
-									<td class="center" *ngIf="item.os == 'windows'"><i
-										class="fa fa-windows" aria-hidden="true"
-										style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'mac' || item.os =='iphone'"><i
-										class="fa fa fa-apple" aria-hidden="true"
-										style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'linux'"><i
-										class="fa fa fa-linux" aria-hidden="true"
-										style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'android'"><i
-										class="fa fa-android" aria-hidden="true"
-										style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == null">-</td>
-									<td><h6>{{item.viewsCount }}</h6></td>
-								</tr>
-							</tbody>
-						</table>
-						<!--pager here  -->
-			 			<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-	                       </li>
-	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-	                        </li>
-	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, 'donutCampaign')">{{page}}</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-	                        </li>
-	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.totalPages, 'donutCampaign')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-	                        </li>
-	                    </ul>
-						<!-- pager end here -->
-					</div>
-			<!-- 	</div> -->
+								<td>
+									<h6>{{item.campaignName}}</h6>
+								</td>
+								<td>
+									<h6>{{item.location }}</h6>
+								</td>
+								<td>
+									<h6>{{item.time | date: 'fullDate'}}</h6>
+								</td>
+								<!-- <td><h6>{{item.deviceType }}</h6></td> -->
+								<td class="center" *ngIf="item.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'mac' || item.os =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td class="center" *ngIf="item.os == null">-</td>
+								<td>
+									<h6>{{item.viewsCount }}</h6>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<!--pager here  -->
+					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+							<a (click)="setPage(pagination.pager.currentPage - 1, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+						</li>
+						<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+							<a (click)="setPage(page, 'donutCampaign')">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.currentPage + 1, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.totalPages, 'donutCampaign')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+						</li>
+					</ul>
+					<!-- pager end here -->
+				</div>
+				<!-- 	</div> -->
 			</div>
 		</div>
 	</div>
 </div>
 
 <!-- watched campaign world user info  -->
-<div class="modal fade" id="worldMapModal" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
-	data-backdrop="static">
-	<div class="modal-dialog" role="document"
-		style="width: 80%; margin: 1em auto">
+<div class="modal fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+ data-backdrop="static">
+	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="m0">People who have watched video</h4>
-			<div class="btn-group pull-right"
-				style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -10px;padding-right: 0px;margin-right: 15px; float:right;">
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -10px;padding-right: 0px;margin-right: 15px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadEmailLogs()"> Export To Excel </a></li>
-				</ul>
-			</div>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
@@ -821,12 +789,11 @@
 								<th class="headerCss center">NAME</th>
 								<th class="headerCss center">DATE & TIME</th>
 								<th class="headerCss center">DEVICE</th>
-							    <th class="headerCss center">LOCATION</th>
+								<th class="headerCss center">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr
-								*ngFor="let emailClicked of worldMapUserData;let i = index">
+							<tr *ngFor="let emailClicked of worldMapUserData;let i = index">
 								<td>
 									<div class="flex">
 										<span class='profile' style="background-color: #3598dc;">
@@ -840,52 +807,42 @@
 										</span>
 									</div>
 								</td>
-								<td style="text-align: center"><h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'windows'"><i
-									class="fa fa-windows" aria-hidden="true"
-									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'mac' || emailClicked.deviceType=='iphone'"><i
-									class="fa fa fa-apple" aria-hidden="true"
-									style="color: green; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'linux' "><i
-									class="fa fa fa-linux" aria-hidden="true"
-									style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'android'"><i
-									class="fa fa-android" aria-hidden="true"
-									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'computer'"><i
-									class="fa fa-desktop" aria-hidden="true"
-									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center"
-									*ngIf="emailClicked.deviceType == null">
+								<td style="text-align: center">
+									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+								</td>
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'mac' || emailClicked.deviceType=='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'linux' "><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+								<td class="center" *ngIf="emailClicked.deviceType == null">
 									-</td>
-								<td style="text-align: center"><h5>{{emailClicked.location}}</h5></td>
+								<td style="text-align: center">
+									<h5>{{emailClicked.location}}</h5>
+								</td>
 							</tr>
 						</tbody>
 					</table>
 					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                          <a (click)="setPage(1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-	                       </li>
-	                       <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" >
-	                           <a (click)="setPage(pagination.pager.currentPage - 1, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-	                        </li>
-	                        <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-	                           <a (click)="setPage(page, 'coutrywiseUsers')">{{page}}</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.currentPage + 1, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-	                        </li>
-	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                            <a (click)="setPage(pagination.pager.totalPages, 'coutrywiseUsers')"  [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-	                        </li>
-	                    </ul>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+							<a (click)="setPage(1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+							<a (click)="setPage(pagination.pager.currentPage - 1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+						</li>
+						<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+							<a (click)="setPage(page, 'coutrywiseUsers')">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.currentPage + 1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+						</li>
+						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
+							<a (click)="setPage(pagination.pager.totalPages, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<!-- <button type="button" class="btn btn-default"
-					(click)="downloadEmailLogs()"
-					style="background-color: #eae8e8;">export to excel</button> -->
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
 			</div>
 		</div>

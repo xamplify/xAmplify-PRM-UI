@@ -90,7 +90,7 @@
 						</div>
 						<div class="col-xs-6 col-sm-4 text-center"  (click)="watchedFullyDetailReport(videoFile.id)">
 							<section class="percentage-circle" style="margin-top: 15px;cursor: pointer">
-							<app-donut-chart [percentageValue]="videoFile.watchedFully" [totalValue]="videoFile.watchedFully"></app-donut-chart>
+							<app-donut-chart [percentageValue]="videoFile.watchedFully" [totalValue]="100"></app-donut-chart>
 							  <h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{videoFile.watchedFully}}%</h2>
                             </section>
 							<h5 class="views-report-heading" style="margin-top: 49px;">Watched Fully</h5>

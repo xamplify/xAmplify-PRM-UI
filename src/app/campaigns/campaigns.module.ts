@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { CampaignsRoutingModule } from './campaigns-routing.module';
-
+import { CommonComponentModule} from '../common/common.module';
 
 import { ManagePublishComponent } from './manage-publish/manage-publish.component';
 import { SelectCampaignTypeComponent } from './select-campaign-type/select-campaign-type.component';
@@ -16,10 +16,10 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.component';
-//import {CkEditor} from "../campaigns/ck-editor.directive";
-@NgModule( {
 
-    imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule],
+@NgModule({
+
+    imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule, CommonComponentModule],
     declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent/*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
