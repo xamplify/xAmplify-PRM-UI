@@ -57,7 +57,7 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
-    getUsersMinutesWatchedInfo(timePeriod: string, videoId: number, timePeriodValue: any, userId: number, pagination: Pagination) {
+    getUsersMinutesWatchedDetailReports(timePeriod: string, videoId: number, timePeriodValue: any, userId: number, pagination: Pagination) {
         try {
             const url = this.authenticationService.REST_URL + 'videos/' + timePeriod + '/views-minuteswatched-detail-report?userId=' + userId + '&videoId='
                 + videoId + '&timePeriodValue=' + timePeriodValue + '&access_token=' + this.authenticationService.access_token;

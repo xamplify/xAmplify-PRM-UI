@@ -2,11 +2,13 @@
 	.disabled {
 		pointer-events: none;
 	}
+
 	.center {
 		text-align: center;
 	}
+
 	.headerCss {
-		font-size: 12px; 
+		font-size: 12px;
 		font-weight: 500;
 	}
 </style>
@@ -49,9 +51,9 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td  class="center">{{videoTitle}}</td>
-							<td  class="center">{{views}}</td>
-							<td  class="center">{{date}}</td>
+							<td class="center">{{videoTitle}}</td>
+							<td class="center">{{views}}</td>
+							<td class="center">{{date}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -64,14 +66,12 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			<div class="btn-group pull-right"
-				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+			<div class="btn-group pull-right" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px;margin-right: 21px; float:right;padding-left: 10px;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadLogs()"> Export To Excel </a></li>
+					<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
 				</ul>
 			</div>
 		</div>
@@ -79,54 +79,39 @@
 			<table class='table tgrid' id="sample_editable_1">
 				<thead>
 					<tr>
-						<th  class="headerCss center">NAME</th>
-						<th  class="headerCss center">TITLE</th>
-						<th  class="headerCss center">VIEWS</th>
-						<th  class="headerCss center">DATE</th>
-						<th  class="headerCss center">DEVICE</th>
-						<th  class="headerCss center">LOCATION</th>
+						<th class="headerCss center">NAME</th>
+						<th class="headerCss center">TITLE</th>
+						<th class="headerCss center">VIEWS</th>
+						<th class="headerCss center">DATE</th>
+						<th class="headerCss center">DEVICE</th>
+						<th class="headerCss center">LOCATION</th>
 					</tr>
 				</thead>
 				<tbody>
 					<ng-container *ngFor="let videoViews of videoViewsLevelTwo; let i = index">
 						<tr>
-						<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
+							<td>
+								<div class="flex">
+									<span class='profile' style="background-color: #3598dc;">
 											<span class='uppercase'>{{videoViews.firstName |
 												slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
+									</span> <span style="margin-left: 20px;">
 											<h5  style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
 											<h6 class='m0'>
-												<a href={{videoViews.name}}>{{videoViews.name}}</a>
+												<a>{{videoViews.emailId}}</a>
 											</h6>
 										</span>
-									</div>
-								</td>
-							<td  class="center">{{videoViews.videoTitle}}</td>
-							<td  class="center">{{videoViews.views}}</td>
-							<td  class="center">{{videoViews.date}}</td>
-							 <td class="center"
-									*ngIf="videoViews.device == 'computer'"><i
-									class="fa fa-desktop" aria-hidden="true"
-									style="color: #0085d5; font-size: 18px !important"></i></td>
-							 <td class="center"
-									*ngIf="videoViews.device == 'windows'"><i
-									class="fa fa-windows" aria-hidden="true"
-									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center"
-									*ngIf="videoViews.device == 'mac' || videoViews.device =='iphone'"><i
-									class="fa fa fa-apple" aria-hidden="true"
-									style="color: green; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="videoViews.device == 'linux'"><i
-									class="fa fa fa-linux" aria-hidden="true"
-									style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center"
-									*ngIf="videoViews.device == 'android'"><i
-									class="fa fa-android" aria-hidden="true"
-									style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="videoViews.device == null">-</td>
+								</div>
+							</td>
+							<td class="center">{{videoViews.videoTitle}}</td>
+							<td class="center">{{videoViews.views}}</td>
+							<td class="center">{{videoViews.date}}</td>
+							<td class="center" *ngIf="videoViews.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+							<td class="center" *ngIf="videoViews.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
+							<td class="center" *ngIf="videoViews.device == 'mac' || videoViews.device =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
+							<td class="center" *ngIf="videoViews.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
+							<td class="center" *ngIf="videoViews.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
+							<td class="center" *ngIf="videoViews.device == null">-</td>
 							<td class="center">{{videoViews.location}}</td>
 						</tr>
 					</ng-container>

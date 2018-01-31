@@ -475,7 +475,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         console.log(this.dropdownValue + 'and inner data' + this.minutesinnerSort);
         this.clickedMinutesWatchedTotalList(userId);
         this.userId = userId;
-        this.videoBaseReportService.getUsersMinutesWatchedInfo(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
+        this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
             subscribe(
             data => {
                 console.log(data);
@@ -631,7 +631,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.reportsPagination.maxResults = 500000;
         this.downloadTypeName = 'clickedMenetsWatched';
         this.userId = userId;
-        this.videoBaseReportService.getUsersMinutesWatchedInfo(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.reportsPagination).
+        this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.reportsPagination).
             subscribe(
             data => {
                 console.log(data);
