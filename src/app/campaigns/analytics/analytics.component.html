@@ -495,7 +495,7 @@
 									<td class="center" *ngIf="item.os == 'windows'"><i
 										class="fa fa-windows" aria-hidden="true"
 										style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'mac'"><i
+									<td class="center" *ngIf="item.os == 'mac' || item.os == 'iphone'"><i
 										class="fa fa fa-apple" aria-hidden="true"
 										style="color: green; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.os == 'linux'"><i
@@ -751,7 +751,7 @@
 									<td class="center" *ngIf="item.os == 'windows'"><i
 										class="fa fa-windows" aria-hidden="true"
 										style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'mac'"><i
+									<td class="center" *ngIf="item.os == 'mac' || item.os =='iphone'"><i
 										class="fa fa fa-apple" aria-hidden="true"
 										style="color: green; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.os == 'linux'"><i
@@ -843,7 +843,7 @@
 								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'windows'"><i
 									class="fa fa-windows" aria-hidden="true"
 									style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'mac'"><i
+								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'mac' || emailClicked.deviceType=='iphone'"><i
 									class="fa fa fa-apple" aria-hidden="true"
 									style="color: green; font-size: 22px !important"></i></td>
 								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'linux' "><i
