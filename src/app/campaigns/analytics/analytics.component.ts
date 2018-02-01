@@ -57,6 +57,7 @@ export class AnalyticsComponent implements OnInit {
   countryCode: string;
   campaignTypeValue: string;
   firstName: string;
+  isPartnerCampaign:string;
   
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -497,6 +498,9 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaign = data;
+        if(this.campaign.channelCampaign === true){
+          this.isPartnerCampaign = '(PARTNER)';
+        } else { this.isPartnerCampaign = '';}
         console.log(this.campaign);
       },
       error => console.log(error),
