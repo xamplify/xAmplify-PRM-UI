@@ -213,9 +213,9 @@ export class ManagePartnersComponent implements OnInit {
         window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
     }
 
-    setPage( page: number, ) {
-        this.pagination.pageIndex = page;
-        this.loadPartnerList( this.pagination );
+    setPage( event: any ) {
+            this.pagination.pageIndex = event.page;
+            this.loadPartnerList( this.pagination );
     }
 
     addRow() {
