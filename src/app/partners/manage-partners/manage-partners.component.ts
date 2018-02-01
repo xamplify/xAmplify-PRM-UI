@@ -221,8 +221,6 @@ export class ManagePartnersComponent implements OnInit {
     addRow() {
         $( "#addPartnerModal .close" ).click()
         this.newPartnerUser.push( this.addPartnerUser );
-
-
         this.selectedAddPartnerOption = 1;
         this.fileTypeError = false;
         this.isContactsThere = false;
@@ -833,7 +831,7 @@ export class ManagePartnersComponent implements OnInit {
             this.newPartnerUser = this.socialPartners.contacts;
             this.saveValidEmails();
         } else
-            this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
+            this.xtremandLogger.error( "ManagePartnerComponent saveGoogleContacts() Contacts Null Error" );
     }
 
     saveGoogleContactSelectedUsers() {
@@ -843,7 +841,7 @@ export class ManagePartnersComponent implements OnInit {
             this.saveValidEmails();
         }
         else {
-            this.xtremandLogger.error( "AddContactComponent saveGoogleContactSelectedUsers() ContactListName Error" );
+            this.xtremandLogger.error( "ManagePartnerComponent saveGoogleContactSelectedUsers() ContactListName Error" );
         }
     }
 

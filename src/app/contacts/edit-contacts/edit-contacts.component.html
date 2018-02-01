@@ -617,32 +617,6 @@
 							</div>
 							<!-- END EXAMPLE TABLE PORTLET-->
 							<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"></app-pagination>
-							<!-- <ul
-								*ngIf="pagination.pager.pages && pagination.pager.pages.length"
-								class="pagination m0">
-								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-									<a (click)="setPage(1)"
-									[class.disabled]="pagination.pager.currentPage === 1">First</a>
-								</li>
-								<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-									<a (click)="setPage(pagination.pager.currentPage - 1)"
-									[class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-								</li>
-								<li *ngFor="let page of pagination.pager.pages"
-									[ngClass]="{active:pagination.pager.currentPage === page}"><a
-									(click)="setPage(page)"
-									[class.disabled]="pagination.pager.currentPage === page">{{page}}</a></li>
-								<li
-									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-									<a (click)="setPage(pagination.pager.currentPage + 1)"
-									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-								</li>
-								<li
-									[ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-									<a (click)="setPage(pagination.pager.totalPages)"
-									[class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-								</li>
-							</ul> -->
 							<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
 								style="left: -4px;">
 								<select class="form-control"
@@ -796,40 +770,6 @@
 						</div>
 						<!--pager here  -->
 						<app-pagination [pagination]="contactsByType.pagination" [type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"></app-pagination>
-						<!-- <ul
-							*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
-							class="pagination m0">
-							<li
-								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-								<a
-								(click)="setPageForListContactsByType(1,contactsByType.selectedCategory)"
-								[class.disabled]="contactsByType.pagination.pager.currentPage === 1">First</a>
-							</li>
-							<li
-								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-								<a
-								(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage - 1,contactsByType.selectedCategory)"
-								[class.disabled]="contactsByType.pagination.pager.currentPage === 1">Previous</a>
-							</li>
-							<li *ngFor="let page of contactsByType.pagination.pager.pages"
-								[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
-								<a
-								(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)"
-								[class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
-							</li>
-							<li
-								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-								<a
-								(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage + 1,contactsByType.selectedCategory)"
-								[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Next</a>
-							</li>
-							<li
-								[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-								<a
-								(click)="setPageForListContactsByType(contactsByType.pagination.pager.totalPages,contactsByType.selectedCategory)"
-								[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
-							</li>
-						</ul> -->
 						<div class="btn-group pull-right" style="left: -4px;">
 							<select class="form-control"
 								[(ngModel)]="sortOptionForPagination"
