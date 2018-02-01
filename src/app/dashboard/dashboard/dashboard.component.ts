@@ -704,8 +704,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    setPage(page: number) {
-        this.pagination.pageIndex = page;
+    setPage(event:any) {
+        this.pagination.pageIndex = event.page;
         if (this.paginationType === 'open') {
             this.listOfEmailOpenLogs(13);
         } else if (this.paginationType === 'clicked') {
