@@ -149,17 +149,16 @@ font-size: 16px;
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4">
-										<button class="btn-info fileinput-button btn-block" id="uploadCSV"
+										<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px"
 											[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-											<i class="fa fa-file-excel-o"></i>
-											<span>Upload a	CSV</span>
+											<i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
+											<span style="display:block; font-size:12px; text-align:center">Upload a	CSV</span>
 											<input type="file" ng2FileSelect
 												*ngIf="uploader.queue.length==0" [uploader]="uploader"
 												title=" " (change)="fileChange(input)" accept=".csv" #input
 												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
-										</button>
+										</div>
 									</div>
-								
 
 								<!-- The global file processing state -->
 								<span class="fileupload-process"> </span>
