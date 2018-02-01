@@ -158,8 +158,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         if (title.length > 22) { title = title.substring(0, 21) + '...'; }
         return title;
     }
-    setPage(page: number) {
-        this.pagination.pageIndex = page;
+    setPage(event:any) {
+        console.log(event.page, event.type);
+        this.pagination.pageIndex = event.page;
         this.loadVideos(this.pagination);
         this.defaultBannerMessageValues();
     }

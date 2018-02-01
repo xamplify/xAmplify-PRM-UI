@@ -546,6 +546,8 @@ export class AnalyticsComponent implements OnInit {
     this.barChartCliked = false;
     this.donultModelpopupTitle = '';
     this.emailLogPagination = new Pagination();
+    this.campaignViewsPagination = new Pagination();
+    this.campaignViewsPagination.pageIndex = 1;
   }
 
   campaignViewsDonut(timePeriod: string, pagination) {

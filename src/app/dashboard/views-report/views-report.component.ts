@@ -141,7 +141,9 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.logger.error('erro in load videos :' + error);
         }
     };
-    setPage(page: number, type: string) {
+    setPage(event: any) {
+        const page = event.page;
+        const type = event.type;
         if(type==='viewsReport'){
         this.pagination.pageIndex = page;
         this.loadVideos(this.pagination);
