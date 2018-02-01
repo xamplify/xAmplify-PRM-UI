@@ -59,3 +59,15 @@
 .viewsh4{
     color: #777;font-weight: 500;margin: 5px;
 }
+.bottomCss {
+    bottom: -183px;
+}
+
+.imagePath {
+    height: 111px;
+    width: 100%;
+}
+
+.is360video {
+    z-index: 900;
+}

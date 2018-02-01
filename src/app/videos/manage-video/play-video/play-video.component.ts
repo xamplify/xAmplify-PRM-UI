@@ -533,8 +533,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.xtremandLogger.error('erro in load All videos :' + error);
         }
     }
-    setPage(page: number) {
-            this.pagination.pageIndex = page;
+    setPage(event:any) {
+            this.pagination.pageIndex = event.page;
             this.loadAllVideos(this.pagination);
     }
     defaultVideoOptions() {
