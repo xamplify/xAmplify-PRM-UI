@@ -101,8 +101,8 @@ export class ChartReportComponent implements OnInit, OnDestroy {
        console.log(err);
     }
   }
-  setPage(page:number){
-    this.pagination.pageIndex = page;
+  setPage(event: any){
+    this.pagination.pageIndex = event.page;
     this.videoViewsBarChartLevelTwo();
   }
   monthlyViewsBarCharts(dates, views) {
