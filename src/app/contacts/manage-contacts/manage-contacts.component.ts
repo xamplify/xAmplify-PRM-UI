@@ -270,11 +270,17 @@ export class ManageContactsComponent implements OnInit {
             )
     }
 
-    setPage( page: number, ) {
-        this.pagination.pageIndex = page;
-        if ( this.currentContactType == null )
+    setPage( event: any ) {
+        if ( event.type == 'contacts' ) {
+            this.pagination.pageIndex = event.page;
             this.loadContactLists( this.pagination );
+        }
+        else {
+            this.contactsByType.pagination.pageIndex = event.page;
+            this.listContactsByType( event.type );
+        }
     }
+
 
     deleteContactList( contactListId: number ) {
         this.xtremandLogger.info( "MangeContacts deleteContactList : " + contactListId );
@@ -914,11 +920,6 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.isLoading = false;
             }
             );
-    }
-
-    setPageForListContactsByType( pageNumber: number, contactType: string ) {
-        this.contactsByType.pagination.pageIndex = pageNumber;
-        this.listContactsByType( contactType );
     }
 
     resetListContacts() {
