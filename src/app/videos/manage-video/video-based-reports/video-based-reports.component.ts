@@ -55,15 +55,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     videoSkippedDurationTotalList: any;
     videoPlayedDurationTotalList: any;
     nonApplicableUsersMinutes: any;
-    nonApplicableUsersViews:any;
+    nonApplicableUsersViews: any;
     videoPlayedPagination: Pagination = new Pagination();
     reportsPagination: Pagination = new Pagination();
     countryCode: string;
     downloadTypeName = '';
     downloadCsvList: any;
     downloadDataList = [];
-    worldMapCampaignUsersInfo: any; 
-    worldMapCampaignUsersTotalData: any; 
+    worldMapCampaignUsersInfo: any;
+    worldMapCampaignUsersTotalData: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -345,7 +345,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
                 // if (this.watchedFullyReportData.length > 0) {
-                    $('#watchedFullyModelPopup').modal('show');
+                $('#watchedFullyModelPopup').modal('show');
                 // }
             },
             (err: any) => { console.log(err); })
@@ -411,7 +411,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 series: {
                     events: {
                         click: function (e) {
-                           // alert(e.point.name + ', views:' + e.point.value);
+                            // alert(e.point.name + ', views:' + e.point.value);
                             self.getCampaignCoutryViewsDetailsReport(e.point['hc-key']);
                         }
                     }
@@ -491,7 +491,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    setPage(page: number, type: string) {
+    setPage(event:any) {
+        const page = event.page;
+        const type = event.type;
         console.log()
         if (type === 'userMinutesWatched') {
             this.pagination.pageIndex = page;
@@ -508,7 +510,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         else if (type === 'videoSkipped') {
             this.pagination.pageIndex = page;
             this.videoSkippedDurationInfo();
-        }else if(type === 'coutrywiseUsers'){
+        } else if (type === 'coutrywiseUsers') {
             this.pagination.pageIndex = page;
             this.getCampaignCoutryViewsDetailsReport(this.countryCode);
         }
@@ -565,7 +567,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
-    
+
     nonApplicableUsersMinutesWatched() {
         this.videoBaseReportService.nonApplicableUsersMinutes(this.selectedVideo.id).subscribe(
             (result: any) => {
@@ -579,43 +581,43 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
-    getCampaignCoutryViewsDetailsReport(countryCode:string){
-         this.countryCode = countryCode.toUpperCase();
-         this.downloadTypeName = 'worldMapData';
-         this.getCampaignCoutryViewsDetailsTotalReport(countryCode);
-         this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id,this.countryCode, this.pagination).
-         subscribe(
+    getCampaignCoutryViewsDetailsReport(countryCode: string) {
+        this.countryCode = countryCode.toUpperCase();
+        this.downloadTypeName = 'worldMapData';
+        this.getCampaignCoutryViewsDetailsTotalReport(countryCode);
+        this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id, this.countryCode, this.pagination).
+            subscribe(
             (result: any) => {
                 console.log(result);
                 this.worldMapCampaignUsersInfo = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
-                if(this.worldMapCampaignUsersInfo.length > 0){
+                if (this.worldMapCampaignUsersInfo.length > 0) {
                     $('#worldMapModal').modal('show');
                 }
             },
             error => {
                 this.xtremandLogger.error(error);
             }
-        );
+            );
     }
-    
-    getCampaignCoutryViewsDetailsTotalReport(countryCode:string){
+
+    getCampaignCoutryViewsDetailsTotalReport(countryCode: string) {
         this.countryCode = countryCode.toUpperCase();
         this.reportsPagination.maxResults = 500000;
         this.downloadTypeName = 'worldMapData';
-        this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id,this.countryCode, this.reportsPagination).
-        subscribe(
-           (result: any) => {
-               console.log(result);
-               this.worldMapCampaignUsersTotalData = result.data;
-           },
-           error => {
-               this.xtremandLogger.error(error);
-           }
-       );
-   }
-   
+        this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id, this.countryCode, this.reportsPagination).
+            subscribe(
+            (result: any) => {
+                console.log(result);
+                this.worldMapCampaignUsersTotalData = result.data;
+            },
+            error => {
+                this.xtremandLogger.error(error);
+            }
+            );
+    }
+
     watchedFullyTotalReport() {
         this.reportsPagination.maxResults = 500000;
         this.downloadTypeName = 'watchedFully';
@@ -626,7 +628,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             (err: any) => { console.log(err); })
     }
-    
+
     clickedMinutesWatchedTotalList(userId: any) {
         this.reportsPagination.maxResults = 500000;
         this.downloadTypeName = 'clickedMenetsWatched';
@@ -642,10 +644,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    
+
     videoSkippedDurationTotalInfo() {
         this.reportsPagination.maxResults = 50000000;
-       // this.downloadTypeName = 'skippedDuration';
+        // this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -670,7 +672,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
-      convertToCSV(objArray) {
+    convertToCSV(objArray) {
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         var str = '';
         var row = "";
@@ -695,97 +697,97 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         return str;
     }
 
-      downloadLogs() {
-          let logListName: string;
-          if ( this.downloadTypeName === 'minetesWatched' ) {
-              logListName = 'Minetes_Views_Logs.csv';
-              this.downloadCsvList = this.totalUsersWatched;
-          }else if ( this.downloadTypeName === 'watchedFully' ) {
-              logListName = 'Fully_Watched_Logs.csv';
-              this.downloadCsvList = this.watchedFullyTotalReportList;
-          }  else if ( this.downloadTypeName === 'worldMapData' ) {
-              logListName = 'country_Wise_Logs.csv';
-              this.downloadCsvList = this.worldMapCampaignUsersTotalData;
-          } else if ( this.downloadTypeName === 'clickedMenetsWatched' ) {
-              logListName = 'Clicked_Menetes_logs.csv';
-              this.downloadCsvList = this.userMinutesWatchedTotalList;
-          }
-          else if ( this.downloadTypeName === 'playedDuration' ) {
-              logListName = 'Played_Duration_logs.csv';
-              this.downloadCsvList = this.videoPlayedDurationTotalList;
-          }
-          else if ( this.downloadTypeName === 'skippedDuration' ) {
-              logListName = 'Skipped_Duration_logs.csv';
-              this.downloadCsvList = this.videoSkippedDurationTotalList;
-          }
-          
-          this.downloadDataList.length = 0;
-          for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
-              let date = new Date( this.downloadCsvList[i].date );
-              let time = new Date( this.downloadCsvList[i].time );
-              let endTime = new Date( this.downloadCsvList[i].endTime );
-              
-              var object = {
-                      "First Name": this.downloadCsvList[i].firstName,
-                      "Last Name": this.downloadCsvList[i].lastName,
-              }
+    downloadLogs() {
+        let logListName: string;
+        if (this.downloadTypeName === 'minetesWatched') {
+            logListName = 'Minetes_Views_Logs.csv';
+            this.downloadCsvList = this.totalUsersWatched;
+        } else if (this.downloadTypeName === 'watchedFully') {
+            logListName = 'Fully_Watched_Logs.csv';
+            this.downloadCsvList = this.watchedFullyTotalReportList;
+        } else if (this.downloadTypeName === 'worldMapData') {
+            logListName = 'country_Wise_Logs.csv';
+            this.downloadCsvList = this.worldMapCampaignUsersTotalData;
+        } else if (this.downloadTypeName === 'clickedMenetsWatched') {
+            logListName = 'Clicked_Menetes_logs.csv';
+            this.downloadCsvList = this.userMinutesWatchedTotalList;
+        }
+        else if (this.downloadTypeName === 'playedDuration') {
+            logListName = 'Played_Duration_logs.csv';
+            this.downloadCsvList = this.videoPlayedDurationTotalList;
+        }
+        else if (this.downloadTypeName === 'skippedDuration') {
+            logListName = 'Skipped_Duration_logs.csv';
+            this.downloadCsvList = this.videoSkippedDurationTotalList;
+        }
 
-              if ( this.downloadTypeName === 'minetesWatched' ) {
-                  object["Email Id"] = this.downloadCsvList[i].name;
-                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                  object["Device"] = this.downloadCsvList[i].device;
-                  object["Location"] = this.downloadCsvList[i].location;
-              } 
-              else if ( this.downloadTypeName === 'watchedFully' ) {
-                  object["Email Id"] = this.downloadCsvList[i].name;
-                  object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                  object["Device"] = this.downloadCsvList[i].device;
-                  object["Location"] = this.downloadCsvList[i].location;
-              }
-              else if ( this.downloadTypeName === 'worldMapData' ) {
-                  object["Email Id"] = this.downloadCsvList[i].emailId;
-                  object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-                  object["Date and Time"] = time.toDateString() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
-                  object["Device"] = this.downloadCsvList[i].os;
-                  object["City"] = this.downloadCsvList[i].city;
-                  object["Country"] = this.downloadCsvList[i].country;
-              }
-              else if ( this.downloadTypeName === 'clickedMenetsWatched' ) {
-                  object["Name"] = this.downloadCsvList[i].name;
-                  object["Video Title"] = this.downloadCsvList[i].videoTitle;
-                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                  object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
-                  object["Device"] = this.downloadCsvList[i].device;
-                  object["Location"] = this.downloadCsvList[i].location;
-              }
-              else if ( this.downloadTypeName === 'playedDuration' ) {
-                  object["Email Id"] = this.downloadCsvList[i].name;
-                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                  object["Device"] = this.downloadCsvList[i].device;
-              }
-              else if ( this.downloadTypeName === 'skippedDuration' ) {
-                  object["Email Id"] = this.downloadCsvList[i].name;
-                  object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                  object["Device"] = this.downloadCsvList[i].device;
-              }
-              
-            
-              this.downloadDataList.push( object );
-          }
-          var csvData = this.convertToCSV( this.downloadDataList );
-          var a = document.createElement( "a" );
-          a.setAttribute( 'style', 'display:none;' );
-          document.body.appendChild( a );
-          var blob = new Blob( [csvData], { type: 'text/csv' });
-          var url = window.URL.createObjectURL( blob );
-          a.href = url;
-          a.download = logListName;
-          a.click();
-          return 'success';
-      }
-    
-    
+        this.downloadDataList.length = 0;
+        for (let i = 0; i < this.downloadCsvList.length; i++) {
+            let date = new Date(this.downloadCsvList[i].date);
+            let time = new Date(this.downloadCsvList[i].time);
+            let endTime = new Date(this.downloadCsvList[i].endTime);
+
+            var object = {
+                "First Name": this.downloadCsvList[i].firstName,
+                "Last Name": this.downloadCsvList[i].lastName,
+            }
+
+            if (this.downloadTypeName === 'minetesWatched') {
+                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Device"] = this.downloadCsvList[i].device;
+                object["Location"] = this.downloadCsvList[i].location;
+            }
+            else if (this.downloadTypeName === 'watchedFully') {
+                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Device"] = this.downloadCsvList[i].device;
+                object["Location"] = this.downloadCsvList[i].location;
+            }
+            else if (this.downloadTypeName === 'worldMapData') {
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+                object["Date and Time"] = time.toDateString() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+                object["Device"] = this.downloadCsvList[i].os;
+                object["City"] = this.downloadCsvList[i].city;
+                object["Country"] = this.downloadCsvList[i].country;
+            }
+            else if (this.downloadTypeName === 'clickedMenetsWatched') {
+                object["Name"] = this.downloadCsvList[i].name;
+                object["Video Title"] = this.downloadCsvList[i].videoTitle;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
+                object["Device"] = this.downloadCsvList[i].device;
+                object["Location"] = this.downloadCsvList[i].location;
+            }
+            else if (this.downloadTypeName === 'playedDuration') {
+                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Device"] = this.downloadCsvList[i].device;
+            }
+            else if (this.downloadTypeName === 'skippedDuration') {
+                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Device"] = this.downloadCsvList[i].device;
+            }
+
+
+            this.downloadDataList.push(object);
+        }
+        var csvData = this.convertToCSV(this.downloadDataList);
+        var a = document.createElement("a");
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = logListName;
+        a.click();
+        return 'success';
+    }
+
+
     ngOnInit() {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;

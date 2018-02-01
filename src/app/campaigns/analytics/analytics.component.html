@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<div class="portlet-body text-center">
-					<div id="world-map" style="max-width: 100%; min-height: 282px;"></div>
+					<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
 				</div>
 			</div>
 		</div>
@@ -148,7 +148,7 @@
 						<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 					</div>
 				</div>
-				<div class="portlet-body flex" style="padding: 1em 0;">
+				<div class="portlet-body flex" style="padding: 1.7em 0;">
 					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.lifetimeViewsCount < 1 ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>

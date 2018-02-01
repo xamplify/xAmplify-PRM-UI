@@ -1,14 +1,3 @@
-<style>
-	.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
-
-	.headerCss {
-		font-size: 12px;
-		font-weight: 500;
-	}
-</style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light">
@@ -48,9 +37,9 @@
 					</div>
 					<div class="col-xs-12 col-md-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
 						<section class="percentage-circle" style="margin-top: 15px;cursor: pointer">
-						<app-donut-chart [percentageValue]="watchedFully" [totalValue]="100"></app-donut-chart>
-						  <h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{watchedFully}}%</h2>
-					    </section>
+							<app-donut-chart [percentageValue]="watchedFully" [totalValue]="100"></app-donut-chart>
+							<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{watchedFully}}%</h2>
+						</section>
 						<h5 style="margin-top: 122px;font-weight: 400;">Watched Fully</h5>
 					</div>
 					<div class="col-xs-12 col-md-3 text-center">
@@ -243,24 +232,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(1, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(pagination.pager.currentPage - 1, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-							</li>
-							<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-								<a (click)="setPage(page, 'userMinutesWatched')">{{page}}</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.currentPage + 1, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.totalPages, 'userMinutesWatched')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-							</li>
-						</ul>
-						<!-- pager end here -->
+						<app-pagination [pagination]="pagination" [type]="'userMinutesWatched'" (notifyParent)="setPage($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -335,24 +307,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(1, 'watchedFully')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(pagination.pager.currentPage - 1, 'watchedFully')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-							</li>
-							<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-								<a (click)="setPage(page, 'watchedFully')">{{page}}</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.currentPage + 1, 'watchedFully')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.totalPages, 'watchedFully')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-							</li>
-						</ul>
-						<!-- pager end here -->
+						<app-pagination [pagination]="pagination" [type]="'watchedFully'" (notifyParent)="setPage($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -489,23 +444,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<ul *ngIf="videoPlayedPagination.pager.pages && videoPlayedPagination.pager.pages.length" class="pagination" style="margin: -8px 0;">
-							<li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === 1}">
-								<a (click)="setPage(1, 'videoPlayed')" [class.disabled]="videoPlayedPagination.pager.currentPage === 1">First</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(videoPlayedPagination.pager.currentPage - 1, 'videoPlayed')" [class.disabled]="videoPlayedPagination.pager.currentPage === 1">Previous</a>
-							</li>
-							<li *ngFor="let page of videoPlayedPagination.pager.pages" [ngClass]="{active:videoPlayedPagination.pager.currentPage === page}">
-								<a (click)="setPage(page, 'videoPlayed')">{{page}}</a>
-							</li>
-							<li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages}">
-								<a (click)="setPage(videoPlayedPagination.pager.currentPage + 1, 'videoPlayed')" [class.disabled]="videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages">Next</a>
-							</li>
-							<li [ngClass]="{disabled:videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages}">
-								<a (click)="setPage(videoPlayedPagination.pager.totalPages, 'videoPlayed')" [class.disabled]="videoPlayedPagination.pager.currentPage === videoPlayedPagination.pager.totalPages">Last</a>
-							</li>
-						</ul>
+						<app-pagination [pagination]="videoPlayedPagination" [type]="'videoPlayed'" (notifyParent)="setPage($event)"></app-pagination>
 					</div>
 				</div>
 				<div class="row">
@@ -556,23 +495,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: -8px 0;">
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(1, 'videoSkipped')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-								<a (click)="setPage(pagination.pager.currentPage - 1, 'videoSkipped')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-							</li>
-							<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-								<a (click)="setPage(page, 'videoSkipped')">{{page}}</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.currentPage + 1, 'videoSkipped')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-							</li>
-							<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-								<a (click)="setPage(pagination.pager.totalPages, 'videoSkipped')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-							</li>
-						</ul>
+						<app-pagination [pagination]="pagination" [type]="'videoSkipped'" (notifyParent)="setPage($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -650,23 +573,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-							<a (click)="setPage(1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-						</li>
-						<li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-							<a (click)="setPage(pagination.pager.currentPage - 1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-						</li>
-						<li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-							<a (click)="setPage(page, 'coutrywiseUsers')">{{page}}</a>
-						</li>
-						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-							<a (click)="setPage(pagination.pager.currentPage + 1, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-						</li>
-						<li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-							<a (click)="setPage(pagination.pager.totalPages, 'coutrywiseUsers')" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-						</li>
-					</ul>
+					<app-pagination [pagination]="pagination" [type]="'coutrywiseUsers'" (notifyParent)="setPage($event)"></app-pagination>
 				</div>
 			</div>
 			<div class="modal-footer">
