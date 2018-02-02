@@ -356,7 +356,9 @@ export class AnalyticsComponent implements OnInit {
       )
   }
 
-  setPage(page: number, type: string) {
+  setPage(event:any) {
+    const page = event.page;
+    const type = event.type;
     if (type === 'campaignViews') {
       if (page !== this.campaignViewsPagination.pageIndex) {
         this.campaignViewsPagination.pageIndex = page;
@@ -464,7 +466,10 @@ export class AnalyticsComponent implements OnInit {
     this.campaignService.getTotalTimeSpentofCamapaigns(userId)
       .subscribe(data => {
         console.log(data);
-        this.totalTimeSpent = data;
+        this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
+        if(typeof data === 'number'){
+             this.totalTimeSpent = data;
+        } else { this.totalTimeSpent = 0;}
       },
       error => console.log(error),
       () => { }
@@ -551,6 +556,7 @@ export class AnalyticsComponent implements OnInit {
     this.donultModelpopupTitle = '';
     this.emailLogPagination = new Pagination();
     this.campaignViewsPagination.pageIndex = 1;
+    this.emailActionListPagination.pageIndex = 1;
   }
 
   campaignViewsDonut(timePeriod: string, pagination) {
@@ -752,6 +758,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.emailActionListPagination.pageIndex = 1;
     const userId = this.authenticationService.getUserId();
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
