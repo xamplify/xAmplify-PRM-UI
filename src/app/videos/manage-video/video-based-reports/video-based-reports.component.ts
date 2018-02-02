@@ -160,6 +160,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         minPointLength: 3,
                     },
                     series: {
+                        colorByPoint: true,
                         point: {
                             events: {
                                 click: function () {
@@ -170,7 +171,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         }
                     }
                 },
-                colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce'],
+                colors: ['#2e37d8','#c42dd8','#d82d2d','#d8d52d','#2dd838','#2dd8be','#3D96AE','#b5ca92','#2e37d8','#c42dd8'],
                 credits: {
                     enabled: false
                 },

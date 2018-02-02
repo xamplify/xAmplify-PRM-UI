@@ -137,6 +137,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     }
                     if (!this.isCategoryThere || this.isCategoryUpdated) {
                         this.categories = result.categories;
+                        console.log(this.categories);
                         this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
                     }
                     this.referenceService.loading(this.httpRequestLoader, false);
