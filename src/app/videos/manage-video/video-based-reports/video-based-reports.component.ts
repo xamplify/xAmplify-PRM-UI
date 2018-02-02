@@ -64,6 +64,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     downloadDataList = [];
     worldMapCampaignUsersInfo: any;
     worldMapCampaignUsersTotalData: any;
+    worldMapdataReport: any;
+
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -385,60 +387,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
-    renderWorldMap(countryWiseData: any) {
-        const data = countryWiseData;
-        const self = this;
-        Highcharts.mapChart('world-map', {
-            chart: {
-                map: 'custom/world'
-            },
-            title: {
-                text: ' ',
-                style: {
-                    color: '#696666',
-                    fontWeight: 'normal',
-                    fontSize: '14px'
-                }
-            },
-            exporting: { enabled: false },
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-            plotOptions: {
-                series: {
-                    events: {
-                        click: function (e) {
-                            // alert(e.point.name + ', views:' + e.point.value);
-                            self.getCampaignCoutryViewsDetailsReport(e.point['hc-key']);
-                        }
-                    }
-                }
-            },
-            colorAxis: {
-                min: 0
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                data: data,
-                name: 'Views',
-                states: {
-                    hover: {
-                        color: '#BADA55'
-                    }
-                },
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.name}'
-                }
-            }]
-        });
-
-    }
     getCampaignVideoCountriesAndViews(alias: any) {
         try {
             this.videoBaseReportService.getCampaignVideoCountriesAndViews(alias)
@@ -447,13 +395,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     this.categories = result.video_views_count_data.months;
                     this.campaignViews = result.video_views_count_data.monthlyViews;
                     console.log(result);
-                    this.renderWorldMap(result.video_views_count_data.countrywiseViews);
+                    this.worldMapdataReport = result.video_views_count_data.countrywiseViews;
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);
                     this.xtremandLogger.errorPage(error);
                 });
         } catch (error) { console.log(error); }
+    }
+    clickWorldMapReports(event) {
+        this.getCampaignCoutryViewsDetailsReport(event);
     }
     getWatchedCountInfo(alias: any) {
         try {
@@ -491,7 +442,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    setPage(event:any) {
+    setPage(event: any) {
         const page = event.page;
         const type = event.type;
         console.log()

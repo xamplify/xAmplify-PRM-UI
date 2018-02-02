@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<div class="portlet-body text-center">
-					<div id="world-map" style="max-width: 100%; min-height: 300px;"></div>
+					<app-worldmap *ngIf="renderMapData" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
 				</div>
 			</div>
 		</div>

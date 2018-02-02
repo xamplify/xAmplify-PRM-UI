@@ -120,7 +120,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             $('#sparkline_bar').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
                     region = sparkline.getCurrentRegionFields();
-                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
                 self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "views");
             });
         });
@@ -154,7 +153,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             $('#sparkline_bar2').bind('sparklineClick', function (ev) {
                 const sparkline = ev.sparklines[0],
                     region = sparkline.getCurrentRegionFields();
-                // alert("Clicked on offset=" + offsetValues[region[0].offset] + " having value=" + region[0].value);
                 self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "minutes watched");
             });
         });
@@ -175,63 +173,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             tooltipValueLookups: { 'offset': offsetValues }
         });
     }
-
-    renderWorldMap() {
-        const data = this.countryViewsData;
-        const self = this;
-        Highcharts.mapChart('world-map', {
-            chart: {
-                map: 'custom/world'
-            },
-            exporting: { enabled: false },
-            title: {
-                text: 'The people who have watched the video',
-                style: {
-                    color: '#696666',
-                    fontWeight: 'normal',
-                    fontSize: '14px'
-                }
-            },
-
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-            colorAxis: {
-                min: 0
-            },
-            credits: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    cursor: 'pointer',
-                    events: {
-                        click: function (e) {
-                            console.log(e);
-                            self.getCampaignUsersWatchedInfo(e.point['hc-key']);
-                        }
-                    }
-                }
-            },
-            series: [{
-                data: data,
-                name: 'Views',
-                states: {
-                    hover: {
-                        color: '#BADA55'
-                    }
-                },
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.name}'
-                }
-            }]
-        });
-
-    }
     generatHeatMap(heatMapData) {
         const self = this;
         const data = heatMapData;
@@ -247,7 +188,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                  //  <br>users: <b>' + this.point.totalUsers + '</b>
+                    //  <br>users: <b>' + this.point.totalUsers + '</b>
                     return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
                 }
             },
@@ -392,7 +333,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
-    
+
     getFriends(socialConnection: SocialConnection) {
         this.facebookService.getFriends(socialConnection)
             .subscribe(
@@ -404,16 +345,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => { }
             );
     }
-    
-    getPosts( socialConnection: SocialConnection ) {
-        this.facebookService.getPosts( socialConnection )
-        .subscribe(
+
+    getPosts(socialConnection: SocialConnection) {
+        this.facebookService.getPosts(socialConnection)
+            .subscribe(
             data => {
-                console.log( data );
+                console.log(data);
             },
-            error => console.log( error ),
-            () => console.log( 'getPosts() Finished.' )
-        );
+            error => console.log(error),
+            () => console.log('getPosts() Finished.')
+            );
     }
 
     getWeeklyPosts(socialConnection: SocialConnection) {
@@ -439,7 +380,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     tooltipValueLookups: { 'offset': dates }
 
                 });
-                
+
                 var sum = values.reduce((a, b) => a + b, 0);
                 socialConnection.weeklyPostsCount = sum;
             },
@@ -469,7 +410,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
                     tooltipValueLookups: { 'offset': dates }
                 });
-                
+
                 var sum = values.reduce((a, b) => a + b, 0);
                 socialConnection.weeklyPostsCount = sum;
             },
@@ -480,37 +421,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listActiveSocialAccounts(userId: number) {
         this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
-        .subscribe(
-        data => {
-            this.socialConnections = data;
-            this.socialService.socialConnections = data;
-            this.socialService.setDefaultAvatar(this.socialConnections);
-        },
-        error => console.log(error),
-        () => {
-            if (this.socialConnections.length > 0) {
-                for (const i in this.socialConnections) {
-                    if (this.socialConnections[i].source === 'TWITTER') {
-                        this.getTotalCountOfTFFF(this.socialConnections[i]);
-                        this.getGenderDemographics(this.socialConnections[i]);
-                        this.getWeeklyTweets(this.socialConnections[i]);
-                    } else if(this.socialConnections[i].source === 'FACEBOOK') {
-                        this.getWeeklyPosts(this.socialConnections[i]);
-                        this.getPosts(this.socialConnections[i]);
-                        if(this.socialConnections[i].emailId === null){
-                            this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
-                        }else{
-                            this.getFriends(this.socialConnections[i]);
+            .subscribe(
+            data => {
+                this.socialConnections = data;
+                this.socialService.socialConnections = data;
+                this.socialService.setDefaultAvatar(this.socialConnections);
+            },
+            error => console.log(error),
+            () => {
+                if (this.socialConnections.length > 0) {
+                    for (const i in this.socialConnections) {
+                        if (this.socialConnections[i].source === 'TWITTER') {
+                            this.getTotalCountOfTFFF(this.socialConnections[i]);
+                            this.getGenderDemographics(this.socialConnections[i]);
+                            this.getWeeklyTweets(this.socialConnections[i]);
+                        } else if (this.socialConnections[i].source === 'FACEBOOK') {
+                            this.getWeeklyPosts(this.socialConnections[i]);
+                            this.getPosts(this.socialConnections[i]);
+                            if (this.socialConnections[i].emailId === null) {
+                                this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                            } else {
+                                this.getFriends(this.socialConnections[i]);
+                            }
+
                         }
-                        
                     }
                 }
+                console.log('getFacebookAccounts() Finished.');
             }
-            console.log('getFacebookAccounts() Finished.');
-        }
-        );
+            );
 
-}
+    }
 
     getDefaultPage(userId: number) {
         this.userService.getUserDefaultPage(userId)
@@ -704,7 +645,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    setPage(event:any) {
+    setPage(event: any) {
         this.pagination.pageIndex = event.page;
         if (this.paginationType === 'open') {
             this.listOfEmailOpenLogs(13);
@@ -766,14 +707,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             subscribe(result => {
                 this.countryViewsData = result.countrywiseusers;
                 console.log(this.countryViewsData);
-                this.renderWorldMap();
+                // this.renderWorldMap();
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 this.xtremandLogger.errorPage(error);
             });
     }
-
+    clickWorldMapReports(event: any) {
+        this.getCampaignUsersWatchedInfo(event);
+    }
     getCampaignsHeatMapData() {
         this.dashboardService.getCampaignsHeatMapDetails().
             subscribe(result => {
@@ -904,7 +847,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else if (this.paginationType === 'watched') {
             logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
-        } 
+        }
         this.downloadDataList.length = 0;
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
@@ -937,7 +880,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.click();
         return 'success';
     }
-    
+
     downloadcountryWiseLogs() {
         this.downloadDataList.length = 0;
         this.dashboardReport.downloadEmailLogList = this.worldMapUserData;

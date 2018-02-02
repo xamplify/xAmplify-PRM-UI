@@ -57,8 +57,9 @@ export class AnalyticsComponent implements OnInit {
   countryCode: string;
   campaignTypeValue: string;
   firstName: string;
-  isPartnerCampaign:string;
-  
+  isPartnerCampaign: string;
+  renderMapData: any;
+
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService) {
@@ -73,17 +74,17 @@ export class AnalyticsComponent implements OnInit {
   }
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
-      this.downloadTypeName === 'campaignViews';
-      this.listTotalCampaignViews(campaignId);
-      this.campaignService.listCampaignViews(campaignId, pagination)
+    this.downloadTypeName === 'campaignViews';
+    this.listTotalCampaignViews(campaignId);
+    this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
         this.campaignViews = data.campaignviews;
-         try{
+        try {
           const self = this;
           const obj = this.campaignViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
-         this.firstName = obj.firstName; 
-         } catch(err){ console.log(err); }
+          this.firstName = obj.firstName;
+        } catch (err) { console.log(err); }
         console.log(data);
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
@@ -128,10 +129,26 @@ export class AnalyticsComponent implements OnInit {
   getCountryWiseCampaignViews(campaignId: number) {
     this.campaignService.getCountryWiseCampaignViews(campaignId)
       .subscribe(
-      data => { this.renderMap(data); },
+      (result: any) => {
+        const countryData = result;
+        const data = [];
+        const self = this;
+        if (countryData != null) {
+          for (const i of Object.keys(countryData)) {
+            const arr = [countryData[i][0].toLowerCase(), countryData[i][1]];
+            data.push(arr);
+          }
+          this.renderMapData = data;
+        }
+        // this.renderMap(data);
+      },
       error => console.log(error),
       () => console.log());
   }
+  clickWorldMapReports(event: any) {
+    this.getCampaignUsersWatchedInfo(event);
+  }
+
   campaignViewsCountBarchart(names, data) {
     console.log(names);
     console.log(data);
@@ -207,13 +224,13 @@ export class AnalyticsComponent implements OnInit {
       data => {
         console.log(data);
         this.campaignBarViews = data.campaignviews;
-       // alert(this.selectedRow.userEmail);
+        // alert(this.selectedRow.userEmail);
         const self = this;
-        try{
-         const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
-         console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
-         this.firstName = obj.firstName; 
-        } catch(err){ this.firstName = ''; console.log(err); }
+        try {
+          const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+          console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+          this.firstName = obj.firstName;
+        } catch (err) { this.firstName = ''; console.log(err); }
         const names = [];
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
@@ -230,67 +247,6 @@ export class AnalyticsComponent implements OnInit {
       error => console.log(error),
       () => console.log()
       )
-  }
-  renderMap(worldData: any) {
-    const countryData = worldData;
-    const data = [];
-    const self = this;
-    if (countryData != null) {
-      for (const i of Object.keys(countryData)) {
-        const arr = [countryData[i][0].toLowerCase(), countryData[i][1]];
-        data.push(arr);
-      }
-      // Create the chart
-      Highcharts.mapChart('world-map', {
-        chart: {
-          map: 'custom/world'
-        },
-        title: {
-          text: 'The people who have watched the campaign video',
-          style: {
-            color: '#696666',
-            fontWeight: 'normal',
-            fontSize: '14px'
-          }
-        },
-        mapNavigation: {
-          enabled: true,
-          buttonOptions: {
-            verticalAlign: 'bottom'
-          }
-        },
-        colorAxis: {
-          min: 0
-        },
-        credits: {
-          enabled: false
-        },
-        plotOptions: {
-          series: {
-            events: {
-              click: function (e) {
-               // alert(e.point.name + ', views:' + e.point.value);
-                self.getCampaignUsersWatchedInfo(e.point['hc-key'])
-              }
-            }
-          }
-        },
-        exporting: { enabled: false },
-        series: [{
-          data: data,
-          name: 'Views',
-          states: {
-            hover: {
-              color: '#BADA55'
-            }
-          },
-          dataLabels: {
-            enabled: false,
-            format: '{point.name}'
-          }
-        }]
-      });
-    }
   }
   getCampaignUsersWatchedInfo(countryCode) {
     this.countryCode = countryCode.toUpperCase();
@@ -341,9 +297,9 @@ export class AnalyticsComponent implements OnInit {
   }
 
   usersWatchList(campaignId: number, pagination: Pagination) {
-      this.downloadTypeName === 'usersWatchedList';
-      this.usersWatchTotalList(campaignId, pagination);
-      this.campaignService.usersWatchList(campaignId, pagination)
+    this.downloadTypeName === 'usersWatchedList';
+    this.usersWatchTotalList(campaignId, pagination);
+    this.campaignService.usersWatchList(campaignId, pagination)
       .subscribe(
       data => {
         this.campaignReport.usersWatchList = data.data;
@@ -356,7 +312,7 @@ export class AnalyticsComponent implements OnInit {
       )
   }
 
-  setPage(event:any) {
+  setPage(event: any) {
     const page = event.page;
     const type = event.type;
     if (type === 'campaignViews') {
@@ -390,10 +346,10 @@ export class AnalyticsComponent implements OnInit {
         this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
       }
     }
-    else if(type === 'coutrywiseUsers'){
-      if(page !== this.pagination.pageIndex){
-          this.pagination.pageIndex = page;
-          this.getCampaignUsersWatchedInfo(this.countryCode);
+    else if (type === 'coutrywiseUsers') {
+      if (page !== this.pagination.pageIndex) {
+        this.pagination.pageIndex = page;
+        this.getCampaignUsersWatchedInfo(this.countryCode);
       }
     }
 
@@ -456,9 +412,10 @@ export class AnalyticsComponent implements OnInit {
     if (!this.barChartCliked) {
       this.pagination.pageIndex = 1;
       this.pagination.maxResults = 10;
-      if(this.campaignId === null){
-         this.campaignId = this.route.snapshot.params['campaignId'];}
-         console.log('campaign id : '+this.campaignId);
+      if (this.campaignId === null) {
+        this.campaignId = this.route.snapshot.params['campaignId'];
+      }
+      console.log('campaign id : ' + this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
   }
@@ -467,9 +424,9 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
         this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
-        if(typeof data === 'number'){
-             this.totalTimeSpent = data;
-        } else { this.totalTimeSpent = 0;}
+        if (typeof data === 'number') {
+          this.totalTimeSpent = data;
+        } else { this.totalTimeSpent = 0; }
       },
       error => console.log(error),
       () => { }
@@ -481,18 +438,18 @@ export class AnalyticsComponent implements OnInit {
       this.userCampaignReport.emailClickedCount = 0;
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.barChartCliked = true;
-      try{
-      const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
-      console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
-      this.firstName = obj.firstName;
-      this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
-      this.isTimeLineView = true;
-      }catch(err){
-      console.log(err);
+      try {
+        const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
+        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+        this.firstName = obj.firstName;
+        this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
+        this.isTimeLineView = true;
+      } catch (err) {
+        console.log(err);
       }
     }
   }
-  onchange(firstName: string){
+  onchange(firstName: string) {
     this.firstName = firstName;
     alert(firstName);
   }
@@ -503,9 +460,9 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaign = data;
-        if(this.campaign.channelCampaign === true){
+        if (this.campaign.channelCampaign === true) {
           this.isPartnerCampaign = '(PARTNER)';
-        } else { this.isPartnerCampaign = '';}
+        } else { this.isPartnerCampaign = ''; }
         console.log(this.campaign);
       },
       error => console.log(error),
@@ -518,10 +475,10 @@ export class AnalyticsComponent implements OnInit {
           this.getCampaignWatchedUsersCount(campaignId);
           this.campaignWatchedUsersListCount(campaignId);
         } else if (campaignType.includes('SOCIAL')) {
-            this.campaignType = 'SOCIAL';
+          this.campaignType = 'SOCIAL';
           this.getSocialCampaignByCampaignId(campaignId);
         } else {
-            this.campaignType = 'REGULAR';
+          this.campaignType = 'REGULAR';
         }
       }
       )
@@ -607,53 +564,53 @@ export class AnalyticsComponent implements OnInit {
       () => console.log()
       )
   }
-  
+
   usersWatchTotalList(campaignId: number, pagination: Pagination) {
-      pagination.maxResults = 500000;
-      this.downloadTypeName = 'usersWatchedList';
-      this.campaignService.usersWatchList(campaignId, pagination)
-        .subscribe(
-        data => {
-          this.campaignReport.totalWatchedList = data.data;
-        },
-        error => console.log(error),
-        () => console.log()
-        )
-    }
+    pagination.maxResults = 500000;
+    this.downloadTypeName = 'usersWatchedList';
+    this.campaignService.usersWatchList(campaignId, pagination)
+      .subscribe(
+      data => {
+        this.campaignReport.totalWatchedList = data.data;
+      },
+      error => console.log(error),
+      () => console.log()
+      )
+  }
 
   listTotalCampaignViews(campaignId: number) {
-      this.downloadTypeName === 'campaignViews';
-      this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
-      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
-        .subscribe(
-        data => {
-          this.campaignTotalViewsData = data.campaignviews;
-         try{
+    this.downloadTypeName === 'campaignViews';
+    this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
+    this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
+      .subscribe(
+      data => {
+        this.campaignTotalViewsData = data.campaignviews;
+        try {
           const self = this;
           const obj = this.campaignTotalViewsData.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
-         this.firstName = obj.firstName; 
-         } catch(err){ console.log(err); }
-        },
-        error => console.log(error),
-        () => console.log()
-        )
-    }
-  
+          this.firstName = obj.firstName;
+        } catch (err) { console.log(err); }
+      },
+      error => console.log(error),
+      () => console.log()
+      )
+  }
+
   getCampaignUsersWatchedTotalInfo(countryCode) {
-      this.downloadTypeName = 'worldMap';
-      this.countryCode = countryCode.toUpperCase();
-      this.campaignsWorldMapPagination.maxResults = 500000000;
-      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
-        .subscribe(
-        (data: any) => {
-          console.log(data);
-          this.worldMapUserTotalData = data.data;
-        },
-        error => console.log(error),
-        () => console.log('finished')
-        );
-    }
-  
+    this.downloadTypeName = 'worldMap';
+    this.countryCode = countryCode.toUpperCase();
+    this.campaignsWorldMapPagination.maxResults = 500000000;
+    this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
+      .subscribe(
+      (data: any) => {
+        console.log(data);
+        this.worldMapUserTotalData = data.data;
+      },
+      error => console.log(error),
+      () => console.log('finished')
+      );
+  }
+
   convertToCSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
@@ -675,86 +632,86 @@ export class AnalyticsComponent implements OnInit {
   }
 
   downloadEmailLogs() {
-      let logListName: string;
-      if ( this.downloadTypeName === 'donut' ) {
-          logListName = 'Campaign_Views_Logs.csv';
-          this.downloadCsvList = this.totalListOfemailLog;
-      } else if ( this.downloadTypeName === 'emailAction' ) {
-          logListName = 'Email_Action_Logs.csv';
-          this.downloadCsvList = this.campaignReport.totalEmailActionList;
-      } else if ( this.downloadTypeName === 'usersWatchedList' ) {
-          logListName = 'Users_watched_Logs.csv';
-          this.downloadCsvList = this.campaignReport.totalWatchedList;
-      } else if ( this.downloadTypeName === 'campaignViews' ) {
-          logListName = 'Campaign_report_logs.csv';
-          this.downloadCsvList = this.campaignTotalViewsData;
-      } else if ( this.downloadTypeName === 'worldMap' ) {
-          logListName = 'World_Map_logs.csv';
-          this.downloadCsvList = this.worldMapUserTotalData;
-      }
-      
-      this.downloadDataList.length = 0;
-      for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
-          let date = new Date( this.downloadCsvList[i].time );
-          let startTime = new Date( this.downloadCsvList[i].startTime );
-          let endTime = new Date( this.downloadCsvList[i].endTime );
-          let sentTime = new Date( this.campaign.launchTime );
-          let latestView = new Date( this.downloadCsvList[i].latestView );
-          
-          var object = {
-                  "First Name": this.downloadCsvList[i].firstName,
-                  "Last Name": this.downloadCsvList[i].lastName,
-          }
+    let logListName: string;
+    if (this.downloadTypeName === 'donut') {
+      logListName = 'Campaign_Views_Logs.csv';
+      this.downloadCsvList = this.totalListOfemailLog;
+    } else if (this.downloadTypeName === 'emailAction') {
+      logListName = 'Email_Action_Logs.csv';
+      this.downloadCsvList = this.campaignReport.totalEmailActionList;
+    } else if (this.downloadTypeName === 'usersWatchedList') {
+      logListName = 'Users_watched_Logs.csv';
+      this.downloadCsvList = this.campaignReport.totalWatchedList;
+    } else if (this.downloadTypeName === 'campaignViews') {
+      logListName = 'Campaign_report_logs.csv';
+      this.downloadCsvList = this.campaignTotalViewsData;
+    } else if (this.downloadTypeName === 'worldMap') {
+      logListName = 'World_Map_logs.csv';
+      this.downloadCsvList = this.worldMapUserTotalData;
+    }
 
-          if ( this.downloadTypeName === 'donut' ) {
-              object["Email Id"] = this.downloadCsvList[i].userEmail;
-              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-              object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-              object["Platform"] = this.downloadCsvList[i].os;
-              object["Location"] = this.downloadCsvList[i].location;
-          }
-          
-          if ( this.downloadTypeName === 'campaignViews' ) {
-              object["Email Id"] = this.downloadCsvList[i].userEmail;
-              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-              object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
-              object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
-          }
-          
-          if ( this.downloadTypeName === 'usersWatchedList' ) {
-              object["Email Id"] = this.downloadCsvList[i].emailId;
-              object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
-              object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
-              object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;
-              object["PLATFORM"] = this.downloadCsvList[i].os;
-              object["STATE"] = this.downloadCsvList[i].state;
-              object["COUNTRY"] = this.downloadCsvList[i].country;
-          }
-          
-          if ( this.downloadTypeName === 'emailAction' ) {
-              object["Email Id"] = this.downloadCsvList[i].emailId;
-              object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-          }
-          
-          if ( this.downloadTypeName === 'worldMap' ) {
-              object["Email Id"] = this.downloadCsvList[i].emailId;
-              object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-              object["Device"] = this.downloadCsvList[i].deviceType;
-              object["Location"] = this.downloadCsvList[i].location;
-          }
+    this.downloadDataList.length = 0;
+    for (let i = 0; i < this.downloadCsvList.length; i++) {
+      let date = new Date(this.downloadCsvList[i].time);
+      let startTime = new Date(this.downloadCsvList[i].startTime);
+      let endTime = new Date(this.downloadCsvList[i].endTime);
+      let sentTime = new Date(this.campaign.launchTime);
+      let latestView = new Date(this.downloadCsvList[i].latestView);
 
-          this.downloadDataList.push( object );
+      var object = {
+        "First Name": this.downloadCsvList[i].firstName,
+        "Last Name": this.downloadCsvList[i].lastName,
       }
-      var csvData = this.convertToCSV( this.downloadDataList );
-      var a = document.createElement( "a" );
-      a.setAttribute( 'style', 'display:none;' );
-      document.body.appendChild( a );
-      var blob = new Blob( [csvData], { type: 'text/csv' });
-      var url = window.URL.createObjectURL( blob );
-      a.href = url;
-      a.download = logListName;
-      a.click();
-      return 'success';
+
+      if (this.downloadTypeName === 'donut') {
+        object["Email Id"] = this.downloadCsvList[i].userEmail;
+        object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        object["Platform"] = this.downloadCsvList[i].os;
+        object["Location"] = this.downloadCsvList[i].location;
+      }
+
+      if (this.downloadTypeName === 'campaignViews') {
+        object["Email Id"] = this.downloadCsvList[i].userEmail;
+        object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+        object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
+        object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
+      }
+
+      if (this.downloadTypeName === 'usersWatchedList') {
+        object["Email Id"] = this.downloadCsvList[i].emailId;
+        object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
+        object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
+        object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;
+        object["PLATFORM"] = this.downloadCsvList[i].os;
+        object["STATE"] = this.downloadCsvList[i].state;
+        object["COUNTRY"] = this.downloadCsvList[i].country;
+      }
+
+      if (this.downloadTypeName === 'emailAction') {
+        object["Email Id"] = this.downloadCsvList[i].emailId;
+        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      }
+
+      if (this.downloadTypeName === 'worldMap') {
+        object["Email Id"] = this.downloadCsvList[i].emailId;
+        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        object["Device"] = this.downloadCsvList[i].deviceType;
+        object["Location"] = this.downloadCsvList[i].location;
+      }
+
+      this.downloadDataList.push(object);
+    }
+    var csvData = this.convertToCSV(this.downloadDataList);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = logListName;
+    a.click();
+    return 'success';
   }
 
   ngOnInit() {
@@ -765,9 +722,8 @@ export class AnalyticsComponent implements OnInit {
     this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
-    if(this.isTimeLineView ===true){
-    this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+    if (this.isTimeLineView === true) {
+      this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
   }
-
 }
