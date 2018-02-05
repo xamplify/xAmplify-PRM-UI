@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (localStorage.getItem('currentUser')) {
                 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 let roles = currentUser.roles;
-                if (roles.length == 1) {
+                let roleNames = roles.map(function (a) { return a.roleName; });
+                if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
                     this.router.navigate(['/home/dashboard/myprofile']);
                 } else {
                     this.router.navigate(['/home/dashboard/default']);
@@ -55,15 +56,16 @@ export class LoginComponent implements OnInit, OnDestroy {
                         console.log(currentUser.hasCompany);
                         let roles = currentUser.roles;
                         let roleNames = roles.map(function (a) { return a.roleName; });
-                        if (currentUser.hasCompany || roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) {
+                        if(currentUser.hasCompany){
                             this.router.navigate(['/home/dashboard/default']);
-                        } else {
-                            if (roles.length == 1) {
+                        }else{
+                            if(roles.length == 1 || this.isOnlyPartner(roleNames)){
                                 this.router.navigate(['/home/dashboard/myprofile']);
-                            } else {
+                            }else{
                                 this.router.navigate(['/home/dashboard/add-company-profile']);
                             }
                         }
+                        
                         // if user is coming from any link
                         if (this.authenticationService.redirectUrl) {
                             this.router.navigate([this.authenticationService.redirectUrl]);
@@ -95,6 +97,14 @@ export class LoginComponent implements OnInit, OnDestroy {
                     });
                 return false;
             }
+        }
+    }
+    
+    isOnlyPartner(roleNames){
+        if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            return true;
+        }else{
+            return false;
         }
     }
     eventHandler(keyCode: any) {

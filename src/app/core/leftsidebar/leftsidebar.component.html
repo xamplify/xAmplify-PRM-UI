@@ -6,7 +6,7 @@
 				<!-- BEGIN SIDEBAR MENU -->
 				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
 					<li  [ngClass]="{'active':  baseRoute === 'dashboard'}" >
-						<a [routerLink]="['/home/dashboard/default']" ><!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
+						<a [routerLink]="['/home/dashboard/default']" [class.disabled]="!authService.user.hasCompany ?true:null" ><!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
 						<i class="icon-home"></i>
 						<span class="title">Account Dashboard</span>
 						<span class="selected"></span>
@@ -15,7 +15,7 @@
 					
 					
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
-						<a [routerLink]="['./videos/manage']">
+						<a [routerLink]="['./videos/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
 						<i class="fa fa-video-camera"></i>
 						<span class="title">Videos</span>
 						<span class="arrow "></span>
@@ -45,7 +45,7 @@
 							</li>
 						</ul>
 					</li>
-					<li *ngIf="authService.module.isContact ||authService.module.isCompanyPartner " [ngClass]="{'active':  baseRoute === 'contacts'}">
+					<li *ngIf="authService.module.isContact ||authService.module.isCompanyPartner " [class.disabled]="!authService.user.hasCompany ?true:null" [ngClass]="{'active':  baseRoute === 'contacts'}">
 						<a>
 						<i class="fa fa-list-ul"></i>
 						<span class="title">Contacts</span>
@@ -54,13 +54,13 @@
 						</a>
 						<ul class="sub-menu" >
 						<li>
-							<a  [routerLink] ="['./contacts/add']" [class.disabled]="!authService.user.hasCompany && !authService.module.isCompanyPartner ?true:null" >
+							<a  [routerLink] ="['./contacts/add']" [class.disabled]="!authService.user.hasCompany?true:null" >
 								<i class="fa fa-users"></i>
 								<span class="title">Add Contacts</span>
 								</a>
 						</li>
 						<li>
-							<a  [routerLink]="['./contacts/manage']" [class.disabled]="!authService.user.hasCompany && !authService.module.isCompanyPartner ?true:null">
+							<a  [routerLink]="['./contacts/manage']" [class.disabled]="!authService.user.hasCompany?true:null">
 							<i class="fa fa-list"></i>
 							<span class="title">Manage Contacts</span>
 							</a>
@@ -77,7 +77,7 @@
 					</li>
 					
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
-						<a [routerLink]="['./emailtemplates']">
+						<a [routerLink]="['./emailtemplates']" [class.disabled]="!authService.user.hasCompany?true:null">
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
 						<span class="arrow "></span>
@@ -118,13 +118,13 @@
 						</a>
 						<ul class="sub-menu">
 						<li>
-								<a  [routerLink] ="['./campaigns']" [class.disabled]="!authService.user.hasCompany && !authService.module.isCompanyPartner  ?true:null">
+								<a  [routerLink] ="['./campaigns']" [class.disabled]="!authService.user.hasCompany?true:null">
 								<i class="fa fa-bullhorn"></i>
 								<span class="title">Create Campaign</span>
 								</a>
 							</li>
 							<li>
-								<a  [routerLink] ="['./campaigns/manage']" [class.disabled]="!authService.user.hasCompany && !authService.module.isCompanyPartner ?true:null">
+								<a  [routerLink] ="['./campaigns/manage']" [class.disabled]="!authService.user.hasCompany?true:null">
 								<i class="fa fa-list"></i>
 								<span class="title">Manage Campaigns</span>
 								</a>
