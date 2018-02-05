@@ -125,7 +125,7 @@
 												<i class="fa fa-pencil-square-o"></i>
 										    </a>
 										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 
-										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isCompanyPartner">
 												<i class="fa fa-trash" style="color:#f43636"></i>
 											</a>
 											</div>

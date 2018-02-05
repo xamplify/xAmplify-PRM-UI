@@ -13,13 +13,7 @@ export class LeftsidebarComponent implements OnInit {
 
     location: Location;
     baseRoute: string;
-   /* isCampaign = false;
-    isContact = false;
-    isEmailTemplate = false;
-    isStats = false;
-    isVideo = false;
-    isOrgAdmin = false;
-    isPartner = false;*/
+    enableLink = true;
     roleName: Roles= new Roles();
     constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
         this.updateLeftSideBar(location);
@@ -89,6 +83,11 @@ export class LeftsidebarComponent implements OnInit {
             this.authService.module.isOrgAdmin = true;
            // this.isOrgAdmin = true;
         }
+        
+        if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+            this.authService.module.isCompanyPartner = true;
+        }
+        
     }
     
 

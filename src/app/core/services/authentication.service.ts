@@ -33,6 +33,7 @@ export class AuthenticationService {
         this.SERVER_URL = 'https://aravindu.com/';
         //this.SERVER_URL = "http://localhost:8080/";
         this.APP_URL = 'https://socialubuntu.com/';
+       // this.APP_URL = 'http://localhost:4200';
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
@@ -126,7 +127,9 @@ export class AuthenticationService {
         module.isEmailTemplate = false;
         module.isCampaign = false;
         module.isStats = false;
+        module.isVideo = false;
         module.hasVideoRole = false;
+        module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         swal.close();
     }

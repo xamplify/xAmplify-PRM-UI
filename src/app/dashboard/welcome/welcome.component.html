@@ -42,7 +42,7 @@ cursor: not-allowed;
 
 	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasVideoRole ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
@@ -55,7 +55,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasContactRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
@@ -68,7 +68,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasCampaignRole ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>
@@ -81,7 +81,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasStatsRole ? true : null">
+			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasEmailTemplateRole ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
 				</div>

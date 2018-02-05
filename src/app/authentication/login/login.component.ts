@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (localStorage.getItem('currentUser')) {
                 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 let roles = currentUser.roles;
-                console.log(currentUser);
                 if (roles.length == 1) {
                     this.router.navigate(['/home/dashboard/myprofile']);
                 } else {
@@ -54,10 +53,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                         console.log(currentUser);
                         console.log(currentUser.hasCompany);
-                        if (currentUser.hasCompany) {
+                        let roles = currentUser.roles;
+                        let roleNames = roles.map(function (a) { return a.roleName; });
+                        if (currentUser.hasCompany || roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) {
                             this.router.navigate(['/home/dashboard/default']);
                         } else {
-                            let roles = currentUser.roles;
                             if (roles.length == 1) {
                                 this.router.navigate(['/home/dashboard/myprofile']);
                             } else {

@@ -20,6 +20,7 @@ export class SelectCampaignTypeComponent implements OnInit{
     roleName:Roles=new Roles();
     hasSocialStatusRole:boolean = false;
     isOrgAdmin:boolean = false;
+    isSocialCampaignAccess = true;
     constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:XtremandLogger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
         this.logger.info("select-campaign-type constructor loaded");
         let roles = this.authenticationService.getRoles();
