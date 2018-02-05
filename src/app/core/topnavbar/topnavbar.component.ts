@@ -73,6 +73,9 @@ export class TopnavbarComponent implements OnInit {
     if(roles.length==1){
         this.isUser = true;
     }
+    if(roles.indexOf(this.roleName.companyPartnerRole) > -1){
+        this.authenticationService.module.isCompanyPartner = true;
+    }
   }
 
   listNotifications(){

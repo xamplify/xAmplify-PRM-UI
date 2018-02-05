@@ -47,6 +47,14 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
+					
+						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin" style="margin-top: 17px;margin-right: 25px;">
+						<!-- refService.hasCompany -->
+						<a class="btn btn-header" routerLink="/home/campaigns/select">
+							Create Campaign
+						<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
+						</a>
+					</li>
 					<li *ngIf="authenticationService.module.hasVideoRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/videos">
@@ -153,7 +161,7 @@
 					<!-- BEGIN TODO DROPDOWN -->
 
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar" style="display: none;">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-info"></i>
 						</a>
