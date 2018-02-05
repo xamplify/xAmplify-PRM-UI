@@ -62,6 +62,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
+    trellisBarChartData: any;
+
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
         public facebookService: FacebookService, public socialService: SocialService,
@@ -228,20 +230,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],
             $containers = $('#trellis td'),
-            datasets = [
-                {
-                    name: 'opened',
-                    data: opened
-                },
-                {
-                    name: 'clicked',
-                    data: clicked
-                },
-                {
-                    name: 'watched',
-                    data: watched
-                },
-            ];
+            datasets = [  {  name: 'opened',data: opened },  { name: 'clicked',data: clicked },
+                { name: 'watched', data: watched },
+               ];
         $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
                 chart: {
@@ -752,6 +743,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return strTime;
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
+        this.trellisBarChartData = undefined;
         this.dashboardService.getCampaignsEmailReports(campaignIdArray).
             subscribe(result => {
                 console.log(result);
@@ -761,7 +753,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 console.log("max number is " + this.maxBarChartNumber);
                 if (this.maxBarChartNumber > 0) {
                     this.isMaxBarChartNumber = true;
-                    this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
+                    const obj = { 'result': result, 'type': 'dashboard','maxValue': this.maxBarChartNumber };
+                    this.trellisBarChartData = obj;
+                   this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
                 }
                 else {
                     this.isMaxBarChartNumber = false;
@@ -772,7 +766,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // this.xtremandLogger.errorPage(error);
             });
     }
-
+  clickedTrellisChart(event){
+    console.log(event);
+  }
     getVideoStatesSparklineChartsInfo(daysCount) {
         this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => {

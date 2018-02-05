@@ -1,20 +1,41 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-declare var Highcharts, $:any;
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+declare var Highcharts, $: any;
 
 @Component({
-  selector: 'app-trellis-chart',
-  templateUrl: './trellis-chart.component.html',
-  styleUrls: ['./trellis-chart.component.css']
+    selector: 'app-trellis-chart',
+    templateUrl: './trellis-chart.component.html',
+    styleUrls: ['./trellis-chart.component.css']
 })
 export class TrellisChartComponent implements OnInit {
- @Input() type: string;
-  constructor() { }
-     trellisBarChart(minutesWatched: any, names: any) {
-        const maxValue = Math.max.apply(null, minutesWatched);
+    @Input() trellisBarChartData: any;
+    @Output() notifyParent: EventEmitter<any>;
+    constructor() {
+        this.notifyParent = new EventEmitter<any>();
+    }
+
+    trellisBarChart() {
+        const maxValue = this.trellisBarChartData.maxValue;
         const self = this;
+        let dataSets: any;
+        let isColor: boolean
+        let namesValues: any;
+        if (this.trellisBarChartData.type === 'dashboard') {
+            const opened = this.trellisBarChartData.result.emailOpenedCount;
+            const clicked = this.trellisBarChartData.result.emailClickedCount;
+            const watched = this.trellisBarChartData.result.watchedCount;
+            namesValues = this.trellisBarChartData.result.campaignNames;
+            isColor = false;
+            dataSets = [{ name: 'opened', data: opened }, { name: 'clicked', data: clicked }, { name: 'watched', data: watched }];
+        } else {
+            const minutesWatched = this.trellisBarChartData.result.video_views_count_data.minutesWatched;
+            namesValues = this.trellisBarChartData.result.video_views_count_data.names;
+            isColor = true;
+            dataSets = [{ name: ' ', data: minutesWatched }];
+        }
+
         const charts = [],
             $containers = $('#trellis td'),
-            datasets = [{ name: ' ', data: minutesWatched, }];
+            datasets = dataSets;
         $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
                 chart: {
@@ -40,23 +61,23 @@ export class TrellisChartComponent implements OnInit {
                         minPointLength: 3,
                     },
                     series: {
-                        colorByPoint: true,
+                        colorByPoint: isColor,
                         point: {
                             events: {
                                 click: function () {
                                     // alert('campaign: ' + this.category + ', value: ' + this.y);
-                                    self.clickedTrellisChart();
+                                    self.clickedTrellisChart(this.category);
                                 }
                             }
                         }
                     }
                 },
-                colors: ['#2e37d8','#c42dd8','#d82d2d','#d8d52d','#2dd838','#2dd8be','#3D96AE','#b5ca92','#2e37d8','#c42dd8'],
+                colors: ['#7CB5EC', '#c42dd8', '#d82d2d', '#d8d52d', '#2dd838', '#2dd8be', '#3D96AE', '#b5ca92', '#2e37d8', '#c42dd8'],
                 credits: {
                     enabled: false
                 },
                 xAxis: {
-                    categories: names,
+                    categories: namesValues,
                     labels: {
                         enabled: i === 0
                     },
@@ -90,17 +111,12 @@ export class TrellisChartComponent implements OnInit {
         });
     }
 
-  clickedTrellisChart(){
-
-  }  
-  ngOnInit() {
-    if(this.type==='dashboard'){
-     // this.trellisBarChart(minutesWatched: any, names: any);
-
-    }else if(this.type === 'video-based-report'){
-     // this.trellisBarChart(minutesWatched, names);
-
+    clickedTrellisChart(category) {
+        this.notifyParent.emit(category);
     }
-  }
+    ngOnInit() {
+        console.log(this.trellisBarChartData);
+        this.trellisBarChart();
+    }
 
 }
