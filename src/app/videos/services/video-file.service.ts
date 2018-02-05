@@ -31,6 +31,7 @@ export class VideoFileService {
     isProgressBar = false;
     isSliderClicked = false;
     seekbarTime: any;
+    videoType: any;
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
         console.log('VideoFileService constructor');
@@ -76,8 +77,15 @@ export class VideoFileService {
     }
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
-        const url = this.URL + this.categoryNumber +
-            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        let url: any
+         if(this.videoType === 'myVideos'){
+            url = this.URL + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+          } else if(this.videoType === 'partnerVideos'){
+            url = this.URL +'channel-videos/'+ this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+          }
+        else {
+            alert('ntohtin');
+        }
         console.log(url);
         return this.http.post(url, pagination)
             .map(this.extractData)

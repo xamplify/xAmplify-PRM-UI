@@ -47,8 +47,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sortVideos: any;
     videoSort: any;
-    
+    videoType: any;
     isListView = false;
+    videoTypes = [{'name':'My Videos', 'value':'myVideos'},{'name':'Partner Videos','value':'partnerVideos' }];
+
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
@@ -61,9 +63,20 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoSort = this.sortVideos[0];
         this.isCategoryThere = false;
         this.categoryNum = this.videoFileService.categoryNumber = 0;
+        this.videoType = this.videoTypes[0];
+        this.videoFileService.videoType = this.videoTypes[0].value;
     }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
+    }
+    getVideoTypes(){
+        this.pagination.pageIndex = 1;
+        this.videoFileService.categoryNumber = this.categoryNum = 0;
+        this.pagination.searchKey = null;
+        this.videoSort = this.sortVideos[0];
+        console.log(this.videoType);
+        this.videoFileService.videoType = this.videoType.value;
+        this.loadVideos(this.pagination);
     }
     ngOnInit() {
         this.isListView = this.referenceService.isListView;
@@ -339,7 +352,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     closeBannerPopup() {
         this.campaignVideo = this.deletedVideo = false;
     }
+    getVideoType(){
+      this.videoType = this.videoFileService.videoType; 
+       if(this.videoType === this.videoTypes[0].value){  this.videoType = this.videoTypes[0];
+        } else {  this.videoType = this.videoTypes[1]; }
+     }
     update(videoFile: SaveVideoFile) {
+        this.videoType = this.videoFileService.videoType;
+        this.getVideoType();
         this.isCategoryUpdated = true;
         this.deletedVideo = this.campaignVideo = false;
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
@@ -371,6 +391,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.campaignReport = campaignReport;
     }
     backToManageVideos() {
+        this.videoType = this.videoFileService.videoType;
+        this.getVideoType();
         console.log('come to goto manage videos :');
         this.videoUtilService.selectedVideo = null;
         if (!this.manageVideos) { this.loadVideos(this.pagination); }

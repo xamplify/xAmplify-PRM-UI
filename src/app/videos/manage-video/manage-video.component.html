@@ -40,15 +40,20 @@
 							<div class="page-toolbar">
 								<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 									<div class="inputs" align="right">
-										<div style="padding:0" class="col-xs-12 col-sm-6 col-md-5">
-											<select class="form-control" style="cursor: pointer; width:65%; position: relative;float:left" [(ngModel)]="categoryNum"
+										<div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
+											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" [(ngModel)]="categoryNum"
 											 (ngModelChange)="getCategoryNumber()">
 											   <option  [value]="0" >All Categories</option>
-											   <option  [value]="-1" >Partner videos</option>
                                                <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
                                             </select>
 										</div>
-										<div class="col-xs-6 col-sm-3 col-md-4 p0 flex">
+										<div class="col-xs-12 col-md-3">
+											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" [(ngModel)]="videoType"
+											 (ngModelChange)="getVideoTypes()">
+											   <option *ngFor="let videoType of videoTypes" [ngValue]="videoType" >{{videoType.name}}</option>
+                                            </select>
+										</div>
+										<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
 											<ng-container class='m10'>
 												<button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
 												<button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
