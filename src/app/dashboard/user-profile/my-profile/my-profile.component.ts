@@ -256,7 +256,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(currentUser.roles.length>1){
+        if(currentUser.roles.length>1 && this.authenticationService.hasCompany()){
             this.videoUtilService.normalVideoJsFiles();
             this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
             this.defaultVideoSettings();

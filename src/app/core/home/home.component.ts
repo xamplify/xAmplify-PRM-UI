@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReferenceService } from '../services/reference.service';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { AuthenticationService } from '../services/authentication.service';
 declare var $:any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $:any;
 export class HomeComponent implements OnInit {
 		public refcategories: any;
 		public currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	    constructor(public referenceService: ReferenceService, public userService: UserService,private router:Router) { 
+	    constructor(public referenceService: ReferenceService, public userService: UserService,private router:Router,public authenticationService:AuthenticationService) { 
 	        this.isAuthorized();
 	    }
 	    
@@ -53,7 +54,7 @@ export class HomeComponent implements OnInit {
         ngOnInit() {
         //  this.getCategorisService();
 		//  this.getVideoTitles();
-			if (this.referenceService.defaulgVideoMethodCalled === false && this.currentUser.roles.length>1) {
+			if (this.referenceService.defaulgVideoMethodCalled === false && this.currentUser.roles.length>1 && this.authenticationService.hasCompany()) {
 			this.getVideoDefaultSettings();
 			this.referenceService.defaulgVideoMethodCalled = true;
 			}
