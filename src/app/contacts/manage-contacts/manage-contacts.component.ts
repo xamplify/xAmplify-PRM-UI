@@ -1110,26 +1110,6 @@ export class ManageContactsComponent implements OnInit {
         }
     }
 
-    convertToCSV( objArray ) {
-        var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
-        var str = '';
-        var row = "";
-        for ( var index in objArray[0] ) {
-            row += index + ',';
-        }
-        row = row.slice( 0, -1 );
-        str += row + '\r\n';
-        for ( var i = 0; i < array.length; i++ ) {
-            var line = '';
-            for ( var index in array[i] ) {
-                if ( line != '' ) line += ','
-                line += array[i][index];
-            }
-            str += line + '\r\n';
-        }
-        return str;
-    }
-
     downloadContactTypeList() {
         let logListName: string;
         if ( this.contactsByType.selectedCategory === 'all' ) {
@@ -1161,7 +1141,7 @@ export class ManageContactsComponent implements OnInit {
 
             this.downloadDataList.push( object );
         }
-        var csvData = this.convertToCSV( this.downloadDataList );
+        var csvData = this.referenceService.convertToCSV( this.downloadDataList );
         var a = document.createElement( "a" );
         a.setAttribute( 'style', 'display:none;' );
         document.body.appendChild( a );
