@@ -297,7 +297,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="color1 btn-campaign" (click)="validateUserCampaignReport(userCampaignReport)">Save changes</button>
-					<button type="button" class="btn btn-campaign " data-dismiss="modal" (click)="userCampaignReport.response = null">Close</button>
+					<button type="button" class="btn-campaign " data-dismiss="modal" (click)="userCampaignReport.response = null">Close</button>
 				</div>
 			</div>
 		</div>
@@ -379,15 +379,9 @@
 		<div class="clearfix"></div>
 		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
 			<div class="portlet-title">
-				<div class="caption flex">
-					<div class="col-xs-6">
-						<span class="caption-subject font-red-sunglo f-w-600">Campaigns</span>
-					</div>
-					<div class="col-xs-6" style="padding: 5px 10px;" *ngIf="hasCampaignRole ">
-						<a><i style="font-size: 1.3em;padding: 0.3em;" class="fa fa-cog pull-right" aria-hidden="true" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
-						<a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary color1 pull-right">Create Campaign</a>
-					</div>
-				</div>
+				<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Campaigns</h4>
+				<a><i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
+				<a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary color1 pull-right" style="margin: 5px 0;">Create Campaign</a>
 			</div>
 			<div class="portlet-body clearfix">
 				<section *ngFor="let campaign of campaigns; let i=index">
@@ -609,9 +603,7 @@
 	<div class="clearfix" *ngIf="socialConnections?.length > 0">
 		<div class="portlet light shadow">
 			<div class="portlet-title">
-				<div class="caption">
-					<span class="caption-subject font-red-sunglo f-w-600">Social Accounts</span>
-				</div>
+				<h4 class="caption-subject font-red-sunglo f-w-600">Social Accounts</h4>
 			</div>
 			<div class="portlet-body clearfix">
 				<div class="clearfix">

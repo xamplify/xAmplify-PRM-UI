@@ -66,31 +66,10 @@
           </div>
         </div>
         <div class="portlet-body">
-          <p *ngFor="let item of trends"
-            style="margin-bottom: 15px; padding-left: 15px;">
+          <p *ngFor="let item of trends">
             <span [innerHTML]="item.name"></span>
           </p>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="replyModal" tabindex="-1" role="dialog"
-  aria-labelledby="replyModalLabel">
-  <div class="modal-dialog" role="document" style="top: 5em;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-          aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="replyModalLabel"></h4>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btn-tweet"
-          (click)="reply()">Tweet</button>
       </div>
     </div>
   </div>
