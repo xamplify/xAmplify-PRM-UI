@@ -28,6 +28,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   views: number;
   downloadDataList = [];
   downloadCsvList: any;
+  viewsBarData: any;
   constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     this.selectedVideoId = this.videoUtilService.selectedVideoId;
@@ -70,6 +71,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   }  
   selectedCampaignWatchedUsers(timePeriod, checkValue) {
     this.timePeriod = timePeriod;
+    this.viewsBarData = undefined;
     console.log(checkValue);
     try{
     this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideoId)
@@ -82,7 +84,10 @@ export class ChartReportComponent implements OnInit, OnDestroy {
             this.timePeriodValue = this.timePeriodValue.substring(1,this.timePeriodValue.length);}
           console.log(this.timePeriodValue);
         }
-        this.monthlyViewsBarCharts(result.dates, result.views);
+        this.viewsBarData = result;
+        console.log(this.viewsBarData);
+       // this.monthlyViewsBarCharts(result.dates, result.views);
+        this.viewsBarData = result;
         if(result.dates.length > 0 && result.views.length > 0){ 
           this.videoViewsBarchart(); 
         } else {
@@ -105,66 +110,16 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     this.pagination.pageIndex = event.page;
     this.videoViewsBarChartLevelTwo();
   }
-  monthlyViewsBarCharts(dates, views) {
-    const self = this;
-    Highcharts.chart('monthly-views-bar-chart', {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: ' '
-      },
-      credits: false,
-      exporting: { enabled: false },
-      xAxis: {
-        categories: dates
-      },
-
-      yAxis: {
-        allowDecimals: false,
-        min: 0,
-        title: {
-          text: ' '
-        },
-        visible: false
-      },
-      legend: {
-        enabled: false
-      },
-
-      tooltip: {
-        formatter: function () {
-          return '<b>' + this.x + '</b><br/>' +
-            this.series.name + ': ' + this.y;
-        }
-      },
-
-      plotOptions: {
-        column: {
-          stacking: 'normal'
-        },
-          series: {
-            point: {
-                events: {
-                    click: function () {
-                        if(this.category.includes('Q')){
-                           const timePeriod = this.category.substring(1,this.category.length);
-                           self.timePeriodValue = timePeriod;
-                          }
-                        else { self.timePeriodValue = this.category; }
-                        self.videoViewsBarchart();
-                    }
-                }
-            }
+  
+  getCategoryValue(category:any){
+       if(category.includes('Q')){
+            const timePeriod = category.substring(1,category.length);
+            this.timePeriodValue = timePeriod;
           }
-      },
-      series: [{
-        name: 'views',
-        data: views
-        // stack: 'male'
-      }]
-    });
+        else { this.timePeriodValue = category; }
+        this.videoViewsBarchart();
   }
+
   goToMangeVideos() {
     this.videoUtilService.selectedVideo = null;
     this.checkVideo = false;
@@ -248,7 +203,5 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     if (!this.checkVideo) {
       this.videoUtilService.selectedVideo = null;
     }
-
   }
-
 }

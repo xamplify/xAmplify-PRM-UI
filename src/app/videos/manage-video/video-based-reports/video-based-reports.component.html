@@ -150,8 +150,10 @@
 				</span>
 				</div>
 			</div>
-			<div class="portlet-body">
-				<div id="monthly-views-bar" style="max-width: 100%; min-height: 300px;"></div>
+			<div class="portlet-body" style="min-height: 308px">
+				<!-- <div id="monthly-views-bar" style="max-width: 100%; min-height: 300px;"></div> -->
+				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
+
 			</div>
 		</div>
 		<!-- END PORTLET-->

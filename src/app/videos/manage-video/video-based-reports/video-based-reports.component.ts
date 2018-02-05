@@ -65,70 +65,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     worldMapCampaignUsersInfo: any;
     worldMapCampaignUsersTotalData: any;
     worldMapdataReport: any;
-
+    viewsBarData: any;
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
         this.daySort = this.videoUtilService.sortMonthDates[3];
         this.minutesSort = this.sortMintuesDates[3];
     }
-    monthlyViewsBarCharts(dates, views) {
-        const self = this;
-        Highcharts.chart('monthly-views-bar', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ' '
-            },
-            credits: false,
-            exporting: { enabled: false },
-            xAxis: {
-                categories: dates
-            },
-
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                title: {
-                    text: ' '
-                },
-                visible: false
-            },
-            legend: {
-                enabled: false
-            },
-
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +
-                        this.series.name + ': ' + this.y;
-                }
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                },
-                series: {
-                    point: {
-                        events: {
-                            click: function () {
-                                // alert('campaign: ' + this.category + ', value: ' + this.y);
-                                self.videoUtilService.selectedVideo = self.selectedVideo;
-                                if (this.category.includes('Q')) { this.category = this.category.substring(1, this.category.length); }
-                                self.videoUtilService.timePeriodValue = this.category;
-                                self.router.navigate(['./home/videos/manage/reports']);
-                            }
-                        }
-                    }
-                }
-            },
-            series: [{
-                name: 'views',
-                data: views
-            }]
-        });
+    selectedCategoryValue(category: any) {
+        this.videoUtilService.selectedVideo = this.selectedVideo;
+        if (category.includes('Q')) { category = category.substring(1, category.length); }
+        this.videoUtilService.timePeriodValue = category;
+        this.router.navigate(['./home/videos/manage/reports']);
     }
+
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
         const maxValue = Math.max.apply(null, minutesWatched);
         const self = this;
@@ -171,7 +121,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         }
                     }
                 },
-                colors: ['#2e37d8','#c42dd8','#d82d2d','#d8d52d','#2dd838','#2dd8be','#3D96AE','#b5ca92','#2e37d8','#c42dd8'],
+                colors: ['#2e37d8', '#c42dd8', '#d82d2d', '#d8d52d', '#2dd838', '#2dd8be', '#3D96AE', '#b5ca92', '#2e37d8', '#c42dd8'],
                 credits: {
                     enabled: false
                 },
@@ -325,13 +275,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
     selectedCampaignWatchedUsers(timePeriod) {
+        this.viewsBarData = undefined;
         if (timePeriod !== undefined) {
             this.videoUtilService.timePeriod = timePeriod;
             this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
                 .subscribe((result: any) => {
                     console.log(result);
                     this.videoUtilService.videoViewsData = result;
-                    this.monthlyViewsBarCharts(result.dates, result.views);
+                    this.viewsBarData = result;
+                    // this.monthlyViewsBarCharts(result.dates, result.views);
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);

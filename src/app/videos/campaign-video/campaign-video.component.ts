@@ -187,13 +187,15 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.videoAlias = result.videoAlias;
                         this.templateId = result.templateId;
                         this.xtremandLogDefaultActions();
-                        
+                        let checkVideoTag: any
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             this.templatehtml = updatedBody;
+                            $('#videoId').css('width', 'auto');
+                            checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
                         else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
@@ -206,6 +208,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
+                            checkVideoTag = 'beeTemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
                            // $('#newPlayerVideo').css({ "width": "562px", "margin-left": "-24px" });
                         } else {
@@ -229,6 +232,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
+                            checkVideoTag = 'uploadtemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
                             console.log(this.campaignVideoTemplate);
                         }
@@ -246,7 +250,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             try {
                               //  this.playNormalVideo();
                                 this.playNormalVideoCampaign();
-                                this.cssOverride();
+                                if(checkVideoTag==='default') { 
+                                $('#videoId').css({'width': '369px','height': '402px','margin':'0 auto'});
+                                }
+                                else {
+                                this.cssOverride(); 
+                               }
                             } catch (err) {
                                 document.getElementById('para').innerHTML = this.errorHtml;
                                 $('html').css('background-color','white');​​​​​​​​​​​​​​​​​​​​​
