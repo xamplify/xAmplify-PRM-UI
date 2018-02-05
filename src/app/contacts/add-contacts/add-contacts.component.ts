@@ -185,7 +185,7 @@ export class AddContactsComponent implements OnInit {
     changEvents( event: any ) {
         this.uploadvalue = false;
     }
-    
+
 
     fileChange( input: any ) {
         this.readFiles( input.files );
@@ -217,7 +217,7 @@ export class AddContactsComponent implements OnInit {
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#GgearIcon' ).attr(  'style', 'opacity: 0.5;position: relative;top: -86px; left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 80px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             let reader = new FileReader();
@@ -227,12 +227,12 @@ export class AddContactsComponent implements OnInit {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
-                
-                var csvResult = Papa.parse(contents);
-                
+
+                var csvResult = Papa.parse( contents );
+
                 var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
-                  // var data = allTextLines[i].split( ',' );
+                    // var data = allTextLines[i].split( ',' );
                     if ( allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4];
@@ -1721,14 +1721,14 @@ export class AddContactsComponent implements OnInit {
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
-                  /*$('body').removeClass('modal-open');
-                  $('.modal-backdrop fade in').remove();*/
-                $('#settingSocialNetwork').modal('hide');
+                /*$('body').removeClass('modal-open');
+                $('.modal-backdrop fade in').remove();*/
+                $( '#settingSocialNetwork' ).modal( 'hide' );
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
-                    $('#settingSocialNetwork').modal('hide');
+                    $( '#settingSocialNetwork' ).modal( 'hide' );
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
@@ -1737,7 +1737,7 @@ export class AddContactsComponent implements OnInit {
                 console.log( error );
             },
             () => {
-                $('#settingSocialNetwork').modal('hide');
+                $( '#settingSocialNetwork' ).modal( 'hide' );
                 this.cancelContacts();
                 this.xtremandLogger.info( "deleted completed" );
             }
@@ -1751,8 +1751,8 @@ export class AddContactsComponent implements OnInit {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-      //  $( '#settingSocialNetwork' ).modal();
-        $('#settingSocialNetwork').appendTo("body").modal('show');
+        //  $( '#settingSocialNetwork' ).modal();
+        $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
     }
 
     addContactModalOpen() {

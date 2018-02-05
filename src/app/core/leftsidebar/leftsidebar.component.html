@@ -68,7 +68,7 @@
 						</ul>
 					</li>
 					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
-						<a  [routerLink]="['./partners']" >
+						<a  [routerLink]="['./partners']" [class.disabled]="!authService.user.hasCompany?true:null" >
 						<i class="fa fa-handshake-o"></i>
 						<span class="title">Partners</span>
 						<span class="arrow "></span>
