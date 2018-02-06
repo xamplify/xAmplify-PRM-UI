@@ -16,13 +16,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
-declare var swal: any;
-declare var $: any;
-declare var Metronic: any;
-declare var Layout: any;
-declare var Demo: any;
-declare var Portfolio: any;
-declare let jsPDF;
+declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
 @Component( {
     selector: 'app-manage-contacts',

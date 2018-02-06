@@ -10,10 +10,9 @@
 }
 
 a.disabled {
-	pointer-events: none
-	cursor: not-allowed;
+   pointer-events: none;
+   cursor: default;
 }
-
 .imageblur {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
@@ -275,7 +274,7 @@ img:hover {
 													src="assets/images/crm/dynamics.png"
 													class="imageClass imageblur mdImageClass"
 													title="Click here To access user list from your Microsoft CRM account"
-													height="86" width="90"
+													height="86" width="90" style="margin-bottom: 18px"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/dynamics.png';">
 													<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
@@ -398,21 +397,6 @@ img:hover {
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Danger!</strong>{{Campaign}}
 						</div>
-						<!-- <div *ngIf="unlinkGoogleSuccessMessage" id="googleSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Google Account successfully
-							Removed.
-						</div>
-						<div *ngIf="unlinkSalesforceSuccessMessage"
-							id="salesforceSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Salesforce Account successfully
-							Removed.
-						</div>
-						<div *ngIf="unlinkZohoSuccessMessage" id="zohoSuccessMessage"
-							class="col-xs-12 alert alert-success">
-							<strong>Success!</strong> Your Zoho Account successfully Removed.
-						</div> -->
 						<div *ngIf="zohoAuthStorageError"
 							class="col-xs-12 alert alert-danger">
 							<span>{{zohoAuthStorageError}}</span>
@@ -477,7 +461,7 @@ img:hover {
 								</tbody>
 							</table>
 							<div class="table-responsive">
-								<table class='table table-hover table-bordered'
+								<table class='table tgrid'
 									id="sample_editable_1">
 									<thead>
 										<tr>
@@ -485,7 +469,7 @@ img:hover {
 											<th>FIRST NAME</th>
 											<th>LAST NAME</th>
 											<th>MORE</th>
-											<th class='text-center'>CANCEL</th>
+											<th>CANCEL</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -558,14 +542,10 @@ img:hover {
 									</div>
 									<div class="portlet-body">
 
-										<table class="table table-striped table-hover table-bordered"
+										<table class="table tgrid"
 											id="google-contacts-table">
 											<thead>
 												<tr>
-													<!-- <td align="center"><input type="checkbox"
-														id="select_all_google_contacts"
-														(change)="selectAllGoogleContacts($event.target.checked)"
-														checked=true></td> -->
 													<td align="center"><input type="checkbox" name="all"
 														[(ngModel)]="isHeaderCheckBoxChecked"
 														(change)="checkAll($event)" class=""
@@ -577,11 +557,6 @@ img:hover {
 											</thead>
 											<tbody>
 												<tr *ngFor="let user of pagedItems;let i = index">
-													<!-- <td align="center"><input type="checkbox"
-														name="selectedUserIds" id="row_{{user.id}}"
-														value="{{user.emailId}},{{user.firstName}},{{user.lastName}}"
-														[(ngModel)]="user.checked"
-														(change)="selectGoogleContact($event.target.checked)"></td> -->
 													<td align="center"><input type="checkbox"
 														[checked]="selectedContactListIds.indexOf(user.id)>-1"
 														class="chk"
@@ -632,7 +607,7 @@ img:hover {
 									</div>
 									<div class="portlet-body">
 
-										<table class="table table-striped table-hover table-bordered"
+										<table class="table tgrid"
 											id="sample_editable_2">
 											<thead>
 												<tr>

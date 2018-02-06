@@ -5,6 +5,8 @@ import { XtremandLogger } from '../../../../error-pages/xtremand-logger.service'
 import { VideoUtilService } from '../../../services/video-util.service';
 import { Pagination } from '../../../../core/models/pagination';
 import { PagerService } from '../../../../core/services/pager.service';
+import { ReferenceService } from '../../../../core/services/reference.service';
+
 declare var Highcharts: any;
 
 @Component({
@@ -29,7 +31,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   downloadDataList = [];
   downloadCsvList: any;
   viewsBarData: any;
-  constructor(public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
+  constructor(public referenceService: ReferenceService, public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     this.selectedVideoId = this.videoUtilService.selectedVideoId;
     this.videoViewsData = this.videoUtilService.videoViewsData;
@@ -142,26 +144,6 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     }
   }  
   
-  convertToCSV(objArray) {
-      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-      var str = '';
-      var row = "";
-      for (var index in objArray[0]) {
-        row += index + ',';
-      }
-      row = row.slice(0, -1);
-      str += row + '\r\n';
-      for (var i = 0; i < array.length; i++) {
-        var line = '';
-        for (var index in array[i]) {
-          if (line != '') line += ','
-          line += array[i][index];
-        }
-        str += line + '\r\n';
-      }
-      return str;
-    }
-
     downloadLogs() {
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
@@ -179,7 +161,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
             }
             this.downloadDataList.push( object );
         }
-        var csvData = this.convertToCSV( this.downloadDataList );
+        var csvData = this.referenceService.convertToCSV( this.downloadDataList );
         var a = document.createElement( "a" );
         a.setAttribute( 'style', 'display:none;' );
         document.body.appendChild( a );
