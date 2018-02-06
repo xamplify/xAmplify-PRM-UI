@@ -44,7 +44,7 @@
 											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" [(ngModel)]="categoryNum"
 											 (ngModelChange)="getCategoryNumber()">
 											   <option  [value]="0" >All Categories</option>
-                                               <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
+                                               <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
                                             </select>
 										</div>
 										<div class="col-xs-12 col-md-3">
@@ -81,7 +81,6 @@
 										<p>Sorry, No videos found..!!</p>
 									</div>
 								</div>
-								
 								<section [hidden]="!isListView">
 								<div class="table-responsive" style="overflow-x: inherit;">
 									<table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
@@ -116,15 +115,15 @@
 												<td>{{videoFile.uploadedDate}}</td>
 												<td>
 													<div class="actions-block">
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner"
 															(click)="showEditVideo(videoFile)" title="Edit Video"> 
 															<i class="fa fa-pencil-square-o"></i>
 														</a> 
-														<a (click)="showCampaignVideoReport(videoFile)"
+														<a (click)="showCampaignVideoReport(videoFile)" *ngIf="authenticationService.module.isCompanyPartner"
 															title="Video Based Reports"> 
 															<i class="fa fa-line-chart"></i>
 														</a>
-														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
+														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
@@ -132,11 +131,10 @@
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
 														</ng-container>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
-
 												</td>
 											</tr>
 										</tbody>

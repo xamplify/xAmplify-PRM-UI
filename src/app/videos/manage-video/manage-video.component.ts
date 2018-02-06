@@ -30,8 +30,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     showMessage = false;
     showVideoFileName: string;
     categoryNum: number;
-    isCategoryUpdated: boolean;
-    isCategoryThere: boolean;
     checkTotalRecords: boolean;
     allRecords: number;
     deletedVideo = false;
@@ -49,7 +47,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     videoSort: any;
     videoType: any;
     isListView = false;
-    videoTypes = [{'name':'My Videos', 'value':'myVideos'},{'name':'Partner Videos','value':'partnerVideos' }];
+    videoTypes = [{ 'name': 'My Videos', 'value': 'myVideos' }, { 'name': 'Partner Videos', 'value': 'partnerVideos' }];
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
@@ -61,7 +59,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
-        this.isCategoryThere = false;
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.videoType = this.videoTypes[0];
         this.videoFileService.videoType = this.videoTypes[0].value;
@@ -69,7 +66,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
     }
-    getVideoTypes(){
+    getVideoTypes() {
         this.pagination.pageIndex = 1;
         this.videoFileService.categoryNumber = this.categoryNum = 0;
         this.pagination.searchKey = null;
@@ -112,7 +109,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.checkTotalRecords = true;
             this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
-            if(this.videoUtilService.selectedVideo){ 
+            if (this.videoUtilService.selectedVideo) {
                 this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
             }
         } catch (error) {
@@ -124,7 +121,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.videoFileService.loadVideosCount(userId)
                 .subscribe((result: any) => {
                     if (result.videos_count === 0) {
-                    this.disableDropDowns = true;
+                        this.disableDropDowns = true;
                     } else { this.disableDropDowns = false; }
                 },
                 (error: any) => {
@@ -148,14 +145,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                         this.allRecords = result.totalRecords;
                         this.checkTotalRecords = false;
                     }
-                    if (!this.isCategoryThere || this.isCategoryUpdated) {
-                        this.categories = result.categories;
-                        console.log(this.categories);
-                        this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
-                    }
+                    this.categories = result.categories;
+                    console.log(this.categories);
+                    this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
                     this.referenceService.loading(this.httpRequestLoader, false);
-                    this.isCategoryThere = true;
-                    this.isCategoryUpdated = false;
                     pagination = this.pagerService.getPagedItems(pagination, result.listOfMobinars);
                 },
                 (error: any) => {
@@ -172,7 +165,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         if (title.length > 22) { title = title.substring(0, 21) + '...'; }
         return title;
     }
-    setPage(event:any) {
+    setPage(event: any) {
         console.log(event.page, event.type);
         this.pagination.pageIndex = event.page;
         this.loadVideos(this.pagination);
@@ -352,15 +345,15 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     closeBannerPopup() {
         this.campaignVideo = this.deletedVideo = false;
     }
-    getVideoType(){
-      this.videoType = this.videoFileService.videoType; 
-       if(this.videoType === this.videoTypes[0].value){  this.videoType = this.videoTypes[0];
-        } else {  this.videoType = this.videoTypes[1]; }
-     }
+    getVideoType() {
+        this.videoType = this.videoFileService.videoType;
+        if (this.videoType === this.videoTypes[0].value) {
+        this.videoType = this.videoTypes[0];
+        } else { this.videoType = this.videoTypes[1]; }
+    }
     update(videoFile: SaveVideoFile) {
         this.videoType = this.videoFileService.videoType;
         this.getVideoType();
-        this.isCategoryUpdated = true;
         this.deletedVideo = this.campaignVideo = false;
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
         this.pagination.pageIndex = 1;
@@ -380,7 +373,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             } else { $('#message').slideUp(500); };
         }, 5000);
         if (videoFile == null) {
-        this.showVideoFileName = '';
+            this.showVideoFileName = '';
         } else { this.showVideoFileName = this.videoTitleLength(videoFile.title); }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);
     }
@@ -401,7 +394,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.deletedVideo = this.campaignVideo = false;
         this.videoFileService.actionValue = '';
     }
-    gotoHome(){
+    gotoHome() {
         this.videoUtilService.selectedVideo = null;
         this.router.navigate(['./home/dashboard']);
     }
