@@ -818,7 +818,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else if (this.paginationType === 'watched') {
             logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
+        } else if (this.paginationType === 'countryWiseUsers') {
+            logListName = 'Country_Wise_Views_Logs.csv';
+            this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
         }
+        
         this.downloadDataList.length = 0;
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
@@ -830,11 +834,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
 
-            if (this.paginationType != 'open') {
+            if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
                 object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
                 object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;
                 object["Platform"] = this.dashboardReport.downloadEmailLogList[i].os;
+
+            }
+            
+            if (this.paginationType == 'countryWiseUsers') {
+                object["Device"] = this.dashboardReport.downloadEmailLogList[i].os;
 
             }
 
@@ -851,33 +860,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         a.click();
         return 'success';
     }
-
-    downloadcountryWiseLogs() {
-        this.downloadDataList.length = 0;
-        this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
-        for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
-            let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
-            var object = {
-                "EmailId": this.dashboardReport.downloadEmailLogList[i].name,
-                "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
-                "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
-                "Date and Time": this.dashboardReport.downloadEmailLogList[i].date,
-                "Device": this.dashboardReport.downloadEmailLogList[i].device
-            }
-            this.downloadDataList.push(object);
-        }
-        var csvData = this.referenceService.convertToCSV(this.downloadDataList);
-        var a = document.createElement("a");
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        var blob = new Blob([csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = 'Coutry_wise_views_logs.csv';
-        a.click();
-        return 'success';
-    }
-
 
     listOfAllEmailOpenLogs() {
         this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
@@ -920,6 +902,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => console.log('finished')
             );
     }
+    
     getCampaignUsersWatchedInfo(countryCode) {
         countryCode = countryCode.toUpperCase();
         this.paginationType = "countryWiseUsers";

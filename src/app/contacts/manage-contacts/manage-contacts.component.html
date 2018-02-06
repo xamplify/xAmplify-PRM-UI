@@ -1,9 +1,7 @@
 <style type="text/css">
-
-.numberCss{
-   font-weight: 300 !important;
+.numberCss {
+	font-weight: 300 !important;
 }
-
 </style>
 
 <div class="page-content">
@@ -108,7 +106,8 @@
 													<i class="fa fa-eye"></i>
 												</div>
 												<div class="details">
-													<div class="number numberCss" style="font-weight: 300 !important;">{{contactsByType.activeContactsCount}}</div>
+													<div class="number numberCss"
+														style="font-weight: 300 !important;">{{contactsByType.activeContactsCount}}</div>
 													<div class="desc">Active {{checkingContactTypeName}}s</div>
 												</div>
 											</button>
@@ -248,7 +247,8 @@
 									</div>
 								</section>
 
-								<div class="row mix-grid mt10" [hidden]="isListView" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
+								<div class="row mix-grid mt10" [hidden]="isListView"
+									*ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let contactList of pagination.pagedItems">
 										<div class="col-md-3 col-sm-6 mix category_1 mix_all"
 											style="display: block; opacity: 1;"
@@ -318,7 +318,8 @@
 								</div>
 								<div id="pagination">
 									<!--pager here  -->
-									<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"></app-pagination>
+									<app-pagination [pagination]="pagination" [type]="'contacts'"
+										(notifyParent)="setPage($event)"></app-pagination>
 									<!-- <ul
 										*ngIf="pagination.pager.pages && pagination.pager.pages.length"
 										class="pagination m0">
@@ -518,20 +519,32 @@
 										<div class="btn-group pull-right"
 											style="margin-top: 4px; color: #000000;"
 											*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
-											<!--<button class="btn dropdown-toggle" data-toggle="dropdown">
+											<span class="dropdown-toggle" data-toggle="dropdown"
+												style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
+												<i class="fa fa-cog"
+												style="font-size: 20px; margin-right: 5px"></i><i
+												class="fa fa-angle-down"
+												style="font-size: 14px; float: right"></i>
+											</span>
+											<ul class="dropdown-menu pull-right">
+												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+													id="delete_button" (click)="invalidContactsShowAlert()">
+														Delete </a></li>
+											</ul>
+										</div>
+										<!-- <div class="btn-group pull-right"
+											style="margin-top: 4px; color: #000000;"
+											*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
+											<button class="btn dropdown-toggle" data-toggle="dropdown">
 	Tools <i class="fa fa-angle-down"></i>
-</button>-->
-
-
+</button>
 											<i class="fa fa-cog dropdown-toggle btn-tools"
 												data-toggle="dropdown" style="font-size: 22px"></i>
-
-
 											<ul class="dropdown-menu pull-right">
 												<li><a id="delete_button"
 													(click)="invalidContactsShowAlert()">Delete</a></li>
 											</ul>
-										</div>
+										</div> -->
 									</div>
 									<div class="portlet-body">
 										<div class="table-responsive">
@@ -638,7 +651,9 @@
 													</ng-container>
 												</tbody>
 											</table>
-											<app-pagination [pagination]="contactsByType.pagination" [type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"></app-pagination>
+											<app-pagination [pagination]="contactsByType.pagination"
+												[type]="contactsByType.selectedCategory"
+												(notifyParent)="setPage($event)"></app-pagination>
 											<!-- <ul
 												*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
 												class="pagination m0">
@@ -706,9 +721,9 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-			<button type="button" class="close"  (click)="cancelSegmentation()"
-						data-dismiss="modal">&times;</button>
-					<!-- <a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a> -->
+				<button type="button" class="close" (click)="cancelSegmentation()"
+					data-dismiss="modal">&times;</button>
+				<!-- <a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a> -->
 				<h4 class="modal-title">Segmentation</h4>
 			</div>
 			<div class="modal-body" style="padding: 28px;">
