@@ -13,6 +13,7 @@ import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
 import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
 import { ReportsComponent } from './dashboard/reports/reports.component';
+import { NotificationsComponent } from './user-profile/notifications/notifications.component';
 
 const routes: Routes = [
                         { path: '', component: DashboardComponent},
@@ -27,7 +28,8 @@ const routes: Routes = [
                         { path: 'shared', component: SharedComponent },
                         { path: 'add-company-profile', component:EditCompanyProfileComponent},
                         { path: 'edit-company-profile', component:EditCompanyProfileComponent},
-                        { path: 'reports', component:ReportsComponent}
+                        { path: 'reports', component:ReportsComponent},
+                        { path: 'notifications', component:NotificationsComponent}
                       ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
