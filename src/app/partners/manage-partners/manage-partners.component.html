@@ -399,17 +399,17 @@ img:hover {
 												</div>
 					</div>
 					<div class="portlet-body">
-					
-					
-						
 						<div class="btn-group pull-right"
 							style="margin-bottom: 10px; left: -16px;">
 							<div class="inputs" align="right" style="float: right"></div>
 						</div>
 						<div class="clearfix">
 							<div class="col-xs-12" style="padding: 10px 0;">
-								<div
-									*ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0"
+							<div class="alert alert-info flex" *ngIf="isLoadingList">
+									<div class="loader" style="border: 1; width: 30px; height: 30px;"></div>
+									<h4 class="m0">please wait while we process your request..!</h4>
+								</div>
+								<div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
 									class="alert alert-info alert-dismissable">No Partners
 									Found..</div>
 								<div class="table-responsive">
@@ -522,10 +522,13 @@ img:hover {
 												</td>
 												<td align="center">
 												<div class="actions-block">
-												<a (click)="editUserDetails(contact)"> 
+												<a *ngIf="contact.signedUp" title="Resend the Email" (click)="sendMail(contact.id)"> 
+													<i class="fa fa-envelope"></i>
+												</a>
+												<a title="Edit Partner" (click)="editUserDetails(contact)"> 
 													<i class="fa fa-pencil-square-o" ></i>
 												</a> 
-												<a (click)="deleteUserShowAlert(contact.id)"> 
+												<a title="Delete partner" (click)="deleteUserShowAlert(contact.id)"> 
 													<i class="fa fa-trash-o" ></i>
 												</a>
 												</div>

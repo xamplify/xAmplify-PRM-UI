@@ -74,6 +74,7 @@ export class ManagePartnersComponent implements OnInit {
     isUnLinkSocialNetwork: boolean = false;
     Campaign: string;
     deleteErrorMessage: boolean;
+    isLoadingList: boolean = true;
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -358,12 +359,14 @@ export class ManagePartnersComponent implements OnInit {
     }
 
     loadPartnerList( pagination: Pagination ) {
+        this.isLoadingList = true;
         this.referenceService.loading( this.httpRequestLoader, true );
         this.httpRequestLoader.isHorizontalCss = true;
         this.contactService.loadUsersOfContactList( this.partnerListId, pagination ).subscribe(
             ( data: any ) => {
                 this.partners = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
+                this.isLoadingList = false;
                 this.referenceService.loading( this.httpRequestLoader, false );
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.partners );
@@ -1486,6 +1489,23 @@ export class ManagePartnersComponent implements OnInit {
                 this.xtremandLogger.errorPage(error);
             },
             () => this.xtremandLogger.info( "download partner List completed" )
+            );
+    }
+    
+    
+    sendMail(partnerId: number) {
+        this.contactService.mailSend( partnerId )
+            .subscribe(
+            data => {
+                console.log( data );
+                if(data.message == "success"){
+                    this.setResponseDetails( 'SUCCESS', 'Email Sent Successfully..' );
+                }
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+            },
+            () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
             );
     }
 

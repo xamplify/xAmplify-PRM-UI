@@ -360,6 +360,13 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    mailSend(partnerId: number) {
+        this.logger.info( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId());
+        return this._http.get( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId())
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     extractData( res: Response ) {
         let body = res.json();
