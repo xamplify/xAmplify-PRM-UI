@@ -48,10 +48,12 @@
                                             </select>
 										</div>
 										<div class="col-xs-12 col-md-3">
-											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" [(ngModel)]="videoType"
-											 (ngModelChange)="getVideoTypes()">
+											<span [hidden]="this.authenticationService.isOnlyPartner()">
+											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" 
+											[(ngModel)]="videoType" (ngModelChange)="getVideoTypes()">
 											   <option *ngFor="let videoType of videoTypes" [ngValue]="videoType" >{{videoType.name}}</option>
-                                            </select>
+											</select>
+											</span>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
 											<ng-container class='m10'>
@@ -114,16 +116,16 @@
 												</td>
 												<td>{{videoFile.uploadedDate}}</td>
 												<td>
-													<div class="actions-block">
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner"
+													<div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)"
 															(click)="showEditVideo(videoFile)" title="Edit Video"> 
 															<i class="fa fa-pencil-square-o"></i>
 														</a> 
-														<a (click)="showCampaignVideoReport(videoFile)" *ngIf="authenticationService.module.isCompanyPartner"
+														<a (click)="showCampaignVideoReport(videoFile)" 
 															title="Video Based Reports"> 
 															<i class="fa fa-line-chart"></i>
 														</a>
-														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner">
+														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
@@ -131,9 +133,14 @@
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
 														</ng-container>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isCompanyPartner" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
 															<i class="fa fa-trash"></i>
 														</a>
+													</div>
+														<div class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'">
+															<a  (click)="campaignRouter(videoFile)" title="Create Campaign">
+																<i class="fa fa-bullhorn"></i>
+															</a>
 													</div>
 												</td>
 											</tr>
@@ -152,7 +159,7 @@
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">
 													<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
-													<div style="top: 2%; position: relative; margin-left: 5px;">
+													<div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='myVideos'">
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
 													    </a>
@@ -165,8 +172,8 @@
 														<i class="fa fa-line-chart"></i>
 													    </a>
 													</div>
-													<div style="top: 27%; position: relative;">
-														<span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
+													<div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='myVideos'">
+													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
 														<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
 														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
@@ -174,13 +181,29 @@
 														<a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
 														<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 													   </a>
-													</span>
+													 </span>
 														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
 														 onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>
 													</div>
-													<span align="right"  title="video length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+													<!-- partner video started -->
+													<div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='partnerVideos'">
+														<a class="mix-preview2" (click)="showPlayVideo(videoFile)"  style="margin-top: 29px; left: 27%;"
+														title="Play Video" data-rel="">
+														<i class="fa fa-play"></i>
+													    </a>
+													</div>
+													<div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='partnerVideos'">
+													  <span>
+														<a class="mix-preview2 " (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
+														 style="left: 50%;margin-top: -9px;">
+														<i class="fa fa-bullhorn"></i>
+													   </a>
+													  </span>
+													</div>
+													<!--end partner videos   -->
+													<span align="right" title="video length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
 													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 												    <span align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>

@@ -78,14 +78,16 @@ export class VideoFileService {
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
         let url: any
-         if(this.videoType === 'myVideos'){
-            url = this.URL + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-          } else if(this.videoType === 'partnerVideos'){
+          if(this.authenticationService.isOnlyPartner()){
             url = this.URL +'channel-videos/'+ this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-          }
-        else {
-            alert('ntohtin');
-        }
+          }else {
+            if(this.videoType === 'myVideos'){
+                url = this.URL + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+            } else if(this.videoType === 'partnerVideos'){
+                url = this.URL +'channel-videos/'+ this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+            }
+            else { console.log('load videos not called');} 
+         }
         console.log(url);
         return this.http.post(url, pagination)
             .map(this.extractData)

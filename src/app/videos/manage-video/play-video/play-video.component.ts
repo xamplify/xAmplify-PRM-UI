@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { UUID } from 'angular2-uuid';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
@@ -8,14 +8,14 @@ import { VideoFileService } from '../../services/video-file.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { UUID } from 'angular2-uuid';
+
 import { CallAction } from '../../models/call-action';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
-declare var $, videojs, QuickSidebar, Metronic, Layout, Demo, Index: any;
+declare const $, videojs, QuickSidebar, Metronic, Layout, Demo, Index, pivot: any;
 // logging info details
 enum LogAction {
     playVideo = 1,
@@ -84,9 +84,30 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     hasAllAccess = false;
     loggedInUserId = 0;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    constructor(public authenticationService: AuthenticationService, public router: Router,
-        public videoFileService: VideoFileService, public videoUtilService: VideoUtilService, public pagination: Pagination,
-        public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
+    input = [
+        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32422' },
+        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32444' },
+        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32466' },
+        { EmaiId: "sravan@stratapps.com", campaignName: "360 Campaign", senttime: '1343442' },
+        { EmaiId: "santhosh@stratapps.com", campaignName: "360 Campaign", senttime: '65432' },
+        { EmaiId: "naresh@stratapps.com", campaignName: "360 Campaign", senttime: '345234233' },
+        { EmaiId: "manas@stratapps.com", campaignName: "360 Campaign", senttime: '24362346' },
+        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' },
+        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' },
+        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' }
+    ];
+
+    options = {
+        row: "EmaiId",
+        column: "campaignName",
+        value: "senttime"
+    };
+
+
+
+    constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
+        public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
+        public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
         public pagerService: PagerService, public referenceService: ReferenceService) {
         this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
@@ -96,10 +117,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
+
     }
     embedSourcePath(alias: string, viewBy: string) {
         this.embedSrcPath = this.authenticationService.APP_URL + 'embed/' +
-        this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias;
+            this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias;
         console.log(this.embedSrcPath);
     }
     checkCallToActionAvailable() {
@@ -129,7 +151,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.selectedVideo.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
         } else { this.isThisDraftVideo = false; }
-     //   this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
+        //   this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {
         $('#modalDialog').append($('#overlay-modal').show());
@@ -142,14 +164,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
             });
         // const shareUrl = this.authenticationService.APP_URL+ 'embed/'+this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias; 
-       // this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
+        // this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
     }
-   shareMetaTags(shareShortUrl: string) {
+    shareMetaTags(shareShortUrl: string) {
         this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
             (error: any) => { this.xtremandLogger.error(error); });
     }
-    embedModal(){
-      this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
+    embedModal() {
+        this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
             .subscribe((result: any) => {
                 this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
                 this.shareMetaTags(this.embedSrcPath);
@@ -168,9 +190,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedVideo = saveVideoFile;
                 this.xtremandLogDefaultActions();  // loggin info method
                 // new code format
-                const pagedItemsIds = this.pagination.pagedItems.map(function(a) {return a.id;});
+                const pagedItemsIds = this.pagination.pagedItems.map(function (a) { return a.id; });
                 console.log(pagedItemsIds);
-                if(pagedItemsIds.includes(this.selectedVideo.id)){
+                if (pagedItemsIds.includes(this.selectedVideo.id)) {
                     this.pagination.pagedItems = this.pagination.pagedItems.filter(i => i.id !== this.selectedVideo.id);
                 }
                 console.log(this.pagination.pagedItems);
@@ -202,15 +224,16 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('.video-js .vjs-tech').css('height', '100%');
                     const self = this;
                     const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
-                    this.videoJSplayer = videojs('videoId',  {
+                    this.videoJSplayer = videojs('videoId', {
                         html5: {
-                        hls: {
-                            overrideNative: overrideNativevalue
-                        },
-                        nativeVideoTracks: !overrideNativevalue,
-                        nativeAudioTracks: !overrideNativevalue,
-                        nativeTextTracks: !overrideNativevalue
-                        } }, function () {
+                            hls: {
+                                overrideNative: overrideNativevalue
+                            },
+                            nativeVideoTracks: !overrideNativevalue,
+                            nativeAudioTracks: !overrideNativevalue,
+                            nativeTextTracks: !overrideNativevalue
+                        }
+                    }, function () {
                         const player = this;
                         const document: any = window.document;
                         let startDuration;
@@ -225,17 +248,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                                 $('.vjs-big-play-button').css('display', 'none');
                                 self.showOverlayModal();
                                 this.pause();
-                             //   self.videoJSplayer.pause();
+                                //   self.videoJSplayer.pause();
                             } else if (isValid !== 'StartOftheVideo') {
                                 $('#overlay-modal').hide();
                                 $('.vjs-big-play-button').css('display', 'none');
-                                 this.play();
+                                this.play();
                             } else {
                                 $('#overlay-modal').hide();
                                 $('.vjs-big-play-button').css('display', 'none');
-                               // player.play();
+                                // player.play();
                             }
-                             $('#skipOverlay').click(function () {
+                            $('#skipOverlay').click(function () {
                                 $('#overlay-modal').hide();
                                 player.play();
                             });
@@ -457,7 +480,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveCallToActionUserForm() {
         $('#overlay-modal').hide();
         if (this.videoJSplayer) {
-            if (this.callAction.videoOverlaySubmit === 'PLAY') { this.videoJSplayer.play();
+            if (this.callAction.videoOverlaySubmit === 'PLAY') {
+                this.videoJSplayer.play();
             } else { this.videoJSplayer.pause(); }
         }
         console.log(this.callAction.email_id);
@@ -530,15 +554,15 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 () => console.log('load All videos completed:' + this.allVideos),
             );
         } catch (error) {
-              this.xtremandLogger.error('erro in load All videos :' + error);
+            this.xtremandLogger.error('erro in load All videos :' + error);
         }
     }
-    setPage(event:any) {
-            this.pagination.pageIndex = event.page;
-            this.loadAllVideos(this.pagination);
+    setPage(event: any) {
+        this.pagination.pageIndex = event.page;
+        this.loadAllVideos(this.pagination);
     }
     defaultVideoOptions() {
-           this.videoUtilService.videoColorControlls(this.selectedVideo);
+        this.videoUtilService.videoColorControlls(this.selectedVideo);
         if (!this.selectedVideo.allowFullscreen) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else {
@@ -554,7 +578,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     transperancyControllBar(value: any) {
         const color: any = this.selectedVideo.controllerColor;
-        const  rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     titleCheckLength(title: string) {
@@ -785,15 +809,16 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const self = this;
         const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
         console.log(overrideNativevalue);
-        this.videoJSplayer = videojs('videoId',  {
-        html5: {
-          hls: {
-            overrideNative: overrideNativevalue
-          },
-          nativeVideoTracks: !overrideNativevalue,
-          nativeAudioTracks: !overrideNativevalue,
-          nativeTextTracks: !overrideNativevalue
-        } }, function () {
+        this.videoJSplayer = videojs('videoId', {
+            html5: {
+                hls: {
+                    overrideNative: overrideNativevalue
+                },
+                nativeVideoTracks: !overrideNativevalue,
+                nativeAudioTracks: !overrideNativevalue,
+                nativeTextTracks: !overrideNativevalue
+            }
+        }, function () {
             const player = this;
             let startDuration;
             self.replyVideo = false;
