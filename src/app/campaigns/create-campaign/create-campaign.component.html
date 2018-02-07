@@ -245,7 +245,7 @@
 								
 							<div id="home" class="tab-pane fade in active">
 								<div class="tab">
-									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab">My Videos</button>
+									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner">My Videos</button>
 									  <button  [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
 										<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>

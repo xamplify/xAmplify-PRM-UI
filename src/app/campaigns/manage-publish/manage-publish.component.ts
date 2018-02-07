@@ -62,6 +62,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
+    isOnlyPartner:boolean = false;
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         private pagination: Pagination, private pagerService: PagerService,
@@ -80,6 +81,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 
     }
     showMessageOnTop() {

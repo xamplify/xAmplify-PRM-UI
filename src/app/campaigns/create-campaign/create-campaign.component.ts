@@ -183,6 +183,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     countries: Country[];
     timezones: Timezone[];
     videojsPlayer: any;
+    isOnlyPartner:boolean  = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -197,9 +198,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
-            this.myVideosClass = this.tabClassActive;
+            if(this.isOnlyPartner){
+                this.partnerVideosClass = this.tabClassActive;
+                this.isMyVideosActive = false;
+            }else{
+                this.myVideosClass = this.tabClassActive;
+            }
             this.myVideosStyle = this.styleDisplayClass;
             this.campaign.countryId = this.countries[0].id;
             this.onSelect(this.campaign.countryId);

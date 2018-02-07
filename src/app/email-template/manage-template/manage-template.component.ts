@@ -34,6 +34,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isCampaignEmailTemplate:boolean  = false;
     selectedEmailTemplateName:string = "";
     selectedTemplateTypeIndex:number = 0;
+    isOnlyPartner:boolean = false;
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -81,6 +82,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }
         this.hasAllAccess = this.refService.hasAllAccess();
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner()
     }
     showMessageOnTop(){
         $(window).scrollTop(0);

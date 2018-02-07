@@ -21,6 +21,7 @@ export class SelectCampaignTypeComponent implements OnInit{
     hasSocialStatusRole:boolean = false;
     isOrgAdmin:boolean = false;
     isSocialCampaignAccess = true;
+    isOnlyPartner = false;
     constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:XtremandLogger,private router:Router,private refService:ReferenceService,private authenticationService:AuthenticationService){
         this.logger.info("select-campaign-type constructor loaded");
         let roles = this.authenticationService.getRoles();
@@ -30,6 +31,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         if(roles.indexOf(this.roleName.orgAdminRole)>-1){
             this.isOrgAdmin = true;
         }
+        this.isOnlyPartner  = this.authenticationService.isOnlyPartner();
     }
    
     ngOnInit() {
