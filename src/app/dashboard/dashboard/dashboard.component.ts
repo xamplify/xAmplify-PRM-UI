@@ -947,7 +947,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.emailTemplateService.countPartnerEmailtemplate(this.loggedInUserId)
                 .subscribe((result: any) => {
-                    this.partnerEmailTemplateCount = result;
+                    console.log(result);
+                    this.partnerEmailTemplateCount = result.count;
                 },
                 (error: any) => {
                     this.xtremandLogger.errorPage(error);
