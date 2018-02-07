@@ -374,6 +374,31 @@
 		</div>
 	</div>
 	<!-- END DASHBOARD STATS -->
+	
+	<ng-container *ngIf="authenticationService.isOnlyPartner()">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="portlet light clearfix">
+							<div class="portlet-title">
+								<span class="caption-subject">Total Videos Shared</span>
+							</div>
+							<div class="portlet-body">
+									<h1 class="text-center"><a [routerLink]="['../../videos/manage']">{{videosPagination.totalRecords}}</a></h1>		
+							</div>
+						</div>
+			</div>
+						<div class="col-xs-6">
+				<div class="portlet light clearfix">
+							<div class="portlet-title">
+								<span class="caption-subject">Total Email Templates Shared</span>
+							</div>
+							<div class="portlet-body">
+									<h1 class="text-center"><a [routerLink]="['../../emailtemplates']">{{partnerEmailTemplateCount}}</a></h1>		
+							</div>
+						</div>
+			</div>
+		</div>
+	</ng-container>
 
 	<div class="row">
 		<div class="clearfix"></div>
@@ -600,6 +625,7 @@
 			</div>
 		</div>
 	</div>
+	<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
 	<div class="clearfix" *ngIf="socialConnections?.length > 0">
 		<div class="portlet light shadow">
 			<div class="portlet-title">
@@ -745,6 +771,7 @@
 
 		</div>
 	</div>
+	</ng-container>
 </div>
 <!-- Modals -->
 <div class="modal fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"

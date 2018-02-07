@@ -84,6 +84,12 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    countPartnerEmailtemplate(userId:number){
+        return this.http.get(this.URL+"admin/count-partner-emailtemplate/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
  
     
     private extractData( res: Response ) {

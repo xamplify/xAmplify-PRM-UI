@@ -24,6 +24,7 @@ import { DashboardReport } from '../../core/models/dashboard-report';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
 declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -64,10 +65,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
     trellisBarChartData: any;
+    partnerEmailTemplateCount: number = 0;
 
-    constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination,
+    constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
-        public facebookService: FacebookService, public socialService: SocialService,
+        public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public campaignService: CampaignService, public referenceService: ReferenceService,
         public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe) {
@@ -922,6 +924,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
             () => console.log('finished')
             );
     }
+    
+    loadChannelVideos() {
+        this.videosPagination.maxResults = 50;
+        try {
+            this.videoFileService.loadChannelVideos(this.videosPagination, 0)
+                .subscribe((result: any) => {
+                    this.videosPagination.totalRecords = result.totalRecords;
+                    this.videosPagination = this.pagerService.getPagedItems(this.videosPagination, result.listOfMobinars);
+                },
+                (error: any) => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => console.log('load videos completed:')
+                );
+        } catch (error) {
+            this.xtremandLogger.error('erro in load videos :' + error);
+        }
+    };
+    
+    countPartnerEmailTemplate(){
+        try {
+            this.emailTemplateService.countPartnerEmailtemplate(this.loggedInUserId)
+                .subscribe((result: any) => {
+                    this.partnerEmailTemplateCount = result;
+                },
+                (error: any) => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => console.log('countPartnerEmailTemplate completed:')
+                );
+        } catch (error) {
+            this.xtremandLogger.error('erro in countPartnerEmailTemplate :' + error);
+        }
+    
+    }
 
     ngOnInit() {
         try {
@@ -946,6 +983,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             Tasks.initDashboardWidget();
             this.listActiveSocialAccounts(this.loggedInUserId);
             this.genderDemographics(this.loggedInUserId);
+            
+            if(this.authenticationService.isOnlyPartner()){
+                this.loadChannelVideos();
+                this.countPartnerEmailTemplate();
+            }
         } catch (err) {
             console.log(err);
         }
