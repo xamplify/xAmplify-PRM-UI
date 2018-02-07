@@ -764,7 +764,11 @@
 				</div>
 			</div>
 			<div class="modal-body clearfix">
-				<div *ngIf="pagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
+				<div class="alert alert-info flex" *ngIf="isLoadingList">
+					<div class="loader" style="border: 1; width: 25px; height: 25px;"></div>
+					<h4>please wait while we process your request..!</h4>
+				</div>
+				<div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
 					<strong>No Records found.. !!!</strong>
 				</div>
 				<div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">

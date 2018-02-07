@@ -1492,7 +1492,6 @@ export class ManagePartnersComponent implements OnInit {
             );
     }
     
-    
     sendMail(partnerId: number) {
         this.contactService.mailSend( partnerId )
             .subscribe(

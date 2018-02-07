@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isMaxBarChartNumber = true;
     downloadDataList = [];
     paginationType: string;
+    isLoadingList: boolean = true;
     worldMapUserData: any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
@@ -655,6 +656,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             (result: any) => {
                 this.dashboardReport.emailLogList = result;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                this.isLoadingList = false;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
             },
             error => console.log(error),
@@ -669,6 +671,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
             result => {
                 this.dashboardReport.emailLogList = result;
+                this.isLoadingList = false;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
             },
@@ -685,6 +688,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
             (data: any) => {
                 this.dashboardReport.emailLogList = data;
+                this.isLoadingList = false;
                 this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
             },
@@ -805,6 +809,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.downloadDataList.length = 0;
         this.dashboardReport.emailLogList.length = 0;
+        this.isLoadingList = true;
     }
 
     downloadEmailLogs() {
