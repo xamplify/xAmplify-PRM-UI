@@ -636,6 +636,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#schedule-later-div').hide();
 
     if (this.isSocialCampaign) {
+        if ( this.authenticationService.user.hasCompany && this.authenticationService.module.isOrgAdmin )
+            this.socialStatus.isPartner = true;
+        else
+            this.socialStatus.isPartner = false;
+
       this.loadContactLists(this.contactListsPagination);
     }
     if (this.isSocialCampaign && this.alias) {

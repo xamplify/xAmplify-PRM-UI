@@ -237,13 +237,15 @@
             </div>
 			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix" style="padding: 15px;">
-				    <div class="form-group m0 pull-right">
-						<h5 class="control-label font-purple-intense pr10">Partner Contacts</h5>
-						<switch [status]="socialStatus.isPartner"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-							   (statusChange)="toggleContactLists()">
-						</switch>
-			  		</div>
+					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
+						<div class="form-group m0 pull-right">
+							<h5 class="control-label font-purple-intense pr10">Partner Contacts</h5>
+							<switch [status]="socialStatus.isPartner"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+								(statusChange)="toggleContactLists()">
+							</switch>
+						</div>
+					</ng-container>
 					<div class="form-group m0">
 				    	<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
 				    </div>
