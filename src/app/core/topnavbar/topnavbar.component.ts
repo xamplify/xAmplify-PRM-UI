@@ -18,6 +18,7 @@ declare var swal, $: any;
 export class TopnavbarComponent implements OnInit {
 
   notifications: any;
+  totalNotificationsCount: number;
   notificationsCount = 0;
   isUserUpdated: boolean;
   campaignEmailNotifications: any;
@@ -76,6 +77,7 @@ export class TopnavbarComponent implements OnInit {
     if(roles.indexOf(this.roleName.companyPartnerRole) > -1){
         this.authenticationService.module.isCompanyPartner = true;
     }
+    
   }
 
   listNotifications(){
@@ -202,6 +204,8 @@ export class TopnavbarComponent implements OnInit {
     this.listNotifications();
     this.listCampaignEmailNotifications();
     this.listCampaignVideoNotifications();
+    
+    this.totalNotificationsCount = this.notificationsCount + this.campaignEmailNotificationCount + this.campaignVideoWatchedNotificationCount;
   }
   
   logout(){

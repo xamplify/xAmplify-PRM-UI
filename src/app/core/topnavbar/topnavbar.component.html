@@ -89,18 +89,21 @@
 										<i class="fa fa-twitter"></i>
 										</span>
 										{{item.message}}</span>
+										 <i class="fa fa-globe" aria-hidden="true" style="color:#00a6e8"></i>
 										</a>
 									</li>
 									<ng-container *ngFor="let emailNotification of campaignEmailNotifications;let i=index">
 										<li *ngIf="emailNotification.openCount>0" class="read-notification" id="email-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
-										 	<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+										 	<i class="icon-envelope-open" style="color:#00a6e8"></i>
+										 	<i class="fa fa-check-circle-o" aria-hidden="true" style="color:#00a6e8"></i>
 										</a>
 										</li>
 										<li *ngIf="emailNotification.openCount==0" class="unread-notification" id="email-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(emailNotification.id,'email');markItAsRead(i,'email-notification-');gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 										 	<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b> at {{emailNotification.time | date: 'medium'}}
+										    <i class="icon-envelope-open" style="color:#00a6e8"></i>
 										</a>
 										</li>
 									</ng-container>
@@ -108,12 +111,14 @@
 										<li *ngIf="videoNotification.openCount>0" class="read-notification" id="video-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}} ( {{videoNotification.campaignName}} ) </b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
-												<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+												<i class="fa fa-play-circle" style="color:#00a6e8"></i>
+												<i class="fa fa-check-circle-o" aria-hidden="true" style="color:#00a6e8"></i>
 										</a>
 										</li>
 										<li *ngIf="videoNotification.openCount==0" class="unread-notification" id="video-notification-{{i}}">
 											<a href="javascript:void(0)" (click)="markAsRead(videoNotification.id,'video');markItAsRead(i,'video-notification-');gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 										 	<b>{{videoNotification.videoTitle}}( {{videoNotification.campaignName}} )</b> Watched By <b>{{videoNotification.userEmailId}}</b> at {{videoNotification.startTime | date: 'medium'}}
+										<i class="fa fa-play-circle" style="color:#00a6e8"></i>
 										</a>
 										</li>
 									</ng-container>
