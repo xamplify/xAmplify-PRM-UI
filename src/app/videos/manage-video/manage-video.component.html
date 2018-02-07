@@ -157,6 +157,11 @@
 											<div id="container">
 												<h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3>
 											</div>
+											<div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
+												<span >
+											       <i aria-hidden="true" class="fa fa-handshake-o pull-right" style="right: -10px;bottom: 5px;color: #f7f7f7; position: absolute"></i>
+												</span>
+											</div>
 											<div class="mix-inner" style="height: 173px;">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">

@@ -78,3 +78,15 @@ h3 {
 .duration {position: relative;    left: 135px;    padding: 1px 5px;    background: #ffffff;    bottom: 19px;}
 
 .view-by-banner{padding: 2px 5px;	background-color: #5bb2f5;	color: #fff;}
+
+.bookmark-ribbon{
+	position: absolute;
+	right: 18px;
+    top: 25px;
+    width: 0px;
+    height: 38px;
+    z-index: 400;
+    border-right: 16px solid #00a6e8;
+    border-left: 16px solid #00a6e8;
+    border-bottom: 13px solid transparent;
+}
