@@ -112,6 +112,15 @@ export class AuthenticationService {
         roleNames = roles.map(function (a) { return a.roleName; });
         return roleNames;
     }
+    
+    isOnlyPartner(){
+        let roleNames = this.getRoles();
+        if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     logout(): void {
         console.log('logout()');
         // clear token remove user from local storage to log user out

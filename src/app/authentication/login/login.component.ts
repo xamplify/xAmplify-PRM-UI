@@ -32,12 +32,15 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.logErrorEmpty()
         } else {
             if (localStorage.getItem('currentUser')) {
+                console.log("User From Local Storage");
                 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 let roles = currentUser.roles;
                 let roleNames = roles.map(function (a) { return a.roleName; });
                 if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
+                    console.log("User Or Company Partner");
                     this.router.navigate(['/home/dashboard/myprofile']);
                 } else {
+                    console.log("Going To DashBoard");
                     this.router.navigate(['/home/dashboard/default']);
                 }
 
@@ -59,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if(currentUser.hasCompany){
                             this.router.navigate(['/home/dashboard/default']);
                         }else{
-                            if(roles.length == 1 || this.isOnlyPartner(roleNames)){
+                            if(roles.length == 1 || this.isOnlyPartner(roleNames) ){
                                 this.router.navigate(['/home/dashboard/myprofile']);
                             }else{
                                 this.router.navigate(['/home/dashboard/add-company-profile']);

@@ -28,4 +28,5 @@ export class User {
     hasCompany:boolean = false;
 
     isShowDetails = false;
+    companyName:string = "";
 }

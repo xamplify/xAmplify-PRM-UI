@@ -59,6 +59,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     currentUser:User;
     roles:string[]=[];
     isOrgAdmin:boolean = false;
+    isOnlyPartnerRole:boolean = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch) {
@@ -234,7 +235,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if(currentUser.roles.length>1){
-                this.getOrgAdminsCount(this.loggedInUserId);
+                let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
+                if(!this.isOnlyPartner(roleNames)){
+                    this.getOrgAdminsCount(this.loggedInUserId);
+                }
                 this.getVideoDefaultSettings();
                 this.defaultVideoSettings();
                 this.refService.isDisabling = false;
@@ -252,6 +256,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             
 
         } catch (err) { }
+    }
+    
+    isOnlyPartner(roleNames){
+        if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            this.isOnlyPartnerRole  = true;
+            return true;
+        }else{
+            this.isOnlyPartnerRole  = false;
+            return false;
+        }
+        
     }
     ngAfterViewInit() {
         
@@ -395,7 +410,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'interests': '',
         'occupation': '',
         'description': '',
-        'websiteUrl': ''
+        'websiteUrl': '',
+        'companyName':''
     };
 
     validationMessages = {
@@ -454,7 +470,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'websiteUrl': {
             'required': 'WebsiteUrl required.',
             'pattern': 'Invalid Url Pattern'
-        }
+        },
+        'companyName': {
+            'required': 'Company Name required.',
+            'whitespace': 'Invalid Data',
+            'minlength': 'Company Name must be at least 3 characters long.',
+            'maxlength': 'Company Name cannot be more than 50 characters long.',
+            'pattern': 'Invalid Name'
+        },
 
 
     };
@@ -475,6 +498,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'occupation': [this.userData.occupation, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
             'description': [this.userData.description, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.required, Validators.pattern(urlPatternRegEx)]],
+            'companyName': [this.userData.companyName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+
 
         });
 
@@ -515,6 +540,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     var message = response.message;
                     if (message === "User Updated") {
                         setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
+                        if(this.isOnlyPartnerRole){
+                            this.authenticationService.user.hasCompany  = true;
+                        }
                         this.userData = this.updateUserProfileForm.value;
                         this.userData.displayName = this.updateUserProfileForm.value.firstName;
                         this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
