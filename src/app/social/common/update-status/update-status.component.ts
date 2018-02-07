@@ -422,6 +422,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   /*****************LOAD VIDEOS WITH PAGINATION START *****************/
 
   listVideos(videosPagination: Pagination) {
+    this.videoFileService.videoType = 'myVideos';
     this.videoFileService.loadVideoFiles(videosPagination)
       .subscribe((result: any) => {
         if (result.totalRecords > 0) {
@@ -653,5 +654,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.videoJSplayer.dispose();
     }
     $('.profile-video').remove();
+    this.videoFileService.videoType = '';
   }
 }

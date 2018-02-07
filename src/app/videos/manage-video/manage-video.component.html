@@ -107,7 +107,8 @@
 												<td>
 													<a (click)="showPlayVideo(videoFile)">
 														<h4 title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{titleCheckLength(videoFile.title)}}</h4>
-														<h5 class='m0'>By {{videoFile.uploadedUserName}}</h5>
+														<h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
+														<h5 *ngIf="videoFileService.videoType === 'partnerVideos'">by {{videoFile.uploadedBy}}</h5>
 														<h6 class='f-w-600'>{{videoFile.views}} views</h6>
 													</a>
 												</td>
@@ -137,7 +138,8 @@
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
-														<div class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'">
+														<div class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'"
+														  style="position: relative;left: -30px;color: #00a6e8;">
 															<a  (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
@@ -206,8 +208,9 @@
 													<span align="right" title="video length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
 													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
-												    <span align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
-											 	</div>
+												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
+											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy}}</span>
+												</div>
 											</div>
 											<div>
 											</div>
