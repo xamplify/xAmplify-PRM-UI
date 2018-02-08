@@ -101,7 +101,7 @@
 									<td>
 									<div class="actions-block">
 									<ng-container *ngIf="!campaign.launched">
-										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)" 
+										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)" 
 											(click)="editCampaign(campaign.campaignId)" title="Edit Campaign" class='mr5'> 
 											<i class="fa fa-pencil-square-o"></i>
 										</a> 
@@ -111,12 +111,12 @@
 										 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
 										</a>
-										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole)" data-rel="fancybox-button" 
+										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner" data-rel="fancybox-button" 
 											title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 												<i class="fa fa-files-o"></i>
 										</a>
 										</ng-container>
-										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId)" 
+										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" 
 											(click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
 											<i class="fa fa-trash"></i>
 										</a>
@@ -156,7 +156,7 @@
 													<!-- <div style="top: 2%; position: relative; margin-left: 5px;">
 													</div> -->
 													<div style="top: 30%; position: relative;" >
-														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 25%;margin-top: -1%;margin-left: 7%"> 
+														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 25%;margin-top: -1%;margin-left: 7%"> 
 															<i class="fa fa-pencil-square-o" ></i>
 														</a> 
 														<ng-container *ngIf="campaign.launched">
@@ -164,8 +164,12 @@
 														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="" style="left: 25%;margin-top: -1%;margin-left: 7%">
 																<i class="fa fa-line-chart" ></i>
 														</a>
-														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner" data-rel="fancybox-button" 
+														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole)" data-rel="fancybox-button" 
 															(click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As" class='mix-preview4' style="margin-top: 17%;margin-left: 24%;">
+																<i class="fa fa-files-o" style="font-size: 20px;color:#fff"></i>
+														</a>
+														<a *ngIf=" isOnlyPartner" data-rel="fancybox-button" 
+															(click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As" class='mix-preview4' style="margin-top: -1%;margin-left: 17%;">
 																<i class="fa fa-files-o" style="font-size: 20px;color:#fff"></i>
 														</a>
 														</ng-container>
