@@ -307,7 +307,7 @@ export class AnalyticsComponent implements OnInit {
         $('#usersWatchListModal').modal();
 
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
-        this.usersWatchTotalList(campaignId);
+        this.usersWatchTotalList(campaignId, this.usersWatchListPagination.totalRecords);
       },
       error => console.log(error),
       () => console.log()
@@ -358,7 +358,6 @@ export class AnalyticsComponent implements OnInit {
   }
 
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
-    this.emailActionTotalList(campaignId, actionType);
     this.campaignService.emailActionList(campaignId, actionType, pagination)
       .subscribe(
       data => {
@@ -372,6 +371,7 @@ export class AnalyticsComponent implements OnInit {
           this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
         this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailActionList);
+        this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
       },
       error => console.log(error),
       () => console.log()
@@ -553,8 +553,8 @@ export class AnalyticsComponent implements OnInit {
       () => { });
   }
 
-  emailActionTotalList(campaignId: number, actionType: string) {
-    this.emailLogPagination.maxResults = this.campaignReport.emailClickedCount;
+  emailActionTotalList(campaignId: number, actionType: string, totalRecords: number) {
+    this.emailLogPagination.maxResults = totalRecords;
     this.downloadTypeName = 'emailAction';
     this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
       .subscribe(
@@ -567,8 +567,8 @@ export class AnalyticsComponent implements OnInit {
       )
   }
 
-  usersWatchTotalList(campaignId: number) {
-      this.userWatchedReportPagination.maxResults = this.campaignReport.usersWatchCount;
+  usersWatchTotalList(campaignId: number, totalRecords: number) {
+      this.userWatchedReportPagination.maxResults = totalRecords;
     this.downloadTypeName = 'usersWatchedList';
     this.campaignService.usersWatchList(campaignId, this.userWatchedReportPagination)
       .subscribe(
