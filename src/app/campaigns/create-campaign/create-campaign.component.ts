@@ -203,11 +203,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaignType = this.refService.selectedCampaignType;
             if(this.isOnlyPartner){
                 this.partnerVideosClass = this.tabClassActive;
+                this.partnerVideosStyle = this.styleDisplayClass;
                 this.isMyVideosActive = false;
             }else{
                 this.myVideosClass = this.tabClassActive;
+                this.myVideosStyle = this.styleDisplayClass;
             }
-            this.myVideosStyle = this.styleDisplayClass;
+            
             this.campaign.countryId = this.countries[0].id;
             this.onSelect(this.campaign.countryId);
         }

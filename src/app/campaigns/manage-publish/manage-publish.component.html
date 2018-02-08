@@ -160,7 +160,7 @@
 															<i class="fa fa-pencil-square-o" ></i>
 														</a> 
 														<ng-container *ngIf="campaign.launched">
-														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole || isOnlyPartner ) " class="mix-preview4" data-rel="fancybox-button"
+														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) " class="mix-preview4" data-rel="fancybox-button"
 														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="" style="left: 25%;margin-top: -1%;margin-left: 7%">
 																<i class="fa fa-line-chart" ></i>
 														</a>

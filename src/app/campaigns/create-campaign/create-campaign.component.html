@@ -466,7 +466,7 @@
 									</tr>
 								<tr>
 									<td colspan="5">
-										<div  *ngIf="channelVideosPagination.totalRecords==0" class="alert alert-info"><strong>No Videos Found</strong></div>
+										<div  *ngIf="channelVideosPagination.totalRecords==0" class="alert alert-info"><strong>No Channel Videos Found</strong></div>
 									</td>
 								</tr>	
 								<ng-container *ngIf="channelVideosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">	

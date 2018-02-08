@@ -105,8 +105,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     
     isOnlyPartner(roleNames){
         if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            console.log("*******************LoggedIn User Is Partner***********************")
             return true;
         }else{
+            console.log("*******************LoggedIn User Is Not Partner***********************");
             return false;
         }
     }
