@@ -1,0 +1,51 @@
+<style>
+  .clipboard {
+    padding: 6px 44px;
+  }
+
+  textarea {
+    resize: none;
+    max-height: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    min-width: 100%;
+    padding: 10px;
+  }
+</style>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 0; height: 268px;">
+      <div class="modal-header">
+        <a class="close-circle" (click)="closeEmbedModal()"><i class="fa fa-times"></i></a>
+        <!-- <button type="button" class="closeModal" data-dismiss="modal" (click)="closeEmbedModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+        <h4 class="modal-title" id="myModalLabel"><strong>Embed Video</strong></h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="input-group" style="width: 100%;">
+            <textarea class="form-control" rows="4" id="embed_code" name="embed_code" spellcheck="false" data-event="share_video_with_embed_code"
+              style="height: 150px;  min-height: 140px; max-height:160px;font-size: 15px;"><iframe width="{{embedWidth}}" height="{{embedHeight}}" src="{{embedSrcPath}}"  {{embedFullScreen}}></iframe><br /><a href="{{embedSrcPath}}" target="_blank">{{video.title}}</a></textarea>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12">
+            <div style="margin-top: 4px;">
+              <div class="col-xs-12 col-sm-4 col-md-4" style="padding:0"><span style="position: relative;top:-2px;">Video Size:</span>
+                <select class="videoSizeCss" [(ngModel)]="videosize" [ngModelOptions]="{standalone: true}" (change)="embedVideoSizes()">
+												<option style="font-size:12px" *ngFor="let size of videoSizes" [value]="size">{{size}}</option>
+											</select>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Allow Full Screen :
+                <input type="checkbox" [(ngModel)]="isFullscreen" [ngModelOptions]="{standalone: true}" (change)="embedFulScreenValue()"
+                  checked="checked">
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4" style="padding: 0">
+                <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard" style="width:100%; background: #00a6e8; color: #FFF;border-radius: 1px;"
+                  (click)="embedCode()" [class.clipboard]="ClipboardName=='Copied !'">{{ClipboardName}}
+											</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

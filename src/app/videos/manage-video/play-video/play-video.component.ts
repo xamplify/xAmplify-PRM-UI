@@ -46,17 +46,11 @@ enum LogAction {
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
     @Input() selectedVideo: SaveVideoFile;
+    embedModelVideo: SaveVideoFile;
     allVideos: Array<SaveVideoFile>;
     user: User = new User();
     callAction: CallAction = new CallAction();
     selectedPosition: number;
-    embedSrcPath: string;
-    embedWidth = '640';
-    embedHeight = '360';
-    videoSizes: string[];
-    videosize = '640 × 360';
-    embedFullScreen = 'allowfullscreen';
-    isFullscreen: boolean;
     videoUrl: string;
     videoJSplayer: any;
     posterImg: string;
@@ -84,45 +78,19 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     hasAllAccess = false;
     loggedInUserId = 0;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    input = [
-        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32422' },
-        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32444' },
-        { EmaiId: "aravind@stratapps.com", campaignName: "360 Campaign", senttime: '32466' },
-        { EmaiId: "sravan@stratapps.com", campaignName: "360 Campaign", senttime: '1343442' },
-        { EmaiId: "santhosh@stratapps.com", campaignName: "360 Campaign", senttime: '65432' },
-        { EmaiId: "naresh@stratapps.com", campaignName: "360 Campaign", senttime: '345234233' },
-        { EmaiId: "manas@stratapps.com", campaignName: "360 Campaign", senttime: '24362346' },
-        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' },
-        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' },
-        { EmaiId: "ksathish@stratapps.com", campaignName: "360 Campaign", senttime: '23462346' }
-    ];
-
-    options = {
-        row: "EmaiId",
-        column: "campaignName",
-        value: "senttime"
-    };
-
-
-
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
         public pagerService: PagerService, public referenceService: ReferenceService) {
-        this.videoSizes = this.videoUtilService.videoSizes;
+       // this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
         this.likesValues = 0;
-        this.isFullscreen = true;
+       // this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
 
-    }
-    embedSourcePath(alias: string, viewBy: string) {
-        this.embedSrcPath = this.authenticationService.APP_URL + 'embed/' +
-            this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias;
-        console.log(this.embedSrcPath);
     }
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true) {
@@ -151,7 +119,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.selectedVideo.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
         } else { this.isThisDraftVideo = false; }
-        //   this.embedSourcePath(this.selectedVideo.alias, this.selectedVideo.viewBy);
     }
     showOverlayModal() {
         $('#modalDialog').append($('#overlay-modal').show());
@@ -163,19 +130,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.shareMetaTags(this.embedUrl);
                 this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
             });
-        // const shareUrl = this.authenticationService.APP_URL+ 'embed/'+this.selectedVideo.viewBy.toLowerCase() + '/' + this.selectedVideo.alias; 
-        // this.videoUtilService.modalWindowPopUp(shareUrl, 670, 500);
     }
     shareMetaTags(shareShortUrl: string) {
         this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
             (error: any) => { this.xtremandLogger.error(error); });
     }
     embedModal() {
-        this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
-            .subscribe((result: any) => {
-                this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
-                this.shareMetaTags(this.embedSrcPath);
-            });
+        this.embedModelVideo = this.selectedVideo;
     }
     showVideo(videoFile: SaveVideoFile, position: number) {
         this.createSessionId();  // creating new session id
@@ -440,20 +401,20 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     disLikesValuesDemo() {
         this.disLikesValues += 1;
     }
-    embedFulScreenValue() {
-        if (this.isFullscreen === true) {
-            this.embedFullScreen = 'allowfullscreen';
-        } else { this.embedFullScreen = ''; }
-    }
-    embedVideoSizes() {
-        if (this.videosize === this.videoSizes[0]) {
-            this.embedWidth = '1280'; this.embedHeight = '720';
-        } else if (this.videosize === this.videoSizes[1]) {
-            this.embedWidth = '560'; this.embedHeight = '315';
-        } else if (this.videosize === this.videoSizes[2]) {
-            this.embedWidth = '853'; this.embedHeight = '480';
-        } else { this.embedWidth = '640'; this.embedHeight = '360'; }
-    }
+    // embedFulScreenValue() {
+    //     if (this.isFullscreen === true) {
+    //         this.embedFullScreen = 'allowfullscreen';
+    //     } else { this.embedFullScreen = ''; }
+    // }
+    // embedVideoSizes() {
+    //     if (this.videosize === this.videoSizes[0]) {
+    //         this.embedWidth = '1280'; this.embedHeight = '720';
+    //     } else if (this.videosize === this.videoSizes[1]) {
+    //         this.embedWidth = '560'; this.embedHeight = '315';
+    //     } else if (this.videosize === this.videoSizes[2]) {
+    //         this.embedWidth = '853'; this.embedHeight = '480';
+    //     } else { this.embedWidth = '640'; this.embedHeight = '360'; }
+    // }
     checkingCallToActionValues() {
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
             && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
@@ -468,11 +429,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         (<HTMLInputElement>document.getElementById('embed_code')).select();
         document.execCommand('copy');
     }
-    closeEmbedModal() {
-        this.ClipboardName = 'Copy to Clipboard';
-        $('#myModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
+    closeEmbedModal(event) {
+        console.log('closed modal popup');
+        this.embedModelVideo = undefined;
     }
     trimCurrentTime(currentTime) {
         return Math.round(currentTime * 100) / 100;
@@ -1031,7 +990,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         $('.h-video').remove();
         $('.p-video').remove();
-        this.closeEmbedModal();
+      //  this.closeEmbedModal('closed');
     }
 
     // the below code is used for logging //////////////////////////////

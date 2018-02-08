@@ -43,6 +43,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
     saveVideoFile: SaveVideoFile;
     tempVideoFile: SaveVideoFile;
+    embedModelVideo: SaveVideoFile;
     categories: Category[];
     uploader: FileUploader;
     user: User = new User();
@@ -88,12 +89,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     likesValues: number;
     disLikesValues: number;
     isThumb: boolean;
-    embedWidth = '640';
-    embedHeight = '360';
-    videoSizes: string[];
-    videosize = '640 × 360';
-    embedFullScreen = 'allowfullscreen';
-    isFullscreen: boolean;
     enableCalltoAction: boolean;
     valueRange: number;
     is360Value: boolean;
@@ -146,7 +141,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultSettingValue = this.saveVideoFile.defaultSetting;
         this.enableVideoControl = this.saveVideoFile.enableVideoController;
         this.editVideoTitle = this.saveVideoFile.title;
-        this.videoSizes = this.videoUtilService.videoSizes;
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
@@ -155,11 +149,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.viewBy = 'PRIVATE';
         }
         this.formErrors = this.videoUtilService.formErrors;
-        this.videoUtilService.clipboardName = 'Copy to Clipboard';
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.selectedImagePath = this.saveVideoFile.imagePath;
-        this.isFullscreen = true;
         this.callAction.email_id = this.authenticationService.user.emailId;
         this.callAction.firstName = this.authenticationService.user.firstName;
         this.callAction.lastName = this.authenticationService.user.lastName;
@@ -227,11 +219,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             (error: any) => { this.xtremandLogger.error(error); });
     }
    embedModal(){
-        this.videoFileService.getShortnerUrlAlias(this.saveVideoFile.viewBy, this.saveVideoFile.alias)
-            .subscribe((result: any) => {
-                this.embedUrl = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
-                this.shareMetaTags(this.embedUrl);
-            });
+       this.embedModelVideo = this.saveVideoFile;
     }
     // call to action values
     callActionValues(overlayValue: string, startCallAction: boolean, endCallAction: boolean, videoPlaybutton: string) {
@@ -371,31 +359,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.disLikesValues += 1;
     }
     // embed video methods
-    embedFulScreenValue() {
-        this.embedFullScreen = this.isFullscreen ? 'allowfullscreen' : '';
-    }
-    embedVideoHeightWidth(width: string, height: string) {
-        this.embedWidth = width; this.embedHeight = height;
-    }
-    embedVideoSizes() {
-        if (this.videosize === this.videoSizes[0]) {
-            this.embedVideoHeightWidth('1280', '720');
-        } else if (this.videosize === this.videoSizes[1]) {
-            this.embedVideoHeightWidth('560', '315');
-        } else if (this.videosize === this.videoSizes[2]) {
-            this.embedVideoHeightWidth('853', '480');
-        } else { this.embedVideoHeightWidth('640', '360'); }
-    }
-    embedCode() {
-        this.videoUtilService.clipboardName = 'Copied !';
-        (<HTMLInputElement>document.getElementById('embed_code')).select();
-        document.execCommand('copy');
-    }
-    closeEmbedModal() {
-        this.videoUtilService.clipboardName = 'Copy to Clipboard';
-        $('#myModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
+    closeEmbedModal(event) {
+        console.log('closed model success');
+        this.embedModelVideo = undefined;
     }
     // normal and 360 video methods
     setVideoIdHeightWidth() {
@@ -1236,6 +1202,5 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         $('.p-video').remove();
         this.tempVideoFile = null;
-        this.closeEmbedModal();
     }
 }

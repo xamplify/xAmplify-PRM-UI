@@ -234,7 +234,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if(currentUser.roles.length>1){
+            if(this.authenticationService.hasCompany()){
                 let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
                 if(!this.isOnlyPartner(roleNames)){
                     this.getOrgAdminsCount(this.loggedInUserId);

@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
         ngOnInit() {
         //  this.getCategorisService();
 		//  this.getVideoTitles();
-			if (this.referenceService.defaulgVideoMethodCalled === false && this.currentUser.roles.length>1 && this.authenticationService.hasCompany()) {
+			if (this.referenceService.defaulgVideoMethodCalled === false && this.authenticationService.hasCompany()) {
 			this.getVideoDefaultSettings();
 			this.referenceService.defaulgVideoMethodCalled = true;
 			}
