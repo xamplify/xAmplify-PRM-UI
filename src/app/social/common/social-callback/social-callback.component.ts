@@ -56,11 +56,23 @@ export class SocialCallbackComponent implements OnInit {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {
                                const currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
+                               let roles = currentUser.roles;
+                               let roleNames = roles.map(function (a) { return a.roleName; });
                                if(currentUser.hasCompany){
                                    this.redirect();
                                }else{
-                                   this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                                   if(roles.length == 1 || this.authenticationService.isOnlyPartner()){
+                                       this.router.navigate(['/home/dashboard/myprofile']);
+                                   }else{
+                                       this.router.navigate(['/home/dashboard/add-company-profile']);
+                                   }
                                }
+                               
+                              /* if(currentUser.hasCompany){
+                                  
+                               }else{
+                                   this.router.navigate( ['/home/dashboard/add-company-profile'] );
+                               }*/
                             } else {
                                 this.router.navigate( ['/logout'] );
                             }
