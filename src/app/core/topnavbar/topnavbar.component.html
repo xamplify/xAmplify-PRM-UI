@@ -48,7 +48,7 @@
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
 					
-						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin" style="margin-top: 17px;margin-right: 25px;">
+						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/campaigns/select">
 							Create Campaign
