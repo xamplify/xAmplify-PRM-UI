@@ -462,13 +462,13 @@
 			<h6 *ngIf="!item.socialStatusProvider.socialConnection.profileName">{{item.socialStatusProvider.socialConnection.firstName}}&nbsp;{{item.socialStatusProvider.socialConnection.lastName}}</h6>
 		</div>
 	</div>
-	<div id="fc-event-body-{{item.id}}-{{item.socialStatusProvider.id}}">
-		<h4 *ngIf="!item.socialStatus.ogTitle">{{item.socialStatus.statusMessage}}</h4>
+	<div id="fc-event-body-{{item.id}}-{{item.socialStatusProvider.id}}" class="clearfix">
+		<h5 *ngIf="!item.socialStatus.ogTitle">{{item.socialStatus.statusMessage}}</h5>
 		<div class="clearfix p10" *ngIf="item.socialStatus.ogTitle" style="border: 1px solid #ddd;">
             <a target="_blank" href="{{item.socialStatus.statusMessage}}" style="text-decoration: none">
-                <img alt="{{item.socialStatus.ogTitle}}" src="{{item.socialStatus.ogImage}}" class="img-responsive" width="auto" height="80px">
+                <img alt="{{item.socialStatus.ogTitle}}" src="{{item.socialStatus.ogImage}}" class="img-responsive" width="auto" height="64px">
                 <p>{{item.socialStatus.ogDescription}}</p>
-                <h5 class="uppercase bold">{{item.socialStatus.ogTitle}}</h5>
+                <h5 class="lowercase bold">{{item.socialStatus.ogTitle}}</h5>
             </a>
 		</div>
 		<div *ngIf="item.socialStatusContents?.length > 0">

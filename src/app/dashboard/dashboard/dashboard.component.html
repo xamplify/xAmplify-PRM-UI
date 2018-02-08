@@ -1,4 +1,19 @@
 <style type="text/css">
+.notification-box{position: relative; text-align: center;    margin: 10px 0 15px 0;padding: 10px;cursor: pointer}
+.notification-box i{font-size: 24px;    padding: 20px 0 0 0;}
+.notification-box h4 {padding: 10px;}
+.notification-box h3{
+    position: absolute;
+    top: -35px;
+    right: -14px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #468bca;
+    border-color: #fff;
+    border: 1px solid #cacaca;
+    font-weight: bold;
+}
 	a {
 		text-decoration: none;
 	}
@@ -203,6 +218,7 @@
 	.center {
 		text-align: center;
 	}
+
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -377,29 +393,37 @@
 	
 	<ng-container *ngIf="authenticationService.isOnlyPartner()">
 		<div class="row">
-			<div class="col-xs-6">
-				<div class="portlet light clearfix">
-							<div class="portlet-title">
-								<span class="caption-subject">Total Videos Shared</span>
-							</div>
-							<div class="portlet-body">
-									<h1 class="text-center"><a [routerLink]="['../../videos/manage']">{{videosPagination.totalRecords}}</a></h1>		
-							</div>
-						</div>
+		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
+			<div class="portlet-title">
+				<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Notification</h4>
 			</div>
-						<div class="col-xs-6">
-				<div class="portlet light clearfix">
-							<div class="portlet-title">
-								<span class="caption-subject">Total Email Templates Shared</span>
-							</div>
-							<div class="portlet-body">
-									<h1 class="text-center"><a [routerLink]="['../../emailtemplates']">{{partnerEmailTemplateCount}}</a></h1>		
-							</div>
-						</div>
+			<div class="portlet-body clearfix">
+			<div class="col-xs-12 col-sm-4">
+				<div class="btn-primary btn-block notification-box" [routerLink]="['../../videos/manage']">
+					<span><i class="fa fa-user-plus"></i></span>
+					<h4>Total Videos Shared</h4>
+					<h3>{{videosPagination.totalRecords}}</h3>
+				</div>
 			</div>
+			<div class="col-xs-12 col-sm-4">
+				<div class="btn-success btn-block notification-box" [routerLink]="['../../emailtemplates']">
+					<span><i class="fa fa-user-plus"></i></span> 
+					<h4>Total Email Templates Shared</h4>
+					<h3>{{partnerEmailTemplateCount}}</h3>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4">
+				<div class="btn-info btn-block notification-box">
+					<span><i class="fa fa-user-plus"></i></span> 
+					<h4>Total Social Campaigns Shared</h4>
+					<h3>-</h3>
+				</div>
+			</div>
+			</div>
+				</div>
 		</div>
 	</ng-container>
-
+	
 	<div class="row">
 		<div class="clearfix"></div>
 		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
