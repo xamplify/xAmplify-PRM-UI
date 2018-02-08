@@ -317,7 +317,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-cloud-upload"></i>
 				</div>
@@ -329,7 +329,7 @@
 		</div>
 
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['../../contacts/manage']" [class.disabled]="!hasStatsRole ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['../../contacts/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
 				</div>
@@ -340,7 +340,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="!hasStatsRole ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-smile-o"></i>
 				</div>
@@ -351,7 +351,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]="!hasStatsRole ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-user-secret"></i>
 				</div>
