@@ -15,9 +15,9 @@
 
 		</div>
 		<div class="portlet-body clearfix">
-			<ul data-handle-color="#637283">
+			<ul class="alt-row-style1" data-handle-color="#637283">
 				<li *ngFor="let item of topnavbarComponent.notifications"
-					style="height: 35px;"><a
+					><a
 					[routerLink]="['../../'+item.targetUrl]"> <span class="time">{{item.createdTime
 							| date: 'shortTime'}}</span> <span class="details"> <span
 							class="label label-sm label-icon label-success"> <i
@@ -28,7 +28,7 @@
 				<ng-container
 					*ngFor="let emailNotification of topnavbarComponent.campaignEmailNotifications;let i=index">
 				<li *ngIf="emailNotification.openCount>0" class="read-notification"
-					id="email-notification-{{i}}" style="height: 35px;"><a
+					id="email-notification-{{i}}"><a
 					href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(emailNotification.id,'email');topnavbarComponent.gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 						<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b>
@@ -49,7 +49,7 @@
 				<ng-container
 					*ngFor="let videoNotification of topnavbarComponent.campaignVideoWatchedNotifications;let i=index">
 				<li *ngIf="videoNotification.openCount>0" class="read-notification"
-					id="video-notification-{{i}}" style="height: 35px;"><a
+					id="video-notification-{{i}}"><a
 					href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(videoNotification.id,'video');topnavbarComponent.gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 						<b>{{videoNotification.videoTitle}} (

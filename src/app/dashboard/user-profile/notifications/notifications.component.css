@@ -1,0 +1,4 @@
+ul.alt-row-style1 {padding-left:0;}
+ul.alt-row-style1 li{list-style-type:none; padding:10px 0 !important;}
+ul.alt-row-style1 li:nth-child(odd) {background: #FFF;}
+ul.alt-row-style1 li:nth-child(even) { background:#f1f1f1 }
