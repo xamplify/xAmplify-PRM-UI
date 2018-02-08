@@ -165,7 +165,7 @@
 											<div class="mix-inner" style="height: 173px;">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">
-													<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
+													 <h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4> 
 													<div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='myVideos'">
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
@@ -214,7 +214,7 @@
 													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
 													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
-											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy}}</span>
+											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{ titleCheckLength(videoFile.uploadedBy)}}</span>
 												</div>
 											</div>
 											<div>

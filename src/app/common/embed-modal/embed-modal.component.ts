@@ -40,11 +40,11 @@ export class EmbedModalComponent implements OnInit {
     if (this.videosize === this.videoSizes[0]) {
       this.embedWidth = '1280'; this.embedHeight = '720';
     } else if (this.videosize === this.videoSizes[1]) {
-      this.embedWidth = '560'; this.embedHeight = '315';
-    } else if (this.videosize === this.videoSizes[2]) {
       this.embedWidth = '853'; this.embedHeight = '480';
-    } else { this.embedWidth = '640'; this.embedHeight = '360'; }
-  }
+    } else if (this.videosize === this.videoSizes[2]) {
+      this.embedWidth = '640'; this.embedHeight = '360';
+    } else { this.embedWidth = '560'; this.embedHeight = '315'; }
+   }
   closeEmbedModal() {
     this.ClipboardName = 'Copy to Clipboard';
     $('#myModal').modal('hide');
