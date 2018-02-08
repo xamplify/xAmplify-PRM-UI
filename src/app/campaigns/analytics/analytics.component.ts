@@ -39,6 +39,7 @@ export class AnalyticsComponent implements OnInit {
   emailLogPagination: Pagination = new Pagination();
   campaignTotalViewsPagination: Pagination = new Pagination();
   campaignsWorldMapPagination: Pagination = new Pagination();
+  userWatchedReportPagination: Pagination = new Pagination();
 
   socialStatus: SocialStatus;
   campaignType: string;
@@ -250,7 +251,6 @@ export class AnalyticsComponent implements OnInit {
   }
   getCampaignUsersWatchedInfo(countryCode) {
     this.countryCode = countryCode.toUpperCase();
-    this.getCampaignUsersWatchedTotalInfo(countryCode);
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
       .subscribe(
       (data: any) => {
@@ -259,6 +259,7 @@ export class AnalyticsComponent implements OnInit {
         this.pagination.totalRecords = data.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
         $('#worldMapModal').modal('show');
+        this.getCampaignUsersWatchedTotalInfo(countryCode, this.pagination.totalRecords);
       },
       error => console.log(error),
       () => console.log('finished')
@@ -298,7 +299,7 @@ export class AnalyticsComponent implements OnInit {
 
   usersWatchList(campaignId: number, pagination: Pagination) {
     this.downloadTypeName === 'usersWatchedList';
-    this.usersWatchTotalList(campaignId, pagination);
+    this.pagination.maxResults = 10;
     this.campaignService.usersWatchList(campaignId, pagination)
       .subscribe(
       data => {
@@ -306,6 +307,7 @@ export class AnalyticsComponent implements OnInit {
         $('#usersWatchListModal').modal();
 
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
+        this.usersWatchTotalList(campaignId);
       },
       error => console.log(error),
       () => console.log()
@@ -533,14 +535,14 @@ export class AnalyticsComponent implements OnInit {
         }
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
         $('#donutModelPopup').modal('show');
-        this.totalCampaignViewsDonut(timePeriod);
+        this.totalCampaignViewsDonut(timePeriod,this.pagination.totalRecords);
       },
       error => console.log(error),
       () => { });
   }
 
-  totalCampaignViewsDonut(timePeriod: string) {
-    this.emailLogPagination.maxResults = 5000;
+  totalCampaignViewsDonut(timePeriod: string, totalRecords: number) {
+    this.emailLogPagination.maxResults = totalRecords;
     this.downloadTypeName = 'donut';
     this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.emailLogPagination).
       subscribe(
@@ -552,7 +554,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   emailActionTotalList(campaignId: number, actionType: string) {
-    this.emailLogPagination.maxResults = 5000;
+    this.emailLogPagination.maxResults = this.campaignReport.emailClickedCount;
     this.downloadTypeName = 'emailAction';
     this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
       .subscribe(
@@ -565,10 +567,10 @@ export class AnalyticsComponent implements OnInit {
       )
   }
 
-  usersWatchTotalList(campaignId: number, pagination: Pagination) {
-    pagination.maxResults = 500000;
+  usersWatchTotalList(campaignId: number) {
+      this.userWatchedReportPagination.maxResults = this.campaignReport.usersWatchCount;
     this.downloadTypeName = 'usersWatchedList';
-    this.campaignService.usersWatchList(campaignId, pagination)
+    this.campaignService.usersWatchList(campaignId, this.userWatchedReportPagination)
       .subscribe(
       data => {
         this.campaignReport.totalWatchedList = data.data;
@@ -596,10 +598,10 @@ export class AnalyticsComponent implements OnInit {
       )
   }
 
-  getCampaignUsersWatchedTotalInfo(countryCode) {
+  getCampaignUsersWatchedTotalInfo(countryCode, totalRecord: number) {
     this.downloadTypeName = 'worldMap';
     this.countryCode = countryCode.toUpperCase();
-    this.campaignsWorldMapPagination.maxResults = 500000000;
+    this.campaignsWorldMapPagination.maxResults = totalRecord;
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
       .subscribe(
       (data: any) => {
