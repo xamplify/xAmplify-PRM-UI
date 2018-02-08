@@ -26,7 +26,7 @@ export class WelcomeComponent implements OnInit {
     hasSocialStatusRole = false;
     constructor( 
             private userService: UserService, 
-            private authenticationService: AuthenticationService,
+            public authenticationService: AuthenticationService,
             private referenceService: ReferenceService, 
             private dashboardService: DashboardService 
             ) {
