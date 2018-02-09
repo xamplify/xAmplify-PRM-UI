@@ -206,7 +206,7 @@
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar"
-										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">
 										<div class="clearfix">
 											<div class="col-sm-6">
 												<div class="btn-group">
@@ -580,7 +580,7 @@
 																</button>
 															</td>
 															<td align="center"
-																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
+																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">
 															<div class="actions-block">
 																<a (click)="editUserDetails(contact)"> 
 																	<i class="fa fa-pencil-square-o"></i>

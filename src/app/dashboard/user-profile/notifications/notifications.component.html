@@ -18,55 +18,55 @@
 			<ul class="alt-row-style1" data-handle-color="#637283">
 				<li *ngFor="let item of topnavbarComponent.notifications"
 					><a
-					[routerLink]="['../../'+item.targetUrl]"> <span class="time">{{item.createdTime
+					[routerLink]="['../../'+item.targetUrl]">
+					<span class="social-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
+					 <span class="time">{{item.createdTime
 							| date: 'shortTime'}}</span> <span class="details"> <span
-							class="label label-sm label-icon label-success"> <i
-								class="fa fa-twitter"></i>
+							class="label label-sm label-icon label-success"> 
+							<i class="fa fa-twitter"></i>
 						</span> {{item.message}}
-					</span> <i class="fa fa-globe" aria-hidden="true" style="color: #00a6e8"></i>
+					</span> 
 				</a></li>
 				<ng-container
 					*ngFor="let emailNotification of topnavbarComponent.campaignEmailNotifications;let i=index">
-				<li *ngIf="emailNotification.openCount>0" class="read-notification"
+				<li *ngIf="emailNotification.openCount>0" class="read-notification" style="background: #dee1e8;"
 					id="email-notification-{{i}}"><a
 					href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(emailNotification.id,'email');topnavbarComponent.gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
+						<span class="social-icon"><i class="icon-envelope-open"></i></span>
 						<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b>
-						at {{emailNotification.time | date: 'medium'}} <i
-						class="icon-envelope-open" style="color: #00a6e8"></i> <i
+						at {{emailNotification.time | date: 'medium'}}  <i
 						class="fa fa-check-circle-o" aria-hidden="true"
-						style="color: #00a6e8"></i>
+						style="color: #00a6e8;"></i>
 				</a></li>
 				<li *ngIf="emailNotification.openCount==0"
-					class="unread-notification" id="email-notification-{{i}}"
-					style="height: 35px;"><a href="javascript:void(0)"
+					class="unread-notification" id="email-notification-{{i}}"><a href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(emailNotification.id,'email');topnavbarComponent.markItAsRead(i,'email-notification-');topnavbarComponent.gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
+						<span class="social-icon"><i class="icon-envelope-open"></i></span>
 						<b>{{emailNotification.campaign}}</b> Email Opened by <b>{{emailNotification.userEmailId}}</b>
-						at {{emailNotification.time | date: 'medium'}} <i
-						class="icon-envelope-open" style="color: #00a6e8"></i>
+						at {{emailNotification.time | date: 'medium'}} 
 				</a></li>
 				</ng-container>
 				<ng-container
 					*ngFor="let videoNotification of topnavbarComponent.campaignVideoWatchedNotifications;let i=index">
-				<li *ngIf="videoNotification.openCount>0" class="read-notification"
+				<li *ngIf="videoNotification.openCount>0" class="read-notification" style="background: #dee1e8;"
 					id="video-notification-{{i}}"><a
 					href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(videoNotification.id,'video');topnavbarComponent.gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
+						<span class="social-icon"><i class="fa fa-play-circle"></i></span>
 						<b>{{videoNotification.videoTitle}} (
 							{{videoNotification.campaignName}} ) </b> Watched By <b>{{videoNotification.userEmailId}}</b>
 						at {{videoNotification.startTime | date: 'medium'}} <i
-						class="fa fa-play-circle" style="color: #00a6e8"></i> <i
 						class="fa fa-check-circle-o" aria-hidden="true"
 						style="color: #00a6e8"></i>
 				</a></li>
 				<li *ngIf="videoNotification.openCount==0"
-					class="unread-notification" id="video-notification-{{i}}"
-					style="height: 35px;"><a href="javascript:void(0)"
+					class="unread-notification" id="video-notification-{{i}}"><a href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(videoNotification.id,'video');topnavbarComponent.markItAsRead(i,'video-notification-');topnavbarComponent.gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
+						<span class="social-icon"><i class="fa fa-play-circle"></i></span>
 						<b>{{videoNotification.videoTitle}}(
 							{{videoNotification.campaignName}} )</b> Watched By <b>{{videoNotification.userEmailId}}</b>
-						at {{videoNotification.startTime | date: 'medium'}} <i
-						class="fa fa-play-circle" style="color: #00a6e8"></i>
+						at {{videoNotification.startTime | date: 'medium'}} 
 				</a></li>
 				</ng-container>
 			</ul>

@@ -217,7 +217,7 @@
 													<td>
 														<div class="actions-block">
 															<a
-																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
+																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
 															</a> <a
@@ -229,7 +229,7 @@
 																title="Dowload List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a> <a
-																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="showAlert(contactList.id)" title="Delete List">
 																<i class="fa fa-trash"></i>
 															</a> <span *ngIf="contactList.synchronisedList == true">
@@ -276,7 +276,7 @@
 															title="Dowload List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a> <a class="mix-preview4"
-															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId)"
 															title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
@@ -286,7 +286,7 @@
 															title="ContactList Info" data-rel="fancybox-button">
 															<i class="glyphicon glyphicon-info-sign"></i>
 														</a> <a class="mix-preview6"
-															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 															(click)="showAlert(contactList.id)" title="Delete List"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
 															<i class="fa fa-trash"></i>
