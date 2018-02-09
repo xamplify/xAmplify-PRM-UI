@@ -39,7 +39,7 @@
 						class="fa fa-check-circle-o" aria-hidden="true"
 						style="color: #00a6e8;"></i>
 				</a></li>
-				<li *ngIf="emailNotification.openCount==0"  style="background: #dee1e8;"
+				<li *ngIf="emailNotification.openCount==0"  style="background: #eef0f7;"
 					class="unread-notification" id="email-notification-{{i}}"><a href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(emailNotification.id,'email');topnavbarComponent.markItAsRead(i,'email-notification-');topnavbarComponent.gotoDetails(emailNotification.campaignId,emailNotification.userId,emailNotification.userEmailId)">
 						<span class="social-icon"><i class="icon-envelope-open"></i></span>
@@ -60,7 +60,7 @@
 						class="fa fa-check-circle-o" aria-hidden="true"
 						style="color: #00a6e8"></i>
 				</a></li>
-				<li *ngIf="videoNotification.openCount==0" style="background: #dee1e8;"
+				<li *ngIf="videoNotification.openCount==0" style="background: #eef0f7;"
 					class="unread-notification" id="video-notification-{{i}}"><a href="javascript:void(0)"
 					(click)="topnavbarComponent.markAsRead(videoNotification.id,'video');topnavbarComponent.markItAsRead(i,'video-notification-');topnavbarComponent.gotoDetails(videoNotification.campaignId,videoNotification.userId,videoNotification.userEmailId)">
 						<span class="social-icon"><i class="fa fa-play-circle"></i></span>
