@@ -1,13 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-import { LoginComponent } from './authentication/login/login.component';
-import { SignupComponent } from './authentication/signup/signup.component';
-import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
-
 import { AuthGuard } from './auth.guard';
-import { HomeComponent } from './core/home/home.component';
+
 import { VideosModule } from './videos/videos.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { PartnersModule } from './partners/partners.module'; 
@@ -17,13 +12,12 @@ import { UpgradeModule } from './upgrade/upgrade.module';
 import { TeamMemberModule } from './team/team-member.module';
 import { AppCustomPreloader } from './app-routing-loader';
 
+import { HomeComponent } from './core/home/home.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
-
 import { ProfileLockComponent } from './dashboard/user-profile/profile-lock/profile-lock.component';
-//import { ActivateAccountComponent } from './signup/activate-account/activate-account.component';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
@@ -31,6 +25,10 @@ import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-fou
 import { ErrorPagesComponent } from './error-pages/error-pages.component';
 import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
+import { LoginComponent } from './authentication/login/login.component';
+import { SignupComponent } from './authentication/signup/signup.component';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },

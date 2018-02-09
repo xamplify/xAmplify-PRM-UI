@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
-import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ShareButtonsModule} from 'ngx-sharebuttons';
+
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
-import { ContactService } from './contacts/services/contact.service';
 
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AppRoutingModule } from './app-routing.module';
+import { ErrorPagesModule } from './error-pages/error-pages.module';
 
 import { AppComponent } from './app.component';
 
@@ -41,26 +40,20 @@ import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { XtremandLogger } from './error-pages/xtremand-logger.service';
-import { VideoUtilService} from './videos/services/video-util.service';
+import { VideoUtilService } from './videos/services/video-util.service';
+import { ContactService } from './contacts/services/contact.service';
 
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
-import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
-import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
-import { ErrorPagesComponent } from './error-pages/error-pages.component';
-import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 
-
 @NgModule({
-    declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent,
-        ShareVideoComponent, CampaignVideoComponent, LogEmailClickComponent,
-        LogUnsubscribeComponent, ServiceUnavailableComponent,PageNotFoundComponent, AccessDeniedComponent,
-        LogRegularCampaignComponent
+    declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
+        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent
     ],
-    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule,HttpClientJsonpModule, 
-              AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-              Ng2DeviceDetectorModule.forRoot()],
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
+        AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule],
     providers: [{
         provide: Http,
         useFactory: httpService,

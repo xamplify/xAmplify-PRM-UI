@@ -82,10 +82,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
         public pagerService: PagerService, public referenceService: ReferenceService) {
-       // this.videoSizes = this.videoUtilService.videoSizes;
         this.disLikesValues = 0;
         this.likesValues = 0;
-       // this.isFullscreen = true;
         this.ClipboardName = 'Copy to ClipBoard';
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
