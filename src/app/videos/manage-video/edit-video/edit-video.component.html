@@ -35,13 +35,11 @@
 		box-shadow: 2px 6px 6px #000;
 		opacity: 1.0;
 		filter: alpha(opacity=100);
-		/* For IE8 and earlier */
 	}
 
 	.colorShade {
 		opacity: 0.3;
 		filter: alpha(opacity=50);
-		/* For IE8 and earlier */
 	}
 
 	.sizeImg {
@@ -103,8 +101,13 @@
 					<div id="newPlayerVideo"></div>
 				</div>
 				<div id="overLayDialog"></div>
-				<!-- video overlay modal popup -->
+				<div id="overLayImage"></div>
 
+				<div id="overlay-logo" class="">
+					<img src="assets/images/ubuntu.png" class="img-responsive" style="position: absolute;top:42px;right:23px;width:40px;"> 
+				</div>
+				<!-- video overlay modal popup -->
+ 
 				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet" style="height: 299px; width:100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<form #f="ngForm" novalidate>
 						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
@@ -138,6 +141,8 @@
 						</div>
 					</div>
 				</div>
+             <!--  overlay modal ending -->
+
 				<div class="col-xs-12 col-sm-6" style="padding: 0;margin-top: 10px;">
 					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
 					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
