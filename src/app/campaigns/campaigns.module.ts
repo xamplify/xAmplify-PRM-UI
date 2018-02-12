@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { CampaignsRoutingModule } from './campaigns-routing.module';
 import { CommonComponentModule} from '../common/common.module';
+import { ErrorPagesModule } from '../error-pages/error-pages.module';
 
 import { ManagePublishComponent } from './manage-publish/manage-publish.component';
 import { SelectCampaignTypeComponent } from './select-campaign-type/select-campaign-type.component';
@@ -19,7 +20,8 @@ import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.comp
 
 @NgModule({
 
-    imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule, CommonComponentModule],
+    imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule,
+         CommonComponentModule, ErrorPagesModule],
     declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent/*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
