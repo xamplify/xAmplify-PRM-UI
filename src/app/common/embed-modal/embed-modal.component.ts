@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: './embed-modal.component.html',
   styleUrls: ['./embed-modal.component.css']
 })
-export class EmbedModalComponent implements OnInit {
+export class EmbedModalComponent implements OnInit, OnDestroy {
   @Input() video: any;
   @Output() notifyParent: EventEmitter<any>;
   ClipboardName: string;
@@ -52,6 +52,11 @@ export class EmbedModalComponent implements OnInit {
     $('.modal-backdrop fade in').remove();
     this.notifyParent.emit("successfully closed model");
   }
+  closeEmbed(){
+    $('#myModal').modal('hide');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop fade in').remove();
+  }
   shareMetaTags(shareShortUrl: string) {
     this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
       (error: any) => { console.log(error); });
@@ -64,11 +69,13 @@ export class EmbedModalComponent implements OnInit {
         if (this.embedSrcPath) {
           $('#myModal').show();
         }
-
       });
   }
   ngOnInit() {
     this.embedModal();
+  }
+  ngOnDestroy(){
+    this.closeEmbed();
   }
 
 }

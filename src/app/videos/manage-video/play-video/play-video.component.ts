@@ -983,12 +983,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     ngOnDestroy() {
         console.log('Deinit - Destroyed Play-Video Component');
-        if (this.videoJSplayer) {
-            this.videoJSplayer.dispose();
-        }
+        if (this.videoJSplayer) { this.videoJSplayer.dispose(); }
         $('.h-video').remove();
         $('.p-video').remove();
-      //  this.closeEmbedModal('closed');
     }
 
     // the below code is used for logging //////////////////////////////

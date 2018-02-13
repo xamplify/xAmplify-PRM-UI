@@ -996,7 +996,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
     }
 }

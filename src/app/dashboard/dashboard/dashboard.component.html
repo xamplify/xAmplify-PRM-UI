@@ -490,7 +490,7 @@
 									<span class="caption-subject">Email Statistics</span>
 								</div>
 								<div>
-									<div class="panel-title pull-right">
+									<div class="panel-title pull-right" *ngIf="heatMapData?.length > 0">
 										<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshHeatMapCharts()"></i></span>
 									</div>
 								</div>
@@ -513,7 +513,7 @@
 									<span class="caption-subject">Email Clicked Statistics</span>
 								</div>
 								<div>
-									<div class="panel-title pull-right">
+									<div class="panel-title pull-right" *ngIf="categories?.length > 0" >
 										<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i></span>
 									</div>
 								</div>

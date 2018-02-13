@@ -824,7 +824,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     ngOnInit() {
-        $('#overLayImage').append($('#overlay-logo').hide());
+        $('#overLayImage').append($('#overlay-logo').show());
         Metronic.init();
         Layout.init();
         Demo.init();
