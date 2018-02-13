@@ -38,6 +38,7 @@ export class EditContactsComponent implements OnInit {
     @Input() contactListName: string;
     @Input() selectedContactListId: number;
     @Input() uploadedUserId: number;
+    @Input() isDefaultPartnerList: boolean;
     @Input( 'value' ) value: number;
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
@@ -345,7 +346,7 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId );
+                this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
@@ -392,7 +393,7 @@ export class EditContactsComponent implements OnInit {
                     data => {
                         data = data;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId );
+                        this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
@@ -485,7 +486,7 @@ export class EditContactsComponent implements OnInit {
                     self.removeContactListUsers( contactListId );
                 })
             }
-            if ( this.totalRecords == 1 || this.totalRecords == this.selectedContactListIds.length ) {
+            if ( (this.totalRecords == 1 && this.isDefaultPartnerList == false) || (this.totalRecords == this.selectedContactListIds.length && this.isDefaultPartnerList == false) ) {
                 swal( {
                     title: 'Are you sure?',
                     text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
@@ -494,7 +495,6 @@ export class EditContactsComponent implements OnInit {
                     swalConfirmButtonColor: '#54a7e9',
                     swalCancelButtonColor: '#999',
                     confirmButtonText: 'Yes, delete it!'
-
                 }).then( function( myData: any ) {
                     console.log( "ManageContacts showAlert then()" + myData );
                     self.deleteContactList();
@@ -719,7 +719,7 @@ export class EditContactsComponent implements OnInit {
                 data => {
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId );
+                    this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                     $( "tr.new_row" ).each( function() {
                         $( this ).remove();
 
@@ -1277,8 +1277,14 @@ export class EditContactsComponent implements OnInit {
             this.contactListObject = new ContactList;
             this.contactListObject.name = name;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            if ( this.selectedContactListIds.length == 0 ) {
-                this.contactService.saveContactList( this.totalListUsers, name, this.isPartner )
+            if ( this.selectedContactListIds.length == 0) {
+                let listUsers = [];
+                if(this.isPartner == true){
+                    listUsers = this.contactService.allPartners;
+                }else{
+                    listUsers = this.totalListUsers;
+                }
+                this.contactService.saveContactList( listUsers, name, this.isPartner )
                     .subscribe(
                     data => {
                         data = data;

@@ -49,6 +49,7 @@ export class ManageContactsComponent implements OnInit {
     public contactLists: Array<ContactList>;
     selectedContactListId: number;
     selectedContactListName: string;
+    isDefaultPartnerList: boolean;
     uploadedUserId: number;
     showAll: boolean;
     showEdit: boolean;
@@ -494,10 +495,11 @@ export class ManageContactsComponent implements OnInit {
             );
     }
 
-    editContactList( contactSelectedListId: number, contactListName: string, uploadUserId: number ) {
+    editContactList( contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean ) {
         this.uploadedUserId = uploadUserId;
         this.selectedContactListId = contactSelectedListId;
         this.selectedContactListName = contactListName;
+        this.isDefaultPartnerList = isDefaultPartnerList;
         this.showAll = false;
         this.showEdit = true;
         this.show = false;
