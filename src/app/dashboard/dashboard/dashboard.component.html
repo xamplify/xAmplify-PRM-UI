@@ -497,6 +497,9 @@
 							</div>
 							<div class="portlet-body">
 								<div id="dashboard-heat-map" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
+								<div *ngIf="heatMapData?.length < 1" style="max-width: 100%;text-align: center;">
+									<span style="position: absolute;top: 130px;left: 220px;">No data available</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -524,6 +527,9 @@
 											<td></td>
 										</tr>
 									</table>
+								</div>
+								<div *ngIf="categories?.length < 1" style="max-width: 100%;text-align: center;">
+									<span style="position: absolute;top: 130px;left: 220px;">No data available</span>
 								</div>
 							</div>
 						</div>
