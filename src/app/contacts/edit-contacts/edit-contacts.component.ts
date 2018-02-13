@@ -19,6 +19,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ContactsByType } from '../models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+//import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
 
@@ -77,6 +78,7 @@ export class EditContactsComponent implements OnInit {
 
     selectedContactForSave = [];
     lessButton: boolean = false;
+    addPartnerSave: boolean = false;
 
     dublicateEmailId: boolean = false;
     noOfContactsDropdown: boolean = true;
@@ -1295,6 +1297,17 @@ export class EditContactsComponent implements OnInit {
                     () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                     )
             } else {
+               
+                if(this.addPartnerSave == true){
+                    for ( let i = 0; i < this.selectedContactListIds.length; i++ ) {
+                        for ( let j = 0; j < this.contactService.allPartners.length; j++ ) {
+                            if ( this.selectedContactListIds[i] == this.contactService.allPartners[j].id ) {
+                                this.selectedContactForSave.push( this.contactService.allPartners[j] );
+                                break;
+                            }
+                        }
+                    }
+                } else{
                 for ( let i = 0; i < this.selectedContactListIds.length; i++ ) {
                     for ( let j = 0; j < this.totalListUsers.length; j++ ) {
                         if ( this.selectedContactListIds[i] == this.totalListUsers[j].id ) {
@@ -1303,6 +1316,8 @@ export class EditContactsComponent implements OnInit {
                         }
                     }
                 }
+                }
+                
                 console.log( this.selectedContactForSave );
                 this.contactService.saveContactList( this.selectedContactForSave, name, this.isPartner )
                     .subscribe(

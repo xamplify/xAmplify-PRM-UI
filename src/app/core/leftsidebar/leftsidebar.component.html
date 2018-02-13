@@ -68,13 +68,36 @@
 						</ul>
 					</li>
 					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
+						<a>
+						<i class="fa fa-handshake-o"></i>
+						<span class="title">Partner</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" >
+						<li>
+							<a  [routerLink] ="['./partners/add']" [class.disabled]="!authService.user.hasCompany?true:null" >
+								<i class="fa fa-users"></i>
+								<span class="title">Add Partners</span>
+								</a>
+						</li>
+						<li>
+							<a  [routerLink]="['./partners/manage']" [class.disabled]="!authService.user.hasCompany?true:null">
+							<i class="fa fa-list"></i>
+							<span class="title">Manage Partners</span>
+							</a>
+							</li>
+						</ul>
+					</li>
+					
+					<!-- <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a  [routerLink]="['./partners']" [class.disabled]="!authService.user.hasCompany?true:null" >
 						<i class="fa fa-handshake-o"></i>
 						<span class="title">Partners</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-					</li>
+					</li> -->
 					
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a [routerLink]="['./emailtemplates']" [class.disabled]="!authService.user.hasCompany?true:null">
