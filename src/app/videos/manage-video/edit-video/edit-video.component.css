@@ -125,3 +125,9 @@ border-radius: 0;
 :host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning {
     border-radius: 0;
 } 
+.videojs-logo {
+    position: absolute;
+    top:42px;
+    right:23px;
+    width:40px;
+}

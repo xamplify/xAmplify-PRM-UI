@@ -506,6 +506,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (event === 'FullscreenOn') {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
+                        newThis.fullScreenMode = true;
                     } else if (event === 'FullscreenOff') {
                         newThis.setVideoIdHeightWidth();
                         newThis.fullScreenMode = false;
@@ -824,7 +825,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     ngOnInit() {
-        $('#overLayImage').append($('#overlay-logo').show());
+        $('#overLayImage').append($('#overlay-logo').hide());
         Metronic.init();
         Layout.init();
         Demo.init();
@@ -934,6 +935,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (event === 'FullscreenOn') {
                             $('.vjs-tech').css('width', '100%');
                             $('.vjs-tech').css('height', '100%');
+                            callactionValue.fullScreenMode = true;
                         } else if (event === 'FullscreenOff') {
                             callactionValue.setVideoIdHeightWidth();
                             callactionValue.fullScreenMode = false;

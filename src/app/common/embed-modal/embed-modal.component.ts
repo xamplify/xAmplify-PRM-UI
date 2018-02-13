@@ -47,9 +47,7 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
    }
   closeEmbedModal() {
     this.ClipboardName = 'Copy to Clipboard';
-    $('#myModal').modal('hide');
-    $('body').removeClass('modal-open');
-    $('.modal-backdrop fade in').remove();
+    this.closeEmbed();
     this.notifyParent.emit("successfully closed model");
   }
   closeEmbed(){

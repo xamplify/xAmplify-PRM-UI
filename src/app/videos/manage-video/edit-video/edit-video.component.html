@@ -77,7 +77,14 @@
 	.bottomCss {
 		bottom: -183px;
 	}
-
+    .logo-video{
+		position: absolute;
+		top:42px;
+		right:23px;
+		width:40px;
+		border: 2px solid red;
+        z-index: 9999999999;
+	}
 	textarea {
 		resize: none;
 		max-height: 100%;
@@ -103,8 +110,8 @@
 				<div id="overLayDialog"></div>
 				<div id="overLayImage"></div>
 
-				<div id="overlay-logo" class="">
-					<img src="assets/images/ubuntu.png" class="img-responsive" style="position: absolute;top:42px;right:23px;width:40px;"> 
+				<div id="overlay-logo">
+					<img src="assets/images/ubuntu.png" class="img-responsive videojs-logo" [class.logo-video]="fullScreenMode"> 
 				</div>
 				<!-- video overlay modal popup -->
  

@@ -883,5 +883,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         } else { }
         $('.h-video').remove();
         $('.p-video').remove();
+        $('#watchedFullyModelPopup').modal('hide');
+        $('#totalwatchedUsersModelPopup').modal('hide');
+        $('#usersMinutesModelPopup').modal('hide');
+        $('#videoSkippedPlayed').modal('hide');
+        $('#worldMapModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
     }
 }
