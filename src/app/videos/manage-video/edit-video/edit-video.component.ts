@@ -185,13 +185,22 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
+            url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail/?access_token=" + this.authenticationService.access_token +'&userId=' + this.authenticationService.user.id
+           // url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
             this.ownThumb = true;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            this.uploader.queue[0].upload();
         };
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            console.log(response); 
+            this.isThumb = true;
+            this.saveVideoFile.imagePath = JSON.parse(response).path;
+            this.defaultSaveImagePath = this.saveVideoFile.imagePath;
+        }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
     }
     public startsWithAt(control: FormControl) {

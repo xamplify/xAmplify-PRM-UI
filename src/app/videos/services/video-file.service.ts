@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import {  HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Observable } from 'rxjs/Observable';
@@ -33,7 +34,8 @@ export class VideoFileService {
     seekbarTime: any;
     videoType: any;
     URL: string = this.authenticationService.REST_URL + 'videos/';
-    constructor(private http: Http, private authenticationService: AuthenticationService, private refService: ReferenceService) {
+    constructor(private http: Http, private authenticationService: AuthenticationService,
+         private refService: ReferenceService, public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }
     processVideoFile(responsePath: any): Observable<any> {
@@ -65,6 +67,7 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
     saveVideo(saveVideoFile: SaveVideoFile) {
         if (this.viewBytemp === 'DRAFT') {
             saveVideoFile.action = 'save';
