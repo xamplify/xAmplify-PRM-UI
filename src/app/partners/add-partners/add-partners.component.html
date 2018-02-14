@@ -57,9 +57,9 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<!-- <a class="btn btn-success" (click)="saveContacts()"
-				style="color: white;">Save <i class="fa fa-save"></i></a> --> <a
+				style="color: white;">Save <i class="fa fa-save"></i></a>  <a
 				class="btn btn-success" (click)="cancelPartners()"
-				style="color: white;">Cancel</a> <a (click)="downloadEmptyCsv()">
+				style="color: white;">Cancel</a>--> <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
 					Download Csv File<i class="fa fa-cloud-download" aria-hidden="true"
@@ -232,13 +232,14 @@ img:hover {
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" (click)="saveContacts()">Save </a></li>
+				<li><a id="save_button" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
-				<!-- <li><a id="exportToExcel"
-					*ngIf="selectedAddContactsOption == 8" (click)="downloadList()">Export
+				 <li><a id="exportToExcel"
+					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 " (click)="downloadPartnerList()">Export
 						To Excel</a></li>
-				<li><a id="delete_button"
+				<!--<li><a id="delete_button"
 					*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
 					(click)="showAlert(selectedContactListId)"> Delete</a></li> -->
 			</ul>
@@ -387,12 +388,12 @@ img:hover {
 						<div class="caption">
 							<i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners
 						</div>
-						<a *ngIf="pagination.pagedItems?.length != 0"
+						<!-- <a *ngIf="pagination.pagedItems?.length != 0"
 							(click)="downloadPartnerList()" title="Dowload List"
 							data-rel="fancybox-button"> <i
 							class="fa fa-cloud-download mr5"
 							style="font-size: 22px; color: #f9f7f7; padding: 13px;"></i>
-						</a>
+						</a> -->
 						<div class="inputs" align="right" style="float: right; padding: 4px">
 													<div style="float: left; margin: 0 10px;">
 														<select class="form-control" [(ngModel)]="sortOption"

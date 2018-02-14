@@ -1245,7 +1245,14 @@ export class EditContactsComponent implements OnInit {
     }
 
     saveAs() {
+        this.loadContactListsNames();
         let self = this;
+        if(this.contactListName == undefined){
+            this.contactListName = this.contactService.partnerListName;
+        }
+        if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
+            this.contactListName + '_copy'
+        }
         swal( {
             title: this.checkingContactTypeName + ' List Name',
             input: 'text',

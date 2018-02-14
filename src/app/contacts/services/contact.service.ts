@@ -32,6 +32,7 @@ export class ContactService {
     public salesforceContactCallBack: boolean;
     public pagination: Pagination;
     allPartners: User[];
+    partnerListName: string;
 
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";

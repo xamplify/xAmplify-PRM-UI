@@ -171,6 +171,7 @@ export class AddPartnersComponent implements OnInit {
             ( data: any ) => {
                 console.log( data );
                 this.partnerListId = data.id;
+                this.contactService.partnerListName = data.name;
             },
             error => this.xtremandLogger.error( error ),
             () => {
