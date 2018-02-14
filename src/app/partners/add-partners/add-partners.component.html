@@ -379,18 +379,11 @@ img:hover {
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
 		<div class="clearfix">
 			<div class="col-xs-12" style="width: 103%; left: -18px;"
-				*ngIf="(selectedAddPartnerOption == 2)">
+				*ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
-				<div *ngIf="newPartnerUser?.length == 0"
+				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2"
 									class="alert alert-info alert-dismissable">No Partners
 									Found..</div>
 				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">

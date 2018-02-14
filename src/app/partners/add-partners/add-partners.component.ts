@@ -272,7 +272,7 @@ export class AddPartnersComponent implements OnInit {
     };
 
     savePartnerUsers() {
-        this.selectedAddPartnerOption = 2;
+        //this.selectedAddPartnerOption = 2;
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
         var testArray = [];
@@ -475,7 +475,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     copyFromClipboard() {
-        this.selectedAddPartnerOption = 2;
+        this.selectedAddPartnerOption = 4;
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
         this.isContactsThere = false;
@@ -1335,7 +1335,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     saveContacts() {
-        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 ) {
+        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4 ) {
             this.savePartnerUsers();
         }
 
