@@ -228,7 +228,9 @@ export class AddPartnersComponent implements OnInit {
         $( "#addPartnerModal .close" ).click()
         this.newPartnerUser.push( this.addPartnerUser );
         this.selectedAddPartnerOption = 1;
-        this.fileTypeError = false;
+        this.saveContacts();
+        this.addPartnerUser = new User();
+        /*this.fileTypeError = false;
         this.isContactsThere = false;
 
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -240,7 +242,7 @@ export class AddPartnersComponent implements OnInit {
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-        this.addPartnerUser = new User();
+        this.addPartnerUser = new User();*/
     }
 
     cancelRow( rowId: number ) {

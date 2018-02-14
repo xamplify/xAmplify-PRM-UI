@@ -379,9 +379,143 @@ img:hover {
 				</div>
 			</div>
 		</div>
+		
+		
+		
+		
+		
+		
+		
 		<div class="clearfix">
 			<div class="col-xs-12" style="width: 103%; left: -18px;"
-				*ngIf="selectedAddPartnerOption == 5 || selectedAddPartnerOption == 1 || selectedAddPartnerOption == 2">
+				*ngIf="(selectedAddPartnerOption == 2)">
+				<!-- BEGIN EXAMPLE TABLE PORTLET-->
+				<div *ngIf="newPartnerUser?.length == 0"
+									class="alert alert-info alert-dismissable">No Partners
+									Found..</div>
+				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="fa fa-edit" style="font-size: 19px;"></i>Partners Preview
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="btn-group pull-right"
+							style="margin-bottom: 10px; left: -16px;">
+							<div class="inputs" align="right" style="float: right"></div>
+						</div>
+						<div class="clearfix">
+							<div class="col-xs-12" style="padding: 10px 0;">
+								<div class="table-responsive">
+									<table class='table tgrid'>
+										<thead *ngIf="newPartnerUser?.length != 0">
+											<tr>
+											<!-- <th class='text-center'><input type="checkbox"
+																[name]="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
+																(change)="editContactComponent.checkAll($event)"
+																[id]="checkAllExistingContacts"/></th> -->
+												<th style="width: 25%; text-align: center;">NAME</th>
+												<th>CONTACT</th>
+												<th>JOB TITLE</th>
+												<th class='text-center'>ADDRESS</th>
+												<th class='text-center'>MORE</th>
+												<!-- <th class='text-center'>ACTIONS</th> -->
+											</tr>
+										</thead>
+										<tbody>
+										<ng-container
+												*ngFor="let newContact of newPartnerUser; let i = index">
+											<tr class='row_{{i}}'>
+												<!-- <td align="center"><input type="checkbox"
+																checked="newContact.checked"></td> -->
+												<td>
+													<div class="flex">
+														<span class='profile' style="background-color: #3598dc;">
+															<span class='uppercase'>{{newContact.firstName
+																| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
+														</span> <span style="margin-left: 20px;">
+															<h5 class='bold' style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
+															<h6 class='m0'>
+																<a href="newContact.emailId"
+																	class='bold'>{{newContact.emailId}}</a>
+															</h6>
+														</span>
+													</div>
+												</td>
+												<td>
+													<h5>
+														<span *ngIf="newContact?.mobileNumber; else NA"
+															>{{newContact.mobileNumber}}</span>
+													</h5>
+												</td>
+												<td>
+													<h5 class='mb0'>{{newContact.jobTitle}}</h5>
+													<h6 class='mt0'>{{newContact.contactCompany}}</h6>
+												</td>
+												<td>
+													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
+													<h5 *ngIf="newContact?.city && newContact.country"
+														class='mt0'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+												</td>
+												<td align="center">
+													<button id='more_less_button_{{i}}'
+														(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+														<span *ngIf="!newContact.isShowDetails">More</span> <span
+															*ngIf="newContact.isShowDetails">Less</span>
+													</button>
+												</td>
+												<!-- <td align="center"><a class="delete"
+													(click)="cancelRow(i)"> Cancel </a></td> -->
+												<ng-template #NA><span>N/A</span></ng-template>
+											</tr>
+											<tr
+												[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
+												>
+												<td colspan="8">
+													<table cellpadding="5" cellspacing="0"
+														style="padding-left: 50px; margin-left: 55px;">
+														<tbody>
+															<tr>
+																<td class='bold pt10 pb10 bold'>Notes:</td>
+																<td class='pt10 pb10'>{{newContact.description}}</td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+											</ng-container>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END EXAMPLE TABLE PORTLET-->
+			</div>
+		</div>
+								
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="clearfix">
+			<div class="col-xs-12" style="width: 103%; left: -18px;"
+				*ngIf="selectedAddPartnerOption == 5">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<div class="portlet box blue">
 					<div class="portlet-title">
@@ -448,67 +582,6 @@ img:hover {
 											</tr>
 										</thead>
 										<tbody>
-											<ng-container> <ng-container
-												*ngFor="let newContact of newPartnerUser; let i = index">
-											<tr class='row_{{i}}' style="background-color: #73c5be;">
-												<td align="center"><input type="checkbox"
-																checked="newContact.checked"></td>
-												<td>
-													<div class="flex">
-														<span class='profile' style="background-color: #3598dc;">
-															<span class='uppercase textWhite'>{{newContact.firstName
-																| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-														</span> <span style="margin-left: 20px;">
-															<h5 class='bold textWhite' style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-															<h6 class='m0 textWhite'>
-																<a href="newContact.emailId"
-																	class='bold textWhite'>{{newContact.emailId}}</a>
-															</h6>
-														</span>
-													</div>
-												</td>
-												<td>
-													<h5>
-														<span *ngIf="newContact?.mobileNumber; else NA"
-															class="textWhite">{{newContact.mobileNumber}}</span>
-													</h5>
-												</td>
-												<td>
-													<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-													<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
-												</td>
-												<td>
-													<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-													<h5 *ngIf="newContact?.city && newContact.country"
-														class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
-												</td>
-												<td align="center">
-													<button id='more_less_button_{{i}}'
-														(click)="newContact.isShowDetails = ! newContact.isShowDetails">
-														<span *ngIf="!newContact.isShowDetails">More</span> <span
-															*ngIf="newContact.isShowDetails">Less</span>
-													</button>
-												</td>
-												<td align="center"><a class="delete textWhite"
-													(click)="cancelRow(i)"> Cancel </a></td>
-												<ng-template #NA><span class="textWhite">N/A</span></ng-template>
-											</tr>
-											<tr
-												[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
-												style="background-color: #73c5be;">
-												<td colspan="8">
-													<table cellpadding="5" cellspacing="0"
-														style="padding-left: 50px; margin-left: 55px;">
-														<tbody>
-															<tr>
-																<td class='bold pt10 pb10 textWhite bold'>Notes:</td>
-																<td class='pt10 pb10 textWhite'>{{newContact.description}}</td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
-											</tr>
-											</ng-container> </ng-container>
 											<ng-container
 												*ngFor="let contact of pagination.pagedItems;let i = index">
 											<tr class='row_{{i}}'>
@@ -744,7 +817,7 @@ img:hover {
 				</div>
 				<div class="modal-footer" *ngIf="!updatePartnerUser">
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
+						[disabled]="!checkingForEmail" (click)="addRow()">Save</button>
 					<button type="button" class="btn green" data-dismiss="modal"
 						(click)="addPartnerModalClose()">Close</button>
 				</div>
