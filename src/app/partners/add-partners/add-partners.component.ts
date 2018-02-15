@@ -21,7 +21,7 @@ declare var $, Papa, swal: any;
 @Component( {
     selector: 'app-add-partners',
     templateUrl: './add-partners.component.html',
-    styleUrls: ['./add-partners.component.css','../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
+    styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent]
 })
@@ -33,7 +33,7 @@ export class AddPartnersComponent implements OnInit {
     addPartnerUser: User = new User();
     newPartnerUser = [];
     partners: User[];
-   // allPartners: User[];
+    // allPartners: User[];
     partnerId = [];
     partnerListId: number;
     totalRecords: number;
@@ -78,6 +78,7 @@ export class AddPartnersComponent implements OnInit {
     Campaign: string;
     deleteErrorMessage: boolean;
     isLoadingList: boolean = true;
+    isEmailExist: boolean = false;
     allPartnersPagination: Pagination = new Pagination();
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -203,6 +204,16 @@ export class AddPartnersComponent implements OnInit {
         else {
             this.checkingForEmail = false;
         }
+        
+        for(let i=0;i< this.contactService.allPartners.length; i++){
+            if( emailId == this.contactService.allPartners[i].emailId ){
+                this.isEmailExist = true;
+                break;
+            }else{
+                this.isEmailExist = false;
+            }
+        }
+        
     }
 
     addPartnerModalOpen() {
@@ -220,8 +231,8 @@ export class AddPartnersComponent implements OnInit {
     }
 
     setPage( event: any ) {
-            this.pagination.pageIndex = event.page;
-            this.loadPartnerList( this.pagination );
+        this.pagination.pageIndex = event.page;
+        this.loadPartnerList( this.pagination );
     }
 
     addRow() {
@@ -377,7 +388,7 @@ export class AddPartnersComponent implements OnInit {
                 this.referenceService.loading( this.httpRequestLoader, false );
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.partners );
-                
+
                 var contactIds = this.pagination.pagedItems.map( function( a ) { return a.id; });
                 var items = $.grep( this.editContactComponent.selectedContactListIds, function( element ) {
                     return $.inArray( element, contactIds ) !== -1;
@@ -387,15 +398,15 @@ export class AddPartnersComponent implements OnInit {
                 } else {
                     this.editContactComponent.isHeaderCheckBoxChecked = false;
                 }
-                
+
                 this.loadAllPartnerInList( pagination.totalRecords );
-                
+
             },
             error => this.xtremandLogger.error( error ),
             () => this.xtremandLogger.info( "MangePartnerComponent loadPartnerList() finished" )
         )
     }
-    
+
     loadAllPartnerInList( totalRecords: number ) {
         this.allPartnersPagination.maxResults = totalRecords;
         this.contactService.loadUsersOfContactList( this.partnerListId, this.allPartnersPagination ).subscribe(
@@ -444,12 +455,12 @@ export class AddPartnersComponent implements OnInit {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
-                
-                var csvResult = Papa.parse(contents);
-                
+
+                var csvResult = Papa.parse( contents );
+
                 var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
-                  // var data = allTextLines[i].split( ',' );
+                    // var data = allTextLines[i].split( ',' );
                     if ( allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4];
@@ -1140,7 +1151,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     showModal() {
-        $('#salesforceModal').appendTo("body").modal('show');
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
     }
 
     hideModal() {
@@ -1162,7 +1173,7 @@ export class AddPartnersComponent implements OnInit {
                 this.storeLogin = data;
                 console.log( data );
                 if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                    $('#salesforceModal').appendTo("body").modal('show');
+                    $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
                     console.log( "AddContactComponent salesforce() Authentication Success" );
                     this.checkingPopupValues();
                 } else {
@@ -1363,8 +1374,8 @@ export class AddPartnersComponent implements OnInit {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-       // $( '#settingSocialNetwork' ).modal();
-        $('#settingSocialNetwork').appendTo("body").modal('show');
+        // $( '#settingSocialNetwork' ).modal();
+        $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
     }
 
     unlinkSocailAccount() {
@@ -1392,12 +1403,12 @@ export class AddPartnersComponent implements OnInit {
                     this.zohoImageBlur = true;
                     this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
-                $('#settingSocialNetwork').modal('hide');
+                $( '#settingSocialNetwork' ).modal( 'hide' );
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
-                    $('#settingSocialNetwork').modal('hide');
+                    $( '#settingSocialNetwork' ).modal( 'hide' );
                     this.deleteErrorMessage = true;
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
@@ -1406,7 +1417,7 @@ export class AddPartnersComponent implements OnInit {
                 console.log( error );
             },
             () => {
-                $('#settingSocialNetwork').modal('hide');
+                $( '#settingSocialNetwork' ).modal( 'hide' );
                 this.cancelPartners();
                 this.xtremandLogger.info( "deleted completed" );
             }
@@ -1492,43 +1503,43 @@ export class AddPartnersComponent implements OnInit {
         }
         event.stopPropagation();
     }
-    
-    downloadFile(data: any) {
-        let parsedResponse = data.text();
-        let blob = new Blob([parsedResponse], { type: 'text/csv' });
-        let url = window.URL.createObjectURL(blob);
 
-        if(navigator.msSaveOrOpenBlob) {
-            navigator.msSaveBlob(blob, 'Partner_List.csv');
+    downloadFile( data: any ) {
+        let parsedResponse = data.text();
+        let blob = new Blob( [parsedResponse], { type: 'text/csv' });
+        let url = window.URL.createObjectURL( blob );
+
+        if ( navigator.msSaveOrOpenBlob ) {
+            navigator.msSaveBlob( blob, 'Partner_List.csv' );
         } else {
-            let a = document.createElement('a');
+            let a = document.createElement( 'a' );
             a.href = url;
             a.download = 'Partner_List.csv';
-            document.body.appendChild(a);
-            a.click();        
-            document.body.removeChild(a);
+            document.body.appendChild( a );
+            a.click();
+            document.body.removeChild( a );
         }
-        window.URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL( url );
     }
-    
+
     downloadPartnerList() {
         this.contactService.downloadContactList( this.partnerListId )
             .subscribe(
             data => this.downloadFile( data ),
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
             },
             () => this.xtremandLogger.info( "download partner List completed" )
             );
     }
-    
-    sendMail(partnerId: number) {
+
+    sendMail( partnerId: number ) {
         this.contactService.mailSend( partnerId )
             .subscribe(
             data => {
                 console.log( data );
-                if(data.message == "success"){
+                if ( data.message == "success" ) {
                     this.setResponseDetails( 'SUCCESS', 'Email Sent Successfully..' );
                 }
             },
@@ -1548,7 +1559,7 @@ export class AddPartnersComponent implements OnInit {
         if ( this.contactService.googleCallBack == true ) {
             this.getGoogleContactsUsers();
         } else if ( this.contactService.salesforceContactCallBack == true ) {
-            $('#salesforceModal').appendTo("body").modal('show');
+            $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
             this.contactService.salesforceContactCallBack = false;
         }
     }

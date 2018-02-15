@@ -862,6 +862,7 @@
 								<div class="textCss"></div>
 								<div style="color: red" *ngIf="!validEmailPatternSuccess">invalid
 									emailId</div>
+								<div style="color: red" *ngIf="isEmailExist">Given Contact already exist</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -916,7 +917,7 @@
 								<textarea name="note" style="border: none" class="form-control"
 									id="note" [(ngModel)]="addContactuser.description"
 									[ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
-		      </textarea>
+		     					</textarea>
 								<div class="textCss"></div>
 							</div>
 						</div>
@@ -924,14 +925,14 @@
 				</div>
 				<div class="modal-footer" *ngIf="!updateContactUser">
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail"
-						(click)="addContactsOption(AddContactsOption.ADDCONTACT);">Add</button>
+						[disabled]="!checkingForEmail || isEmailExist"
+						(click)="addContactsOption(AddContactsOption.ADDCONTACT);">Save</button>
 					<button type="button" class="btn green" data-dismiss="modal"
 						(click)="addContactModalClose()">Close</button>
 				</div>
 				<div class="modal-footer" *ngIf="updateContactUser">
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail" (click)="updateContactListUser()">Update</button>
+						[disabled]="!checkingForEmail || isEmailExist" (click)="updateContactListUser()">Update</button>
 					<button type="button" class="btn green" data-dismiss="modal"
 						(click)="updateContactModalClose()">Close</button>
 				</div>

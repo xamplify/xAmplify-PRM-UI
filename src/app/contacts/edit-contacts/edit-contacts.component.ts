@@ -125,6 +125,7 @@ export class EditContactsComponent implements OnInit {
     public invalidPattenMail = false;
     showInvalidMaills = false;
     downloadDataList = [];
+    isEmailExist: boolean = false;
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -506,13 +507,11 @@ export class EditContactsComponent implements OnInit {
     addRow() {
         if ( this.emailNotValid == true ) {
             $( "#addContactModal .close" ).click()
-            //   $('body').removeClass('modal-open');
-            //       $('.modal-backdrop fade in').remove();
-
             this.users.push( this.addContactuser );
         }
-        this.fileTypeError = false;
-        this.noContactsFound = false;
+        //this.fileTypeError = false;
+        //this.noContactsFound = false;
+        this.saveContacts(this.contactListId);
         this.addContactuser = new User();
     }
 
@@ -1230,6 +1229,15 @@ export class EditContactsComponent implements OnInit {
         }
         else {
             this.checkingForEmail = false;
+        }
+        
+        for(let i=0;i< this.contacts.length; i++){
+            if( emailId == this.contacts[i].emailId ){
+                this.isEmailExist = true;
+                break;
+            }else{
+                this.isEmailExist = false;
+            }
         }
     }
 
