@@ -210,17 +210,7 @@
 							<tbody>
 								<tr *ngFor="let item of userMinutesWatched">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td class="center">{{item.videoTitle}}</td>
 									<!-- | date: 'fullDate' -->
@@ -286,17 +276,7 @@
 							<tbody>
 								<tr *ngFor="let item of watchedFullyReportData">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td class="center">{{item.campaignName}}</td>
 									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
@@ -358,17 +338,7 @@
 						<tbody>
 							<tr *ngFor="let item of totalUsersWatched">
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a>{{item.emailId}}</a>
-											</h6>
-										</span>
-									</div>
+									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">{{item.minutesWatched }}</td>
 								<td class="center">{{item.date }}</td>
@@ -423,17 +393,7 @@
 							<tbody>
 								<tr *ngFor="let item of videoPlayedPagination.pagedItems;let i = index">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a>{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
@@ -474,17 +434,7 @@
 							<tbody>
 								<tr *ngFor="let item of pagination.pagedItems;let i = index">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
@@ -543,17 +493,7 @@
 						<tbody>
 							<tr *ngFor="let item of worldMapCampaignUsersInfo;let i = index">
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-									</div>
+									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{item.campaignName}}</h5>
