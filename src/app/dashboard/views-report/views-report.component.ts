@@ -8,13 +8,13 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DashboardService } from '../dashboard.service';
 import { ContactService } from '../../contacts/services/contact.service';
+import { VideoBaseReportService } from '../../videos/services/video-base-report.service';
 
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { Category } from '../../videos/models/category';
 import { ContactList } from '../../contacts/models/contact-list';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { VideoBaseReportService } from '../../videos/services/video-base-report.service';
 
 declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 
@@ -28,10 +28,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     videoJSplayer: any;
     categories: Category[];
-    showDatailedData: boolean = false;
     searchKey: string;
     categoryNum: number;
-    isCategoryThere: boolean;
     launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
     videoSort: any;
@@ -40,28 +38,15 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     length1 = 60;
     totalVideos: any;
     videoId: number;
-
-    sortContactUsers = [
-        { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
-        { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
-        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
-        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
-        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
-    ];
-    public contactsUsersSort: any = this.sortContactUsers[0];
     watchedFullyDetailReportData: any;
-    public watchedPagination = new Pagination();
+    watchedPagination = new Pagination();
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
-        public logger: XtremandLogger, public pagination: Pagination,
-        public authenticationService: AuthenticationService,
+        public logger: XtremandLogger, public pagination: Pagination,public authenticationService: AuthenticationService,
         public videoUtilService: VideoUtilService, public videoBaseReportService: VideoBaseReportService) {
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
         this.categoryNum = 0;
-        this.isCategoryThere = false;
     }
     showAverageDuration(id: number, pagination: Pagination) {  // need to modify with dynamic api values
         this.videoFileService.loadVideoForViewsReport(pagination)
@@ -119,11 +104,8 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     pagination.totalRecords = result.totalRecords;
                     this.noVideos = result.listOfMobinars.length === 0 ? true : false;
                     this.referenceService.loading(this.httpRequestLoader, false);
-                    if (!this.isCategoryThere) {
                         this.categories = result.categories;
                         this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
-                        this.isCategoryThere = true;
-                    }
                     pagination = this.pagerService.getPagedItems(pagination, result.listOfMobinars);
                 },
                 (error: string) => {
