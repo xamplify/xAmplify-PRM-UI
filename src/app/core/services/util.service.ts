@@ -59,17 +59,14 @@ export class UtilService {
 
     sortOptionValues(sortValue: any, pagination: Pagination){
         const sortedValue = sortValue.value;
-        let sortcolumn, sortingOrder: any;
         if (sortedValue !== '') {
             const options: string[] = sortedValue.split('-');
-            sortcolumn = options[0];
-            sortingOrder = options[1];
+            pagination.sortcolumn = options[0];
+            pagination.sortingOrder = options[1];
         } else {
-            sortcolumn = sortingOrder = null;
+            pagination.sortcolumn = pagination.sortingOrder = null;
         }
         pagination.pageIndex = 1;
-        pagination.sortcolumn = sortcolumn;
-        pagination.sortingOrder = sortingOrder;
         return pagination;
     }
 
