@@ -546,7 +546,7 @@ export class EditContactsComponent implements OnInit {
             swal( "value can't be null" );
         }
         if ( selectedDropDown == "DEFAULT" ) {
-            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 24px;'>Please Select the Delimeter Type</span>" );
+            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimeter Type</span>" );
             return false;
         }
         else {
@@ -1537,7 +1537,7 @@ export class EditContactsComponent implements OnInit {
         let self = this;
         swal( {
             //title: this.checkingContactTypeName + ' List Name',
-            title: "<span style='font-weight: 100;font-family: Open Sans;font-size: 28px;'>Update List Name</span>",
+            title: "<span style='font-weight: 100;font-family: Open Sans;font-size: 24px;'>Update List Name</span>",
             input: 'text',
             inputValue: this.contactListName,
             showCancelButton: true,
