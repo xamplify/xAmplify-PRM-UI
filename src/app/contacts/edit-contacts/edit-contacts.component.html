@@ -475,20 +475,7 @@
 															<td align="center"><input type="checkbox"
 																checked="newContact.checked"></td>
 															<td>
-																<div class="flex">
-																	<span class='profile'
-																		style="background-color: #3598dc;"> <span
-																		class='uppercase textWhite'>{{newContact.firstName
-																			| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-																	</span> <span style="margin-left: 20px;">
-																		<h5 class='bold textWhite'
-																			style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-																		<h6 class='m0 textWhite'>
-																			<a href="mailto:ksathish@xtremand.com"
-																				class='bold textWhite'>{{newContact.emailId}}</a>
-																		</h6>
-																	</span>
-																</div>
+															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
 															<td>
 																<h5>
@@ -546,18 +533,7 @@
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="highlightRow(contact.id,$event)" /></td>
 															<td>
-																<div class="flex">
-																	<span class='profile'
-																		style="background-color: #3598dc;"> <span
-																		class='uppercase'>{{contact.firstName |
-																			slice:0:1}}{{contact.lastName | slice:0:1}}</span>
-																	</span> <span style="margin-left: 20px;">
-																		<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
-																		<h6 class='m0'>
-																			<a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a>
-																		</h6>
-																	</span>
-																</div>
+															<app-user-info  [userInfo]="contact"> </app-user-info>
 															</td>
 															<td>
 																<h5>
@@ -720,7 +696,7 @@
 														</span> <span style="margin-left: 20px;">
 															<h5 class='bold' style="margin: 7px 0 2px 0;">{{allcontacts.firstName}}&nbsp;{{allcontacts.lastName}}</h5>
 															<h6 class='m0'>
-																<a href="mailto:ksathish@xtremand.com" class='bold'>{{allcontacts.emailId}}</a>
+																<a href="{{allcontacts.emailId}}" class='bold'>{{allcontacts.emailId}}</a>
 															</h6>
 														</span>
 													</div>

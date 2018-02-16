@@ -422,18 +422,7 @@ img:hover {
 												<!-- <td align="center"><input type="checkbox"
 																checked="newContact.checked"></td> -->
 												<td>
-													<div class="flex">
-														<span class='profile' style="background-color: #3598dc;">
-															<span class='uppercase'>{{newContact.firstName
-																| slice:0:1}}{{newContact.lastName | slice:0:1}}</span>
-														</span> <span style="margin-left: 20px;">
-															<h5 class='bold' style="margin: 7px 0 2px 0;">{{newContact.firstName}}&nbsp;{{newContact.lastName}}</h5>
-															<h6 class='m0'>
-																<a href="newContact.emailId"
-																	class='bold'>{{newContact.emailId}}</a>
-															</h6>
-														</span>
-													</div>
+												<app-user-info  [userInfo]="newContact"> </app-user-info>
 												</td>
 												<td>
 													<h5>
@@ -571,17 +560,7 @@ img:hover {
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="editContactComponent.highlightRow(contact.id,$event)" /></td>
 												<td>
-													<div class="flex">
-														<span class='profile' style="background-color: #3598dc;">
-															<span class='uppercase'>{{contact.firstName |
-																slice:0:1}}{{contact.lastName | slice:0:1}}</span>
-														</span> <span style="margin-left: 20px;">
-															<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
-															<h6 class='m0'>
-																<a href="contact.emailId" class='bold'>{{contact.emailId}}</a>
-															</h6>
-														</span>
-													</div>
+													<app-user-info  [userInfo]="contact"> </app-user-info>
 												</td>
 												<td>
 													<h5>

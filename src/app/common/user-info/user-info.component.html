@@ -1,0 +1,11 @@
+<div class="flex">
+	<span class='profile' style="background-color: #3598dc;"> <span
+		class='uppercase'>{{userInfo.firstName |
+			slice:0:1}}{{userInfo.lastName | slice:0:1}}</span>
+	</span> <span style="margin-left: 20px;">
+		<h5 class='bold' style="margin: 7px 0 2px 0;">{{userInfo.firstName}}&nbsp;{{userInfo.lastName}}</h5>
+		<h6 class='m0'>
+			<a href="{{userInfo.emailId}}" class='bold textWhite'>{{userInfo.emailId}}</a>
+		</h6>
+	</span>
+</div>

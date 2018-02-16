@@ -508,19 +508,6 @@
 														Delete </a></li>
 											</ul>
 										</div>
-										<!-- <div class="btn-group pull-right"
-											style="margin-top: 4px; color: #000000;"
-											*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
-											<button class="btn dropdown-toggle" data-toggle="dropdown">
-	Tools <i class="fa fa-angle-down"></i>
-</button>
-											<i class="fa fa-cog dropdown-toggle btn-tools"
-												data-toggle="dropdown" style="font-size: 22px"></i>
-											<ul class="dropdown-menu pull-right">
-												<li><a id="delete_button"
-													(click)="invalidContactsShowAlert()">Delete</a></li>
-											</ul>
-										</div> -->
 									</div>
 									<div class="portlet-body">
 										<div class="table-responsive">
@@ -576,17 +563,7 @@
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
 														</td>
 														<td>
-															<div class="flex">
-																<span class='profile' style="background-color: #3598dc;">
-																	<span class='uppercase'>{{contact.firstName |
-																		slice:0:1}}{{contact.lastName | slice:0:1}}</span>
-																</span> <span style="margin-left: 20px;">
-																	<h5 class='bold' style="margin: 7px 0 2px 0;">{{contact.firstName}}&nbsp;{{contact.lastName}}</h5>
-																	<h6 class='m0'>
-																		<a href="mailto:ksathish@xtremand.com" class='bold'>{{contact.emailId}}</a>
-																	</h6>
-																</span>
-															</div>
+														<app-user-info  [userInfo]="contact"> </app-user-info>
 														</td>
 														<td>
 															<h5>
@@ -630,42 +607,6 @@
 											<app-pagination [pagination]="contactsByType.pagination"
 												[type]="contactsByType.selectedCategory"
 												(notifyParent)="setPage($event)"></app-pagination>
-											<!-- <ul
-												*ngIf="contactsByType.pagination.pager.pages && contactsByType.pagination.pager.pages.length"
-												class="pagination m0">
-												<li
-													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-													<a
-													(click)="setPageForListContactsByType(1,contactsByType.selectedCategory)"
-													[class.disabled]="contactsByType.pagination.pager.currentPage === 1">First</a>
-												</li>
-												<li
-													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === 1}">
-													<a
-													(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage - 1,contactsByType.selectedCategory)"
-													[class.disabled]="contactsByType.pagination.pager.currentPage === 1">Previous</a>
-												</li>
-												<li
-													*ngFor="let page of contactsByType.pagination.pager.pages"
-													[ngClass]="{active:contactsByType.pagination.pager.currentPage === page}">
-													<a
-													(click)="setPageForListContactsByType(page,contactsByType.selectedCategory)"
-													[class.disabled]="contactsByType.pagination.pager.currentPage === page">{{page}}</a>
-												</li>
-												<li
-													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-													<a
-													(click)="setPageForListContactsByType(contactsByType.pagination.pager.currentPage + 1,contactsByType.selectedCategory)"
-													[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Next</a>
-												</li>
-												<li
-													[ngClass]="{disabled:contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages}">
-													<a
-													(click)="setPageForListContactsByType(contactsByType.pagination.pager.totalPages,contactsByType.selectedCategory)"
-													[class.disabled]="contactsByType.pagination.pager.currentPage === contactsByType.pagination.pager.totalPages">Last</a>
-												</li>
-											</ul> -->
-
 											<div class="btn-group pull-right">
 												<select class="form-control"
 													[(ngModel)]="sortOptionForPagination"
