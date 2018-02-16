@@ -18,10 +18,8 @@ declare var $: any;
 @Injectable()
 export class ReferenceService {
     
-    
     swalConfirmButtonColor: '#54a7e9';
     swalCancelButtonColor: '#999';
-
     refcategories: Category[];
     userName: any;
     selectedCampaignType: string = "";
@@ -205,14 +203,6 @@ export class ReferenceService {
         }
     }
     validateEmailId(emailId: string) {
-        /*    if(emailId.length>0){
-                emailId = emailId.trim();
-                var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-                return regex.test(emailId);
-            }else{
-                return false;
-            }
-            emailId = emailId.trim();*/
         var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
         return regex.test(emailId);
     }
