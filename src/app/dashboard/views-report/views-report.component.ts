@@ -33,7 +33,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     videoSort: any;
     videotitle: string;
     noVideos = false;
-    length1 = 60;
     totalVideos: any;
     videoId: number;
     watchedFullyDetailReportData: any;

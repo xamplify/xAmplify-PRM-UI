@@ -9,9 +9,6 @@
 			<li>
 				<a (click)="backToReport()">Views report</a>
 			</li>
-			<li *ngIf="showDatailedData">
-				<i class="fa fa-angle-right"></i> Total Views
-			</li>
 		</ul>
 	</div>
 	<!-- <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader> -->
@@ -60,7 +57,7 @@
 				<strong>No Views found.. !!!</strong>
 			</div>
 		</div>
-		<ng-container *ngFor="let videoFile of totalVideos ;let i =index">
+		<ng-container *ngFor="let videoFile of pagination.pagedItems ;let i =index">
 			<div class="col-xs-12 views-box">
 				<div class="col-xs-12 col-md-6 p0 m0">
 					<div class="col-xs-12 col-sm-6 thumb-bg">
