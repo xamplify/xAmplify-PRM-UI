@@ -212,17 +212,8 @@
 								<tbody>
 									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.userEmail);">
 										<td>
-											<div class="flex">
-												<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-												</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a href="mailto:{{item.userEmail}}">{{item.userEmail}}</a>
-											</h6>
-										</span>
-											</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+											<!-- here emailId coming as userMail -->
 										</td>
 										<td class="td-chart">
 											<h6>{{item.campaignName}}</h6>
@@ -419,17 +410,7 @@
 							<tbody>
 								<tr *ngFor="let item of campaignReport.usersWatchList">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td>
 										<h6>{{item.startTime | date: 'short'}}</h6>
@@ -493,17 +474,7 @@
 							<tbody>
 								<tr *ngFor="let item of campaignReport.emailActionList">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.emailId}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
 										<h6>{{item.url}}</h6>
@@ -556,17 +527,7 @@
 							<tbody>
 								<tr *ngFor="let item of campaignViews">
 									<td>
-										<div class="flex">
-											<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-											</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{item.userEmail}}</a>
-											</h6>
-										</span>
-										</div>
+										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td>
 										<h6>{{item.campaignName}}</h6>
@@ -618,17 +579,7 @@
 						<tbody>
 							<tr *ngFor="let item of donutCampaignViews">
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a>{{item.userEmail}}</a>
-											</h6>
-										</span>
-									</div>
+									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td>
 									<h6>{{item.campaignName}}</h6>
@@ -689,17 +640,7 @@
 						<tbody>
 							<tr *ngFor="let emailClicked of worldMapUserData;let i = index">
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{emailClicked.firstName |
-												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
-											<h6 class='m0'>
-												<a >{{emailClicked.emailId}}</a>
-											</h6>
-										</span>
-									</div>
+									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
 								</td>
 								<td style="text-align: center">
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>

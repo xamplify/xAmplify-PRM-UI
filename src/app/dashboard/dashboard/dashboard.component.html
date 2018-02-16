@@ -844,17 +844,7 @@
 								<!-- <td class="center"><h5>{{emailClicked.firstName}}
 										{{emailClicked.lastName}}</h5></td> -->
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{emailClicked.firstName |
-												slice:0:1}}{{emailClicked.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{emailClicked.firstName}}&nbsp;{{emailClicked.lastName}}</h5>
-											<h6 class='m0'>
-												<a href="mailto:{{emailClicked.emailId}}">{{emailClicked.emailId}}</a>
-											</h6>
-										</span>
-									</div>
+									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{emailClicked.campaignName}}</h5>
@@ -915,17 +905,7 @@
 						<tbody>
 							<tr *ngFor="let item of worldMapUserData;let i = index">
 								<td>
-									<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{item.firstName |
-												slice:0:1}}{{item.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{item.firstName}}&nbsp;{{item.lastName}}</h5>
-											<h6 class='m0'>
-												<a href="mailto:{{item.emailId}}">{{item.emailId}}</a>
-											</h6>
-										</span>
-									</div>
+								<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
