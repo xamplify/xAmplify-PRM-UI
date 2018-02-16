@@ -395,14 +395,18 @@
 												</div>
 											</div>
 											<!-- cobra eding video logo -->
-											<!-- <div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Video Logo:</label>
-												<div class="col-xs-7 col-sm-7 col-md-7">
-													<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="defaultPlayerSettingsValues($event)">
-													</switch>
-												</div>
-											</div> -->
+											<div id = "fileLogoSelectedid" *ngIf="!disablePlayerSettingnew"class="" style="padding:0%;width: 50%;position: relative;right: -233px;top: -17px;">
+												<label style="position: relative;left: -103px;font-size: 14px;color: #6d6969;top: 29px;">Video LOGO:</label>
+												<input  *ngIf="!logoImageUrlPath" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
+													 class="btn btn-primary" style="background: #00a6e8;width: 100%;" (change)="fileLogoSelected($event)">
+													<div>
+														<span *ngIf="logoImageUrlPath" class="close" style="position: absolute;left: 87px;top: 27px;background: #00a6e8;" (click)="clearLogo()"></span>
+														<img *ngIf="logoImageUrlPath" [src]=logoImageUrlPath style="height: 71px; width: 98px; border: 1px solid red;">
+													</div>
+													<div *ngIf="!logoImageUrlPath" class="alert alert-danger" style="margin-top: 2px;height: 38px;">
+														<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
+													</div>
+											</div>
 										</div>
 									</div>
 								</div>

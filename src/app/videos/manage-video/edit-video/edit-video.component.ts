@@ -46,6 +46,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     embedModelVideo: SaveVideoFile;
     categories: Category[];
     uploader: FileUploader;
+    videoLogoUploader: FileUploader;
     user: User = new User();
     defaultPlayerValues: DefaultVideoPlayer;
     callAction: CallAction = new CallAction();
@@ -129,6 +130,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedImagePath: string;
     saveButtonTitle = 'Save';
     isDisable = false;
+    logoImageUrlPath: any;
+    videojsLogo = false;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -144,6 +147,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
+        this.logoImageUrlPath = 'assets/images/logo.png';
         if (this.saveVideoFile.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
             this.saveVideoFile.viewBy = 'PRIVATE';
@@ -185,12 +189,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
-            url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail/?access_token=" + this.authenticationService.access_token +'&userId=' + this.authenticationService.user.id
-           // url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+            url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail?userId=" + this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token
         });
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
-            this.ownThumb = true;
+            console.log(fileItem);
+           // this.ownThumb = true;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             this.uploader.queue[0].upload();
@@ -201,8 +205,41 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.imagePath = JSON.parse(response).path;
             this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         }
+        this.videoLogoUploader = new FileUploader({
+            allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
+            maxFileSize: 10 * 1024 * 1024, // 10 MB
+            url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+        });
+        this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
+            fileItem.withCredentials = false;
+            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            console.log(this.logoImageUrlPath);
+            this.fileLogoSelected(fileItem);
+        };
+        this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+          //  this.saveVideoFile.imagePath = JSON.parse(response).path;
+            console.log(response);
+        }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
     }
+    fileLogoSelected(event: any){
+    (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
+     const fileList: FileList = event.target.files;
+        console.log(fileList[0].type);
+        if (fileList.length > 0) {
+            const file: File = fileList[0];
+            const isSupportfile: any = fileList[0].type;
+            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+                this.videoLogoUploader.queue[0].upload();
+            }
+            else {
+                this.videoLogoUploader.queue.length=0;
+                this.videoLogoUploader = undefined;
+                (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
+            }
+        } 
+    }
+
     public startsWithAt(control: FormControl) {
         try {
             let checkTag: string;
@@ -236,6 +273,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.callAction.startCalltoAction = startCallAction;
         this.callAction.endCalltoAction = endCallAction;
         this.callAction.videoOverlaySubmit = videoPlaybutton;
+    }
+    // clear videojs logo
+
+    ownFileChange(){
+
+    }
+    clearLogo(){
+      this.logoImageUrlPath = undefined;
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
@@ -325,7 +370,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.titleDiv = titleDiv; this.colorControl = colorControl;
         this.controlPlayers = controlPlayers; this.callaction = callaction;
     }
-    titleDivChange() { this.divChanageValues(true, false, false, false); }
+    titleDivChange() { 
+        this.divChanageValues(true, false, false, false);
+     }
     colorControlChange() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.divChanageValues(false, true, false, false);
