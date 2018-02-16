@@ -1,25 +1,25 @@
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
- import { Criteria } from '../../contacts/models/criteria';
+import { Criteria } from '../../contacts/models/criteria';
 
 export class Pagination {
-	    pageIndex: number = 1 ;
-		maxResults :number=10;
-		sortcolumn :string=null;
-		sortingOrder :string=null;
-		searchKey:string=null;
-		filterBy:any =null;
-		pager: any = {};
-		pagedItems: any[]=[];
-		totalRecords:number;
-		editCampaign:boolean=false;
-        campaignId:number;
-        campaignDefaultTemplate:boolean=false;
-        emailTemplateType:EmailTemplateType=EmailTemplateType.NONE;
-        isLoading:boolean = false;
-        videoCategoryId:number = 0;
-        isEmailTemplateSearchedFromCampaign:boolean=false;
-        filterKey: string = null;
-        filterValue: any = null;
-        criterias : Criteria[]= null;
+	pageIndex = 1;
+	maxResults = 10;
+	sortcolumn: string = null;
+	sortingOrder: string = null;
+	searchKey: string = null;
+	filterBy: any = null;
+	pager: any = {};
+	pagedItems: any[] = [];
+	totalRecords: number;
+	editCampaign = false;
+	campaignId: number;
+	campaignDefaultTemplate = false;
+	emailTemplateType: EmailTemplateType = EmailTemplateType.NONE;
+	isLoading = false;
+	videoCategoryId = 0;
+	isEmailTemplateSearchedFromCampaign = false;
+	filterKey: string = null;
+	filterValue: any = null;
+	criterias: Criteria[] = null;
 
 }

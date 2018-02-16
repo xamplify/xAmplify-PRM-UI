@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { UtilService } from '../../core/services/util.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import { PagerService } from '../../core/services/pager.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { DashboardService } from '../dashboard.service';
-import { ContactService } from '../../contacts/services/contact.service';
 import { VideoBaseReportService } from '../../videos/services/video-base-report.service';
 
 import { SaveVideoFile } from '../../videos/models/save-video-file';
@@ -22,7 +21,7 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
     selector: 'app-views-report',
     templateUrl: './views-report.component.html',
     styleUrls: ['./views-report.component.css'],
-    providers: [Pagination, HttpRequestLoader, DashboardService, VideoBaseReportService]
+    providers: [Pagination, HttpRequestLoader, VideoBaseReportService]
 })
 export class ViewsReportComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -30,7 +29,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     categories: Category[];
     searchKey: string;
     categoryNum: number;
-    launchVideoPreview: SaveVideoFile = new SaveVideoFile();
     sortVideos: any;
     videoSort: any;
     videotitle: string;
@@ -41,9 +39,9 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     watchedFullyDetailReportData: any;
     watchedPagination = new Pagination();
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
-        public dashboardService: DashboardService, public pagerService: PagerService, public contactService: ContactService,
-        public logger: XtremandLogger, public pagination: Pagination,public authenticationService: AuthenticationService,
-        public videoUtilService: VideoUtilService, public videoBaseReportService: VideoBaseReportService) {
+        public pagerService: PagerService, public logger: XtremandLogger, public pagination: Pagination,
+        public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
+        public videoBaseReportService: VideoBaseReportService, public utilService: UtilService) {
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
         this.categoryNum = 0;
@@ -51,31 +49,31 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     showAverageDuration(id: number, pagination: Pagination) {  // need to modify with dynamic api values
         this.videoFileService.loadVideoForViewsReport(pagination)
             .subscribe(
-            data => {
-                const values = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
-                //  const dates = [];
-                // const values = [];
-                // for (const i of Object.keys(data)) {
-                //     dates.push(i);
-                //     values.push(data[i]);
-                // }
+                data => {
+                    const values = [3, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12];
+                    //  const dates = [];
+                    // const values = [];
+                    // for (const i of Object.keys(data)) {
+                    //     dates.push(i);
+                    //     values.push(data[i]);
+                    // }
 
-                $('#sparkline_bar' + id).sparkline(values, {
-                    type: 'bar',
-                    padding: '5px',
-                    barSpacing: '3',
-                    width: '100',
-                    barWidth: 6,
-                    height: '55',
-                    barColor: '#7cb5ec',
-                    negBarColor: '#e02222',
-                    tooltipFormat: '<span>average:{{offset:offset}}</span>',
-                    tooltipValueLookups: { 'offset': values }
+                    $('#sparkline_bar' + id).sparkline(values, {
+                        type: 'bar',
+                        padding: '5px',
+                        barSpacing: '3',
+                        width: '100',
+                        barWidth: 6,
+                        height: '55',
+                        barColor: '#7cb5ec',
+                        negBarColor: '#e02222',
+                        tooltipFormat: '<span>average:{{offset:offset}}</span>',
+                        tooltipValueLookups: { 'offset': values }
 
-                });
-            },
-            error => console.log(error),
-            () => console.log('getWeeklyTweets() method invoke started finished.')
+                    });
+                },
+                error => console.log(error),
+                () => console.log('getWeeklyTweets() method invoke started finished.')
             );
     }
     watchedFullyDetailReport(videoId: number) {
@@ -90,9 +88,9 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             },
             (err: any) => { console.log(err); })
     }
-    clearPaginationValues(){
+    clearPaginationValues() {
         this.watchedPagination = new Pagination();
-        this.watchedPagination.pageIndex =1;
+        this.watchedPagination.pageIndex = 1;
     }
     loadVideos(pagination: Pagination) {
         this.pagination.maxResults = 5;
@@ -104,20 +102,20 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                     pagination.totalRecords = result.totalRecords;
                     this.noVideos = result.listOfMobinars.length === 0 ? true : false;
                     this.referenceService.loading(this.httpRequestLoader, false);
-                        this.categories = result.categories;
-                        this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
+                    this.categories = result.categories;
+                    this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
                     pagination = this.pagerService.getPagedItems(pagination, result.listOfMobinars);
                 },
-                (error: string) => {
-                    this.logger.error('error in videos: views report page' + error);
-                    this.logger.errorPage(error);
-                },
-                () => {
-                    console.log(pagination.pagedItems)
-                    for (let i = 0; i < pagination.pagedItems.length; i++) {
-                        this.showAverageDuration(pagination.pagedItems[i].id, pagination)
+                    (error: string) => {
+                        this.logger.error('error in videos: views report page' + error);
+                        this.logger.errorPage(error);
+                    },
+                    () => {
+                        console.log(pagination.pagedItems)
+                        for (let i = 0; i < pagination.pagedItems.length; i++) {
+                            this.showAverageDuration(pagination.pagedItems[i].id, pagination)
+                        }
                     }
-                }
                 );
         } catch (error) {
             this.logger.error('erro in load videos :' + error);
@@ -126,12 +124,12 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     setPage(event: any) {
         const page = event.page;
         const type = event.type;
-        if(type==='viewsReport'){
-        this.pagination.pageIndex = page;
-        this.loadVideos(this.pagination);
-        } else if(type==='watchedFully'){
-          this.watchedPagination.pageIndex = page;
-          this.watchedFullyDetailReport(this.videoId);
+        if (type === 'viewsReport') {
+            this.pagination.pageIndex = page;
+            this.loadVideos(this.pagination);
+        } else if (type === 'watchedFully') {
+            this.watchedPagination.pageIndex = page;
+            this.watchedFullyDetailReport(this.videoId);
         }
     }
     getCategoryNumber() {
@@ -149,18 +147,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     }
     selectedSortByValue(event: any) {
         this.videoSort = event;
-        const sortedValue = this.videoSort.value;
-        let sortcolumn, sortingOrder: any;
-        if (sortedValue !== '') {
-            const options: string[] = sortedValue.split('-');
-            sortcolumn = options[0];
-            sortingOrder = options[1];
-        } else {
-            sortcolumn = sortingOrder = null;
-        }
-        this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = sortcolumn;
-        this.pagination.sortingOrder = sortingOrder;
+        this.pagination = this.utilService.sortOptionValues(this.videoSort, this.pagination);
         this.loadVideos(this.pagination);
     }
     showPreview(videoFile: SaveVideoFile) {
@@ -178,10 +165,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     videoTitleLength(title: string) {
         if (title.length > 60) { title = title.substring(0, 60) + '.....'; }
         return title;
-    }
-    playVideo() {
-        $('#main_video_src').empty();
-        this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
     }
     videoControllColors(videoFile: SaveVideoFile) {
         this.videoUtilService.videoColorControlls(videoFile);
@@ -278,8 +261,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         });
     }
     backToReport() {
-        this.pagination.sortcolumn = null;
-        this.pagination.sortingOrder = null;
+        this.pagination.sortcolumn = this.pagination.sortingOrder = null;
         this.loadVideos(this.pagination);
     }
     ngOnInit() {
@@ -289,10 +271,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             Layout.init();
             Demo.init();
             QuickSidebar.init();
-            // Index.init();
-            // Index.initDashboardDaterange();
-            // Index.initCharts();
-            // Index.initChat();
         } catch (err) { }
     }
     ngOnDestroy() {
@@ -303,5 +281,4 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();
     }
-
 }

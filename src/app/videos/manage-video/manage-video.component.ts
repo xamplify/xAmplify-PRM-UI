@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SaveVideoFile } from '.././models/save-video-file';
 import { Category } from '.././models/category';
 import { Pagination } from '../../core/models/pagination';
+
 import { VideoFileService } from '.././services/video-file.service';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -11,6 +12,7 @@ import { VideoUtilService } from '../services/video-util.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HomeComponent } from '../../core/home/home.component';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { UtilService } from '../../core/services/util.service';
 declare var swal, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
 
 @Component({
@@ -53,7 +55,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
-        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent) {
+        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService) {
         console.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
@@ -190,18 +192,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     selectedSortByValue(event: any) {
         this.defaultBannerMessageValues();
         this.videoSort = event;
-        const sortedValue = this.videoSort.value;
-        let sortcolumn, sortingOrder: any;
-        if (sortedValue !== '') {
-            const options: string[] = sortedValue.split('-');
-            sortcolumn = options[0];
-            sortingOrder = options[1];
-        } else {
-            sortcolumn = sortingOrder = null;
-        }
-        this.pagination.pageIndex = 1;
-        this.pagination.sortcolumn = sortcolumn;
-        this.pagination.sortingOrder = sortingOrder;
+        this.pagination =  this.utilService.sortOptionValues(this.videoSort, this.pagination);
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {

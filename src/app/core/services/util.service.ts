@@ -3,11 +3,13 @@ import { User } from '../models/user';
 import { UserToken } from '../models/user-token';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Pagination } from '../models/pagination';
 
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
-    constructor( private http: Http ) { }
+    pagination: Pagination; 
+    constructor( private http: Http) { }
 
     intlNumberFormat( num ) {
         return new Intl.NumberFormat().format( Math.round( num * 10 ) / 10 );
@@ -54,4 +56,21 @@ export class UtilService {
         return this.http.get( locationurl, '' )
             .map( response => response.json() );
     }
+
+    sortOptionValues(sortValue: any, pagination: Pagination){
+        const sortedValue = sortValue.value;
+        let sortcolumn, sortingOrder: any;
+        if (sortedValue !== '') {
+            const options: string[] = sortedValue.split('-');
+            sortcolumn = options[0];
+            sortingOrder = options[1];
+        } else {
+            sortcolumn = sortingOrder = null;
+        }
+        pagination.pageIndex = 1;
+        pagination.sortcolumn = sortcolumn;
+        pagination.sortingOrder = sortingOrder;
+        return pagination;
+    }
+
 }
