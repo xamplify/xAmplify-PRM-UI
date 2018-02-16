@@ -197,6 +197,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     validateEmail( emailId: string ) {
+        const lowerCaseEmail = emailId.toLowerCase();
         if ( this.validateEmailAddress( emailId ) ) {
             this.checkingForEmail = true;
             this.validEmailPatternSuccess = true;
@@ -204,9 +205,8 @@ export class AddPartnersComponent implements OnInit {
         else {
             this.checkingForEmail = false;
         }
-        
         for(let i=0;i< this.contactService.allPartners.length; i++){
-            if( emailId == this.contactService.allPartners[i].emailId ){
+            if( lowerCaseEmail == this.contactService.allPartners[i].emailId ){
                 this.isEmailExist = true;
                 break;
             }else{

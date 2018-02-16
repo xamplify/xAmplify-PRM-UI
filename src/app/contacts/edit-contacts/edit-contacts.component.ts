@@ -1223,6 +1223,7 @@ export class EditContactsComponent implements OnInit {
         $( "#addContactModal .close" ).click()
     }
     validateEmail( emailId: string ) {
+        const lowerCaseEmail = emailId.toLowerCase();
         if ( this.validateEmailAddress( emailId ) ) {
             this.checkingForEmail = true;
             this.validEmailPatternSuccess = true;
@@ -1232,7 +1233,7 @@ export class EditContactsComponent implements OnInit {
         }
         
         for(let i=0;i< this.contacts.length; i++){
-            if( emailId == this.contacts[i].emailId ){
+            if( lowerCaseEmail == this.contacts[i].emailId ){
                 this.isEmailExist = true;
                 break;
             }else{
