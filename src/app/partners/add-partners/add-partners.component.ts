@@ -780,6 +780,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     googleContacts() {
+       if(this.selectedAddPartnerOption == 5){
         this.fileTypeError = false;
         this.isContactsThere = false;
         this.socialPartners.firstName = '';
@@ -820,6 +821,7 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
             );
+    }
     }
 
     getGoogleContactsUsers() {
@@ -918,6 +920,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     checkingZohoContactsAuthentication() {
+        if(this.selectedAddPartnerOption == 5){
         this.contactService.checkingZohoAuthentication()
             .subscribe(
             ( data: any ) => {
@@ -949,6 +952,7 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
+    }
     }
 
     getZohoContacts( contactType: any, username: string, password: string ) {
@@ -1162,6 +1166,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     salesforceContacts() {
+        if(this.selectedAddPartnerOption == 5){
         this.contactType = "";
         this.isContactsThere = false;
         this.fileTypeError = false;
@@ -1189,6 +1194,7 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
+        }
     }
 
     checkingPopupValues() {

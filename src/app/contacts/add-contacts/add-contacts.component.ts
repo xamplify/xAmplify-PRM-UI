@@ -826,6 +826,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     googleContacts() {
+        if(this.selectedAddContactsOption == 8){
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
         this.isContactsThere = false;
@@ -869,6 +870,7 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
             );
+    }
     }
 
     getGoogleContactsUsers() {
@@ -1116,6 +1118,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     checkingZohoContactsAuthentication() {
+        if(this.selectedAddContactsOption == 8){
         this.contactService.checkingZohoAuthentication()
             .subscribe(
             ( data: any ) => {
@@ -1147,6 +1150,7 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
             )
+    }
     }
 
     getZohoContacts( contactType: any, username: string, password: string ) {
@@ -1415,6 +1419,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     salesforceContacts() {
+        if(this.selectedAddContactsOption == 8){
         this.contactType = "";
         this.isContactsThere = false;
         this.noOptionsClickError = false;
@@ -1445,7 +1450,7 @@ export class AddContactsComponent implements OnInit {
             () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
             );
     }
-
+    }
     checkingPopupValues() {
         $( "button#salesforce_save_button" ).prop( 'disabled', true );
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {

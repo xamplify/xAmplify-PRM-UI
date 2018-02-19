@@ -5,4 +5,4 @@ ul.alt-row-style1 li:nth-child(odd) {}
 ul.alt-row-style1 li:nth-child(even) {border-top:1px solid #dddfe2; border-bottom:1px solid #dddfe2 }
 ul.alt-row-style1 .social-icon{background:#c4cbdf; width:30px; height:30px; border-radius:100%; margin-right:5px;}
 ul.alt-row-style1 .social-icon i{    color: #FFF;    text-align: center !important;    position: relative;
-    display: block;    width: 30px;    margin-top: 5px;}
+    display: block;    width: 30px;    margin-top: 8px;}
