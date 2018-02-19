@@ -112,31 +112,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.defaultBannerMessageValues();
             }
             this.checkTotalRecords = true;
-            this.loadVideosCount(this.authenticationService.user.id);
             this.loadVideos(this.pagination);
             if (this.videoUtilService.selectedVideo) {
                 this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
             }
         } catch (error) {
             this.xtremandLogger.error('error in ng oninit :' + error);
-        }
-    }
-    loadVideosCount(userId: number) {
-        try {
-            this.videoFileService.loadVideosCount(userId)
-                .subscribe((result: any) => {
-                    if (result.videos_count === 0) {
-                        this.disableDropDowns = true;
-                    } else { this.disableDropDowns = false; }
-                },
-                (error: any) => {
-                    this.xtremandLogger.error(' manage Videos Component : Loading Videos count method():' + error);
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => console.log('load videos completed:')
-                );
-        } catch (error) {
-            this.xtremandLogger.error('erro in load videos :' + error);
         }
     }
     loadVideos(pagination: Pagination) {
@@ -166,10 +147,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error('erro in load videos :' + error);
         }
     };
-    titleCheckLength(title: string) {
-        if (title.length > 22) { title = title.substring(0, 21) + '..'; }
-        return title;
-    }
     setPage(event: any) {
         console.log(event.page, event.type);
         this.pagination.pageIndex = event.page;
@@ -270,10 +247,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
             });
     }
-    videoTitleLength(title: string) {
-        if (title.length > 50) { title = title.substring(0, 50) + '.....'; }
-        return title;
-    }
     deleteVideoFile(alias: string, position: number, videoName: string) {
         console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
         this.videoFileService.deleteVideoFile(alias)
@@ -284,17 +257,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.deletedVideo = true;
-                this.showVideoFileName = this.videoTitleLength(videoName);
-                this.loadVideosCount(this.authenticationService.user.id);
+                this.showVideoFileName = videoName;
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
-                this.loadVideos(this.pagination);
                 if (this.pagination.pagedItems.length === 0) {
                     this.pagination.pageIndex = 1;
                     this.loadVideos(this.pagination);
                 }
-                setTimeout(function () {
-                    $('#deleteMesg').slideUp(500);
-                }, 5000);
+                setTimeout(()=>{ this.deletedVideo = false; },5000); 
             },
             (error: any) => {
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
@@ -307,9 +276,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.defaultBannerMessageValues();
                     this.campaignVideo = true;
                     $('html,body').animate({ scrollTop: 0 }, 'slow');
-                    setTimeout(function () {
-                        $('#campaignVideo').slideUp(500);
-                    }, 5000);
+                    setTimeout(()=>{ this.campaignVideo = false; },5000); 
                 } else {
                     this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
@@ -361,14 +328,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
         const timevalue = this;
-        setTimeout(function () {
-            if (timevalue.showUpdatevalue === true) {
-                $('#showUpdatevalue').slideUp(500);
-            } else { $('#message').slideUp(500); };
-        }, 5000);
-        if (videoFile == null) {
-            this.showVideoFileName = '';
-        } else { this.showVideoFileName = this.videoTitleLength(videoFile.title); }
+        if(this.showMessage === true){  
+            setTimeout(()=>{ this.showMessage = false; },5000); 
+        } else { 
+            setTimeout(()=>{ this.showUpdatevalue = false; },5000); 
+        }
+        if (videoFile == null) { this.showVideoFileName = '';
+        } else { this.showVideoFileName = videoFile.title; }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);
     }
     showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {

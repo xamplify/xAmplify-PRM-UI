@@ -33,7 +33,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     videoSort: any;
     videotitle: string;
     noVideos = false;
-    totalVideos: any;
     videoId: number;
     watchedFullyDetailReportData: any;
     watchedPagination = new Pagination();
@@ -97,7 +96,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoForViewsReport(pagination)
                 .subscribe((result: any) => {
-                    this.totalVideos = result.listOfMobinars;
                     pagination.totalRecords = result.totalRecords;
                     this.noVideos = result.listOfMobinars.length === 0 ? true : false;
                     this.referenceService.loading(this.httpRequestLoader, false);

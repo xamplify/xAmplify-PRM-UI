@@ -12,21 +12,12 @@
 	</div>
 	<div>
 		<div class="row" *ngIf="manageVideos">
-			<div *ngIf="showMessage" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<p>{{showVideoFileName}} video Saved Successfully!</p>
-			</div>
-			<div *ngIf="showUpdatevalue" style="width: 97.5%;" class="col-md-6 " id="showUpdatevalue" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<p>{{showVideoFileName}} video file Updated Successfully!</p>
-			</div>
-			<div *ngIf="deletedVideo" style="width: 97.5%;" class="col-md-6" id="deleteMesg" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
-				<p> {{showVideoFileName}} video deleted Successfully!</p>
-			</div>
-			<div id="campaignVideo" style="width: 97.5%;" *ngIf="campaignVideo" class="col-md-6" class="col-md-9 alert alert alert-danger alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close" (click)="closeBannerPopup()">&times;</a>
-				<p>{{campaignVideoMesg}}</p>
+			<div *ngIf="showMessage || showUpdatevalue || deletedVideo || campaignVideo" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
+				<a class="close" data-dismiss="alert" aria-label="close"></a>
+				<p *ngIf="showMessage">{{showVideoFileName | slice: 0: 50}} video Saved Successfully!</p>
+				<p *ngIf="showUpdatevalue">{{showVideoFileName | slice: 0: 50}} video file Updated Successfully!</p>
+				<p *ngIf="deletedVideo">{{showVideoFileName | slice: 0: 50}} video deleted Successfully!</p>
+				<p *ngIf="campaignVideo">{{campaignVideoMesg}}</p>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12">
 				<div class="tabbable tabbable-custom tabbable-noborder" style="background: white">
@@ -106,7 +97,8 @@
 												</td>
 												<td>
 													<a (click)="showPlayVideo(videoFile)">
-														<h4 title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{titleCheckLength(videoFile.title)}}</h4>
+														<h4 *ngIf="videoFile.title?.length < 24" title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}} </h4>
+														<h4 *ngIf="videoFile.title?.length > 24" title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}}...</h4>
 														<h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
 														<h5 *ngIf="videoFileService.videoType === 'partnerVideos'">by {{videoFile.uploadedBy}}</h5>
 														<h6 class='f-w-600'>{{videoFile.views}} views</h6>
@@ -165,7 +157,8 @@
 											<div class="mix-inner" style="height: 173px;">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">
-													 <h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4> 
+													 <h4 *ngIf="videoFile.title?.length < 24" title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}} </h4>
+													 <h4 *ngIf="videoFile.title?.length > 24" title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}}...</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='myVideos'">
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
@@ -214,7 +207,7 @@
 													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
 													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
-											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{ titleCheckLength(videoFile.uploadedBy)}}</span>
+											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy | slice: 0: 21}}</span>
 												</div>
 											</div>
 											<div>
