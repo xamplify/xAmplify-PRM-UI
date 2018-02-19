@@ -428,9 +428,9 @@ tr.highlight {
 .gd-female i { margin-top: 15px}
 .visual{height: 50px}
 .shadow {
-  -webkit-box-shadow: 0 0 2px 0 #777 !important;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow:    0 0 2px 0 #777 !important;  /* Firefox 3.5 - 3.6 */
-  box-shadow:         0 0 2px 0 #777 !important;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  -webkit-box-shadow: 0 0 1px 0 #ccc !important;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    0 0 1px 0 #ccc !important;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         0 0 1px 0 #ccc !important;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
 /* 5 Equal Columns http://jsfiddle.net/sct3j/283/ */

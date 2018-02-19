@@ -22,9 +22,9 @@ export class HttpService extends Http {
   }
 
   intercept(observable: Observable<Response>): Observable<Response> {
-    console.log('In the intercept routine..');
+    // console.log('In the intercept routine..');
     this.turnOnModal();
-    console.log('slimLoadingBarService : ' + this.slimLoadingBarService.height + 'pendingRequests' + this.pendingRequests);
+    // console.log('slimLoadingBarService : ' + this.slimLoadingBarService.height + 'pendingRequests' + this.pendingRequests);
     this.pendingRequests++;
     return observable
       .do((res: Response) => {
