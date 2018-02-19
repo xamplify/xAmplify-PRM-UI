@@ -7,7 +7,7 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a (click)="backToReport()">Views report</a>
+				<a >Views report</a>
 			</li>
 		</ul>
 	</div>
@@ -17,7 +17,8 @@
 			<div class="modal-content" style="border-radius: 0">
 				<div class="modal-header">
 					<a class="close-circle" data-dismiss="modal" (click)="destroyPreview()"><i class="fa fa-times"></i></a>
-					<h4 class="modal-title" id="modal-title" title={{videotitle}}></h4>
+					<h4 *ngIf="videotitle?.length < 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}</h4>
+					<h4 *ngIf="videotitle?.length > 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}...</h4>
 				</div>
 				<div class="modal-body">
 					<div id="main_video"></div>
@@ -53,7 +54,7 @@
 				</div>
 			</div>
 			<div *ngIf="noVideos" class="col-xs-12 alert alert alert-danger alert-dismissable" style="margin-top:20px">
-				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<a class="close" data-dismiss="alert" aria-label="close"></a>
 				<strong>No Views found.. !!!</strong>
 			</div>
 		</div>

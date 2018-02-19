@@ -159,10 +159,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             console.log('360 video closed');
         }
     }
-    videoTitleLength(title: string) {
-        if (title.length > 60) { title = title.substring(0, 60) + '.....'; }
-        return title;
-    }
     videoControllColors(videoFile: SaveVideoFile) {
         this.videoUtilService.videoColorControlls(videoFile);
         const rgba = this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
@@ -181,7 +177,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         this.videotitle = videoFile.title;
-        var title = this.videoTitleLength(videoFile.title);
         var videoPath = videoFile.videoPath;
         var is360 = videoFile.is360video;
         $("#" + divId).empty();
@@ -192,7 +187,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $('.h-video').remove();
             this.videoUtilService.player360VideoJsFiles();
             var str = '<video id=videoId poster=' + fullImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#" + titleId).append(title);
             $("#" + divId).append(str);
             console.log("360 video path" + videoPath);
             videoPath = videoPath.replace(".m3u8", ".mp4");
@@ -216,7 +210,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             $('.p-video').remove();
             this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster=' + fullImagePath + ' preload="none"  class="video-js vjs-default-skin" controls></video>';
-            $("#" + titleId).append(title);
             $("#" + divId).append(str);
             console.log("Video Path:::" + videoPath);
             videoPath = videoPath.substring(0, videoPath.lastIndexOf('.'));
@@ -256,10 +249,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         $("video").bind("contextmenu", function () {
             return false;
         });
-    }
-    backToReport() {
-        this.pagination.sortcolumn = this.pagination.sortingOrder = null;
-        this.loadVideos(this.pagination);
     }
     ngOnInit() {
         try {

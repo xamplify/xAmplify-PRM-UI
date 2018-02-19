@@ -327,7 +327,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showVideosPage(true, false, false, false);
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
-        const timevalue = this;
         if(this.showMessage === true){  
             setTimeout(()=>{ this.showMessage = false; },5000); 
         } else { 
