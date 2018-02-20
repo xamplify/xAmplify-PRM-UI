@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Logger } from 'angular2-logger/core';
+import { LoggerService } from './services/logger.service';
 
 @Injectable()
 export class XtremandLogger {
 
     errorMessage='';
-	constructor(public router: Router, public logger: Logger) { }
+	constructor(public router: Router, public logger: LoggerService) { }
 
 	log(...logMessages) {
 		for (const logMessage of logMessages) {
-			this.logger.warn(logMessage);
+			this.logger.info(logMessage);
 		}
 	}
 
@@ -28,7 +28,7 @@ export class XtremandLogger {
 
 	debug(...debugMessages) {
 		for (const debugMessage of debugMessages) {
-			this.logger.debug(debugMessage);
+			this.logger.warn(debugMessage);
 		}
 	}
 

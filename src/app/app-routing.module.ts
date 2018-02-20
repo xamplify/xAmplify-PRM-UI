@@ -60,7 +60,7 @@ export const routes: Routes = [
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
-    { path: 'serviceunavailable', component: ServiceUnavailableComponent },
+    { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: '**', component: PageNotFoundComponent},
 ];

@@ -42,7 +42,14 @@
   -webkit-transition: .4s;
   transition: .4s;
 }
-
+.logo-video{
+		position: absolute;
+		top:42px;
+		right:23px;
+		width:40px;
+		border: 2px solid red;
+        z-index: 9999999999;
+}
 input:checked + .slider-new {
   background-color: #5cb85c;
 }
@@ -399,6 +406,24 @@ input:checked + .slider-new:before {
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
 														<div>   
+															<!-- video js logo add -->
+															<div class= "col-xs-12 pclass-css">
+																<h4 style="color:white;margin:3px"> Add your video Logo </h4>
+															</div>
+															
+															<div>
+																<div *ngIf="!logoImageUrlPath">
+																<input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+																*ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" #input/> 
+																</div>
+																<div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -19px;left: 296px;background: lightblue;">upload images only and size should be less than 2mb</span></div>
+																<div>
+																	<img *ngIf="logoImageUrlPath" [src]=logoImageUrlPath style="margin-top:-2px;height: 71px; width: 98px; border: 1px solid red;">
+																	<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
+																</div>
+															</div>	
+														<!-- videojs logo code end -->
+
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 														<div *ngIf="defaultPlayerSuccess" id="defaultPlayerSettings"
 															class="alert alert-success alert-dismissable" style="width:104.5%;margin-left:-17px;">
@@ -445,7 +470,10 @@ input:checked + .slider-new:before {
 																	<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
 																	</div>
 														</div>
-														
+														<div id="overLayImage"></div>
+															<div id="overlay-logo">
+																<img *ngIf="logoImageUrlPath" [src]="logoImageUrlPath" class="img-responsive" style="position: absolute; right: -11px;z-index: 9;width: 32px;" [class.logo-video]="fullScreenMode"> 
+														</div>
 														<div class ="col-xs-12 col-sm-6 col-md-4" style="position: relative;top: -4px; margin-left:-16px" >
 															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"
 															poster=""

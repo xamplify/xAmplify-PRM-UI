@@ -77,6 +77,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
         this.daySort = this.sortDates[0];
+        this.xtremandLogger.error(this.daySort);
+        this.xtremandLogger.warn('error is dashboard constructor');
+        this.xtremandLogger.log('error is dashboard constructor');
+        this.xtremandLogger.info('error is dashboard constructor');
     }
 
     genderDemographics(userId: number) {

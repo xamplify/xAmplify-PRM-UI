@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Logger } from 'angular2-logger/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
-declare var  QuickSidebar: any;
+declare var QuickSidebar: any;
 
 @Component({
     selector: 'app-root',
@@ -11,13 +10,11 @@ declare var  QuickSidebar: any;
 })
 export class AppComponent implements OnInit {
 
-    constructor(private logger: Logger, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
-        logger.level = logger.Level.LOG;
-        this.logger.log('AppComponent constructor');
+    constructor(private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
+        // logger.level = logger.Level.LOG;
     }
     ngOnInit() {
         QuickSidebar.init();
-        this.logger.log('AppComponent initialized');
         // reloading the same url with in the application
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;

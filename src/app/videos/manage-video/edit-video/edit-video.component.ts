@@ -130,8 +130,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedImagePath: string;
     saveButtonTitle = 'Save';
     isDisable = false;
-    logoImageUrlPath: any;
-    videojsLogo = false;
+    brandLogoUrl: any; 
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -147,7 +146,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
-        this.logoImageUrlPath = 'assets/images/logo.png';
         if (this.saveVideoFile.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
             this.saveVideoFile.viewBy = 'PRIVATE';
@@ -208,34 +206,36 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 10 MB
-            url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+            url: this.authenticationService.REST_URL + "videos/upload-branding-logo?userId="+this.authenticationService.user.id + "&videoDefaultSetting=false&access_token=" + this.authenticationService.access_token
         });
         this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
-            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
-            console.log(this.logoImageUrlPath);
-            this.fileLogoSelected(fileItem);
+            this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            console.log(this.brandLogoUrl);
+            this.fileLogoSelected(fileItem._file);
+            this.videoLogoUploader.queue[0].upload();
         };
         this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          //  this.saveVideoFile.imagePath = JSON.parse(response).path;
+            this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
             console.log(response);
         }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
     }
-    fileLogoSelected(event: any){
+    fileLogoSelected(event: File){
     (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
-     const fileList: FileList = event.target.files;
-        console.log(fileList[0].type);
-        if (fileList.length > 0) {
-            const file: File = fileList[0];
-            const isSupportfile: any = fileList[0].type;
+     const fileList: File = event;
+        if (fileList) {
+            const file: File = fileList;
+            console.log(file);
+            const isSupportfile: any = file.type;
             if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-                this.videoLogoUploader.queue[0].upload();
+                return true;
             }
             else {
                 this.videoLogoUploader.queue.length=0;
                 this.videoLogoUploader = undefined;
                 (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
+                return false;
             }
         } 
     }
@@ -280,7 +280,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
     clearLogo(){
-      this.logoImageUrlPath = undefined;
+      this.brandLogoUrl = undefined;
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
@@ -623,6 +623,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             if (event) {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
+                this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri;
                 this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -632,6 +633,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
+                this.brandLogoUrl = this.tempVideoFile.brandingLogoUri;
                 this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -1108,7 +1110,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'defaultSetting': [this.saveVideoFile.defaultSetting],
             'category': [this.saveVideoFile.category],
             'views': [this.saveVideoFile.views],
-            'watchedFully': [this.saveVideoFile.watchedFully]
+            'watchedFully': [this.saveVideoFile.watchedFully],
+            'brandingLogoUri': [this.saveVideoFile.brandingLogoUri]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
         this.onValueChanged();
@@ -1150,6 +1153,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.is360video = this.newValue360;
             this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
+            this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {

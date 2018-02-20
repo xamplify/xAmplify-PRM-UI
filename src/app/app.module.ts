@@ -16,11 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
 
 import { AppComponent } from './app.component';
-
-import { Logger, Options } from 'angular2-logger/core';
+// import { Logger, Options } from 'angular2-logger/core';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
-
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
 
@@ -39,9 +37,13 @@ import { EmailTemplateService } from './email-template/services/email-template.s
 import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
-import { XtremandLogger } from './error-pages/xtremand-logger.service';
 import { VideoUtilService } from './videos/services/video-util.service';
 import { ContactService } from './contacts/services/contact.service';
+// logger services
+
+import { LoggerService } from './error-pages/services/logger.service';
+import { ConsoleLoggerService } from './error-pages/services/console-logger.service';
+import { XtremandLogger } from './error-pages/xtremand-logger.service';
 
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
@@ -58,9 +60,9 @@ import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/lo
         provide: Http,
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
-    },
+    }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
-        TwitterService, FacebookService, Logger, Options, XtremandLogger, VideoUtilService,
+        TwitterService, FacebookService, XtremandLogger, VideoUtilService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 

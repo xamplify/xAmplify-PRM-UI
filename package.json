@@ -24,7 +24,6 @@
     "@angular/router": "~4.3.1",
     "angular2-bootstrap-switch": "^0.2.3",
     "angular2-highcharts": "^0.4.3",
-    "angular2-logger": "^0.6.0",
     "angular2-uuid": "^1.1.1",
     "core-js": "^2.4.1",
     "enhanced-resolve": "3.3.0",

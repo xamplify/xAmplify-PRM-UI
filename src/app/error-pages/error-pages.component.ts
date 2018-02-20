@@ -30,7 +30,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
     });
 
     if (this.errorCode === 503 || this.errorCode === 0) {
-      this.router.navigate(['/serviceunavailable']);
+      this.router.navigate(['/su']);
     }
   }
 

@@ -12,6 +12,7 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 declare var swal, $, Metronic, Layout, Demo, videojs: any;
 
 @Component({
@@ -60,12 +61,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     roles:string[]=[];
     isOrgAdmin:boolean = false;
     isOnlyPartnerRole:boolean = false;
+    logoUploader: FileUploader;
+    logoImageUrlPath: SafeUrl;
+    fullScreenMode = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch) {
+        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer,) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
+        this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasAllAccess = this.refService.hasAllAccess();
@@ -112,12 +117,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
             setTimeout(function () { $('#profile-pic-upload-div').hide(500); }, 5000);
         };
-
+        this.logoUploader = new FileUploader({
+            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
+            maxFileSize: 10 * 1024 * 1024, // 100 MB
+            url: this.authenticationService.REST_URL + "videos/upload-branding-logo?userId=" + this.loggedInUserId + "&videoDefaultSetting=true&access_token=" + this.authenticationService.access_token
+        });
+        this.logoUploader.onAfterAddingFile = (fileItem) => {
+            console.log(fileItem);
+            fileItem.withCredentials = false;
+            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            this.logoUploader.queue[0].upload();
+            $('#overLayImage').append($('#overlay-logo').show());
+        };
+        this.logoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            console.log(response); 
+            this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
+        }
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    
+    clearLogo(){
+        this.logoUploader.queue.length = 0;
+        this.logoImageUrlPath = undefined;
+    }
 
     hasOrgAdminRole(){
         this.roles = this.authenticationService.getRoles();
@@ -159,6 +182,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.readFiles(inputFile.files);
         }
     }
+    videofileChange(inputFile){
+    console.log(inputFile);
+    }
     readFile(file: any, reader: any, callback: any) {
         reader.onload = () => {
             callback(reader.result);
@@ -192,6 +218,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                  },
                 { "controls": true, "autoplay": false, "preload": "auto" },
                 function () {
+                    const document: any = window.document;
                     this.ready(function () {
                         $('.vjs-big-play-button').css('display', 'block');
                         self.isPlayed = false;
@@ -203,6 +230,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.on('pause', function () {
                         self.isPlayed = true;
                         $('.vjs-big-play-button').css('display', 'none');
+                    });
+                    this.on('fullscreenchange', function () {
+                        const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                        const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                        if (event === 'FullscreenOn') {
+                            self.fullScreenMode = true;
+                        } else if (event === 'FullscreenOff') {
+                            self.fullScreenMode  = false;
+                         }
                     });
                 });
             this.defaultVideoSettings();
@@ -760,6 +796,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'enableCasting': [this.defaultVideoPlayer.enableCasting],
             'allowEmbed': [this.defaultVideoPlayer.allowEmbed],
             'is360video': [this.defaultVideoPlayer.is360video],
+            'brandingLogoUri': [this.defaultVideoPlayer.brandingLogoUri]
         });
         this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
         this.onDefaultPlayerValueChanged();

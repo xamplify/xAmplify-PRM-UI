@@ -11,4 +11,5 @@ export class DefaultVideoPlayer {
     enableCasting: boolean;
     allowEmbed: boolean;
     is360video: boolean;
+    brandingLogoUri: string;
 }
