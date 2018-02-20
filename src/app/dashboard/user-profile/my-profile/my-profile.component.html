@@ -418,6 +418,7 @@ input:checked + .slider-new:before {
 																</div>
 																<div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -19px;left: 296px;background: lightblue;">upload images only and size should be less than 2mb</span></div>
 																<div>
+																    <span *ngIf="logoImageUrlPath" class="close" style="position: absolute;left: 123px;top: 123px;background: #127ba5;" (click)="clearLogo()"></span>
 																	<img *ngIf="logoImageUrlPath" [src]=logoImageUrlPath style="margin-top:-2px;height: 71px; width: 98px; border: 1px solid red;">
 																	<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
 																</div>

@@ -62,7 +62,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isOrgAdmin:boolean = false;
     isOnlyPartnerRole:boolean = false;
     logoUploader: FileUploader;
-    logoImageUrlPath: SafeUrl;
+    logoImageUrlPath: any;
     fullScreenMode = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -71,6 +71,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
         this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
+        alert(this.logoImageUrlPath)
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasAllAccess = this.refService.hasAllAccess();
