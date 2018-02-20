@@ -853,7 +853,10 @@
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
 								<td class="center" *ngIf="paginationType != 'open'">
-									<h5>{{emailClicked.city}},{{emailClicked.state}},{{emailClicked.country}}</h5>
+									<!-- <img *ngIf="emailClicked.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailClicked.countryCode | lowercase}}.svg"
+								 width="24px"> {{emailClicked.country}}
+									<h5>{{emailClicked.city}},{{emailClicked.state}}</h5> -->
+									<app-location  [userLocation]="emailClicked"> </app-location>
 								</td>
 								<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
 								<td class="center" *ngIf="emailClicked.os == 'windows' && paginationType != 'open'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>

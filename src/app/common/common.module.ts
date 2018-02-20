@@ -9,12 +9,13 @@ import { TrellisChartComponent } from './trellis-chart/trellis-chart.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { EmbedModalComponent } from './embed-modal/embed-modal.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { LocationComponent } from './location/location.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-     TrellisChartComponent, BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent],
+     TrellisChartComponent, BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, TrellisChartComponent,
-     BarChartComponent, EmbedModalComponent, UserInfoComponent]
+     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent]
 })
 export class CommonComponentModule { }
