@@ -48,6 +48,19 @@ export class EmailTemplateService {
         
     }
     
+    listTemplatesForVideo(pagination:Pagination,userId:number,videoId:number){
+        console.log(pagination);
+        try{
+            var url =this.URL+"admin/listEmailTemplates/"+userId+"/"+videoId+"?access_token="+this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError); 
+        }catch(error){
+           this.refService.showError(error, "Error in sdfs() in emailTemplate.service.ts","");
+        }
+        
+    }
+    
     listCampaignDefaultTemplates(){
         return this.http.get(this.URL+"admin/listCampaignDefaultTemplates?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)

@@ -151,6 +151,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedTemplateBody;string = "";
     emailTemplate:EmailTemplate = new EmailTemplate();
     emailTemplateSearchInput:string = "";
+    videoEmailTemplateSearchInput:string = "";
     filteredEmailTemplateIds: Array<number>;
     showSelectedEmailTemplate:boolean = false;
     /*****************Launch************************/
@@ -267,9 +268,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoTabClass  = this.successTabClass;
                 this.videoId = selectedVideoId;
                 this.selectedRow = selectedVideoId;
+                this.campaign.selectedVideoId = selectedVideoId;
                 this.isCampaignDraftVideo = true;
                 this.launchVideoPreview = this.campaignService.campaign.campaignVideoFile;
                 this.savedVideoFile = this.campaignService.campaign.campaignVideoFile;
+                if(this.isOnlyPartner){
+                    this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+                }else{
+                    this.loadEmailTemplates(this.emailTemplatesPagination);
+                }
             }
             
             /***********Select Contact List Tab*************************/
@@ -406,6 +413,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(this.isAdd){
             this.contactsPagination.filterValue = false;
             this.loadCampaignContacts(this.contactsPagination);
+            this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
         }else{
             this.contactsPagination.filterValue = this.campaign.channelCampaign;
             this.loadCampaignContacts(this.contactsPagination);
@@ -432,7 +440,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#videoTab').hide();
             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
         }  
-        this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
     }
     
     /******************************************Pagination Related Code******************************************/
@@ -449,7 +456,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadUsers(this.id,this.contactsUsersPagination);
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
-            this.loadEmailTemplates(this.emailTemplatesPagination);
+            if(this.isOnlyPartner){
+                this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+            }else{
+                this.loadEmailTemplates(this.emailTemplatesPagination);
+            }
+           
         }else if(module=="partner-videos"){
             this.channelVideosPagination.pageIndex  = pageIndex;
             this.loadPartnerVideos(this.channelVideosPagination);
@@ -595,8 +607,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
         }else{
             this.selectedRow = videoId;
+            this.campaign.selectedVideoId =videoFile.id;
             if(videoType=="partner-videos"){
                 this.campaign.partnerVideoSelected = true;
+                if(this.authenticationService.isOnlyPartner()){
+                    this.selectedEmailTemplateRow=0;
+                    this.isEmailTemplate = false;
+                    this.emailTemplatesPagination.pageIndex = 1;
+                    this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+                }
             }else{
                 this.campaign.partnerVideoSelected = false;
             }
@@ -611,11 +630,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
                
             }
-            this.campaign.selectedVideoId =videoFile.id;
         }
         
         
     }
+    
     
     setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
         reply.selectedEmailTemplateId = emailTemplateId;
@@ -1169,6 +1188,30 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
     
+    loadEmailTemplatesForVideo(pagination:Pagination){
+        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+        pagination.campaignDefaultTemplate = false;
+        pagination.isEmailTemplateSearchedFromCampaign = true;
+        pagination.maxResults = 12;
+        this.emailTemplateService.listTemplatesForVideo(pagination,this.loggedInUserId,this.campaign.selectedVideoId)
+        .subscribe(
+            (data:any) => {
+                this.campaignEmailTemplates = data.emailTemplates;
+                pagination.totalRecords = data.totalRecords;
+                this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+                if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
+                    this.isEmailTemplate = false;
+                }
+                this.filterEmailTemplateForEditCampaign();
+                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+            },
+            (error:string) => {
+               this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+            )
+    }
+    
      /**********************Email Templates For Add Reply**************************************************/
     loadEmailTemplatesForAddReply(reply:Reply){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
@@ -1382,13 +1425,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     searchEmailTemplate(){
         this.emailTemplatesPagination.pageIndex = 1;
         this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
-        this.loadEmailTemplates(this.emailTemplatesPagination);
+        if(this.isOnlyPartner){
+            this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+        }else{
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        }
+        
     }
     searchReplyEmailTemplate(reply:Reply){
         reply.emailTemplatesPagination.pageIndex = 1;
         reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
         this.loadEmailTemplatesForAddReply(reply);
     }
+    
+  
     
     searchClickEmailTemplate(url:Url){
         url.emailTemplatesPagination.pageIndex = 1;
