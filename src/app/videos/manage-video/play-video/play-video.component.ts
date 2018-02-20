@@ -316,6 +316,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             if (event === 'FullscreenOn') {
                                 $('.vjs-tech').css('width', '100%');
                                 $('.vjs-tech').css('height', '100%');
+                                self.fullScreenMode = true;
                             } else if (event === 'FullscreenOff') {
                                 $('#videoId').css('width', 'auto');
                                 $('#videoId').css('height', '318px');
@@ -458,6 +459,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         //     });
     }
     ngOnInit() {
+        $('#overLayImage').append($('#overlay-logo').show());
         Metronic.init();
         Layout.init();
         Demo.init();
@@ -726,9 +728,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 player.on('fullscreenchange', function () {
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                    console.log(self.fullScreenMode);
                     if (event === 'FullscreenOn') {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
+                        self.fullScreenMode = true;
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
                         $('#videoId').css('height', '318px');

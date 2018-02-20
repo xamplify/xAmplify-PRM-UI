@@ -70,8 +70,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
-        this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
-        alert(this.logoImageUrlPath)
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasAllAccess = this.refService.hasAllAccess();
@@ -82,6 +80,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
+            this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
             console.log(this.userData);
             if (this.userData.firstName !== null) {
                 this.parentModel.displayName = this.userData.firstName;

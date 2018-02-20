@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
 				if (body != "") {
 					var response = JSON.parse(body);
 					console.log(response);
+					this.referenceService.videoBrandLogo = response.brandingLogoUri;
 					this.referenceService.defaultPlayerSettings = response;
 				}
 			});

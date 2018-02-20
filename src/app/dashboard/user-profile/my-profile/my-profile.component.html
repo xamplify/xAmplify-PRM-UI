@@ -419,7 +419,7 @@ input:checked + .slider-new:before {
 																<div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -19px;left: 296px;background: lightblue;">upload images only and size should be less than 2mb</span></div>
 																<div>
 																    <span *ngIf="logoImageUrlPath" class="close" style="position: absolute;left: 123px;top: 123px;background: #127ba5;" (click)="clearLogo()"></span>
-																	<img *ngIf="logoImageUrlPath" [src]=logoImageUrlPath style="margin-top:-2px;height: 71px; width: 98px; border: 1px solid red;">
+																	<img *ngIf="logoImageUrlPath" [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style="margin-top:-2px;height: 71px; width: 98px; border: 1px solid red;">
 																	<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
 																</div>
 															</div>	
@@ -473,7 +473,7 @@ input:checked + .slider-new:before {
 														</div>
 														<div id="overLayImage"></div>
 															<div id="overlay-logo">
-																<img *ngIf="logoImageUrlPath" [src]="logoImageUrlPath" class="img-responsive" style="position: absolute; right: -11px;z-index: 9;width: 32px;" [class.logo-video]="fullScreenMode"> 
+																<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" style="position: absolute; right: -11px;z-index: 9;width: 32px;" [class.logo-video]="fullScreenMode"> 
 														</div>
 														<div class ="col-xs-12 col-sm-6 col-md-4" style="position: relative;top: -4px; margin-left:-16px" >
 															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"

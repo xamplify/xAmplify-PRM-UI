@@ -81,8 +81,8 @@
 		position: absolute;
 		top:42px;
 		right:23px;
-		width:40px;
-		border: 2px solid red;
+		width:62px;
+		border: 1px solid red;
         z-index: 9999999999;
 	}
 	textarea {
@@ -111,7 +111,7 @@
 				<div id="overLayImage"></div>
 
 				<div id="overlay-logo">
-					<img src="assets/images/ubuntu.png" class="img-responsive videojs-logo" [class.logo-video]="fullScreenMode"> 
+					<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive videojs-logo" [class.logo-video]="fullScreenMode"> 
 				</div>
 				<!-- video overlay modal popup -->
  
@@ -401,7 +401,7 @@
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
 													<div>
 														<span *ngIf="brandLogoUrl" class="close" style="position: absolute;left: 87px;top: 27px;background: #00a6e8;" (click)="clearLogo()"></span>
-														<img *ngIf="brandLogoUrl" [src]=brandLogoUrl style="height: 71px; width: 98px; border: 1px solid red;">
+														<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: 98px; border: 1px solid red;">
 													</div>
 													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 38px;">
 														<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>

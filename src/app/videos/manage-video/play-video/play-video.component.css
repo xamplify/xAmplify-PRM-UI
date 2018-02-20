@@ -62,6 +62,12 @@
 .bottomCss {
     bottom: -183px;
 }
+.videojs-logo-play{
+    position: absolute;
+    top: 15px;
+    right: 34px;
+    width: 75px;
+}
 
 .imagePath {
     height: 111px;
