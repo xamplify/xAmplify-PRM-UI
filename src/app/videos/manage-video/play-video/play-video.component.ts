@@ -702,6 +702,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             $('#overlay-modal').css('height', '100%');
                             $('#videoId').append($('#overlay-modal').show());
                         } else {
+                            self.fullScreenMode = false;
                             self.overLaySet = false;
                             self.showOverlayModal();
                         }
@@ -733,12 +734,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
                         self.fullScreenMode = true;
+                        console.log(self.fullScreenMode);
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
                         $('#videoId').css('height', '318px');
+                        self.fullScreenMode = false;
                         if (isCallActionthere === true) {
                             self.overLaySet = false;
-                            self.fullScreenMode = false;
                             $('#overlay-modal').css('width', 'auto');
                             $('#overlay-modal').css('height', '318px');
                             $('#videoId').append($('#overlay-modal').hide());
@@ -875,6 +877,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('#overlay-modal').css('height', '100%');
                         $('#videoId').append($('#overlay-modal').show());
                     } else {
+                        self.fullScreenMode = false;
                         self.overLaySet = false;
                         self.showOverlayModal();
                     }
@@ -906,6 +909,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (event === 'FullscreenOn') {
                     $('.vjs-tech').css('width', '100%');
                     $('.vjs-tech').css('height', '100%');
+                    self.fullScreenMode = true;
                 } else if (event === 'FullscreenOff') {
                     $('#videoId').css('width', 'auto');
                     $('#videoId').css('height', '318px');

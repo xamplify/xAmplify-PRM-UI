@@ -58,7 +58,8 @@ export class ReferenceService {
     accountDisabled:string = "";
     isDisabling:boolean = false;
     forgotMessage = '';
-    
+    videoBrandLogo: string;
+
     countries = ["---Please Select Country---", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
 
         "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegowina", "Botswana", "Bouvet Island", "Brazil",

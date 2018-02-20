@@ -535,6 +535,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             $('#overlay-modal').css('height', '100%');
                             $('#videoId').append($('#overlay-modal').show());
                         } else {
+                            newThis.fullScreenMode = false;
                             newThis.overLaySet = false;
                             newThis.showEditModalDialog();
                         }
@@ -965,6 +966,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                                 $('#overlay-modal').css('height', '100%');
                                 $('#edit_video_player').append($('#overlay-modal').show());
                             } else {
+                                callactionValue.fullScreenMode = false;
                                 callactionValue.overLaySet = false;
                                 callactionValue.showEditModalDialog();
                             }

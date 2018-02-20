@@ -56,7 +56,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
         public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService) {
-        console.log('MangeVideosComponent : constructor ');
+        this.xtremandLogger.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
         this.isPartner = this.authenticationService.isOnlyPartner();
@@ -141,21 +141,21 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);
                     this.xtremandLogger.errorPage(error);
                 },
-                () => console.log('load videos completed:')
+                () => this.xtremandLogger.log('load videos completed:')
                 );
         } catch (error) {
             this.xtremandLogger.error('erro in load videos :' + error);
         }
     };
     setPage(event: any) {
-        console.log(event.page, event.type);
+        this.xtremandLogger.log(event.page, event.type);
         this.pagination.pageIndex = event.page;
         this.loadVideos(this.pagination);
         this.defaultBannerMessageValues();
     }
     getCategoryNumber() {
         this.defaultBannerMessageValues();
-        console.log(this.categoryNum);
+        this.xtremandLogger.log(this.categoryNum);
         this.videoFileService.categoryNumber = this.categoryNum;
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
@@ -174,19 +174,19 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     showEditVideo(video: SaveVideoFile) {
         this.referenceService.loading(this.httpRequestLoader, true);
-        console.log('show edit video method in mange videos ' + JSON.stringify(video));
+        this.xtremandLogger.log('show edit video method in mange videos ' + JSON.stringify(video));
         this.closeBannerPopup();
         this.videoFileService.videoViewBy = video.viewBy;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((editVideoFile: SaveVideoFile) => {
-                console.log('enter the show edit vidoe method');
+                this.xtremandLogger.log('enter the show edit vidoe method');
                 this.referenceService.loading(this.httpRequestLoader, false);
                 if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
                     editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
                 }
                 this.videoFileService.saveVideoFile = editVideoFile;
-                console.log('show edit vidoe object :');
-                console.log(this.videoFileService.saveVideoFile);
+                this.xtremandLogger.log('show edit vidoe object :');
+                this.xtremandLogger.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
                 this.showVideosPage(false, true, false, false);
             },
@@ -200,10 +200,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.videoFileService.videoViewBy = video.viewBy;
-        console.log('MangeVideoComponent playVideo:');
+        this.xtremandLogger.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
-                console.log(playVideoFile);
+                this.xtremandLogger.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
                 this.selectedVideo.uploadedUserId = video.uploadedUserId;
                 this.referenceService.loading(this.httpRequestLoader, false);
@@ -218,10 +218,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     showCampaignVideoReport(video: SaveVideoFile) {
         this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
-        console.log('ManageVideoComponent campaign report:');
+        this.xtremandLogger.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((campaignVideoFile: SaveVideoFile) => {
-                console.log(video);
+                this.xtremandLogger.log(video);
                 this.selectedVideo = campaignVideoFile;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.showVideosPage(false, false, false, true);
@@ -248,12 +248,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             });
     }
     deleteVideoFile(alias: string, position: number, videoName: string) {
-        console.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
+        this.xtremandLogger.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
         this.videoFileService.deleteVideoFile(alias)
             .subscribe(
             data => {
-                console.log(data);
-                console.log('MangeVideoComponent deleteVideoFile success : ' + data);
+                this.xtremandLogger.log(data);
+                this.xtremandLogger.log('MangeVideoComponent deleteVideoFile success : ' + data);
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.deletedVideo = true;
@@ -281,14 +281,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
                 }
-                console.log(error);
+                this.xtremandLogger.log(error);
             },
-            () => console.log('deleted functionality done')
+            () => this.xtremandLogger.log('deleted functionality done')
             );
         this.closeBannerPopup();
     }
     deleteVideoAlert(alias: string, position: number, videoName: string) {
-        console.log('videoId in sweetAlert()');
+        this.xtremandLogger.log('videoId in sweetAlert()');
         const self = this;
         swal({
             title: 'Are you sure?',
@@ -345,7 +345,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     backToManageVideos() {
         this.videoType = this.videoFileService.videoType;
         this.getVideoType();
-        console.log('come to goto manage videos :');
+        this.xtremandLogger.log('come to goto manage videos :');
         this.videoUtilService.selectedVideo = null;
         if (!this.manageVideos) { this.loadVideos(this.pagination); }
         this.showVideosPage(true, false, false, false);
