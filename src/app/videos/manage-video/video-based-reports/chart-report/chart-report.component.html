@@ -88,7 +88,9 @@
 							<td class="center" *ngIf="videoViews.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
 							<td class="center" *ngIf="videoViews.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
 							<td class="center" *ngIf="videoViews.device == null">-</td>
-							<td class="center">{{videoViews.location}}</td>
+							<td class="center">
+							<app-location  [userLocation]="videoViews"> </app-location>
+							</td>
 						</tr>
 					</ng-container>
 				</tbody>

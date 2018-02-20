@@ -221,7 +221,9 @@
 									<td class="center" *ngIf="item.device == 'mac' || item.device =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td>{{item.location}}</td>
+									<td>
+									<app-location  [userLocation]="item"> </app-location>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -286,7 +288,9 @@
 									<td class="center" *ngIf="item.deviceType == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.deviceType == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
 									<td class="center" *ngIf="item.deviceType == null">-</td>
-									<td class="center">{{item.location }}</td>
+									<td class="center">
+									<app-location  [userLocation]="item"> </app-location>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -348,7 +352,9 @@
 								<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
 								<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
 								<td class="center" *ngIf="item.device == null">-</td>
-								<td class="center">{{item.location }}</td>
+								<td class="center">
+								<app-location  [userLocation]="item"> </app-location>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -486,8 +492,7 @@
 								<th class="headerCss">CAMPAIGN NAME</th>
 								<th class="headerCss">DATE & TIME</th>
 								<th class="headerCss">DEVICE</th>
-								<th class="headerCss">CITY</th>
-								<th class="headerCss">COUNTRY</th>
+								<th class="headerCss">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -509,10 +514,7 @@
 								<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
 								<td class="center" *ngIf="item.os == null">-</td>
 								<td class="center">
-									<h5>{{item.city}}</h5>
-								</td>
-								<td class="center">
-									<h5>{{item.country}}</h5>
+									<app-location  [userLocation]="item"> </app-location>
 								</td>
 							</tr>
 						</tbody>

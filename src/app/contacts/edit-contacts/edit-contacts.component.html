@@ -689,17 +689,7 @@
 													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
 												</td>
 												<td>
-													<div class="flex">
-														<span class='profile' style="background-color: #3598dc;">
-															<span class='uppercase'>{{allcontacts.firstName |
-																slice:0:1}}{{allcontacts.lastName | slice:0:1}}</span>
-														</span> <span style="margin-left: 20px;">
-															<h5 class='bold' style="margin: 7px 0 2px 0;">{{allcontacts.firstName}}&nbsp;{{allcontacts.lastName}}</h5>
-															<h6 class='m0'>
-																<a href="{{allcontacts.emailId}}" class='bold'>{{allcontacts.emailId}}</a>
-															</h6>
-														</span>
-													</div>
+													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
 												</td>
 												<td>
 													<h5>
