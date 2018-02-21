@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
     providers: [TopnavbarComponent]
 })
 export class NotificationsComponent implements OnInit {
+    @Input('isTopNavBar') isTopNavBar = false;
     notifications: any;
     totalNotificationsCount: number;
     notificationsCount = 0;

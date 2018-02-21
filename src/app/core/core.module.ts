@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 
 import { TopnavbarComponent } from './topnavbar/topnavbar.component';
 import { BottomnavbarComponent } from './bottomnavbar/bottomnavbar.component';
@@ -11,7 +12,7 @@ import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-ba
 import { CopyrightComponent } from './copyright/copyright.component';
 
 @NgModule({
-    imports: [CommonModule, RouterModule, SlimLoadingBarModule.forRoot()],
+    imports: [CommonModule, RouterModule, SharedModule, SlimLoadingBarModule.forRoot()],
     declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent],
     exports: [
         TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent],

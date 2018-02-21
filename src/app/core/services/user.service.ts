@@ -142,7 +142,7 @@ export class UserService {
     }
 
     markAllAsRead(userId:number) {
-        return this.http.get(this.URL + 'mark-all-as-read/'+userId+'?access_token=' + this.authenticationService.access_token)
+        return this.http.get(this.URL + 'notifications/mark-all-as-read/'+userId+'?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
