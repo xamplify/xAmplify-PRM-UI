@@ -1,0 +1,29 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
+				<i class="fa fa-angle-right"></i></li>
+			<li><a>Notifications</a></li>
+		</ul>
+	</div>
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption">
+				<span class="caption-subject font-red-sunglo uppercase">All Notifications</span>
+			</div>
+		</div>
+		<div class="portlet-body clearfix">
+			<ul class="alt-row-style1" data-handle-color="#637283">
+				<li *ngFor="let item of notifications">
+					<a [routerLink]="['../../'+item.targetUrl]">
+						<span class="social-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
+						<span class="time">{{item.createdTime | date: 'shortTime'}}</span> 
+						<span class="details"> 
+							{{item.message}}
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

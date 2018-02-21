@@ -455,7 +455,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.userService.getUserDefaultPage(userId)
             .subscribe(
             data => {
-                if (data['_body'].includes('dashboard')) {
+                if (data.includes('dashboard')) {
                     this.userDefaultPage.isCurrentPageDefaultPage = true;
                     this.referenceService.userDefaultPage = 'DASHBOARD';
                 }

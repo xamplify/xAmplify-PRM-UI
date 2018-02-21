@@ -18,7 +18,7 @@ export class DefaultPageComponent implements OnInit {
     getDefaultPage(userId: number) {
         this.userService.getUserDefaultPage(userId)
             .subscribe(
-            data => this.defaultPage = data['_body'].replace(/['"]+/g, ''),
+            data => this.defaultPage = data.replace(/['"]+/g, ''),
             error => console.log(error),
             () => {
                 console.log(this.defaultPage);
@@ -34,7 +34,7 @@ export class DefaultPageComponent implements OnInit {
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(
-            data => {this.referenceService.isListView = (data['_body'] == 'true');},
+            data => {this.referenceService.isListView = (data === 'true');},
             error => console.log(error),
             () => { }
             );

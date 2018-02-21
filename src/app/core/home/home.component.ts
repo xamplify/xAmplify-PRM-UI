@@ -45,9 +45,8 @@ export class HomeComponent implements OnInit {
 	getVideoDefaultSettings() {
 		this.userService.getVideoDefaultSettings().subscribe(
 			(result: any) => {
-				var body = result['_body'];
-				if (body != "") {
-					var response = JSON.parse(body);
+				if (result !== "") {
+					const response = result;
 					console.log(response);
 					this.referenceService.videoBrandLogo = response.brandingLogoUri;
 					this.referenceService.defaultPlayerSettings = response;

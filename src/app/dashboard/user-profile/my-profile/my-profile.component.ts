@@ -338,9 +338,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.updatePasswordBusy = this.userService.updatePassword(userPassword)
                 .subscribe(
                 data => {
-                    var body = data['_body'];
-                    if (body != "") {
-                        var response = JSON.parse(body);
+                    const body = data;
+                    if (body !== "") {
+                        var response = body;
                         var message = response.message;
                         if (message == "Wrong Password") {
                             this.formErrors['oldPassword'] = message;
@@ -381,10 +381,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService.comparePassword(user)
                 .subscribe(
                 data => {
-                    var body = data['_body'];
-                    if (body != "") {
-                        var response = JSON.parse(body);
-                        var message = response.message;
+                    if (data != "") {
+                        const response = data;
+                        const message = response.message;
                         this.formErrors['oldPassword'] = message;
                     } else {
                         this.logger.error(this.refService.errorPrepender + " checkPassword():" + data);
@@ -572,9 +571,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
             data => {
-                var body = data['_body'];
-                if (body != "") {
-                    var response = JSON.parse(body);
+                if (data != "") {
+                    var response = data;
                     var message = response.message;
                     if (message === "User Updated") {
                         setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
@@ -628,10 +626,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     getVideoDefaultSettings() {
         this.userService.getVideoDefaultSettings().subscribe(
             (result: any) => {
-                const body = result['_body'];
-                if (body !== '') {
                     this.active = true;
-                    const response = JSON.parse(body);
+                    const response = result;
                     console.log(response);
                     //  this.defaultPlayerSuccess = true;
                     this.refService.defaultPlayerSettings = response;
@@ -645,7 +641,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.defaultPlayerbuildForm();
                     if (this.isPlayerSettingUpdated === true) {
                     this.videoUtilService.videoTempDefaultSettings = response; }
-                }
             }
         );
     }
@@ -820,7 +815,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(
-            data => {this.callActionSwitch.isListView = (data['_body'] == 'true');},
+            data => {this.callActionSwitch.isListView = (data === 'true');},
             error => console.log(error),
             () => { }
             );
@@ -893,8 +888,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.getOrgAdminsCount(userId)
         .subscribe(
             data => {
-                var body = data['_body'];
-                this.orgAdminCount = body;
+                this.orgAdminCount = data;
             },
             error => {
                 this.logger.errorPage(error);
@@ -908,8 +902,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.disableOrgAdmin(this.loggedInUserId)
         .subscribe(
             data => {
-                var body = data['_body'];
-                var response = JSON.parse(body);
+                const response = data;
                 if(response.statusCode==1048){
                     $('a').removeClass('disabled');
                     this.refService.isDisabling  = false;

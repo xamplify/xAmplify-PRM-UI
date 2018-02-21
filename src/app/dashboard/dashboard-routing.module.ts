@@ -13,7 +13,7 @@ import { FollowersComponent } from './followers/followers.component';
 import { SharedComponent } from './shared/shared.component';
 import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
 import { ReportsComponent } from './dashboard/reports/reports.component';
-import { NotificationsComponent } from './user-profile/notifications/notifications.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 const routes: Routes = [
                         { path: '', component: DashboardComponent},

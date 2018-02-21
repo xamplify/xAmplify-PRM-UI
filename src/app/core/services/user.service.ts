@@ -135,16 +135,27 @@ export class UserService {
             .map( this.extractData )
             .catch( this.handleError );
     }
- 
+
+    listNotifications(userId:number) {
+        return this.http.get(this.URL + 'notifications/'+userId+'?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    markAllAsRead(userId:number) {
+        return this.http.get(this.URL + 'mark-all-as-read/'+userId+'?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData( res: Response ) {
-        console.log( res );
-        let body = res;
-        console.log( "response.json(): " + body );
+        const body = res.json();
+        console.log(body);
         return body || {};
     }
 
     private handleError( error: any ) {
-        var body = error['_body'];
+        const body = error['_body'];
         console.log( body );
         if ( body != "" ) {
             var response = JSON.parse( body );

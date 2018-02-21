@@ -22,7 +22,7 @@ import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 import { EditCompanyProfileComponent } from './company-profile/edit-company-profile/edit-company-profile.component';
 import { CompanyProfileService } from './company-profile/services/company-profile.service';
 import { ReportsComponent } from './dashboard/reports/reports.component';
-import { NotificationsComponent } from './user-profile/notifications/notifications.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule],

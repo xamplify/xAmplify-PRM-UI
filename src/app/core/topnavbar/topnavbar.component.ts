@@ -1,7 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {TwitterService} from '../../social/services/twitter.service';
 import {SocialService} from '../../social/services/social.service';
 import {User} from '../models/user';
 import {AuthenticationService} from '../../core/services/authentication.service';
@@ -28,8 +27,7 @@ export class TopnavbarComponent implements OnInit {
   roleName: Roles = new Roles();
   isUser = false;
   @Input() model = {'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png'};
-  constructor(public router: Router, public userService: UserService,
-              public twitterService: TwitterService, public utilService: UtilService,
+  constructor(public router: Router, public userService: UserService, public utilService: UtilService,
               public socialService: SocialService, public authenticationService: AuthenticationService,
               public refService: ReferenceService, public logger: XtremandLogger) {
     const userName = this.authenticationService.user.emailId;
@@ -80,87 +78,6 @@ export class TopnavbarComponent implements OnInit {
     
   }
 
-  listNotifications(){
-      this.twitterService.listNotifications(this.authenticationService.getUserId())
-      .subscribe(
-      data => {
-          this.notifications = data;
-          let count = 0;
-          for (const i in this.notifications) {
-            if (this.notifications[i].read === false) {
-              count = count + 1;
-            }
-          }
-          this.notificationsCount = count;
-      },
-      error => console.log(error),
-      () => console.log('Finished')
-      );
-  }
-
-  listTwitterNotifications() {
-    setInterval(() => {
-      this.twitterService.listNotifications(null)
-        .subscribe(
-        data => {
-          this.notifications = data;
-          let count = 0;
-          for (const i in this.notifications) {
-            if (this.notifications[i].read === false) {
-              count = count + 1;
-            }
-          }
-          this.notificationsCount = count;
-        },
-        error => console.log(error),
-        () => console.log('Finished')
-        );
-
-
-      console.log('getting notifications: ' + new Date());
-    }, 3600000);
-  }
-
-  markAllAsRead() {
-    this.twitterService.markAllAsRead(this.authenticationService.getUserId())
-      .subscribe(
-      data => {
-        this.notificationsCount = 0;
-      },
-      error => console.log(error),
-      () => console.log('Finished')
-      );
-  }
-
-
-  listCampaignEmailNotifications() {
-    this.refService.listCampaignEmailNotifications(this.authenticationService.user.id)
-      .subscribe(
-      data => {
-        console.log(data);
-        this.campaignEmailNotifications = data;
-        this.campaignEmailNotificationCount = this.getUnReadNotificationCount(
-          this.campaignEmailNotifications.map(function(a) {return a.openCount; }));
-      },
-      error => console.log(error),
-      () => console.log('Finished')
-      );
-  }
-
-  listCampaignVideoNotifications() {
-    this.refService.listCampaignVideoNotifications(this.authenticationService.user.id)
-      .subscribe(
-      data => {
-        console.log(data);
-        this.campaignVideoWatchedNotifications = data;
-        this.campaignVideoWatchedNotificationCount = this.getUnReadNotificationCount(
-              this.campaignVideoWatchedNotifications.map(function(a) {return a.openCount; }));
-      },
-      error => console.log(error),
-      () => console.log('Finished')
-      );
-  }
-
   markAsRead(id: number, type: string) {
     this.refService.markNotificationsAsRead(id, type)
       .subscribe(
@@ -200,11 +117,7 @@ export class TopnavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.listTwitterNotifications();
-    this.listNotifications();
-    this.listCampaignEmailNotifications();
-    this.listCampaignVideoNotifications();
-    
+    // this.listNotifications();
     this.totalNotificationsCount = this.notificationsCount + this.campaignEmailNotificationCount + this.campaignVideoWatchedNotificationCount;
   }
   
@@ -212,5 +125,4 @@ export class TopnavbarComponent implements OnInit {
       this.authenticationService.logout();
       this.router.navigate(['/login']);
   }
-
 }

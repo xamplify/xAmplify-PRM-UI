@@ -167,7 +167,7 @@ export class TwitterService {
     }
 
     listNotifications(userId:number) {
-        return this.http.get(this.URL + 'list-notifications?access_token=' + this.authService.access_token+'&userId='+userId)
+        return this.http.get(this.authService.REST_URL + 'notifications/'+userId+'?access_token=' + this.authService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
