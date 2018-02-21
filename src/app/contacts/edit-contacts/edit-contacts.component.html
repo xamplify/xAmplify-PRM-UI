@@ -105,8 +105,8 @@
 							<!-- END DASHBOARD STATS -->
 							<div class="clearfix"></div>
 
-							<div class="row">
-								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+							<div class="row mt5 mb5">
+								<div class="col-sm-5ths">
 									<button class="btn-block dashboard-stat blue-soft"
 										(click)="backToEditContacts()">
 										<div class="visual">
@@ -118,7 +118,7 @@
 										</div>
 									</button>
 								</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<div class="col-sm-5ths">
 									<button class="btn-block dashboard-stat red-soft"
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
@@ -131,7 +131,7 @@
 										</div>
 									</button>
 								</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<div class="col-sm-5ths">
 									<button class="btn-block dashboard-stat blue-sharp"
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -144,7 +144,7 @@
 										</div>
 									</button>
 								</div>
-								<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+								<div class="col-sm-5ths">
 									<button class="btn-block dashboard-stat yellow-gold"
 										(click)="showingContactDetails('invalid')"
 										[disabled]="contactsByType.invalidContactsCount == 0">
@@ -157,7 +157,7 @@
 										</div>
 									</button>
 								</div>
-								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-6">
+								<div class="col-sm-5ths">
 									<button class="btn-block dashboard-stat green-soft"
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
