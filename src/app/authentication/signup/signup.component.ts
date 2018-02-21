@@ -23,7 +23,7 @@ export class SignupComponent implements OnInit {
     emailRegEx: any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     userActive = false;
     loading = false;
-    isError = true;
+    isError = false;
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
         private userService: UserService, public refService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {

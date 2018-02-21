@@ -42,7 +42,6 @@ export class UserService {
         }
     }
     updatePlayerSettings( defaultVideoSettings: DefaultVideoPlayer ) {
-        alert(this.currentUser.roles.length);
         if(this.currentUser.roles.length>1){
         return this.http.post( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
             , defaultVideoSettings )
