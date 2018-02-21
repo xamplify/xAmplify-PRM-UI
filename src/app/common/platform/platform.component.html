@@ -1,0 +1,39 @@
+<ng-container *ngIf="deviceTypeOs">
+		<span *ngIf="userPlatform.os == 'windows'"><i
+			class="fa fa-windows" aria-hidden="true"
+			style="color: #0085d5; font-size: 18px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == 'mac'"><i class="fa fa fa-apple"
+			aria-hidden="true" style="color: green; font-size: 22px !important"></i>
+		</span>
+		
+		<span *ngIf="userPlatform.os == 'linux'"><i
+			class="fa fa fa-linux" aria-hidden="true"
+			style="color: #2b247d; font-size: 22px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == 'android'"><i
+			class="fa fa-android" aria-hidden="true"
+			style="color: #a4ca39; font-size: 22px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == null">- </span>
+</ng-container>
+
+<ng-container *ngIf="!deviceTypeOs">
+		<span *ngIf="userPlatform.os == 'windows'"><i
+			class="fa fa-windows" aria-hidden="true"
+			style="color: #0085d5; font-size: 18px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == 'mac'"><i class="fa fa fa-apple"
+			aria-hidden="true" style="color: green; font-size: 22px !important"></i>
+		</span>
+		
+		<span *ngIf="userPlatform.os == 'linux'"><i
+			class="fa fa fa-linux" aria-hidden="true"
+			style="color: #2b247d; font-size: 22px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == 'android'"><i
+			class="fa fa-android" aria-hidden="true"
+			style="color: #a4ca39; font-size: 22px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.os == null">- </span>
+</ng-container>

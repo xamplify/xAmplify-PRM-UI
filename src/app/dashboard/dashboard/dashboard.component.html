@@ -855,13 +855,9 @@
 								<td class="center" *ngIf="paginationType != 'open'">
 									<app-location  [userLocation]="emailClicked"> </app-location>
 								</td>
-								<!-- <td><h5>{{emailClicked.os}}</h5></td> -->
-								<td class="center" *ngIf="emailClicked.os == 'windows' && paginationType != 'open'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="emailClicked.os == 'mac' && paginationType != 'open'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="emailClicked.os == 'linux' && paginationType != 'open'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="emailClicked.os == 'android' && paginationType != 'open'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="emailClicked.os == null && paginationType != 'open'">
-									-</td>
+								<td class="center" *ngIf="paginationType != 'open'"> 
+								<app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
+								</td>
 							</tr>
 						</tbody>
 					</table>

@@ -10,12 +10,13 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { EmbedModalComponent } from './embed-modal/embed-modal.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { LocationComponent } from './location/location.component';
+import { PlatformComponent } from './platform/platform.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-     TrellisChartComponent, BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent],
+     TrellisChartComponent, BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, TrellisChartComponent,
-     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent]
+     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent]
 })
 export class CommonComponentModule { }
