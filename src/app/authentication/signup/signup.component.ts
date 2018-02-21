@@ -22,7 +22,8 @@ export class SignupComponent implements OnInit {
     signUpForm: FormGroup;
     emailRegEx: any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     userActive = false;
-
+    loading = false;
+    isError = true;
     constructor( private router: Router,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
         private userService: UserService, public refService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
@@ -88,6 +89,7 @@ export class SignupComponent implements OnInit {
         //this.isLoading = true;
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
+        this.loading = true;
         this.userService.signUp( this.signUpUser )
             .subscribe(
             data => {
@@ -96,10 +98,13 @@ export class SignupComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "USER CREATED SUCCESSFULLY" ) {
+                        this.loading = false;
                         this.refService.signUpSuccess = 'Thank you for signing up with the platform! A verification link has been sent to your email account';
                         this.router.navigate(['/login']);
                     }
                 } else {
+                    this.loading = false;
+                    this.isError = true;
                     this.logger.error( this.refService.errorPrepender + " signUp():" + data );
                 }
             },
@@ -160,7 +165,9 @@ export class SignupComponent implements OnInit {
             }
         }
     }
-
+    toggleChild(){
+        this.isError = !this.isError;
+    }
     ngOnInit() {
     }
 

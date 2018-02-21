@@ -14,6 +14,7 @@ import { BusyModule } from 'tixif-ngx-busy';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
+import { LoadingModule } from 'ngx-loading';
 
 import { LoaderComponent } from '../loader/loader.component';
 import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
@@ -22,12 +23,12 @@ import { ConnectAccountsComponent } from '../social/common/connect-accounts/conn
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                 TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, BusyModule, TimepickerModule.forRoot()
-                , BootstrapSwitchModule.forRoot(), TimezonePickerModule],
+                , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule],
         declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                 HttpModule, Ng2FilterPipeModule, LoaderComponent, BusyModule, TimepickerModule,
-                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent],
+                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule],
         providers: [],
 })
 

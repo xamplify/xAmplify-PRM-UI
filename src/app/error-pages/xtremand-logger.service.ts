@@ -10,7 +10,7 @@ export class XtremandLogger {
 
 	log(...logMessages) {
 		for (const logMessage of logMessages) {
-			this.logger.info(logMessage);
+			this.logger.log(logMessage);
 		}
 	}
 
@@ -28,7 +28,7 @@ export class XtremandLogger {
 
 	debug(...debugMessages) {
 		for (const debugMessage of debugMessages) {
-			this.logger.warn(debugMessage);
+			this.logger.log(debugMessage);
 		}
 	}
 

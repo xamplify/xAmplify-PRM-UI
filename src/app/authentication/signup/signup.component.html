@@ -1,8 +1,14 @@
 <app-video></app-video>
 <div class="content">
+	<div class="my-container">
+			<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		</div>
 	<div>
 		<form class="register" [formGroup]="signUpForm" (ngSubmit)="signUp()">
 			<h3>Sign Up</h3>
+			<div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
+				<span >something went wrong..!</span>
+			</div>
 			<label class="custom-label">Enter your account details below:</label>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Email</label> <input

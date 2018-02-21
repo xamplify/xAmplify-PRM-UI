@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module'; 
 
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -10,11 +11,11 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { VideoComponent } from './video/video.component';
 
-
 @NgModule({
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule
+    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule
   ],
-  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent]
+  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent],
+  exports: []
 })
 export class AuthenticationModule { }

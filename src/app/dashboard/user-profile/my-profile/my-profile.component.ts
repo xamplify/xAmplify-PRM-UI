@@ -62,8 +62,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isOrgAdmin:boolean = false;
     isOnlyPartnerRole:boolean = false;
     logoUploader: FileUploader;
-    logoImageUrlPath: any;
+    logoImageUrlPath: string;
     fullScreenMode = false;
+    logoUpdated = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer,) {
@@ -125,12 +126,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoUploader.onAfterAddingFile = (fileItem) => {
             console.log(fileItem);
             fileItem.withCredentials = false;
-            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+          //  this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             this.logoUploader.queue[0].upload();
             $('#overLayImage').append($('#overlay-logo').show());
         };
         this.logoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             console.log(response); 
+            this.logoUpdated = true;
             this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
         }
     }
@@ -646,6 +648,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     closeSuccessPopup() {
         this.defaultPlayerSuccess = false;
+        this.logoUpdated = false;
     }
     enableVideoController(event: any) {
         if (this.isPlayed === false) {
