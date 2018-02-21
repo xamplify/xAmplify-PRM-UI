@@ -14,26 +14,51 @@
 		<span *ngIf="userPlatform.os == 'android'"><i
 			class="fa fa-android" aria-hidden="true"
 			style="color: #a4ca39; font-size: 22px !important"></i> </span>
-		
-		<span *ngIf="userPlatform.os == null">- </span>
 </ng-container>
 
 <ng-container *ngIf="!deviceTypeOs">
-		<span *ngIf="userPlatform.os == 'windows'"><i
+		<span *ngIf="userPlatform.deviceType == 'windows'"><i
 			class="fa fa-windows" aria-hidden="true"
 			style="color: #0085d5; font-size: 18px !important"></i> </span>
 		
-		<span *ngIf="userPlatform.os == 'mac'"><i class="fa fa fa-apple"
+		<span *ngIf="userPlatform.deviceType == 'mac'"><i class="fa fa fa-apple"
 			aria-hidden="true" style="color: green; font-size: 22px !important"></i>
 		</span>
 		
-		<span *ngIf="userPlatform.os == 'linux'"><i
+		<span *ngIf="userPlatform.deviceType == 'linux'"><i
 			class="fa fa fa-linux" aria-hidden="true"
 			style="color: #2b247d; font-size: 22px !important"></i> </span>
 		
-		<span *ngIf="userPlatform.os == 'android'"><i
+		<span *ngIf="userPlatform.deviceType == 'android'"><i
 			class="fa fa-android" aria-hidden="true"
-			style="color: #a4ca39; font-size: 22px !important"></i> </span>
-		
-		<span *ngIf="userPlatform.os == null">- </span>
+			style="color: #a4ca39; font-size: 22px !important"></i> 
+			</span>
+			
+	  <span *ngIf="userPlatform.deviceType == 'computer'"><i
+				class="fa fa-desktop" aria-hidden="true"
+				style="color: #0085d5; font-size: 18px !important"></i> </span>
 </ng-container>
+
+<ng-container *ngIf="userPlatform.deviceType==null && userPlatform.os==null">
+		<span *ngIf="userPlatform.device == 'windows'"><i
+			class="fa fa-windows" aria-hidden="true"
+			style="color: #0085d5; font-size: 18px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.device == 'mac'"><i class="fa fa fa-apple"
+			aria-hidden="true" style="color: green; font-size: 22px !important"></i>
+		</span>
+		
+		<span *ngIf="userPlatform.device == 'linux'"><i
+			class="fa fa fa-linux" aria-hidden="true"
+			style="color: #2b247d; font-size: 22px !important"></i> </span>
+		
+		<span *ngIf="userPlatform.device == 'android'"><i
+			class="fa fa-android" aria-hidden="true"
+			style="color: #a4ca39; font-size: 22px !important"></i> 
+			</span>
+			
+	  <span *ngIf="userPlatform.device == 'computer'"><i
+				class="fa fa-desktop" aria-hidden="true"
+				style="color: #0085d5; font-size: 18px !important"></i> </span>
+</ng-container>
+<span *ngIf="userPlatform.deviceType == null && userPlatform.device == null && userPlatform.os == null"> - </span>

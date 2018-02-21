@@ -82,12 +82,9 @@
 							<td class="center">{{videoViews.videoTitle}}</td>
 							<td class="center">{{videoViews.views}}</td>
 							<td class="center">{{videoViews.date}}</td>
-							<td class="center" *ngIf="videoViews.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-							<td class="center" *ngIf="videoViews.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-							<td class="center" *ngIf="videoViews.device == 'mac' || videoViews.device =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-							<td class="center" *ngIf="videoViews.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-							<td class="center" *ngIf="videoViews.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-							<td class="center" *ngIf="videoViews.device == null">-</td>
+							<td class="center">
+							<app-platform [userPlatform]="videoViews"> </app-platform>
+							</td>
 							<td class="center">
 							<app-location  [userLocation]="videoViews"> </app-location>
 							</td>

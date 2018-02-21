@@ -425,11 +425,9 @@
 										<app-location  [userLocation]="item"> </app-location>
 									</td>
 									<!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
-									<td class="center" *ngIf="item.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'mac' || item.os == 'iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.os == null">-</td>
+									<td class="center">
+									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -591,11 +589,9 @@
 									<h6>{{item.time | date: 'fullDate'}}</h6>
 								</td>
 								<!-- <td><h6>{{item.deviceType }}</h6></td> -->
-								<td class="center" *ngIf="item.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'mac' || item.os =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == null">-</td>
+								<td class="center">
+								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+								</td>
 								<td>
 									<h6>{{item.viewsCount }}</h6>
 								</td>
@@ -645,13 +641,9 @@
 								<td style="text-align: center">
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'mac' || emailClicked.deviceType=='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'linux' "><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td style="text-align: center" *ngIf="emailClicked.deviceType == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="emailClicked.deviceType == null">
-									-</td>
+								<td style="text-align: center">
+								<app-platform [deviceTypeOs]="false" [userPlatform]="emailClicked"> </app-platform>
+								</td>
 								<td style="text-align: center">
 									<app-location  [userLocation]="emailClicked"> </app-location>
 								</td>

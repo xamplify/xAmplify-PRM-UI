@@ -11,6 +11,7 @@ export class PlatformComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+//alert(this.deviceTypeOs + this.userPlatform.deviceType);
   }
 
 }

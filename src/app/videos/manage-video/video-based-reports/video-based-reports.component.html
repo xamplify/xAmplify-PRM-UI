@@ -216,11 +216,9 @@
 									<!-- | date: 'fullDate' -->
 									<td class="center">{{item.date }}</td>
 									<td class="center">{{item.minutesWatched }}</td>
-									<td class="center" *ngIf="item.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'mac' || item.device =='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
+									<td class="center">
+									<app-platform [userPlatform]="item"> </app-platform>
+									</td>
 									<td>
 									<app-location  [userLocation]="item"> </app-location>
 									</td>
@@ -282,12 +280,9 @@
 									</td>
 									<td class="center">{{item.campaignName}}</td>
 									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
-									<td class="center" *ngIf="item.deviceType == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'mac' || item.deviceType == 'iphone' "><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == null">-</td>
+									<td class="center">
+									<app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
+									</td>
 									<td class="center">
 									<app-location  [userLocation]="item"> </app-location>
 									</td>
@@ -346,12 +341,9 @@
 								</td>
 								<td class="center">{{item.minutesWatched }}</td>
 								<td class="center">{{item.date }}</td>
-								<td class="center" *ngIf="item.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="item.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="item.device == 'mac' || item.device=== 'iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.device == null">-</td>
+								<td class="center">
+								<app-platform [userPlatform]="item"> </app-platform>
+								</td>
 								<td class="center">
 								<app-location  [userLocation]="item"> </app-location>
 								</td>
@@ -405,12 +397,9 @@
 									<td class="center">
 										<h5>{{item.date }}</h5>
 									</td>
-									<td class="center" *ngIf="item.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'mac' || item.device=='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == null">-</td>
+									<td class="center">
+									<app-platform [userPlatform]="item"> </app-platform>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -446,12 +435,9 @@
 									<td class="center">
 										<h5>{{item.date }}</h5>
 									</td>
-									<td class="center" *ngIf="item.device == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'mac' || item.device==='iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.device == null">-</td>
+									<td class="center">
+									<app-platform [userPlatform]="item"> </app-platform>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -507,12 +493,9 @@
 								<td class="center">
 									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma' }}</h5>
 								</td>
-								<td class="center" *ngIf="item.os == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'mac' || item.os == 'iphone'"><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-								<td *ngIf="item.os == 'linux' "><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-								<td class="center" *ngIf="item.os == null">-</td>
+								<td class="center">
+								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+								</td>
 								<td class="center">
 									<app-location  [userLocation]="item"> </app-location>
 								</td>
