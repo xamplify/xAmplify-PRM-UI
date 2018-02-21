@@ -566,6 +566,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
+    
+    firstNameValue(name: string){
+        this.userData.displayName = name;
+    }
+    occupationValue(occupation: string){
+        this.userData.occupation = occupation;
+    }
+
     updateUserProfile() {
         console.log(this.updateUserProfileForm.value);
         this.refService.goToTop();

@@ -103,7 +103,7 @@ input:checked + .slider-new:before {
 							<div class="portlet light profile-sidebar-portlet">
 								<!-- SIDEBAR USERPIC -->
 								<div class="profile-userpic">
-									<img src="{{userProfileImage}}" class="img-responsive" alt="">
+									<img src="{{userProfileImage}}" class="img-responsive" alt="" style="width: 100px;height: 100px;">
 								</div>
 								<!-- END SIDEBAR USERPIC -->
 								<!-- SIDEBAR USER TITLE -->
@@ -232,7 +232,7 @@ input:checked + .slider-new:before {
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 														<div class="form-group">
 															<label class="control-label">First Name</label>
-															<input type="text"   placeholder="First Name" class="form-control" formControlName="firstName" required/>
+															<input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName" required/>
 															<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
 														</div>
 														<div class="form-group">
@@ -253,7 +253,7 @@ input:checked + .slider-new:before {
 														</div>
 														<div class="form-group">
 															<label class="control-label">Occupation</label>
-															<input type="text"  placeholder="Occupation" class="form-control" formControlName="occupation"  required/>
+															<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation"  required/>
 															<div *ngIf="formErrors.occupation" class="alert alert-danger">{{ formErrors.occupation }}</div>
 														</div>
 														<div class="form-group">
