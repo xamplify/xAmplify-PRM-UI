@@ -217,6 +217,7 @@
 										</td>
 										<td class="td-chart">
 											<h6>{{item.campaignName}}</h6>
+											<h4 *ngIf="item.campaignName==null">-</h4>
 										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart">
@@ -529,6 +530,7 @@
 									</td>
 									<td>
 										<h6>{{item.campaignName}}</h6>
+										<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
 									<td>
 										<h6>{{campaign.launchTime | date: 'MM/dd/yyyy @ h:mma'}}</h6>
@@ -581,6 +583,7 @@
 								</td>
 								<td>
 									<h6>{{item.campaignName}}</h6>
+									<h4 *ngIf="item.campaignName==null">-</h4>
 								</td>
 								<td>
 									<app-location  [userLocation]="item"> </app-location>

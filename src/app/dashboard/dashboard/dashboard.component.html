@@ -841,13 +841,12 @@
 						</thead>
 						<tbody>
 							<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
-								<!-- <td class="center"><h5>{{emailClicked.firstName}}
-										{{emailClicked.lastName}}</h5></td> -->
 								<td>
 									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{emailClicked.campaignName}}</h5>
+									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
 								</td>
 								<td class="center">
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>

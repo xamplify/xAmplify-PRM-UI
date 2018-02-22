@@ -138,14 +138,13 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td class="center">{{item.campaignName}}</td>
+									<td class="center">{{item.campaignName}}
+									<h4 *ngIf="item.campaignName==null">-</h4>
+									</td>
 									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
-									<td class="center" *ngIf="item.deviceType == 'computer'"><i class="fa fa-desktop" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'windows'"><i class="fa fa-windows" aria-hidden="true" style="color: #0085d5; font-size: 18px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'mac' || item.deviceType == 'iphone' "><i class="fa fa fa-apple" aria-hidden="true" style="color: green; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'linux'"><i class="fa fa fa-linux" aria-hidden="true" style="color: #2b247d; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == 'android'"><i class="fa fa-android" aria-hidden="true" style="color: #a4ca39; font-size: 22px !important"></i></td>
-									<td class="center" *ngIf="item.deviceType == null">-</td>
+									<td class="center">
+									<app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
+									</td>
 									<td class="center">{{item.location }}</td>
 								</tr>
 							</tbody>
