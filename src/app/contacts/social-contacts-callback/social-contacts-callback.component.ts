@@ -6,13 +6,14 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
-  selector: 'app-google-call-back',
-  templateUrl: './google-call-back.component.html',
-  styleUrls: ['./google-call-back.component.css']
-})
-export class GoogleCallBackComponent implements OnInit {
-    
+    selector: 'app-social-contacts-callback',
+    templateUrl: './social-contacts-callback.component.html',
+    styleUrls: ['./social-contacts-callback.component.css']
+  })
+  
+  export class SocialContactsCallbackComponent implements OnInit {
     public isPartner:boolean;
+    isGoogleCallBack: boolean;
     
     constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {
         let currentUrl = this.router.url;
@@ -20,6 +21,14 @@ export class GoogleCallBackComponent implements OnInit {
             this.isPartner = false;
         }else{
             this.isPartner = true;  
+        }
+        
+        if(currentUrl.includes('google-callback')){
+            this.isGoogleCallBack = true;
+            this.contactService.socialCallbackName = "googleOauth";
+        }else{
+            this.contactService.socialCallbackName = "salesforceOauth";
+            this.isGoogleCallBack = false;  
         }
         
         if(currentUrl.includes('error=access_denied') && this.isPartner == false){
@@ -30,8 +39,8 @@ export class GoogleCallBackComponent implements OnInit {
         }
     }
     
-    googleCallback(){
-        this.contactService.googleCallback()
+    socialContactsCallback(){
+        this.contactService.socialContactsCallback()
         .subscribe(
             result => {
                 localStorage.removeItem("userAlias");
@@ -54,7 +63,7 @@ export class GoogleCallBackComponent implements OnInit {
     ngOnInit(){
         this.contactService.googleCallBack = true;
         try{
-             this.googleCallback();
+             this.socialContactsCallback();
         }
         catch(err){
             this.xtremandLogger.error(err);
@@ -62,3 +71,4 @@ export class GoogleCallBackComponent implements OnInit {
     }       
 
 }
+

@@ -3,15 +3,13 @@ import { RouterModule, Routes}   from '@angular/router';
 
 import {AddPartnersComponent} from './add-partners/add-partners.component';
 import {ManagePartnersComponent} from './manage-partners/manage-partners.component';
-import { GoogleCallBackComponent } from '../contacts/google-call-back/google-call-back.component';
-import { SalesforceCallBackComponent } from '../contacts/salesforce-call-back/salesforce-call-back.component';
+import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
 
 const routes: Routes = [
     { path: '',redirectTo:'add' ,pathMatch:'full'},                             
     { path: 'add', component: AddPartnersComponent },
     { path: 'manage',component:ManagePartnersComponent},
-    { path: 'google-callback', component: GoogleCallBackComponent },
-    { path: 'salesforce-callback', component: SalesforceCallBackComponent }
+    { path: 'social-contacts-callback', component: SocialContactsCallbackComponent },
 ];
 
 

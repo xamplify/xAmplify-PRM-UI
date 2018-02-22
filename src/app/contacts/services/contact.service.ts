@@ -33,6 +33,7 @@ export class ContactService {
     public pagination: Pagination;
     allPartners: User[];
     partnerListName: string;
+    socialCallbackName: string;
 
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
@@ -202,19 +203,6 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    googleCallback(): Observable<String> {
-        let queryParam: string;
-        this.activatedRoute.queryParams.subscribe(
-            ( param: any ) => {
-                let code = param['code'];
-                let denied = param['denied'];
-                queryParam = "?code=" + code;
-            });
-        return this._http.get( this.authenticationService.REST_URL + "googleOauth/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
     getGoogleContacts( socialContact: SocialContact ) {
         this.logger.info( "get google contacts :" + socialContact );
         //this.successMessage = true;
@@ -313,8 +301,21 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    socialContactsCallback(): Observable<String> {
+        let queryParam: string;
+        this.activatedRoute.queryParams.subscribe(
+            ( param: any ) => {
+                let code = param['code'];
+                let denied = param['denied'];
+                queryParam = "?code=" + code;
+            });
+        return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
-    salesforceCallback(): Observable<String> {
+    /*salesforceCallback(): Observable<String> {
         let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
@@ -325,7 +326,7 @@ export class ContactService {
         return this._http.get( this.authenticationService.REST_URL + "salesforceOauth/callback" + queryParam + "&access_token=" + this.authenticationService.access_token + "&userAlias=" + localStorage.getItem( 'userAlias' ) + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
             .map( this.extractData )
             .catch( this.handleError );
-    }
+    }*/
 
     getSalesforceContacts( socialNetwork: string, contactType: string ) {
        // this.successMessage = true;
