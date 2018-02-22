@@ -779,7 +779,7 @@ export class AddPartnersComponent implements OnInit {
         this.socialPartners.contactType = '';
         this.socialPartners.alias = '';
         this.socialPartners.socialNetwork = "GOOGLE";
-        this.contactService.googleCallBack = true;
+        this.contactService.socialProviderName = 'google';
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
         this.contactService.googleLogin( this.isPartner )
             .subscribe(
@@ -812,7 +812,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     getGoogleContactsUsers() {
-        this.contactService.googleCallBack = false;
+        this.contactService.socialProviderName = 'google';
         this.socialPartners.socialNetwork = "GOOGLE";
         var self = this;
         this.contactService.getGoogleContacts( this.socialPartners )
@@ -1549,17 +1549,15 @@ export class AddPartnersComponent implements OnInit {
         this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.defaultPartnerList( this.loggedInUserId );
-        if ( this.contactService.googleCallBack == true ) {
+        if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
-        } else if ( this.contactService.salesforceContactCallBack == true ) {
+        } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-            this.contactService.salesforceContactCallBack = false;
         }
     }
 
     ngDestroy() {
-        this.contactService.googleCallBack = false;
-        this.contactService.salesforceContactCallBack = false;
+        this.contactService.socialProviderName = '';
         this.referenceService.callBackURLCondition = '';
         this.hideModal();
 

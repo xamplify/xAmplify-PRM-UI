@@ -842,7 +842,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contactType = '';
         this.socialContact.alias = '';
         this.socialContact.socialNetwork = "GOOGLE";
-        this.contactService.googleCallBack = true;
+        this.contactService.socialProviderName = 'google';
         this.xtremandLogger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.googleLogin( this.isPartner )
             .subscribe(
@@ -874,7 +874,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     getGoogleContactsUsers() {
-        this.contactService.googleCallBack = false;
+        this.contactService.socialProviderName = 'google';
         this.socialContact.socialNetwork = "GOOGLE";
         var self = this;
         this.contactService.getGoogleContacts( this.socialContact )
@@ -1779,11 +1779,10 @@ export class AddContactsComponent implements OnInit {
         this.socialContactImage();
         this.hideModal();
         this.loadContactListsNames();
-        if ( this.contactService.googleCallBack == true ) {
+        if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
-        } else if ( this.contactService.salesforceContactCallBack == true ) {
+        } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( "#salesforceModal" ).modal();
-            this.contactService.salesforceContactCallBack = false;
         }
 
         this.contactListName = '';
@@ -1828,8 +1827,7 @@ export class AddContactsComponent implements OnInit {
 
     ngDestroy() {
         this.contactService.successMessage = false;
-        this.contactService.googleCallBack = false;
-        this.contactService.salesforceContactCallBack = false;
+        this.contactService.socialProviderName = '';
         this.hideModal();
 
     }

@@ -28,8 +28,8 @@ export class ContactService {
     public zohoContact: ZohoContact;
     public salesforceContact: SalesforceContact;
     public salesforceListViewContact: SalesforceListViewContact;
-    public googleCallBack: boolean;
-    public salesforceContactCallBack: boolean;
+    
+    socialProviderName: string;
     public pagination: Pagination;
     allPartners: User[];
     partnerListName: string;

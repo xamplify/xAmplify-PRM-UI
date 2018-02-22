@@ -13,7 +13,7 @@ import { ReferenceService } from '../../core/services/reference.service';
   
   export class SocialContactsCallbackComponent implements OnInit {
     public isPartner:boolean;
-    isGoogleCallBack: boolean;
+    callbackName: string;
     
     constructor(public referenceService: ReferenceService,private router: Router, private contactService: ContactService, public xtremandLogger:XtremandLogger) {
         let currentUrl = this.router.url;
@@ -24,11 +24,11 @@ import { ReferenceService } from '../../core/services/reference.service';
         }
         
         if(currentUrl.includes('google-callback')){
-            this.isGoogleCallBack = true;
+            this.callbackName = 'google';
             this.contactService.socialCallbackName = "googleOauth";
         }else{
             this.contactService.socialCallbackName = "salesforceOauth";
-            this.isGoogleCallBack = false;  
+            this.callbackName = 'salesforce';  
         }
         
         if(currentUrl.includes('error=access_denied') && this.isPartner == false){
@@ -47,10 +47,10 @@ import { ReferenceService } from '../../core/services/reference.service';
                 localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
                 
-                if(this.isGoogleCallBack == true){
-                    this.contactService.googleCallBack = true; 
-                }else{
-                    this.contactService.salesforceContactCallBack = true;
+                if(this.callbackName == 'google'){
+                    this.contactService.socialProviderName = 'google'; 
+                }else if(this.callbackName == 'salesforce'){
+                    this.contactService.socialProviderName = 'salesforce';
                 }
                 
                 if(this.isPartner == true){
@@ -67,7 +67,7 @@ import { ReferenceService } from '../../core/services/reference.service';
     }
     
     ngOnInit(){
-        this.contactService.googleCallBack = true;
+        this.contactService.socialProviderName = '';
         try{
              this.socialContactsCallback();
         }
