@@ -9,7 +9,8 @@ const routes: Routes = [
     { path: '',redirectTo:'add' ,pathMatch:'full'},                             
     { path: 'add', component: AddPartnersComponent },
     { path: 'manage',component:ManagePartnersComponent},
-    { path: 'social-contacts-callback', component: SocialContactsCallbackComponent },
+    { path: 'google-callback', component: SocialContactsCallbackComponent },
+    { path: 'salesforce-callback', component: SocialContactsCallbackComponent }
 ];
 
 

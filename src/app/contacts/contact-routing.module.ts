@@ -12,7 +12,8 @@ const routes: Routes =  [
                           { path: '',redirectTo:'add' ,pathMatch:'full'},                             
                           { path: 'add', component: AddContactsComponent },
                           { path: 'manage',component:ManageContactsComponent},
-                          { path: 'social-contacts-callback', component: SocialContactsCallbackComponent }
+                          { path: 'google-callback', component: SocialContactsCallbackComponent },
+                          { path: 'salesforce-callback', component: SocialContactsCallbackComponent }
                            ];
 
 
