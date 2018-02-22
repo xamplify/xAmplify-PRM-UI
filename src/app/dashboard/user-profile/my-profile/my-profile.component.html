@@ -435,7 +435,7 @@ input:checked + .slider-new:before {
 															</div>	
 														<!-- videojs logo code end -->
 
-														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
+														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active && !isOnlyPartnerRole" (ngSubmit)="UpdatePlayerSettingsValues()">
 													<div class= "col-xs-12 pclass-css">
 														<h4 style="color:white;margin:3px"> Apperance of the player</h4>
 													</div>

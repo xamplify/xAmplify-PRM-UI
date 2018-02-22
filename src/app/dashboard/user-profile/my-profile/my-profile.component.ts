@@ -62,7 +62,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isOrgAdmin:boolean = false;
     isOnlyPartnerRole:boolean = false;
     logoUploader: FileUploader;
-    logoImageUrlPath: string;
+    logoImageUrlPath: any;
     fullScreenMode = false;
     logoUpdated = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -81,7 +81,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
+            if(this.hasCompany && this.refService.defaultPlayerSettings !== undefined){
             this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
+            }
             console.log(this.userData);
             if (this.userData.firstName !== null) {
                 this.parentModel.displayName = this.userData.firstName;
@@ -126,7 +128,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoUploader.onAfterAddingFile = (fileItem) => {
             console.log(fileItem);
             fileItem.withCredentials = false;
-          //  this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             this.logoUploader.queue[0].upload();
             $('#overLayImage').append($('#overlay-logo').show());
         };
@@ -597,6 +599,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             subscribe(
                             res => {
                                 this.authenticationService.userProfile = res;
+                                this.getVideoDefaultSettings();
+                                this.hasCompany = this.authenticationService.user.hasCompany;
+                                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                                let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
+                                this.isOnlyPartner(roleNames);                                
                             },
                             error => { this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error) },
                             () => console.log("Finished")
