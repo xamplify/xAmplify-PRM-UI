@@ -310,6 +310,7 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });
+        this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) );
         return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
             .map( this.extractData )
             .catch( this.handleError );

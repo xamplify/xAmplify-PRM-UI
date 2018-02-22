@@ -46,7 +46,13 @@ import { ReferenceService } from '../../core/services/reference.service';
                 localStorage.removeItem("userAlias");
                 localStorage.removeItem("isPartner");
                 this.xtremandLogger.info("result: "+result);
-                this.contactService.googleCallBack = true;
+                
+                if(this.isGoogleCallBack == true){
+                    this.contactService.googleCallBack = true; 
+                }else{
+                    this.contactService.salesforceContactCallBack = true;
+                }
+                
                 if(this.isPartner == true){
                     this.router.navigate(['/home/partners']);
                 }else{
