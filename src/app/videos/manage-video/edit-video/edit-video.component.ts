@@ -131,6 +131,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     saveButtonTitle = 'Save';
     isDisable = false;
     brandLogoUrl: any; 
+    logoDescriptionUrl: string;
+
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -625,6 +627,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
                 this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri;
+                this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri;
                 this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -635,6 +638,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
                 this.brandLogoUrl = this.tempVideoFile.brandingLogoUri;
+                this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri;
                 this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -883,6 +887,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoJSplayer.play();
         }
     }
+    logoDescription(event: string){
+        this.logoDescriptionUrl = event;
+    }
     ngOnInit() {
         $('#overLayImage').append($('#overlay-logo').show());
         Metronic.init();
@@ -1113,7 +1120,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'category': [this.saveVideoFile.category],
             'views': [this.saveVideoFile.views],
             'watchedFully': [this.saveVideoFile.watchedFully],
-            'brandingLogoUri': [this.saveVideoFile.brandingLogoUri]
+            'brandingLogoUri': [this.saveVideoFile.brandingLogoUri],
+            'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
         this.onValueChanged();
@@ -1156,6 +1164,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
             this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
+            this.saveVideoFile.brandingLogoDescUri = this.logoDescriptionUrl;
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {

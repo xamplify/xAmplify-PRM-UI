@@ -111,7 +111,7 @@
 				<div id="overLayImage"></div>
 
 				<div id="overlay-logo" >
-					<a [href]="authenticationService.MEDIA_URL + brandLogoUrl" target="_blank">
+					<a [href]="logoDescriptionUrl" target="_blank">
 					<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive videojs-logo" [class.logo-video]="fullScreenMode"> 
 				    </a>
 				</div>
@@ -397,7 +397,7 @@
 												</div>
 											</div>
 											<!-- cobra eding video logo -->
-											<div id = "fileLogoSelectedid" *ngIf="!disablePlayerSettingnew"class="" style="padding:0%;width: 50%;position: relative;right: -233px;top: -17px;">
+											<div id = "fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="" style="padding:0%;width: 50%;position: relative;right: -233px;top: -17px;">
 												<label style="position: relative;left: -103px;font-size: 14px;color: #6d6969;top: 29px;">Video LOGO:</label>
 												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
@@ -408,6 +408,13 @@
 													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 38px;">
 														<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
 													</div>
+											</div>
+											<div *ngIf="!disablePlayerSettingnew" class="form-group">
+													<div class="col-xs-5 control-label" style="font-size:14px;padding:0">VideoLog Des:</div>
+													<div class="col-xs-7" style="padding:0">
+														<input type="text"  style="width: 90%;position: relative;right:-7px;" formControlName="brandingLogoDescUri"
+														 placeholder="logo website url" #val (input)="logoDescription(val.value)">
+												</div>
 											</div>
 										</div>
 									</div>

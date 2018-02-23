@@ -146,7 +146,11 @@ export class UserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+    saveBrandLogo(logoPath: string,logoDesc: string,userId: number){
+     return this.http.get( this.URL + 'videos/save-branding-logo?logoPath='+logoPath+'&LogoDescUri='+logoDesc+'&userId='+userId+'&access_token='+this.authenticationService.access_token )
+       .map(this.extractData)
+       .catch(this.handleError);
+    }
     private extractData( res: Response ) {
         const body = res.json();
         console.log(body);

@@ -68,8 +68,13 @@
 				</div>
 				<!-- modal popup end-->
 				<div id="overLayImage"></div>
-				<div id="overlay-logo">
-					<img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+				<div id="overlay-logo" >
+					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank">
+					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					</a>
+					<a [href]="brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank">
+					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					</a>
 				</div>
 				<div>
 					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>

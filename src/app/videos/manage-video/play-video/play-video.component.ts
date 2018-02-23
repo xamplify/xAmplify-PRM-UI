@@ -8,6 +8,7 @@ import { VideoFileService } from '../../services/video-file.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { UserService } from '../../../core/services/user.service';
 
 import { CallAction } from '../../models/call-action';
 import { SaveVideoFile } from '../../models/save-video-file';
@@ -77,10 +78,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     hasVideoRole = false;
     hasAllAccess = false;
     loggedInUserId = 0;
+    logoImageUrlPath: string;
+    logoLink: string;
+
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
-        public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,
+        public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
         public pagerService: PagerService, public referenceService: ReferenceService) {
         this.disLikesValues = 0;
         this.likesValues = 0;
@@ -155,13 +159,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.pagination.pagedItems = this.pagination.pagedItems.filter(i => i.id !== this.selectedVideo.id);
                 }
                 console.log(this.pagination.pagedItems);
-                // ended the new code
-                // for (let i = 0; i < this.pagination.pagedItems.length; i++) {
-                //     if (this.selectedVideo.id === this.pagination.pagedItems[i].id) {
-                //         this.pagination.pagedItems.splice(i, 1);
-                //         break;
-                //     }
-                // }
                 this.selectedPosition = position;
                 this.playVideoInfo(this.selectedVideo);
                 this.checkCallToActionAvailable();
@@ -400,20 +397,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     disLikesValuesDemo() {
         this.disLikesValues += 1;
     }
-    // embedFulScreenValue() {
-    //     if (this.isFullscreen === true) {
-    //         this.embedFullScreen = 'allowfullscreen';
-    //     } else { this.embedFullScreen = ''; }
-    // }
-    // embedVideoSizes() {
-    //     if (this.videosize === this.videoSizes[0]) {
-    //         this.embedWidth = '1280'; this.embedHeight = '720';
-    //     } else if (this.videosize === this.videoSizes[1]) {
-    //         this.embedWidth = '560'; this.embedHeight = '315';
-    //     } else if (this.videosize === this.videoSizes[2]) {
-    //         this.embedWidth = '853'; this.embedHeight = '480';
-    //     } else { this.embedWidth = '640'; this.embedHeight = '360'; }
-    // }
     checkingCallToActionValues() {
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
             && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
@@ -458,8 +441,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         //         console.log('Save user Form call to acton is successfull' + result);
         //     });
     }
+    getVideoDefaultSettings() {
+        this.userService.getVideoDefaultSettings().subscribe(
+            (result: any) => { 
+                this.logoImageUrlPath = result.brandingLogoUri;
+                this.logoLink = result.brandingLogoDescUri;
+            });
+      }
     ngOnInit() {
         $('#overLayImage').append($('#overlay-logo').show());
+        if(this.videoFileService.videoType==='partnerVideos'){
+            this.getVideoDefaultSettings();
+        }
         Metronic.init();
         Layout.init();
         Demo.init();

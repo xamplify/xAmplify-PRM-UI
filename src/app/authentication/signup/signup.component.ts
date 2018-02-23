@@ -93,11 +93,9 @@ export class SignupComponent implements OnInit {
         this.userService.signUp( this.signUpUser )
             .subscribe(
             data => {
-                console.log( data['_body'] );
-                var body = data['_body'];
-                if ( body != "" ) {
-                    var response = JSON.parse( body );
-                    if ( response.message == "USER CREATED SUCCESSFULLY" ) {
+                 this.loading = false;
+                if ( data !== undefined ) {
+                    if ( data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')){
                         this.loading = false;
                         this.refService.signUpSuccess = 'Thank you for signing up with the platform! A verification link has been sent to your email account';
                         this.router.navigate(['/login']);
@@ -109,10 +107,11 @@ export class SignupComponent implements OnInit {
                 }
             },
             error => {
-                if ( error == "USERNAME IS ALREADY EXISTING" ) {
+                 this.loading = false;
+                if ( error === "USERNAME IS ALREADY EXISTING" ) {
                     this.formErrors['userName'] = error;
                     // this.isLoading = false;
-                } else if ( error == "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
+                } else if ( error === "USER IS ALREADY EXISTING WITH THIS EMAIL" ) {
                     this.formErrors['emailId'] = 'Email Id already exists';
                     // this.isLoading = false;
                 } else {
@@ -121,7 +120,6 @@ export class SignupComponent implements OnInit {
             },
             () => console.log( "Done" )
             );
-        return false;
     }
 
     buildForm() {

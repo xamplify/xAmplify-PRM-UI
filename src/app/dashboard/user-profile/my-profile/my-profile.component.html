@@ -416,6 +416,10 @@ input:checked + .slider-new:before {
 															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
 															<strong>Your brand Logo updated Successfully!</strong> 
 														</div>
+														<div *ngIf="logoUrlUpdated" class="alert alert-success alert-dismissable" style="width:104.5%;margin-left:-17px;">
+															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
+															<strong>Your brand Logo Link updated Successfully!</strong> 
+														</div>
 															<div class= "col-xs-12 pclass-css" style="margin-top: -12px;">
 																<h4 style="color:white;margin:3px"> Add your Brand video Logo </h4>
 															</div>
@@ -429,13 +433,17 @@ input:checked + .slider-new:before {
 																<div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -27px;font-size:13px;left: 296px;background: lightblue;">upload image only and size should be less than 2mb</span></div>
 																<div>
 																    <span *ngIf="logoImageUrlPath" class="close" style="position: relative; float: left; right: -96px;;background: #127ba5;" (click)="clearLogo()"></span>
-																	<img *ngIf="logoImageUrlPath" [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style="margin-top:-2px;height: 71px; width: 98px; border: 1px solid red;">
+																	<img *ngIf="logoImageUrlPath" [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style=" margin-top: -3px; height: 71px;width: 109px;border: 1px solid red;margin-left: -8px;">
 																	<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
 																</div>
+																<div>
+																	<input type="text" style="width:45%; margin-top:6px;" [(ngModel)]="logoLink" placeholder="website">
+																</div>
+																<button style="margin-top: 7px;" class="btn btn-primary" (click)="saveVideoBrandLog()">Save Logo Info</button>
 															</div>	
 														<!-- videojs logo code end -->
-
-														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active && !isOnlyPartnerRole" (ngSubmit)="UpdatePlayerSettingsValues()">
+														<div  [hidden]="isOnlyPartnerRole">	
+														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 													<div class= "col-xs-12 pclass-css">
 														<h4 style="color:white;margin:3px"> Apperance of the player</h4>
 													</div>
@@ -569,6 +577,7 @@ input:checked + .slider-new:before {
 														    <button type="button" class="btn default" (click)="resetForm()" [disabled]="!hasAllAccess">Cancel</button>
 															</div>
 													</form>
+												 </div>
 												</div>
 											</div>
 										</div>

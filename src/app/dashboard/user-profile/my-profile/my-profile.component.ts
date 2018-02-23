@@ -62,9 +62,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isOrgAdmin:boolean = false;
     isOnlyPartnerRole:boolean = false;
     logoUploader: FileUploader;
-    logoImageUrlPath: any;
+    logoImageUrlPath: string;
+    imagePathSafeUrl: any;
     fullScreenMode = false;
     logoUpdated = false;
+    logoLink = '';
+    logoUrlUpdated = false;
+
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer,) {
@@ -83,6 +87,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             if(this.hasCompany && this.refService.defaultPlayerSettings !== undefined){
             this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
+            this.logoLink  = this.refService.defaultPlayerSettings.brandingLogoDescUri;
             }
             console.log(this.userData);
             if (this.userData.firstName !== null) {
@@ -128,14 +133,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoUploader.onAfterAddingFile = (fileItem) => {
             console.log(fileItem);
             fileItem.withCredentials = false;
-            this.logoImageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            this.imagePathSafeUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+            this.logoImageUrlPath = this.imagePathSafeUrl.changingThisBreaksApplicationSecurity;
             this.logoUploader.queue[0].upload();
             $('#overLayImage').append($('#overlay-logo').show());
         };
         this.logoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             console.log(response); 
-            this.logoUpdated = true;
-            this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
+            console.log(this.logoUploader.queue[0]);
+            if(JSON.parse(response).message === null){
+            //   this.logoUploader.queue[0].upload(); 
+            } else {
+             this.logoUploader.queue.length = 0;
+             this.logoUpdated = true;
+             this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
+            }
         }
     }
     isEmpty(obj) {
@@ -145,7 +157,19 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoUploader.queue.length = 0;
         this.logoImageUrlPath = undefined;
     }
-
+    saveVideoBrandLog(){
+       this.logoUpdated = false;
+       this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
+        .subscribe(
+        (data: any)=>{
+         console.log(data);
+         if(data !== undefined){
+             this.logoUrlUpdated = true;
+             this.logoImageUrlPath = data.brandingLogoPath
+             this.logoLink = data.brandingLogoDescUri;
+         }
+       });
+    }
     hasOrgAdminRole(){
         this.roles = this.authenticationService.getRoles();
         if(this.roles.indexOf('ROLE_ORG_ADMIN')>-1){
@@ -276,7 +300,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
               let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
               this.isOnlyPartner(roleNames);
-            if(this.authenticationService.hasCompany()){
+            if(this.hasCompany){
                 let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
                 if(!this.isOnlyPartner(roleNames)){
                     this.getOrgAdminsCount(this.loggedInUserId);
@@ -317,6 +341,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoUtilService.normalVideoJsFiles();
             this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
             this.defaultVideoSettings();
+            if(this.refService.defaultPlayerSettings.transparency === null){
+                this.refService.defaultPlayerSettings.transparency = 100;
+                this.refService.defaultPlayerSettings.controllerColor= '#456';
+                this.refService.defaultPlayerSettings.playerColor = '#879';
+            }
             this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
             if (this.refService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
@@ -655,6 +684,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.valueRange = response.transparency;
                     this.tempControllerColor = response.controllerColor;
                     this.tempPlayerColor = response.playerColor;
+                    this.logoImageUrlPath = response.brandingLogoUri;
+                    this.logoLink = response.brandingLogoDescUri;
                     this.defaultPlayerbuildForm();
                     if (this.isPlayerSettingUpdated === true) {
                     this.videoUtilService.videoTempDefaultSettings = response; }
@@ -664,6 +695,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     closeSuccessPopup() {
         this.defaultPlayerSuccess = false;
         this.logoUpdated = false;
+        this.logoUrlUpdated = false;
     }
     enableVideoController(event: any) {
         if (this.isPlayed === false) {
@@ -738,6 +770,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
+        if(this.refService.defaultPlayerSettings.playerColor === undefined || this.refService.defaultPlayerSettings.playerColor=== null){
+            this.refService.defaultPlayerSettings.playerColor = '#454';
+            this.refService.defaultPlayerSettings.controllerColor = '#234';
+            this.refService.defaultPlayerSettings.transparency = 100;
+        }
         $('.video-js').css('color', this.refService.defaultPlayerSettings.playerColor);
         $('.video-js .vjs-play-progress').css('background-color', this.refService.defaultPlayerSettings.playerColor);
         $('.video-js .vjs-volume-level').css('background-color', this.refService.defaultPlayerSettings.playerColor);

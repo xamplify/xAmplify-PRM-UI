@@ -46,4 +46,5 @@ export class SaveVideoFile {
     views: number;
     watchedFully: number;
     brandingLogoUri: string;
+    brandingLogoDescUri: string;
  }
