@@ -35,7 +35,10 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     noVideos = false;
     videoId: number;
     watchedFullyDetailReportData: any;
+    watchedFullyTotalList: any;
+    downloadDataList = [];
     watchedPagination = new Pagination();
+    reportPagination = new Pagination();
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public pagerService: PagerService, public logger: XtremandLogger, public pagination: Pagination,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
@@ -83,6 +86,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
                 this.watchedPagination.totalRecords = result.totalRecords;
                 this.watchedPagination = this.pagerService.getPagedItems(this.watchedPagination, result.data);
                 $('#watchedFullyModelPopup').modal('show');
+                this.watchedFullyAllDataReport(videoId, this.watchedPagination.totalRecords);
             },
             (err: any) => { console.log(err); })
     }
@@ -250,6 +254,45 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             return false;
         });
     }
+    
+    watchedFullyAllDataReport(videoId: number, totalRecords: number) {
+        this.reportPagination.maxResults = totalRecords;
+        this.videoBaseReportService.watchedFullyReport(videoId, this.reportPagination).subscribe(
+            (result: any) => {
+                console.log(result);
+                this.watchedFullyTotalList = result.data;
+            },
+            (err: any) => { console.log(err); })
+    }
+    
+    downloadLogs(){
+        for (let i = 0; i < this.watchedFullyTotalList.length; i++) {
+            let date = new Date(this.watchedFullyTotalList[i].time);
+            var object = {
+                "First Name": this.watchedFullyTotalList[i].firstName,
+                "Last Name": this.watchedFullyTotalList[i].lastName,
+                "EmailId": this.watchedFullyTotalList[i].emailId,
+                "Campaign Name": this.watchedFullyTotalList[i].campaignName,
+                "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                "Device": this.watchedFullyTotalList[i].deviceType,
+                "Location": this.watchedFullyTotalList[i].location
+            }
+
+            this.downloadDataList.push(object);
+        }
+        var csvData = this.referenceService.convertToCSV(this.downloadDataList);
+        var a = document.createElement("a");
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'Watched Fully Report.csv';
+        a.click();
+        return 'success';
+    }
+
+    
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);

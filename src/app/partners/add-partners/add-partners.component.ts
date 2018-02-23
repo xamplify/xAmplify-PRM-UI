@@ -1551,8 +1551,10 @@ export class AddPartnersComponent implements OnInit {
         this.defaultPartnerList( this.loggedInUserId );
         if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
+            this.contactService.socialProviderName = '';
         } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+            this.contactService.socialProviderName = '';
         }
     }
 

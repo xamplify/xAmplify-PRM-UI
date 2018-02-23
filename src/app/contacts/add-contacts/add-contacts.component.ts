@@ -1781,8 +1781,10 @@ export class AddContactsComponent implements OnInit {
         this.loadContactListsNames();
         if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
+            this.contactService.socialProviderName = '';
         } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( "#salesforceModal" ).modal();
+            this.contactService.socialProviderName = '';
         }
 
         this.contactListName = '';
