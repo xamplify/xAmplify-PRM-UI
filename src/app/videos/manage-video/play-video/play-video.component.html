@@ -80,7 +80,7 @@
 					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
-					<div *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId )">
+					<div *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
 						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
 							<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 						</button>

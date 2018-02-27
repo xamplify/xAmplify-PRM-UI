@@ -130,7 +130,7 @@ export class VideoFileService {
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
-            + "&videoAlias=" + alias, '')
+            + "&videoAlias=" + alias+ "&userId="+this.authenticationService.user.id, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
