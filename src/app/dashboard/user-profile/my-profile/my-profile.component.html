@@ -217,7 +217,7 @@ input:checked + .slider-new:before {
 												<li>
 													<a href="#tab_1_4" data-toggle="tab" >Settings</a>
 												</li>
-												<li *ngIf="hasCompany" (click)="videojsCall()">
+												<li *ngIf="hasCompany && roleLength" (click)="videojsCall()">
 													<a href="#tab_1_5" data-toggle="tab" (click)="videojsCall()">Default Player Settings</a>
 												</li>
 											</ul>

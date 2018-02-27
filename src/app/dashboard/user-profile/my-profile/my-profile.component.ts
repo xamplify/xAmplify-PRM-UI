@@ -68,6 +68,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     logoUpdated = false;
     logoLink = '';
     logoUrlUpdated = false;
+    roleLength: boolean;
 
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -299,6 +300,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
               let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
+              this.roleLength = currentUser.roles.length> 1 ? true: false;
               this.isOnlyPartner(roleNames);
             if(currentUser.roles.length > 1 && this.hasCompany){
                 let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
