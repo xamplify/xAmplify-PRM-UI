@@ -1081,7 +1081,7 @@ export class EditContactsComponent implements OnInit {
             })
         }
 
-        if ( this.totalRecords == 1 ) {
+        if ( this.totalRecords === 1  && !(this.isDefaultPartnerList )) {
             swal( {
                 title: 'Are you sure?',
                 text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
@@ -1096,6 +1096,22 @@ export class EditContactsComponent implements OnInit {
                 self.deleteContactList();
             })
         }
+        if ( this.totalRecords === 1 && this.isDefaultPartnerList ) {
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.removeContactListUsers1( contactId );
+            })
+        }
+
     }
 
     showingContactDetails( contactType: string ) {
