@@ -15,6 +15,18 @@
 	.bottomCss {
 		bottom: -183px;
 	}
+	.logo-video {
+		position: absolute;
+		top: 15px;
+		right: 34px;
+		width: 75px;
+		border: 1px solid red;
+		z-index: 9999999999;
+	}
+	a.disabled{
+		pointer-events: none;
+	}
+
 </style>
 <div class="portlet light clearfix" style="background: white; box-shadow: 0 0 0px rgba(0,0,0,.4)!important;">
 	<div class="portlet-body">
@@ -23,6 +35,12 @@
 				<div id="newPlayerVideo"></div>
 			</div>
 			<div id="overLayDialog"></div>
+			<div id="overLayImage"></div>
+				<div id="overlay-logo" >
+					<a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
+					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					</a>
+				</div>
 			<div id="overlay-modal" class="video-js overlay is360video" style="height: 318px; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
@@ -56,6 +74,7 @@
 					</div>
 				</div>
 			</div>
+            
 
 			<div class="col-xs-12" style="padding:0">
 				<h3 style="word-break: break-all;color:#777">{{title}}</h3>

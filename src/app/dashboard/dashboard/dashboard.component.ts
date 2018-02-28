@@ -195,7 +195,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             tooltip: {
                 formatter: function () {
                     //  <br>users: <b>' + this.point.totalUsers + '</b>
-                    return 'campaign name: <b>' + this.point.name + '</b><br> email open count: <b>' + this.point.value + '</b>' + '</b><br>launchTime:<b>' + this.point.launchTime + '</b>';
+                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' + '</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
                 }
             },
             plotOptions: {
@@ -234,8 +234,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],
             $containers = $('#trellis td'),
-            datasets = [  {  name: 'opened',data: opened },  { name: 'clicked',data: clicked },
-                { name: 'watched', data: watched },
+            datasets = [  {  name: 'Opened',data: opened },  { name: 'Clicked',data: clicked },
+                { name: 'Watched', data: watched },
                ];
         $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({

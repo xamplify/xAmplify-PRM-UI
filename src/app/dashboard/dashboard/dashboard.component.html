@@ -70,9 +70,11 @@
 
 	.email-action-desscription {
 		font-size: 12px;
-		text-transform: lowercase;
+		/* text-transform: lowercase; */
 	}
-
+	.capitalize {
+      text-transform: capitalize;
+    }
 	.alert-dismissible .close {
 		top: 5px;
 		right: 0;
@@ -612,7 +614,7 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailOpenedCount}}</b>
 													<br>
-													<span class="email-action-desscription">opened</span></h4>
+													<span class="email-action-desscription">Opened</span></h4>
 											</div>
 										</div>
 									</div>
@@ -626,7 +628,7 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailClickedCount}}</b>
 													<br>
-													<span class="email-action-desscription">clicked</span></h4>
+													<span class="email-action-desscription">Clicked</span></h4>
 											</div>
 										</div>
 									</div>
@@ -640,7 +642,7 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailWatchedCount}}</b>
 													<br>
-													<span class="email-action-desscription">watched</span></h4>
+													<span class="email-action-desscription">Views</span></h4>
 											</div>
 										</div>
 									</div>
@@ -810,7 +812,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()"><i class="fa fa-times"></i></a>
-				<h4 class="m0">People who {{paginationType}} Emails</h4>
+				<h4 class="m0">People Who Have <span class="capitalize">{{paginationType}}</span> Your Emails</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -823,7 +825,7 @@
 			<div class="modal-body clearfix">
 				<div class="alert alert-info flex" *ngIf="isLoadingList">
 					<div class="loader" style="border: 1; width: 25px; height: 25px;"></div>
-					<h4>please wait while we process your request..!</h4>
+					<h4>please wait while we process your request</h4>
 				</div>
 				<div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
 					<strong>No Records found.. !!!</strong>
@@ -835,8 +837,8 @@
 								<th class="headerCss center">NAME</th>
 								<th class="headerCss center">CAMPAIGN NAME</th>
 								<th class="headerCss center">DATE & TIME</th>
-								<th class="headerCss center" *ngIf="paginationType != 'open'">LOCATION</th>
-								<th class="headerCss center" *ngIf="paginationType != 'open'">PLATFORM</th>
+								<th class="headerCss center" *ngIf="emailType != 'open'">LOCATION</th>
+								<th class="headerCss center" *ngIf="emailType != 'open'">PLATFORM</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -851,10 +853,10 @@
 								<td class="center">
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
-								<td class="center" *ngIf="paginationType != 'open'">
+								<td class="center" *ngIf="emailType != 'open'">
 									<app-location  [userLocation]="emailClicked"> </app-location>
 								</td>
-								<td class="center" *ngIf="paginationType != 'open'"> 
+								<td class="center" *ngIf="emailType != 'open'"> 
 								<app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
 								</td>
 							</tr>
@@ -876,7 +878,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
-				<h4 class="m0">People who have watched video</h4>
+				<h4 class="m0">Check out where your videos are being watched</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>

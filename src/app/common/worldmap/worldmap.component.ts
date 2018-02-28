@@ -20,7 +20,7 @@ export class WorldmapComponent implements OnInit {
       },
       exporting: { enabled: false },
       title: {
-        text: 'The people who have watched the video',
+        text: 'Check out where your videos are being watched',
         style: {
           color: '#696666',
           fontWeight: 'normal',
