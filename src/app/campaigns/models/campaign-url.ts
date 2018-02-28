@@ -18,4 +18,5 @@ export class Url{
     emailTemplate:EmailTemplate = new EmailTemplate();
     showSelectedEmailTemplate:boolean  = false;
     defaultTemplate:boolean = false;
+    replyTimeInHoursAndMinutes:string = "";
 }

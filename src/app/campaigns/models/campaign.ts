@@ -12,7 +12,7 @@ export class Campaign {
     email: string;
     preHeader: string;
     message: string;
-    selectedVideoId: number;
+    selectedVideoId: number = 0;;
     userListIds: number[] = [];
     userId: number;
     emailOpened = false;

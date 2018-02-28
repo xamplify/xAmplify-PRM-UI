@@ -202,15 +202,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         if(this.isAdd){
             this.campaignType = this.refService.selectedCampaignType;
-            if(this.isOnlyPartner){
-                this.partnerVideosClass = this.tabClassActive;
-                this.partnerVideosStyle = this.styleDisplayClass;
-                this.isMyVideosActive = false;
-            }else{
-                this.myVideosClass = this.tabClassActive;
-                this.myVideosStyle = this.styleDisplayClass;
-            }
-            
+            this.setActiveTabForVideo();
             this.campaign.countryId = this.countries[0].id;
             this.onSelect(this.campaign.countryId);
         }
@@ -236,8 +228,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign = this.campaignService.campaign;
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
+                this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
             }else{
                 this.campaignType = 'video';
+                this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -272,11 +266,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCampaignDraftVideo = true;
                 this.launchVideoPreview = this.campaignService.campaign.campaignVideoFile;
                 this.savedVideoFile = this.campaignService.campaign.campaignVideoFile;
-                if(this.isOnlyPartner){
-                    this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
-                }else{
-                    this.loadEmailTemplates(this.emailTemplatesPagination);
-                }
             }
             
             /***********Select Contact List Tab*************************/
@@ -298,6 +287,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedTemplateBody = this.campaign.emailTemplate.body;
                 this.emailTemplate = this.campaign.emailTemplate;
             }
+            if(this.isOnlyPartner){
+                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+            }else{
+                this.loadEmailTemplates(this.emailTemplatesPagination);
+            }
           /************Launch Campaign**********************/
             this.name = this.campaignService.campaign.campaignName;
             if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
@@ -314,7 +308,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaign.scheduleTime = "";
             }
             let emailTemplate = this.campaign.emailTemplate;
-            console.log(emailTemplate);
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
             }else{
@@ -340,6 +333,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             /****************Creating Campaign From Manage VIdeos*******************************/
             var selectedVideoId  = this.refService.campaignVideoFile.id;
             if(selectedVideoId>0){
+                this.setActiveTabForVideo();
                 this.isVideo = true;
                 this.videoId = selectedVideoId;
                 this.isCampaignDraftVideo = true;
@@ -349,10 +343,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaign.selectedVideoId = selectedVideoId;
                 this.savedVideoFile = this.refService.campaignVideoFile;
                 this.selectedRow = this.refService.campaignVideoFile.id;
+                console.log(this.refService.campaignVideoFile);
+                //this.partnerVideoSelected =true;
+                //this.campaign.partnerVideoSelected = true;
             }
         }
     
     
+    }
+    
+    setActiveTabForVideo(){
+        if(this.isOnlyPartner){
+            this.partnerVideosClass = this.tabClassActive;
+            this.partnerVideosStyle = this.styleDisplayClass;
+            this.isMyVideosActive = false;
+        }else{
+            this.myVideosClass = this.tabClassActive;
+            this.myVideosStyle = this.styleDisplayClass;
+        }
     }
     
     getCampaignReplies(campaign:Campaign){
@@ -365,6 +373,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                }
                reply.emailTemplatesPagination = new Pagination();
                reply.replyTime = new Date(reply.replyTime);
+               reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
                let length = this.allItems.length;
                length = length+1;
                var id = 'reply-'+length;
@@ -374,6 +383,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            } 
        }
        
+    }
+    
+    extractTimeFromDate(replyTime){
+        let dt = new Date(replyTime);
+        let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
+        let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
+        return hours+":"+minutes;
     }
     getCampaignUrls(campaign:Campaign){
         if(campaign.campaignUrls!=undefined){
@@ -385,6 +401,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
                 url.emailTemplatesPagination = new Pagination();
                 url.replyTime = new Date(url.replyTime);
+                url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
                 let length = this.allItems.length;
                 length = length+1;
                 var id = 'click-'+length;
@@ -407,39 +424,48 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             time_24hr: true
         } );
         //this.validatecampaignForm();
+        
+        if(this.campaignType=="video"){
+            this.width="20%";
+             this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+             $('#videoTab').show();
+             if(!(this.isAdd)){
+                 var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
+                 if(selectedTemplateId>0){
+                     this.emailTemplateId = selectedTemplateId;
+                     this.isEmailTemplate = true;
+                     this.isCampaignDraftEmailTemplate = true;
+                 }
+                      
+             }
+             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
+         }else{
+             this.width="25%";
+             this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+             this.isVideo = true;
+             $('#videoTab').hide();
+             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+         } 
+        
+        
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
         if(this.isAdd){
             this.contactsPagination.filterValue = false;
             this.loadCampaignContacts(this.contactsPagination);
-            this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
+            if(this.isOnlyPartner){
+                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+            }else{
+                this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
+            }
+           
         }else{
             this.contactsPagination.filterValue = this.campaign.channelCampaign;
             this.loadCampaignContacts(this.contactsPagination);
         }
         
-        if(this.campaignType=="video"){
-           this.width="20%";
-            this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-            $('#videoTab').show();
-            if(!(this.isAdd)){
-                var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
-                if(selectedTemplateId>0){
-                    this.emailTemplateId = selectedTemplateId;
-                    this.isEmailTemplate = true;
-                    this.isCampaignDraftEmailTemplate = true;
-                }
-                     
-            }
-            this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
-        }else{
-            this.width="25%";
-            this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-            this.isVideo = true;
-            $('#videoTab').hide();
-            this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
-        }  
+    
     }
     
     /******************************************Pagination Related Code******************************************/
@@ -457,7 +483,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
             if(this.isOnlyPartner){
-                this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
             }else{
                 this.loadEmailTemplates(this.emailTemplatesPagination);
             }
@@ -614,7 +640,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.selectedEmailTemplateRow=0;
                     this.isEmailTemplate = false;
                     this.emailTemplatesPagination.pageIndex = 1;
-                    this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+                    this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
                 }
             }else{
                 this.campaign.partnerVideoSelected = false;
@@ -1188,7 +1214,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
     
-    loadEmailTemplatesForVideo(pagination:Pagination){
+    loadPartnerEmailTemplates(pagination:Pagination){
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         pagination.campaignDefaultTemplate = false;
         pagination.isEmailTemplateSearchedFromCampaign = true;
@@ -1426,7 +1452,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplatesPagination.pageIndex = 1;
         this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
         if(this.isOnlyPartner){
-            this.loadEmailTemplatesForVideo(this.emailTemplatesPagination);
+            this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
         }else{
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
@@ -1623,6 +1649,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getRepliesData(){
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
+            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
             this.removeStyleAttrByDivId('send-time-'+reply.divId);
@@ -1679,6 +1706,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getOnClickData(){
         for(var i=0;i<this.urls.length;i++){
             let url = this.urls[i];
+            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
             this.removeStyleAttrByDivId('click-send-time-'+url.divId);
