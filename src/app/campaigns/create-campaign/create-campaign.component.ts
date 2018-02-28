@@ -117,6 +117,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     myVideosStyle = this.styleHiddenClass;
     partnerVideoSelected:boolean = false;
     isMyVideosActive:boolean = true;
+    isFromManageVideos:boolean =false;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -333,6 +334,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             /****************Creating Campaign From Manage VIdeos*******************************/
             var selectedVideoId  = this.refService.campaignVideoFile.id;
             if(selectedVideoId>0){
+                this.isFromManageVideos = true;
                 this.setActiveTabForVideo();
                 this.isVideo = true;
                 this.videoId = selectedVideoId;
@@ -343,9 +345,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaign.selectedVideoId = selectedVideoId;
                 this.savedVideoFile = this.refService.campaignVideoFile;
                 this.selectedRow = this.refService.campaignVideoFile.id;
-                console.log(this.refService.campaignVideoFile);
-                //this.partnerVideoSelected =true;
-                //this.campaign.partnerVideoSelected = true;
+                if(this.refService.videoType=='partnerVideos'){
+                    this.partnerVideoSelected =true;
+                    this.campaign.partnerVideoSelected = true;
+                }
             }
         }
     
