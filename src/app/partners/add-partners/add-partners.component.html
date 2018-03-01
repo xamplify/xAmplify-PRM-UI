@@ -62,7 +62,7 @@ img:hover {
 				style="color: white;">Cancel</a>--> <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
-					Download Csv File<i class="fa fa-cloud-download" aria-hidden="true"
+					Download Parter Csv Template<i class="fa fa-cloud-download" aria-hidden="true"
 						style="margin-left: 5px"></i>
 				</button>
 			</a>
@@ -74,8 +74,8 @@ img:hover {
 									<div class="row">
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 								<div class="portlet light add-options">
-								<div class="portlet-title">Add your
-									Partners with given options</div>
+								<!-- <div class="portlet-title">Add your Partners with given options</div> -->
+								<div class="portlet-title"> How would you like to add your Partners?</div>
 								<div class="portlet-body">
 									<div class="row">		
 									<div class="col-xs-12 col-sm-4 col-md-4">
@@ -83,7 +83,7 @@ img:hover {
 											(click)="addPartnerModalOpen()"
 							 					[disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5">
 											<i class="fa fa-user-plus"></i>
-											<span>Add Partner</span>
+											<span>One at a Time</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4">
@@ -91,7 +91,7 @@ img:hover {
 											(click)="copyFromClipboard()"
 											[disabled]="selectedAddPartnerOption != 5">
 											<i class="fa fa-users"></i>
-											<span>Copy Form ClipBoard</span>
+											<span>Copy List Form ClipBoard</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4">
@@ -116,7 +116,8 @@ img:hover {
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 									<div class="portlet light cloud-services">
-									<div class="portlet-title">Import from	available cloud service</div>
+									<!-- <div class="portlet-title">Import from	available cloud service</div> -->
+									<div class="portlet-title">Import contacts from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
 									
@@ -662,14 +663,14 @@ img:hover {
 								<input type="name" style="border: none" class="form-control"
 									id="firstName" [(ngModel)]="addPartnerUser.firstName"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter First Name" maxlength="250">
+									placeholder="First Name" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 							<div class="form-group col-sm-5">
 								<input type="name" style="border: none" class="form-control"
 									id="lastName" [(ngModel)]="addPartnerUser.lastName"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter Last Name" maxlength="250">
+									placeholder="Last Name" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 						</div>
@@ -682,14 +683,14 @@ img:hover {
 								<input type="company" style="border: none" class="form-control"
 									id="company" [(ngModel)]="addPartnerUser.contactCompany"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter Company" maxlength="250">
+									placeholder="Company" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 							<div class="form-group col-sm-5">
 								<input type="title" style="border: none" class="form-control"
 									id="title" [(ngModel)]="addPartnerUser.jobTitle"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter JobTitle" maxlength="250">
+									placeholder="JobTitle" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 						</div>
@@ -705,7 +706,7 @@ img:hover {
 									(input)="validateEmail(addPartnerUser.emailId)"
 									[(ngModel)]="addPartnerUser.emailId"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter email *" autocomplete="off" maxlength="250">
+									placeholder="Email *" autocomplete="off" maxlength="250">
 								<div class="textCss"></div>
 								<div style="color: red" *ngIf="!validEmailPatternSuccess">Invalid
 									EmailId</div>
@@ -721,20 +722,20 @@ img:hover {
 									<input type="address" style="border: none" class="form-control"
 										id="address" [(ngModel)]="addPartnerUser.address"
 										[ngModelOptions]="{standalone: true}"
-										placeholder="Enter Address lane1" maxlength="250">
+										placeholder="Address lane1" maxlength="250">
 									<div class="textCss"></div>
 								</div>
 								<div class="form-group col-sm-3">
 									<input type="city" style="border: none" class="form-control"
 										id="city" [(ngModel)]="addPartnerUser.city"
-										[ngModelOptions]="{standalone: true}" placeholder="city/town"
+										[ngModelOptions]="{standalone: true}" placeholder="City/Town"
 										maxlength="44">
 									<div class="textCss"></div>
 								</div>
 								<div class="form-group col-sm-3">
 									<select class="form-control" style="border: none; width: 120%"
 										class="form-control" [(ngModel)]="addPartnerUser.country"
-										[ngModelOptions]="{standalone: true}" placeholder="country">
+										[ngModelOptions]="{standalone: true}" placeholder="Country">
 										<option *ngFor="let country of referenceService.countries"
 											[value]="country">{{country}}</option>
 									</select>
@@ -752,7 +753,7 @@ img:hover {
 									style="border: none" class="form-control" id="phone"
 									[(ngModel)]="addPartnerUser.mobileNumber"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Enter MobileNumber" maxlength="10"
+									placeholder="Mobile Number" maxlength="10"
 									autocomplete="off">
 								<div class="textCss"></div>
 							</div>
@@ -764,7 +765,7 @@ img:hover {
 							<div class="col-sm-10">
 								<textarea name="note" style="border: none" class="form-control"
 									id="note" [(ngModel)]="addPartnerUser.description"
-									[ngModelOptions]="{standalone: true}" placeholder="Enter Notes">
+									[ngModelOptions]="{standalone: true}" placeholder="Notes">
 		      </textarea>
 								<div class="textCss"></div>
 							</div>
@@ -774,14 +775,13 @@ img:hover {
 				<div class="modal-footer" *ngIf="!updatePartnerUser">
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="addRow()">Save</button>
-					<button type="button" class="btn green" data-dismiss="modal"
-						(click)="addPartnerModalClose()">Close</button>
+					<!-- <button type="button" class="btn green" data-dismiss="modal" (click)="addPartnerModalClose()">Close</button> -->
 				</div>
 				<div class="modal-footer" *ngIf="updatePartnerUser">
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="updatePartnerListUser()">Update</button>
-					<button type="button" class="btn green" data-dismiss="modal"
-						(click)="updatePartnerModalClose()">Close</button>
+					<!-- <button type="button" class="btn green" data-dismiss="modal"
+						(click)="updatePartnerModalClose()">Close</button> -->
 				</div>
 			</div>
 
@@ -815,7 +815,7 @@ img:hover {
 								<label class="control-label col-sm-3" for="email">Email:</label>
 								<div class="col-sm-8">
 									<input type="email" style="width: 75%" class="form-control"
-										id="email" placeholder="Enter email" [(ngModel)]="userName"
+										id="email" placeholder="email" [(ngModel)]="userName"
 										[ngModelOptions]="{standalone: true}">
 								</div>
 							</div>
@@ -823,7 +823,7 @@ img:hover {
 								<label class="control-label col-sm-3" for="pwd">Password:</label>
 								<div class="col-sm-8">
 									<input type="password" style="width: 75%" class="form-control"
-										id="pwd" placeholder="Enter password" [(ngModel)]="password"
+										id="pwd" placeholder="password" [(ngModel)]="password"
 										[ngModelOptions]="{standalone: true}">
 								</div>
 							</div>
