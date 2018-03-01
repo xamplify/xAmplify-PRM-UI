@@ -45,5 +45,6 @@ export class Campaign {
     countryId:number = 0;
     country:string = "";
     timeZoneId: any;
+    createdFromVideos=false;
     
 }

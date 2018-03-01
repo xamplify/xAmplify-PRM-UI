@@ -241,10 +241,11 @@
 				          <div class="col-lg-12" style="padding-left: 0px;padding-right: 0px;">
 									<div class="note-vid">Video: Pick your video to be streamed</div>
 							<div id="home" class="tab-pane fade in active">
-								<div class="tab">
+								<div class="tab" *ngIf="!campaign.createdFromVideos">
 									  <button  [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner">My Videos</button>
 									  <button  [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
-										<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
+									  <ng-container *ngIf="!campaign.createdFromVideos">
+									  	<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 											<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
 											<input type="text"  class="form-control" placeholder="search in My videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 										</div>
@@ -252,6 +253,7 @@
 											<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
 											<input type="text"  class="form-control" placeholder="search in Partner videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 										</div>
+									  </ng-container>
 								</div>
 							
 							<div id="my-videos" class="tabcontent" [style.display]="myVideosStyle">
@@ -261,17 +263,16 @@
 									<tr role="row">
 									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
 									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th>
-									<!-- background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0); -->
-									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="CategoryAccountingAgriculture and FisheryAlternative MedicineApparel and FashionAutomotiveAviation and AerospaceLeisure,Travel and TourismManufacturingMediaNon-profitReal EstateSecurity and InvestigationsSportsTechnology (General)">
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 										<span class="filter_column filter_select">
-										<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)">
+										<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)" >
 											<option value="" class="search_init">Category</option>
 											<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}" [selected]="category.id==videosPagination.videoCategoryId">{{category.name}}</option>
 										</select>
 										</span>
 									</th>
-									<!-- background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0); -->
-									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1">
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1"  *ngIf="campaign.createdFromVideos">Category</th>
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 										<span class="filter_column filter_select">
 										<select class="form-control" (change)="filterVideosByType($event)">
 											<option value="" class="search_init">Type</option>
@@ -281,6 +282,7 @@
 					         			 </select>
 										</span>
 									</th>
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1"  *ngIf="campaign.createdFromVideos">Type</th>
 									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
 									</tr>
 								</thead>
@@ -341,6 +343,7 @@
 									</tr>
 									</ng-container>
 									<!-- --------------------Avalilable Campaign Videos------------ -->	
+									<ng-container *ngIf="!campaign.createdFromVideos">
 									<tr role="row" class="odd" *ngFor="let videoFile of videosPagination.pagedItems;let i =  index" 
 									(click)="setClickedRow(videoFile,'my-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
 										[attr.title]="draftMessage"  (mouseover)='showToolTip(videoFile.viewBy)'>
@@ -391,9 +394,10 @@
 										</td>
 									</tr>
 									</ng-container>
+									</ng-container>
 								</tbody>
 							</table>
-								<div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !isFromManageVideos ">   
+								<div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos ">   
 								<!--pager here  -->
 								 	 <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
@@ -429,16 +433,16 @@
 									<tr role="row">
 									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
 									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th>
-									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="CategoryAccountingAgriculture and FisheryAlternative MedicineApparel and FashionAutomotiveAviation and AerospaceLeisure,Travel and TourismManufacturingMediaNon-profitReal EstateSecurity and InvestigationsSportsTechnology (General)">
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 										<span class="filter_column filter_select">
-										<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)">
+										<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)" >
 											<option value="" class="search_init">Category</option>
 											<option *ngFor="let category of partnerCategories" class="colorSelect" value="{{category.id}}" [selected]="category.id==channelVideosPagination.videoCategoryId">{{category.name}}</option>
 										</select>
 										</span>
 									</th>
-									<!-- background: url(&quot;https://aravindu.com/MobinarApp/admin/assets/plugins/jquery-datatable/images/sort_both.png&quot;) 100% 50% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0); -->
-									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1">
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" *ngIf="campaign.createdFromVideos">Category</th>
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 										<span class="filter_column filter_select">
 										<select class="form-control" (change)="filterPartnerVideosByType($event)">
 											<option value="" class="search_init">Type</option>
@@ -448,6 +452,7 @@
 					         			 </select>
 										</span>
 									</th>
+									<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1"  *ngIf="campaign.createdFromVideos">Type</th>
 									<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
 									</tr>
 								</thead>
@@ -501,6 +506,7 @@
 									</tr>
 									</ng-container>
 									<!-- --------------------Avalilable Campaign Videos------------ -->	
+									<ng-container *ngIf="!campaign.createdFromVideos">
 									<tr role="row" class="odd" *ngFor="let videoFile of channelVideosPagination.pagedItems;let i =  index" 
 									(click)="setClickedRow(videoFile,'partner-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" 
 										[attr.title]="draftMessage"  (mouseover)='showToolTip(videoFile.viewBy)'>
@@ -547,9 +553,10 @@
 										</td>
 									</tr>
 									</ng-container>
+									</ng-container>
 								</tbody>
 							</table>
-								<div *ngIf="!isPartnerVideoExists && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !isFromManageVideos">   
+								<div *ngIf="!isPartnerVideoExists && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos">   
 								<!--pager here  -->
 								 	 <ul *ngIf="channelVideosPagination.pager.pages && channelVideosPagination.pager.pages.length" class="pagination">
                                              <li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}">

@@ -117,7 +117,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     myVideosStyle = this.styleHiddenClass;
     partnerVideoSelected:boolean = false;
     isMyVideosActive:boolean = true;
-    isFromManageVideos:boolean =false;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -334,7 +333,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             /****************Creating Campaign From Manage VIdeos*******************************/
             var selectedVideoId  = this.refService.campaignVideoFile.id;
             if(selectedVideoId>0){
-                this.isFromManageVideos = true;
+                this.campaign.createdFromVideos = true;
                 this.setActiveTabForVideo();
                 this.isVideo = true;
                 this.videoId = selectedVideoId;
@@ -1232,6 +1231,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.isEmailTemplate = false;
                 }
                 this.filterEmailTemplateForEditCampaign();
+                if(this.refService.campaignVideoFile!=undefined){
+                    let filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+                    this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
+                    this.isEmailTemplate = true;
+                }
                 this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
             },
             (error:string) => {
@@ -1643,7 +1647,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'campaignReplies':this.replies,
             'campaignUrls':this.urls,
             'campaignType':campaignType,
-            'country':country
+            'country':country,
+            'createdFromVideos':this.campaign.createdFromVideos
         };
         console.log(data);
         return data;
