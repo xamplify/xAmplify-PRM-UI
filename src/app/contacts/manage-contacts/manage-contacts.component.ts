@@ -233,7 +233,8 @@ export class ManageContactsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
                 }
                 if ( this.contactLists.length == 0 ) {
-                    this.setResponseDetails( 'INFO', 'No Data lists found' );
+                    // this.setResponseDetails( 'INFO', 'No Data lists found' );
+                    this.setResponseDetails( 'INFO', 'No results found' );
                     this.pagedItems = null;
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );

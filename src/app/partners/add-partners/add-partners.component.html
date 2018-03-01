@@ -62,7 +62,7 @@ img:hover {
 				style="color: white;">Cancel</a>--> <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
-					Download Parter Csv Template<i class="fa fa-cloud-download" aria-hidden="true"
+					Download Parter CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
 						style="margin-left: 5px"></i>
 				</button>
 			</a>
@@ -117,7 +117,7 @@ img:hover {
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 									<div class="portlet light cloud-services">
 									<!-- <div class="portlet-title">Import from	available cloud service</div> -->
-									<div class="portlet-title">Import contacts from the cloud:</div>
+									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
 									
@@ -128,7 +128,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass"
-										title="Click here To access user list from your Salesforce account"
+										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90">
 									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
 										style="background-color: white" (click)="salesforceContacts()"
@@ -136,7 +136,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass"
-										title="Click here To access user list from your Salesforce account"
+										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/sf.png';">
@@ -155,7 +155,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass"
-										title="Click here To access user list from your Google contacts"
+										title="Click here to access contacts from your Google contacts"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/google.png';">
@@ -165,7 +165,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass"
-										title="Click here To access user list from your Google contacts"
+										title="Click here to access contacts from your Google contacts"
 										height="86" width="90">
 									</a>
 									<div id="GoogleGear" style="position: relative"
@@ -184,7 +184,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass"
-										title="Click here To access user list from your Zoho account"
+										title="Click here to access contacts from your Zoho account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/Zoho.png';">
@@ -195,7 +195,7 @@ img:hover {
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass"
-										title="Click here To access user list from your Zoho account"
+										title="Click here to access contacts from your Zoho account"
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
@@ -209,7 +209,7 @@ img:hover {
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamics.png"
 										class="imageClass imageblur mdImageClass"
-										title="Click here To access user list from your Microsoft CRM account"
+										title="Click here to access contacts from your Microsoft CRM account"
 										height="86" width="90" style="margin-bottom: 18px"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/dynamics.png';">
@@ -505,14 +505,14 @@ img:hover {
 														</select>
 													</div> 
 													<div class="portlet-input input-inline input-small">
-														<div class="input-icon right">
+														<div class="input-icon right" style="width:106%">
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
 																(click)="search()"> </i> <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search...">
+																class="form-control" placeholder="Search for a List">
 														</div>
 													</div>
 												</div>
@@ -690,7 +690,7 @@ img:hover {
 								<input type="title" style="border: none" class="form-control"
 									id="title" [(ngModel)]="addPartnerUser.jobTitle"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="JobTitle" maxlength="250">
+									placeholder="Job Title" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 						</div>
@@ -722,7 +722,7 @@ img:hover {
 									<input type="address" style="border: none" class="form-control"
 										id="address" [(ngModel)]="addPartnerUser.address"
 										[ngModelOptions]="{standalone: true}"
-										placeholder="Address lane1" maxlength="250">
+										placeholder="Address" maxlength="250">
 									<div class="textCss"></div>
 								</div>
 								<div class="form-group col-sm-3">
@@ -773,6 +773,7 @@ img:hover {
 					</form>
 				</div>
 				<div class="modal-footer" *ngIf="!updatePartnerUser">
+					<span style="float: left;">Note: * indicates required</span>
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="addRow()">Save</button>
 					<!-- <button type="button" class="btn green" data-dismiss="modal" (click)="addPartnerModalClose()">Close</button> -->

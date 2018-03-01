@@ -185,7 +185,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 													src="assets/images/crm/sf.png" class="salesForceImageClass"
-													title="Click here To access user list from your Salesforce account"
+													title="Click here to access contacts from your Salesforce account"
 													height="86" width="90">
 												</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
 													style="background-color: white"
@@ -194,7 +194,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 													src="assets/images/crm/sf.png" class="salesForceImageClass"
-													title="Click here To access user list from your Salesforce account"
+													title="Click here to access contacts from your Salesforce account"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/sf.png';">
@@ -215,7 +215,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 													src="assets/images/crm/google.png" class="googleImageClass"
-													title="Click here To access user list from your Google contacts"
+													title="Click here to access contacts from your Google contacts"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/google.png';">
@@ -226,7 +226,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 													src="assets/images/crm/google.png" class="googleImageClass"
-													title="Click here To access user list from your Google contacts"
+													title="Click here to access contacts from your Google contacts"
 													height="86" width="90">
 												</a>
 												<div id="GoogleGear" style="position: relative"
@@ -246,7 +246,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass"
-													title="Click here To access user list from your Zoho account"
+													title="Click here to access contacts from your Zoho account"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/Zoho.png';">
@@ -257,7 +257,7 @@ img:hover {
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass"
-													title="Click here To access user list from your Zoho account"
+													title="Click here to access contacts from your Zoho account"
 													height="86" width="90">
 												</a>
 												<div id="zohoGear" style="position: relative"
@@ -274,7 +274,7 @@ img:hover {
 													style="background-color: white"> <img
 													src="assets/images/crm/dynamics.png"
 													class="imageClass imageblur mdImageClass"
-													title="Click here To access user list from your Microsoft CRM account"
+													title="Click here to access contacts from your Microsoft CRM account"
 													height="86" width="90" style="margin-bottom: 18px"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/dynamics.png';">
@@ -761,7 +761,7 @@ img:hover {
 							<input type="title" style="border: none" class="form-control"
 								id="title" [(ngModel)]="addContactuser.jobTitle"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="JobTitle" maxlength="250">
+								placeholder="Job Title" maxlength="250">
 							<div class="textCss"></div>
 						</div>
 					</div>
@@ -792,7 +792,7 @@ img:hover {
 								<input type="address" style="border: none" class="form-control"
 									id="address" [(ngModel)]="addContactuser.address"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Address lane1" maxlength="250">
+									placeholder="Address" maxlength="250">
 								<div class="textCss"></div>
 							</div>
 							<div class="form-group col-sm-3">
@@ -843,7 +843,7 @@ img:hover {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<!-- <span style="color:red">Required: *</span> -->
+				<span style="float: left;">Note: * indicates required</span>
 				<button type="submit" class="btn green"
 					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
 				<!-- <button type="button" class="btn green" data-dismiss="modal"

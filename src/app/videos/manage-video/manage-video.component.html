@@ -60,7 +60,7 @@
 											<div class="input-icon right" style="cursor:pointer">
 												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 												<input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-												 placeholder="Search...">
+												 placeholder="Search for a Video">
 											</div>
 										</div>
 									</div>
@@ -201,11 +201,11 @@
 													  </span>
 													</div>
 													<!--end partner videos   -->
-													<span align="right" title="video length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-													<span align="right" title="uploaded date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
-													<span align="left"  title="views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
-												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
-											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="uploadedBy" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy | slice: 0: 21}}</span>
+													<span align="right" title="Video Length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+													<span align="right" title="Uploaded Date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
+													<span align="left"  title="Views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
+												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
+											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy | slice: 0: 21}}</span>
 												</div>
 											</div>
 											<div>

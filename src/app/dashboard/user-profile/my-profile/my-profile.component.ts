@@ -30,7 +30,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
     busy: Subscription;
-    status:boolean = true;
+    status: boolean = true;
     updatePasswordBusy: Subscription;
     updatePlayerBusy: Subscription;
     updatePasswordSuccess = false;
@@ -55,12 +55,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hasAllAccess = false;
     hasCompany: boolean;
     defaultViewSuccess = false;
-    orgAdminCount:number = 0;
-    infoMessage:string = "";
-    currentUser:User;
-    roles:string[]=[];
-    isOrgAdmin:boolean = false;
-    isOnlyPartnerRole:boolean = false;
+    orgAdminCount: number = 0;
+    infoMessage: string = "";
+    currentUser: User;
+    roles: string[] = [];
+    isOrgAdmin: boolean = false;
+    isOnlyPartnerRole: boolean = false;
     logoUploader: FileUploader;
     logoImageUrlPath: string;
     imagePathSafeUrl: any;
@@ -69,10 +69,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     logoLink = '';
     logoUrlUpdated = false;
     roleLength: boolean;
+    ngxloading: boolean;
 
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer,) {
+        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, ) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
@@ -86,9 +87,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
-            if(this.hasCompany && this.refService.defaultPlayerSettings !== undefined){
-            this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
-            this.logoLink  = this.refService.defaultPlayerSettings.brandingLogoDescUri;
+            if (this.hasCompany && this.refService.defaultPlayerSettings !== undefined) {
+                this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
+                this.logoLink = this.refService.defaultPlayerSettings.brandingLogoDescUri;
             }
             console.log(this.userData);
             if (this.userData.firstName !== null) {
@@ -140,42 +141,46 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('#overLayImage').append($('#overlay-logo').show());
         };
         this.logoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response); 
+            console.log(response);
             console.log(this.logoUploader.queue[0]);
-            if(JSON.parse(response).message === null){
-            //   this.logoUploader.queue[0].upload(); 
+            if (JSON.parse(response).message === null) {
+                //   this.logoUploader.queue[0].upload(); 
             } else {
-             this.logoUploader.queue.length = 0;
-             this.logoUpdated = true;
-             this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
+                this.logoUploader.queue.length = 0;
+                this.logoUpdated = true;
+                this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
             }
         }
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    clearLogo(){
+    clearLogo() {
         this.logoUploader.queue.length = 0;
         this.logoImageUrlPath = undefined;
     }
-    saveVideoBrandLog(){
-       this.logoUpdated = false;
-       this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
-        .subscribe(
-        (data: any)=>{
-         console.log(data);
-         if(data !== undefined){
-             this.logoUrlUpdated = true;
-             this.logoImageUrlPath = data.brandingLogoPath
-             this.logoLink = data.brandingLogoDescUri;
-         }
-       });
+    saveVideoBrandLog() {
+        this.logoUpdated = false;
+        this.refService.goToTop();
+        this.ngxloading = true;
+        this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
+            .subscribe(
+                (data: any) => {
+                    console.log(data);
+                    if (data !== undefined) {
+                        this.ngxloading = false;
+                        this.logoUrlUpdated = true;
+                        this.logoImageUrlPath = data.brandingLogoPath
+                        this.logoLink = data.brandingLogoDescUri;
+                    } else { this.ngxloading = false; }
+                },
+                (error) => { this.ngxloading = false; });
     }
-    hasOrgAdminRole(){
+    hasOrgAdminRole() {
         this.roles = this.authenticationService.getRoles();
-        if(this.roles.indexOf('ROLE_ORG_ADMIN')>-1){
+        if (this.roles.indexOf('ROLE_ORG_ADMIN') > -1) {
             this.isOrgAdmin = true;
-        }else{
+        } else {
             this.isOrgAdmin = false;
         }
     }
@@ -211,8 +216,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.readFiles(inputFile.files);
         }
     }
-    videofileChange(inputFile){
-    console.log(inputFile);
+    videofileChange(inputFile) {
+        console.log(inputFile);
     }
     readFile(file: any, reader: any, callback: any) {
         reader.onload = () => {
@@ -235,16 +240,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             const self = this;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
-               { 
-               html5: {
-                    hls: {
-                        overrideNative: overrideNativeValue
-                    },
-                    nativeVideoTracks: !overrideNativeValue,
-                    nativeAudioTracks: !overrideNativeValue,
-                    nativeTextTracks: !overrideNativeValue
-                  }
-                 },
+                {
+                    html5: {
+                        hls: {
+                            overrideNative: overrideNativeValue
+                        },
+                        nativeVideoTracks: !overrideNativeValue,
+                        nativeAudioTracks: !overrideNativeValue,
+                        nativeTextTracks: !overrideNativeValue
+                    }
+                },
                 { "controls": true, "autoplay": false, "preload": "auto" },
                 function () {
                     const document: any = window.document;
@@ -266,8 +271,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (event === 'FullscreenOn') {
                             self.fullScreenMode = true;
                         } else if (event === 'FullscreenOff') {
-                            self.fullScreenMode  = false;
-                         }
+                            self.fullScreenMode = false;
+                        }
                     });
                 });
             this.defaultVideoSettings();
@@ -275,13 +280,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.refService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
-         setTimeout(function () {
-             self.videoJSplayer.play();
-             self.videoJSplayer.pause();  
-        }, 1);
-        } else { 
+            setTimeout(function () {
+                self.videoJSplayer.play();
+                self.videoJSplayer.pause();
+            }, 1);
+        } else {
             this.logger.log('you already initialized the videojs');
-         }
+        }
     }
     ngOnInit() {
         try {
@@ -297,64 +302,64 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.userData.displayName = this.userData.emailId;
             }
-            
+
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-              let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
-              this.roleLength = currentUser.roles.length> 1 ? true: false;
-              this.isOnlyPartner(roleNames);
-            if(currentUser.roles.length > 1 && this.hasCompany){
-                let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
-                if(!this.isOnlyPartner(roleNames)){
+            let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
+            this.roleLength = currentUser.roles.length > 1 ? true : false;
+            this.isOnlyPartner(roleNames);
+            if (currentUser.roles.length > 1 && this.hasCompany) {
+                let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
+                if (!this.isOnlyPartner(roleNames)) {
                     this.getOrgAdminsCount(this.loggedInUserId);
                 }
                 this.getVideoDefaultSettings();
                 this.defaultVideoSettings();
                 this.refService.isDisabling = false;
                 this.status = true;
-            }else{
+            } else {
                 this.refService.isDisabling = true;
-                if(this.authenticationService.isCompanyAdded){
+                if (this.authenticationService.isCompanyAdded) {
                     this.status = true;
-                }else{
+                } else {
                     this.status = false;
                 }
-               
+
             }
-            
-            
+
+
 
         } catch (err) { }
     }
-    
-    isOnlyPartner(roleNames){
-        if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            this.isOnlyPartnerRole  = true;
+
+    isOnlyPartner(roleNames) {
+        if (roleNames.length == 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
+            this.isOnlyPartnerRole = true;
             return true;
-        }else{
-            this.isOnlyPartnerRole  = false;
+        } else {
+            this.isOnlyPartnerRole = false;
             return false;
         }
-        
+
     }
     ngAfterViewInit() {
-        
+
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(currentUser.roles.length>1 && this.authenticationService.hasCompany()){
+        if (currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
             this.videoUtilService.normalVideoJsFiles();
             this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
             this.defaultVideoSettings();
-            if(this.refService.defaultPlayerSettings.transparency === null){
+            if (this.refService.defaultPlayerSettings.transparency === null) {
                 this.refService.defaultPlayerSettings.transparency = 100;
-                this.refService.defaultPlayerSettings.controllerColor= '#456';
+                this.refService.defaultPlayerSettings.controllerColor = '#456';
                 this.refService.defaultPlayerSettings.playerColor = '#879';
             }
             this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
             if (this.refService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
-            
+
         }
-       
+
     }
 
     updatePassword() {
@@ -372,36 +377,36 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('#update-password-error-div').hide();
             this.updatePasswordBusy = this.userService.updatePassword(userPassword)
                 .subscribe(
-                data => {
-                    const body = data;
-                    if (body !== "") {
-                        var response = body;
-                        var message = response.message;
-                        if (message == "Wrong Password") {
-                            this.formErrors['oldPassword'] = message;
-                            if (this.className == "form-control ng-touched ng-dirty ng-invalid") {
-                                this.className = "form-control ng-dirty ng-invalid ng-touched";
-                            } else if (this.className = "form-control ng-dirty ng-invalid ng-touched") {
-                                this.className = "form-control ng-touched ng-dirty ng-invalid";
+                    data => {
+                        const body = data;
+                        if (body !== "") {
+                            var response = body;
+                            var message = response.message;
+                            if (message == "Wrong Password") {
+                                this.formErrors['oldPassword'] = message;
+                                if (this.className == "form-control ng-touched ng-dirty ng-invalid") {
+                                    this.className = "form-control ng-dirty ng-invalid ng-touched";
+                                } else if (this.className = "form-control ng-dirty ng-invalid ng-touched") {
+                                    this.className = "form-control ng-touched ng-dirty ng-invalid";
+                                } else {
+                                    this.className = "form-control ng-touched ng-dirty ng-valid";
+                                }
+                            } else if (response.message == "Password Updated Successfully") {
+                                $("#update-password-div").show(600);
+                                this.updatePasswordForm.reset();
                             } else {
-                                this.className = "form-control ng-touched ng-dirty ng-valid";
+                                this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
                             }
-                        } else if (response.message == "Password Updated Successfully") {
-                            $("#update-password-div").show(600);
-                            this.updatePasswordForm.reset();
+
                         } else {
                             this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
                         }
 
-                    } else {
-                        this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
-                    }
-
-                },
-                error => {
-                    this.logger.error(this.refService.errorPrepender + " updatePassword():" + error);
-                },
-                () => console.log("Done")
+                    },
+                    error => {
+                        this.logger.error(this.refService.errorPrepender + " updatePassword():" + error);
+                    },
+                    () => console.log("Done")
                 );
         }
         return false;
@@ -415,20 +420,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             var user = { 'oldPassword': password, 'userId': this.loggedInUserId };
             this.userService.comparePassword(user)
                 .subscribe(
-                data => {
-                    if (data != "") {
-                        const response = data;
-                        const message = response.message;
-                        this.formErrors['oldPassword'] = message;
-                    } else {
-                        this.logger.error(this.refService.errorPrepender + " checkPassword():" + data);
-                    }
+                    data => {
+                        if (data != "") {
+                            const response = data;
+                            const message = response.message;
+                            this.formErrors['oldPassword'] = message;
+                        } else {
+                            this.logger.error(this.refService.errorPrepender + " checkPassword():" + data);
+                        }
 
-                },
-                error => {
-                    this.logger.error(this.refService.errorPrepender + " checkPassword():" + error);
-                },
-                () => console.log("Done")
+                    },
+                    error => {
+                        this.logger.error(this.refService.errorPrepender + " checkPassword():" + error);
+                    },
+                    () => console.log("Done")
                 );
         }
         return false;
@@ -483,7 +488,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'occupation': '',
         'description': '',
         'websiteUrl': '',
-        'companyName':''
+        'companyName': ''
     };
 
     validationMessages = {
@@ -599,11 +604,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
-    
-    firstNameValue(name: string){
+
+    firstNameValue(name: string) {
         this.userData.displayName = name;
     }
-    occupationValue(occupation: string){
+    occupationValue(occupation: string) {
         this.userData.occupation = occupation;
     }
 
@@ -613,45 +618,45 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $("#update-profile-div-id").hide();
         this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
-            data => {
-                if (data != "") {
-                    var response = data;
-                    var message = response.message;
-                    if (message === "User Updated") {
-                        setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
-                        if(this.isOnlyPartnerRole){
-                            this.authenticationService.user.hasCompany  = true;
+                data => {
+                    if (data != "") {
+                        var response = data;
+                        var message = response.message;
+                        if (message === "User Updated") {
+                            setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
+                            if (this.isOnlyPartnerRole) {
+                                this.authenticationService.user.hasCompany = true;
+                            }
+                            this.userData = this.updateUserProfileForm.value;
+                            this.userData.displayName = this.updateUserProfileForm.value.firstName;
+                            this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
+                            this.refService.topNavBarUserDetails.displayName = this.parentModel.displayName;
+                            this.userService.getUserByUserName(this.authenticationService.user.emailId).
+                                subscribe(
+                                    res => {
+                                        this.authenticationService.userProfile = res;
+                                        this.getVideoDefaultSettings();
+                                        this.hasCompany = this.authenticationService.user.hasCompany;
+                                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                                        let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
+                                        this.isOnlyPartner(roleNames);
+                                    },
+                                    error => { this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error) },
+                                    () => console.log("Finished")
+                                );
+                        } else {
+                            this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
                         }
-                        this.userData = this.updateUserProfileForm.value;
-                        this.userData.displayName = this.updateUserProfileForm.value.firstName;
-                        this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
-                        this.refService.topNavBarUserDetails.displayName = this.parentModel.displayName;
-                        this.userService.getUserByUserName(this.authenticationService.user.emailId).
-                            subscribe(
-                            res => {
-                                this.authenticationService.userProfile = res;
-                                this.getVideoDefaultSettings();
-                                this.hasCompany = this.authenticationService.user.hasCompany;
-                                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                                let roleNames =  currentUser.roles.map(function (a) { return a.roleName; });
-                                this.isOnlyPartner(roleNames);                                
-                            },
-                            error => { this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error) },
-                            () => console.log("Finished")
-                            );
+
                     } else {
                         this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
                     }
 
-                } else {
-                    this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
-                }
-
-            },
-            error => {
-                this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error);
-            },
-            () => console.log("Done")
+                },
+                error => {
+                    this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error);
+                },
+                () => console.log("Done")
             );
         return false;
     }
@@ -674,23 +679,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     getVideoDefaultSettings() {
         this.userService.getVideoDefaultSettings().subscribe(
             (result: any) => {
-                    this.active = true;
-                    const response = result;
-                    console.log(response);
-                    //  this.defaultPlayerSuccess = true;
-                    this.refService.defaultPlayerSettings = response;
-                    this.tempDefaultVideoPlayerSettings = response;
-                    this.defaultVideoPlayer = response;
-                    this.compControllerColor = response.controllerColor;
-                    this.compPlayerColor = response.playerColor;
-                    this.valueRange = response.transparency;
-                    this.tempControllerColor = response.controllerColor;
-                    this.tempPlayerColor = response.playerColor;
-                    this.logoImageUrlPath = response.brandingLogoUri;
-                    this.logoLink = response.brandingLogoDescUri;
-                    this.defaultPlayerbuildForm();
-                    if (this.isPlayerSettingUpdated === true) {
-                    this.videoUtilService.videoTempDefaultSettings = response; }
+                this.active = true;
+                const response = result;
+                console.log(response);
+                //  this.defaultPlayerSuccess = true;
+                this.refService.defaultPlayerSettings = response;
+                this.tempDefaultVideoPlayerSettings = response;
+                this.defaultVideoPlayer = response;
+                this.compControllerColor = response.controllerColor;
+                this.compPlayerColor = response.playerColor;
+                this.valueRange = response.transparency;
+                this.tempControllerColor = response.controllerColor;
+                this.tempPlayerColor = response.playerColor;
+                this.logoImageUrlPath = response.brandingLogoUri;
+                this.logoLink = response.brandingLogoDescUri;
+                this.defaultPlayerbuildForm();
+                if (this.isPlayerSettingUpdated === true) {
+                    this.videoUtilService.videoTempDefaultSettings = response;
+                }
             }
         );
     }
@@ -772,7 +778,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-        if(this.refService.defaultPlayerSettings.playerColor === undefined || this.refService.defaultPlayerSettings.playerColor=== null){
+        if (this.refService.defaultPlayerSettings.playerColor === undefined || this.refService.defaultPlayerSettings.playerColor === null) {
             this.refService.defaultPlayerSettings.playerColor = '#454';
             this.refService.defaultPlayerSettings.controllerColor = '#234';
             this.refService.defaultPlayerSettings.transparency = 100;
@@ -830,7 +836,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.changeControllerColor(this.compControllerColor);
         this.changePlayerColor(this.compPlayerColor);
         this.transperancyControllBar(this.valueRange);
-         if (this.defaultVideoPlayer.enableVideoController === false) {
+        if (this.defaultVideoPlayer.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
@@ -868,118 +874,118 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
-    
+
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(
-            data => {this.callActionSwitch.isListView = (data === 'true');},
-            error => console.log(error),
-            () => { }
+                data => { this.callActionSwitch.isListView = (data === 'true'); },
+                error => console.log(error),
+                () => { }
             );
     }
-    
+
     setListView(isListView: boolean) {
         this.userService.setListView(this.authenticationService.getUserId(), isListView)
             .subscribe(
-            data => { 
-                this.refService.isListView = isListView;
-                this.defaultViewSuccess = true;
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    this.refService.isListView = isListView;
+                    this.defaultViewSuccess = true;
+                },
+                error => console.log(error),
+                () => { }
             );
     }
-    
-    changeStatus(){
+
+    changeStatus() {
         $('#org-admin-info').hide();
-        if (!($('#status').is(":checked"))){
-            if(this.currentUser.roles.length>1){
+        if (!($('#status').is(":checked"))) {
+            if (this.currentUser.roles.length > 1) {
                 this.status = true;
-                $('#status').prop("checked",true);
+                $('#status').prop("checked", true);
                 let self = this;
                 swal({
                     title: 'Are you sure?',
-                    text:'Once you change status,it cannot be undone.',
+                    text: 'Once you change status,it cannot be undone.',
                     showCancelButton: true,
                     confirmButtonColor: '#54a7e9',
                     cancelButtonColor: '#999',
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
-                    allowOutsideClick:false
-               /*     preConfirm: () => {
-                        if(self.orgAdminCount>1){
-                            $('a').addClass('disabled');
-                            self.refService.isDisabling = true;
-                            self.disableOrgAdmin();
-                        }else{
-                            self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
-                            $('#org-admin-info').show(600);
-                            swal.close();
-                            
-                        }
-                    }*/
-                  }).then(function() {
-                      if(self.orgAdminCount>1){
-                          $('a').addClass('disabled');
-                          self.refService.isDisabling = true;
-                          self.disableOrgAdmin();
-                      }else{
-                          self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
-                          $('#org-admin-info').show(600);
-                          swal.close();
-                          
-                      }
-                  },function (dismiss) {
-                      if (dismiss === 'cancel') {
-                          
-                      }
-                  })
-         
+                    allowOutsideClick: false
+                    /*     preConfirm: () => {
+                             if(self.orgAdminCount>1){
+                                 $('a').addClass('disabled');
+                                 self.refService.isDisabling = true;
+                                 self.disableOrgAdmin();
+                             }else{
+                                 self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+                                 $('#org-admin-info').show(600);
+                                 swal.close();
+                                 
+                             }
+                         }*/
+                }).then(function () {
+                    if (self.orgAdminCount > 1) {
+                        $('a').addClass('disabled');
+                        self.refService.isDisabling = true;
+                        self.disableOrgAdmin();
+                    } else {
+                        self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+                        $('#org-admin-info').show(600);
+                        swal.close();
+
+                    }
+                }, function (dismiss) {
+                    if (dismiss === 'cancel') {
+
+                    }
+                })
+
             }
-        }else{
+        } else {
             this.router.navigate(["/home/dashboard/edit-company-profile"]);
         }
     }
-    
-    getOrgAdminsCount(userId:number){
+
+    getOrgAdminsCount(userId: number) {
         this.userService.getOrgAdminsCount(userId)
-        .subscribe(
-            data => {
-                this.orgAdminCount = data;
-            },
-            error => {
-                this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished getOrgAdminsCount()")
-        );
-    
+            .subscribe(
+                data => {
+                    this.orgAdminCount = data;
+                },
+                error => {
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished getOrgAdminsCount()")
+            );
+
     }
-    
-    disableOrgAdmin(){
+
+    disableOrgAdmin() {
         this.userService.disableOrgAdmin(this.loggedInUserId)
-        .subscribe(
-            data => {
-                const response = data;
-                if(response.statusCode==1048){
+            .subscribe(
+                data => {
+                    const response = data;
+                    if (response.statusCode == 1048) {
+                        $('a').removeClass('disabled');
+                        this.refService.isDisabling = false;
+                        $('#status').prop("checked", true);
+                        this.status = false;
+                        this.refService.accountDisabled = "OrgAdmin Deactivation Successfully Done.";
+                        this.authenticationService.logout();
+                        this.router.navigate(["/login"]);
+                    }
+                },
+                error => {
+                    this.logger.errorPage(error);
                     $('a').removeClass('disabled');
-                    this.refService.isDisabling  = false;
-                    $('#status').prop("checked",true);
-                    this.status = false;
-                    this.refService.accountDisabled = "OrgAdmin Deactivation Successfully Done.";
-                    this.authenticationService.logout();
-                    this.router.navigate(["/login"]);
-                }
-            },
-            error => {
-                this.logger.errorPage(error);
-                $('a').removeClass('disabled');
-            },
-            () => this.logger.info("Finished enableOrDisableOrgAdmin()")
-        );
-    
-        
+                },
+                () => this.logger.info("Finished enableOrDisableOrgAdmin()")
+            );
+
+
     }
-    
+
     ngOnDestroy() {
         if (this.isPlayed === true) {
             this.videoJSplayer.dispose();
@@ -988,5 +994,5 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.h-video').remove();
         this.refService.defaulgVideoMethodCalled = false;
     }
-    
+
 }

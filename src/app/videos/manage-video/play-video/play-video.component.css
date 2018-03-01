@@ -77,3 +77,9 @@
 .is360video {
     z-index: 900;
 }
+.videojs-logo-play{
+    position: absolute;
+    top: 15px;
+    right: 34px;
+    width: 75px;
+}

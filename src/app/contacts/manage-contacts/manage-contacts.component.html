@@ -68,14 +68,14 @@
 														</select>
 													</div>
 													<div class="portlet-input input-inline input-small">
-														<div class="input-icon right">
+														<div class="input-icon right" style="width: 106%;left: -4px;">
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
 																(click)="search('contactList')"> </i> <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search...">
+																class="form-control" placeholder="Search For a List">
 														</div>
 													</div>
 												</div>
@@ -226,7 +226,7 @@
 																title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
 															</a> <a (click)="downloadContactList(contactList.id)"
-																title="Dowload List" data-rel="fancybox-button"> <i
+																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a> <a
 																*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
@@ -273,7 +273,7 @@
 													<div style="top: 4%; position: relative;">
 														<a class="mix-preview5"
 															(click)="downloadContactList(contactList.id)"
-															title="Dowload List" data-rel="fancybox-button"> <i
+															title="Download List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a> <a class="mix-preview4"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
@@ -303,7 +303,7 @@
 													</div>
 													<span align="right"
 														style="bottom: 5px; float: right; position: absolute; right: 10px;">Created
-														Date <br>{{contactList.createdDate}}
+														On <br>{{contactList.createdDate}}
 													</span> <span align="left"
 														style="bottom: 0; left: 6px; position: absolute;">Created
 														By <br>
@@ -377,11 +377,15 @@
 							<h4 class="btn-group pull-left">
 								<span class="capitalize" style="color: #888888"
 									*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
-									contacts </span> <span class="capitalize" style="color: #888888"
+									<!-- contacts  -->
+								    {{checkingContactTypeName}}s
+								</span> <span class="capitalize" style="color: #888888"
 									*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
-									contacts </span>
+									<!-- contacts  -->
+									{{checkingContactTypeName}}s
+								</span>
 							</h4>
-							<a (click)="downloadContactTypeList()" title="Dowload List"
+							<a (click)="downloadContactTypeList()" title="Download List"
 								data-rel="fancybox-button"> <i
 								class="fa fa-cloud-download mr5"
 								style="font-size: 22px; color: #26a69a; padding: 13px;"></i>
@@ -402,7 +406,7 @@
 											<i class="fa fa-times" aria-hidden="true"
 												style="color: red; margin-left: -12px;"></i>
 										</div>
-										<div style="float: left; margin-right: 10px">
+										<div style="float: left; margin-right: 37px">
 											<select class="form-control" [(ngModel)]="sortOption"
 												(ngModelChange)="sortByOption($event, 'contacts')">
 												<ng-container
@@ -413,14 +417,14 @@
 											</select>
 										</div>
 										<div class="portlet-input input-inline input-small">
-											<div class="input-icon right">
+											<div class="input-icon right"  style="width: 122%;left: -29px;">
 												<i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
 													(click)="search('contacts')"> </i> <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search...">
+													placeholder="Search for a contact">
 											</div>
 										</div>
 									</div>
@@ -475,12 +479,13 @@
 								<div *ngIf="contactsByType.isLoading"
 									class="alert alert-info flex">
 									<div class="loader"></div>
-									<h4>please wait while we process your request..!</h4>
+									<h4>please wait while we process your request</h4>
 								</div>
 								<div
 									*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 									class="alert alert-info">
-									<h4>No {{checkingContactTypeName}}s found..!</h4>
+									<!-- <h4>No {{checkingContactTypeName}}s found..!</h4> -->
+									<h4>No results found</h4>
 								</div>
 								<div class="portlet box blue"
 									*ngIf="contactsByType.contacts?.length > 0">
