@@ -128,11 +128,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     checkTag: string;
     isThisDraftVideo = false;
     selectedImagePath: string;
-    saveButtonTitle = 'Save';
+    saveButtonTitle: string;
     isDisable = false;
     brandLogoUrl: any; 
     logoDescriptionUrl: string;
-
+    isLogoThere: boolean;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -151,7 +151,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.saveVideoFile.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
             this.saveVideoFile.viewBy = 'PRIVATE';
-        }
+            this.saveButtonTitle = 'Save';
+        } else { this.saveButtonTitle = 'Update'; }
         this.formErrors = this.videoUtilService.formErrors;
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -162,6 +163,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.callAction.isFistNameChecked = this.saveVideoFile.name;
         this.callAction.isSkipChecked = this.saveVideoFile.skip;
         this.is360Value = this.value360 = this.saveVideoFile.is360video;
+        this.brandLogoUrl = this.saveVideoFile.brandingLogoUri;
         if (this.videoUtilService.validateEmail(this.callAction.email_id)) {
             this.callAction.isOverlay = false;
         } else { this.callAction.isOverlay = true; }
@@ -218,8 +220,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoLogoUploader.queue[0].upload();
         };
         this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            if(JSON.parse(response).message === null){
+              this.isLogoThere = false;
+            } else {
             this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
             console.log(response);
+            if(this.logoDescriptionUrl) { this.isLogoThere = true; } else { this.isLogoThere = false; }
+            }
         }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
     }
@@ -277,12 +284,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.callAction.videoOverlaySubmit = videoPlaybutton;
     }
     // clear videojs logo
-
-    ownFileChange(){
-
-    }
     clearLogo(){
       this.brandLogoUrl = undefined;
+      this.isLogoThere = false;
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
@@ -634,6 +638,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
                 if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
                 this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
+                if(this.brandLogoUrl && this.logoDescriptionUrl) {this.isLogoThere = true; } else {
+                    this.isLogoThere = false;
+                }
             } else {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
@@ -645,6 +652,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.changeTransperancyControllBar(this.tempVideoFile.transparency, this.compControllerColor);
                 if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
                 this.defaultPlayerSettingsCondition(this.tempVideoFile);
+                if(this.brandLogoUrl && this.logoDescriptionUrl) {this.isLogoThere = true; } else {
+                    this.isLogoThere = false;
+                }
             }
             this.loadNgOninit = false;
         } catch (error) { console.log(error); }
@@ -889,6 +899,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     logoDescription(event: string){
         this.logoDescriptionUrl = event;
+        if(this.logoDescriptionUrl) { this.isLogoThere = true; }
+        else { this.isLogoThere = false; }
     }
     ngOnInit() {
         $('#overLayImage').append($('#overlay-logo').show());
@@ -1145,7 +1157,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
         if (this.isValidTitle === false) {
-            this.saveButtonTitle = 'saving..';
+            // if(this.saveButtonTitle === 'Save') { this.saveButtonTitle = 'saving..'} ;
+            this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating'; 
             this.isDisable = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.defaultSetting = this.defaultSettingValue;
@@ -1201,17 +1214,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.saveVideoFile = result;
                         this.notifyParent.emit(this.saveVideoFile);
                         this.videoFileService.videoViewBy = 'Save';
-                        this.saveButtonTitle = 'Save';
+                     //   this.saveButtonTitle = 'Save';
                         this.isDisable = false;
                     } else {
                         this.isDisable = false;
-                        this.saveButtonTitle = 'Save';
+                      //  this.saveButtonTitle = 'Save';
                         this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                     }
                 },
                 (error: any) => {
                     this.isDisable = false;
-                    this.saveButtonTitle = 'Save';
+                  //  this.saveButtonTitle = 'Save';
                     this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
                     this.xtremandLogger.errorPage(error);
                 }),

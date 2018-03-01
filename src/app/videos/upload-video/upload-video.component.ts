@@ -110,7 +110,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
-                    'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
+                    'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
                 maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
             });

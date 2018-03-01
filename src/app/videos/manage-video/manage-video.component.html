@@ -97,8 +97,7 @@
 												</td>
 												<td>
 													<a (click)="showPlayVideo(videoFile)">
-														<h4 *ngIf="videoFile.title?.length < 24" title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}} </h4>
-														<h4 *ngIf="videoFile.title?.length > 24" title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}}...</h4>
+														<h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}} </h4>
 														<h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
 														<h5 *ngIf="videoFileService.videoType === 'partnerVideos'">by {{videoFile.uploadedBy}}</h5>
 														<h6 class='f-w-600'>{{videoFile.views}} views</h6>
@@ -157,8 +156,7 @@
 											<div class="mix-inner" style="height: 173px;">
 												<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="customeImagePath" style="height:173px;">
 												<div class="mix-details" style="z-index: 700;padding: 11px;">
-													 <h4 *ngIf="videoFile.title?.length < 24" title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}} </h4>
-													 <h4 *ngIf="videoFile.title?.length > 24" title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}}...</h4>
+													 <h4  title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}} </h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='myVideos'">
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>

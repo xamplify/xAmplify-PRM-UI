@@ -191,7 +191,7 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="submit" class="btn green" [disabled]="!videoForm.valid || isThumb==false || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable">{{saveButtonTitle}}</button>
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || isLogoThere == false">{{saveButtonTitle}}</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable">Cancel</button>
 								</div>
 							</div>
@@ -202,7 +202,8 @@
 								<div class="col-xs-12 caption p01">
 									<!-- <i class="fa fa-info-circle"></i> -->
 									<div class="col-xs-11 p01">
-										<h4 class="p01">{{videoFileService.actionValue}} Video Info</h4>
+										<!-- <h4 class="p01">{{videoFileService.actionValue}} Video Info</h4> -->
+										<h4 class="p01">Video Info</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -249,7 +250,7 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<tag-input formControlName="tags" [theme]="'foundation-theme'" placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
+											<tag-input formControlName="tags" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'" placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 										</div>
 									</div>
@@ -340,7 +341,7 @@
 							<div class="portlet-title" [ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}" (click)="colorControlChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
-										<h4 class="p01">Appearance of the player</h4>
+										<h4 class="p01">Video Player Appearance </h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -398,7 +399,7 @@
 											</div>
 											<!-- cobra eding video logo -->
 											<div id = "fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="" style="padding:0%;width: 50%;position: relative;right: -233px;top: -17px;">
-												<label style="position: relative;left: -103px;font-size: 14px;color: #6d6969;top: 29px;">Video LOGO:</label>
+												<label class="control-label"  style="position: relative;left: -103px;font-size: 14px;color: #6d6969;top: 29px;">Video LOGO:<span style="color:red">*</span></label>
 												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
 													<div>
@@ -410,9 +411,9 @@
 													</div>
 											</div>
 											<div *ngIf="!disablePlayerSettingnew" class="form-group">
-													<div class="col-xs-5 control-label" style="font-size:14px;padding:0">VideoLog Des:</div>
-													<div class="col-xs-7" style="padding:0">
-														<input type="text"  style="width: 90%;position: relative;right:-7px;" formControlName="brandingLogoDescUri"
+													<div class="col-xs-5 control-label" style="font-size:14px;padding:0">VideoLog Des:<span style="color:red">*</span></div>
+													<div class="col-xs-7" style="position: relative;left: -8px;">
+														<input type="text" style="width: 90%;position: relative;right:-7px;" formControlName="brandingLogoDescUri"
 														 placeholder="logo website url" #val (input)="logoDescription(val.value)">
 												</div>
 											</div>
@@ -549,7 +550,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Names:</label>
+									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Viewer Name::</label>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>
@@ -581,17 +582,17 @@
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
-										<label style="float:right; font-size: 11px;">{{characterleft}}</label>
+										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;">{{characterleft}} character left</label>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Lower Text:
-											<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;"><b>*</b></font>
+											<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;color:#7b8894"><b>*</b></font>
 									</label>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
-										<label style="float:right; font-size: 11px;">{{lowerCharacterleft}}</label>
+										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}} character left</label>
 									</div>
 								</div>
 							</div>

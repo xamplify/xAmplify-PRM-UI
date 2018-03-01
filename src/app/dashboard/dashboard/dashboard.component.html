@@ -812,7 +812,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()"><i class="fa fa-times"></i></a>
-				<h4 class="m0">People Who Have <span class="capitalize">{{paginationType}}</span> Your Emails</h4>
+				<h4 class="m0">People Who Have 
+					<span *ngIf="paginationType=='open'" >Opened</span>
+					<span *ngIf="paginationType=='clicked'" >Clicked</span>
+					<span *ngIf="paginationType=='watched'" >Watched</span>
+					 Your Emails</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>

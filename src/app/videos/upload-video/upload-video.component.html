@@ -78,7 +78,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 					<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add A Video</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob"
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv"
 							 [class.customDisableCss]="isFileProgress==true" *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true || isSelectedVideo == true"
 							 (change)="fileSizeCheck($event)" title=" " #input />
 						</div>
@@ -97,7 +97,7 @@
 					<div *ngIf="processing">
 						<div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
 							<img src="assets/images/loadbar.gif" class="loader-image-tag">
-							<p class="p-tag-loaderCss">Hurray! The video got uploaded, Now we are processing your video.</p>
+							<p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it.</p>
 						</div>
 					</div>
 					<div *ngIf="maxSubscription || noSpaceOnDevice || maxSizeOver|| errorNull || codecSupport" class="alert alert-danger alert-dismissable"
@@ -167,7 +167,7 @@
 						<div class="text-center">
 							<i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i>
 							<h2 class="upload-video" style="margin-top: 3px;">Upload a video </h2>
-							<h6 style="color:#fff">Drop a video file here or select a video from your device</h6>
+							<h6 style="color:#fff">Drag and drop a video file here or click to select a file.</h6>
 						</div>
 					</div>
 				</div>
@@ -176,7 +176,7 @@
 					<div class="col-sm-5ths" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/record.png" title="Click here To Record from computer acttached camera" (click)="cameraChange()"
 						 height="70" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
-						<div style="font-weight: 600;color: #ea7b92; margin: 9px 15px;">Camera</div>
+						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;">WebCam</div>
 					</div>
 					<div class="col-sm-5ths" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/Dropbox.png" class="dropBox" title="Click here To access videos from your Dropbox account" (click)="dropBoxChange()"
@@ -211,8 +211,7 @@
 				<div class="panel-body">
 					<ul style="color:#4c4b4b;">
 						<li>The maximum video file size ({{maxVideoSize}} MB) allowed for uploads depends on your account.</li>
-						<li>Only Video files (<strong>.mp4, .flv, .mpeg and
-									soon</strong>) are allowed to upload.
+						<li>Only Video files (<strong>.mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv </strong>) are allowed to upload.
 						</li>
 					</ul>
 				</div>
