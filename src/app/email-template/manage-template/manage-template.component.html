@@ -25,15 +25,15 @@
 					<div class="caption">
 						<div class="row">
 						<div class="colxs-12 col-sm-9">
-						<div>
-							<ul class="mix-filter">
-								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">All Email Templates</li>
-								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner"> Basic Templates</li>
-								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">Rich Templates</li>
-								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">Basic Video Templates</li>
-								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">Rich Video Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">Upload Template</li>
-								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" *ngIf="!isOnlyPartner">Partner Template</li>
+						<div *ngIf="!isOnlyPartner"> 
+							<ul class="mix-filter" >
+								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" >All Email Templates</li>
+								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich Templates</li>
+								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video Templates</li>
+								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Template</li>
+								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner Template</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>

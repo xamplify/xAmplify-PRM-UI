@@ -1233,8 +1233,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.filterEmailTemplateForEditCampaign();
                 if(this.refService.campaignVideoFile!=undefined){
                     let filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
-                    this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
-                    this.isEmailTemplate = true;
+                    if(filteredEmailTemplateIds.length>0){
+                        this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
+                        this.isEmailTemplate = true;
+                    }
+                    
                 }
                 this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
             },
@@ -1249,11 +1252,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddReply(reply:Reply){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        if(this.campaignType=="video"){
+        /*if(this.campaignType=="video"){
             reply.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
         }else{
             reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }
+        }*/
+        reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
             reply.emailTemplatesPagination.campaignDefaultTemplate = true;
         }else{
@@ -1279,11 +1283,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddOnClick(url:Url){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        if(this.campaignType=="video"){
+     /*   if(this.campaignType=="video"){
             url.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
         }else{
             url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }
+        }*/
+        url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
             url.emailTemplatesPagination.campaignDefaultTemplate = true;
         }else{
