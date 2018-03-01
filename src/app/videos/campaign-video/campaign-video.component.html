@@ -1,4 +1,20 @@
+<style>
+.logo-video {
+	position: absolute;
+    top: -273px;
+    width: 99px;
+    border: 10px solid red;
+    z-index: 9999999999;
+	}
 
-  <div id="para"></div>  
- <!-- style=" margin: -169px auto 21px; background: #FFF;  padding: 180px;" -->
- 
+</style>
+
+<div id="para">
+</div>
+<!-- style=" margin: -169px auto 21px; background: #FFF;  padding: 180px;" -->
+<div id="overlay-logo">
+  <a (click)="gotoUrl()"  target="_blank">
+    <img *ngIf="campaignVideoFile.brandingLogoUri" [src]="authenticationService.MEDIA_URL + campaignVideoFile.brandingLogoUri" class="img-responsive videojs-logo-play"
+      [class.logo-video]="fullScreenMode">
+  </a>
+</div>

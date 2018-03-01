@@ -77,6 +77,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     previousTimeSlider: any;
     seekbarPreviousTime = false;
     seekbarTimestored = 0;
+    fullScreenMode: boolean;
+    brandingLogoUrl: string;
+
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
@@ -186,6 +189,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.userAlias = result.userAlias;
                         this.videoAlias = result.videoAlias;
                         this.templateId = result.templateId;
+                        this.brandingLogoUrl = this.campaignVideoFile.brandingLogoUri;
                         this.xtremandLogDefaultActions();
                         let checkVideoTag: any
                         console.log(this.templatehtml);
@@ -262,7 +266,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             }
                         }
                         this.defaultVideoSettings();
-
+                        $('#newPlayerVideo').append($('#overlay-logo').show());
                         console.log(this.videoUrl);
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
@@ -566,9 +570,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     if (event === "FullscreenOn") {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
+                        selfPanorama.fullScreenMode = true;
                     } else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "413px");
+                        selfPanorama.fullScreenMode = false;
                     }
                 });
                 player.on('click', function () {
@@ -720,9 +726,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (event === "FullscreenOn") {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
+                            self.fullScreenMode = true;
                         } else if (event === "FullscreenOff") {
                             $("#videoId").css("width", "auto");
                             $("#videoId").css("height", "413px");
+                            self.fullScreenMode = false;
                         }
                     });
                     this.on('contextmenu', function (e) {
@@ -774,6 +782,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 });
             $('#videoId').css('height', '304px');
          //   $('#videoId').css('width', 'auto');    
+    }
+    gotoUrl(){
+        window.open(this.campaignVideoFile.brandingLogoDescUri, '');
     }
     playNormalVideo() {
         $('.p-video').remove();

@@ -83,3 +83,14 @@
     visibility: visible;
     font-size: 1em;
      }
+.videojs-logo-play{
+/* position: absolute;
+top: 15px;
+right: 34px;
+width: 75px; */
+position: absolute;
+right: 34px;
+width: 75px;
+top: 309px;
+left: 815px;
+}
