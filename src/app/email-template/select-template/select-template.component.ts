@@ -202,6 +202,41 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     
     
     }
+    
+    showRegularCoBrandingTemplates(index:number){
+        try{
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
+            console.log(this.allEmailTemplates);
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var isRegularCoBrandingTemplate = this.allEmailTemplates[i].regularCoBrandingTemplate;
+                if(isRegularCoBrandingTemplate){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing showRegularCoBrandingTemplates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showRegularCoBrandingTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
+    
+    showVideoCoBrandingTemplates(index:number){
+        try{
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var isVideoCoBrandingTemplate = this.allEmailTemplates[i].videoCoBrandingTemplate;
+                if(isVideoCoBrandingTemplate){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing showVideoCoBrandingTemplates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showVideoCoBrandingTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
    
     
     showTemplateById(id:number,index:number){

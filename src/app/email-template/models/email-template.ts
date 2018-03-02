@@ -16,4 +16,6 @@ export class EmailTemplate {
 		user:User;
 		jsonBody:string;
         type:EmailTemplateType;
+        regularCoBrandingTemplate:boolean;
+        videoCoBrandingTemplate:boolean;
 }

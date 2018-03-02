@@ -85,6 +85,12 @@ export class CreateTemplateComponent implements OnInit {
 	                 return false;
 	              }
 	          }
+	          if(emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
+	              if(jsonContent.indexOf("co-branding.png")<0){
+	                     swal("Please Add Default Co-Branding Image","","error");
+	                     return false;
+	                  }
+	          }
 	          if(!isDefaultTemplate){
 	              var buttons = $('<div>')
                   .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
@@ -180,6 +186,8 @@ export class CreateTemplateComponent implements OnInit {
               emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
               emailTemplate.desc = emailTemplateService.emailTemplate.name;//Type Of Email Template
               emailTemplate.subject = emailTemplateService.emailTemplate.subject;//Image Path
+              emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
+              emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
               if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1){
                   emailTemplate.type = EmailTemplateType.BASIC;
               }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1){
