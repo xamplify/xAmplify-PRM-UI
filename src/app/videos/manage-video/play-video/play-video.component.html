@@ -15,6 +15,9 @@
 		border: 1px solid red;
 		z-index: 9999999999;
 	}
+	a.disabled {
+		pointer-events: none;
+	}
 
 	textarea {
 		resize: none;
@@ -69,10 +72,12 @@
 				<!-- modal popup end-->
 				<div id="overLayImage"></div>
 				<div id="overlay-logo" >
-					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank">
+					<!-- default setting logo -->
+					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank" [class.disabled]="logoLink===null">
 					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
 					</a>
-					<a [href]="brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank">
+					<!-- org admin logo -->
+					<a [href]="selectedVideo.brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank" [class.disabled]="selectedVideo.brandingLogoDescUri===null">
 					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
 					</a>
 				</div>

@@ -67,6 +67,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     worldMapdataReport: any;
     viewsBarData: any;
     trellisBarChartData: any;
+    logoDescriptionUrl: any;
+    brandLogoUrl:any;
+
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -675,6 +678,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
        this.totalMinutesWatchedByMostUsers();
     }
     ngOnInit() {
+        this.logoDescriptionUrl = this.selectedVideo.brandingLogoDescUri;
+        this.brandLogoUrl = this.selectedVideo.brandingLogoUri;
+        $('#overLayImage').append($('#overlay-logo').show());
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
         this.getWatchedCountInfo(this.selectedVideo.alias);

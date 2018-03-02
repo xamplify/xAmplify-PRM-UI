@@ -25,13 +25,10 @@
 				</div>
 			</div>
 			<!-- <div id="overLayImage"></div>
-				<div id="overlay-logo" >
-					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank">
-					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
-					</a>
-					<a [href]="brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank">
-					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
-					</a>
+			<div id="overlay-logo" >
+					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="logoDescriptionUrl===null">
+					<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive videojs-logo" [class.logo-video]="fullScreenMode"> 
+				    </a>
 				</div> -->
 		</div>
 	</div>

@@ -56,7 +56,8 @@
 								<div class="portlet light block">
 									<div class="portlet-title">
 										<div class="caption">
-											<h4 class="caption-subject font-purple-intense uppercase text-center">{{beeRegularTemplate.name}}</h4>
+											<h4 class="caption-subject font-purple-intense uppercase text-center"
+											 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
 										</div>
 									</div>
 									<div class="portlet-body">
