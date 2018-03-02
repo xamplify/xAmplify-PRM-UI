@@ -212,6 +212,11 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }    
+    getAllTeamMemberEmailIds(userId: number) {
+        return this.http.get(this.URL + "admin/listAllTeamMemberEmailIds/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     private extractData(res: Response) {
         let body = res.json();
         console.log(body);

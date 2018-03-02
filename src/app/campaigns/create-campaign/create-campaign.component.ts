@@ -61,6 +61,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignContact:CampaignContact=new CampaignContact();
     campaignEmailTemplate:CampaignEmailTemplate = new CampaignEmailTemplate();
     names:string[]=[];
+    teamMemberEmailIds:string[] = [];
     editedCampaignName:string = "";
     isAdd:boolean = true;
     name:string = "";
@@ -238,11 +239,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
-            if(this.campaign.email!=undefined){
-                this.isValidEmail = true;
-            }
             if(this.campaign.campaignName!=undefined && this.campaign.fromName!=undefined && 
-                    this.campaign.subjectLine!=undefined&& this.campaign.email!=undefined && 
+                    this.campaign.subjectLine!=undefined&& 
                     this.campaign.preHeader!=undefined && this.campaign.message!=undefined){
                 this.isCampaignDetailsFormValid = true;
             }else{
@@ -466,7 +464,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.contactsPagination.filterValue = this.campaign.channelCampaign;
             this.loadCampaignContacts(this.contactsPagination);
         }
-        
+        this.listAllTeamMemberEmailIds();
     
     }
     
@@ -509,7 +507,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           }
              
         });
-        if(isValid && this.isValidEmail && this.isValidCampaignName){
+        if(isValid && this.isValidCampaignName){
             this.isCampaignDetailsFormValid = true;
         }else{
             this.isCampaignDetailsFormValid = false;
@@ -576,12 +574,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.preHeaderDivClass = successClass;
              }else{
                  this.preHeaderDivClass = errorClass;
-             }
-         }else if(fieldId=="email"){
-             if(fieldValue.length>0 && this.isValidEmail){
-                 this.fromEmaiDivClass = successClass;
-             }else{
-                 this.fromEmaiDivClass = errorClass;
              }
          }else if(fieldId=="message"){
              if(fieldValue.length>0){
@@ -2288,5 +2280,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      onSelect(countryId) {
          this.timezones = this.refService.getTimeZones().filter((item)=> item.countryId == countryId);
        }
+     
+     listAllTeamMemberEmailIds(){
+         this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
+         .subscribe(
+         data => {
+           let self = this;
+           $.each(data,function(index,value){
+               self.teamMemberEmailIds.push(data[index]);
+           });
+           if(this.isAdd){
+               this.campaign.email = this.teamMemberEmailIds[0];
+           }
+           
+         },
+         error => console.log( error ),
+         () => console.log( "Campaign Names Loaded" )
+         );
+     }
      
 }
