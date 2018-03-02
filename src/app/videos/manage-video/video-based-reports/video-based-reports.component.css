@@ -70,3 +70,9 @@ text-align: center;
 .center {
 	text-align: center;
 }
+.videojs-logo-play{
+    position: absolute;
+    top: 15px;
+    right: 34px;
+    width: 75px;
+}

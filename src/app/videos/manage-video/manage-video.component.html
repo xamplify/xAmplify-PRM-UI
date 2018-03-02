@@ -71,7 +71,7 @@
 								<div *ngIf="!httpRequestLoader.isLoading">
 									<div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
 										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<p>Sorry, No videos found..!!</p>
+										<p>Sorry, No results found..!!</p>
 									</div>
 								</div>
 								<section [hidden]="!isListView">
@@ -202,7 +202,7 @@
 													</div>
 													<!--end partner videos   -->
 													<span align="right" title="Video Length" style="bottom: 13px; float: right; position: absolute; right: 5px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-													<span align="right" title="Uploaded Date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate}}</span>
+													<span align="right" title="Uploaded Date" style="bottom: -2px; float: right; position: absolute; right: 4px;">{{videoFile.uploadedDate }}</span>
 													<span align="left"  title="Views" style="bottom: 12px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 												    <span *ngIf="videoFileService.videoType==='myVideos'" align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
 											        <span *ngIf="videoFileService.videoType==='partnerVideos'" align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">by {{videoFile.uploadedBy | slice: 0: 21}}</span>

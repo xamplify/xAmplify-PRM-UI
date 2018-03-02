@@ -41,7 +41,7 @@
 					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
 					</a>
 				</div>
-			<div id="overlay-modal" class="video-js overlay is360video" style="height: 318px; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+			<div id="overlay-modal" class="video-js overlay is360video" style="height: 348px; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
@@ -74,8 +74,6 @@
 					</div>
 				</div>
 			</div>
-            
-
 			<div class="col-xs-12" style="padding:0">
 				<h3 style="word-break: break-all;color:#777">{{title}}</h3>
 			</div>

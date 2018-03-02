@@ -13,8 +13,7 @@
 </div>
 <!-- style=" margin: -169px auto 21px; background: #FFF;  padding: 180px;" -->
 <div id="overlay-logo">
-  <a (click)="gotoUrl()"  target="_blank">
-    <img *ngIf="campaignVideoFile.brandingLogoUri" [src]="authenticationService.MEDIA_URL + campaignVideoFile.brandingLogoUri" class="img-responsive videojs-logo-play"
-      [class.logo-video]="fullScreenMode">
-  </a>
+    <a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
+        <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+      </a>
 </div>

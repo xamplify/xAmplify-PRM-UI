@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import {  HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +35,7 @@ export class VideoFileService {
     videoType: any;
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService,
-         private refService: ReferenceService, public httpClient: HttpClient) {
+        private refService: ReferenceService, public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }
     processVideoFile(responsePath: any): Observable<any> {
@@ -81,16 +81,16 @@ export class VideoFileService {
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
         let url: any
-          if(this.authenticationService.isOnlyPartner()){
-            url = this.URL +'channel-videos/'+ this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-          }else {
-            if(this.videoType === 'myVideos'){
+        if (this.authenticationService.isOnlyPartner()) {
+            url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        } else {
+            if (this.videoType === 'myVideos') {
                 url = this.URL + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-            } else if(this.videoType === 'partnerVideos'){
-                url = this.URL +'channel-videos/'+ this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+            } else if (this.videoType === 'partnerVideos') {
+                url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
             }
-            else { console.log('load videos not called');} 
-         }
+            else { console.log('load videos not called'); }
+        }
         console.log(url);
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -130,7 +130,7 @@ export class VideoFileService {
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
-            + "&videoAlias=" + alias+ "&userId="+this.authenticationService.user.id, '')
+            + "&videoAlias=" + alias + "&userId=" + this.authenticationService.user.id, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -152,9 +152,7 @@ export class VideoFileService {
         console.log(user);
         try {
             const url = this.URL + 'user/save-call-action-user';
-            return this.http.post(url, user)
-                .map(this.extractData)
-                .catch(this.handleError);
+            return this.httpClient.post(url, user).catch(this.handleError);
         } catch (error) { console.log(error); }
     }
     showCampaignVideo(emailLog: any) {
@@ -176,15 +174,15 @@ export class VideoFileService {
         xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
-         if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime;}
+            if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
-                || (xtremandLog.actionId === 2 && this.pause360Action === true )) {
+                || (xtremandLog.actionId === 2 && this.pause360Action === true)) {
                 console.log('skipped api calling for video log');
                 this.replyVideo = false;
             } else {
-            //    if(xtremandLog.actionId === 8 ) { this.isSliderClicked = true;}
+                //    if(xtremandLog.actionId === 8 ) { this.isSliderClicked = true;}
                 console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
                 return this.http.post(url, xtremandLog)
@@ -197,7 +195,7 @@ export class VideoFileService {
     }
     logCampaignVideoActions(xtremandLog: XtremandLog) {
         try {
-            if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime;}
+            if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }
             let skipPause: any;
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             if (xtremandLog.actionId === 8) { skipPause = true; }

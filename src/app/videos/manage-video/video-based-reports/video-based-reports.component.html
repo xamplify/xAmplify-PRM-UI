@@ -1,3 +1,13 @@
+<style>
+.logo-video {
+	position: absolute;
+	top: 15px;
+	right: 34px;
+	width: 75px;
+	border: 1px solid red;
+	z-index: 9999999999;
+}
+</style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light">
@@ -14,6 +24,15 @@
 					</div>
 				</div>
 			</div>
+			<!-- <div id="overLayImage"></div>
+				<div id="overlay-logo" >
+					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank">
+					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					</a>
+					<a [href]="brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank">
+					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					</a>
+				</div> -->
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 p5">

@@ -59,11 +59,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isMaxBarChartNumber = true;
     downloadDataList = [];
     paginationType: string;
-    isLoadingList: boolean = true;
+    isLoadingList = true;
     worldMapUserData: any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
+    sortHeatMapValues = [{ 'name': 'Top 10', 'value': 10 }, { 'name': 'Top 20', 'value': 20 },
+    { 'name': 'All ', 'value': 'All' }];
+    heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount: number = 0;
 
@@ -77,6 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
         this.daySort = this.sortDates[0];
+        this.heatMapSort = this.sortHeatMapValues[0];
         this.xtremandLogger.info('dashboard constructor');
     }
 
@@ -716,11 +720,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.getCampaignUsersWatchedInfo(event);
     }
     getCampaignsHeatMapData() {
-        this.dashboardService.getCampaignsHeatMapDetails().
+        this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
             subscribe(result => {
                 this.xtremandLogger.log(result.heatMapData);
                 this.heatMapData = result.heatMapData;
-                this.heatMapformatDateTime();
                 console.log(this.heatMapData);
                 if (result.heatMapData.length > 0) {
                     this.generatHeatMap(this.heatMapData);
@@ -730,24 +733,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
                 // this.xtremandLogger.errorPage(error);
             });
-    }
-
-    heatMapformatDateTime() {
-        if (this.heatMapData.length > 0) {
-            for (let i = 0; i < this.heatMapData.length; i++) {
-                const fulldate = this.heatMapData[i].launchTime;
-                const fulldate2 = fulldate.split(" ");
-                const date = fulldate2[0];
-                const replactime = fulldate.replace('-', '/');
-                const time = this.formatAMPM(replactime);
-                const fullTime = date + ' ' + time;
-                this.heatMapData[i].launchTime = fullTime;
-            }
-        }
-    }
-    formatAMPM(date) {
-        const strTime = new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-        return strTime;
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
         this.trellisBarChartData = undefined;
@@ -797,6 +782,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log(event);
         this.referenceService.daySortValue = event;
         this.getVideoStatesSparklineChartsInfo(event);
+    }
+    selectedheatMapSortByValue(event: any){
+      this.heatMapSort.value = event;
+      this.getCampaignsHeatMapData();
     }
 
     refreshCampaignBarcharts() {

@@ -78,8 +78,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     seekbarPreviousTime = false;
     seekbarTimestored = 0;
     fullScreenMode: boolean;
-    brandingLogoUrl: string;
-
+    logoLink: string;
+    logoImageUrlPath: string;
+    
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
     ' <div class="portlet-body">' +
@@ -189,7 +190,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.userAlias = result.userAlias;
                         this.videoAlias = result.videoAlias;
                         this.templateId = result.templateId;
-                        this.brandingLogoUrl = this.campaignVideoFile.brandingLogoUri;
+                        this.logoLink = this.campaignVideoFile.brandingLogoDescUri;
+                        this.logoImageUrlPath = this.campaignVideoFile.brandingLogoUri;
                         this.xtremandLogDefaultActions();
                         let checkVideoTag: any
                         console.log(this.templatehtml);

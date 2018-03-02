@@ -131,9 +131,9 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getCampaignsHeatMapDetails() {
+    getCampaignsHeatMapDetails(limit: any) {
         const url = this.authenticationService.REST_URL + 'dashboard/heatmap-data?userId=' + this.authenticationService.user.id +
-            '&access_token=' + this.authenticationService.access_token;
+            '&access_token=' + this.authenticationService.access_token+'&limit='+limit;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
