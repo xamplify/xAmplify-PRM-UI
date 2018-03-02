@@ -69,6 +69,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     trellisBarChartData: any;
     logoDescriptionUrl: any;
     brandLogoUrl:any;
+    fullScreenMode: boolean;
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -746,6 +747,19 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             this.on('ended', function () {
                 console.log('video done');
             });
+            player.on('fullscreenchange', function () {
+                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                if (event === 'FullscreenOn') {
+                    $('.vjs-tech').css('width', '100%');
+                    $('.vjs-tech').css('height', '100%');
+                    self.fullScreenMode = true;
+                } else if (event === 'FullscreenOff') {
+                    $('#videoId').css('width', 'auto');
+                    $('#videoId').css('height', '300px');
+                    self.fullScreenMode = false;
+                }
+            });
             this.on('contextmenu', function (e) {
                 e.preventDefault();
             });
@@ -870,9 +884,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     if (event === 'FullscreenOn') {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
+                        newValue.fullScreenMode = true;
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
                         $('#videoId').css('height', '300px');
+                        newValue.fullScreenMode = false;
                     }
                 });
             }

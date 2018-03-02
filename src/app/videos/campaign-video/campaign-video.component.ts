@@ -574,7 +574,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         $(".vjs-tech").css("height", "100%");
                         selfPanorama.fullScreenMode = true;
                     } else if (event === "FullscreenOff") {
-                        $("#videoId").css("width", "auto");
+                        $("#videoId").css("width", "369px");
                         $("#videoId").css("height", "413px");
                         selfPanorama.fullScreenMode = false;
                     }
@@ -730,7 +730,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             $(".vjs-tech").css("height", "100%");
                             self.fullScreenMode = true;
                         } else if (event === "FullscreenOff") {
-                            $("#videoId").css("width", "auto");
+                            $("#videoId").css("width", "369px");
                             $("#videoId").css("height", "413px");
                             self.fullScreenMode = false;
                         }
@@ -784,9 +784,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 });
             $('#videoId').css('height', '304px');
          //   $('#videoId').css('width', 'auto');    
-    }
-    gotoUrl(){
-        window.open(this.campaignVideoFile.brandingLogoDescUri, '');
     }
     playNormalVideo() {
         $('.p-video').remove();
@@ -942,7 +939,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     $(".vjs-tech").css("width", "100%");
                     $(".vjs-tech").css("height", "100%");
                 } else if (event === "FullscreenOff") {
-                    $("#videoId").css("width", "auto");
+                    $("#videoId").css("width", "369px");
                     $("#videoId").css("height", "413px");
                 }
             });

@@ -389,6 +389,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#videoId').append($('#overlay-modal').show());
                         } else {
                             player360.overLaySet = false;
+                            player360.fullScreenMode = false;
                             $('#videoId').append($('#overlay-modal').show());
                         }
                     } else if (isValid !== 'EndOftheVideo') {
@@ -415,6 +416,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     if (event === 'FullscreenOn') {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
+                        player360.fullScreenMode = true;
                     } else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "348px");
@@ -599,6 +601,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                                 $('#videoId').append($('#overlay-modal').show());
                             } else {
                                 self.overLaySet = false;
+                                self.fullScreenMode = false;
                                 $('#videoId').append($('#overlay-modal').show());
                             }
                         } else if (isValid !== 'EndOftheVideo') {
@@ -628,6 +631,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         if (event === "FullscreenOn") {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
+                            self.fullScreenMode = true;
                         } else if (event === "FullscreenOff") {
                             $("#videoId").css("width", "auto");
                             $("#videoId").css("height", "348px");
