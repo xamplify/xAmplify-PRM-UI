@@ -855,7 +855,6 @@ export class ManageContactsComponent implements OnInit {
     }
 
     listContactsByType( contactType: string ) {
-        this.listAllContactsByType( contactType );
         this.contactsByType.isLoading = true;
         this.response.responseType = null;
         this.response.responseMessage = null;
@@ -877,6 +876,7 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.contacts = data.listOfUsers;
                 this.contactsByType.pagination.totalRecords = data.totalRecords;
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
+                this.listAllContactsByType( contactType, this.contactsByType.pagination.totalRecords );
 
                 if ( this.contactsByType.selectedCategory == 'invalid' ) {
                     this.userListIds = data.listOfUsers;
@@ -1149,19 +1149,17 @@ export class ManageContactsComponent implements OnInit {
         a.click();
         return 'success';
     }
+    
+    listAllContactsByType( contactType: string, totalRecords: number ) {
+        this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
+        this.contactsByType.contactPagination.filterValue = this.isPartner;
+        this.contactsByType.contactPagination.criterias = this.criterias;
+        this.contactsByType.contactPagination.maxResults = totalRecords;
 
-    listAllContactsByType( contactType: string ) {
-        this.response.responseType = null;
-        this.response.responseMessage = null;
-        this.resetListContacts();
-        this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
         this.contactService.listContactsByType( contactType, this.contactsByType.contactPagination )
             .subscribe(
             data => {
-                this.contactsByType.selectedCategory = contactType;
                 this.contactsByType.listOfAllContacts = data.listOfUsers;
-                this.contactsByType.contactPagination.totalRecords = data.totalRecords;
-                this.contactsByType.contactPagination = this.pagerService.getPagedItems( this.contactsByType.contactPagination, this.contactsByType.contacts );
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );

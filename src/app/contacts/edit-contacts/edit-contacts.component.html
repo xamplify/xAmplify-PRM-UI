@@ -328,8 +328,7 @@
 
 									<div *ngIf="noContactsFound==true"
 										style="background-color: #3598dc" class="alert alert-info">
-										<h4 style="margin-top: 8px; color: white">No
-											{{checkingContactTypeName}}s found..!</h4>
+										<h4 style="margin-top: 8px; color: white">No results found.</h4>
 									</div>
 									<div *ngIf="showInvalidMaills==true" class="col-md-6"
 										class="col-md-9 alert alert alert-danger alert-dismissable">
@@ -614,7 +613,6 @@
 						<div
 							*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 							class="alert alert-info">
-							<!-- <h4>No {{checkingContactTypeName}}s found..!</h4> -->
 							<h4>No results found</h4>
 						</div>
 						<div class="alert alert-success alert-dismissable col-xs-12"
