@@ -105,7 +105,7 @@ export class TwitterProfileComponent implements OnInit {
         $('.DMDeleteMessage').hide('1000');
     }
     getTweets(socialConnection: SocialConnection, id: number) {
-        this.twitterService.getTweets(socialConnection, id, 100)
+        this.twitterService.getUserTimeline(socialConnection, id, 100)
         .subscribe(
             data => {
                 for (var i in data) {

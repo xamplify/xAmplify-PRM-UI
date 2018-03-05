@@ -69,7 +69,7 @@ export class TopnavbarComponent implements OnInit {
     if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
         this.authenticationService.module.isOrgAdmin = true;
     }
-    if(roles.length==1){
+    if(roles.length === 1){
         this.isUser = true;
     }
     if(roles.indexOf(this.roleName.companyPartnerRole) > -1){
@@ -116,9 +116,19 @@ export class TopnavbarComponent implements OnInit {
     this.router.navigateByUrl('/home/campaigns/' + campaignId + '/details');
   }
 
+  unreadNotificationsCount() {
+    this.userService.unreadNotificationsCount(this.authenticationService.getUserId())
+      .subscribe(
+      data => {
+        this.notificationsCount = data;
+      },
+      error => console.log(error),
+      () => console.log('Finished')
+      );
+  }
+
   ngOnInit() {
-    // this.listNotifications();
-    this.totalNotificationsCount = this.notificationsCount + this.campaignEmailNotificationCount + this.campaignVideoWatchedNotificationCount;
+    this.unreadNotificationsCount();
   }
   
   logout(){

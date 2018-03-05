@@ -24,13 +24,16 @@ import { FacebookInsightFansCountryComponent } from './facebook/facebook-insight
 import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebook-reactions.component';
 import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
 import { SocialLoaderComponent } from './common/social-loader/social-loader.component';
+import { TwitterHomeComponent } from './twitter/twitter-home/twitter-home.component';
+import { TwitterTrendsComponent } from './twitter/twitter-trends/twitter-trends.component';
+import { ProfileCardComponent } from './twitter/profile-card/profile-card.component';
 
 @NgModule( {
     imports: [CommonModule, SharedModule, SocialRoutingModule, FormsModule],
     declarations: [SocialManageComponent, TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
         TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
         TwitterAreaChartComponent, FacebookAccountsComponent, FacebookPostsComponent, FacebookAnalyticsComponent,
-        FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent, SocialLoaderComponent],
+        FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent, SocialLoaderComponent, TwitterHomeComponent, TwitterTrendsComponent, ProfileCardComponent],
     providers: []
 })
 export class SocialModule { }

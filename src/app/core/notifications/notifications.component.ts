@@ -15,6 +15,7 @@ export class NotificationsComponent implements OnInit {
     totalNotificationsCount: number;
     notificationsCount = 0;
     constructor(public topnavbarComponent: TopnavbarComponent, public userService: UserService, public authenticationService: AuthenticationService) { }
+    
     listNotifications() {
         this.userService.listNotifications(this.authenticationService.getUserId())
             .subscribe(

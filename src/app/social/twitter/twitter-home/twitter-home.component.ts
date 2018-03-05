@@ -1,36 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Trend } from '../../models/trend';
-import { TwitterService } from '../../services/twitter.service';
-import { SocialService } from '../../services/social.service';
-import { AuthenticationService } from '../../../core/services/authentication.service';
-
-import { ReferenceService } from '../../../core/services/reference.service';
-
 import { SocialConnection } from '../../models/social-connection';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 
-declare var $: any;
+import { TwitterService } from '../../services/twitter.service';
+import { SocialService } from '../../services/social.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
+import { UtilService } from '../../../core/services/util.service';
 
-@Component( {
-    selector: 'app-twitter-tweets',
-    templateUrl: './twitter-tweets.component.html',
-    styleUrls: ['./twitter-tweets.component.css']
+@Component({
+  selector: 'app-twitter-home',
+  templateUrl: './twitter-home.component.html',
+  styleUrls: ['./twitter-home.component.css']
 })
-
-export class TwitterTweetsComponent implements OnInit {
+export class TwitterHomeComponent implements OnInit {
     tweets: any;
-    trends: Array<Trend> = [];
     socialConnection: SocialConnection;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    twitterProfile: any;
+    profileId: any;
 
-    constructor( private route: ActivatedRoute, private authenticationService: AuthenticationService,
-        private twitterService: TwitterService, private socialService: SocialService, private referenceService: ReferenceService ) { }
+  constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService, private twitterService: TwitterService, 
+  private socialService: SocialService, private referenceService: ReferenceService, private utilService: UtilService) { }
 
-    getTweets( socialConnection: SocialConnection ) {
+  getHomeTimeline(socialConnection: SocialConnection) {
         this.referenceService.loading( this.httpRequestLoader, true );
-        this.twitterService.getUserTimeline( socialConnection, 0, 100 )
+        this.twitterService.getHomeTimeline( socialConnection, 0, 100 )
             .subscribe(
             data => {
                 for ( const i of Object.keys(data) ) {
@@ -62,30 +59,9 @@ export class TwitterTweetsComponent implements OnInit {
             },
             () => this.referenceService.loading( this.httpRequestLoader, false )
             );
-    }
+  }
 
-    populateReplyModalContent( id: number, screenName: string, text: string ) {
-        $( 'div.modal-body' ).html( '' );
-        $( 'h4#replyModalLabel' ).html( 'Reply to @' + screenName );
-        $( '#content-' + id ).clone().prependTo( 'div.modal-body' );
-        $( 'div.modal-body' ).append( '<textarea class=\'tweet-status\' style=\'margin-top: 1em; min-width: 100%; max-width: 100%; min-height:64px; max-height:64px;\'>@' + screenName + ' </textarea><input type=\'hidden\' class=\'tweet-id\'>' );
-        $( '.tweet-id' ).val( id );
-    }
-
-    reply() {
-        this.twitterService.reply( this.socialConnection, $( '.tweet-id' ).val(), $( '.tweet-status' ).val() )
-            .subscribe(
-            data => {
-                $( '#replyModal' ).modal( 'hide' );
-                alert( 'Replied successfully.' );
-                this.getTweets( this.socialConnection );
-            },
-            error => console.log( error ),
-            () => console.log( this.tweets )
-            );
-    }
-
-  getSocialConnection( profileId: string, source: string ) {
+    getSocialConnection( profileId: string, source: string ) {
       this.socialService.getSocialConnection(profileId, source)
         .subscribe(
           data => {
@@ -93,18 +69,34 @@ export class TwitterTweetsComponent implements OnInit {
           },
           error => console.log( error ),
           () => {
-              this.getTweets( this.socialConnection );
+              this.getHomeTimeline( this.socialConnection );
+              this.getTwitterProfile( this.socialConnection, this.profileId);
           }
         );
   }
 
-    ngOnInit() {
-        try {
-            const profileId = this.route.snapshot.params['profileId'];
-            this.getSocialConnection( profileId, 'TWITTER' );
-        } catch ( err ) {
-            console.log( err );
-        }
+      getTwitterProfile(socialConnection: SocialConnection, id: number) {
+        this.twitterService.getTwitterProfile(socialConnection, id)
+            .subscribe(
+            data => {
+                this.twitterProfile = data;
+                this.twitterProfile.statusesCount = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
+                this.twitterProfile.friendsCount = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
+                this.twitterProfile.followersCount = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
+            },
+            error => console.log( error ),
+            () => console.log( this.twitterProfile )
+        );
     }
+
+  ngOnInit() {
+    try {
+      this.profileId = this.route.snapshot.params['profileId'];
+      this.getSocialConnection(this.profileId, 'TWITTER');
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
 
 }

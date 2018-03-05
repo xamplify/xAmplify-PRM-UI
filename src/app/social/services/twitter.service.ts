@@ -43,8 +43,15 @@ export class TwitterService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getTweets(socialConnection: SocialConnection, userId: number, pageSize: number): Observable<Object> {
-        return this.http.get(this.URL + 'tweets' + this.appendQueryParameters(socialConnection)
+    getUserTimeline(socialConnection: SocialConnection, userId: number, pageSize: number): Observable<Object> {
+        return this.http.get(this.URL + 'user_timeline' + this.appendQueryParameters(socialConnection)
+        + '&userId=' + userId + '&pageSize=' + pageSize)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getHomeTimeline(socialConnection: SocialConnection, userId: number, pageSize: number): Observable<Object> {
+        return this.http.get(this.URL + 'home_timeline' + this.appendQueryParameters(socialConnection)
         + '&userId=' + userId + '&pageSize=' + pageSize)
             .map(this.extractData)
             .catch(this.handleError);

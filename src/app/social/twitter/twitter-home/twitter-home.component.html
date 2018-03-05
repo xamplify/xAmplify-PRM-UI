@@ -3,15 +3,18 @@
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
         class="fa fa-angle-right"></i></li>
-      <li>Tweets</li>
+      <li>Home Timeline</li>
     </ul>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-7"
+    <div class="col-xs-12 col-sm-3">
+      <app-profile-card [twitterProfile]="twitterProfile" [socialConnection]="socialConnection"></app-profile-card>
+    </div>
+    <div class="col-xs-12 col-sm-6"
       *ngIf="httpRequestLoader.isLoading">
       <app-social-loader></app-social-loader>
     </div>
-    <div class="col-xs-12 col-sm-7" *ngIf="tweets?.length > 0">
+    <div class="col-xs-12 col-sm-6" *ngIf="tweets?.length > 0">
       <div id="tweets" class="portlet-body">
         <div class="portlet light block rounded-0"
           *ngFor="let item of tweets">
@@ -58,8 +61,8 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-5">
-          <app-twitter-trends></app-twitter-trends>
+    <div class="col-xs-12 col-sm-3">
+        <app-twitter-trends></app-twitter-trends>
     </div>
   </div>
 </div>

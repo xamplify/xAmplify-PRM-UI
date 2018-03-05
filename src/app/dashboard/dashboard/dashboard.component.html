@@ -692,7 +692,12 @@
 									</div>
 									<div class="col-xs-9 p0">
 										<h5 class="profile-name">
-											<span *ngIf="socialConnection.source === 'TWITTER'">@</span>{{socialConnection.profileName}}
+											
+											<span *ngIf="socialConnection.source === 'TWITTER'">
+												<a [routerLink]="['/home/social/t', socialConnection.profileId]">
+												@{{socialConnection.profileName}}</a>
+											</span>
+											<span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
 											<span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
 										</h5>
 										<section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">

@@ -8,4 +8,6 @@ ul.alt-row-style1 .social-icon i{    color: #FFF;    text-align: center !importa
     display: block;    width: 30px;    margin-top: 8px;}
 .scroller {
     overflow: auto;
-}    
+}
+.read {background-color: #edf2fa;}
+.unread {background-color: #fff;}
