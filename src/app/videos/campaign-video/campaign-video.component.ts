@@ -584,12 +584,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        //$('#videoId').css('width', 'auto');
         $('#videoId').css('height', '413px');
     }
      cssOverride(){
-    //    $('#videoId').css({'width': '570px','height': '401px', 'margin-left': '-24px'});
-    //  $('#videoId').css({'width': '570px','height': '327px', 'margin-left': '-42px'});
       $('#videoId').css({'width': '490px','height': '327px', 'margin-left': '-2px'});
       $('.nl-container').css({'table-layout': 'auto'});
      }
@@ -603,8 +600,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        // $('#videoId').css('height', '304px');
-        // $('#videoId').css('width', 'auto');
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
@@ -784,212 +779,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 });
             $('#videoId').css('height', '304px');
          //   $('#videoId').css('width', 'auto');    
-    }
-    playNormalVideo() {
-        $('.p-video').remove();
-        this.videoUtilService.normalVideoJsFiles();
-        this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" controls ></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.campaignVideoFile.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8';
-        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '413px');
-        $('#videoId').css('width', 'auto');
-        $('.video-js .vjs-tech').css('width', '100%');
-        $('.video-js .vjs-tech').css('height', '100%');
-        const self = this;
-        const overrideNativevalue = this.referService.getBrowserInfoForNativeSet();
-        console.log(overrideNativevalue);
-        this.videoJSplayer = videojs('videoId', 
-        { controls: true,
-          autoplay: false,
-          preload: 'auto',
-          html5: {
-           hls: {
-                overrideNative: overrideNativevalue
-              },
-              nativeVideoTracks: !overrideNativevalue,
-              nativeAudioTracks: !overrideNativevalue,
-              nativeTextTracks: !overrideNativevalue
-          } }, function () {
-            const player = this;
-            self.replyVideo = false;
-            const document: any = window.document;
-            let startDuration;
-            let seekCurrentTime = false;
-            self.logVideoViewValue = true;
-            self.videoFileService.pauseAction = false;
-            let seekCheck = false;
-            this.ready(function () {
-                $('.video-js .vjs-tech').css('width', '100%');
-                $('.video-js .vjs-tech').css('height', '100%');
-                $('.vjs-big-play-button').css('display', 'block');
-                self.xtremandLog.startDuration = 0;
-                self.xtremandLog.stopDuration = 0;
-                $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.campaignVideoFile.playerColor + '!important');
-            });
-            this.on('play', function () {
-                seekCheck = false;
-                self.videoFileService.pauseAction = false;
-                $('.vjs-big-play-button').css('display', 'none');
-                console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
-                if (self.replyVideo === true) {
-                    self.xtremandLog.actionId = self.LogAction.replyVideo;
-                    self.replyVideo = false;
-                    self.videoFileService.pauseAction = false;
-                } else {
-                    self.xtremandLog.actionId = self.LogAction.playVideo;
-                }
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                //    self.getCurrentTimeValues(player.currentTime());
-                self.videoLogAction(self.xtremandLog);
-                if (self.logVideoViewValue === true) {
-                    self.logVideoViewsCount();
-                    self.logVideoViewValue = false;
-                }
-                if (seekCheck === false) {
-                    self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
-                }
-            });
-            this.on('pause', function () {
-                seekCheck = false;
-                self.videoFileService.pauseAction = false;
-                console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
-                self.xtremandLog.actionId = self.LogAction.pauseVideo;
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                self.videoLogAction(self.xtremandLog);
-                //   self.getCurrentTimeValues(player.currentTime());
-                if (seekCheck === false) {
-                    self.videoFileService.campaignTimeValue = self.trimCurrentTime(player.currentTime());
-                }
-            });
-            this.on('timeupdate', function () {
-                 if (seekCurrentTime === true) {
-                    startDuration = self.trimCurrentTime(player.currentTime());
-                    self.videoFileService.campaignTimeValue = startDuration;
-                    console.log('time update in seek bare' + startDuration);
-                  }
-                    self.previousTime = self.currentTime;
-                    self.currentTime = player.currentTime();
-                    self.startTimeUpdate = self.endTimeUpdate;
-                    self.endTimeUpdate = new Date();
-            });
-            this.on('seeking', function () {
-                self.videoFileService.pauseAction = true;
-                 if(self.seekbarPreviousTime === false){
-                    console.log(' enter into seek bar previous time is: '+self.previousTime);
-                    self.seekbarTimestored = self.previousTime;
-                    console.log(self.seekbarTimestored);
-                    self.seekbarPreviousTime = true;
-                  }
-                 const timeoutTime = 300;
-                 const beforeCounter = self.counter + 1;
-                 if (player.cache_.currentTime === player.duration()) {
-                    return;
-                 }
-                 self.beforeTimeChange = self.beforeTimeChange || player.cache_.currentTime;
-                 setTimeout(function() {
-                    if (beforeCounter === self.counter) {
-                        console.log('before seek', self.beforeTimeChange, '\nafter seek', player.currentTime() - (timeoutTime / 1000));
-                           self.xtremandLog.actionId = self.LogAction.videoPlayer_slideSlider;
-                            self.xtremandLog.startDuration = self.previousTime;
-                            self.xtremandLog.stopDuration = player.currentTime() - (timeoutTime / 1000);
-                         //   self.trimCurrentTime(player.currentTime()-(timeoutTime / 1000))
-                            self.xtremandLog.startTime = self.startTimeUpdate;
-                            self.xtremandLog.endTime = new Date();
-                            self.videoLogAction(self.xtremandLog);
-                        self.counter = 0;
-                        self.beforeTimeChange = 0;
-                    }
-                 }, timeoutTime);
-                 self.counter++;
-            });
-              this.on('seeked', function(){
-                    self.seekbarPreviousTime = false;
-                    self.videoFileService.seekbarTime = 0;
-                    console.log('seeked completed'+ self.videoFileService.seekbarTime);
-                });
-            this.on('ended', function () {
-                const whereYouAt = player.currentTime();
-                console.log(whereYouAt);
-                self.logVideoViewValue = true;
-                self.replyVideo = true;
-                self.videoFileService.replyVideo = true;
-                $('.vjs-big-play-button').css('display', 'block');
-                self.xtremandLog.actionId = self.LogAction.videoPlayer_movieReachEnd;
-                self.xtremandLog.startTime = new Date();
-                self.xtremandLog.endTime = new Date();
-                self.xtremandLog.startDuration = self.trimCurrentTime(player.currentTime());
-                self.xtremandLog.stopDuration = self.trimCurrentTime(player.currentTime());
-                self.videoLogAction(self.xtremandLog);
-            });
-            this.on('fullscreenchange', function () {
-                console.log('fullscreen changed');
-                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                if (event === "FullscreenOn") {
-                    $(".vjs-tech").css("width", "100%");
-                    $(".vjs-tech").css("height", "100%");
-                } else if (event === "FullscreenOff") {
-                    $("#videoId").css("width", "369px");
-                    $("#videoId").css("height", "413px");
-                }
-            });
-            player.on('click', function () {
-                console.log('clicked function ');
-            });
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
-                        }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
-                        }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
     }
     extractData(res: Response) {
         const body = res.json();

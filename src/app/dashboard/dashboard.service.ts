@@ -162,12 +162,12 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getVideoViewsLevelTwoReports(daysInterval: number, dateValue: any, videoId: number) {
+    getVideoViewsLevelTwoReports(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
         console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
-        return this.http.get(url)
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -180,19 +180,19 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getVideoMinutesWatchedLevelTwoReports(daysInterval: any, dateValue: number, videoId: number) {
+    getVideoMinutesWatchedLevelTwoReports(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
         console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
-        return this.http.get(url)
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    worldMapCampaignDetails(userId: number, countryCode: string){
+    worldMapCampaignDetails(userId: number, countryCode: string, pagination: any){
         const url = this.authenticationService.REST_URL+ 'dashboard/world-map-detail-report?access_token='+this.authenticationService.access_token+
         '&userId='+userId+'&countryCode='+countryCode;
-        return this.http.get(url)
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

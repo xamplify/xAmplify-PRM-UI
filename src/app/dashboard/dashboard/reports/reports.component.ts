@@ -1,13 +1,20 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { ReferenceService } from '../../../core/services/reference.service';
 import { DashboardService } from '../../dashboard.service';
+import { PagerService } from '../../../core/services/pager.service';
+
+import { Pagination } from '../../../core/models/pagination';
+
 declare var $: any;
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.css']
+  styleUrls: ['./reports.component.css'] ,
+  providers :[Pagination]
+
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
 
@@ -24,11 +31,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   anotherViewDate: string;
   downloadDataList = [];
   downloadCsvList: any;
-  
+  daysInterval: any;
+  dateValue: any;
+  videoId: number;
+
   sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
   { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
   daySort: any;
-  constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService) {
+  constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
+  public pagerService: PagerService, public pagination: Pagination) {
     this.resultSparkline = this.referenceService.viewsSparklineValues;
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
       this.router.navigate(['/']);
@@ -132,7 +143,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.videoViewsLevelSecond.length = 0;
           }
           if (this.isReport && this.videoViewsLevelFirst.length > 0) {
-            this.getVideoViewsLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId);
+            this.pagination.pageIndex = 1;
+            this.getVideoViewsLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId, this.pagination);
             this.isReport = false;
           }
         },
@@ -141,16 +153,31 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         });
     }
   }
-  getVideoViewsLevelTwo(daysInterval, dateValue, videoId) {
-    this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId).subscribe(
+  getVideoViewsLevelTwo(daysInterval, dateValue, videoId, pagination) {
+    this.pagination.maxResults = 5;
+    this.daysInterval = daysInterval;
+    this.dateValue = dateValue;
+    this.videoId = videoId;
+    this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
         console.log(result);
-        this.videoViewsLevelSecond = result;
+        this.videoViewsLevelSecond = result.data;
+        this.pagination.totalRecords = result.totalRecords;
+        this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
       },
       (error: any) => {
         console.error(error);
       });
   }
+  setPage(event:any){
+    this.pagination.pageIndex =  event.page;
+    if(this.reportName === 'views') {
+    this.getVideoViewsLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination)
+    } else { 
+     this.getVideoMinutesWatchedLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination)
+    }
+  }
+
   getVideoMinutesWatchedLevelOne(dateValue, isReport) {
     this.isReport = isReport;
     if (dateValue === undefined) {
@@ -166,7 +193,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           console.log(this.videoViewsLevelFirst);
           if (this.videoViewsLevelFirst.length === 0) { this.videoViewsLevelSecond.length = 0; }
           if (this.isReport && this.videoViewsLevelFirst.length > 0) {
-            this.getVideoMinutesWatchedLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId);
+            this.getVideoMinutesWatchedLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId, this.pagination);
             this.isReport = false;
           }
         },
@@ -175,20 +202,32 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         });
     }
   }
-  getVideoMinutesWatchedLevelTwo(daysInterval, dateValue, videoId) {
-    this.dashboardService.getVideoMinutesWatchedLevelTwoReports(daysInterval, dateValue, videoId).subscribe(
+  getVideoMinutesWatchedLevelTwo(daysInterval, dateValue, videoId, pagination) {
+    this.daysInterval = daysInterval;
+    this.dateValue = dateValue;
+    this.videoId =  videoId;
+    this.pagination.maxResults = 5;
+    this.dashboardService.getVideoMinutesWatchedLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
         console.log(result);
-        this.videoViewsLevelSecond = result;
+        this.videoViewsLevelSecond = result.data;
+        this.pagination.totalRecords = result.totalRecords;
+        this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
       },
       (error: any) => {
         console.error(error);
       });
   }
-  selectedRow(ViewData: any) {
-    console.log(ViewData);
+  selectedRow(viewData: any) {
+    console.log(viewData);
     this.videoViewsLevelSecond.length = 0;
-    this.getVideoMinutesWatchedLevelTwo(this.daysCount, ViewData.selectedDate, ViewData.videoId);
+    this.pagination.pageIndex = 1;
+    if(this.reportName === 'views'){
+       this.getVideoViewsLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
+    }
+    else { 
+       this.getVideoMinutesWatchedLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
+    }
   }
   
   convertToCSV(objArray) {

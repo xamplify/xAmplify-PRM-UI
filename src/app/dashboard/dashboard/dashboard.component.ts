@@ -61,6 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     paginationType: string;
     isLoadingList = true;
     worldMapUserData: any;
+    countryCode:any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
@@ -652,7 +653,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listOfEmailClickedLogs();
         } else if (this.paginationType === 'watched') {
             this.listOfWatchedLogs();
+        } else if(this.paginationType === 'countryWiseUsers'){
+            this.getCampaignUsersWatchedInfo(this.countryCode);
         }
+
     }
 
     listOfEmailOpenLogs(actionId: number) {
@@ -901,13 +905,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     
     getCampaignUsersWatchedInfo(countryCode) {
-        countryCode = countryCode.toUpperCase();
+        this.countryCode = countryCode.toUpperCase();
         this.paginationType = "countryWiseUsers";
-        this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, countryCode)
+        this.pagination.maxResults = 10;
+        this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
             .subscribe(
-            (data: any) => {
-                console.log(data);
-                this.worldMapUserData = data;
+            (result: any) => {
+                console.log(result);
+                this.worldMapUserData = result.data;
+                this.pagination.totalRecords = result.totalRecords;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
                 $('#worldMapModal').modal('show');
             },
             error => console.log(error),
