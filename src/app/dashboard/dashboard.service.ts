@@ -13,42 +13,11 @@ import { SocialConnection } from '../social/models/social-connection';
 @Injectable()
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
-    URL = 'demo/values.json';
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
-    getDashboardStats(): Observable<any> {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getVideoStats() {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getSparklineData() {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getLineChartdetails() {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getSocialMediaValues(): Observable<any> {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-
-    }
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
         return this.http.get(this.authenticationService.REST_URL + "twitter/gender-demographics" + this.QUERY_PARAMETERS
             + '&oAuthTokenValue=' + socialConnection.oAuthTokenValue + '&oAuthTokenSecret=' + socialConnection.oAuthTokenSecret)
@@ -61,22 +30,6 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getGoolgPlusSparklinecharts(): Observable<any> {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getFacebookSparklinecharts(): Observable<any> {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getLinkdinSparklinecharts(): Observable<any> {
-        return this.http.get(this.URL)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
 
     getEmailActionCount(userId: number) {
         return this.http.get(this.authenticationService.REST_URL + "dashboard/emaillog-count-by-user/" + userId + "?access_token=" + this.authenticationService.access_token)
@@ -114,16 +67,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
-        if (pagination.filterBy == null) { pagination.filterBy = 0; }
-        console.log(pagination);
-        const url = this.URL + 'listVideosNew/' + pagination.filterBy +
-            '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-        console.log(url);
-        return this.http.post(url, pagination, '')
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
     getCountryViewsDetails() {
         const url = this.authenticationService.REST_URL + 'dashboard/countrywise_users_count?userId=' + this.authenticationService.user.id +
             '&access_token=' + this.authenticationService.access_token;
