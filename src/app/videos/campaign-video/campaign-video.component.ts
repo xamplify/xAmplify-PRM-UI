@@ -723,11 +723,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if (event === "FullscreenOn") {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
-                            self.fullScreenMode = true;
+                           // self.fullScreenMode = true;
+                            self.setFullscreenValue('FullscreenOn');
+
                         } else if (event === "FullscreenOff") {
                             $("#videoId").css("width", "369px");
                             $("#videoId").css("height", "413px");
-                            self.fullScreenMode = false;
+                           // self.fullScreenMode = false;
+                            self.setFullscreenValue('FullscreenOff');
                         }
                     });
                     this.on('contextmenu', function (e) {
@@ -780,6 +783,13 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             $('#videoId').css('height', '304px');
          //   $('#videoId').css('width', 'auto');    
     }
+   setFullscreenValue(event: string){
+    if(event ==='FullscreenOn'){
+        this.fullScreenMode = true;
+    } else {
+        this.fullScreenMode = false;
+    }
+   }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);
