@@ -338,7 +338,7 @@
 
 	<div *ngIf="! showListOfContactList">
 		<div *ngIf="response.responseType != null">
-			<div class="alert alert-dismissible" role="alert"
+			<div class="alert alert-dismissible" role="alert" style="margin-bottom: 20px;"
 				[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
   									'alert-danger': response.responseType == 'ERROR'}">
 				<button type="button" class="close" data-dismiss="alert"
@@ -353,9 +353,9 @@
 				</h5>
 			</div>
 		</div>
-		<div *ngIf="invalidDeleteSucessMessage" id="showDeleteMessage"
-			class="alert alert-success alert-dismissable">
-			<strong>Success!</strong> {{checkingContactTypeName}} List has been
+		<div class="alert alert-success alert-dismissible" *ngIf="invalidDeleteSucessMessage" style="margin-bottom:20px;">
+		  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  <strong>Success!</strong> {{checkingContactTypeName}} List has been
 			Deleted successfully.
 		</div>
 		<div class="alert alert-danger" style="padding: 12px 10px 12px;"
@@ -374,22 +374,22 @@
 					<div class="tab-content" style="min-height: 570px;">
 						<!-- BEGIN PAGE HEADER-->
 						<div class="page-bar" style="margin-bottom: 6px">
-							<h4 class="btn-group pull-left">
+							<!-- <h4 class="btn-group pull-left">
 								<span class="capitalize" style="color: #888888"
 									*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
-									<!-- contacts  -->
+									contacts 
 								    {{checkingContactTypeName}}s
 								</span> <span class="capitalize" style="color: #888888"
 									*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
-									<!-- contacts  -->
+									contacts 
 									{{checkingContactTypeName}}s
 								</span>
-							</h4>
-							<a (click)="downloadContactTypeList()" title="Download List"
+							</h4> -->
+							<!-- <a (click)="downloadContactTypeList()" title="Download List"
 								data-rel="fancybox-button"> <i
 								class="fa fa-cloud-download mr5"
 								style="font-size: 22px; color: #26a69a; padding: 13px;"></i>
-							</a>
+							</a> -->
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
@@ -433,21 +433,23 @@
 						</div>
 						<div class="tab-pane active"></div>
 						<div class="row">
-							<form #f="ngForm" class="form-inline"
+							<!-- <form #f="ngForm" class="form-inline"
 								*ngIf="contactsByType.selectedCategory == 'all' && (hasAllAccess || hasContactRole)">
 								<div class="contact-list-form">
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
-											<label for="name" class="col-xs-12 col-sm-6 control-label">{{checkingContactTypeName}}
-												List Name*</label>
-											<div class="col-xs-12 col-sm-6" style="margin-left: -12px;">
+											<label for="name" class="col-xs-12 col-sm-9" style="margin-left:-14px;color:dimgrey;font-size:15px;margin-top:4px;">
+											{{checkingContactTypeName}} List Name* 
+											Create a new {{checkingContactTypeName}} list from existing {{checkingContactTypeName}}s:
+											</label>
+											<div class="col-xs-12 col-sm-3" style="margin-left: -45px;">
 												<input type="text" autocomplete="off" class="form-control"
 													id="contactListName" required
 													[(ngModel)]="model.contactListName" name="contactListName"
 													minlength="1" maxlength="250"
 													(input)="validateContactName(model.contactListName)"
 													placeholder="List Name" #contactListName="ngModel">
-												<!-- Validation Messages -->
+												Validation Messages
 												<div *ngIf="isValidContactName">
 													<p class="custom-error-message">{{checkingContactTypeName}}
 														List Name Already Exists</p>
@@ -474,7 +476,7 @@
 										</section>
 									</div>
 								</div>
-							</form>
+							</form> -->
 							<div class="col-xs-12">
 								<div *ngIf="contactsByType.isLoading"
 									class="alert alert-info flex">
@@ -499,7 +501,7 @@
 										</div>
 										<div class="btn-group pull-right"
 											style="margin-top: 4px; color: #000000;"
-											*ngIf="contactsByType.selectedCategory == 'invalid' && (hasAllAccess || hasContactRole)">
+											*ngIf="(hasAllAccess || hasContactRole)">
 											<span class="dropdown-toggle" data-toggle="dropdown"
 												style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
 												<i class="fa fa-cog"
@@ -508,9 +510,14 @@
 												style="font-size: 14px; float: right"></i>
 											</span>
 											<ul class="dropdown-menu pull-right">
+												<li *ngIf="contactsByType.selectedCategory == 'all'"><a
+													 (click)="saveAs()">
+														Save As </a></li>
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="delete_button" (click)="invalidContactsShowAlert()">
 														Delete </a></li>
+												<li><a id="delete_button"
+												(click)="downloadContactTypeList()"> Export To Excel </a></li>
 											</ul>
 										</div>
 									</div>

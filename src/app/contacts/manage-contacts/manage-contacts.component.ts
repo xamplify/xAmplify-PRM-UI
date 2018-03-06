@@ -725,18 +725,17 @@ export class ManageContactsComponent implements OnInit {
         event.stopPropagation();
     }
 
-    saveSelectedUsers() {
+    saveSelectedUsers(listName: string) {
         var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         this.xtremandLogger.info( "SelectedUserIDs:" + this.selectedContactListIds );
-        this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+       // this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.contactListObject = new ContactList;
-        this.contactListObject.name = this.model.contactListName;
+        //this.contactListObject.name = this.model.contactListName;
         this.contactListObject.isPartnerUserList = this.isPartner;
-        if ( this.model.contactListName != "" && !this.isValidContactName && this.model.contactListName != " " ) {
+        if ( listName != "") {
             if ( this.selectedContactListIds.length != 0 ) {
-                if ( this.model.contactListName.length != "" ) {
-                    this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+                    this.contactService.saveContactList( this.allselectedUsers, listName, this.isPartner )
                         .subscribe(
                         data => {
                             data = data;
@@ -752,9 +751,9 @@ export class ManageContactsComponent implements OnInit {
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
-                }
             } else {
-                this.contactsNotSelectedError = true;
+                //this.contactsNotSelectedError = true;
+                this.setResponseDetails( 'ERROR', 'Please select the users' );
             }
         }
         else {
@@ -791,7 +790,7 @@ export class ManageContactsComponent implements OnInit {
                 });
                 this.invalidDeleteSucessMessage = true;
                 this.contactCountLoad = true;
-                setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
+                //setTimeout( function() { $( "#showDeleteMessage" ).slideUp( 500 ); }, 2000 );
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
             ( error: any ) => {
@@ -1169,6 +1168,30 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.isLoading = false;
             }
             );
+    }
+    
+    saveAs() {
+        let self = this;
+        swal( {
+            title: this.checkingContactTypeName + ' List Name',
+            input: 'text',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            allowOutsideClick: false,
+            preConfirm: function( name: any ) {
+                return new Promise( function() {
+                    console.log( 'logic begins' );
+                    var inputName = name.toLowerCase().replace( /\s/g, '' );
+                    if ( $.inArray( inputName, self.names ) > -1 ) {
+                        swal.showValidationError( 'This Contact List Name is already taken.' )
+                    } else {
+                        swal.close();
+                        self.saveSelectedUsers( name );
+                    }
+                });
+            }
+        }).then( function( name: any ) {
+        })
     }
 
     ngOnInit() {
