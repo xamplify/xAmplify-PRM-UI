@@ -498,7 +498,7 @@ export class AddPartnersComponent implements OnInit {
             swal( "value can't be null" );
         }
         if ( selectedDropDown == "DEFAULT" ) {
-            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimeter Type</span>" );
+            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimiter Type</span>" );
             return false;
         }
         else {

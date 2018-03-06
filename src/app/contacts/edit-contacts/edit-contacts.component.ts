@@ -475,7 +475,7 @@ export class EditContactsComponent implements OnInit {
             if ( this.totalRecords != 1 || this.totalRecords != this.selectedContactListIds.length ) {
                 swal( {
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    text: "You won't be able to undo this action!",
                     type: 'warning',
                     showCancelButton: true,
                     swalConfirmButtonColor: '#54a7e9',
@@ -490,7 +490,7 @@ export class EditContactsComponent implements OnInit {
             if ( (this.totalRecords == 1 && this.isDefaultPartnerList == false) || (this.totalRecords == this.selectedContactListIds.length && this.isDefaultPartnerList == false) ) {
                 swal( {
                     title: 'Are you sure?',
-                    text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
+                    text: "If you delete all Users, your contact list aslo will delete and You won't be able to undo this action!",
                     type: 'warning',
                     showCancelButton: true,
                     swalConfirmButtonColor: '#54a7e9',
@@ -546,7 +546,7 @@ export class EditContactsComponent implements OnInit {
             swal( "value can't be null" );
         }
         if ( selectedDropDown == "DEFAULT" ) {
-            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimeter Type</span>" );
+            swal( "<span style='font-weight: 100;font-family: Open Sans;font-size: 16px;'>Please Select the Delimiter Type</span>" );
             return false;
         }
         else {
@@ -991,7 +991,7 @@ export class EditContactsComponent implements OnInit {
             let self = this;
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -1068,7 +1068,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.totalRecords != 1 ) {
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -1084,7 +1084,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.totalRecords === 1  && !(this.isDefaultPartnerList )) {
             swal( {
                 title: 'Are you sure?',
-                text: "If you delete all Users, your contact list aslo will delete and You won't be able to revert this!",
+                text: "If you delete all Users, your contact list aslo will delete and You won’t be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -1099,7 +1099,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.totalRecords === 1 && this.isDefaultPartnerList ) {
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
