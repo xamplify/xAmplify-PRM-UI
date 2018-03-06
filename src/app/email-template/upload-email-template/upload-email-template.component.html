@@ -55,12 +55,12 @@
 							</tbody>
 						</table>
 						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: 85px;">
-					 		<br><label for="info"><font style="color: red;">***Please copy and add this below content to your HTML template, before you upload</font></label>
+					 		<br><label for="info"><font style="color: red;">**Before you upload your HTML template, please be sure to include the code below.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{videoTag}}</textarea>
 					</div>
 					
 					<div>
-					 		<br><label for="info"><font style="color: #6dcff6;">Please use below merge tags for configuring names</font></label>
+					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you’re doing a mail merge.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{emailMergeTags}}</textarea>
 					</div>
 					

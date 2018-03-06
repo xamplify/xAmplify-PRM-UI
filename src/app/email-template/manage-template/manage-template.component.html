@@ -13,7 +13,7 @@
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
 				class="fa fa-angle-right"></i></li>
-			<li>Manage Templates
+			<li style="color:#808080">Manage Templates
 			</li>
 		</ul>
 		<a class="btn btn-info" id="emailtemplate-help" [routerLink]="['/home/emailtemplates/help']">Custom Template Delivers</a>
@@ -32,8 +32,8 @@
 								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich Templates</li>
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video Templates</li>
 								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Template</li>
-								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner Template</li>
+								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded Templates</li>
+								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner Templates</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -136,7 +136,7 @@
 												<b>{{emailTemplate.createdDate}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-									 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}...</b>
+									 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:17}}..</b>
 												<b  *ngIf="emailTemplate.createdBy?.length<20">{{emailTemplate.createdBy}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-value"><b>Created By</b></span>

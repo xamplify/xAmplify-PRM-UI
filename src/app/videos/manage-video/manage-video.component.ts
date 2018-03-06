@@ -293,7 +293,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         const self = this;
         swal({
             title: 'Are you sure?',
-            text: 'You wont be able to revert this!',
+            text: 'You won’t be able to undo this action!',
             type: 'warning',
             showCancelButton: true,
             swalConfirmButtonColor: '#54a7e9',

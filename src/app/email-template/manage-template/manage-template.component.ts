@@ -225,7 +225,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             let self = this;
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                text: "You won’t be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
