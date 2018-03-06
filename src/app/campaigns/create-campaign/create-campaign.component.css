@@ -306,10 +306,6 @@ a.disabled {
 	cursor: hand;
 }
 
-.portlet.light.block.active {
-	
-}
-
 .fa-4x {
 	font-size: 4em;
 }
@@ -320,7 +316,7 @@ a.disabled {
 	position: relative;
 }
 
-.email-template-container:not (:hover ) .email-template-i-container {
+.email-template-container:not(:hover ) .email-template-i-container {
 	display: none;
 }
 

@@ -1630,6 +1630,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
             'channelCampaign':this.campaign.channelCampaign,
+            'enableCoBrandingLogo':this.campaign.enableCoBrandingLogo,
             'socialSharingIcons': true,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
