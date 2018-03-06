@@ -608,6 +608,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadCampaignContacts(this.contactsPagination);
         }
     }
+    setCrobraBinding(event:any){
+        this.campaign.enableCoBrandingLogo = event;
+    }
     setVideoPlayed(event:any){
         this.campaign.videoPlayed = event;
     }
@@ -1481,7 +1484,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplateHrefLinks = [];
         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
         this.setEmailTemplateData(emailTemplate);
-        if(this.emailTemplateHrefLinks.length==0){
+        if(this.emailTemplateHrefLinks.length === 0){
             this.urls = [];
         }
        /* if(this.emailTemplateHrefLinks.length==0){

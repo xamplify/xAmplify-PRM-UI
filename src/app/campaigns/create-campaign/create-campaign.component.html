@@ -129,6 +129,16 @@
 											</switch>
 										</div>
 									</div>
+									<div class="form-group" *ngIf="((this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin ) && campaign.channelCampaign">
+										<label class="control-label col-sm-4">Co-Branding Logo</label>
+										<div class="col-sm-8">
+											<switch class="pull-left" [status]="campaign.enableCoBrandingLogo"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
+														   (statusChange)="setCrobraBinding($event)">
+											</switch>
+										</div>
+									</div>
+
 									<div class="form-group" [attr.class]="fromNameDivClass">
 										<label class="control-label col-sm-4">From Name<font style="color: red"><b>*</b></font></label>
 										<div class="col-sm-8">
