@@ -145,7 +145,7 @@
 			<div class="portlet light">
 				<div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">TOTAL VIEWS FOR THIS CAMPAIGN</span>
+						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
 					</div>
 				</div>
 				<div class="portlet-body flex" style="padding: 1.7em 0;">
@@ -154,7 +154,7 @@
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
-							<h6 class="percentage-text">views</h6>
+							<h6 class="percentage-text">Viewed</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
@@ -163,7 +163,7 @@
 							<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
-							<h6 class="percentage-text">views</h6>
+							<h6 class="percentage-text">Viewed</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
 						</h5>
@@ -173,7 +173,7 @@
 							<app-donut-chart [percentageValue]="campaignReport.todayViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%</h2>
-							<h6 class="percentage-text">views</h6>
+							<h6 class="percentage-text">Viewed</h6>
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Today</h5>
 					</div>
@@ -187,7 +187,10 @@
 				<div class="portlet light">
 					<div class="portlet-title">
 						<div class="caption">
-							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">TOTAL VIEWS FOR THIS CAMPAIGN</span>
+							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
+								<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
+								<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
+							</span>
 						</div>
 						<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 							<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
@@ -206,7 +209,10 @@
 										<th style="font-size: 12px;font-weight: 500;">NAME</th>
 										<th style="font-size: 12px;font-weight: 500;">CAMPAIGN NAME</th>
 										<th style="font-size: 12px;font-weight: 500;">LATEST VIEW</th>
-										<th style="font-size: 12px;font-weight: 500;">TOTAL VIEWS</th>
+										<th style="font-size: 12px;font-weight: 500;">
+											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS</span>
+											<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED</span>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -246,9 +252,17 @@
 
 		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;">
-				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">Top Users Minutes Watched</span></div>
+				<div style="text-align: center;">
+					<span style="color: #7d7676; font-weight: bold; font-size: 15px;">
+					<span *ngIf="campaignType==='VIDEO'">Top Users Minutes Watched </span>
+					<span *ngIf="campaignType!=='VIDEO'">Top Users Email Opened </span>
+					</span>
+					</div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
-				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">User wise Views Count</span></div>
+				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">
+					<span *ngIf="campaignType==='VIDEO'">User wise Views Count</span>
+					<span *ngIf="campaignType!=='VIDEO'">User wise Email Opened Count</span>
+				  </span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
 				<app-pagination [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)"></app-pagination>
 			</div>
@@ -294,7 +308,7 @@
 											</div>
 										</a>
 									</div>
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL' ">
 										<a class="">
 											<div style="text-align: center">
 												<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
@@ -307,7 +321,7 @@
 											</div>
 										</a>
 									</div>
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
+									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL'">
 										<a class="">
 											<div style="text-align: center">
 												<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>

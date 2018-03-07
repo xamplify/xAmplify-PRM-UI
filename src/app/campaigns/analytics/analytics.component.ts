@@ -85,6 +85,10 @@ export class AnalyticsComponent implements OnInit {
           const self = this;
           const obj = this.campaignViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
           this.firstName = obj.firstName;
+          if(this.firstName === undefined || this.firstName === null){
+            const index = this.selectedRow.userEmail.indexOf('@');
+            this.firstName = this.selectedRow.userEmail.substring(0,index);
+          }
         } catch (err) { console.log(err); }
         console.log(data);
         const views = [];
@@ -153,7 +157,11 @@ export class AnalyticsComponent implements OnInit {
   campaignViewsCountBarchart(names, data) {
     console.log(names);
     console.log(data);
+    let nameValue: string;
     const maxValue = Math.max.apply(null, data);
+    if(this.campaignType === 'VIDEO'){
+      nameValue = 'Views'
+    } else {  nameValue = 'Email Opened'}
     const self = this;
     Highcharts.chart('campaign-views-barchart', {
       chart: {
@@ -214,7 +222,7 @@ export class AnalyticsComponent implements OnInit {
       },
       series: [{
         showInLegend: false,
-        name: 'views',
+        name: nameValue,
         data: data
       }]
     });
@@ -231,6 +239,10 @@ export class AnalyticsComponent implements OnInit {
           const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
           console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
           this.firstName = obj.firstName;
+          if(this.firstName === undefined || this.firstName === null){
+            const index = this.selectedRow.userEmail.indexOf('@');
+            this.firstName = this.selectedRow.userEmail.substring(0,index);
+          }
         } catch (err) { this.firstName = ''; console.log(err); }
         const names = [];
         const views = [];
@@ -444,6 +456,10 @@ export class AnalyticsComponent implements OnInit {
         const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
         console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
         this.firstName = obj.firstName;
+        if(this.firstName === undefined || this.firstName === null){
+          const index = emailId.indexOf('@');
+          this.firstName = emailId.substring(0,index);
+        }
         this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
         this.isTimeLineView = true;
       } catch (err) {
@@ -451,11 +467,6 @@ export class AnalyticsComponent implements OnInit {
       }
     }
   }
-  onchange(firstName: string) {
-    this.firstName = firstName;
-    alert(firstName);
-  }
-
   getCampaignById(campaignId: number) {
     const obj = { 'campaignId': campaignId }
     this.campaignService.getCampaignById(obj)
@@ -591,6 +602,10 @@ export class AnalyticsComponent implements OnInit {
           const self = this;
           const obj = this.campaignTotalViewsData.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
           this.firstName = obj.firstName;
+          if(this.firstName === undefined || this.firstName === null){
+            const index = this.selectedRow.userEmail.indexOf('@');
+            this.firstName = this.selectedRow.userEmail.substring(0,index);
+          }
         } catch (err) { console.log(err); }
       },
       error => console.log(error),

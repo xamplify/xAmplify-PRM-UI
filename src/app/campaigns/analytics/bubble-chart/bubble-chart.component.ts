@@ -41,6 +41,9 @@ export class BubbleChartComponent implements OnInit {
         }
 
         bubbleChart(names,legends, values) {
+                let hoverValue: any;
+                if(this.campaignType ==='VIDEO'){ hoverValue = 'Minutes Watched';
+                } else {   hoverValue = 'Email Opened';  }
                 Highcharts.chart('bubble-chart', {
 
                         chart: {
@@ -73,7 +76,7 @@ export class BubbleChartComponent implements OnInit {
                                 bubble: {
                                         tooltip: {
                                                 headerFormat: '<b>{series.name}</b><br>',
-                                                pointFormat: 'minutes watched:  {point.z}'
+                                                pointFormat: hoverValue+':  {point.z}'
 
                                         }
                                 },
