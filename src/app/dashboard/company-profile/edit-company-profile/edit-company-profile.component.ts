@@ -8,6 +8,8 @@ import {noWhiteSpaceValidator } from '../../../form-validator';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Processor } from '../../../core/models/processor';
+import { HomeComponent } from '../../../core/home/home.component';
+
 declare var $:any;
 @Component({
   selector: 'app-edit-company-profile',
@@ -31,8 +33,9 @@ export class EditCompanyProfileComponent implements OnInit {
     companyNameErrorMessage:string = "";
     companyProfileNameErrorMessage:string = "";
     existingCompanyName:string = "";
-    constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private companyProfileService: CompanyProfileService,
-        private fb: FormBuilder,public refService:ReferenceService,private router:Router,public processor:Processor) {
+    constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private fb: FormBuilder,
+        private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
+        public refService:ReferenceService,private router:Router,public processor:Processor) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
@@ -86,7 +89,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         self.router.navigate(["/home/dashboard/welcome"]);
                         self.processor.set(this.processor);
                       }, 3000);
-                   
+                   this.homeComponent.getVideoDefaultSettings();
                 },
                 error => { this.logger.errorPage( error ) },
                 () => { this.logger.info( "Completed saveOrUpdate()" ) }
