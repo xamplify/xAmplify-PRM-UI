@@ -77,7 +77,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     previousTimeSlider: any;
     seekbarPreviousTime = false;
     seekbarTimestored = 0;
-    fullScreenMode: boolean;
+    fullScreenMode = false;
     logoLink: string;
     logoImageUrlPath: string;
     

@@ -1,20 +1,28 @@
 <style>
-.logo-video {
-    position: absolute;
-    top: 58px;
-    left: 1184px;
-    width: 99px;
-    border: 1px solid red;
-    z-index: 9999999999;
-	}
+    .logo-video {
+        position: absolute !important;
+        top: 58px;
+        left: 1184px;
+        width: 99px;
+        border: 1px solid red;
+        z-index: 9999999999;
+    }
 
+    .videojs-logo-play {
+        position: absolute;
+        right: 34px;
+        width: 75px;
+        top: 145px;
+        left: 763px;
+    }
 </style>
 
 <div id="para">
 </div>
 <!-- style=" margin: -169px auto 21px; background: #FFF;  padding: 180px;" -->
 <div id="overlay-logo">
-    <a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
-        <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
-      </a>
+    <a [href]="logoLink" target="_blank" [class.disabled]="logoLink===null">
+        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive"
+        [class.videojs-logo-play]="!fullScreenMode" [class.logo-video]="fullScreenMode">
+    </a>
 </div>
