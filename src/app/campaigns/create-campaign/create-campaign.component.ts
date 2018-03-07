@@ -348,10 +348,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
         }
-            if(this.campaign.enableCoBrandingLogo === undefined || this.campaign.enableCoBrandingLogo===null){
-                this.campaign.enableCoBrandingLogo = false;
-            }
-    
     }
     
     setActiveTabForVideo(){

@@ -480,7 +480,7 @@ export class AnalyticsComponent implements OnInit {
           this.campaignType = 'SOCIAL';
           this.getSocialCampaignByCampaignId(campaignId);
         } else {
-          this.campaignType = 'REGULAR';
+          this.campaignType = 'EMAIL';
         }
       }
       )
