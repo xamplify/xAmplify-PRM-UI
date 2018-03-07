@@ -188,12 +188,17 @@ export class CreateTemplateComponent implements OnInit {
               emailTemplate.subject = emailTemplateService.emailTemplate.subject;//Image Path
               emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
               emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
-              if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1){
+              let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+              if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
                   emailTemplate.type = EmailTemplateType.BASIC;
-              }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1){
+              }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1 && !isCoBrandingTemplate){
                   emailTemplate.type = EmailTemplateType.RICH;
-              }else if(emailTemplateService.emailTemplate.subject.indexOf('Upload')>-1){
+              }else if(emailTemplateService.emailTemplate.subject.indexOf('Upload')>-1 && !isCoBrandingTemplate){
                   emailTemplate.type = EmailTemplateType.UPLOADED;
+              }else if(emailTemplate.regularCoBrandingTemplate){
+                  emailTemplate.type = EmailTemplateType.REGULAR_CO_BRANDING;
+              }else if(emailTemplate.videoCoBrandingTemplate){
+                  emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
               }
               console.log(emailTemplate.name);
               emailTemplateService.save(emailTemplate) .subscribe(

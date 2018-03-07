@@ -29,6 +29,7 @@ export class AddTeamMembersComponent implements OnInit {
     deleteText:string = "This will remove team member";
     deleteMessage:string = "";
     orgAdminEmailIds:string[]=[];
+    partnerEmailIds:string[]=[];
     existingEmailIds:string[] = [];
     disabledEmailIds:string[] = [];
     teamMemberUi:TeamMemberUi;
@@ -72,6 +73,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.listTeamMembers(this.pagination);
             this.listEmailIds();
             this.listAllOrgAdminsEmailIds();
+            this.listAllPartnerEmailIds();
         }
         catch ( error ) {
             this.showUIError(error);
@@ -149,6 +151,19 @@ export class AddTeamMembersComponent implements OnInit {
                 this.logger.errorPage(error);
             },
             () => this.logger.info("Finished listAllOrgAdminsEmailIds()")
+        );
+    }
+    
+    listAllPartnerEmailIds(){
+        this.teamMemberService.listAllPartnerEmailIds()
+        .subscribe(
+            data => {
+                this.partnerEmailIds = data;
+            },
+            error => {
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished listAllPartnerEmailIds()")
         );
     }
     
@@ -307,27 +322,16 @@ export class AddTeamMembersComponent implements OnInit {
                     if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
                         console.log(emailId.toLowerCase()+" is an org admin")
                         this.showErrorMessage("Org Admin Cannot be added as a team member");
-                    }else{
+                    }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
+                        this.showErrorMessage("Partner Cannot be added as a team member");
+                    }
+                    else{
                         if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
                             this.showErrorMessage("Already Added As Team Member ");
                         }else{
                             this.hideErrorMessage();
                         }
-                      //  this.validateDisableEmailIds(emailId);
                         
-                     /********************Check Duplicate Email Ids*******************//*
-                        let addedEmailIds = this.teamMembers.map(function(a) {return a.emailId.toLowerCase();});
-                        if(addedEmailIds.indexOf(emailId.toLowerCase())>-1){
-                            this.showErrorMessage("Duplicate Entry");
-                        }else{
-                      *//*******************Check If Already Added As A Team Member***************************//*
-                            if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                                this.showErrorMessage("Already Added As Team Member ");
-                            }else{
-                                this.hideErrorMessage();
-                            }
-                            this.validateDisableEmailIds(emailId);
-                        }*/
                     }
                 }
             }else{

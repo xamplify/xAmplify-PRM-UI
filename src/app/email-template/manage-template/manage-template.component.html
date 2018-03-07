@@ -34,6 +34,8 @@
 								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video Templates</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded Templates</li>
 								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner Templates</li>
+								<li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Regular Co-Branding Template</li>
+								<li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Video Co-Branding Template</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -136,8 +138,8 @@
 												<b>{{emailTemplate.createdDate}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-									 			<b  *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:17}}..</b>
-												<b  *ngIf="emailTemplate.createdBy?.length<20">{{emailTemplate.createdBy}}</b>
+									 			<b  *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
+												<b  *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 									 		</span>
 									 		<span align="left" class="template-created-by-value"><b>Created By</b></span>
 										</div>

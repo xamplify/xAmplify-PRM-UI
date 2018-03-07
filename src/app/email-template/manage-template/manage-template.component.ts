@@ -283,6 +283,10 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.pagination.emailTemplateType =EmailTemplateType.UPLOADED;
         }else if(type=="PARTNER"){
             this.pagination.emailTemplateType = EmailTemplateType.PARTNER;
+        }else if(type=="REGULAR_CO_BRANDING"){
+            this.pagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+        }else if(type=="VIDEO_CO_BRANDING"){
+            this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
         }
        
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
