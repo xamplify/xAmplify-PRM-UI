@@ -82,15 +82,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     logoImageUrlPath: string;
     
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
-    '<div class="portlet light" style="padding:5px 5px 690px 17px">' +
-    ' <div class="portlet-body">' +
+    '<div class="portlet light">' +
+    ' <div class="portlet-body clearfix">' +
     '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
     '<div id="newPlayerVideo"></div>' +
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
-    errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
-    '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div>';
+    errorHtml =  '<div class="page-content"><div class="portlet light">' +
+    ' <div class="portlet-body clearfix">' +
+    '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div></div></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
@@ -307,6 +308,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log(this.sessionId);
     }
     ngOnInit() {
+        $('body').css('cssText', 'background-color: white !important');
         this.createSessionId();
         this.xtremandLogger.log('public video component ngOnInit called');
         this.deviceDectorInfo();
