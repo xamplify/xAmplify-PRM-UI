@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./company-page.component.css']
 })
 export class CompanyPageComponent implements OnInit {
-
+    videos = [
+              {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
+              {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
+              {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
+              ];
   constructor() { }
 
   ngOnInit() {

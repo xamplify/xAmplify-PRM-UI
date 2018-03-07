@@ -45,11 +45,11 @@ export class ForgotPasswordComponent implements OnInit {
         this.userService.sendPassword( this.forgotPasswordForm.value.forgotPasswordEmailId )
             .subscribe(
             data => {
-                console.log( data['_body'] );
-                var body = data['_body'];
-                if ( body != "" ) {
-                    var response = JSON.parse( body );
-                    if ( response.message == "An email has been sent. Please login with the credentials" ) {
+                /*console.log( data['_body'] );
+                var body = data['_body'];*/
+                if ( data.message != "" ) {
+                   // var response = JSON.parse( body );
+                    if ( data.message == "An email has been sent. Please login with the credentials" ) {
                         this.forgotPasswordForm.reset();
                         this.refService.forgotMessage = 'Password has been sent to your registered Email Id';
                         this.router.navigate(['./login']);

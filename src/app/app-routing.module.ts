@@ -29,6 +29,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
+import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -58,6 +59,8 @@ export const routes: Routes = [
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
+    { path: 'company-page/:alias', component: CompanyPageComponent },
+    { path: 'partner-page/:alias', component: CompanyPageComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'su', component: ServiceUnavailableComponent },
