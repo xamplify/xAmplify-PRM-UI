@@ -1177,7 +1177,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
             this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
-            this.saveVideoFile.brandingLogoDescUri = this.logoDescriptionUrl;
+            if(this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null){
+            this.saveVideoFile.brandingLogoDescUri = null;
+            } else 
+             {  this.saveVideoFile.brandingLogoDescUri = this.logoDescriptionUrl; }
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {
