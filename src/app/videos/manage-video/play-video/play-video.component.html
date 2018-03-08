@@ -1,7 +1,4 @@
 <style type="text/css">
-	#overlay-modal {
-		width: auto;
-	}
 	.overlaySet {
 		margin-top: -331px;
 	}
@@ -15,15 +12,6 @@
 	}
 	a.disabled {
 		pointer-events: none;
-	}
-
-	textarea {
-		resize: none;
-		max-height: 100%;
-		max-width: 100%;
-		min-height: 100%;
-		min-width: 100%;
-		padding: 10px;
 	}
 </style>
 <div class="portlet light">
@@ -282,7 +270,7 @@
 								<div *ngIf="showRelatedMessage == false">
 									<app-pagination [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)"></app-pagination>
 								</div>
-								<p *ngIf="showRelatedMessage" class="notFoundCss">No Related videos Found</p>
+								<p *ngIf="showRelatedMessage" class="notFoundVideo">No Related videos Found</p>
 							</div>
 						</div>
 					</div>
