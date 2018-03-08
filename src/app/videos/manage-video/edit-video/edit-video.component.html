@@ -1,27 +1,14 @@
 <style type="text/css">
-	.portlet,
-	.portlet-body {
-		border-radius: 0;
-	}
-
-	.p01 {
-		padding: 0;
-		margin: 0;
-	}
-
 	a.disabled {
 		pointer-events: none;
 		cursor: not-allowed;
 	}
-
 	.ownThumnailCss {
 		margin-top: -22px;
 	}
-
 	.clipboard {
 		padding: 6px 44px;
 	}
-
 	.disablePlayerValues {
 		pointer-events: none;
 		opacity: 0.6;
@@ -30,24 +17,6 @@
 		padding: 15px 58px !important;
 		border-radius: 0px;
 	}
-
-	.colorImg {
-		box-shadow: 2px 6px 6px #000;
-		opacity: 1.0;
-		filter: alpha(opacity=100);
-	}
-
-	.colorShade {
-		opacity: 0.3;
-		filter: alpha(opacity=50);
-	}
-
-	.sizeImg {
-		height: 71px;
-		width: 98px;
-		cursor: pointer;
-	}
-
 	img:hover {
 		opacity: 1.0;
 		filter: alpha(opacity=100);
@@ -85,14 +54,7 @@
 		border: 1px solid red;
         z-index: 9999999999;
 	}
-	textarea {
-		resize: none;
-		max-height: 100%;
-		max-width: 100%;
-		min-height: 100%;
-		min-width: 100%;
-		padding: 10px;
-	}
+
 </style>
 <div class="portlet light">
 	<div class="portlet-body">
@@ -101,7 +63,6 @@
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
 				<div *ngIf="!is360Value">
 					<video id="edit_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="299" poster="" data-setup='{"example_option":true }'>
-						<!-- <source [src]=videoUrl type: 'application/x-mpegURL' /> -->
 					</video>
 				</div>
 				<div *ngIf="is360Value">
@@ -367,8 +328,7 @@
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
-													 [cpWidth]="'200px'" [cpHeight]="'265px'"  />
-													 <!-- [cpDisableInput]="disablePlayerSettingnew" -->
+													 [cpWidth]="'200px'" [cpHeight]="'265px'" />
 												</div>
 											</div>
 											<div class="form-group">
@@ -385,12 +345,12 @@
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
-													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
+													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'"/>
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-xs-5 col-sm-5 col-md-5 control-label" style="font-size:14px;padding:0">Transparency:</div>
-												<div class="col-xs-7 col-sm-7 col-md-7" style="padding:0">
+												<div class="col-xs-5 control-label" style="font-size:14px;padding:0">Transparency:</div>
+												<div class="col-xs-7" style="padding:0">
 													<div class="col-xs-10 col-sm-6 col-md-6">
 														<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 104%;" [class.disablePlayerValues]="disablePlayerSettingnew"
 														 (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
@@ -399,26 +359,37 @@
 												</div>
 											</div>
 											<!-- cobra eding video logo -->
-											<div id = "fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="" style="padding:0%;width: 50%;position: relative;right: -233px;top: -17px;">
-												<label class="control-label"  style="position: relative;left: -103px;font-size: 14px;color: #6d6969;top: 29px;">Video LOGO:
-													</label>
+
+											<div id ="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
+												 <label class="col-xs-5 control-label">Co-branding LOGO:</label>
+												 <div class="col-xs-7">
 												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
 													<div>
-														<span *ngIf="brandLogoUrl" class="close" style="position: absolute;left: 87px;top: 27px;background: #00a6e8;" (click)="clearLogo()"></span>
+														<span *ngIf="brandLogoUrl" class="close" style="position: absolute;left: 102px;background: #00a6e8;" (click)="clearLogo()"></span>
 														<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: 98px; border: 1px solid red;">
 													</div>
-													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 38px;">
+													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 11px;">
 														<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
 													</div>
+												</div>
 											</div>
 											<div *ngIf="!disablePlayerSettingnew" class="form-group">
-													<div class="col-xs-5 control-label" style="font-size:14px;padding:0">Video Logo url:
-														</div>
-													<div class="col-xs-7" style="position: relative;left: -8px;">
-														<input type="text" style="width: 90%;position: relative;right:-7px;" formControlName="brandingLogoDescUri"
+													<label class="col-xs-5 control-label">Co-branding Url:</label>
+													<div class="col-xs-7">
+														<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri"
 														 placeholder="logo website url" #val (input)="logoDescription(val.value)">
 												</div>
+											</div>
+											<div *ngIf="disablePlayerSettingnew && brandLogoUrl"  class="form-group">
+													<label class="col-xs-5 control-label">Co-branding LOGO:</label>
+													<div class="col-xs-7"> <img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl"
+														 style="height: 71px; width: 98px; border: 1px solid red;opacity: 0.5;">
+													</div>
+											</div>
+											<div *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group">
+													<label class="col-xs-5 control-label">Co-branding Url:</label>
+													<div class="col-xs-7"><p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p></div>
 											</div>
 										</div>
 									</div>
@@ -428,7 +399,6 @@
 						<div class="portlet box red">
 							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}" (click)="controlPlayerChange();">
 								<div class="col-xs-12 caption p01">
-									<!-- <i class="fa fa-info-circle"></i> -->
 									<div class="col-xs-11 p01">
 										<h4 class="p01">Controls of the player</h4>
 									</div>

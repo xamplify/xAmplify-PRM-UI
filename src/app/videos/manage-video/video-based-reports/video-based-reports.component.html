@@ -167,7 +167,6 @@
 				</div>
 			</div>
 			<div class="portlet-body" style="min-height: 308px">
-				<!-- <div id="monthly-views-bar" style="max-width: 100%; min-height: 300px;"></div> -->
 				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
 
 			</div>
@@ -182,7 +181,6 @@
 				</div>
 			</div>
 			<div class="portlet-body text-center">
-				<!-- <div id="world-map" style="max-width: 100%; min-height: 300px;"></div> -->
 				<app-worldmap *ngIf= "worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
 			</div>
 		</div>
@@ -228,7 +226,6 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td class="center">{{item.videoTitle}}</td>
-									<!-- | date: 'fullDate' -->
 									<td class="center">{{item.date }}</td>
 									<td class="center">{{item.minutesWatched }}</td>
 									<td class="center">

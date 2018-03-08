@@ -1,22 +1,14 @@
-<style type="text/css">
-	.active {
-		background: lightblue;
-	}
-
-	.headerCss {
-		font-size: 12px;
-		font-weight: 500;
-	}
-
-	.center {
-		text-align: center;
-	}
-</style>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a><i class="fa fa-angle-right"></i></li>
-			<li><a>reports</a> </li>
+			<li>
+				<i class="fa fa-home"></i>
+				<a [routerLink]="['/']">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a>Reports</a>
+			</li>
 		</ul>
 	</div>
 	<div class="portlet light ">
@@ -25,14 +17,15 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			<div class="btn-group pull-right"
-				style="margin-top: 6px; cursor:pointer; color: #7d8c98;margin-right: -18px;">
+			<div class="btn-group pull-right" style="margin-top: 6px; cursor:pointer; color: #7d8c98;margin-right: -18px;">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 3px;margin-right: 21px; float:right;padding-left: 6px;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+					<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadLogs('one')"> Export To Excel </a></li>
+					<li>
+						<a id="delete_button" (click)="downloadLogs('one')"> Export To Excel </a>
+					</li>
 				</ul>
 			</div>
 			<div class="panel-title pull-right" style="margin-top: 5px;">
@@ -81,14 +74,15 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			<div class="btn-group pull-right"
-				style="margin-top: 4px; cursor:pointer; color: #7d8c98">
+			<div class="btn-group pull-right" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 5px;margin-right: 6px; float:right;padding-left: 10px;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+					<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 				<ul class="dropdown-menu pull-right">
-					<li><a id="delete_button"
-					(click)="downloadLogs('two')"> Export To Excel </a></li>
+					<li>
+						<a id="delete_button" (click)="downloadLogs('two')"> Export To Excel </a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -96,7 +90,7 @@
 			<table class='table tgrid' id="sample_editable_1">
 				<thead>
 					<tr>
-				    	<th class="headerCss center">Name</th>
+						<th class="headerCss center">Name</th>
 						<th class="headerCss center">Title</th>
 						<th class="headerCss center">Date</th>
 					</tr>
@@ -104,25 +98,25 @@
 				<tbody>
 					<ng-container *ngFor="let videoViews of videoViewsLevelSecond; let i = index">
 						<tr>
-						<td>
-							<div class="flex">
-										<span class='profile' style="background-color: #3598dc;">
-											<span class='uppercase'>{{videoViews.firstName |
-												slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
-										</span> <span style="margin-left: 20px;">
-											<h5  style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
-											<h6 class='m0'>
-												<a href={{videoViews.emailId}}>{{videoViews.emailId}}</a>
-											</h6>
-										</span>
-									</div>
-								</td>
+							<td>
+								<div class="flex">
+									<span class='profile' style="background-color: #3598dc;">
+										<span class='uppercase'>{{videoViews.firstName | slice:0:1}}{{videoViews.lastName | slice:0:1}}</span>
+									</span>
+									<span style="margin-left: 20px;">
+										<h5 style="margin: 7px 0 2px 0;">{{videoViews.firstName}}&nbsp;{{videoViews.lastName}}</h5>
+										<h6 class='m0'>
+											<a href={{videoViews.emailId}}>{{videoViews.emailId}}</a>
+										</h6>
+									</span>
+								</div>
+							</td>
 							<td class="center">{{videoViews.videoTitle}}</td>
 							<td class="center">{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
 						</tr>
 					</ng-container>
 				</tbody>
-					<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
+				<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
 			</table>
 			<app-pagination [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)"></app-pagination>
 		</div>

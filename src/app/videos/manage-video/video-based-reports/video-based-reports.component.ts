@@ -1,15 +1,17 @@
 import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SaveVideoFile } from '../../models/save-video-file';
+
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { VideoUtilService } from '../../services/video-util.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoBaseReportService } from '../../services/video-base-report.service';
-import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import { Pagination } from '../../../core/models/pagination';
 import { PagerService } from '../../../core/services/pager.service';
-import { ChartModule } from 'angular2-highcharts';
-declare var videojs, Metronic, Layout, $, Demo, QuickSidebar, Index, Tasks, Highcharts: any;
+import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
+
+import { Pagination } from '../../../core/models/pagination';
+import { SaveVideoFile } from '../../models/save-video-file';
+
+declare var videojs, $, QuickSidebar, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
