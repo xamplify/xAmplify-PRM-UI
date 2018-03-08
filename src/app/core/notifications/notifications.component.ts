@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TopnavbarComponent } from '../../core/topnavbar/topnavbar.component';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -12,22 +13,13 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class NotificationsComponent implements OnInit {
     @Input('isTopNavBar') isTopNavBar = false;
     notifications: any;
-    totalNotificationsCount: number;
-    notificationsCount = 0;
-    constructor(public topnavbarComponent: TopnavbarComponent, public userService: UserService, public authenticationService: AuthenticationService) { }
-    
+    constructor(private router: Router, public topnavbarComponent: TopnavbarComponent, public userService: UserService, public authenticationService: AuthenticationService) { }
+
     listNotifications() {
         this.userService.listNotifications(this.authenticationService.getUserId())
             .subscribe(
             data => {
-                this.notifications =  data;
-                let count = 0;
-                for (const i in this.notifications) {
-                    if (this.notifications[i].read === false) {
-                        count = count + 1;
-                    }
-                }
-                this.notificationsCount = count;
+                this.notifications = data;
             },
             error => console.log(error),
             () => console.log('Finished')
@@ -38,11 +30,31 @@ export class NotificationsComponent implements OnInit {
         this.userService.markAllAsRead(this.authenticationService.getUserId())
             .subscribe(
             data => {
-                this.notificationsCount = 0;
+                this.userService.unreadNotificationsCount = 0;
+                for(const notification of this.notifications) {
+                    notification.read = true;
+                }
             },
             error => console.log(error),
             () => console.log('Finished')
             );
+    }
+    markAsRead(notification: any) {
+        this.userService.markAsRead(notification)
+            .subscribe(
+            data => {
+            },
+            error => console.log(error),
+            () => console.log('Finished')
+            );
+    }
+
+    navigate(notification: any) {
+        if (!notification.read) {
+            this.userService.unreadNotificationsCount--;
+            this.markAsRead(notification);
+        }
+        this.router.navigate(['/home/' + notification.targetUrl]);
     }
     ngOnInit() {
         this.listNotifications();

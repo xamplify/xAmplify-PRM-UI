@@ -1,50 +1,49 @@
 <div class="page-content" *ngIf="!isTopNavBar">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
-            <i class="fa fa-angle-right"></i>
-         </li>
-         <li><a>Notifications</a></li>
-      </ul>
-   </div>
-   <div class="portlet light ">
-      <div class="portlet-title">
-         <div class="caption">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li><a>Notifications</a></li>
+        </ul>
+    </div>
+    <div class="portlet light ">
+        <div class="portlet-title">
             <span class="caption-subject font-red-sunglo uppercase">All Notifications</span>
-         </div>
-      </div>
-      <div class="portlet-body clearfix">
-         <ul class="alt-row-style1 p0">
-            <li *ngFor="let item of notifications" [ngClass]="{'read': item.read, 'unread': !item.read}">
-               <a [routerLink]="['../../'+item.targetUrl]">
-               <span class="social-icon">
+            <button class="btn btn-primary btn-xs pull-right" (click)="markAllAsRead()" [disabled]="userService.unreadNotificationsCount === 0">Mark All As Read</button>
+        </div>
+        <div class="portlet-body clearfix">
+            <ul class="alt-row-style1 p0" *ngIf="notifications?.length > 0">
+                <li *ngFor="let item of notifications" [ngClass]="{'read': item.read, 'unread': !item.read}">
+                    <a (click)='navigate(item)'>
+                        <span class="social-icon">
 					<i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
-					<i class="fa fa-video" aria-hidden="true" *ngIf="item.actionId == 1"></i>
+					<i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
 					<i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
                </span>
-               <span class="time">{{item.createdTime | date: 'shortTime'}}</span>
-               <span class="details" [innerHtml]="item.message"></span>
-               </a>
-            </li>
-         </ul>
-      </div>
-   </div>
+                        <span class="time">{{item.createdTime | date: 'short'}}</span>
+                        <span class="details" [innerHtml]="item.message"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
-<ng-container *ngIf="isTopNavBar">
-   <ul class="dropdown-menu-list scroller" style="height: 250px;">
-      <li *ngFor="let item of notifications" [ngClass]="{'read': item.read, 'unread': !item.read}">
-         <a [routerLink]="[item.targetUrl]">
-         <span class="time">{{item.createdTime | date: 'shortTime'}}</span>
-         <span class="details" [innerHtml]="item.message">
+<ng-container *ngIf="isTopNavBar && notifications?.length > 0">
+    <ul class="dropdown-menu-list scroller" style="height: 250px;">
+<li *ngFor="let item of notifications" [ngClass]="{'read': item.read, 'unread': !item.read}">
+    <a (click)='navigate(item)'>
+        <span class="time">{{item.createdTime | date: 'short'}}</span>
+        <span class="details" [innerHtml]="item.message">
          <span class="label label-sm label-icon label-success">
          </span> {{item.message}} - {{item.read}}
-         </span>
-         <span class="social-icon">
+        </span>
+        <span class="social-icon">
 			<i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
-			<i class="fa fa-video" aria-hidden="true" *ngIf="item.actionId == 1"></i>
+			<i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
 			<i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
          </span>
-         </a>
-      </li>
-   </ul>
+    </a>
+</li>
+</ul>
 </ng-container>

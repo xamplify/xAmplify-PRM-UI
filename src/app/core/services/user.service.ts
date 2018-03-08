@@ -19,6 +19,7 @@ export class UserService {
 
     URL = this.authenticationService.REST_URL;
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    unreadNotificationsCount: number;
 
     constructor(
         private http: Http,
@@ -136,22 +137,29 @@ export class UserService {
     }
 
     listNotifications(userId:number) {
-        return this.http.get(this.URL + 'notifications/'+userId+'?access_token=' + this.authenticationService.access_token)
+        return this.http.get(this.URL + `notifications/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    unreadNotificationsCount(userId:number) {
-        return this.http.get(this.URL + 'notifications/unread-count/'+userId+'?access_token=' + this.authenticationService.access_token)
+    getUnreadNotificationsCount(userId:number) {
+        return this.http.get(this.URL + `notifications/unread-count/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     markAllAsRead(userId:number) {
-        return this.http.get(this.URL + 'notifications/mark-all-as-read/'+userId+'?access_token=' + this.authenticationService.access_token)
+        return this.http.get(this.URL + `notifications/mark-all-as-read/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    markAsRead(notification: any){
+        return this.http.post(this.URL + `notifications/mark-as-read?access_token=${this.authenticationService.access_token}`, notification)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     saveBrandLogo(logoPath: string,logoDesc: string,userId: number){
      return this.http.get( this.URL + 'videos/save-branding-logo?logoPath='+logoPath+'&LogoDescUri='+logoDesc+'&userId='+userId+'&access_token='+this.authenticationService.access_token )
        .map(this.extractData)
@@ -160,7 +168,8 @@ export class UserService {
     private extractData( res: Response ) {
         const body = res.json();
         console.log(body);
-        return body || {};
+        // return body || {};
+        return body;
     }
 
     private handleError( error: any ) {
