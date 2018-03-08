@@ -15,7 +15,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../models/contact-option';
 import { SocialPagerService } from '../services/social-pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { CustomeResponse } from '../models/response';
+import { CustomeResponse } from '../../common/models/response';
+import { CountryNames } from '../../common/models/countryNames';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -31,7 +32,7 @@ declare var $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination]
+    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames]
 })
 export class AddContactsComponent implements OnInit {
 
@@ -108,9 +109,9 @@ export class AddContactsComponent implements OnInit {
     emailNotValid: boolean;
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService, private contactService: ContactService,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
 
-        this.addContactuser.country = ( this.referenceService.countries[0] );
+        this.addContactuser.country = ( this.countryNames.countries[0] );
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
@@ -1762,7 +1763,7 @@ export class AddContactsComponent implements OnInit {
 
     addContactModalOpen() {
         $( "#addContactModal" ).show();
-        this.addContactuser.country = ( this.referenceService.countries[0] );
+        this.addContactuser.country = ( this.countryNames.countries[0] );
     }
 
     addContactModalClose() {

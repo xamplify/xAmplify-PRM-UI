@@ -3,7 +3,7 @@ import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
 import { EditUser } from '../models/edit-user';
-import { CustomeResponse } from '../models/response';
+import { CustomeResponse } from '../../common/models/response';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
@@ -19,6 +19,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ContactsByType } from '../models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CountryNames } from '../../common/models/countryNames';
 //import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
@@ -29,7 +30,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader, CountryNames]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -170,10 +171,10 @@ export class EditContactsComponent implements OnInit {
     filterCondition = this.filterConditions[0];
 
     constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private router: Router,
+        private authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
 
-        this.addContactuser.country = ( this.refService.countries[0] );
+        this.addContactuser.country = ( this.countryNames.countries[0] );
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
@@ -1231,7 +1232,7 @@ export class EditContactsComponent implements OnInit {
     addContactModalOpen() {
         this.addContactuser = new User();
         $( "#addContactModal" ).show();
-        this.addContactuser.country = ( this.refService.countries[0] );
+        this.addContactuser.country = ( this.countryNames.countries[0] );
     }
 
     addContactModalClose() {
@@ -1517,7 +1518,7 @@ export class EditContactsComponent implements OnInit {
         this.addContactuser.city = contactDetails.city;
         this.addContactuser.country = contactDetails.country;
         if ( this.addContactuser.country == null ) {
-            this.addContactuser.country = ( this.refService.countries[0] );
+            this.addContactuser.country = ( this.countryNames.countries[0] );
         }
         this.addContactuser.mobileNumber = contactDetails.mobileNumber;
         this.addContactuser.description = contactDetails.description;

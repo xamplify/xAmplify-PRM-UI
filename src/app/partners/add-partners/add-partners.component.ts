@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
-import { CustomeResponse } from '../../contacts/models/response';
+import { CustomeResponse } from '../../common/models/response';
+import { CountryNames } from '../../common/models/countryNames';
 import { Pagination } from '../../core/models/pagination';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { SocialContact } from '../../contacts/models/social-contact';
@@ -23,7 +24,7 @@ declare var $, Papa, swal: any;
     templateUrl: './add-partners.component.html',
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
-    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent]
+    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames]
 })
 export class AddPartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -111,14 +112,14 @@ export class AddPartnersComponent implements OnInit {
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
-        public referenceService: ReferenceService,
+        public referenceService: ReferenceService, public countryNames: CountryNames,
         public contactService: ContactService,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
 
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
-        this.addPartnerUser.country = ( this.referenceService.countries[0] );
+        this.addPartnerUser.country = ( this.countryNames.countries[0] );
     }
 
     onChangeAllPartnerUsers( event: Event ) {
@@ -218,7 +219,7 @@ export class AddPartnersComponent implements OnInit {
 
     addPartnerModalOpen() {
         $( "#addPartnerModal" ).show();
-        this.addPartnerUser.country = ( this.referenceService.countries[0] );
+        this.addPartnerUser.country = ( this.countryNames.countries[0] );
     }
 
     addPartnerModalClose() {
@@ -703,7 +704,7 @@ export class AddPartnersComponent implements OnInit {
         this.addPartnerUser.city = contactDetails.city;
         this.addPartnerUser.country = contactDetails.country;
         if ( this.addPartnerUser.country == null ) {
-            this.addPartnerUser.country = ( this.referenceService.countries[0] );
+            this.addPartnerUser.country = ( this.countryNames.countries[0] );
         }
         this.addPartnerUser.mobileNumber = contactDetails.mobileNumber;
         this.addPartnerUser.description = contactDetails.description;

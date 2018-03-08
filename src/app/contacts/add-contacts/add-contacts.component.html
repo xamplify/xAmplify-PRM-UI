@@ -806,7 +806,7 @@ img:hover {
 								<select class="form-control" style="border: none; width: 120%"
 									class="form-control" [(ngModel)]="addContactuser.country"
 									[ngModelOptions]="{standalone: true}" placeholder="Country">
-									<option *ngFor="let country of referenceService.countries"
+									<option *ngFor="let country of countryNames.countries"
 										[value]="country">{{country}}</option>
 								</select>
 								<div class="textCss"></div>

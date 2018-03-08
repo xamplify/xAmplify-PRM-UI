@@ -61,7 +61,7 @@
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Country</label>
 				<select class="form-control" required formControlName="country">
-					<option *ngFor="let country of refService.countries"
+					<option *ngFor="let country of countryNames.countries"
 						[value]="country">{{country}}</option>
 				</select>
 				<div *ngIf="formErrors.country" class="alert alert-danger">{{

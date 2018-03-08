@@ -10,13 +10,14 @@ import { UserService } from '../../core/services/user.service';
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CountryNames } from '../../common/models/countryNames';
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component( {
     selector: 'app-signup',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
-    providers: [User]
+    providers: [User, CountryNames]
 })
 export class SignupComponent implements OnInit {
     signUpForm: FormGroup;
@@ -24,7 +25,7 @@ export class SignupComponent implements OnInit {
     userActive = false;
     loading = false;
     isError = false;
-    constructor( private router: Router,
+    constructor( private router: Router, public countryNames: CountryNames,
         private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
         private userService: UserService, public refService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
         this.buildForm();
@@ -133,7 +134,7 @@ export class SignupComponent implements OnInit {
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( this.emailRegEx )]],
             'address': [this.signUpUser.address, Validators.compose( [Validators.required, noWhiteSpaceValidator, Validators.maxLength( 50 ),] )],//Validators.pattern(nameRegEx)
             'city': [this.signUpUser.city, Validators.compose( [Validators.required, noWhiteSpaceValidator, Validators.maxLength( 50 ), Validators.pattern( cityRegEx )] )],
-            'country': [this.refService.countries[0], Validators.compose( [Validators.required, validateCountryName] )],
+            'country': [this.countryNames.countries[0], Validators.compose( [Validators.required, validateCountryName] )],
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.pattern( passwordRegex )]],
             'confirmPassword': [null, [Validators.required, Validators.pattern( passwordRegex )]],
             'agree': [false, Validators.required],

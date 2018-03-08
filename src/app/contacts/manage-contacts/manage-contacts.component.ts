@@ -4,7 +4,7 @@ import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
 import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
-import { CustomeResponse } from '../models/response';
+import { CustomeResponse } from '../../common/models/response';
 import { Router, NavigationExtras } from "@angular/router";
 import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
