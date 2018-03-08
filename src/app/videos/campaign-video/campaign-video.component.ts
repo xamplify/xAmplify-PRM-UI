@@ -80,15 +80,17 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     fullScreenMode = false;
     logoLink: string;
     logoImageUrlPath: string;
-    
+    templateName: string;
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light">' +
     ' <div class="portlet-body clearfix">' +
     '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
-    '<div id="newPlayerVideo"></div>' +
+    '<div id="newPlayerVideo"><div id="overlay-logo-bee"><a href=' + this.logoLink+' target="_blank" >'+
+    '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>' +
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
+
     errorHtml =  '<div class="page-content"><div class="portlet light">' +
     ' <div class="portlet-body clearfix">' +
     '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div></div></div>';
@@ -198,17 +200,23 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
                         if (updatedBody.includes("video-tag")) {
+                            this.templateName = 'defaultTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);
-                            updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
+                           // updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
+                            updatedBody = updatedBody.replace('<div id="video-tag"></div>', '<div id="newPlayerVideo">'+
+                            '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                            '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                             this.templatehtml = updatedBody;
-                            $('#videoId').css('width', 'auto');
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
                         else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
+                            this.templateName = 'beeTemplate'; 
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
-                            updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo"></div> <a ');
+                            updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
+                            '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                            '<img id="image"  style="position:relative;top:65px;left:158px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
@@ -216,6 +224,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             checkVideoTag = 'beeTemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         } else {
+                            this.templateName = 'uploadedTemplate';
                             updatedBody = updatedBody.replace("view in browser", '');
                             updatedBody = updatedBody.replace("click here","");
                             updatedBody = updatedBody.replace('<a href="<unsubscribeURL>">click here</a>',"");
@@ -230,6 +239,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             else {
                                 updatedBody = this.campaignVideoTemplate;
                             }
+                            
+                            updatedBody = updatedBody.replace('<div id="newPlayerVideo"></div>', '<div id="newPlayerVideo">'+
+                            '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                            '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                           
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("SocialUbuntuImgURL", '');
@@ -238,6 +252,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             console.log(this.templatehtml);
                             checkVideoTag = 'uploadtemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
+                           
                             console.log(this.campaignVideoTemplate);
                         }
                         console.log(this.templatehtml);
@@ -253,19 +268,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         } else {
                             try {
                                 this.playNormalVideoCampaign();
-                                if(checkVideoTag==='default') { 
-                                $('#videoId').css({'width': '369px','height': '402px','margin':'0 auto'});
-                                }
-                                else {
-                                this.cssOverride(); 
-                               }
                             } catch (err) {
                                 document.getElementById('para').innerHTML = this.errorHtml;
                                 $('html').css('background-color','white');​​​​​​​​​​​​​​​​​​​​​
                             }
                         }
                         this.defaultVideoSettings();
-                        $('#newPlayerVideo').append($('#overlay-logo').show());
+                        // $('#newPlayerVideo').append($('#overlay-logo').show());
+                        if(!this.logoImageUrlPath){ $('#image').css('display','none');​​​​​​​​​​​​​​​​​​​​​  }
+                        if(checkVideoTag==='default') { $('#videoId').css({'width': '479px','height': '279px','margin':'0 auto'});
+                        } else {  this.cssOverride(); }
                         console.log(this.videoUrl);
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
@@ -513,11 +525,20 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     if (event === "FullscreenOn") {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
-                        selfPanorama.fullScreenMode = true;
+                        selfPanorama.setFullscreenValue('FullscreenOn');
                     } else if (event === "FullscreenOff") {
+                       if(selfPanorama.templateName ==='beeTemplate'){
+                        $("#videoId").css("width", "500px");
+                        $("#videoId").css("height", "279px");
+                       } else if(selfPanorama.templateName=== 'defaultTemplate'){
+                        $("#videoId").css("width", "479px");
+                        $("#videoId").css("height", "279px");
+                       }
+                       else {
                         $("#videoId").css("width", "369px");
                         $("#videoId").css("height", "413px");
-                        selfPanorama.fullScreenMode = false;
+                       }
+                       selfPanorama.setFullscreenValue('FullscreenOff');
                     }
                 });
                 player.on('click', function () {
@@ -528,7 +549,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('#videoId').css('height', '413px');
     }
      cssOverride(){
-      $('#videoId').css({'width': '490px','height': '327px', 'margin-left': '-2px'});
+      $('#videoId').css({'width': '500px','height': '279px', 'margin-left': '-2px'});
       $('.nl-container').css({'table-layout': 'auto'});
      }
       playNormalVideoCampaign() {
@@ -665,10 +686,18 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
                             self.setFullscreenValue('FullscreenOn');
-
                         } else if (event === "FullscreenOff") {
+                           if(self.templateName ==='beeTemplate'){
+                            $("#videoId").css("width", "500px");
+                            $("#videoId").css("height", "279px");
+                           } else if(self.templateName=== 'defaultTemplate'){
+                            $("#videoId").css("width", "479px");
+                            $("#videoId").css("height", "279px");
+                           }
+                           else {
                             $("#videoId").css("width", "369px");
                             $("#videoId").css("height", "413px");
+                           }
                             self.setFullscreenValue('FullscreenOff');
                         }
                     });
