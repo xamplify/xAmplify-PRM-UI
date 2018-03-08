@@ -37,7 +37,7 @@ export class ForgotPasswordComponent implements OnInit {
     validationMessages = {
         'forgotPasswordEmailId': {
             'required': 'Email is required.',
-            'pattern': 'Invalid Pattern.'
+            'pattern': 'Your email address must be in the format of name@domain.com.'
         }
     };
 

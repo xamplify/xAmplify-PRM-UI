@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompanyPageComponent implements OnInit {
     videos = [
-              {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
+              {id:1,video:'videoTitle one'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
               {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
               {id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},{id:1,video:'videos1'},
               ];
