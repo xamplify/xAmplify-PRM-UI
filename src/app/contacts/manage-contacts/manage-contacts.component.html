@@ -308,6 +308,7 @@
 														style="bottom: 0; left: 6px; position: absolute;">Created
 														By <br>
 														<h5 class="m0" title={{contactList.uploadedBy}}>{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
+														<h5 class="m0" *ngIf="contactList.uploadedBy==null">-</h5>
 														<br>
 														<h5 class="m0" style="position: absolute; top: 34px">#{{contactList.noOfContacts}}</h5>
 													</span>

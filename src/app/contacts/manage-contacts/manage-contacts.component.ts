@@ -206,13 +206,17 @@ export class ManageContactsComponent implements OnInit {
     }
 
     contactListNameLength( title: string ) {
-        if ( title.length > 25 ) { title = title.substring( 0, 25 ) + '....'; }
-        return title;
+        if ( title != null ) {
+            if ( title.length > 25 ) { title = title.substring( 0, 25 ) + '....'; }
+            return title;
+        }
     }
 
     contactListUploadedNameLength( title: string ) {
-        if ( title.length > 15 ) { title = title.substring( 0, 15 ) + '....'; }
-        return title;
+        if ( title != null ) {
+            if ( title.length > 15 ) { title = title.substring( 0, 15 ) + '....'; }
+            return title;
+        }
     }
 
     loadContactLists( pagination: Pagination ) {
