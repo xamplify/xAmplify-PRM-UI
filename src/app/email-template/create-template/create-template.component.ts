@@ -79,7 +79,7 @@ export class CreateTemplateComponent implements OnInit {
 	          emailTemplate = new EmailTemplate();
               emailTemplate.body = htmlContent;
               emailTemplate.jsonBody = jsonContent;
-	          if(emailTemplateService.emailTemplate.beeVideoTemplate){
+	          if(emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
 	              if(jsonContent.indexOf("xtremand-video.gif")<0){
 	                 swal("Please Add Default .gif ","","error");
 	                 return false;

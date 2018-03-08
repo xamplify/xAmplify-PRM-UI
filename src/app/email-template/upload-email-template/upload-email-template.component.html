@@ -54,7 +54,11 @@
 								</tr>
 							</tbody>
 						</table>
-						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: 85px;">
+						<div>
+					 		<label for="info"><font style="color: red;">Use Below Image Tag For Co-Branding.</font></label>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="2">{{coBrandingTag}}</textarea>
+					</div>
+						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv">
 					 		<br><label for="info"><font style="color: red;">**Before you upload your HTML template, please be sure to include the code below.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{videoTag}}</textarea>
 					</div>

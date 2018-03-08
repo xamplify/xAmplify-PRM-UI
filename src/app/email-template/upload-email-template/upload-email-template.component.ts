@@ -45,11 +45,13 @@ export class UploadEmailTemplateComponent implements OnInit {
     uploadFileErrorMessage:string = "";
     videoTag:string = "";
     emailMergeTags:string = "";
+    coBrandingTag:string = "";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
             private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         this.emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
+       this.coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
         this.loggedInUserId = this.authenticationService.getUserId();
        
         if(this.emailTemplateService.isRegularUpload==undefined){

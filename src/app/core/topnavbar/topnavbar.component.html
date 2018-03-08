@@ -11,11 +11,11 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a routerLink="/" *ngIf="!refService.isDisabling"> <img
+			<a routerLink="/" *ngIf="authenticationService.user.hasCompany"> <img
 				src="assets/images/ubuntu-logo.png" alt="logo"
 				class="logo-default" />
 			</a>
-			<a  *ngIf="refService.isDisabling">
+			<a class="disabled" *ngIf="!authenticationService.user.hasCompany">
 			 <img src="assets/images/ubuntu-logo.png" alt="logo" class="logo-default" />
 			</a>
 			<div class="menu-toggler sidebar-toggler">
@@ -170,7 +170,7 @@
 									class="fa fa-building-o"></i>Company Profile
 							</a>
 							</li>
-							<li *ngIf="refService.hasAllAccess()">
+							<li *ngIf="refService.hasAllAccess() && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
 							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']"> 

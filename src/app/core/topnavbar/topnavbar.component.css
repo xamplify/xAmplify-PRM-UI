@@ -24,3 +24,7 @@ padding: 7px 15px;
 
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default{
     background-color: #00a8e7 !important;}
+    
+    a.disabled{
+    pointer-events: none;
+    }

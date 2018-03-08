@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 declare var Metronic ,Demo,Layout :any;
 
@@ -9,7 +10,7 @@ declare var Metronic ,Demo,Layout :any;
 })
 export class UpgradeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authenticationService:AuthenticationService) { }
 
   ngOnInit(){
       try{   
