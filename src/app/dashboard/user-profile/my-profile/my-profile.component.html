@@ -412,13 +412,9 @@ input:checked + .slider-new:before {
 															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
 															<strong> Default player settings updated Successfully!</strong> 
 														</div>
-														<div *ngIf="logoUpdated" class="alert alert-success alert-dismissable" style="width:104.5%;margin-left:-17px;">
-															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
-															<strong>Your branding Logo Uploaded Successfully!</strong> 
-														</div>
 														<div *ngIf="logoUrlUpdated" class="alert alert-success alert-dismissable" style="width:104.5%;margin-left:-17px;">
 															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
-															<strong>Your branding Logo Saved Successfully!</strong> 
+															<strong>Your branding Logo and Url Uploaded Successfully!</strong> 
 														</div>
 														<div  [hidden]="isOnlyPartnerRole">	
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">

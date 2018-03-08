@@ -19,10 +19,9 @@
 
 <div id="para">
 </div>
-<!-- style=" margin: -169px auto 21px; background: #FFF;  padding: 180px;" -->
 <div id="overlay-logo">
     <a [href]="logoLink" target="_blank" [class.disabled]="logoLink===null">
-        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive"
-        [class.videojs-logo-play]="!fullScreenMode" [class.logo-video]="fullScreenMode">
+        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" [class.videojs-logo-play]="!fullScreenMode"
+            [class.logo-video]="fullScreenMode">
     </a>
 </div>

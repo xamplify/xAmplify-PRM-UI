@@ -65,7 +65,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     logoImageUrlPath: string;
     imagePathSafeUrl: any;
     fullScreenMode = false;
-    logoUpdated = false;
     logoLink = '';
     logoUrlUpdated = false;
     roleLength: boolean;
@@ -147,7 +146,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 //   this.logoUploader.queue[0].upload(); 
             } else {
                 this.logoUploader.queue.length = 0;
-                this.logoUpdated = true;
                 this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
             }
         }
@@ -160,21 +158,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoImageUrlPath = undefined;
     }
     saveVideoBrandLog() {
-        this.logoUpdated = false;
-        this.refService.goToTop();
         this.ngxloading = true;
+        if(this.logoImageUrlPath && this.logoLink) {
         this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
+                    this.refService.goToTop();
                     console.log(data);
                     if (data !== undefined) {
                         this.ngxloading = false;
                         this.logoUrlUpdated = true;
                         this.logoImageUrlPath = data.brandingLogoPath
                         this.logoLink = data.brandingLogoDescUri;
+                        setTimeout(()=>{  this.logoUrlUpdated = false; },5000)
                     } else { this.ngxloading = false; }
                 },
                 (error) => { this.ngxloading = false; });
+            }
     }
     hasOrgAdminRole() {
         this.roles = this.authenticationService.getRoles();
@@ -236,7 +236,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     videojsCall() {
-        if (!this.videoJSplayer) {
+        if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
             const self = this;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
@@ -702,7 +702,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     closeSuccessPopup() {
         this.defaultPlayerSuccess = false;
-        this.logoUpdated = false;
         this.logoUrlUpdated = false;
     }
     enableVideoController(event: any) {

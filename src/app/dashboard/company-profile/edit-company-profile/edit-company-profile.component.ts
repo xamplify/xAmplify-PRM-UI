@@ -88,8 +88,8 @@ export class EditCompanyProfileComponent implements OnInit {
                         module.hasSocialStatusRole = true;
                         self.router.navigate(["/home/dashboard/welcome"]);
                         self.processor.set(this.processor);
+                        self.homeComponent.getVideoDefaultSettings();
                       }, 3000);
-                   this.homeComponent.getVideoDefaultSettings();
                 },
                 error => { this.logger.errorPage( error ) },
                 () => { this.logger.info( "Completed saveOrUpdate()" ) }

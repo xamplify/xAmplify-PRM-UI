@@ -47,10 +47,11 @@ export class HomeComponent implements OnInit {
 			(result: any) => {
 				if (result !== "") {
 					const response = result;
+					console.log('defaultsetting api called :');
 					console.log(response);
 					this.referenceService.videoBrandLogo = response.brandingLogoUri;
 					this.referenceService.defaultPlayerSettings = response;
-				}
+				} else { 	console.log('defaultsetting api result is empty :')}
 			});
 	}
 	ngOnInit() {
