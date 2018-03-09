@@ -19,15 +19,17 @@ import { LoadingModule } from 'ngx-loading';
 import { LoaderComponent } from '../loader/loader.component';
 import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
+import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
+
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                 TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, BusyModule, TimepickerModule.forRoot()
                 , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule],
-        declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent],
+        declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                 HttpModule, Ng2FilterPipeModule, LoaderComponent, BusyModule, TimepickerModule,
-                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, ],
+                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent],
         providers: [],
 })
 

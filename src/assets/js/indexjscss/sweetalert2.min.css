@@ -171,7 +171,8 @@
 }
 
 .swal2-icon.swal2-error {
-    border-color: #f27474
+    border-color: #f27474;
+    padding: 2px;
 }
 
 .swal2-icon.swal2-error .x-mark {
@@ -181,24 +182,24 @@
 
 .swal2-icon.swal2-error .line {
     position: absolute;
-    height: 5px;
-    width: 47px;
+    height: 4px;
+    width: 40px;
     background-color: #f27474;
     display: block;
-    top: 37px;
-    border-radius: 2px
+    top: 18px;
+    border-radius: 2px;
 }
 
 .swal2-icon.swal2-error .line.left {
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
-    left: 17px
+    left: 0
 }
 
 .swal2-icon.swal2-error .line.right {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
-    right: 16px
+    right: 0
 }
 
 .swal2-icon.swal2-warning {

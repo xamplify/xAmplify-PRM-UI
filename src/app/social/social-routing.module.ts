@@ -4,13 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UpdateStatusComponent } from './common/update-status/update-status.component';
 import { SocialManageComponent } from './common/social-manage/social-manage.component';
 
-import { TwitterTweetsComponent } from './twitter/twitter-tweets/twitter-tweets.component';
-import { TwitterFriendsComponent } from './twitter/twitter-friends/twitter-friends.component';
-import { TwitterFollowersComponent } from './twitter/twitter-followers/twitter-followers.component';
-import { TwitterAnalyticsComponent } from './twitter/twitter-analytics/twitter-analytics.component';
-import { TwitterProfileComponent } from './twitter/twitter-profile/twitter-profile.component';
-import { TwitterHomeComponent } from './twitter/twitter-home/twitter-home.component';
-
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
 import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
 import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebook-analytics.component';
@@ -18,13 +11,6 @@ import { FacebookAnalyticsComponent } from './facebook/facebook-analytics/facebo
 const routes: Routes = [
     { path: 'update-status', component: UpdateStatusComponent },
     { path: 'manage/:social', component: SocialManageComponent },
-
-    { path: 't/:profileId', component: TwitterHomeComponent },
-    { path: 'twitter-tweets/:profileId', component: TwitterTweetsComponent },
-    { path: 'twitter-friends/:profileId', component: TwitterFriendsComponent },
-    { path: 'twitter-followers/:profileId', component: TwitterFollowersComponent },
-    { path: 'twitter-analytics/:profileId', component: TwitterAnalyticsComponent },
-    { path: 'twitter-user/:profileId1/:profileId2', component: TwitterProfileComponent },
 
     { path: 'facebook-accounts', component: FacebookAccountsComponent },
     { path: 'facebook-posts/:profileId', component: FacebookPostsComponent },

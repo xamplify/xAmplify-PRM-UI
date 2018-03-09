@@ -44,6 +44,7 @@ export const routes: Routes = [
             { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
             { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
             { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
+            { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
             { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },

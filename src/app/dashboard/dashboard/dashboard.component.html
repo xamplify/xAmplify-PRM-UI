@@ -694,22 +694,22 @@
 										<h5 class="profile-name">
 											
 											<span *ngIf="socialConnection.source === 'TWITTER'">
-												<a [routerLink]="['/home/social/t', socialConnection.profileId]">
+												<a [routerLink]="['/home/twitter', socialConnection.profileId]">
 												@{{socialConnection.profileName}}</a>
 											</span>
 											<span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
 											<span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
 										</h5>
 										<section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-tweets', socialConnection.profileId]">
+											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
 													<b>Tweets</b>
 													<h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
 												</a>
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-followers', socialConnection.profileId]">
+											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
 													<b>Followers</b>
 													<h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
 												</a>
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/social/twitter-friends', socialConnection.profileId]">
+											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
 													<b>Friends</b>
 													<h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
 												</a>
