@@ -10,7 +10,7 @@ declare var Metronic ,Demo,Layout :any;
 })
 export class UpgradeComponent implements OnInit {
 
-  constructor(private authenticationService:AuthenticationService) { }
+  constructor(public authenticationService:AuthenticationService) { }
 
   ngOnInit(){
       try{   

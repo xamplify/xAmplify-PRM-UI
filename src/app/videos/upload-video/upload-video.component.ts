@@ -820,7 +820,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             if (this.refService.homeMethodsCalled === false) {
                 this.homeComponent.getVideoTitles();
                 this.homeComponent.getCategorisService();
-                this.homeComponent.getVideoDefaultSettings();
                 this.refService.homeMethodsCalled = true;
             }
             this.defaultSettings();

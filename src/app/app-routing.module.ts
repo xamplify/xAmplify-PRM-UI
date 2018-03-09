@@ -22,7 +22,7 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { ServiceUnavailableComponent } from './error-pages/service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './error-pages/page-not-found/page-not-found.component';
-import { ErrorPagesComponent } from './error-pages/error-pages.component';
+import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 import { AccessDeniedComponent } from './error-pages/access-denied/access-denied.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { LoginComponent } from './authentication/login/login.component';

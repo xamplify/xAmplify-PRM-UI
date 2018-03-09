@@ -2,16 +2,19 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
 import { VideoFileService } from '../services/video-file.service';
-import { SaveVideoFile } from '../models/save-video-file';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { XtremandLog } from '../models/xtremand-log';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { UUID } from 'angular2-uuid';
 import { UtilService } from '../../core/services/util.service';
+
+import { SaveVideoFile } from '../models/save-video-file';
+import { XtremandLog } from '../models/xtremand-log';
+import { UUID } from 'angular2-uuid';
+
 declare var $, videojs: any;
 
 enum LogAction {
@@ -86,7 +89,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     ' <div class="portlet-body clearfix">' +
     '<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0">' +
     '<div id="newPlayerVideo"><div id="overlay-logo-bee"><a href=' + this.logoLink+' target="_blank" >'+
-    '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>' +
+    '<img id="image"  style="position:relative;top: 47px;right: -813px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>' +
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
@@ -99,8 +102,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService) {
-        console.log('share component constructor called');
-        console.log('url is on angular 2' + document.location.href);
+        this.xtremandLogger.log('share component constructor called');
+        this.xtremandLogger.log('url is on angular 2' + document.location.href);
         this.publicRouterUrl = document.location.href;
         this.logVideoViewValue = true;
     }
@@ -205,7 +208,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                            // updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             updatedBody = updatedBody.replace('<div id="video-tag"></div>', '<div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            '<img id="image"  style="position:relative;top: 47px;right: -813px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                             this.templatehtml = updatedBody;
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
@@ -216,7 +219,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top:65px;left:158px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            '<img id="image"  style="position:relative;top:10px;float: right;right: 10px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
@@ -242,7 +245,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             
                             updatedBody = updatedBody.replace('<div id="newPlayerVideo"></div>', '<div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top: 65px;right: -789px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            '<img id="image"  style="position:relative;top: 65px;right: -393px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                            
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
@@ -252,7 +255,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             console.log(this.templatehtml);
                             checkVideoTag = 'uploadtemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
-                           
                             console.log(this.campaignVideoTemplate);
                         }
                         console.log(this.templatehtml);
@@ -527,17 +529,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         $(".vjs-tech").css("height", "100%");
                         selfPanorama.setFullscreenValue('FullscreenOn');
                     } else if (event === "FullscreenOff") {
-                       if(selfPanorama.templateName ==='beeTemplate'){
-                        $("#videoId").css("width", "500px");
-                        $("#videoId").css("height", "279px");
-                       } else if(selfPanorama.templateName=== 'defaultTemplate'){
-                        $("#videoId").css("width", "479px");
-                        $("#videoId").css("height", "279px");
-                       }
-                       else {
-                        $("#videoId").css("width", "369px");
-                        $("#videoId").css("height", "413px");
-                       }
+                        if(selfPanorama.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
+                          $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
+                          $("#videoId").css("height", "279px"); } 
                        selfPanorama.setFullscreenValue('FullscreenOff');
                     }
                 });
@@ -687,17 +681,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             $(".vjs-tech").css("height", "100%");
                             self.setFullscreenValue('FullscreenOn');
                         } else if (event === "FullscreenOff") {
-                           if(self.templateName ==='beeTemplate'){
-                            $("#videoId").css("width", "500px");
-                            $("#videoId").css("height", "279px");
-                           } else if(self.templateName=== 'defaultTemplate'){
-                            $("#videoId").css("width", "479px");
-                            $("#videoId").css("height", "279px");
-                           }
-                           else {
-                            $("#videoId").css("width", "369px");
-                            $("#videoId").css("height", "413px");
-                           }
+                           if(self.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
+                           $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
+                           $("#videoId").css("height", "279px"); } 
                             self.setFullscreenValue('FullscreenOff');
                         }
                     });

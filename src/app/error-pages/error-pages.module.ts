@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { ErrorPagesComponent } from './error-pages.component';
+import { ErrorPagesComponent } from './error-pages/error-pages.component';
 import { ServiceUnavailableComponent } from './service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
