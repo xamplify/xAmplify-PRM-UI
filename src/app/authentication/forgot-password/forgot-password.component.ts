@@ -24,12 +24,6 @@ export class ForgotPasswordComponent implements OnInit {
     error = '';
     emailRegEx: any = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
 
-    constructor( private router: Router,
-        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
-        private userService: UserService, public refService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
-        this.validateForgotPasswordForm();
-    }
-
     formErrors = {
         'forgotPasswordEmailId': ''
     };
@@ -41,7 +35,13 @@ export class ForgotPasswordComponent implements OnInit {
         }
     };
 
-    sendPassword() {
+    constructor( private router: Router,
+        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
+        private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
+        this.validateForgotPasswordForm();
+    }
+
+        sendPassword() {
         this.userService.sendPassword( this.forgotPasswordForm.value.forgotPasswordEmailId )
             .subscribe(
             data => {
@@ -51,11 +51,11 @@ export class ForgotPasswordComponent implements OnInit {
                    // var response = JSON.parse( body );
                     if ( data.message == "An email has been sent. Please login with the credentials" ) {
                         this.forgotPasswordForm.reset();
-                        this.refService.forgotMessage = 'Password has been sent to your registered Email Id';
+                        this.referenceService.forgotMessage = 'Password has been sent to your registered Email Id';
                         this.router.navigate(['./login']);
                     }
                 } else {
-                    this.logger.error( this.refService.errorPrepender + " sendPassword():" + data );
+                    this.logger.error( this.referenceService.errorPrepender + " sendPassword():" + data );
                 }
             },
             error => {

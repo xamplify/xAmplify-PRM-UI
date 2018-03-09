@@ -25,12 +25,6 @@ export class SignupComponent implements OnInit {
     userActive = false;
     loading = false;
     isError = false;
-    constructor( private router: Router, public countryNames: CountryNames,
-        private authenticationService: AuthenticationService, private fb: FormBuilder, private signUpUser: User,
-        private userService: UserService, public refService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
-        this.buildForm();
-    }
-
     formErrors = {
         'fullName': '',
         'emailId': '',
@@ -86,6 +80,13 @@ export class SignupComponent implements OnInit {
         }
     };
 
+    constructor( private router: Router, public countryNames: CountryNames,
+        private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private signUpUser: User,
+        private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private logger: XtremandLogger ) {
+        this.buildForm();
+    }
+
+    
     signUp() {
         //this.isLoading = true;
         this.signUpUser = this.signUpForm.value;
@@ -98,13 +99,13 @@ export class SignupComponent implements OnInit {
                 if ( data !== undefined ) {
                     if ( data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')){
                         this.loading = false;
-                        this.refService.signUpSuccess = 'Thank you for signing up with the platform! A verification link has been sent to your email account';
+                        this.referenceService.signUpSuccess = 'Thank you for signing up with the platform! A verification link has been sent to your email account';
                         this.router.navigate(['/login']);
                     }
                 } else {
                     this.loading = false;
                     this.isError = true;
-                    this.logger.error( this.refService.errorPrepender + " signUp():" + data );
+                    this.logger.error( this.referenceService.errorPrepender + " signUp():" + data );
                 }
             },
             error => {
@@ -129,7 +130,7 @@ export class SignupComponent implements OnInit {
         // var cityRegEx = /^[a-zA-z] ?([a-zA-z]|[a-zA-z] )*[a-zA-z]$/;
         var cityRegEx = /[a-zA-Z]+[a-zA-Z ]+/;
         //var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
-        this.signUpForm = this.fb.group( {
+        this.signUpForm = this.formBuilder.group( {
             'fullName': [this.signUpUser.fullName, Validators.compose( [Validators.required, noWhiteSpaceValidator, Validators.maxLength( 50 )] )],//Validators.pattern(nameRegEx)
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( this.emailRegEx )]],
             'address': [this.signUpUser.address, Validators.compose( [Validators.required, noWhiteSpaceValidator, Validators.maxLength( 50 ),] )],//Validators.pattern(nameRegEx)

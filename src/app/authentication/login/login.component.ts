@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     error = '';
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
-        public refService: ReferenceService, private logger: XtremandLogger) {
+        public referenceService: ReferenceService, private logger: XtremandLogger) {
 
     }
 
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             } else {
                 this.loading = true;
                 const userName = this.model.username.toLowerCase();
-                this.refService.userName = userName;
+                this.referenceService.userName = userName;
                 const authorization = 'Basic ' + btoa('my-trusted-client:');
                 const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
                 this.authenticationService.login(authorization, body, userName).subscribe(result => {
@@ -134,16 +134,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        /*Metronic.init();
-        Layout.init();
-        Login.init();
-        Demo.init();*/
+
     }
 
     ngOnDestroy() {
-        this.refService.signUpSuccess = '';
-        this.refService.forgotMessage = '';
-        this.refService.accountDisabled = "";
+        this.referenceService.signUpSuccess = '';
+        this.referenceService.forgotMessage = '';
+        this.referenceService.accountDisabled = "";
         $('#org-admin-deactivated').hide();
     }
 
