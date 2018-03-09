@@ -2,19 +2,22 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angu
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VideoFileService } from '../services/video-file.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { VideoUtilService } from '../services/video-util.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { Ng2DeviceService } from 'ng2-device-detector';
+import { UUID } from 'angular2-uuid';
+
 import { User } from '../../core/models/user';
 import { XtremandLog } from '../models/xtremand-log';
 import { CallAction } from '../models/call-action';
 import { LogAction } from '../models/log-action';
+
 declare var $, videojs: any;
-import { Ng2DeviceService } from 'ng2-device-detector';
-import { UUID } from 'angular2-uuid';
 
 @Component({
     selector: 'app-share-video',

@@ -101,19 +101,19 @@ opacity:0.4;
 }
 
 /* record modal popup css */
-/deep/ .vjs-device-button.vjs-control {
+:host /deep/ .vjs-device-button.vjs-control {
 position: absolute;
 right: 0;
 left: 0;
 }
-/deep/ .video-js .vjs-time-control{
+:host /deep/ .video-js .vjs-time-control{
 line-height : 3.3em;
 }
-/deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
+:host /deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
 line-height: 2.455em;
 }  
 
-/deep/ .vjs-control-bar {
+:host /deep/ .vjs-control-bar {
 display: -webkit-box;
 display: -webkit-flex;
 display: -ms-flexbox;
