@@ -85,7 +85,7 @@
 									</td>
 									<td>
 										<h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}}</h4>
-										<h5 class='m0'>{{campaign.createdBy}}</h5>
+										<h5 class='m0'>Created By <span class='f-w-600'>{{campaign.createdBy}}</span></h5>
 									</td>
 									<td>
 										<span align="right">
@@ -183,6 +183,12 @@
 														<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
 														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</b>
 													</span>
+														<span align="left" style="bottom: 24px; float: left; position: absolute; left: 3%;">
+														<b>Created By</b>
+													</span>
+													
+													
+													<span  align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">{{campaign.createdBy}}</span>
 												    <span align="right" title="upladed date" style="bottom: 2px; float: right; position: absolute; right: 17px;" >
 												    	<b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b>
 												    	<!-- <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" >{{campaign.endTime}}</b> -->

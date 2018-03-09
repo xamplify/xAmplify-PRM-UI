@@ -604,6 +604,8 @@ export class AddTeamMembersComponent implements OnInit {
                        /**********Method To Check Whether Org Admin Or Not***********/
                        if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
                            this.csvErrors.push(emailId+" at row "+(i+1)+" is an Org Admin.");
+                       }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
+                           this.csvErrors.push(emailId+" at row "+(i+1)+" is a Partner.");
                        }else{
                            /*******************Check If Already Added As A Team Member***************************/
                            if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
