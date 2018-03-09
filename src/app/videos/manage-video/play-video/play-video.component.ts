@@ -10,30 +10,14 @@ import { VideoUtilService } from '../../services/video-util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UserService } from '../../../core/services/user.service';
 
+import { LogAction } from '../../models/log-action';
 import { CallAction } from '../../models/call-action';
 import { SaveVideoFile } from '../../models/save-video-file';
 import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
-declare const $, videojs, QuickSidebar, Metronic, Layout, Demo, Index, pivot: any;
-// logging info details
-enum LogAction {
-    playVideo = 1,
-    pauseVideo = 2,
-    contactButtonPressed = 3,
-    callButtonPressed = 4,
-    emailButtonPressed = 5,
-    chatButtonPressed = 6,
-    applePayButtonPressed = 7,
-    videoPlayer_slideSlider = 8,
-    videoPlayer_movieReachEnd = 9,
-    replyVideo = 10,
-    videoStopped = 11,
-    shareMobinar = 12,
-    email_Opened = 13,
-    email_GIF_clicked = 14,
-}
+declare const $, videojs: any;
 
 @Component({
     selector: 'app-play-video',
@@ -453,11 +437,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if(this.videoFileService.videoType==='partnerVideos'){
             this.getVideoDefaultSettings();
         }
-        Metronic.init();
-        Layout.init();
-        Demo.init();
-        Index.init();
-        QuickSidebar.init();
         this.createSessionId();
         this.deviceDectorInfo();
         this.xtremandLogDefaultActions();

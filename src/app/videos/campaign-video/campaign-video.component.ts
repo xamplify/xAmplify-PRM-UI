@@ -13,26 +13,10 @@ import { UtilService } from '../../core/services/util.service';
 
 import { SaveVideoFile } from '../models/save-video-file';
 import { XtremandLog } from '../models/xtremand-log';
+import { LogAction } from '../models/log-action';
 import { UUID } from 'angular2-uuid';
 
 declare var $, videojs: any;
-
-enum LogAction {
-    playVideo = 1,
-    pauseVideo = 2,
-    contactButtonPressed = 3,
-    callButtonPressed = 4,
-    emailButtonPressed = 5,
-    chatButtonPressed = 6,
-    applePayButtonPressed = 7,
-    videoPlayer_slideSlider = 8,
-    videoPlayer_movieReachEnd = 9,
-    replyVideo = 10,
-    videoStopped = 11,
-    shareMobinar = 12,
-    email_Opened = 13,
-    email_GIF_clicked = 14,
-}
 
 @Component({
     selector: 'app-public-video',

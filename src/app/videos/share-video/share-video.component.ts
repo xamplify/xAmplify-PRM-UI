@@ -11,26 +11,10 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { User } from '../../core/models/user';
 import { XtremandLog } from '../models/xtremand-log';
 import { CallAction } from '../models/call-action';
+import { LogAction } from '../models/log-action';
 declare var $, videojs: any;
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { UUID } from 'angular2-uuid';
-// logging info details
-enum LogAction {
-    playVideo = 1,
-    pauseVideo = 2,
-    contactButtonPressed = 3,
-    callButtonPressed = 4,
-    emailButtonPressed = 5,
-    chatButtonPressed = 6,
-    applePayButtonPressed = 7,
-    videoPlayer_slideSlider = 8,
-    videoPlayer_movieReachEnd = 9,
-    replyVideo = 10,
-    videoStopped = 11,
-    shareMobinar = 12,
-    email_Opened = 13,
-    email_GIF_clicked = 14,
-}
 
 @Component({
     selector: 'app-share-video',
