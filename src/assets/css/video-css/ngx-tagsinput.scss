@@ -1,4 +1,4 @@
- @import "../../../../../node_modules/ngx-chips/dist/modules/core/styles/core/_core.scss";
+@import "../../../../node_modules/ngx-chips/dist/modules/core/styles/core/_core.scss";
 
 $foundation-primary: #00a6e8;
 $foundation-primary-dark: darken($foundation-primary, 10%);
@@ -27,16 +27,16 @@ $foundation-icon-theme: (
 );
 
 // apply theme to the container
-/deep/ .ng2-tag-input.foundation-theme {
+:host /deep/ .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
 
 // apply theme to the tags
-/deep/ .ng2-tag-input.foundation-theme tag {
+:host /deep/ .ng2-tag-input.foundation-theme tag {
     @include tag-theme($foundation-tag-theme);
 }
 
 // apply theme to the delete icon
-/deep/ .ng2-tag-input.foundation-theme tag delete-icon {
+:host /deep/ .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
 }

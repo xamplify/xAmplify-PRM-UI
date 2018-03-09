@@ -1,30 +1,35 @@
-import {
-    Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
     style, state, animate, transition, trigger
 } from '@angular/core';
+
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileItem } from 'ng2-file-upload';
+
 import { VideoFileService } from '../../services/video-file.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
+import { VideoUtilService } from '../../services/video-util.service';
+
 import { SaveVideoFile } from '../../models/save-video-file';
 import { Category } from '../../models/category';
 import { CallActionSwitch } from '../../models/call-action-switch';
 import { CallAction } from '../../models/call-action';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
-import { VideoUtilService } from '../../services/video-util.service';
-declare var swal, videojs, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
+
+declare var swal, videojs, QuickSidebar,$: any;
 
 @Component({
     selector: 'app-edit-video',
     templateUrl: './edit-video.component.html',
-    styleUrls: ['./edit-video.component.css', './foundation-themes.scss', './call-action.css',
-        '../../../../assets/css/video-css/video-js.custom.css', '../../../../assets/css/todo.css',
-        '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/video-css/customImg.css',
+    styleUrls: ['./edit-video.component.css', '../../../../assets/css/video-css/ngx-tagsinput.scss',
+        '../../../../assets/css/video-css/call-action.css', '../../../../assets/css/video-css/video-js.custom.css', 
+        '../../../../assets/css/todo.css','../../../../assets/css/video-css/videojs-overlay.css', 
+        '../../../../assets/css/video-css/customImg.css',
     ],
     animations: [
         trigger('fadeInOut', [

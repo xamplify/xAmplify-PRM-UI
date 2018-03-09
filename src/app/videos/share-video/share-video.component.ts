@@ -35,7 +35,8 @@ enum LogAction {
 @Component({
     selector: 'app-share-video',
     templateUrl: './share-video.component.html',
-    styleUrls: ['./share-video.component.css', '../../../assets/css/video-css/video-js.custom.css'],
+    styleUrls: ['./share-video.component.css', '../../../assets/css/video-css/call-action.css',
+    '../../../assets/css/video-css/video-js.custom.css'],
     providers: [VideoUtilService, XtremandLog]
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {

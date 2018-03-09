@@ -41,7 +41,7 @@ enum LogAction {
     styleUrls: ['./play-video.component.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
-        '../edit-video/call-action.css'],
+        '../../../../assets/css/video-css/call-action.css'],
     providers: [Pagination, XtremandLog, HttpRequestLoader]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
