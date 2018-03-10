@@ -16,6 +16,7 @@ export class LogRegularCampaignComponent implements OnInit {
   templateId: number;
   templatehtml: string;
   alias: string;
+  isTestEmail = false;
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
@@ -32,12 +33,13 @@ export class LogRegularCampaignComponent implements OnInit {
     //   this.xtremandLogger.error(error);
     // });
     this.alias = this.activatedRoute.snapshot.params['alias'];
+    this.isTestEmail =this.activatedRoute.snapshot.params['isTestEmail'];
     this.getRegularTemplateHtml();
   }
 
   getRegularTemplateHtml() {
     try {
-      this.videoFileService.showCampaignEmail(this.alias)
+      this.videoFileService.showCampaignEmail(this.alias,this.isTestEmail)
         .subscribe((result: any) => {
               this.templatehtml = result.templatehtml;
               this.xtremandLogger.log(this.templatehtml);

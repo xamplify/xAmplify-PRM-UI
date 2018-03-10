@@ -16,61 +16,66 @@ export class LogEmailClickComponent implements OnInit {
     public alias :string;
     public emailLog: any;
     public deviceInfo: any;
+    isTestEmail = false;
 
     constructor(private activatedRoute: ActivatedRoute, private router: Router, private logService: LogService, private utilService: UtilService, private deviceService: Ng2DeviceService) { }
 
     logEmailUrlClicks() {
+       
+
         this.utilService.getJSONLocation()
+        .subscribe(
+        (data: any) => {
+            console.log("data :" + data);
+
+            this.deviceInfo = this.deviceService.getDeviceInfo();
+            if (this.deviceInfo.device === 'unknown') {
+                this.deviceInfo.device = 'computer';
+            }
+
+            this.emailLog = {
+                'userAlias': this.userAlias,
+                'campaignAlias': this.campaignAlias,
+                'url': this.url,
+                'time': new Date(),
+                'deviceType': this.deviceInfo.device,
+                'os': this.deviceInfo.os,
+                'city': data.city,
+                'country': data.country,
+                'isp': data.isp,
+                'ipAddress': data.query,
+                'state': data.regionName,
+                'zip': data.zip,
+                'latitude': data.lat,
+                'longitude': data.lon,
+                'countryCode': data.countryCode,
+                'videoId' : 0,
+                'actionId' : 15,
+                'alias':this.alias,
+                'testEmail':this.isTestEmail
+            };
+
+            console.log("emailLog" + this.emailLog);
+            
+            this.logService.logEmailUrlClicks(this.emailLog)
             .subscribe(
-            (data: any) => {
-                console.log("data :" + data);
-
-                this.deviceInfo = this.deviceService.getDeviceInfo();
-                if (this.deviceInfo.device === 'unknown') {
-                    this.deviceInfo.device = 'computer';
-                }
-
-                this.emailLog = {
-                    'userAlias': this.userAlias,
-                    'campaignAlias': this.campaignAlias,
-                    'url': this.url,
-                    'time': new Date(),
-                    'deviceType': this.deviceInfo.device,
-                    'os': this.deviceInfo.os,
-                    'city': data.city,
-                    'country': data.country,
-                    'isp': data.isp,
-                    'ipAddress': data.query,
-                    'state': data.regionName,
-                    'zip': data.zip,
-                    'latitude': data.lat,
-                    'longitude': data.lon,
-                    'countryCode': data.countryCode,
-                    'videoId' : 0,
-                    'actionId' : 15,
-                    'alias':this.alias
-                };
-
-                console.log("emailLog" + this.emailLog);
-                
-                this.logService.logEmailUrlClicks(this.emailLog)
-                .subscribe(
-                (result: any) => {
-                    console.log(result['_body']);
-                    var body = result['_body'];
-                    var resp = JSON.parse(body);
-                    console.log(resp.url);
-                    window.location.href = resp.url;
-                })
-            },
-            error => console.log(error));
+            (result: any) => {
+                console.log(result['_body']);
+                var body = result['_body'];
+                var resp = JSON.parse(body);
+                console.log(resp.url);
+                window.location.href = resp.url;
+            })
+        },
+        error => console.log(error));
+    
+       
     }
 
 
     ngOnInit() {
     	this.alias = this.activatedRoute.snapshot.params['alias'];
-    	
-     
+    	this.isTestEmail  = this.activatedRoute.snapshot.params['isTestEmail'];
         //this.getGeoLocation();
         this.logEmailUrlClicks();
 

@@ -257,11 +257,18 @@
 									<i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}
 								</td>
 								<td *ngIf="teamMember.all">
-									<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+									<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
 												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
 												(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
 									</switch>
+									
+									<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+												 [disabled]="callActionSwitch.disabled">
+									</switch>
+									
 								</td>
 								<td *ngIf="!teamMember.all">
 									<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
@@ -302,7 +309,12 @@
 									</switch>
 								</td>
 								<td *ngIf="teamMember.teamMemberId!=secondOrgAdminId">
-								<switch [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+								<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+											  (statusChange)="changeTeamMemberStatus(teamMember,$event)" [disabled]="callActionSwitch.disabled">
+									</switch>
+								<switch *ngIf="teamMember.status!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">

@@ -1,16 +1,16 @@
 <app-video></app-video>
 <div class="content">
-	<div *ngIf="refService.signUpSuccess?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
+	<div *ngIf="referenceService.signUpSuccess?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{refService.signUpSuccess}}</strong>
+		<strong>{{referenceService.signUpSuccess}}</strong>
 	</div>
-	<div *ngIf="refService.forgotMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
+	<div *ngIf="referenceService.forgotMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{refService.forgotMessage}}</strong>
+		<strong>{{referenceService.forgotMessage}}</strong>
 	</div>
-	<div *ngIf="refService.accountDisabled?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
+	<div *ngIf="referenceService.accountDisabled?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{refService.accountDisabled}}</strong>
+		<strong>{{referenceService.accountDisabled}}</strong>
 	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">

@@ -163,9 +163,9 @@ export class VideoFileService {
                 .catch(this.handleErrorLogAction);
         } catch (error) { console.log(error); }
     }
-    showCampaignEmail(alias: string) {
+    showCampaignEmail(alias: string,isTestEmail:boolean) {
         const url = this.authenticationService.REST_URL;
-        return this.http.get(url + 'showCampaignEmail?shortenUrlAlias=' + alias, '')
+        return this.http.get(url + 'showCampaignEmail?shortenUrlAlias=' + alias+"&ite="+isTestEmail, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
