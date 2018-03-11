@@ -1,18 +1,18 @@
-<div *ngIf="response.responseType != null">
+<div *ngIf="customResponse.responseType != null">
 	<div class="alert alert-dismissible" role="alert"
-		[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
-			'alert-danger': response.responseType == 'ERROR',
-			'alert-info': response.responseType == 'INFO'}">
+		[ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+			'alert-danger': customResponse.responseType == 'ERROR',
+			'alert-info': customResponse.responseType == 'INFO'}">
 		<button type="button" class="close" data-dismiss="alert"
-			aria-label="Close" (click)="response.responseType = null">
+			aria-label="Close" (click)="customResponse.responseType = null">
 			<span aria-hidden="true">&times;</span>
 		</button>
 		<h4 class="flex">
 			<i class="fa"
-				[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
-				'fa-exclamation': response.responseType == 'ERROR'}"
+				[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
+				'fa-exclamation': customResponse.responseType == 'ERROR'}"
 				aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> <span class="text"
-				[innerHTML]="response.responseMessage"></span>
+				[innerHTML]="customResponse.responseMessage"></span>
 		</h4>
 	</div>
 </div>

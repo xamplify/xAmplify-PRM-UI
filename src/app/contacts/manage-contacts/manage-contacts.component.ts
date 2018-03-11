@@ -4,7 +4,8 @@ import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
 import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
-import { CustomeResponse } from '../../common/models/response';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
 import { Router, NavigationExtras } from "@angular/router";
 import { Response } from '@angular/http';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -22,7 +23,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
     selector: 'app-manage-contacts',
     templateUrl: './manage-contacts.component.html',
     styleUrls: ['./manage-contacts.component.css'],
-    providers: [SocialContact, Pagination]
+    providers: [SocialContact, Pagination, Properties]
 })
 
 export class ManageContactsComponent implements OnInit {
@@ -60,7 +61,7 @@ export class ManageContactsComponent implements OnInit {
     isSegmentationErrorMessage: boolean;
 
     listContactData: boolean = true;
-    response: CustomeResponse = new CustomeResponse();
+    customResponse: CustomResponse = new CustomResponse();
     invalidRemovableContacts = [];
     allselectedUsers = [];
     isInvalidHeaderCheckBoxChecked: boolean = false;
@@ -166,7 +167,7 @@ export class ManageContactsComponent implements OnInit {
     responseMessage= [];
    // isResponsMessage = false;
 
-    constructor( public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router,
+    constructor( public contactService: ContactService, private authenticationService: AuthenticationService, private router: Router,public properties: Properties,
         private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
 
         let currentUrl = this.router.url;
@@ -190,11 +191,11 @@ export class ManageContactsComponent implements OnInit {
         this.access_token = this.authenticationService.access_token;
         this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
         if ( this.contactService.successMessage == true ) {
-            this.responseMessage = ['SUCCESS', 'your contact List has been created successfully','show'];
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
             this.xtremandLogger.info( "Success Message in manage contact pape" + this.show );
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
-            this.responseMessage = ['ERROR', 'your contact List has been deleted successfully','show' ];
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
             this.xtremandLogger.info( " delete Success Message in manage contact pape" + this.show );
         }
         this.noSaveButtonDisable = true;
@@ -234,14 +235,15 @@ export class ManageContactsComponent implements OnInit {
                 this.totalRecords = data.totalRecords;
                 if ( data.totalRecords.length == 0 ) {
                     this.resetResponse();
-                    this.responseMessage = ['INFO', 'No Contact Lists found. Please add the contact lists.','show'];
+                    this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
                 } else {
                     pagination.totalRecords = this.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
                 }
                 if ( this.contactLists.length == 0 ) {
                     this.resetResponse();
-                    this.responseMessage = ['INFO', 'No results found.','show'];
+                   // this.responseMessage = ['INFO', 'No results found.','show'];
+                    this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
                     this.pagedItems = null;
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
@@ -295,7 +297,8 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsCount();
                 $( '#contactListDiv_' + contactListId ).remove();
                 this.loadContactLists( this.pagination );
-                this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
+                //this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
                 if ( this.pagination.pagedItems.length === 1 ) {
                     this.pagination.pageIndex = 1;
                     this.loadContactLists( this.pagination );
@@ -304,7 +307,8 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.responseMessage = ['ERROR', error,'show'];
+                   // this.responseMessage = ['ERROR', error,'show'];
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -420,7 +424,8 @@ export class ManageContactsComponent implements OnInit {
             data => {
                 data
                 swal.close();
-                this.responseMessage = ['SUCCESS', 'Your Contact List has been sychronized successfully.','show'];
+                //this.responseMessage = ['SUCCESS', 'Your Contact List has been sychronized successfully.','show'];
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true );
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
             },
@@ -455,7 +460,8 @@ export class ManageContactsComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                        this.responseMessage = ['INFO', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!','show'];
+                        this.customResponse = new CustomResponse( 'INFO', response.message, true );
+                        //this.responseMessage = ['INFO', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!','show'];
                     } else {
                         this.xtremandLogger.errorPage( error );
                     }
@@ -749,7 +755,8 @@ export class ManageContactsComponent implements OnInit {
                             this.contactCountLoad = true;
                             this.navigateToManageContacts();
                             this.allselectedUsers.length = 0;
-                            this.responseMessage = ['SUCCESS', 'your contact List created successfully.','show'];
+                            this.customResponse = new CustomResponse( 'INFO', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                            //this.responseMessage = ['SUCCESS', 'your contact List created successfully.','show'];
                         },
 
                         ( error: any ) => {
@@ -759,7 +766,8 @@ export class ManageContactsComponent implements OnInit {
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
             } else {
-                this.responseMessage = ['ERROR', 'Please select the users.','show'];
+                //this.responseMessage = ['ERROR', 'Please select the users.','show'];
+                this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_USERS_SELECT_ERROR, true );
             }
         }
         else {
@@ -801,7 +809,8 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.responseMessage = ['ERROR', error,'show'];
+                    //this.responseMessage = ['ERROR', error,'show'];
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                     this.invalidDeleteErrorMessage = true;
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -985,7 +994,7 @@ export class ManageContactsComponent implements OnInit {
         this.contactsNotSelectedError = false;
         this.model.contactListName = "";
         this.searchKey = null;
-        this.response.responseType = null;
+        this.customResponse.responseType = null;
         this.resetPagination();
         this.listContactData = true;
 
@@ -1015,8 +1024,9 @@ export class ManageContactsComponent implements OnInit {
     }*/
 
     resetResponse() {
-        this.responseMessage.length = 0;
-        this.responseMessage[2] = 'hide';
+        this.customResponse.responseType = null;
+        this.customResponse.responseMessage = null;
+        this.customResponse.isVisible = false;
     }
 
     toggle( i: number ) {

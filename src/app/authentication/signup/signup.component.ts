@@ -10,7 +10,7 @@ import { UserService } from '../../core/services/user.service';
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { CountryNames } from '../../common/models/countryNames';
+import { CountryNames } from '../../common/models/country-names';
 declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component( {

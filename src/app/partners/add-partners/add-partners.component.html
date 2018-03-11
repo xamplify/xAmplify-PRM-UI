@@ -245,8 +245,10 @@ img:hover {
 					(click)="showAlert(selectedContactListId)"> Delete</a></li> -->
 			</ul>
 		</div>
-
-		<div class="col-xs-12" *ngIf="response.responseType != null">
+	<div class="col-xs-12">	
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+	</div>
+	<!-- 	<div class="col-xs-12" *ngIf="response.responseType != null">
 			<div class="alert alert-dismissible" role="alert"
 				style="width: 103%; margin-left: -16px; top: 17px;"
 				[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
@@ -263,7 +265,7 @@ img:hover {
 						[innerHTML]="response.responseMessage"></span>
 				</h4>
 			</div>
-		</div>
+		</div> -->
 		<div *ngIf="deleteErrorMessage" id="campaignError"
 			class="col-xs-12 alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

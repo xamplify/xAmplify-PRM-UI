@@ -15,8 +15,9 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AddContactsOption } from '../models/contact-option';
 import { SocialPagerService } from '../services/social-pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { CustomeResponse } from '../../common/models/response';
-import { CountryNames } from '../../common/models/countryNames';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
+import { CountryNames } from '../../common/models/country-names';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -32,7 +33,7 @@ declare var $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames]
+    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties]
 })
 export class AddContactsComponent implements OnInit {
 
@@ -97,7 +98,7 @@ export class AddContactsComponent implements OnInit {
     selectedContactListIds = [];
     allselectedUsers = [];
     isHeaderCheckBoxChecked: boolean = false;
-    response: CustomeResponse = new CustomeResponse();
+    customResponse: CustomResponse = new CustomResponse();
 
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -108,7 +109,7 @@ export class AddContactsComponent implements OnInit {
     private socialContactType: string;
     emailNotValid: boolean;
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService, private contactService: ContactService,
-        private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute,
+        private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
@@ -1708,25 +1709,23 @@ export class AddContactsComponent implements OnInit {
         this.contactService.unlinkSocailAccount( socialNetwork, this.isUnLinkSocialNetwork )
             .subscribe(
             ( data: any ) => {
-                if ( socialNetwork == 'SALESFORCE' ) {
+                if ( socialNetwork === 'SALESFORCE' ) {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
                 }
-                else if ( socialNetwork == 'GOOGLE' ) {
+                else if ( socialNetwork === 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
+                this.customResponse = new CustomResponse( 'SUCCESS', this.customResponse.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
                 /*$('body').removeClass('modal-open');
                 $('.modal-backdrop fade in').remove();*/
                 $( '#settingSocialNetwork' ).modal( 'hide' );
@@ -1769,11 +1768,6 @@ export class AddContactsComponent implements OnInit {
     addContactModalClose() {
         $( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()
-    }
-
-    setResponseDetails( responseType: string, responseMessage: string ) {
-        this.response.responseType = responseType;
-        this.response.responseMessage = responseMessage;
     }
 
     ngOnInit() {

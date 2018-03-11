@@ -3,7 +3,8 @@ import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
 import { EditUser } from '../models/edit-user';
-import { CustomeResponse } from '../../common/models/response';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
 import { FormsModule, FormControl } from '@angular/forms';
@@ -19,7 +20,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ContactsByType } from '../models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { CountryNames } from '../../common/models/countryNames';
+import { CountryNames } from '../../common/models/country-names';
 //import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
@@ -30,7 +31,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames]
+    providers: [Pagination, HttpRequestLoader, CountryNames,Properties]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -75,7 +76,7 @@ export class EditContactsComponent implements OnInit {
     showSelectedCategoryUsers: boolean = true;
     isShowUsers: boolean = true;
     public users: Array<User>;
-    response: CustomeResponse = new CustomeResponse();
+    customResponse: CustomResponse = new CustomResponse();
     names: string[] = [];
 
     selectedContactForSave = [];
@@ -169,10 +170,10 @@ export class EditContactsComponent implements OnInit {
         { 'name': 'like', 'value': 'like' },
     ];
     filterCondition = this.filterConditions[0];
-
+    
     constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
-        private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger ) {
+        private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
 
@@ -219,7 +220,7 @@ export class EditContactsComponent implements OnInit {
 
     fileChange( input: any ) {
         this.uploadCsvUsingFile = true;
-        this.response.responseType = null;
+        this.customResponse.responseType = null;
         this.fileTypeError = false;
         this.noContactsFound = false;
         this.readFiles( input.files );
@@ -353,7 +354,7 @@ export class EditContactsComponent implements OnInit {
                     $( this ).remove();
                 });
 
-                this.setResponseDetails( 'SUCCESS', 'your contacts has been saved successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
 
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -363,7 +364,7 @@ export class EditContactsComponent implements OnInit {
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
                 if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', body );
+                    this.customResponse = new CustomResponse( 'ERROR', body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -399,8 +400,7 @@ export class EditContactsComponent implements OnInit {
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
-
-                        this.setResponseDetails( 'SUCCESS', 'your contacts has been saved successfully' );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
 
                         this.users = [];
                         this.uploadCsvUsingFile = false;
@@ -415,7 +415,8 @@ export class EditContactsComponent implements OnInit {
                         let body: string = error['_body'];
                         body = body.substring( 1, body.length - 1 );
                         if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                            this.setResponseDetails( 'ERROR', body );
+                            this.customResponse = new CustomResponse( 'ERROR', body, true );
+
                         } else {
                             this.xtremandLogger.errorPage( error );
                         }
@@ -429,11 +430,6 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-    setResponseDetails( responseType: string, responseMessage: string ) {
-        this.response.responseType = responseType;
-        this.response.responseMessage = responseMessage;
-    }
-
     removeContactListUsers( contactListId: number ) {
         let self = this;
         this.xtremandLogger.info( this.selectedContactListIds );
@@ -443,8 +439,7 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 console.log( "update Contacts ListUsers:" + data );
-
-                this.setResponseDetails( 'SUCCESS', 'your contacts has been deleted successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.contact_CREATE_SUCCESS, true );
 
                 $.each( this.selectedContactListIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
@@ -458,7 +453,7 @@ export class EditContactsComponent implements OnInit {
                 //let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', error );
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -726,7 +721,7 @@ export class EditContactsComponent implements OnInit {
                     });
                     this.clickBoard = false;
 
-                    this.setResponseDetails( 'SUCCESS', 'your contacts has been saved successfully' );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
 
                     $( "button#add_contact" ).prop( 'disabled', false );
                     $( "button#upload_csv" ).prop( 'disabled', false );
@@ -739,7 +734,7 @@ export class EditContactsComponent implements OnInit {
                     let body: string = error['_body'];
                     body = body.substring( 1, body.length - 1 );
                     if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                        this.setResponseDetails( 'ERROR', body );
+                        this.customResponse = new CustomResponse( 'ERROR', body, true );
                     } else {
                         this.xtremandLogger.errorPage( error );
                     }
@@ -977,7 +972,7 @@ export class EditContactsComponent implements OnInit {
                 //let body: string = error['_body'];
                 // body = body.substring(1, body.length-1);
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.response.responseMessage = error;
+                    this.customResponse.responseMessage = error;
                     this.invalidDeleteErrorMessage = true;
                 }
             },
@@ -1020,14 +1015,14 @@ export class EditContactsComponent implements OnInit {
                 this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
                 this.allUsers = this.contactsByType.allContactsCount;
                 console.log( "update Contacts ListUsers:" + data );
-                this.setResponseDetails( 'SUCCESS', 'your contacts has been deleted successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             ( error: any ) => {
                 // let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', error );
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -1044,7 +1039,7 @@ export class EditContactsComponent implements OnInit {
             data => {
                 console.log( "MangeContacts deleteContactList success : " + data );
                 $( '#contactListDiv_' + this.selectedContactListId ).remove();
-                this.setResponseDetails( 'SUCCESS', 'your contacts has been deleted successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
                 this.refresh();
                 this.contactService.deleteUserSucessMessage = true;
             },
@@ -1052,7 +1047,7 @@ export class EditContactsComponent implements OnInit {
                 //let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', error );
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -1085,7 +1080,7 @@ export class EditContactsComponent implements OnInit {
         if ( this.totalRecords === 1  && !(this.isDefaultPartnerList )) {
             swal( {
                 title: 'Are you sure?',
-                text: "If you delete all Users, your contact list aslo will delete and You won’t be able to undo this action!",
+                text: "If you delete all Users, your contact list aslo will delete and You wonï¿½t be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -1218,15 +1213,17 @@ export class EditContactsComponent implements OnInit {
     addContactsOption( addContactsOption: number ) {
         this.resetResponse();
         this.selectedAddContactsOption = addContactsOption;
-        if ( addContactsOption == 0 )
+        if ( addContactsOption === 0 ){
             this.addRow();
-        else if ( addContactsOption == 1 )
+        } else if ( addContactsOption === 1 ){
             this.copyFromClipboard();
+        }
     }
 
     resetResponse() {
-        this.response.responseType = null;
-        this.response.responseMessage = null;
+        this.customResponse.responseType = null;
+        this.customResponse.responseMessage = null;
+        this.customResponse.isVisible = false;
     }
 
     addContactModalOpen() {
@@ -1326,7 +1323,7 @@ export class EditContactsComponent implements OnInit {
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        this.setResponseDetails( 'SUCCESS', 'your contact List created successfully' );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
                     },
 
                     ( error: any ) => {
@@ -1367,7 +1364,7 @@ export class EditContactsComponent implements OnInit {
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        this.setResponseDetails( 'SUCCESS', 'your contact List created successfully' );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
                     },
 
                     ( error: any ) => {
@@ -1542,7 +1539,7 @@ export class EditContactsComponent implements OnInit {
             .subscribe(
             ( data: any ) => {
                 console.log( data );
-                this.setResponseDetails( 'SUCCESS', 'your contact has been updated successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true );
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.xtremandLogger.error( error ),
@@ -1585,7 +1582,7 @@ export class EditContactsComponent implements OnInit {
             .subscribe(
             ( data: any ) => {
                 console.log( data );
-                this.setResponseDetails( 'SUCCESS', 'your contact List Name has been updated successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true );
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.xtremandLogger.error( error ),

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
-import { CustomeResponse } from '../../common/models/response';
-import { CountryNames } from '../../common/models/countryNames';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
+import { CountryNames } from '../../common/models/country-names';
 import { Pagination } from '../../core/models/pagination';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { SocialContact } from '../../contacts/models/social-contact';
@@ -24,7 +25,7 @@ declare var $, Papa, swal: any;
     templateUrl: './add-partners.component.html',
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
-    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames]
+    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames, Properties]
 })
 export class AddPartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -41,7 +42,7 @@ export class AddPartnersComponent implements OnInit {
     updatePartnerUser: boolean = false;
     updatedUserDetails = [];
     editUser: EditUser = new EditUser();
-    response: CustomeResponse = new CustomeResponse();
+    customResponse: CustomResponse = new CustomResponse();
     googleImageNormal: boolean = false;
     googleImageBlur: boolean = false;
     sfImageBlur: boolean = false;
@@ -113,7 +114,7 @@ export class AddPartnersComponent implements OnInit {
     constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames,
-        public contactService: ContactService,
+        public contactService: ContactService, public properties: Properties,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
 
         this.user = new User();
@@ -313,7 +314,8 @@ export class AddPartnersComponent implements OnInit {
                     $( this ).remove();
                 });
 
-                this.setResponseDetails( 'SUCCESS', 'your Partner has been saved successfully' );
+                //this.setResponseDetails( 'SUCCESS', 'your Partner has been saved successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
 
                 this.newPartnerUser.length = 0;
                 this.allselectedUsers.length = 0;
@@ -325,7 +327,8 @@ export class AddPartnersComponent implements OnInit {
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
                 if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', body );
+                    //this.setResponseDetails( 'ERROR', body );
+                    this.customResponse = new CustomResponse( 'ERROR', body, true );
                     console.log( "done" )
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -649,14 +652,16 @@ export class AddPartnersComponent implements OnInit {
             ( data: any ) => {
                 data = data;
                 console.log( "update Contacts ListUsers:" + data );
-                this.setResponseDetails( 'SUCCESS', 'your Partner has been deleted successfully' );
+               // this.setResponseDetails( 'SUCCESS', 'your Partner has been deleted successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
                 this.loadPartnerList( this.pagination );
             },
             ( error: any ) => {
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.setResponseDetails( 'ERROR', error );
+                   // this.setResponseDetails( 'ERROR', error );
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -682,7 +687,8 @@ export class AddPartnersComponent implements OnInit {
             .subscribe(
             ( data: any ) => {
                 console.log( data );
-                this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
+                //this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true );
                 this.loadPartnerList( this.pagination );
             },
             error => this.xtremandLogger.error( error ),
@@ -713,11 +719,11 @@ export class AddPartnersComponent implements OnInit {
         this.updatedUserDetails = contactDetails;
     }
 
-    setResponseDetails( responseType: string, responseMessage: string ) {
-        this.response.responseType = responseType;
-        this.response.responseMessage = responseMessage;
+    /*setResponseDetails( responseType: string, responseMessage: string ) {
+        this.customResponse.responseType = responseType;
+        this.customResponse.responseMessage = responseMessage;
     }
-
+*/
     socialContactImage() {
         this.contactService.socialContactImages()
             .subscribe(
@@ -1382,22 +1388,23 @@ export class AddPartnersComponent implements OnInit {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
+                    //this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
                 }
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
+                   // this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                    this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
+                   // this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
                 $( '#settingSocialNetwork' ).modal( 'hide' );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
@@ -1534,7 +1541,8 @@ export class AddPartnersComponent implements OnInit {
             data => {
                 console.log( data );
                 if ( data.message == "success" ) {
-                    this.setResponseDetails( 'SUCCESS', 'Email Sent Successfully..' );
+                   // this.setResponseDetails( 'SUCCESS', 'Email Sent Successfully..' );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
                 }
             },
             ( error: any ) => {

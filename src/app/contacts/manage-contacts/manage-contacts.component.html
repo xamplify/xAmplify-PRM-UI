@@ -154,7 +154,8 @@
 											</button>
 										</div>
 									</div>
-								<app-response-message [responseMessageDetails]="responseMessage" *ngIf="responseMessage[2]=='show'" ></app-response-message>
+								<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+								<!-- <app-response-message [responseMessageDetails]="responseMessage" *ngIf="responseMessage[2]=='show'" ></app-response-message> -->
 									<!-- <div *ngIf="response.responseType != null">
 										<div class="alert alert-dismissible" role="alert"
 											[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
@@ -337,7 +338,8 @@
 	</div>
 
 	<div *ngIf="! showListOfContactList">
-		<div *ngIf="response.responseType != null">
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		<!-- <div *ngIf="response.responseType != null">
 			<div class="alert alert-dismissible" role="alert" style="margin-bottom: 20px;"
 				[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
   									'alert-danger': response.responseType == 'ERROR'}">
@@ -352,7 +354,7 @@
 						aria-hidden="true" style="padding-right: 7px;"></i> <span>{{response.responseMessage}}</span>
 				</h5>
 			</div>
-		</div>
+		</div> -->
 		<div class="alert alert-success alert-dismissible" *ngIf="invalidDeleteSucessMessage" style="margin-bottom:20px;">
 		  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		  <strong>Success!</strong> {{checkingContactTypeName}} List has been

@@ -402,8 +402,8 @@ img:hover {
 							class="col-xs-12 alert alert-danger">
 							<span>{{zohoAuthStorageError}}</span>
 						</div>
-
-						<div class="col-xs-12" *ngIf="response.responseType != null">
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+						<!-- <div class="col-xs-12" *ngIf="response.responseType != null">
 							<div class="alert alert-dismissible" role="alert"
 								[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
 		  									'alert-danger': response.responseType == 'ERROR',
@@ -420,7 +420,7 @@ img:hover {
 										[innerHTML]="response.responseMessage"></span>
 								</h4>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">
