@@ -439,7 +439,7 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 console.log( "update Contacts ListUsers:" + data );
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.contact_CREATE_SUCCESS, true );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_CREATE_SUCCESS, true );
 
                 $.each( this.selectedContactListIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();

@@ -316,7 +316,7 @@
     box-sizing: border-box;
     border-radius: 3px;
     border: 1px solid #d7d7d7;
-    font-size: 18px;
+    font-size: 14px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .06);
     -webkit-transition: all .3s;
     transition: all .3s
@@ -371,7 +371,7 @@
 }
 
 .swal2-input:not([type=file]) {
-    height: 43px;
+    height: 38px;
     padding: 0 12px
 }
 
