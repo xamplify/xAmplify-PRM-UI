@@ -16,6 +16,7 @@ import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+//import { EditContactsComponent } from '../edit-contacts/edit-contacts.component';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -41,6 +42,8 @@ export class ManageContactsComponent implements OnInit {
     hasContactRole: boolean = false;
     loggedInUserId = 0;
     hasAllAccess = false;
+    contactListUsers = [];
+    gettingAllUserspagination: Pagination = new Pagination();
 
     selectedContactListIds = [];
     selectedInvalidContactIds = [];
@@ -1205,6 +1208,65 @@ export class ManageContactsComponent implements OnInit {
             }
         }).then( function( name: any ) {
         })
+    }
+    
+    saveAsNewList( contactSelectedListId: number, contactListName: string ) {
+        this.loadContactListsNames();
+        let self = this;
+        swal( {
+            title: this.checkingContactTypeName + ' List Name',
+            input: 'text',
+            inputValue: contactListName + '_copy',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            allowOutsideClick: false,
+            preConfirm: function( name: any ) {
+                return new Promise( function() {
+                    console.log( 'logic begins' );
+                    var inputName = name.toLowerCase().replace( /\s/g, '' );
+                    if ( $.inArray( inputName, self.names ) > -1 ) {
+                        swal.showValidationError( 'This Contact List Name is already taken.' )
+                    } else {
+                        swal.close();
+                        self.saveExistingContactList( contactSelectedListId, name );
+                    }
+                });
+            }
+        }).then( function( name: any ) {
+        })
+    }
+    
+    saveExistingContactList( contactSelectedListId: number, contactListName: string ){
+        this.gettingAllUserspagination.maxResults = 50000;
+        this.gettingAllUserspagination.pageIndex = 1;
+        this.contactService.loadUsersOfContactList( contactSelectedListId, this.gettingAllUserspagination )
+            .subscribe(
+            ( data: any ) => {
+                console.log( data.listOfUsers );
+                this.contactListUsers = data.listOfUsers;
+            },
+            error => this.xtremandLogger.error( error ),
+            () =>{ this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+                this.saveListAsNewList( contactListName );
+            }
+            )
+    }
+    
+    saveListAsNewList( contactListName: string ) {
+        this.contactService.saveContactList( this.contactListUsers, contactListName, this.isPartner )
+            .subscribe(
+            data => {
+                data = data;
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                this.loadContactLists(this.pagination);
+            },
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
+            )
+
     }
 
     ngOnInit() {

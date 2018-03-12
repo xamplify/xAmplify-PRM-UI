@@ -1282,7 +1282,6 @@ export class EditContactsComponent implements OnInit {
             inputValue: this.contactListName + '_copy',
             showCancelButton: true,
             confirmButtonText: 'Submit',
-            //showLoaderOnConfirm: true,
             allowOutsideClick: false,
             preConfirm: function( name: any ) {
                 return new Promise( function() {
@@ -1297,8 +1296,6 @@ export class EditContactsComponent implements OnInit {
                 });
             }
         }).then( function( name: any ) {
-
-            //self.saveDuplicateContactList(name);
         })
     }
 

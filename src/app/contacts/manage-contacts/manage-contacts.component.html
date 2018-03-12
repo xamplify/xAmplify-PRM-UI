@@ -220,7 +220,10 @@
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
-															</a> <a
+															</a>
+															<a title="Save List" (click)="saveAs()"> <i class="fa fa-files-o"></i>
+															</a>
+															 <a
 																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="ContactList Info"> <i
@@ -292,12 +295,19 @@
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
+													<div style="top: 38%; position: relative;">
+														<a class="mix-preview2" title="Save Existing list as a new list"
+															(click)="saveAsNewList(contactList.id,contactList.name)"
+															data-rel="fancybox-button" style="left: 38%; top: -16px;">
+															<i class="fa fa-files-o" aria-hidden="true"></i>
+														</a>
+													</div>
 													<div style="top: 38%; position: relative;"
 														*ngIf="contactList.synchronisedList == true">
 														<a class="mix-preview2" title="sychronizeContactList"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
-															data-rel="fancybox-button" style="left: 38%; top: -16px;">
+															data-rel="fancybox-button" style="left: 18%; top: -16px;">
 															<i class="fa fa-refresh" aria-hidden="true"></i>
 														</a>
 													</div>
