@@ -79,8 +79,7 @@
 :host /deep/ .video-js .vjs-progress-control:hover .vjs-time-tooltip,
 .video-js .vjs-progress-control:hover .vjs-mouse-display:after,
 .video-js .vjs-progress-control:hover .vjs-play-progress:after {
-    font-family: Arial, Helvetica, sans-serif;
-    visibility: visible;
-    font-size: 1em;
-     }
-
+font-family: Arial, Helvetica, sans-serif;
+visibility: visible;
+font-size: 1em;
+}

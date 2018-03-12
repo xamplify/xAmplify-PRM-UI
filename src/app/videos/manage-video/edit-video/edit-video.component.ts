@@ -512,6 +512,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 newThis.setNewPlayerIdHeightWidth();
                 $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newThis.saveVideoFile.playerColor + '!important');
                 player.ready(function () {
+                    $('#overLayImage').append($('#overlay-logo').show());
                     if (isValid === 'StartOftheVideo') {
                         player.play();
                         player.pause();
@@ -574,6 +575,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (event === 'FullscreenOn') {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
+                        $('#edit_video_player').append($('#overlay-logo').show());
                         newThis.fullScreenMode = true;
                     } else if (event === 'FullscreenOff') {
                         newThis.setVideoIdHeightWidth();
@@ -908,7 +910,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         else { this.isLogoThere = false; }
     }
     ngOnInit() {
-        $('#overLayImage').append($('#overlay-logo').show());
         QuickSidebar.init();
         console.log(this.referenceService.videoTitles);
         this.removeVideoTitlesWhiteSpaces();
@@ -953,6 +954,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     const document: any = window.document;
                     let isCallActionthere = false;
                     this.ready(function () {
+                        $('#overLayImage').append($('#overlay-logo').show());
                         if (isValid === 'StartOftheVideo') {
                             $('.video-js.vjs-default-skin .vjs-big-play-button').css('display', 'none');
                             player.play();
@@ -1016,10 +1018,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             $('.vjs-tech').css('width', '100%');
                             $('.vjs-tech').css('height', '100%');
                             callactionValue.fullScreenMode = true;
+                            $('#edit_video_player').append($('#overlay-logo').show());
                         } else if (event === 'FullscreenOff') {
                             callactionValue.setVideoIdHeightWidth();
                             callactionValue.fullScreenMode = false;
                             callactionValue.overLaySet = false;
+                            $('#overlay-logo').hide();
+                            $('#overLayImage').append($('#overlay-logo').show());
                             if (isCallActionthere) {
                                 callactionValue.overLaySet = false;
                                 callactionValue.fullScreenMode = false;

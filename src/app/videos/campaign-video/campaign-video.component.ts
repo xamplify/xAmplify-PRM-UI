@@ -290,6 +290,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.sessionId = UUID.UUID();
         this.xtremandLogger.log(this.sessionId);
     }
+    setVideoBranLogo(){
+        $('#overLayImage').append($('#overlay-logo').show());
+    }
     ngOnInit() {
         $('body').css('cssText', 'background-color: white !important');
         this.createSessionId();
@@ -416,6 +419,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 let startDuration;
                 selfPanorama.videoFileService.replyVideo = false;
                 player.ready(function () {
+                    selfPanorama.setVideoBranLogo();
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
@@ -521,11 +525,13 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
                         selfPanorama.setFullscreenValue('FullscreenOn');
+                        $('#videoId').append($('#overlay-logo').show());
                     } else if (event === "FullscreenOff") {
                         if(selfPanorama.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
                           $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
                           $("#videoId").css("height", "279px"); } 
                        selfPanorama.setFullscreenValue('FullscreenOff');
+                       $('#overlay-logo').hide()
                     }
                 });
                 player.on('click', function () {
@@ -570,6 +576,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.replyVideo = false;
                     const document: any = window.document;
                     this.ready(function () {
+                        self.setVideoBranLogo();
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;
@@ -673,11 +680,13 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
                             self.setFullscreenValue('FullscreenOn');
+                            $('#videoId').append($('#overlay-logo').show());
                         } else if (event === "FullscreenOff") {
                            if(self.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
                            $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
                            $("#videoId").css("height", "279px"); } 
                             self.setFullscreenValue('FullscreenOff');
+                            $('#overlay-logo').hide()
                         }
                     });
                     this.on('contextmenu', function (e) {

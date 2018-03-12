@@ -76,12 +76,6 @@
 .is360video {
     z-index: 900;
 }
-.videojs-logo-play{
-    position: absolute;
-    top: 15px;
-    right: 34px;
-    width: 75px;
-}
 textarea {
     resize: none;
     max-height: 100%;
@@ -89,4 +83,22 @@ textarea {
     min-height: 100%;
     min-width: 100%;
     padding: 10px;
+}
+.logoCss{
+    position: relative;
+    width: 91px;
+    height: 58px;
+    right: -501px;
+    top: -309px;
+    background: transparent;
+    z-index: 99;
+}
+.logoFullscreen{
+    position: relative;
+    top: 15px;
+    width: 91px;
+    height: 58px;
+    right: -1235px;
+    background: transparent;
+    z-index: 99;
 }

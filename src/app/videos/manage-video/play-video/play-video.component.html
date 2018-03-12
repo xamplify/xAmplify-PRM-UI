@@ -2,14 +2,6 @@
 	.overlaySet {
 		margin-top: -331px;
 	}
-	.logo-video {
-		position: absolute;
-		top: 15px;
-		right: 34px;
-		width: 75px;
-		border: 1px solid red;
-		z-index: 9999999999;
-	}
 	a.disabled {
 		pointer-events: none;
 	}
@@ -25,7 +17,7 @@
 				<!-- modal popup  -->
 				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 318px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<form #f="ngForm" novalidate>
-						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
 							<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
 							<div class="flex" *ngIf="callAction.isFistNameChecked==true">
 								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
@@ -57,14 +49,14 @@
 				</div>
 				<!-- modal popup end-->
 				<div id="overLayImage"></div>
-				<div id="overlay-logo" >
+				<div id="overlay-logo" class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
 					<!-- default setting logo -->
 					<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank" [class.disabled]="logoLink===null">
-					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" >
 					</a>
 					<!-- org admin logo -->
 					<a [href]="selectedVideo.brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank" [class.disabled]="selectedVideo.brandingLogoDescUri===null">
-					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
+					  <img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive" >
 					</a>
 				</div>
 				<div>
