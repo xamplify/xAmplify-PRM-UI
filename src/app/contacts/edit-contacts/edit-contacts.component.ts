@@ -1290,8 +1290,12 @@ export class EditContactsComponent implements OnInit {
                     if ( $.inArray( inputName, self.names ) > -1 ) {
                         swal.showValidationError( 'This Contact List Name is already taken.' )
                     } else {
-                        swal.close();
-                        self.saveDuplicateContactList( name );
+                        if ( name != "" ) {
+                            swal.close();
+                            self.saveDuplicateContactList( name );
+                        }else {
+                            swal.showValidationError( 'List Name is Required..' )
+                        }
                     }
                 });
             }

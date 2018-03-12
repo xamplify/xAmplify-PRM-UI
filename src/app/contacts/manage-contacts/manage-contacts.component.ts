@@ -1201,8 +1201,12 @@ export class ManageContactsComponent implements OnInit {
                     if ( $.inArray( inputName, self.names ) > -1 ) {
                         swal.showValidationError( 'This Contact List Name is already taken.' )
                     } else {
-                        swal.close();
-                        self.saveSelectedUsers( name );
+                        if ( name != "" ) {
+                            swal.close();
+                            self.saveSelectedUsers( name );
+                        }else {
+                            swal.showValidationError( 'List Name is Required..' )
+                        }
                     }
                 });
             }
@@ -1227,8 +1231,12 @@ export class ManageContactsComponent implements OnInit {
                     if ( $.inArray( inputName, self.names ) > -1 ) {
                         swal.showValidationError( 'This Contact List Name is already taken.' )
                     } else {
-                        swal.close();
-                        self.saveExistingContactList( contactSelectedListId, name );
+                        if ( name != "" ) {
+                            swal.close();
+                            self.saveExistingContactList( contactSelectedListId, name );
+                        }else {
+                            swal.showValidationError( 'List Name is Required..' )
+                        }
                     }
                 });
             }
