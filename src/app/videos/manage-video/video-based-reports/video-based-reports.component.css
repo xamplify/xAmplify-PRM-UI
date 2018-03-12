@@ -70,9 +70,21 @@ text-align: center;
 .center {
 	text-align: center;
 }
-.videojs-logo-play{
+.logoCss{
     position: absolute;
-    top: 23px;
-    right: 34px;
-    width: 75px;
+    width: 91px;
+    height: 1px;
+    right: 20px;
+    top: 22px;
+    background: transparent;
+    z-index: 99;
+}
+.logoFullscreen{
+    position: absolute;
+    top: 15px;
+    width: 91px;
+    height: 58px;
+    right: 17px;
+    background: transparent;
+    z-index: 99;
 }

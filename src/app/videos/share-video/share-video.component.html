@@ -15,14 +15,6 @@
 	.bottomCss {
 		bottom: -183px;
 	}
-	.logo-video {
-		position: absolute;
-		top: 15px;
-		right: 34px;
-		width: 75px;
-		border: 1px solid red;
-		z-index: 9999999999;
-	}
 	a.disabled{
 		pointer-events: none;
 	}
@@ -32,15 +24,15 @@
 	<div class="portlet-body">
 		<div class="col-md-6" style="padding:0">
 			<div>
+				<div id="overLayImage"></div>
+				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
+					<a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
+						<img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" >
+					</a>
+				</div>
 				<div id="newPlayerVideo"></div>
 			</div>
 			<div id="overLayDialog"></div>
-			<div id="overLayImage"></div>
-				<div id="overlay-logo" >
-					<a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
-					  <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive videojs-logo-play" [class.logo-video]="fullScreenMode">
-					</a>
-				</div>
 			<div id="overlay-modal" class="video-js overlay is360video" style="height: 348px; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">

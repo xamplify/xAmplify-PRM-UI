@@ -27,9 +27,21 @@
 .viewsh4{
     color: #777;font-weight: 500;margin: 5px;
 }
-.videojs-logo-play{
+.logoCss{
+    position: absolute;
+    width: 91px;
+    height: 1px;
+    right: 20px;
+    top: 22px;
+    background: transparent;
+    z-index: 99;
+}
+.logoFullscreen{
     position: absolute;
     top: 15px;
-    right: 34px;
-    width: 75px;
+    width: 91px;
+    height: 58px;
+    right: 17px;
+    background: transparent;
+    z-index: 99;
 }

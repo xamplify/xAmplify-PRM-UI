@@ -85,20 +85,20 @@ textarea {
     padding: 10px;
 }
 .logoCss{
-    position: relative;
+    position: absolute;
     width: 91px;
-    height: 58px;
-    right: -501px;
-    top: -309px;
+    height: 1px;
+    right: 20px;
+    top: 22px;
     background: transparent;
     z-index: 99;
 }
 .logoFullscreen{
-    position: relative;
+    position: absolute;
     top: 15px;
     width: 91px;
     height: 58px;
-    right: -1235px;
+    right: 17px;
     background: transparent;
     z-index: 99;
 }

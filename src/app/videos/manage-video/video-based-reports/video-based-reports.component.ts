@@ -683,7 +683,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     ngOnInit() {
         this.logoDescriptionUrl = this.selectedVideo.brandingLogoDescUri;
         this.brandLogoUrl = this.selectedVideo.brandingLogoUri;
-        $('#overLayImage').append($('#overlay-logo').show());
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 8;
         this.getWatchedCountInfo(this.selectedVideo.alias);
@@ -742,6 +741,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             const document: any = window.document;
             const isValid = self.overLayValue;
             this.ready(function () {
+                $('#overLayImage').append($('#overlay-logo').show());
                 $('.video-js .vjs-tech').css('width', '100%');
                 $('.video-js .vjs-tech').css('height', '100%');
                 player.play();
@@ -756,6 +756,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     $('.vjs-tech').css('width', '100%');
                     $('.vjs-tech').css('height', '100%');
                     self.fullScreenMode = true;
+                    $('#videoId').append($('#overlay-logo').show());
                 } else if (event === 'FullscreenOff') {
                     $('#videoId').css('width', 'auto');
                     $('#videoId').css('height', '300px');
@@ -877,6 +878,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 const isValid = newValue.overLayValue;
                 const document: any = window.document;
                 player.ready(function () {
+                    $('#overLayImage').append($('#overlay-logo').show());
                     player.play();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newValue.selectedVideo.playerColor + '!important');
                 });
@@ -887,6 +889,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
                         newValue.fullScreenMode = true;
+                        $('#videoId').append($('#overlay-logo').show());
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
                         $('#videoId').css('height', '300px');

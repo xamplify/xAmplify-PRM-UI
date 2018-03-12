@@ -122,12 +122,6 @@ border-radius: 0;
 :host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning {
     border-radius: 0;
 } 
-.videojs-logo {
-    position: absolute;
-    top:42px;
-    right:23px;
-    width:62px;
-}
 .portlet,
 .portlet-body {
     border-radius: 0;
@@ -160,4 +154,25 @@ textarea {
     min-height: 100%;
     min-width: 100%;
     padding: 10px;
+}
+.logoCss{
+    position: absolute;
+    width: 91px;
+    height: 1px;
+    right: 28px;
+    top: 36px;
+    background: transparent;
+    z-index: 99;
+}
+.logoFullscreen{
+    position: absolute;
+    top: 15px;
+    width: 91px;
+    height: 58px;
+    right: 17px;
+    background: transparent;
+    z-index: 99;
+}
+#edit_video_player{ 
+    width:auto;
 }

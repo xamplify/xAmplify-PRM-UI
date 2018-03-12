@@ -153,7 +153,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         //  this.setConfirmUnload(true);
-        $('#overLayImage').append($('#overlay-logo').show());
         $('body').css('cssText', 'background-color: white !important');
         $('#overlay-modal').hide();
         console.log('Share video component ngOnInit called');
@@ -261,6 +260,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 player.ready(function () {
                     player360.xtremandLog.startDuration = 0;
                     player360.xtremandLog.startDuration = 0;
+                    $('#overLayImage').append($('#overlay-logo').show());
                      $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + player360.embedVideoFile.playerColor + '!important');
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
@@ -405,6 +405,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         $(".vjs-tech").css("width", "100%");
                         $(".vjs-tech").css("height", "100%");
                         player360.fullScreenMode = true;
+                        $('#videoId').append($('#overlay-logo').show());
                     } else if (event === "FullscreenOff") {
                         $("#videoId").css("width", "auto");
                         $("#videoId").css("height", "348px");
@@ -465,6 +466,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;
+                        $('#videoId').append($('#overlay-logo').show());
                         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.embedVideoFile.playerColor + '!important');
                         $('.video-js .vjs-tech').css('width', '100%');
                         $('.video-js .vjs-tech').css('height', '100%');
@@ -620,6 +622,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $(".vjs-tech").css("width", "100%");
                             $(".vjs-tech").css("height", "100%");
                             self.fullScreenMode = true;
+                            $('#videoId').append($('#overlay-logo').show());
                         } else if (event === "FullscreenOff") {
                             $("#videoId").css("width", "auto");
                             $("#videoId").css("height", "348px");

@@ -575,7 +575,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (event === 'FullscreenOn') {
                         $('.vjs-tech').css('width', '100%');
                         $('.vjs-tech').css('height', '100%');
-                        $('#edit_video_player').append($('#overlay-logo').show());
+                        $('#videoId').append($('#overlay-logo').show());
                         newThis.fullScreenMode = true;
                     } else if (event === 'FullscreenOff') {
                         newThis.setVideoIdHeightWidth();
