@@ -31,7 +31,7 @@ export class SocialLoginComponent implements OnInit {
 
     ngOnInit() {
         try {
-            let providerName = this.route.snapshot.params['social'];
+            const providerName = this.route.snapshot.params['social'];
             this.login(providerName);
         }
         catch (err) {

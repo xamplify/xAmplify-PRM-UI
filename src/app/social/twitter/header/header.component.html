@@ -1,0 +1,22 @@
+<div *ngIf="twitterProfile != null" class="header-wrapper">
+  <img src="{{twitterProfile.profileBannerUrl}}" class="banner-image">
+  <img src="{{twitterProfile.profileImageUrl}}" class="img-responsive img-circle profile-image">
+  <div class='header-line clearfix'>
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+      <a class="col-xs-4" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
+        <b>Tweets</b>
+        <h4>{{twitterProfile.statusesCount}}</h4>
+      </a>
+      <a class="col-xs-4" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
+        <b>Followers</b>
+        <h4>{{twitterProfile.followersCount}}</h4>
+      </a>
+      <a class="col-xs-4" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
+        <b>Friends</b>
+        <h4>{{twitterProfile.friendsCount}}</h4>
+      </a>
+    </div>
+    <div class="col-xs-4"></div>
+  </div>
+</div>
