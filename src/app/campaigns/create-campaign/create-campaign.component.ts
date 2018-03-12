@@ -1826,12 +1826,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let self = this;
         var data = this.getCampaignData(emailId);
         if(data.scheduleCampaign==null ||data.scheduleCampaign==""){
-            data['scheduleCampaign'] = "SAVE";
+            data.scheduleCampaign = "SAVE";
         }
         this.campaignService.sendTestEmail(data)
         .subscribe(
         data => {
-            console.log(data);
            if(data.statusCode==2017){
                swal("Mail Sent Successfully", "", "success");
                this.campaign.campaignId = data.data;

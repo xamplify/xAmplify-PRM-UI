@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var $: any;
 
 @Component({
@@ -16,11 +17,10 @@ export class LogRegularCampaignComponent implements OnInit {
   templateId: number;
   templatehtml: string;
   alias: string;
-  isTestEmail = false;
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
-  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, public videoFileService: VideoFileService) {
+  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, public videoFileService: VideoFileService,public referenceService:ReferenceService) {
     this.xtremandLogger.log('Ui regular campaign called');
   }
 
@@ -33,13 +33,12 @@ export class LogRegularCampaignComponent implements OnInit {
     //   this.xtremandLogger.error(error);
     // });
     this.alias = this.activatedRoute.snapshot.params['alias'];
-    this.isTestEmail =this.activatedRoute.snapshot.params['isTestEmail'];
     this.getRegularTemplateHtml();
   }
 
   getRegularTemplateHtml() {
     try {
-      this.videoFileService.showCampaignEmail(this.alias,this.isTestEmail)
+      this.videoFileService.showCampaignEmail(this.alias)
         .subscribe((result: any) => {
               this.templatehtml = result.templatehtml;
               this.xtremandLogger.log(this.templatehtml);

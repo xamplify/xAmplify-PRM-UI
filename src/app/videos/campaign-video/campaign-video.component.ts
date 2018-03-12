@@ -32,7 +32,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     is360Value: boolean;
     publicRouterUrl: string;
     alias: string;
-    isTestEmail = false;
     typeValue: string;
     videoAlias: string=null;
     campaignAlias: string=null;
@@ -169,8 +168,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     'countryCode': data.countryCode,
                     'videoAlias': this.videoAlias,
                     'actionId': 14,
-                    'alias':this.alias,
-                    'testEmail':this.isTestEmail
+                    'alias':this.alias
                 };
                 console.log(this.emailLog);
                 this.videoFileService.showCampaignVideo(this.emailLog)
@@ -298,9 +296,11 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('public video component ngOnInit called');
         this.deviceDectorInfo();
         this.alias = this.activatedRoute.snapshot.params['alias'];
-        this.isTestEmail =  this.activatedRoute.snapshot.params['isTestEmail'];
         this.getCampaignVideo();
     }
+    
+
+    
     defaultVideoSettings() {
         this.xtremandLogger.log('default settings called');
         this.videoUtilService.videoColorControlls(this.campaignVideoFile);
@@ -311,22 +311,25 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         return Math.round(currentTime * 100) / 100;
     }
     videoLogAction(xtremandLog: XtremandLog) {
-        if(!this.isTestEmail){
-            if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
-            console.log(xtremandLog.startDuration);
-            this.videoFileService.seekbarTime = this.seekbarTimestored; 
-            }
-            console.log(xtremandLog);
-            console.log(xtremandLog.actionId);
-            this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
-                (result: any) => {
-                    this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);        
-                    xtremandLog.previousId = result.id;
-                },
-                (error: any) => {
-                    console.log('successfully skipped unused logged the actions' + xtremandLog.actionId);
-                });
+      console.log(this.alias);
+      xtremandLog.alias = this.alias;
+        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
+        console.log(xtremandLog.startDuration);
+        this.videoFileService.seekbarTime = this.seekbarTimestored; 
         }
+        console.log(xtremandLog);
+        console.log(xtremandLog.actionId);
+        this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
+            (result: any) => {
+                this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);        
+                xtremandLog.previousId = result.id;
+            },
+            (error: any) => {
+                console.log('successfully skipped unused logged the actions' + xtremandLog.actionId);
+            });
+    
+    
+       
     
     }
     logVideoViewsCount() {

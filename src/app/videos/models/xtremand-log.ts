@@ -26,4 +26,5 @@ export class XtremandLog {
     startDurationHHMMSS: string;
     stopDurationHHMMSS: string;
     previousId: number = null;
+    alias:string = "";
 }

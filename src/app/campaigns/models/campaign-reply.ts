@@ -2,14 +2,14 @@ import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../../email-template/models/email-template';
 export class Reply{
     id:number;
-    replyInDays:number;
+    replyInDays:number=0;
     replyTime:Date;
     subject:string;
     actionId:number;
     divId:string;
     emailAction:any;
     scheduled:boolean;
-    replyInDaysSum:number;
+    replyInDaysSum:number=0;
     emailTemplatesPagination:Pagination = new Pagination();
     selectedEmailTemplateId:number = 0;
     selectedEmailTemplateIdForEdit:number = 0;

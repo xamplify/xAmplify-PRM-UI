@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LogService } from '../../core/services/log.service';
 import { UtilService } from '../../core/services/util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
     selector: 'app-log-email-click',
@@ -16,9 +17,9 @@ export class LogEmailClickComponent implements OnInit {
     public alias :string;
     public emailLog: any;
     public deviceInfo: any;
-    isTestEmail = false;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private logService: LogService, private utilService: UtilService, private deviceService: Ng2DeviceService) { }
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private logService: LogService, 
+            private utilService: UtilService, private deviceService: Ng2DeviceService,private referenceService:ReferenceService) { }
 
     logEmailUrlClicks() {
        
@@ -52,7 +53,6 @@ export class LogEmailClickComponent implements OnInit {
                 'videoId' : 0,
                 'actionId' : 15,
                 'alias':this.alias,
-                'testEmail':this.isTestEmail
             };
 
             console.log("emailLog" + this.emailLog);
@@ -75,7 +75,6 @@ export class LogEmailClickComponent implements OnInit {
 
     ngOnInit() {
     	this.alias = this.activatedRoute.snapshot.params['alias'];
-    	this.isTestEmail  = this.activatedRoute.snapshot.params['isTestEmail'];
         //this.getGeoLocation();
         this.logEmailUrlClicks();
 
