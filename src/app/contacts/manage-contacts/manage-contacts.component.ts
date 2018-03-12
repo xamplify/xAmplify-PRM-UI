@@ -1222,7 +1222,7 @@ export class ManageContactsComponent implements OnInit {
             allowOutsideClick: false,
             preConfirm: function( name: any ) {
                 return new Promise( function() {
-                    console.log( 'logic begins' );
+                    self.xtremandLogger.log( 'logic begins' );
                     var inputName = name.toLowerCase().replace( /\s/g, '' );
                     if ( $.inArray( inputName, self.names ) > -1 ) {
                         swal.showValidationError( 'This Contact List Name is already taken.' )
