@@ -217,8 +217,8 @@ input:checked + .slider-new:before {
 												<li>
 													<a href="#tab_1_4" data-toggle="tab" >Settings</a>
 												</li>
-												<li *ngIf="hasCompany && roleLength" (click)="videojsCall()">
-													<a href="#tab_1_5" data-toggle="tab" (click)="videojsCall()">Default Player Settings</a>
+												<li *ngIf="hasCompany" (click)="videojsCall()">
+													<a href="#tab_1_5" data-toggle="tab">Default Player Settings</a>
 												</li>
 											</ul>
 										</div>
@@ -416,7 +416,7 @@ input:checked + .slider-new:before {
 															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
 															<strong>Your branding Logo and Url Uploaded Successfully!</strong> 
 														</div>
-														<div  [hidden]="isOnlyPartnerRole">	
+														<div *ngIf="!isOnlyPartnerRole">	
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 													<div class= "col-xs-12 pclass-css">
 														<h4 style="color:white;margin:3px">Video Player Apperance</h4>

@@ -128,7 +128,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.selectedVideo) {
             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
             this.allVideos.push(this.selectedVideo);
-            this.pagination.pagedItems.push(this.selectedVideo);
+            this.pagination.pagedItems.unshift(this.selectedVideo);
         }
         this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
             .subscribe((saveVideoFile: SaveVideoFile) => {

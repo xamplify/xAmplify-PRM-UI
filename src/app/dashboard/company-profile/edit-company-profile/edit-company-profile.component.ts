@@ -87,7 +87,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         module.hasVideoRole = true;
                         module.hasSocialStatusRole = true;
                         self.router.navigate(["/home/dashboard/welcome"]);
-                        self.processor.set(this.processor);
+                        self.processor.set(self.processor);
                         self.homeComponent.getVideoDefaultSettings();
                       }, 3000);
                 },

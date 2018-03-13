@@ -307,7 +307,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
             this.roleLength = currentUser.roles.length > 1 ? true : false;
             this.isOnlyPartner(roleNames);
-            if (currentUser.roles.length > 1 && this.hasCompany) {
+            if ((currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
                 let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
                 if (!this.isOnlyPartner(roleNames)) {
                     this.getOrgAdminsCount(this.loggedInUserId);

@@ -822,6 +822,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.homeComponent.getCategorisService();
                 this.refService.homeMethodsCalled = true;
             }
+            if(!this.refService.defaultPlayerSettings){
+                this.homeComponent.getVideoDefaultSettings();
+            }
             this.defaultSettings();
         } catch (err) {
             console.error('ERROR : FileUploadComponent : ngOnInit() ' + err);
