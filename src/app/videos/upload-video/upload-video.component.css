@@ -1,4 +1,3 @@
-
 input[type='file'],
 input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
     cursor: pointer; 
@@ -9,7 +8,6 @@ color: white;
 font-size: 5em;
 line-height: initial;
 }
-
 textarea {
 resize: none;
 max-height: 100%;
@@ -19,30 +17,23 @@ min-width: 100%;
 padding: 10px;
 }
 .upload-video{
-      font-weight: 500;
-      color: white;
+font-weight: 500;
+color: white;
 }
-/*model popup css*/
 #myVideo{  background-color: #5fdbf5; width: 100%;}
 .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
             -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
 .zoomin img:hover { width: 87px;height: 87px;  } 
 .closeModal { 
-    float:right;
-    font-size:21px;font-weight:700;line-height:1;opacity:1;
-    }
-/* drop files css*/
+float:right;
+font-size:21px;font-weight:700;line-height:1;opacity:1;
+}
 .my-drop-zone { 
-      /* border: dotted 3px lightgray;  */
-      width :auto; 
-      border-radius: 0;
-      }
-/* .nv-file-over { border: dotted 3px red; } */
+width :auto; 
+border-radius: 0;
+}
 .nav-file-over { border: 0;}
-  /* Default class applied to drop zones on over */
 .another-file-over-class { border: dotted 3px green; }      
-
-/*file input css */
 .fileinput-button {
 position: relative;
 overflow: hidden;
@@ -73,7 +64,6 @@ margin-bottom: 20px;
 margin-right: 304px;
 margin-left: 19px;
 }
-
 .loaderSymbol{
 height: 49px;
 margin-top: -15px;
@@ -99,20 +89,12 @@ font-weight: bold;color:blue;
 cursor: not-allowed;
 opacity:0.4;
 }
-
-/* record modal popup css */
-:host /deep/ .vjs-device-button.vjs-control {
-position: absolute;
-right: 0;
-left: 0;
-}
 :host /deep/ .video-js .vjs-time-control{
 line-height : 3.3em;
 }
 :host /deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
 line-height: 2.455em;
 }  
-
 :host /deep/ .vjs-control-bar {
 display: -webkit-box;
 display: -webkit-flex;
@@ -120,7 +102,6 @@ display: -ms-flexbox;
 display: flex;
 background-color : rgba(43, 51, 63, 0.7) !important;
 }
-
 .record-textarea{
 width: 100% ;height:55px;line-height:16px; font-size: 14px;
 }
@@ -129,11 +110,21 @@ width: 100% ;height:55px;line-height:16px; font-size: 14px;
 .portlet.light {
 border-radius: 0
 }
-
 #file-upload { width:0; height:0; }
-
 .box-border{border: 1px solid #54a7e9;
-    overflow: hidden;
-    padding: 30px 0;
-    margin: 0}
+overflow: hidden;
+padding: 30px 0;
+margin: 0;
+}
 .portlet.light {padding: 10px;min-height: 580px;}    
+.upload-video-css {
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.customDisableCss {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
