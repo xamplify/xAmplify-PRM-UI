@@ -1391,6 +1391,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
         $('.modal .modal-body').css('overflow-y', 'auto'); 
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        console.log(body);
         $("#show_email_template_preivew").modal('show');
     }
     filterTemplates(type:string,index:number){

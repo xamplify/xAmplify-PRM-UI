@@ -63,8 +63,12 @@ export class LogEmailClickComponent implements OnInit {
                 console.log(result['_body']);
                 var body = result['_body'];
                 var resp = JSON.parse(body);
-                console.log(resp.url);
-                window.location.href = resp.url;
+                let url = resp.url;
+                if(!(url.startsWith('http')|| url.startsWith('https'))){
+                    url = "http://"+url;
+                }
+                window.location.href = url;
+                
             })
         },
         error => console.log(error));

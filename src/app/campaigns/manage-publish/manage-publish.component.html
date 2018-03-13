@@ -85,7 +85,7 @@
 									</td>
 									<td>
 										<h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}}</h4>
-										<h5 class='m0'>Created By <span class='f-w-600'>{{campaign.createdBy}}</span></h5>
+										<h5 class='m0'>{{campaign.companyName}} <span class='f-w-600'>{{campaign.createdBy}}</span></h5>
 									</td>
 									<td>
 										<span align="right">
@@ -184,7 +184,7 @@
 														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</b>
 													</span>
 														<span align="left" style="bottom: 24px; float: left; position: absolute; left: 3%;">
-														<b>Created By</b>
+														<b>{{campaign.companyName}}</b>
 													</span>
 													
 													

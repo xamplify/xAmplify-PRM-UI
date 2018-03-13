@@ -77,7 +77,11 @@
 									</td>
 									<td>
 										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
-										<h5 class='m0'>By <span class='f-w-600'>{{emailTemplate.createdBy}}</span></h5>
+										<h5 class='m0'>{{emailTemplate.companyName}} 
+										<span class='f-w-600'>
+											<b>{{emailTemplate.createdBy}}</b>
+										</span>
+									 </h5>
 									</td>
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
@@ -141,7 +145,10 @@
 									 			<b  *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
 												<b  *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 									 		</span>
-									 		<span align="left" class="template-created-by-value"><b>Created By</b></span>
+									 		<span align="left" class="template-created-by-value" title="{{emailTemplate.companyName}}">
+									 			<b  *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
+												<b  *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
+									 	</span>
 										</div>
 									</div>
 								</div>
