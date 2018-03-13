@@ -324,7 +324,7 @@
 	<!-- BEGIN DASHBOARD STATS -->
 	<div class="row">
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']" [class.disabled]="!hasStatsRole ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
 				<div class="visual">
 					<i class="fa fa-eye"></i>
 				</div>
@@ -335,7 +335,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-cloud-upload"></i>
 				</div>
@@ -347,7 +347,7 @@
 		</div>
 
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['../../contacts/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['../../contacts/manage']" [class.disabled]="!hasStatsRole|| !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
 				</div>
@@ -358,7 +358,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-smile-o"></i>
 				</div>
@@ -369,7 +369,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]="!hasStatsRole &&!authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-user-secret"></i>
 				</div>
@@ -431,8 +431,8 @@
 		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
 			<div class="portlet-title">
 				<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Campaigns</h4>
-				<a><i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"></i></a>
-				<a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary color1 pull-right" style="margin: 5px 0;">Create Campaign</a>
+				<a><i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal" *ngIf="hasCampaignRole && authenticationService.user.hasCompany "></i></a>
+				<a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary color1 pull-right" style="margin: 5px 0;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
 			</div>
 			<div class="portlet-body clearfix">
 				<section *ngFor="let campaign of campaigns; let i=index">
