@@ -49,4 +49,14 @@ export class Properties {
 
     PARTNERS_SAVE_SUCCESS = "Your partners have been saved successfully";
     PARTNERS_SAVE_ERROR = "An error occured while saving your partners";
+    
+   /* Authentication Module*/
+    
+    FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Password has been sent to your registered Email Id";
+    FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail";
+    
+    SIGN_UP_SUCCESS = "Thank you for signing up with the platform! A verification link has been sent to your email account";
+    SIGN_UP_ERROR = "An error occured while sign up please try later";
+    ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
+    
 }

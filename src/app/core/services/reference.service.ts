@@ -54,10 +54,10 @@ export class ReferenceService {
     clickedValue:number;
     daySortValue = 7;
     reportName: string;
-    signUpSuccess = '';
-    accountDisabled:string = "";
+    
+    userProviderMessage = '';
+    
     isDisabling:boolean = false;
-    forgotMessage = '';
     videoBrandLogo: string;
     videoType:string = "";
 

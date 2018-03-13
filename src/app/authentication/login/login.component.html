@@ -1,16 +1,8 @@
 <app-video></app-video>
 <div class="content">
-	<div *ngIf="referenceService.signUpSuccess?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
+	 <div *ngIf="referenceService.userProviderMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{referenceService.signUpSuccess}}</strong>
-	</div>
-	<div *ngIf="referenceService.forgotMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{referenceService.forgotMessage}}</strong>
-	</div>
-	<div *ngIf="referenceService.accountDisabled?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{referenceService.accountDisabled}}</strong>
+		<strong>{{referenceService.userProviderMessage}}</strong>
 	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
@@ -46,21 +38,11 @@
 		<div class="login-options login-form">
 			<h4>Or login with</h4>
 			<ul class="social-icons">
-				<li>
-					<a class="social-icon-color salesforce" data-original-title="Salesforce" routerLink="../salesforce/login"></a>
-				</li>
-				<li>
-					<a class="social-icon-color facebook" data-original-title="facebook" routerLink="../facebook/login"></a>
-				</li>
-				<li>
-					<a class="social-icon-color twitter" data-original-title="Twitter" routerLink="../twitter/login"></a>
-				</li>
-				<li>
-					<a class="social-icon-color googleplus" data-original-title="Goole Plus" routerLink="../google/login"></a>
-				</li>
-				<li>
-					<a class="social-icon-color linkedin" data-original-title="Linkedin" routerLink="../linkedin/login"></a>
-				</li>
+				<ng-container *ngFor="let socialProviderName of socialProviderNames">
+				<li><a class="social-icon-color {{socialProviderName.name}}"
+					title="{{socialProviderName.name}}"
+					routerLink="../{{socialProviderName.name}}/login"></a></li>
+				</ng-container>
 			</ul>
 		</div>
 		<div class="create-account login-form">

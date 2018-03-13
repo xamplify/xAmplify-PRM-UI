@@ -10,10 +10,12 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { VideoComponent } from './video/video.component';
+import { CommonComponentModule } from '../common/common.module';
+
 
 @NgModule({
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule
+    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule, CommonComponentModule
   ],
   declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent],
   exports: []

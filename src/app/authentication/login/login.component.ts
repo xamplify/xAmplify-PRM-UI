@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
 import { User } from '../../core/models/user';
 import { Role } from '../../core/models/role';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -14,16 +15,32 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
-    providers: [User]
+    providers: [User, Properties]
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
     loading = false;
+    customResponse: CustomResponse = new CustomResponse();
     error = '';
+    
+    socialProviderNames = [{ "name": "salesforce" },
+                        { "name": "facebook" },
+                        { "name": "twitter" },
+                        { "name": "googleplus" },
+                        { "name": "linkedin" }];
+    
     roles: Array<Role>;
-    constructor(private router: Router, private authenticationService: AuthenticationService, private fb: FormBuilder,
-        public referenceService: ReferenceService, private logger: XtremandLogger) {
+    constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder,
+        public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
+
+        if (this.referenceService.userProviderMessage === 'signUpSuccess') {
+            this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
+        } else if (this.referenceService.userProviderMessage === 'forgotPassWord') {
+            this.referenceService.userProviderMessage = this.properties.FORGOT_PASSWORD_MAIL_SEND_SUCCESS;
+        } else if (this.referenceService.userProviderMessage === 'accountDisable') {
+            this.referenceService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
+        }
 
     }
 
@@ -32,15 +49,15 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.logErrorEmpty()
         } else {
             if (localStorage.getItem('currentUser')) {
-                console.log("User From Local Storage");
+                this.xtremandLogger.log("User From Local Storage");
                 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 let roles = currentUser.roles;
                 let roleNames = roles.map(function (a) { return a.roleName; });
                 if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
-                    console.log("User Or Company Partner");
+                    this.xtremandLogger.log("User Or Company Partner");
                     this.router.navigate(['/home/dashboard/myprofile']);
                 } else {
-                    console.log("Going To DashBoard");
+                    this.xtremandLogger.log("Going To DashBoard");
                     this.router.navigate(['/home/dashboard/default']);
                 }
 
@@ -55,20 +72,20 @@ export class LoginComponent implements OnInit, OnDestroy {
                     if (localStorage.getItem('currentUser')) {
                         // if user is coming from login
                         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                        console.log(currentUser);
-                        console.log(currentUser.hasCompany);
+                        this.xtremandLogger.log(currentUser);
+                        this.xtremandLogger.log(currentUser.hasCompany);
                         let roles = currentUser.roles;
                         let roleNames = roles.map(function (a) { return a.roleName; });
-                        if(currentUser.hasCompany){
+                        if (currentUser.hasCompany) {
                             this.router.navigate(['/home/dashboard/default']);
-                        }else{
-                            if(roles.length == 1 || this.isOnlyPartner(roleNames) ){
+                        } else {
+                            if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
                                 this.router.navigate(['/home/dashboard/myprofile']);
-                            }else{
+                            } else {
                                 this.router.navigate(['/home/dashboard/add-company-profile']);
                             }
                         }
-                        
+
                         // if user is coming from any link
                         if (this.authenticationService.redirectUrl) {
                             this.router.navigate([this.authenticationService.redirectUrl]);
@@ -95,20 +112,20 @@ export class LoginComponent implements OnInit, OnDestroy {
                                 }, 5000)
                             }
                         }
-                        console.log("error:" + error)
+                        this.xtremandLogger.error("error:" + error)
 
                     });
                 return false;
             }
         }
     }
-    
-    isOnlyPartner(roleNames){
-        if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            console.log("*******************LoggedIn User Is Partner***********************")
+
+    isOnlyPartner(roleNames) {
+        if (roleNames.length == 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
+            this.xtremandLogger.log("*******************LoggedIn User Is Partner***********************")
             return true;
-        }else{
-            console.log("*******************LoggedIn User Is Not Partner***********************");
+        } else {
+            this.xtremandLogger.log("*******************LoggedIn User Is Not Partner***********************");
             return false;
         }
     }
@@ -119,7 +136,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     logError() {
         this.error = 'Username or password is incorrect';
-        console.log("error : " + this.error);
+        this.xtremandLogger.error("error : " + this.error);
         setTimeout(() => {
             this.error = '';
         }, 5000)
@@ -127,7 +144,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     logErrorEmpty() {
         this.error = 'Username or password can\'t be empty';
-        console.log("error : " + this.error);
+        this.xtremandLogger.error("error : " + this.error);
         setTimeout(() => {
             this.error = '';
         }, 5000)
@@ -138,9 +155,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.referenceService.signUpSuccess = '';
-        this.referenceService.forgotMessage = '';
-        this.referenceService.accountDisabled = "";
+        this.referenceService.userProviderMessage = '';
         $('#org-admin-deactivated').hide();
     }
 

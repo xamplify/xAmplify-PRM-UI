@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 @Component( {
     selector: 'app-verify-email',
@@ -9,13 +10,15 @@ import { UserService } from '../../core/services/user.service';
 })
 export class VerifyEmailComponent implements OnInit {
     public alias: string;
-    constructor( private activatedRoute: ActivatedRoute, private userService: UserService, private router: Router ) { }
+    constructor( private activatedRoute: ActivatedRoute, private userService: UserService, private router: Router, 
+            public xtremandLogger:XtremandLogger ) { }
 
     activateAccount() {
         this.userService.activateAccount( this.alias )
             .subscribe(
             ( result: any ) => {
-                console.log( result );
+                this.xtremandLogger.log( result );
+                this.xtremandLogger.info("your account activated successfully")
                 this.router.navigate( ['/login'] );
             });
     }

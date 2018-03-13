@@ -970,7 +970,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.refService.isDisabling = false;
                         $('#status').prop("checked", true);
                         this.status = false;
-                        this.refService.accountDisabled = "OrgAdmin Deactivation Successfully Done.";
+                        this.refService.userProviderMessage = "accountDisable";
                         this.authenticationService.logout();
                         this.router.navigate(["/login"]);
                     }
