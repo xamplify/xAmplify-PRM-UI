@@ -22,7 +22,6 @@ export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
     passwordSuccess = false;
-    error = '';
     formErrors = {
         'forgotPasswordEmailId': ''
     };

@@ -101,15 +101,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (body != "") {
                             var response = JSON.parse(body);
                             if (response.error_description == "Bad credentials") {
-                                this.error = 'Username or password is incorrect';
-                                setTimeout(() => {
-                                    this.error = '';
-                                }, 5000)
+                                this.customResponse = new CustomResponse( 'ERROR', this.properties.BAD_CREDENTIAL_ERROR, true );
                             } else if (response.error_description == "User is disabled") {
-                                this.error = 'Your account is not activated.!';
-                                setTimeout(() => {
-                                    this.error = '';
-                                }, 5000)
+                                this.customResponse = new CustomResponse( 'ERROR', this.properties.USER_ACCOUNT_ACTIVATION_ERROR, true );
                             }
                         }
                         this.xtremandLogger.error("error:" + error)
@@ -135,19 +129,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
     logError() {
-        this.error = 'Username or password is incorrect';
-        this.xtremandLogger.error("error : " + this.error);
-        setTimeout(() => {
-            this.error = '';
-        }, 5000)
+        this.customResponse = new CustomResponse( 'ERROR', this.properties.BAD_CREDENTIAL_ERROR, true );
+        this.xtremandLogger.error("error : " + this.properties.BAD_CREDENTIAL_ERROR);
     }
 
     logErrorEmpty() {
-        this.error = 'Username or password can\'t be empty';
-        this.xtremandLogger.error("error : " + this.error);
-        setTimeout(() => {
-            this.error = '';
-        }, 5000)
+        this.customResponse = new CustomResponse( 'ERROR', this.properties.EMPTY_CREDENTIAL_ERROR, true );
+        this.xtremandLogger.error("error : " + this.properties.EMPTY_CREDENTIAL_ERROR, true);
     }
 
     ngOnInit() {

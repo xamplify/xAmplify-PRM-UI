@@ -8,9 +8,10 @@
 	<div class="row" *ngIf="model">
 		<form class="login-form" (ngSubmit)="login()">
 			<h3 class="form-title">Sign In</h3>
-			<div *ngIf="error" class="alert alert-danger">
+			<!-- <div *ngIf="error" class="alert alert-danger">
 				<span>{{error}}</span>
-			</div>
+			</div> -->
+			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 			<div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
 				<label class="custom-label">Enter any Email and password.</label>
