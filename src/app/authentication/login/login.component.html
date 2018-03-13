@@ -1,6 +1,6 @@
 <app-video></app-video>
 <div class="content">
-	 <div *ngIf="referenceService.userProviderMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
+	<div *ngIf="referenceService.userProviderMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<strong>{{referenceService.userProviderMessage}}</strong>
 	</div>
@@ -39,9 +39,9 @@
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProviderName of socialProviderNames">
-				<li><a class="social-icon-color {{socialProviderName.name}}"
-					title="{{socialProviderName.name}}"
-					routerLink="../{{socialProviderName.name}}/login"></a></li>
+					<li>
+						<a class="social-icon-color {{socialProviderName.name}}" title="{{socialProviderName.name}}" routerLink="../{{socialProviderName.name}}/login"></a>
+					</li>
 				</ng-container>
 			</ul>
 		</div>
