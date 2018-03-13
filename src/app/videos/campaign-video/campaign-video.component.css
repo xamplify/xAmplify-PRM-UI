@@ -83,3 +83,11 @@ font-family: Arial, Helvetica, sans-serif;
 visibility: visible;
 font-size: 1em;
 }
+.logoFullscreen {
+    position: absolute;
+    top: 15px;
+    width: 91px;
+    height: 58px;
+    right: 21px;
+    background: transparent;
+}

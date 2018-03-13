@@ -1,19 +1,7 @@
-<style>
-    .logoFullscreen{
-    position: relative;
-    top: 15px;
-    width: 91px;
-    height: 58px;
-    right: -581px;
-    background: transparent;
-}
-</style>
-
 <div id="para"></div>
 <div id="overLayImage"></div>
-<div id="overlay-logo"  class="video-js" [ngClass]="{'logoFullscreen':fullScreenMode }">
+<div id="overlay-logo" class="video-js" [ngClass]="{'logoFullscreen':fullScreenMode }">
     <a [href]="logoLink" target="_blank" [class.disabled]="logoLink===null">
-        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" 
-            >
+        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive">
     </a>
 </div>
