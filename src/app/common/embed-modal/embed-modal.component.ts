@@ -12,45 +12,48 @@ declare var $: any;
 export class EmbedModalComponent implements OnInit, OnDestroy {
   @Input() video: any;
   @Output() notifyParent: EventEmitter<any>;
-  ClipboardName: string;
+  clipboardName: string;
   embedSrcPath: string;
   embedWidth = '640';
   embedHeight = '360';
-  videoSizes: string[];
+  videoSizes = ['1280 × 720', '853 × 480', '640 × 360','560 × 315'];
   videosize = '640 × 360';
   embedFullScreen = 'allowfullscreen';
   isFullscreen: boolean;
 
   constructor(public videoUtilService: VideoUtilService, public videoFileService: VideoFileService,
     public authenticationService: AuthenticationService) {
-    this.ClipboardName = 'Copy to ClipBoard';
-    this.videoSizes = this.videoUtilService.videoSizes;
+    this.clipboardName = 'Copy to ClipBoard';
     this.isFullscreen = true;
     this.notifyParent = new EventEmitter();
   }
   embedCode() {
-    this.ClipboardName = 'Copied !';
+    this.clipboardName = 'Copied !';
     (<HTMLInputElement>document.getElementById('embed_code')).select();
     document.execCommand('copy');
   }
   embedFulScreenValue() {
-     this.embedFullScreen = this.isFullscreen ? 'allowfullscreen' : '';
+    this.embedFullScreen = this.isFullscreen ? 'allowfullscreen' : '';
   }
   embedVideoSizes() {
     if (this.videosize === this.videoSizes[0]) {
-      this.embedWidth = '1280'; this.embedHeight = '720';
+      this.setEmbedwidthHeight('1280','720');
     } else if (this.videosize === this.videoSizes[1]) {
-      this.embedWidth = '853'; this.embedHeight = '480';
+      this.setEmbedwidthHeight('853','480');
     } else if (this.videosize === this.videoSizes[2]) {
-      this.embedWidth = '640'; this.embedHeight = '360';
-    } else { this.embedWidth = '560'; this.embedHeight = '315'; }
-   }
+      this.setEmbedwidthHeight('640','360');
+    } else {this.setEmbedwidthHeight('560','315');}
+  }
+  setEmbedwidthHeight(width: string, height: string){
+    this.embedWidth = width;
+    this.embedHeight = height;
+  }
   closeEmbedModal() {
-    this.ClipboardName = 'Copy to Clipboard';
+    this.clipboardName = 'Copy to Clipboard';
     this.closeEmbed();
     this.notifyParent.emit("successfully closed model");
   }
-  closeEmbed(){
+  closeEmbed() {
     $('#myModal').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop fade in').remove();
@@ -72,7 +75,7 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.embedModal();
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.closeEmbed();
   }
 

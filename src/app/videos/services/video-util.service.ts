@@ -11,8 +11,6 @@ export class VideoUtilService {
     timePeriod: string;
     timePeriodValue: string;
     selectedVideo: SaveVideoFile = null;
-    clipboardName: string;
-    videoSizes = ['1280 × 720', '853 × 480', '640 × 360','560 × 315'];
     publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
     formErrors = {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
@@ -20,10 +18,10 @@ export class VideoUtilService {
     };
     noSpaceMesg = 'No Space Left on the device Please Contact the admin.!!';
     maxSubscriptionMesg = 'Maximum Disk Space Reached for you subscription.!! Please Contact the admin.';
-    codecNotSupportMesg  = 'Codec is not supported for this video..We are unable to ' +
-    'process your video file. Please upload another video file!!';
+    codecNotSupportMesg = 'Codec is not supported for this video..We are unable to ' +
+        'process your video file. Please upload another video file!!';
     maxSizeOverMesg = 'Your video size is more than the maximum video file size(800 MB)' +
-     'Please upload another video file within the limit!!';
+        'Please upload another video file within the limit!!';
     errorNullMesg = 'Something went wrong !! Please Contact the admin.!!';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
@@ -34,9 +32,9 @@ export class VideoUtilService {
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];
-     sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
-        { 'name': 'Month wise views', 'value': 'month' },
-        { 'name': 'Quarterly views', 'value': 'quarter' }, { 'name': 'Yearly views', 'value': 'year' }];
+    sortMonthDates = [{ 'name': 'Current month views', 'value': 'current-month' },
+    { 'name': 'Month wise views', 'value': 'month' },
+    { 'name': 'Quarterly views', 'value': 'quarter' }, { 'name': 'Yearly views', 'value': 'year' }];
     validationMessages = {
         'title': {
             'required': 'Title is required.',
@@ -58,22 +56,22 @@ export class VideoUtilService {
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
     }
     player360VideoJsFiles() {
-         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="p-video" rel="stylesheet">');
-         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
-         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
-         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama-test.min.css" rel="stylesheet"  class="p-video">');
-         $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.min.js" type="text/javascript"  class="p-video" />');
-         this.videojshotkeys();
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="p-video" rel="stylesheet">');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
+        $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama-test.min.css" rel="stylesheet"  class="p-video">');
+        $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.min.js" type="text/javascript"  class="p-video" />');
+        this.videojshotkeys();
     }
     normalVideoJsFiles() {
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
         $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-hls.js" type="text/javascript"  class="h-video"/>');   
-         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-hls.js" type="text/javascript"  class="h-video"/>');
+        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         this.videojshotkeys();
     }
-    
+
     constructor() { }
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -81,8 +79,9 @@ export class VideoUtilService {
     }
     transparancyControllBarColor(color: string, value: number) {
         if (color.includes('rgba')) { color = this.convertRgbToHex(color); }
-        if (color === '#fff') {  color = '#fbfbfb';
-        } else if (color === '#ccc') { color = '#cccddd';  }
+        if (color === '#fff') {
+            color = '#fbfbfb';
+        } else if (color === '#ccc') { color = '#cccddd'; }
         const rgba = this.convertHexToRgba(color, value);
         return rgba;
     }
@@ -134,7 +133,7 @@ export class VideoUtilService {
         $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:'+videoFile.playerColor+'!important');
+        $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
     }
     modalWindowPopUp(url, width, height) {
@@ -142,8 +141,8 @@ export class VideoUtilService {
         leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
         topPosition = (window.screen.height / 2) - ((height / 2) + 50);
         window.open(url, "Window2",
-        "status=no,height=" + height + ",width=" + width + ",resizable=yes,left="
-        + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY="
-        + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+            "status=no,height=" + height + ",width=" + width + ",resizable=yes,left="
+            + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY="
+            + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
     }
 }

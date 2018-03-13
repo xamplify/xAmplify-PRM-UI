@@ -49,7 +49,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     shareValues: boolean;
     is360Value: boolean;
     embedUrl: string;
-    ClipboardName: string;
     // logging info details
     sessionId: string;
     deviceInfo: any;
@@ -72,7 +71,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         public pagerService: PagerService, public referenceService: ReferenceService) {
         this.disLikesValues = 0;
         this.likesValues = 0;
-        this.ClipboardName = 'Copy to ClipBoard';
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
