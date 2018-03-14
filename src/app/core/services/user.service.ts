@@ -34,7 +34,7 @@ export class UserService {
 
     getVideoDefaultSettings() {
         console.log(this.authenticationService.user.roles);
-        if(this.currentUser.roles.length>1  || this.authenticationService.user.roles.length > 1){
+        if(this.authenticationService.user.roles.length > 1){
         return this.http.get( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
@@ -44,7 +44,7 @@ export class UserService {
         }
     }
     updatePlayerSettings( defaultVideoSettings: DefaultVideoPlayer ) {
-        if(this.currentUser.roles.length>1  || this.authenticationService.user.roles.length > 1){
+        if(this.authenticationService.user.roles.length > 1){
         return this.http.post( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
             , defaultVideoSettings )
             .map( this.extractData )
