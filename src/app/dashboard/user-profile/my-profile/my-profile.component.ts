@@ -13,6 +13,10 @@ import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
+import { CustomResponse } from '../../../common/models/custom-response';
+import { Properties } from '../../../common/models/properties';
+
 declare var swal, $, Metronic, Layout, Demo, videojs: any;
 
 @Component({
@@ -20,7 +24,7 @@ declare var swal, $, Metronic, Layout, Demo, videojs: any;
     templateUrl: './my-profile.component.html',
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch]
+    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
@@ -69,10 +73,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     logoUrlUpdated = false;
     roleLength: boolean;
     ngxloading: boolean;
+    customResponse: CustomResponse = new CustomResponse();
 
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, ) {
+        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, public properties: Properties) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
@@ -972,7 +977,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.refService.isDisabling = false;
                         $('#status').prop("checked", true);
                         this.status = false;
-                        this.refService.userProviderMessage = "accountDisable";
+                        this.refService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
                         this.authenticationService.logout();
                         this.router.navigate(["/login"]);
                     }

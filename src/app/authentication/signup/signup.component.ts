@@ -5,6 +5,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
+
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
 import { UserService } from '../../core/services/user.service';
@@ -18,13 +21,14 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
     selector: 'app-signup',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
-    providers: [User, CountryNames, RegularExpressions]
+    providers: [User, CountryNames, RegularExpressions, Properties]
 })
 export class SignupComponent implements OnInit {
     signUpForm: FormGroup;
     userActive = false;
     loading = false;
     isError = false;
+    customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'fullName': '',
         'emailId': '',
@@ -80,7 +84,7 @@ export class SignupComponent implements OnInit {
         }
     };
 
-    constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions,
+    constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions,public properties: Properties,
         private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private signUpUser: User,
         private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private xtremandLogger: XtremandLogger) {
         this.buildForm();
@@ -98,7 +102,7 @@ export class SignupComponent implements OnInit {
                     if (data !== undefined) {
                         if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
                             this.loading = false;
-                            this.referenceService.userProviderMessage = 'signUpSuccess';
+                            this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
                             this.router.navigate(['/login']);
                         }
                     } else {

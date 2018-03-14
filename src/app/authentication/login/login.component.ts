@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var Metronic, swal, $, Layout, Login, Demo: any;
+declare const Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component({
     selector: 'app-login',
@@ -22,9 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
     loading = false;
     customResponse: CustomResponse = new CustomResponse();
-    error = '';
     
-    socialProviderNames = [{ "name": "salesforce","iconName":"salesforce"},
+    socialProviders = [{ "name": "salesforce","iconName":"salesforce"},
                         { "name": "facebook","iconName":"facebook" },
                         { "name": "twitter","iconName":"twitter" },
                         { "name": "google","iconName":"googleplus" },
@@ -33,27 +32,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
-
-        if (this.referenceService.userProviderMessage === 'signUpSuccess') {
-            this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
-        } else if (this.referenceService.userProviderMessage === 'forgotPassWord') {
-            this.referenceService.userProviderMessage = this.properties.FORGOT_PASSWORD_MAIL_SEND_SUCCESS;
-        } else if (this.referenceService.userProviderMessage === 'accountDisable') {
-            this.referenceService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
+       
+        if ( this.referenceService.userProviderMessage !== "" ) {
+            this.customResponse = new CustomResponse( 'SUCCESS', this.referenceService.userProviderMessage, true );
         }
-
     }
 
     public login() {
         if (this.model.username.length === 0 || this.model.password.length === 0) {
-            this.logErrorEmpty()
+            this.setCustomeResponse("ERROR",this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
             if (localStorage.getItem('currentUser')) {
                 this.xtremandLogger.log("User From Local Storage");
-                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                let roles = currentUser.roles;
-                let roleNames = roles.map(function (a) { return a.roleName; });
-                if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const roles = currentUser.roles;
+                const roleNames = roles.map(function (a) { return a.roleName; });
+                if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
                     this.xtremandLogger.log("User Or Company Partner");
                     this.router.navigate(['/home/dashboard/myprofile']);
                 } else {
@@ -71,15 +65,15 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.authenticationService.login(authorization, body, userName).subscribe(result => {
                     if (localStorage.getItem('currentUser')) {
                         // if user is coming from login
-                        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                         this.xtremandLogger.log(currentUser);
                         this.xtremandLogger.log(currentUser.hasCompany);
-                        let roles = currentUser.roles;
-                        let roleNames = roles.map(function (a) { return a.roleName; });
+                        const roles = currentUser.roles;
+                        const roleNames = roles.map(function (a) { return a.roleName; });
                         if (currentUser.hasCompany) {
                             this.router.navigate(['/home/dashboard/default']);
                         } else {
-                            if (roles.length == 1 || this.isOnlyPartner(roleNames)) {
+                            if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
                                 this.router.navigate(['/home/dashboard/myprofile']);
                             } else {
                                 this.router.navigate(['/home/dashboard/add-company-profile']);
@@ -93,16 +87,16 @@ export class LoginComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
-                        this.logError();
+                        this.setCustomeResponse("ERROR",this.properties.BAD_CREDENTIAL_ERROR);
                     }
                 },
                     (error: any) => {
-                        var body = error['_body'];
-                        if (body != "") {
-                            var response = JSON.parse(body);
-                            if (response.error_description == "Bad credentials") {
+                        const body = error['_body'];
+                        if (body !== "") {
+                            const response = JSON.parse(body);
+                            if (response.error_description === "Bad credentials") {
                                 this.customResponse = new CustomResponse( 'ERROR', this.properties.BAD_CREDENTIAL_ERROR, true );
-                            } else if (response.error_description == "User is disabled") {
+                            } else if (response.error_description === "User is disabled") {
                                 this.customResponse = new CustomResponse( 'ERROR', this.properties.USER_ACCOUNT_ACTIVATION_ERROR, true );
                             }
                         }
@@ -115,7 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     isOnlyPartner(roleNames) {
-        if (roleNames.length == 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
+        if (roleNames.length === 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
             this.xtremandLogger.log("*******************LoggedIn User Is Partner***********************")
             return true;
         } else {
@@ -128,14 +122,9 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.login();
         }
     }
-    logError() {
-        this.customResponse = new CustomResponse( 'ERROR', this.properties.BAD_CREDENTIAL_ERROR, true );
-        this.xtremandLogger.error("error : " + this.properties.BAD_CREDENTIAL_ERROR);
-    }
-
-    logErrorEmpty() {
-        this.customResponse = new CustomResponse( 'ERROR', this.properties.EMPTY_CREDENTIAL_ERROR, true );
-        this.xtremandLogger.error("error : " + this.properties.EMPTY_CREDENTIAL_ERROR, true);
+    setCustomeResponse(responseType: string, responseMessage: string) {
+        this.customResponse = new CustomResponse( responseType, responseMessage, true );
+        this.xtremandLogger.error(responseMessage);
     }
 
     ngOnInit() {

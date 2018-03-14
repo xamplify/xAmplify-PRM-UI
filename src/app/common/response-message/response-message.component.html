@@ -1,5 +1,5 @@
 <div *ngIf="customResponse.responseType != null">
-	<div class="alert alert-dismissible" role="alert"
+	<div class="alert alert-dismissible m0" role="alert"
 		[ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
 			'alert-danger': customResponse.responseType == 'ERROR',
 			'alert-info': customResponse.responseType == 'INFO'}">
@@ -7,7 +7,7 @@
 			aria-label="Close" (click)="customResponse.responseType = null">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h4 class="flex">
+		<h4>
 			<i class="fa"
 				[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
 				'fa-exclamation': customResponse.responseType == 'ERROR'}"

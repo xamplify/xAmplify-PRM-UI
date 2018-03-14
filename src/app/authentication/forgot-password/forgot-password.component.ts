@@ -5,6 +5,10 @@ import { User } from '../../core/models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
 import { UserService } from '../../core/services/user.service';
+
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
+
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -16,12 +20,13 @@ declare var Metronic, swal, $, Layout, Login, Demo: any;
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
-    providers: [User, RegularExpressions]
+    providers: [User, RegularExpressions, Properties]
 })
 export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
     passwordSuccess = false;
+    customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'forgotPasswordEmailId': ''
     };
@@ -33,7 +38,7 @@ export class ForgotPasswordComponent implements OnInit {
         }
     };
 
-    constructor(private router: Router, public regularExpressions: RegularExpressions,
+    constructor(private router: Router, public regularExpressions: RegularExpressions, public properties: Properties,
         private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private user: User,
         private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private xtremandLogger: XtremandLogger) {
         this.validateForgotPasswordForm();
@@ -49,7 +54,7 @@ export class ForgotPasswordComponent implements OnInit {
                         // var response = JSON.parse( body );
                         if (data.message == "An email has been sent. Please login with the credentials") {
                             this.forgotPasswordForm.reset();
-                            this.referenceService.userProviderMessage = 'forgotPassWord';
+                            this.referenceService.userProviderMessage = this.properties.FORGOT_PASSWORD_MAIL_SEND_SUCCESS;
                             this.router.navigate(['./login']);
                         }
                     } else {
