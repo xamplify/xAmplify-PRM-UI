@@ -110,6 +110,7 @@ export class AuthenticationService {
         const currentUser = localStorage.getItem('currentUser');
         const roles = JSON.parse(currentUser)['roles'];
         roleNames = roles.map(function (a) { return a.roleName; });
+        if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
         return roleNames;
     }
     

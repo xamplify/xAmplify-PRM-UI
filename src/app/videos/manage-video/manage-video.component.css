@@ -90,3 +90,11 @@ h3 {
     border-left: 16px solid #00a6e8;
     border-bottom: 13px solid transparent;
 }
+.mix-filter {
+	margin: 5px;
+}
+
+.mix-filter li {
+	font-size: 12px;
+	text-transform: uppercase;
+}

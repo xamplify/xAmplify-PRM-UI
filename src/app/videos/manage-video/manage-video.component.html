@@ -1,3 +1,9 @@
+<style>
+ .selectedtype{
+	 background:#00a6e8;
+ }
+
+</style>
 <div class="page-content">
 	<div>
 		<div class="page-bar">
@@ -39,12 +45,12 @@
                                             </select>
 										</div>
 										<div class="col-xs-12 col-md-3">
-											<span [hidden]="this.authenticationService.isOnlyPartner()">
+											<!-- <span [hidden] = "this.authenticationService.isOnlyPartner()" >
 											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" 
 											[(ngModel)]="videoType" (ngModelChange)="getVideoTypes()">
 											   <option *ngFor="let videoType of videoTypes" [ngValue]="videoType" >{{videoType.name}}</option>
 											</select>
-											</span>
+											</span> -->
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
 											<ng-container class='m10'>
@@ -64,6 +70,11 @@
 											</div>
 										</div>
 									</div>
+									<div class="col-xs-12" style="margin: 1px -18px;"  [hidden] ="this.authenticationService.isOnlyPartner()">
+									<ul class="mix-filter" >
+										<li class="filter" *ngFor="let videoType of videoTypes; let i = index;"
+										 (click)="getVideoTypes(videoType)" [class.selectedtype]="videoFileService.videoType === videoType.value">{{videoType.name}}</li>
+									</ul></div>
 								</div>
 							</div>
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
@@ -144,7 +155,7 @@
 								<section [hidden]="isListView">
 								<div class="row mix-grid" style="margin-top: 10px;padding:7px" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
-										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
+										<div class="col-xs-12 col-sm-6 col-md-3  mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -27px;">
 											<div id="container">
 												<h3>{{videoFile.viewBy}}<span class="arrow"></span> </h3>
 											</div>

@@ -42,7 +42,7 @@
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
 				<div id="overLayImage"></div>
 				<div id="overlay-logo" class="video-js" [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
-					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="logoDescriptionUrl===null">
+					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="!logoDescriptionUrl">
 					<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive"> 
 					</a>
 				</div>

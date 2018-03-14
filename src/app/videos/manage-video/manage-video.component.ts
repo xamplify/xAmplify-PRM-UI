@@ -71,13 +71,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
     }
-    getVideoTypes() {
+    getVideoTypes(videoType) {
         this.pagination.pageIndex = 1;
         this.videoFileService.categoryNumber = this.categoryNum = 0;
         this.pagination.searchKey = null;
         this.videoSort = this.sortVideos[0];
         console.log(this.videoType);
-        this.videoFileService.videoType = this.videoType.value;
+        this.videoFileService.videoType = videoType.value;
         this.loadVideos(this.pagination);
     }
     ngOnInit() {
