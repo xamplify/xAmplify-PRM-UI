@@ -1,3 +1,8 @@
+<style>
+.responsemessage h4 {
+    color: white !important;
+}
+</style>
 <app-video></app-video>
 <div class="content">
 	<div *ngIf="referenceService.userProviderMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
@@ -8,9 +13,6 @@
 	<div class="row" *ngIf="model">
 		<form class="login-form" (ngSubmit)="login()">
 			<h3 class="form-title">Sign In</h3>
-			<!-- <div *ngIf="error" class="alert alert-danger">
-				<span>{{error}}</span>
-			</div> -->
 			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 			<div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
@@ -41,7 +43,7 @@
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProviderName of socialProviderNames">
 					<li>
-						<a class="social-icon-color {{socialProviderName.name}}" title="{{socialProviderName.name}}" routerLink="../{{socialProviderName.name}}/login"></a>
+						<a class="social-icon-color {{socialProviderName.iconName}}" title="{{socialProviderName.name}}" routerLink="../{{socialProviderName.name}}/login"></a>
 					</li>
 				</ng-container>
 			</ul>

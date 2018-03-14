@@ -24,11 +24,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     error = '';
     
-    socialProviderNames = [{ "name": "salesforce" },
-                        { "name": "facebook" },
-                        { "name": "twitter" },
-                        { "name": "googleplus" },
-                        { "name": "linkedin" }];
+    socialProviderNames = [{ "name": "salesforce","iconName":"salesforce"},
+                        { "name": "facebook","iconName":"facebook" },
+                        { "name": "twitter","iconName":"twitter" },
+                        { "name": "google","iconName":"googleplus" },
+                        { "name": "linkedin","iconName":"linkedin" }];
     
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder,
