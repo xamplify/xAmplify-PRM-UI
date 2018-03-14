@@ -61,6 +61,6 @@ export class Properties {
     
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect";
     USER_ACCOUNT_ACTIVATION_ERROR ="Your account is not activated";
-    EMPTY_CREDENTIAL_ERROR = "Username or password can\'t be empty";
+    EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty";
     
 }
