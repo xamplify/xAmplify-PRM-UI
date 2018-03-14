@@ -464,8 +464,7 @@ input:checked + .slider-new:before {
 														</div>
 														<div class ="col-xs-12 col-sm-6 col-md-4" style="position: relative;top: -4px; margin-left:-16px" >
 															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"
-															poster=""
-															data-setup='{"example_option":true }'>
+															poster="" data-setup='{"example_option":true }'>
 															<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type="video/mp4" /> -->
 															 <source [src]="videoUrl" type="application/x-mpegURL">
 															<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">supports HTML5 video</a></p>
@@ -576,7 +575,7 @@ input:checked + .slider-new:before {
 															<label class="control-label" style="left: 27px; position: relative;">Video Logo Url: </label>
 															<input type="text" style="width: 28%; margin-top: 13px; position: relative;right: -110px;" [(ngModel)]="logoLink" placeholder="Video Logo Url">
 														</div>
-														<button style="margin-top: 7px;margin-left: -5px;" class="btn btn-primary" (click)="saveVideoBrandLog()">Save Logo Info</button>
+														<button style="margin-top: 7px;margin-left: -5px;" class="btn btn-primary" (click)="saveVideoBrandLog()" [disabled]="!logoImageUrlPath">Save Logo Info</button>
 													</div>	
 												<!-- videojs logo code end -->
 												</div>

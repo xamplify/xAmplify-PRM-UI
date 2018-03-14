@@ -158,8 +158,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoImageUrlPath = undefined;
     }
     saveVideoBrandLog() {
-        this.ngxloading = true;
-        if(this.logoImageUrlPath && this.logoLink) {
+        this.ngxloading = true; //  && this.logoLink
+        if(this.logoImageUrlPath) {
         this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
@@ -291,6 +291,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit() {
         try {
             //    $("#defaultPlayerSettings").hide();
+            if(this.authenticationService.user.hasCompany){
+                this.videoUtilService.normalVideoJsFiles();
+                this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+            }
             this.isListView(this.authenticationService.getUserId());
             Metronic.init();
             Layout.init();
@@ -345,9 +349,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
-            this.videoUtilService.normalVideoJsFiles();
-            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-            this.defaultVideoSettings();
+             this.defaultVideoSettings();
             if (this.refService.defaultPlayerSettings.transparency === null) {
                 this.refService.defaultPlayerSettings.transparency = 100;
                 this.refService.defaultPlayerSettings.controllerColor = '#456';
@@ -981,17 +983,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
-
-
     }
-
     ngOnDestroy() {
-        if (this.isPlayed === true) {
-            this.videoJSplayer.dispose();
-        }
+        if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
         $('.h-video').remove();
         this.refService.defaulgVideoMethodCalled = false;
     }
-
 }
