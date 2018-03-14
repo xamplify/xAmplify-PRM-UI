@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare const Metronic, swal, $, Layout, Login, Demo: any;
+declare const $: any;
 
 @Component({
     selector: 'app-login',
@@ -20,27 +20,26 @@ declare const Metronic, swal, $, Layout, Login, Demo: any;
 
 export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
-    loading = false;
     customResponse: CustomResponse = new CustomResponse();
-    
-    socialProviders = [{ "name": "salesforce","iconName":"salesforce"},
-                        { "name": "facebook","iconName":"facebook" },
-                        { "name": "twitter","iconName":"twitter" },
-                        { "name": "google","iconName":"googleplus" },
-                        { "name": "linkedin","iconName":"linkedin" }];
-    
+
+    socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
+    { "name": "facebook", "iconName": "facebook" },
+    { "name": "twitter", "iconName": "twitter" },
+    { "name": "google", "iconName": "googleplus" },
+    { "name": "linkedin", "iconName": "linkedin" }];
+
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
-       
-        if ( this.referenceService.userProviderMessage !== "" ) {
-            this.customResponse = new CustomResponse( 'SUCCESS', this.referenceService.userProviderMessage, true );
+
+        if (this.referenceService.userProviderMessage !== "") {
+            this.customResponse = new CustomResponse('SUCCESS', this.referenceService.userProviderMessage, true);
         }
     }
 
     public login() {
         if (this.model.username.length === 0 || this.model.password.length === 0) {
-            this.setCustomeResponse("ERROR",this.properties.EMPTY_CREDENTIAL_ERROR);
+            this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
             if (localStorage.getItem('currentUser')) {
                 this.xtremandLogger.log("User From Local Storage");
@@ -57,7 +56,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
                 return false
             } else {
-                this.loading = true;
                 const userName = this.model.username.toLowerCase();
                 this.referenceService.userName = userName;
                 const authorization = 'Basic ' + btoa('my-trusted-client:');
@@ -87,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
-                        this.setCustomeResponse("ERROR",this.properties.BAD_CREDENTIAL_ERROR);
+                        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                     }
                 },
                     (error: any) => {
@@ -95,9 +93,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (body !== "") {
                             const response = JSON.parse(body);
                             if (response.error_description === "Bad credentials") {
-                                this.customResponse = new CustomResponse( 'ERROR', this.properties.BAD_CREDENTIAL_ERROR, true );
+                                this.customResponse = new CustomResponse('ERROR', this.properties.BAD_CREDENTIAL_ERROR, true);
                             } else if (response.error_description === "User is disabled") {
-                                this.customResponse = new CustomResponse( 'ERROR', this.properties.USER_ACCOUNT_ACTIVATION_ERROR, true );
+                                this.customResponse = new CustomResponse('ERROR', this.properties.USER_ACCOUNT_ACTIVATION_ERROR, true);
                             }
                         }
                         this.xtremandLogger.error("error:" + error)
@@ -123,7 +121,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
     setCustomeResponse(responseType: string, responseMessage: string) {
-        this.customResponse = new CustomResponse( responseType, responseMessage, true );
+        this.customResponse = new CustomResponse(responseType, responseMessage, true);
         this.xtremandLogger.error(responseMessage);
     }
 

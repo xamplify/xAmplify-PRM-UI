@@ -15,7 +15,6 @@ import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '.
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
-declare var Metronic, swal, $, Layout, Login, Demo: any;
 
 @Component({
     selector: 'app-signup',
@@ -84,7 +83,7 @@ export class SignupComponent implements OnInit {
         }
     };
 
-    constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions,public properties: Properties,
+    constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private signUpUser: User,
         private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private xtremandLogger: XtremandLogger) {
         this.buildForm();

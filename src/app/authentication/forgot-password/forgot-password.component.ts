@@ -14,7 +14,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 
-declare var Metronic, swal, $, Layout, Login, Demo: any;
+declare var $: any;
 
 @Component({
     selector: 'app-forgot-password',
@@ -52,7 +52,7 @@ export class ForgotPasswordComponent implements OnInit {
                     var body = data['_body'];*/
                     if (data.message != "") {
                         // var response = JSON.parse( body );
-                        if (data.message == "An email has been sent. Please login with the credentials") {
+                        if (data.message === "An email has been sent. Please login with the credentials") {
                             this.forgotPasswordForm.reset();
                             this.referenceService.userProviderMessage = this.properties.FORGOT_PASSWORD_MAIL_SEND_SUCCESS;
                             this.router.navigate(['./login']);
