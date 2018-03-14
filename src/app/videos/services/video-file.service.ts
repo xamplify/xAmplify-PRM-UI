@@ -129,8 +129,15 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
+        let isChannelVideo:boolean;
+        if(this.videoType ==='myVideos'){
+            isChannelVideo = false;
+        } else if(this.videoType ==='partnerVideos'){ 
+            isChannelVideo = true;
+        } 
+        console.log(isChannelVideo);
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
-            + "&videoAlias=" + alias + "&userId=" + this.authenticationService.user.id, '')
+            + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id+'&isChannelVideo'+isChannelVideo, '')
             .map(this.extractData)
             .catch(this.handleError);
     }

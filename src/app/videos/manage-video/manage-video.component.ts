@@ -83,6 +83,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isListView = this.referenceService.isListView;
         QuickSidebar.init();
+        let roleNames =  this.authenticationService.user.roles.map(function (a) { return a.roleName; });
+        console.log(roleNames);
+
+        const currentUser = localStorage.getItem('currentUser');
+        const roles = JSON.parse(currentUser)['roles'];
+        roleNames = roles.map(function (a) { return a.roleName; });
+        console.log(roleNames);
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
