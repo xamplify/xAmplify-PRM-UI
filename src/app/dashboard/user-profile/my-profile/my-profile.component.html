@@ -48,7 +48,7 @@
 		right:23px;
 		width:40px;
 		border: 2px solid red;
-        z-index: 9999999999;
+        z-index: 999999999999999999;
 }
 input:checked + .slider-new {
   background-color: #5cb85c;
@@ -282,15 +282,15 @@ input:checked + .slider-new:before {
 													<form action="#" role="form">
 														<div class="form-group">
 															<div class="fileinput fileinput-new" data-provides="fileinput">
-																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-																	<img src="assets/images/upload-profile.png" alt="" id="priview"/>
+																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;border-radius: 0px;">
+																	<img src="assets/images/upload-profile.png" alt="Image" id="priview"/>
 																</div>
 																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
 																</div>
 																<div>
-																	<button class="btn default btn-file">Select image
+																	<button class="btn fileinput-button">Select image
 																	<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" #input/> 
+																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" title=" " #input/> 
 																	</button>
 																</div>
 															</div>
@@ -455,17 +455,18 @@ input:checked + .slider-new:before {
 																	<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
 																	</div>
 														</div>
-														<div id="overLayImage"></div>
-															<div id="overlay-logo">
-																<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" style="position: absolute; right: -11px;z-index: 9;width: 32px;" [class.logo-video]="fullScreenMode"> 
-														</div>
+														
 														<div class ="col-xs-12 col-sm-6 col-md-4" style="position: relative;top: -4px; margin-left:-16px" >
 															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"
 															poster="" data-setup='{"example_option":true }'>
-															<!-- <source src="https://yanwsh.github.io/videojs-panorama/assets/shark.mp4" type="video/mp4" /> -->
 															 <source [src]="videoUrl" type="application/x-mpegURL">
-															<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">supports HTML5 video</a></p>
 															</video> 
+															<div id="overlay-logo" >
+																<a [href]="logoLink">
+																	<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image" 
+																	 [class.logo-video]="fullScreenMode"> 
+															    </a>
+															</div>
 														</div>
 													</div>  
 													<div class= "col-xs-12 pclass-css">
@@ -554,12 +555,22 @@ input:checked + .slider-new:before {
 													</div>
 													<div>
 														<div *ngIf="!logoImageUrlPath">
-														  <div class="btn green fileinput-button"><span > <i  class="fa fa-plus"></i>Add Image...</span>
+																<label class="control-label" style="left: 32px; position: relative;">Video Logo: </label>
+																<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
+																	<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
+																		<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
+																	</div>
+																	<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
+																		<input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+																		*ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" title=" " #input/> 
+																	</button>
+																</div>
+														  <!-- <div class="btn green fileinput-button"><span > <i  class="fa fa-plus"></i>Add Image...</span>
 															 <input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
 															 *ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" #input/> 
-														 </div>
+														 </div> -->
 														</div>
-														<div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -27px;font-size:13px;left: 145px;background: lightblue;">upload image only and size should be less than 2mb</span></div>
+														<!-- <div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -27px;font-size:13px;left: 145px;background: lightblue;">upload image only and size should be less than 2mb</span></div> -->
 														<div>
 															<div *ngIf="logoImageUrlPath">
 															<label class="control-label" style="left: 20px; position: relative;">Video Logo: </label>

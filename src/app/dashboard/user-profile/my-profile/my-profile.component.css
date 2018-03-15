@@ -90,3 +90,13 @@ font-size: 200px;
 direction: ltr;
 cursor: pointer;
 }
+.logo-image{
+    position: absolute;
+    right: 22px;
+    z-index: 9;
+    width: 32px;
+    top: 16px;
+}
+#profile_video_player {
+    width: auto;
+}

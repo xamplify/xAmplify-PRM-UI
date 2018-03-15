@@ -275,6 +275,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         const event = state ? 'FullscreenOn' : 'FullscreenOff';
                         if (event === 'FullscreenOn') {
                             self.fullScreenMode = true;
+                            $('#profile_video_player').append($('#overlay-logo').show());
                         } else if (event === 'FullscreenOff') {
                             self.fullScreenMode = false;
                         }
