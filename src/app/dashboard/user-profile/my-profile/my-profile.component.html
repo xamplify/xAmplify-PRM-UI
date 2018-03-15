@@ -244,14 +244,17 @@ input:checked + .slider-new:before {
 														<div class="form-group">
 															<label class="control-label">Interests</label>
 															<input type="text"   placeholder="Interests" class="form-control" formControlName="interests"/>
+															<div *ngIf="formErrors.interests" class="alert alert-danger">{{ formErrors.interests }}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Occupation</label>
 															<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation" />
+															<div *ngIf="formErrors.occupation" class="alert alert-danger">{{ formErrors.occupation }}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">About</label>
 															<textarea class="form-control" rows="3" placeholder="About You" formControlName="description"   style="resize: none;"></textarea>
+															<div *ngIf="formErrors.description" class="alert alert-danger">{{ formErrors.description }}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Website Url</label>
