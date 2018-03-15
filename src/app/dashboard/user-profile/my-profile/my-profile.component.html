@@ -551,11 +551,11 @@ input:checked + .slider-new:before {
 												 </div>
 												 	<!-- videojs logo code end -->
 												     <div class= "col-xs-12 pclass-css">
-														<h4 style="color:white;margin:3px"> Add your Brand video Logo </h4>
+														<h4 style="color:white;margin:3px"> Add your Co-Branding video Logo </h4>
 													</div>
 													<div>
 														<div *ngIf="!logoImageUrlPath">
-																<label class="control-label" style="left: 32px; position: relative;">Video Logo: </label>
+																<label class="control-label" style="left: 32px; position: relative;">Co-Branding Video Logo: </label>
 																<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
 																	<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
 																		<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
@@ -573,14 +573,14 @@ input:checked + .slider-new:before {
 														<!-- <div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -27px;font-size:13px;left: 145px;background: lightblue;">upload image only and size should be less than 2mb</span></div> -->
 														<div>
 															<div *ngIf="logoImageUrlPath">
-															<label class="control-label" style="left: 20px; position: relative;">Video Logo: </label>
+															<label class="control-label" style="left: 20px; position: relative;">Co-Branding Video Logo: </label>
 															<span class="close" style="position: relative; float: left; left: 313px;background: #127ba5; bottom: -4px;z-index: 3;" (click)="clearLogo()"></span>
 															<img [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style=" margin-top: -3px; height: 71px;width: 109px;border: 1px solid red;margin-left: 126px;position: relative;bottom: -6px;">
 															</div>
 															<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
 														</div>
 														<div>
-															<label class="control-label" style="left: 27px; position: relative;">Video Logo Url: </label>
+															<label class="control-label" style="left: 27px; position: relative;">Co-Branding Video Logo Url: </label>
 															<input type="text" style="width: 28%; margin-top: 13px; position: relative;right: -110px;" [(ngModel)]="logoLink" placeholder="Video Logo Url">
 														</div>
 														<button style="margin-top: 7px;margin-left: -5px;" class="btn btn-primary" (click)="saveVideoBrandLog()" [disabled]="!logoImageUrlPath">Save Logo Info</button>
