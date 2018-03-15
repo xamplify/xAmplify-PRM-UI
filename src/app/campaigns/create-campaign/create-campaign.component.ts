@@ -288,7 +288,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if(this.isOnlyPartner){
                 this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
             }else{
-                this.loadEmailTemplates(this.emailTemplatesPagination);
+                if(this.campaign.enableCoBrandingLogo){
+                    this.loadRegularOrVideoCoBrandedTemplates();
+                }else{
+                    this.loadEmailTemplates(this.emailTemplatesPagination);
+                }
             }
           /************Launch Campaign**********************/
             this.name = this.campaignService.campaign.campaignName;
@@ -606,8 +610,37 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadCampaignContacts(this.contactsPagination);
         }
     }
-    setCrobraBinding(event:any){
+    setCoBrandingLogo(event:any){
         this.campaign.enableCoBrandingLogo = event;
+        this.selectedEmailTemplateRow = 0;
+        this.isEmailTemplate = false;
+        this.filterCoBrandedTemplates(event);
+    }
+    filterCoBrandedTemplates(event:any){
+        if(event){
+           this.loadRegularOrVideoCoBrandedTemplates();
+        }else{
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+          this.loadAllEmailTemplates(this.emailTemplatesPagination);
+        }
+    }
+    
+   loadRegularOrVideoCoBrandedTemplates(){
+        if(this.campaignType == "regular"){
+            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        }else{
+            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        }
+    }
+    
+    loadAllEmailTemplates(emailTemplatesPagination:Pagination){
+        if(this.isOnlyPartner){
+            this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+        }else{
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        }
     }
     setVideoPlayed(event:any){
         this.campaign.videoPlayed = event;
@@ -1457,12 +1490,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     searchEmailTemplate(){
         this.emailTemplatesPagination.pageIndex = 1;
         this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
-        if(this.isOnlyPartner){
+        this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.campaign.enableCoBrandingLogo;
+        if(this.campaign.enableCoBrandingLogo){
+            this.loadRegularOrVideoCoBrandedTemplates();
+        }else{
+            this.loadAllEmailTemplates(this.emailTemplatesPagination);
+        }
+       /* if(this.isOnlyPartner){
             this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
         }else{
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
-        
+        */
     }
     searchReplyEmailTemplate(reply:Reply){
         reply.emailTemplatesPagination.pageIndex = 1;
@@ -1954,8 +1993,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             },
             () => this.logger.info("Finished saveCampaignOnDestroy()")
         );
-        }else{
-            
         }
     return false;
     }

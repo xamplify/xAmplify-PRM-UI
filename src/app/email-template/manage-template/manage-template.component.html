@@ -115,6 +115,9 @@
 											<h3 *ngIf="emailTemplate.type=='PARTNER'" style="width: 21%">
 												{{emailTemplate.type}}<span class="arrow"></span>
 											</h3>
+											<h3 *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' " style="width: 31%">
+												CO-BRANDED<span class="arrow"></span>
+											</h3>
 										</div>
 									<div class="mix-inner" id="mix-inner">
 										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">										

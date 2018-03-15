@@ -134,7 +134,7 @@
 										<div class="col-sm-8">
 											<switch class="pull-left" [status]="campaign.enableCoBrandingLogo"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 															[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" 
-														   (statusChange)="setCrobraBinding($event)">
+														   (statusChange)="setCoBrandingLogo($event)">
 											</switch>
 										</div>
 									</div>
@@ -736,7 +736,7 @@
       	<!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
 		 <div class="col-xs-12 text-center" style="margin-top: 10px;">
 	    	<div class="portlet light">
-					<ul class="mix-filter pull-left" style="padding: 10px 10px 0 10px;">
+					<ul class="mix-filter pull-left" style="padding: 10px 10px 0 10px;" *ngIf="!campaign.enableCoBrandingLogo">
 									<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner">All Email Templates</li>
 									<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
 									<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>

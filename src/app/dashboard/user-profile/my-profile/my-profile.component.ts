@@ -577,11 +577,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateUserProfileForm = this.fb.group({
             'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
-            'interests': [this.userData.interests, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'occupation': [this.userData.occupation, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'description': [this.userData.description, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'websiteUrl': [this.userData.websiteUrl, [Validators.required, Validators.pattern(urlPatternRegEx)]],
+            'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+            'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
             'companyName': [this.userData.companyName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 
 

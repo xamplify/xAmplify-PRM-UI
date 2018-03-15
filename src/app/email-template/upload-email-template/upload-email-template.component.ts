@@ -80,6 +80,7 @@ export class UploadEmailTemplateComponent implements OnInit {
             Layout.init();
             Demo.init();
             TableManaged.init();
+            console.log(CKEDITOR.instances);
         } catch (errr) { }
     }
 
@@ -99,11 +100,12 @@ export class UploadEmailTemplateComponent implements OnInit {
         }
         this.htmlText = "";
         let file: any;
-        if (event.srcElement != undefined) {
-            file = event.srcElement.files[0];
+        if (event.target != undefined) {
+            file = event.target.files[0];
         } else {
             file = event[0];
         }
+        console.log(event);
         if(file!=undefined){
             this.isUploadFileError = false;
             let  extentionsArray = ["html"];
@@ -126,8 +128,11 @@ export class UploadEmailTemplateComponent implements OnInit {
             if(!this.isUploadFileError){
                 let reader: FileReader = new FileReader();
                 reader.onload = (e) => {
-                        let htmlText: string = reader.result;
+                    console.log("Loading The File")    
+                    let htmlText: string = reader.result;
                         this.model.content = htmlText;
+                        console.log(this.model.content);
+                        console.log("Done with reading file");
                     }
             reader.readAsText(file);
             this.isUploaded = true;
@@ -209,6 +214,11 @@ export class UploadEmailTemplateComponent implements OnInit {
                 this.loading = false;
                 if (data == "success") {
                 this.refService.isCreated = true;
+                if(CKEDITOR){
+                    if(CKEDITOR.instances.editor1){
+                        CKEDITOR.instances.editor1.destroy();
+                    }
+                }
                 this.router.navigate(["/home/emailtemplates/manage"]);
                 } else{
                     this.isVideoTagError = true;

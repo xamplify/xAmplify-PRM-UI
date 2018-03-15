@@ -242,28 +242,25 @@ input:checked + .slider-new:before {
 														</div>
 														<div class="form-group">
 															<label class="control-label">Mobile Number</label>
-															<input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"  required  pattern="[0-9]*"
+															<input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"    pattern="[0-9]*"
   																	 minlength="10"  maxlength="10" />
 															<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Interests</label>
-															<input type="text"   placeholder="Interests" class="form-control" formControlName="interests"  required/>
-															<div *ngIf="formErrors.interests" class="alert alert-danger">{{ formErrors.interests }}</div>
+															<input type="text"   placeholder="Interests" class="form-control" formControlName="interests"/>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Occupation</label>
-															<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation"  required/>
-															<div *ngIf="formErrors.occupation" class="alert alert-danger">{{ formErrors.occupation }}</div>
+															<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation" />
 														</div>
 														<div class="form-group">
 															<label class="control-label">About</label>
-															<textarea class="form-control" rows="3" placeholder="About You" formControlName="description"  required style="resize: none;"></textarea>
-															<div *ngIf="formErrors.description" class="alert alert-danger">{{ formErrors.description }}</div>
+															<textarea class="form-control" rows="3" placeholder="About You" formControlName="description"   style="resize: none;"></textarea>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Website Url</label>
-															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl"  required/>
+															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
 															<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
 														</div>
 														<div class="form-group" *ngIf="isOnlyPartnerRole">

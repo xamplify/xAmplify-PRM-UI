@@ -21,5 +21,6 @@ export class Pagination {
 	filterKey: string = null;
 	filterValue: any = null;
 	criterias: Criteria[] = null;
+	coBrandedEmailTemplateSearch = false;
 
 }
