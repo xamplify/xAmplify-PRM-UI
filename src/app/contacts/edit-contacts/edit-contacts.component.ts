@@ -21,6 +21,7 @@ import { ContactsByType } from '../models/contacts-by-type';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
+import { RegularExpressions } from '../../common/models/regular-expressions';
 //import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
@@ -31,7 +32,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames,Properties]
+    providers: [Pagination, HttpRequestLoader, CountryNames,Properties, RegularExpressions]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -173,6 +174,7 @@ export class EditContactsComponent implements OnInit {
     
     constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
+        public regularExpressions: RegularExpressions,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
@@ -388,7 +390,7 @@ export class EditContactsComponent implements OnInit {
                     this.validCsvContacts = false;
                 }
             }
-            if ( this.validCsvContacts == true ) {
+            if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
                 $( "#sample_editable_1" ).show();
                 this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
                 this.contactService.updateContactList( this.contactListId, this.users )
@@ -669,7 +671,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     validateEmailAddress( emailId: string ) {
-        var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
         return EMAIL_ID_PATTERN.test( emailId );
     }
     validateName( name: string ) {

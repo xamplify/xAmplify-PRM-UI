@@ -18,6 +18,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
+import { RegularExpressions } from '../../common/models/regular-expressions';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -33,7 +34,7 @@ declare var $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties]
+    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions]
 })
 export class AddContactsComponent implements OnInit {
 
@@ -108,7 +109,8 @@ export class AddContactsComponent implements OnInit {
     contacts: User[];
     private socialContactType: string;
     emailNotValid: boolean;
-    constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService, private contactService: ContactService,
+    constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
+            private contactService: ContactService, public regularExpressions: RegularExpressions,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
 
@@ -398,7 +400,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     validateEmailAddress( emailId: string ) {
-        var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
         return EMAIL_ID_PATTERN.test( emailId );
     }
     validateName( name: string ) {
@@ -640,7 +642,7 @@ export class AddContactsComponent implements OnInit {
                         this.validCsvContacts = false;
                     }
                 }
-                if ( this.validCsvContacts == true ) {
+                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
                     }

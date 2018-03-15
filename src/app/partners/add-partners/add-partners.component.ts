@@ -17,6 +17,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { EditContactsComponent } from '../../contacts/edit-contacts/edit-contacts.component';
 import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-contacts.component';
+import { RegularExpressions } from '../../common/models/regular-expressions';
 
 declare var $, Papa, swal: any;
 
@@ -25,7 +26,8 @@ declare var $, Papa, swal: any;
     templateUrl: './add-partners.component.html',
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
-    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames, Properties]
+    providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
+                Properties, RegularExpressions]
 })
 export class AddPartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -114,7 +116,7 @@ export class AddPartnersComponent implements OnInit {
     constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames,
-        public contactService: ContactService, public properties: Properties,
+        public contactService: ContactService, public properties: Properties, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
 
         this.user = new User();
@@ -194,7 +196,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     validateEmailAddress( emailId: string ) {
-        var EMAIL_ID_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
         return EMAIL_ID_PATTERN.test( emailId );
     }
 
