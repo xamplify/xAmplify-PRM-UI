@@ -4,6 +4,6 @@
 .alert-danger{background-color:#ec6262}
 .alert-danger1{background-color:#ec6262;color:white}
 .alert-warning{background-color:#f1d43b}
-.alert{padding:6px}
+.alert{padding:10px}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
-.text{padding-top: 8px;}
+.text{padding-top: 12px;}

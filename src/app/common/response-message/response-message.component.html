@@ -7,11 +7,12 @@
 			aria-label="Close" (click)="customResponse.responseType = null">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h4>
-			<i class="fa"
+		<h4 style="padding-top: 6px;">
+			<!-- <i class="fa"
 				[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
 				'fa-exclamation': customResponse.responseType == 'ERROR'}"
-				aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> <span class="text"
+				aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> --> 
+				<span class="text"
 				[innerHTML]="customResponse.responseMessage"></span>
 		</h4>
 	</div>
