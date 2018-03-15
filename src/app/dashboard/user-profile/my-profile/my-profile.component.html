@@ -4,12 +4,7 @@
 .portlet.light{
 	padding: 20px;
 }
-.disablePlayerValues {
-		pointer-events: none;
-		opacity: 0.6;
-	}
-	
-	
+.disablePlayerValues { pointer-events: none; opacity: 0.6;}
 .switch {
   position: relative;
   display: inline-block;
@@ -297,7 +292,7 @@ input:checked + .slider-new:before {
 															
 															<div class="clearfix margin-top-10">
 																<span class="label label-danger">NOTE!</span>
-																<span>Uploading Thumbnail is supported in latest browsers</span>
+																<span>Uploading Thumbnail is only supported in latest browsers</span>
 															</div>
 														</div>
 														
@@ -420,49 +415,48 @@ input:checked + .slider-new:before {
 													</div>
 														<div class= "col-xs-12" style="padding:0">
 														<div class ="col-xs-12 col-sm-6 col-md-8" style="padding:0"> 
-																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																		<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
-																		<div class="col-xs-9 colsm-6 col-md-6">
-																			<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
-																				formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-																				[cpWidth]="'200px'" [cpHeight]="'265px'" [class.disablePlayerValues]="!hasAllAccess" [cpPosition]="'bottom'" />
-																		</div>
-																	</div>
-																<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																	<label class="col-xs-3 col-sm-6 col-md-6 control-label" >Enable Video Controller:</label>
-																	<div class="col-xs-9 col-sm-6 col-md-6">
-																		<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-																			(statusChange)="enableVideoController($event)" [disabled]="!hasAllAccess">
-																		</switch>
-																	</div>
+															<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
+																<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
+																<div class="col-xs-9 colsm-6 col-md-6">
+																	<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
+																		formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
+																		[cpWidth]="'200px'" [cpHeight]="'265px'" [class.disablePlayerValues]="!hasAllAccess" [cpPosition]="'bottom'" />
 																</div>
-																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
-																		<div class="col-xs-9 colsm-6 col-md-6" >
-																			<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
-																				formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" 
-																				(colorPickerChange)="changeControllerColor($event)" [class.disablePlayerValues]="!hasAllAccess"
-																				[value]="compControllerColor"  [cpPosition]="'bottom'"/>
-																		</div>
-																	</div>
-																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
-																		<div class="col-xs-6 col-sm-5 col-md-5">
-																		<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;"  
-																		[class.disablePlayerValues]="!hasAllAccess" (input)="transperancyControllBar(Transvalue.value)" #Transvalue> 
-																		</div>
-																	<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
-																	</div>
+															</div>
+														<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+															<label class="col-xs-3 col-sm-6 col-md-6 control-label" >Enable Video Controller:</label>
+															<div class="col-xs-9 col-sm-6 col-md-6">
+																<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																	(statusChange)="enableVideoController($event)" [disabled]="!hasAllAccess">
+																</switch>
+															</div>
 														</div>
-														
+															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
+																<div class="col-xs-9 colsm-6 col-md-6" >
+																	<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+																		formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" 
+																		(colorPickerChange)="changeControllerColor($event)" [class.disablePlayerValues]="!hasAllAccess"
+																		[value]="compControllerColor"  [cpPosition]="'bottom'"/>
+																</div>
+															</div>
+															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
+																<div class="col-xs-6 col-sm-5 col-md-5">
+																<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;"  
+																[class.disablePlayerValues]="!hasAllAccess" (input)="transperancyControllBar(Transvalue.value)" #Transvalue> 
+																</div>
+															<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
+															</div>
+														</div>
 														<div class ="col-xs-12 col-sm-6 col-md-4" style="position: relative;top: -4px; margin-left:-16px" >
 															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"
 															poster="" data-setup='{"example_option":true }'>
 															 <source [src]="videoUrl" type="application/x-mpegURL">
 															</video> 
 															<div id="overlay-logo" >
-																<a [href]="logoLink">
+																<a [href]="logoLink" target="_blank">
 																	<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image" 
 																	 [class.logo-video]="fullScreenMode"> 
 															    </a>
@@ -555,29 +549,25 @@ input:checked + .slider-new:before {
 													</div>
 													<div>
 														<div *ngIf="!logoImageUrlPath">
-																<label class="control-label" style="left: 32px; position: relative;">Co-Branding Video Logo: </label>
-																<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
-																	<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
-																		<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
-																	</div>
-																	<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
-																		<input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-																		*ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" title=" " #input/> 
-																	</button>
+															<label class="control-label" style="left: 32px; position: relative;">Co-Branding Video Logo: </label>
+															<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
+																<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
+																	<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
 																</div>
-														  <!-- <div class="btn green fileinput-button"><span > <i  class="fa fa-plus"></i>Add Image...</span>
-															 <input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-															 *ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" #input/> 
-														 </div> -->
+																<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
+																	<input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+																	*ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" title=" " #input/> 
+																</button>
+															</div>
 														</div>
-														<!-- <div *ngIf="!logoImageUrlPath"><span style="position: relative;top: -27px;font-size:13px;left: 145px;background: lightblue;">upload image only and size should be less than 2mb</span></div> -->
 														<div>
 															<div *ngIf="logoImageUrlPath">
 															<label class="control-label" style="left: 20px; position: relative;">Co-Branding Video Logo: </label>
-															<span class="close" style="position: relative; float: left; left: 400px;background: #127ba5; bottom: -4px;z-index: 3;" (click)="clearLogo()"></span>
-															<img [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style=" margin-top: -3px; height: 71px;width: 109px;border: 1px solid red;margin-left: 126px;position: relative;bottom: -6px;">
+															 <div class="img-wrap img-responsive img-thumbnail rounded-0">
+																<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
+																<img [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style="height: 81px; width: auto;">
 															</div>
-															<!-- <button  class="btn btn-primary" *ngIf="logoImageUrlPath" (click)="clearLogo()"> Clear Image</button> -->
+														</div>
 														</div>
 														<div>
 															<label class="control-label" style="left: 27px; position: relative;">Co-Branding Video Logo Url: </label>
