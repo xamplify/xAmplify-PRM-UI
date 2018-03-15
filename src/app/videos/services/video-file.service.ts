@@ -137,7 +137,7 @@ export class VideoFileService {
         } 
         console.log(isChannelVideo);
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
-            + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id+'&isChannelVideo'+isChannelVideo, '')
+            + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id+'&isChannelVideo='+isChannelVideo, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
