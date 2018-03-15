@@ -8,8 +8,6 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { UtilService } from '../../core/services/util.service';
 import { UserService } from '../../core/services/user.service';
 import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -24,7 +22,6 @@ import { CountryNames } from '../../common/models/country-names';
 })
 export class SignupComponent implements OnInit {
     signUpForm: FormGroup;
-    userActive = false;
     loading = false;
     isError = false;
     customResponse: CustomResponse = new CustomResponse();
@@ -84,8 +81,8 @@ export class SignupComponent implements OnInit {
     };
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
-        private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private signUpUser: User,
-        private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private xtremandLogger: XtremandLogger) {
+        private formBuilder: FormBuilder, private signUpUser: User,
+        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger) {
         this.buildForm();
     }
 

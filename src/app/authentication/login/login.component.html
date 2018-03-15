@@ -1,12 +1,8 @@
 <app-video></app-video>
 <div class="content">
-	<!-- <div *ngIf="referenceService.userProviderMessage?.length>0" class="alert alert-success alert-dismissable" id="org-admin-deactivated">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<strong>{{referenceService.userProviderMessage}}</strong>
-	</div> -->
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<form class="login-form" (ngSubmit)="login()">
 			<h3 class="form-title">Sign In</h3>
 			<div class="alert alert-danger display-hide">

@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { User } from '../../core/models/user';
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { UtilService } from '../../core/services/util.service';
 import { UserService } from '../../core/services/user.service';
 
 import { CustomResponse } from '../../common/models/custom-response';
@@ -20,7 +17,7 @@ declare var $: any;
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
-    providers: [User, RegularExpressions, Properties]
+    providers: [RegularExpressions, Properties]
 })
 export class ForgotPasswordComponent implements OnInit {
 
@@ -39,8 +36,8 @@ export class ForgotPasswordComponent implements OnInit {
     };
 
     constructor(private router: Router, public regularExpressions: RegularExpressions, public properties: Properties,
-        private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private user: User,
-        private userService: UserService, public referenceService: ReferenceService, private utilService: UtilService, private xtremandLogger: XtremandLogger) {
+        private formBuilder: FormBuilder, private userService: UserService, public referenceService: ReferenceService,
+        private xtremandLogger: XtremandLogger) {
         this.validateForgotPasswordForm();
     }
 
