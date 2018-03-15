@@ -145,4 +145,8 @@ export class VideoUtilService {
             + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY="
             + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
     }
+    isStartsWith(logoLink:string){
+       if( logoLink.startsWith("http")){  } else { logoLink = 'http://'+logoLink; }
+       return logoLink;
+    }
 }

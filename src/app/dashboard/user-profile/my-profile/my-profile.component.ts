@@ -165,6 +165,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     saveVideoBrandLog() {
         this.ngxloading = true; //  && this.logoLink
         if(this.logoImageUrlPath) {
+        this.logoLink = this.videoUtilService.isStartsWith(this.logoLink);
         this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
@@ -802,7 +803,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     UpdatePlayerSettingsValues() {
-        //   $("#defaultPlayerSettings").hide();
         this.isPlayerSettingUpdated = true;
         this.defaultPlayerSuccess = false;
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
@@ -810,19 +810,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.transparency = this.valueRange;
         this.updatePlayerBusy = this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
-                //  this.defaultPlayerSuccess = true;
-                const selfCheck = this;
-                setTimeout(function () {
-                    selfCheck.defaultPlayerSuccess = true;
-                }, 1003);
-                this.getVideoDefaultSettings();
-            }
+                setTimeout(() => { this.defaultPlayerSuccess = true; }, 1003);
+                this.getVideoDefaultSettings();  },
+                (error:any) => { console.error('error in update player setting api'); }
             );
-        // this.defaultPlayerSuccess = true;
-        const self = this;
-        setTimeout(function () {
+         setTimeout(() => {
             $('#defaultPlayerSettings').slideUp(500);
-            self.defaultPlayerSuccess = false;
+            this.defaultPlayerSuccess = false;
         }, 5000);
     }
     resetForm() {
