@@ -17,10 +17,18 @@ import { SocialConnection } from '../../models/social-connection';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   profileId: any;
   twitterProfile: any;
   socialConnection: SocialConnection;
+
+  twitterNavs: any = [
+    { name: 'tweets', count: 0, isCurrent: false },
+    { name: 'friends', count: 0, isCurrent: false },
+    { name: 'followers', count: 0, isCurrent: false }
+  ];
+
   constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService,
     private utilService: UtilService, private authenticationService: AuthenticationService, private socialService: SocialService) {
 
@@ -44,9 +52,9 @@ export class HeaderComponent implements OnInit {
       .subscribe(
       data => {
         this.twitterProfile = data;
-        this.twitterProfile.statusesCount = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
-        this.twitterProfile.friendsCount = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
-        this.twitterProfile.followersCount = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
+        this.twitterNavs[0].count = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
+        this.twitterNavs[1].count = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
+        this.twitterNavs[2].count = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
       },
       error => console.log(error),
       () => console.log(this.twitterProfile)
@@ -55,6 +63,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.profileId = this.route.snapshot.params['profileId'];
+    const path = this.route.snapshot.url[1].path;
+    const obj = this.twitterNavs.find(function (obj) { return obj.name === path; });
+    obj.isCurrent = true;
     this.getSocialConnection(this.profileId, 'TWITTER');
   }
 
