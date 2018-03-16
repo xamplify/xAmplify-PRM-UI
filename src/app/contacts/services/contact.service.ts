@@ -29,7 +29,7 @@ export class ContactService {
     public salesforceContact: SalesforceContact;
     public salesforceListViewContact: SalesforceListViewContact;
     
-    socialProviderName: string;
+    socialProviderName = "";
     public pagination: Pagination;
     allPartners: User[];
     partnerListName: string;

@@ -394,11 +394,6 @@ img:hover {
 							Duplicate EmailId Exist Please Remove..<span
 								style="color: black; font-size: 14px">{{duplicateEmailIds}}</span>
 						</div>
-						<div *ngIf="deleteErrorMessage" id="campaignError"
-							class="col-xs-12 alert alert-danger alert-dismissable">
-							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>Danger!</strong>{{Campaign}}
-						</div>
 						<div *ngIf="zohoAuthStorageError"
 							class="col-xs-12 alert alert-danger">
 							<span>{{zohoAuthStorageError}}</span>

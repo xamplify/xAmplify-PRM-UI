@@ -26,7 +26,7 @@
 					<div class="tab-pane active">
 						<!-- BEGIN FILTER -->
 
-						<div class="page-bar">
+						<div class="page-bar m0">
 							<div class="page-breadcrumb">
 								<span title="Edit Contact list Name" style="font-size: 16px; font-family: Open Sans; color: #989292;cursor: pointer" 
 								(click)="updateContactListNameAlert()">{{selectedContactListName}}
@@ -177,25 +177,10 @@
 							<!-- END FILTER -->
 						</div>
 					</div>
-					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-				<!-- 	<div class="col-sm-12" *ngIf="response.responseType != null">
-						<div class="alert alert-dismissible" role="alert"
-							style="width: 103%; margin-left: -16px;"
-							[ngClass]="{'alert-success': response.responseType == 'SUCCESS',
-  									'alert-danger': response.responseType == 'ERROR'}">
-							<button type="button" class="close" data-dismiss="alert"
-								aria-label="Close" (click)="response.responseType = null">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="flex" style="padding-top: 10px;">
-								<i class="fa"
-									[ngClass]="{'fa-check': response.responseType == 'SUCCESS',
- 								 'fa-exclamation': response.responseType == 'ERROR'}"
-									aria-hidden="true" style="padding-right: 7px;"></i> <span
-									[innerHTML]="response.responseMessage"></span>
-							</h4>
-						</div>
-					</div> -->
+					<div style="padding: 0px 0 10px;">
+						<app-response-message [customResponse]="customResponse"
+							*ngIf="customResponse.isVisible"></app-response-message>
+					</div>
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12" style="width: 103%; left: -18px;">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->

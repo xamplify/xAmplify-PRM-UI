@@ -840,6 +840,7 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
+                    this.contactService.socialProviderName = "";
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -1562,15 +1563,15 @@ export class AddPartnersComponent implements OnInit {
         this.defaultPartnerList( this.loggedInUserId );
         if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
-            this.contactService.socialProviderName = '';
+            this.contactService.socialProviderName = "nothing";
         } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-            this.contactService.socialProviderName = '';
+            this.contactService.socialProviderName = "nothing";
         }
     }
 
     ngDestroy() {
-        this.contactService.socialProviderName = '';
+        this.contactService.socialProviderName = "";
         this.referenceService.callBackURLCondition = '';
         this.hideModal();
 

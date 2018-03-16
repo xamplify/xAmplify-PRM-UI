@@ -52,8 +52,6 @@ export class AddContactsComponent implements OnInit {
     zohoAuthStorageError = '';
     model: any = {};
     names: string[] = [];
-    deleteErrorMessage: boolean;
-    Campaign: string;
     invalidPatternEmails: string[] = [];
     isValidContactName: boolean = false;
     validCsvContacts: boolean;
@@ -897,6 +895,7 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
                     this.xtremandLogger.info( this.getGoogleConatacts );
+                    this.contactService.socialProviderName = "";
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1727,16 +1726,14 @@ export class AddContactsComponent implements OnInit {
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
                 }
-                this.customResponse = new CustomResponse( 'SUCCESS', this.customResponse.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
-                /*$('body').removeClass('modal-open');
-                $('.modal-backdrop fade in').remove();*/
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
                 $( '#settingSocialNetwork' ).modal( 'hide' );
             },
             ( error: any ) => {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
-                    this.Campaign = error;
+                    this.customResponse = new CustomResponse( 'ERROR', error, true );
                     $( '#settingSocialNetwork' ).modal( 'hide' );
-                    this.deleteErrorMessage = true;
+                    
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -1749,7 +1746,6 @@ export class AddContactsComponent implements OnInit {
                 this.xtremandLogger.info( "deleted completed" );
             }
             );
-        this.deleteErrorMessage = false;
     }
 
     convertToLowerCase( text: string ) {
@@ -1778,19 +1774,16 @@ export class AddContactsComponent implements OnInit {
         this.loadContactListsNames();
         if ( this.contactService.socialProviderName == 'google' ) {
             this.getGoogleContactsUsers();
-            this.contactService.socialProviderName = '';
+            this.contactService.socialProviderName = "nothing";
         } else if ( this.contactService.socialProviderName == 'salesforce' ) {
             $( "#salesforceModal" ).modal();
-            this.contactService.socialProviderName = '';
+            this.contactService.socialProviderName = "nothing";
         }
-
+        
         this.contactListName = '';
         $( "#Gfile_preview" ).hide();
         $( "#popupForListviews" ).hide();
         try {
-            //Metronic.init(); 
-            //Layout.init(); 
-            //Demo.init(); 
             $( "#uploadContactsMessage" ).hide();
             $( "#sample_editable_1" ).hide();
             $( "#file_preview" ).hide();
@@ -1826,7 +1819,7 @@ export class AddContactsComponent implements OnInit {
 
     ngDestroy() {
         this.contactService.successMessage = false;
-        this.contactService.socialProviderName = '';
+        this.contactService.socialProviderName = "";
         this.hideModal();
 
     }
