@@ -638,7 +638,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
                 this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri;
-                this.logoDescriptionUrl = this.videoUtilService.isStartsWith(this.defaultPlayerValues.brandingLogoDescUri);
+                this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri;
                 this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -652,7 +652,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
                 this.brandLogoUrl = this.tempVideoFile.brandingLogoUri;
-                this.logoDescriptionUrl = this.videoUtilService.isStartsWith(this.tempVideoFile.brandingLogoDescUri);
+                this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri;
                 this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);

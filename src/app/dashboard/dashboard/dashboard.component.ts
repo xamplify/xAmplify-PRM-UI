@@ -62,11 +62,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isLoadingList = true;
     worldMapUserData: any;
     countryCode:any;
+    isFullscreenToggle:boolean;
+    heatMap:any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
-    sortHeatMapValues = [{ 'name': 'Top 10', 'value': 10 }, { 'name': 'Top 20', 'value': 20 },
-    { 'name': 'All ', 'value': 'All' }];
+    sortHeatMapValues = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
+    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 },{'name': 'Quarter', 'value': 'quarter'},
+    {'name':'Yearly',value:'year'}];
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount: number = 0;
@@ -184,11 +187,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             tooltipValueLookups: { 'offset': offsetValues }
         });
     }
-    generatHeatMap(heatMapData) {
+    generatHeatMap(heatMapData, heatMapId) {
         const self = this;
         const data = heatMapData;
         console.log(data);
-        Highcharts.chart('dashboard-heat-map', {
+        Highcharts.chart(heatMapId, {
             colorAxis: {
                 minColor: '#FFFFFF',
                 maxColor: Highcharts.getOptions().colors[0]
@@ -730,7 +733,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.heatMapData = result.heatMapData;
                 console.log(this.heatMapData);
                 if (result.heatMapData.length > 0) {
-                    this.generatHeatMap(this.heatMapData);
+                    this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
+                    this.generatHeatMap(this.heatMapData, 'heat-map-data');
                 }
             },
             (error: any) => {
@@ -957,7 +961,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
     
     }
-
+    isFullscreenHeatMap(){
+        this.generatHeatMap(this.heatMapData,'heat-map-data');
+        $('#heatMapModel').show();
+    }
+    closeModel(){
+        $('#heatMapModel').hide();
+    }
     ngOnInit() {
         try {
             this.dashboardReportsCount();
@@ -993,5 +1003,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
+        $('#heatMapModel').modal('hide');
     }
 }

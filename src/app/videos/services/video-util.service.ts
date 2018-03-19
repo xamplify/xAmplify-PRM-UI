@@ -22,7 +22,7 @@ export class VideoUtilService {
         'process your video file. Please upload another video file!!';
     maxSizeOverMesg = 'Your video size is more than the maximum video file size(800 MB)' +
         'Please upload another video file within the limit!!';
-    errorNullMesg = 'Something went wrong !! Please Contact the admin.!!';
+    errorNullMesg = 'Something went wrong !! while uploading your video into our system.!!';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },

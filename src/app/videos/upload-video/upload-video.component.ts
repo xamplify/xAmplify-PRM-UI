@@ -182,6 +182,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
          this.previewDisabled = previewdisable;
     }
     processVideo(responsePath: any) {
+        this.errorNull = false;
         if (!this.videoFileService.isProgressBar) { this.cloudStorageDisabled(); }
         const val = this;
         if (this.RecordSave !== true) {  setTimeout(function () {  val.processing = true; }, 100); }
