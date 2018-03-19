@@ -236,8 +236,8 @@ export class AnalyticsComponent implements OnInit {
         // alert(this.selectedRow.userEmail);
         const self = this;
         try {
-          const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
-          console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+          const obj = this.campaignBarViews.find(function (obj) { return obj.emailId === self.selectedRow.userEmail; });
+          console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.emailId);
           this.firstName = obj.firstName;
           if(this.firstName === undefined || this.firstName === null){
             const index = this.selectedRow.userEmail.indexOf('@');
@@ -247,7 +247,7 @@ export class AnalyticsComponent implements OnInit {
         const names = [];
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
-          names.push(data.campaignviews[i].userEmail);
+          names.push(data.campaignviews[i].emailId);
           views.push(data.campaignviews[i].viewsCount)
         }
         this.maxViewsValue = Math.max.apply(null, views);
@@ -453,14 +453,14 @@ export class AnalyticsComponent implements OnInit {
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.barChartCliked = true;
       try {
-        const obj = this.campaignBarViews.find(function (obj) { return obj.userEmail === emailId; });
-        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.userEmail);
+        const obj = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
+        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.emailId);
         this.firstName = obj.firstName;
         if(this.firstName === undefined || this.firstName === null){
           const index = emailId.indexOf('@');
           this.firstName = emailId.substring(0,index);
         }
-        this.userTimeline(obj.campaignId, obj.userId, obj.userEmail);
+        this.userTimeline(obj.campaignId, obj.userId, obj.emailId);
         this.isTimeLineView = true;
       } catch (err) {
         console.log(err);
