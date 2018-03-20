@@ -83,7 +83,7 @@ export class AnalyticsComponent implements OnInit {
         this.campaignViews = data.campaignviews;
         try {
           const self = this;
-          const obj = this.campaignViews.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+          const obj = this.campaignViews.find(function (obj) { return obj.emailId === self.selectedRow.userEmail; });
           this.firstName = obj.firstName;
           if(this.firstName === undefined || this.firstName === null){
             const index = this.selectedRow.userEmail.indexOf('@');
@@ -447,7 +447,7 @@ export class AnalyticsComponent implements OnInit {
       );
   }
   userWatchedviewsInfo(emailId: string) {
-    if (emailId !== this.selectedRow.userEmail) {
+    if (emailId !== this.selectedRow.emailId) {
       this.userCampaignReport.emailOpenCount = 0;
       this.userCampaignReport.emailClickedCount = 0;
       this.userCampaignReport.totalUniqueWatchCount = 0;
@@ -600,11 +600,11 @@ export class AnalyticsComponent implements OnInit {
         this.campaignTotalViewsData = data.campaignviews;
         try {
           const self = this;
-          const obj = this.campaignTotalViewsData.find(function (obj) { return obj.userEmail === self.selectedRow.userEmail; });
+          const obj = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
           this.firstName = obj.firstName;
           if(this.firstName === undefined || this.firstName === null){
-            const index = this.selectedRow.userEmail.indexOf('@');
-            this.firstName = this.selectedRow.userEmail.substring(0,index);
+            const index = this.selectedRow.emailId.indexOf('@');
+            this.firstName = this.selectedRow.emailId.substring(0,index);
           }
         } catch (err) { console.log(err); }
       },
@@ -661,7 +661,7 @@ export class AnalyticsComponent implements OnInit {
       }
 
       if (this.downloadTypeName === 'donut') {
-        object["Email Id"] = this.downloadCsvList[i].userEmail;
+        object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
         object["Platform"] = this.downloadCsvList[i].os;
@@ -669,7 +669,7 @@ export class AnalyticsComponent implements OnInit {
       }
 
       if (this.downloadTypeName === 'campaignViews') {
-        object["Email Id"] = this.downloadCsvList[i].userEmail;
+        object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
         object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
