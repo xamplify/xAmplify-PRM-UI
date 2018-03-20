@@ -309,7 +309,8 @@
 
 	<!-- BEGIN DASHBOARD STATS -->
 	<div class="row">
-		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+		<!--  commented for future work -->
+		<!-- <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
 				<div class="visual">
 					<i class="fa fa-eye"></i>
@@ -319,7 +320,7 @@
 					<div class="desc">Total Views</div>
 				</div>
 			</a>
-		</div>
+		</div> -->
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
@@ -376,6 +377,17 @@
 				</div>
 			</a>
 		</div>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+				<a class="dashboard-stat dashboard-stat-lighter red-soft" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
+					<div class="visual">
+						<i class="fa fa-eye"></i>
+					</div>
+					<div class="details">
+						<div class="number">0</div>
+						<div class="desc">Total Partners</div>
+					</div>
+				</a>
+			</div>
 	</div>
 	<!-- END DASHBOARD STATS -->
 	

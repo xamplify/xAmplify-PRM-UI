@@ -712,26 +712,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getCountriesTotalViewsData() {
+        try{
         this.dashboardService.getCountryViewsDetails().
             subscribe(result => {
                 this.countryViewsData = result.countrywiseusers;
-                console.log(this.countryViewsData);
-                // this.renderWorldMap();
+                this.xtremandLogger.log(this.countryViewsData);
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
                 this.xtremandLogger.errorPage(error);
             });
+        }catch(error){
+            this.xtremandLogger.error(error);
+        }
     }
     clickWorldMapReports(event: any) {
         this.getCampaignUsersWatchedInfo(event);
     }
     getCampaignsHeatMapData() {
+        try{
         this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
             subscribe(result => {
                 this.xtremandLogger.log(result.heatMapData);
                 this.heatMapData = result.heatMapData;
-                console.log(this.heatMapData);
                 if (result.heatMapData.length > 0) {
                     if(!this.isFullscreenToggle){
                     this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');}
@@ -740,11 +743,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                // this.xtremandLogger.errorPage(error);
+                this.xtremandLogger.errorPage(error);
             });
+        }catch(error){
+            this.xtremandLogger.error(error);
+        }
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
-        this.trellisBarChartData = undefined;
+        try{
         this.dashboardService.getCampaignsEmailReports(campaignIdArray).
             subscribe(result => {
                 console.log(result);
@@ -754,23 +760,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 console.log("max number is " + this.maxBarChartNumber);
                 if (this.maxBarChartNumber > 0) {
                     this.isMaxBarChartNumber = true;
-                    const obj = { 'result': result, 'type': 'dashboard','maxValue': this.maxBarChartNumber };
-                    this.trellisBarChartData = obj;
                    this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
-                }
-                else {
-                    this.isMaxBarChartNumber = false;
-                }
+                }  else {  this.isMaxBarChartNumber = false; }
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                // this.xtremandLogger.errorPage(error);
+                this.xtremandLogger.errorPage(error);
             });
+        }catch(error){
+            this.xtremandLogger.error(error);
+        }
     }
   clickedTrellisChart(event){
     console.log(event);
   }
     getVideoStatesSparklineChartsInfo(daysCount) {
+       try{
         this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => {
                 console.log(result);
@@ -782,9 +787,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 this.xtremandLogger.error(error);
-                // this.xtremandLogger.errorPage(error);
+                this.xtremandLogger.errorPage(error);
             });
-
+        }catch(error){
+            this.xtremandLogger.error('error in world map dashboard '+error);
+        }
     }
 
     selectedSortByValue(event: any) {
@@ -910,6 +917,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     
     getCampaignUsersWatchedInfo(countryCode) {
+        try{
         this.countryCode = countryCode.toUpperCase();
         this.paginationType = "countryWiseUsers";
         this.pagination.maxResults = 10;
@@ -922,9 +930,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
                 $('#worldMapModal').modal('show');
             },
-            error => console.log(error),
+            (error:any) => {
+                console.log(error)
+                this.xtremandLogger.error('error in world map dashboard '+error);
+                this.xtremandLogger.errorPage(error);
+            },
             () => console.log('finished')
             );
+        } catch(error) {
+            this.xtremandLogger.error('error in world map dashboard '+error);
+        }
     }
     
     loadChannelVideos() {
@@ -960,7 +975,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } catch (error) {
             this.xtremandLogger.error('erro in countPartnerEmailTemplate :' + error);
         }
-    
     }
     isFullscreenHeatMap(){
         this.isFullscreenToggle = !this.isFullscreenToggle;
