@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isLoadingList = true;
     worldMapUserData: any;
     countryCode:any;
-    isFullscreenToggle:boolean;
+    isFullscreenToggle = false;
     heatMap:any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
@@ -963,9 +963,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     }
     isFullscreenHeatMap(){
-        this.generatHeatMap(this.heatMapData,'heat-map-data');
-        $('#heatMapModel').show();
-    }
+        this.isFullscreenToggle =  !this.isFullscreenToggle;
+        if(this.isFullscreenToggle){
+           $('#dashboard-heat-map').css('cssText','min-width: 500px;min-height: 304px;margin: 0 auto;');
+          } else {
+           $('#dashboard-heat-map').css('cssText','min-width: 300px;min-height: 214px;margin: 0 auto;');
+            }
+         // this.generatHeatMap(this.heatMapData,'heat-map-data');
+        // $('#heatMapModel').show();
+      }
     closeModel(){
         $('#heatMapModel').hide();
     }
@@ -1005,5 +1011,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
         $('#heatMapModel').modal('hide');
+        this.isFullscreenToggle = false;
     }
 }

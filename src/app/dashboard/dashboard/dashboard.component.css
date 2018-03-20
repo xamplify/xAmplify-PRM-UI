@@ -224,7 +224,6 @@ h1.bold {
 }
 
 #dashboard-heat-map {
-    min-width: 300px;
 	max-width: 600px;
     min-height: 214px;
     margin: 0 auto;
@@ -256,14 +255,16 @@ h1.bold {
 a.social-stats h4{font-weight: 700; text-align: center; margin: 0;}
 a.social-stats{text-align: center;}
 .dashboard-stat-lighter {margin: 7px 0 14px 0 !important;}
-.full-width-div {
-	position: fixed;
-    width: 168%;
-    left: -176px;
+
+.pointer {
+	cursor: pointer;
 }
-.heat-map-div{
-	float: right;
-    position: relative;
-    top: -28px;
-    left: -18px;
+
+.headerCss {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.center {
+	text-align: center;
 }
