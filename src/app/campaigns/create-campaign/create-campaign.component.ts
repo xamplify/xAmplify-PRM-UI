@@ -608,7 +608,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.contactsPagination.filterValue = false;
             this.loadCampaignContacts(this.contactsPagination);
+            this.setCoBrandingLogo(event);
         }
+       
     }
     setCoBrandingLogo(event:any){
         this.campaign.enableCoBrandingLogo = event;
