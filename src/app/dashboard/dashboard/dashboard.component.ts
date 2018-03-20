@@ -69,8 +69,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
     daySort: any;
     sortHeatMapValues = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 },{'name': 'Quarter', 'value': 'quarter'},
-    {'name':'Yearly',value:'year'}];
+    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 },{'name':'Year',value:'year'}];
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount: number = 0;
@@ -734,8 +733,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.heatMapData = result.heatMapData;
                 console.log(this.heatMapData);
                 if (result.heatMapData.length > 0) {
-                    this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
-                    this.generatHeatMap(this.heatMapData, 'heat-map-data');
+                    if(!this.isFullscreenToggle){
+                    this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');}
+                    else { this.generatHeatMap(this.heatMapData,'heat-map-data'); }
                 }
             },
             (error: any) => {
@@ -963,18 +963,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     }
     isFullscreenHeatMap(){
-        this.isFullscreenToggle =  !this.isFullscreenToggle;
-        if(this.isFullscreenToggle){
-           $('#dashboard-heat-map').css('cssText','min-width: 500px;min-height: 304px;margin: 0 auto;');
-          } else {
-           $('#dashboard-heat-map').css('cssText','min-width: 300px;min-height: 214px;margin: 0 auto;');
-            }
-         // this.generatHeatMap(this.heatMapData,'heat-map-data');
-        // $('#heatMapModel').show();
+        this.isFullscreenToggle = !this.isFullscreenToggle;
+         if(this.isFullscreenToggle) {
+         this.generatHeatMap(this.heatMapData,'heat-map-data');    
+         $('#heatMapModel').modal('show'); }
+         else {  $('#heatMapModel').modal('hide'); }
       }
-    closeModel(){
-        $('#heatMapModel').hide();
-    }
     ngOnInit() {
         try {
             this.dashboardReportsCount();

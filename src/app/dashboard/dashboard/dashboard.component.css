@@ -268,3 +268,22 @@ a.social-stats{text-align: center;}
 .center {
 	text-align: center;
 }
+
+.heat-modal{
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    overflow: auto;
+   }
+
+ .heatmap-model{
+	height: 657px;
+    width: 1364px;
+    min-width: 600px;
+    left: -380px;
+    top: -30px;
+ }  
+ 
