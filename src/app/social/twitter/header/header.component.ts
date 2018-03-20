@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
   socialConnection: SocialConnection;
 
   twitterNavs: any = [
+    { name: 'home', count: '...', isCurrent: false },
     { name: 'tweets', count: 0, isCurrent: false },
     { name: 'friends', count: 0, isCurrent: false },
     { name: 'followers', count: 0, isCurrent: false }
@@ -52,9 +53,9 @@ export class HeaderComponent implements OnInit {
       .subscribe(
       data => {
         this.twitterProfile = data;
-        this.twitterNavs[0].count = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
-        this.twitterNavs[1].count = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
-        this.twitterNavs[2].count = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
+        this.twitterNavs[1].count = this.utilService.abbreviateNumber(this.twitterProfile.statusesCount);
+        this.twitterNavs[2].count = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
+        this.twitterNavs[3].count = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
       },
       error => console.log(error),
       () => console.log(this.twitterProfile)

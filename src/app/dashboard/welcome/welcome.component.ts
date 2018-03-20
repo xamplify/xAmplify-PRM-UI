@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Properties } from '../../common/models/properties';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -11,7 +11,8 @@ import { DashboardReport } from '../../core/models/dashboard-report';
 @Component({
     selector: 'app-welcome',
     templateUrl: './welcome.component.html',
-    styleUrls: ['./welcome.component.css']
+    styleUrls: ['./welcome.component.css'],
+    providers: [Properties]
 })
 export class WelcomeComponent implements OnInit {
 
@@ -28,7 +29,8 @@ export class WelcomeComponent implements OnInit {
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
-        private dashboardService: DashboardService
+        private dashboardService: DashboardService,
+        public properties: Properties
     ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -65,11 +67,11 @@ export class WelcomeComponent implements OnInit {
                 data => {
                     this.userDefaultPage.isCurrentPageDefaultPage = event;
                     this.userDefaultPage.responseType = 'SUCCESS';
-                    this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
+                    this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_SUCCESS;
                 },
                 error => {
                     this.userDefaultPage.responseType = 'ERROR';
-                    this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
+                    this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_ERROR;
                 },
                 () => { }
             );

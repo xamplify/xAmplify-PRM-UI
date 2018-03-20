@@ -9,7 +9,7 @@ import { TwitterProfileComponent } from './twitter-profile/twitter-profile.compo
 import { TwitterHomeComponent } from './twitter-home/twitter-home.component';
 
 const routes: Routes = [
-    { path: ':profileId', component: TwitterHomeComponent },
+    { path: ':profileId/home', component: TwitterHomeComponent },
     { path: ':profileId/tweets', component: TwitterTweetsComponent },
     { path: ':profileId/friends', component: TwitterFriendsComponent },
     { path: ':profileId/followers', component: TwitterFollowersComponent },

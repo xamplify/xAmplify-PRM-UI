@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
+import { Properties } from '../../common/models/properties';
 import { SocialConnection } from '../../social/models/social-connection';
 import { Campaign } from '../../campaigns/models/campaign';
 import { CampaignReport } from '../../campaigns/models/campaign-report';
@@ -31,7 +32,7 @@ declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcha
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService, Pagination, DatePipe]
+    providers: [DashboardService, Pagination, DatePipe, Properties]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -79,7 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public campaignService: CampaignService, public referenceService: ReferenceService,
-        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe) {
+        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
@@ -477,11 +478,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             data => {
                 this.userDefaultPage.isCurrentPageDefaultPage = event;
                 this.userDefaultPage.responseType = 'SUCCESS';
-                this.userDefaultPage.responseMessage = 'Your setting has been saved successfully';
+                this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_SUCCESS;
             },
             error => {
                 this.userDefaultPage.responseType = 'ERROR';
-                this.userDefaultPage.responseMessage = 'an error occurred while processing your request';
+                this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_ERROR;
             },
             () => { }
             );

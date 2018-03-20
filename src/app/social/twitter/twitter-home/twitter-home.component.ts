@@ -11,9 +11,9 @@ import { ReferenceService } from '../../../core/services/reference.service';
 import { UtilService } from '../../../core/services/util.service';
 
 @Component({
-  selector: 'app-twitter-home',
-  templateUrl: './twitter-home.component.html',
-  styleUrls: ['./twitter-home.component.css']
+    selector: 'app-twitter-home',
+    templateUrl: './twitter-home.component.html',
+    styleUrls: ['./twitter-home.component.css']
 })
 export class TwitterHomeComponent implements OnInit {
     tweets: any;
@@ -22,25 +22,25 @@ export class TwitterHomeComponent implements OnInit {
     twitterProfile: any;
     profileId: any;
 
-  constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService, private twitterService: TwitterService, 
-  private socialService: SocialService, private referenceService: ReferenceService, private utilService: UtilService) { }
+    constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService, private twitterService: TwitterService,
+        private socialService: SocialService, private referenceService: ReferenceService, private utilService: UtilService) { }
 
-  getHomeTimeline(socialConnection: SocialConnection) {
-        this.referenceService.loading( this.httpRequestLoader, true );
-        this.twitterService.getHomeTimeline( socialConnection, 0, 100 )
+    getHomeTimeline(socialConnection: SocialConnection) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.twitterService.getHomeTimeline(socialConnection, 0, 100)
             .subscribe(
             data => {
-                for ( const i of Object.keys(data) ) {
-                    const splitted = data[i].unmodifiedText.split( ' ' );
+                for (const i of Object.keys(data)) {
+                    const splitted = data[i].unmodifiedText.split(' ');
                     let updatedText = '';
-                    for ( const j of Object.keys(splitted) ) {
+                    for (const j of Object.keys(splitted)) {
                         let eachWord = '';
-                        if ( splitted[j].startsWith( '@' ) ) {
-                            eachWord = '<a href="https://twitter.com/' + splitted[j].substring( 1 ) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
-                        } else if ( splitted[j].startsWith( '#' ) ) {
-                            eachWord = '<a href="https://twitter.com/hashtag/' + splitted[j].substring( 1 ) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
+                        if (splitted[j].startsWith('@')) {
+                            eachWord = '<a href="https://twitter.com/' + splitted[j].substring(1) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
+                        } else if (splitted[j].startsWith('#')) {
+                            eachWord = '<a href="https://twitter.com/hashtag/' + splitted[j].substring(1) + '" target="_blank"><b>' + splitted[j] + '</b></a>';
                         }
-                        else if ( splitted[j].startsWith( 'https://t.co' ) || splitted[j].startsWith( 'http://t.co' ) ) {
+                        else if (splitted[j].startsWith('https://t.co') || splitted[j].startsWith('http://t.co')) {
                             eachWord = '';
                         } else {
                             eachWord = splitted[j];
@@ -53,29 +53,29 @@ export class TwitterHomeComponent implements OnInit {
                 this.tweets = data;
             },
             error => {
-                console.log( error );
-                this.referenceService.loading( this.httpRequestLoader, false );
-                this.referenceService.showServerError( this.httpRequestLoader );
+                console.log(error);
+                this.referenceService.loading(this.httpRequestLoader, false);
+                this.referenceService.showServerError(this.httpRequestLoader);
             },
-            () => this.referenceService.loading( this.httpRequestLoader, false )
+            () => this.referenceService.loading(this.httpRequestLoader, false)
             );
-  }
+    }
 
-    getSocialConnection( profileId: string, source: string ) {
-      this.socialService.getSocialConnection(profileId, source)
-        .subscribe(
-          data => {
-              this.socialConnection = data;
-          },
-          error => console.log( error ),
-          () => {
-              this.getHomeTimeline( this.socialConnection );
-              this.getTwitterProfile( this.socialConnection, this.profileId);
-          }
-        );
-  }
+    getSocialConnection(profileId: string, source: string) {
+        this.socialService.getSocialConnection(profileId, source)
+            .subscribe(
+            data => {
+                this.socialConnection = data;
+            },
+            error => console.log(error),
+            () => {
+                this.getHomeTimeline(this.socialConnection);
+                this.getTwitterProfile(this.socialConnection, this.profileId);
+            }
+            );
+    }
 
-      getTwitterProfile(socialConnection: SocialConnection, id: number) {
+    getTwitterProfile(socialConnection: SocialConnection, id: number) {
         this.twitterService.getTwitterProfile(socialConnection, id)
             .subscribe(
             data => {
@@ -84,19 +84,19 @@ export class TwitterHomeComponent implements OnInit {
                 this.twitterProfile.friendsCount = this.utilService.abbreviateNumber(this.twitterProfile.friendsCount);
                 this.twitterProfile.followersCount = this.utilService.abbreviateNumber(this.twitterProfile.followersCount);
             },
-            error => console.log( error ),
-            () => console.log( this.twitterProfile )
-        );
+            error => console.log(error),
+            () => console.log(this.twitterProfile)
+            );
     }
 
-  ngOnInit() {
-    try {
-      this.profileId = this.route.snapshot.params['profileId'];
-      this.getSocialConnection(this.profileId, 'TWITTER');
-    } catch (err) {
-      console.log(err);
-    }
+    ngOnInit() {
+        try {
+            this.profileId = this.route.snapshot.params['profileId'];
+            this.getSocialConnection(this.profileId, 'TWITTER');
+        } catch (err) {
+            console.log(err);
+        }
 
-  }
+    }
 
 }

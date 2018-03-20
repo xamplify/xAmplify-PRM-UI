@@ -697,7 +697,7 @@
 										<h5 class="profile-name">
 											
 											<span *ngIf="socialConnection.source === 'TWITTER'">
-												<a [routerLink]="['/home/twitter', socialConnection.profileId]">
+												<a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
 												@{{socialConnection.profileName}}</a>
 											</span>
 											<span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>

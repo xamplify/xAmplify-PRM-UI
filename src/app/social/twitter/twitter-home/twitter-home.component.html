@@ -6,15 +6,13 @@
       <li>Home Timeline</li>
     </ul>
   </div>
+  <app-header></app-header>
   <div class="row">
-    <div class="col-xs-12 col-sm-3">
-      <app-profile-card [twitterProfile]="twitterProfile" [socialConnection]="socialConnection"></app-profile-card>
-    </div>
-    <div class="col-xs-12 col-sm-6"
+    <div class="col-xs-12 col-sm-8"
       *ngIf="httpRequestLoader.isLoading">
       <app-social-loader></app-social-loader>
     </div>
-    <div class="col-xs-12 col-sm-6" *ngIf="tweets?.length > 0">
+    <div class="col-xs-12 col-sm-8" *ngIf="tweets?.length > 0">
       <div id="tweets" class="portlet-body">
         <div class="portlet light block rounded-0"
           *ngFor="let item of tweets">
@@ -52,16 +50,11 @@
                 </div>
               </div>
             </div>
-            <!--<div style="padding: 1em;">
-              <i class="fa fa-comment-o col-sm-4" aria-hidden="true"></i> <i
-                class="fa fa-retweet col-sm-4" aria-hidden="true"></i> <i
-                class="fa fa-heart-o col-sm-4" aria-hidden="true"></i>
-            </div>-->
           </div>
         </div>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-3">
+    <div class="col-xs-12 col-sm-4">
         <app-twitter-trends></app-twitter-trends>
     </div>
   </div>
