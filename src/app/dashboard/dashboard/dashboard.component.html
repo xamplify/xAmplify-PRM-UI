@@ -493,6 +493,9 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
+											<a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 134px;top: 11px;font-size: 11px;">
+											  <span class="glyphicon glyphicon-info-sign icon_info"></span>
+											</a>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 											<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
@@ -501,7 +504,6 @@
 											<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"></i>
 											<!-- <i *ngIf="isFullscreenToggle"  style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i> -->
 										</span>
-										<!-- <span *ngIf="heatMapData?.length > 0" style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshHeatMapCharts()"></i></span> -->
 									</div>
 								</div>
 							</div>
@@ -951,6 +953,9 @@
 		<h4 class="modal-title" style="margin: 0 19px;">Campaign Statistics </h4>
 			<div class="panel-title pull-right" style="position:absolute;right: 28px;top: 11px;">
 			<span style="font-size: 13px;">
+			    <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 113px;top: 5px;font-size: 11px;">
+				 <span class="glyphicon glyphicon-info-sign icon_info"></span>
+				</a>
 				<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 				<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 				</select>

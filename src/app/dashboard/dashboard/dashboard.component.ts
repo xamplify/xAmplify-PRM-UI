@@ -72,7 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 },{'name':'Year',value:'year'}];
     heatMapSort: any;
     trellisBarChartData: any;
-    partnerEmailTemplateCount: number = 0;
+    partnerEmailTemplateCount = 0;
+    heatMapTooltip = 'last 7 days';
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -775,7 +776,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log(event);
   }
     getVideoStatesSparklineChartsInfo(daysCount) {
-       try{
+        try{
         this.dashboardService.getVideoStatesInformation(daysCount).
             subscribe(result => {
                 console.log(result);
@@ -801,6 +802,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     selectedheatMapSortByValue(event: any){
       this.heatMapSort.value = event;
+      if(event === 7){
+        this.heatMapTooltip = 'last 7 days';
+      } else if(event === 14){ 
+        this.heatMapTooltip = 'last 14 days';
+      } else if(event === 21){
+        this.heatMapTooltip = 'last 21 days';
+      } else if(event === 30){
+        this.heatMapTooltip = 'current month';
+      } else if(event.includes('year')) {
+        this.heatMapTooltip = 'current year';
+      }
       this.getCampaignsHeatMapData();
     }
 
