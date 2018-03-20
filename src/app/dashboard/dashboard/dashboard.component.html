@@ -493,14 +493,15 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
-											<a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 134px;top: 11px;font-size: 11px;">
+											<!-- <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 134px;top: 11px;font-size: 11px;">
 											  <span class="glyphicon glyphicon-info-sign icon_info"></span>
-											</a>
+											</a> -->
+											<span class="label label-primary mytooltip" style="border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 											<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
 										</span>
-										<span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
+										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
 											<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"></i>
 											<!-- <i *ngIf="isFullscreenToggle"  style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i> -->
 										</span>
@@ -953,9 +954,10 @@
 		<h4 class="modal-title" style="margin: 0 19px;">Campaign Statistics </h4>
 			<div class="panel-title pull-right" style="position:absolute;right: 28px;top: 11px;">
 			<span style="font-size: 13px;">
-			    <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 113px;top: 5px;font-size: 11px;">
+			    <!-- <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 113px;top: 5px;font-size: 11px;">
 				 <span class="glyphicon glyphicon-info-sign icon_info"></span>
-				</a>
+				</a> -->
+				<span class="label label-primary mytooltip" style="position: absolute;right: 113px;top: 2px;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
 				<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 				<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 				</select>
@@ -967,12 +969,9 @@
 	</div>
 	<div class="modal-body" style="background: #fff;margin: 1px;">
 		<div id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
-		<div *ngIf="heatMapData?.length < 1" style="max-width: 100%;text-align: center;">
-			<span style="position: absolute;top: 130px;left: 220px;">No data available</span>
-		</div>
 	</div>
 	<div class="modal-footer">
-		<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	</div>
 	</div>
 </div>
