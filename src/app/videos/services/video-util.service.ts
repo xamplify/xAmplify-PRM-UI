@@ -146,7 +146,7 @@ export class VideoUtilService {
             + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
     }
     isStartsWith(logoLink:string){
-       if(logoLink === undefined || logoLink === null){ }
+       if(logoLink === "" ||logoLink === undefined || logoLink === null){ }
        else if( logoLink.startsWith("http")){ } 
        else { logoLink = 'http://'+logoLink; }
        return logoLink;
