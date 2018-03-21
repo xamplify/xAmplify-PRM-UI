@@ -194,7 +194,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
         }).then(function() {
             self.deleteCampaign(id);
-        })
+        }, function(dismiss:any) {
+            console.log('you clicked on option'+dismiss);
+        });
     }
 
     deleteCampaign(id: number) {

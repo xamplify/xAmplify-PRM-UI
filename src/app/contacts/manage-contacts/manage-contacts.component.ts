@@ -849,7 +849,9 @@ export class ManageContactsComponent implements OnInit {
             }).then( function( myData: any ) {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.removeInvalidContactListUsers();
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
     }
 
@@ -1213,7 +1215,10 @@ export class ManageContactsComponent implements OnInit {
                 });
             }
         }).then( function( name: any ) {
-        })
+            console.log(name);
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
     
     saveAsNewList( contactSelectedListId: number, contactListName: string ) {
@@ -1243,7 +1248,10 @@ export class ManageContactsComponent implements OnInit {
                 });
             }
         }).then( function( name: any ) {
-        })
+            console.log(name);
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
     
     saveExistingContactList( contactSelectedListId: number, contactListName: string ){

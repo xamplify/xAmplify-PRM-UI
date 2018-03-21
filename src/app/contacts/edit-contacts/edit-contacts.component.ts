@@ -483,7 +483,9 @@ export class EditContactsComponent implements OnInit {
                 }).then( function( myData: any ) {
                     console.log( "ManageContacts showAlert then()" + myData );
                     self.removeContactListUsers( contactListId );
-                })
+                }, function( dismiss: any ) {
+                    console.log( 'you clicked on option' + dismiss );
+                });
             }
             if ( (this.totalRecords == 1 && this.isDefaultPartnerList == false) || (this.totalRecords == this.selectedContactListIds.length && this.isDefaultPartnerList == false) ) {
                 swal( {
@@ -497,7 +499,9 @@ export class EditContactsComponent implements OnInit {
                 }).then( function( myData: any ) {
                     console.log( "ManageContacts showAlert then()" + myData );
                     self.deleteContactList();
-                })
+                }, function( dismiss: any ) {
+                    console.log( 'you clicked on option' + dismiss );
+                });
             }
         }
     }
@@ -999,7 +1003,9 @@ export class EditContactsComponent implements OnInit {
             }).then( function( myData: any ) {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.removeInvalidContactListUsers();
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
     }
 
@@ -1076,7 +1082,9 @@ export class EditContactsComponent implements OnInit {
             }).then( function( myData: any ) {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.removeContactListUsers1( contactId );
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
 
         if ( this.totalRecords === 1  && !(this.isDefaultPartnerList )) {
@@ -1092,7 +1100,9 @@ export class EditContactsComponent implements OnInit {
             }).then( function( myData: any ) {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.deleteContactList();
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
         if ( this.totalRecords === 1 && this.isDefaultPartnerList ) {
             swal( {
@@ -1107,7 +1117,9 @@ export class EditContactsComponent implements OnInit {
             }).then( function( myData: any ) {
                 console.log( "ManageContacts showAlert then()" + myData );
                 self.removeContactListUsers1( contactId );
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
 
     }
@@ -1302,7 +1314,10 @@ export class EditContactsComponent implements OnInit {
                 });
             }
         }).then( function( name: any ) {
-        })
+            console.log(name);
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
 
     saveDuplicateContactList( name: string ) {
@@ -1576,7 +1591,9 @@ export class EditContactsComponent implements OnInit {
             }
         }).then( function( name: any ) {
             self.updateContactListName( name );
-        })
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
 
     updateContactListName( newContactListName: string ) {

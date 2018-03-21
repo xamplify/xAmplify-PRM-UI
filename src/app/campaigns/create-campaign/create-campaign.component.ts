@@ -1613,26 +1613,28 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     /****************Sending Test Email*************************/
-    addEmailId(){
+    addEmailId() {
         var self = this;
-        swal({
+        swal( {
             title: 'Please Enter Email Id',
             input: 'email',
             showCancelButton: true,
             confirmButtonText: 'Submit',
             showLoaderOnConfirm: true,
-            preConfirm: function (email:string) {
-              return new Promise(function (resolve, reject) {
-                setTimeout(function() {
-                    resolve();
-                }, 2000)
-              })
+            preConfirm: function( email: string ) {
+                return new Promise( function( resolve, reject ) {
+                    setTimeout( function() {
+                        resolve();
+                    }, 2000 )
+                } )
             },
             allowOutsideClick: false,
-            
-          }).then(function (email:string) {
-              self.sendTestEmail(email);
-              })
+
+        }).then( function( email: string ) {
+            self.sendTestEmail( email );
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
        }
     getCampaignData( emailId: string ) {
         if ( this.campaignType == "regular" ) {

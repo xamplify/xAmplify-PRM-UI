@@ -234,7 +234,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
             }).then( function() {
                 self.deleteEmailTemplate( id,name );
-            })
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         } catch ( error ) {
             this.logger.error(this.refService.errorPrepender+" confirmDeleteEmailTemplate():"+error);
             this.refService.showServerError(this.httpRequestLoader);
