@@ -184,7 +184,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
-            // tooltipFormat: '<span >average:{{value}} <br>{{offset:offset}}</span>',
             tooltipValueLookups: { 'offset': offsetValues }
         });
     }
@@ -203,16 +202,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                    //  <br>users: <b>' + this.point.totalUsers + '</b>
-                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' + '</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
+                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' + 
+                    '<br> Interaction : <b>'+ this.point.interactionPercentage+ '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
                 }
             },
             plotOptions: {
                 series: {
                     dataLabels: {
                         enabled: true,
-                        // align: 'left',
-                        // verticalAlign: 'top',
                         style: {
                             fontWeight: 'normal',
                             fontSize: '13px',
