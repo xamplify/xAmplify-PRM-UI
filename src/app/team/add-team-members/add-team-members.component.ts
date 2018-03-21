@@ -293,11 +293,9 @@ export class AddTeamMembersComponent implements OnInit {
             error => {self.logger.errorPage(error)},
             () => console.log( "Team member Deleted Successfully" )
             );
-        },function (dismiss) {
-            if (dismiss === 'cancel') {
-                
-            }
-        })
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
     
     setPage(page: number) {

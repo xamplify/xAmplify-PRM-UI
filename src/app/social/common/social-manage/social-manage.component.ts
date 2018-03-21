@@ -58,7 +58,9 @@ export class SocialManageComponent implements OnInit {
 
             }).then( function() {
                 socialConnection.active = !socialConnection.active;
-            }).catch( swal.noop );
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
         }
     }
 

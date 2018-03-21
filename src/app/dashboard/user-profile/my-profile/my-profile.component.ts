@@ -936,11 +936,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         swal.close();
 
                     }
-                }, function (dismiss) {
-                    if (dismiss === 'cancel') {
-
-                    }
-                })
+                }, function(dismiss:any) {
+                    console.log('you clicked on option'+dismiss);
+                });
 
             }
         } else {

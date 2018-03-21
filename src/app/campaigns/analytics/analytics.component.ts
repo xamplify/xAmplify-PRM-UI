@@ -477,9 +477,7 @@ export class AnalyticsComponent implements OnInit {
           this.isPartnerCampaign = '(PARTNER)';
         } else { this.isPartnerCampaign = ''; }
         console.log(this.campaign);
-      },
-      error => console.log(error),
-      () => {
+
         const campaignType = this.campaign.campaignType.toLocaleString();
         if (campaignType.includes('VIDEO')) {
           this.campaignType = 'VIDEO';
@@ -493,6 +491,10 @@ export class AnalyticsComponent implements OnInit {
         } else {
           this.campaignType = 'EMAIL';
         }
+      },
+      error => console.log(error),
+      () => {
+
       }
       )
   }
