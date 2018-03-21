@@ -293,15 +293,14 @@
 														</a>
 													</div>
 													<span align="right"
-														style="bottom: 5px; float: right; position: absolute; right: 10px;">Created
-														On <br>{{contactList.createdDate}}
-													</span> <span align="left"
-														style="bottom: 0; left: 6px; position: absolute;">Created
-														By <br>
-														<h5 class="m0" title={{contactList.uploadedBy}}>{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
-														<h5 class="m0" *ngIf="contactList.uploadedBy==null">-</h5>
+														style="bottom: 1px; float: right; position: absolute; right: 10px;" title="Created On"> {{contactList.createdDate}}
+													</span> 
+													<span align="left" style="bottom: 0; left: 6px; position: absolute;" >
+														<!-- title={{contactList.uploadedBy}} -->
+														<h5 class="m0" title="Total Contacts">#{{contactList.noOfContacts}}</h5>
 														<br>
-														<h5 class="m0" style="position: absolute; top: 34px">#{{contactList.noOfContacts}}</h5>
+														<h5 class="m0" style="position: absolute; top: 14px"  title="Created By">{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
+														<h5 class="m0" style="position: absolute; top: 14px" *ngIf="contactList.uploadedBy==null">-</h5>
 													</span>
 												</div>
 											</div>

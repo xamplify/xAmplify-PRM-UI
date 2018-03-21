@@ -337,7 +337,7 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
-											<span class="label label-primary mytooltip" style="border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
+											<span class="label label-primary mytooltip" style="cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 											<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
@@ -794,7 +794,7 @@
 		<div>
 			<div class="panel-title pull-right">
 				<span style="font-size: 13px;">
-					<span class="label label-primary mytooltip" style="border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
+					<span class="label label-primary mytooltip" style="cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
 					<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 					<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 					</select>
