@@ -34,80 +34,7 @@
 		font-weight: 500;
 	}
 
-	a.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
-
 	.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
-
-	.social-disable {
-		color: #e2e2e2 !important;
-	}
-
-	.twitter-color {
-		color: #33CCFF;
-	}
-
-	.google-color {
-		color: #C63D2D;
-	}
-
-	.facebook-color {
-		color: #3B5998;
-	}
-
-	.linkedin-color {
-		color: #4875B4;
-	}
-
-	.fa1 {
-		font-size: 32px;
-	}
-
-	.email-action-desscription {
-		font-size: 12px;
-		/* text-transform: lowercase; */
-	}
-	.capitalize {
-      text-transform: capitalize;
-    }
-	.alert-dismissible .close {
-		top: 5px;
-		right: 0;
-	}
-
-	.alert-success,
-	.alert-danger,
-	.alert-warning {
-		color: #ffffff;
-		border-radius: 0;
-		padding: 3px 10px;
-		margin: 0;
-	}
-
-	.alert-success {
-		background-color: #77bf81;
-	}
-
-	.alert-danger {
-		background-color: #ec6262;
-	}
-
-	.alert-warning {
-		background-color: #f1d43b;
-	}
-
-	.alert-success,
-	.alert-danger,
-	.alert-warning>h5 {
-		font-size: 14px;
-	}
-
-	a.disabled {
 		pointer-events: none;
 		cursor: not-allowed;
 	}
@@ -121,92 +48,10 @@
 		position: relative;
 		opacity: 1 !important;
 	}
-
-	.gu-mirror {
-		position: fixed !important;
-		margin: 0 !important;
-		z-index: 9999 !important;
-		opacity: .8;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-		filter: alpha(opacity=80)
-	}
-
-	.gu-hide {
-		display: none !important
-	}
-
-	.gu-unselectable {
-		-webkit-user-select: none !important;
-		-moz-user-select: none !important;
-		-ms-user-select: none !important;
-		user-select: none !important
-	}
-
-	.gu-transit {
-		background: rgba(0, 166, 232, 0.4);
-		color: #00a6e7;
-	}
-
-	.gu-block:hover {
-		background: rgba(0, 166, 232, 0.4);
-	}
-
-	.gu-block {
-		border: 1px solid rgba(0, 166, 232, 0.5);
-		padding: 0 10px;
-		cursor: pointer;
-		margin: 3px;
-	}
-
-	.gu-block-content {
-		margin: 7px 0;
-	}
-
-	.scrollbar {
-		max-height: 200px;
-		overflow: auto;
-	}
-
-	.scrollbar::-webkit-scrollbar-track {
-		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		border-radius: 10px;
-		background-color: #F5F5F5;
-	}
-
-	.scrollbar::-webkit-scrollbar {
-		width: 6px;
-		background-color: #F5F5F5;
-	}
-
-	.scrollbar::-webkit-scrollbar-thumb {
-		border-radius: 10px;
-		box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-		background-color: #555;
-	}
-
-	.form-check-label {
-		border: 1px solid rgba(218, 218, 218, 0.53);
-		padding: 5px 10px;
-		width: 100%;
-		color: rgba(125, 125, 125, 0.74);
-		letter-spacing: 0.5px;
-		cursor: pointer;
-	}
-
 	td>h5 {
 		margin: 2px;
 	}
 
-	#trellis td {
-		width: 200px;
-		height: 200px;
-	}
-
-	#trellis td.first {
-		width: 300px;
-	}
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -484,7 +329,6 @@
 			<div class="clearfix">
 				<div class="col-xs-12 col-sm-6" style="padding: 0">
 					<div class="col-xs-12">
-						<!-- [ngClass]="{'portlet-fullscreen': isFullscreenToggle}" -->
 						<div class="portlet light" >
 							<div class="portlet-title">
 								<div class="caption">
@@ -493,9 +337,6 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
-											<!-- <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 134px;top: 11px;font-size: 11px;">
-											  <span class="glyphicon glyphicon-info-sign icon_info"></span>
-											</a> -->
 											<span class="label label-primary mytooltip" style="border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 											<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
@@ -503,7 +344,6 @@
 										</span>
 										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
 											<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"></i>
-											<!-- <i *ngIf="isFullscreenToggle"  style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i> -->
 										</span>
 									</div>
 								</div>
@@ -946,33 +786,26 @@
 	</div>
 </div>
 
-
-<div class="modal" id="heatMapModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-	<div class="modal-content heat-modal heatmap-model">
-	<div class="modal-header">
-		<h4 class="modal-title" style="margin: 0 19px;">Campaign Statistics </h4>
-			<div class="panel-title pull-right" style="position:absolute;right: 28px;top: 11px;">
-			<span style="font-size: 13px;">
-			    <!-- <a data-toggle="tooltip" class="tooltipLink" title="{{heatMapTooltip}}" style="position: absolute;right: 113px;top: 5px;font-size: 11px;">
-				 <span class="glyphicon glyphicon-info-sign icon_info"></span>
-				</a> -->
-				<span class="label label-primary mytooltip" style="position: absolute;right: 113px;top: 2px;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
-				<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
-				<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
-				</select>
-			</span>
-			<span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
-				<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i>
-			</span>
+<div class="portlet light portlet-fullscreen" [hidden]="!isFullscreenToggle">
+	<div class="portlet-title">
+		<div class="caption">
+			<span class="caption-subject">Campaign Statistics</span>
+		</div>
+		<div>
+			<div class="panel-title pull-right">
+				<span style="font-size: 13px;">
+					<span class="label label-primary mytooltip" style="border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
+					<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
+					<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
+					</select>
+				</span>
+				<span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
+					<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-small"></i>
+				</span>
+			</div>
 		</div>
 	</div>
-	<div class="modal-body" style="background: #fff;margin: 1px;">
+	<div class="portlet-body">
 		<div id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
 	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	</div>
-	</div>
-</div>
 </div>

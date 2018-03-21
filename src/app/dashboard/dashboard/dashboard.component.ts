@@ -992,8 +992,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.isFullscreenToggle = !this.isFullscreenToggle;
          if(this.isFullscreenToggle) {
          this.generatHeatMap(this.heatMapData,'heat-map-data');    
-         $('#heatMapModel').modal('show'); }
-         else {  $('#heatMapModel').modal('hide'); }
+         }  else {  }
       }
     ngOnInit() {
         try {
@@ -1030,7 +1029,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
-        $('#heatMapModel').modal('hide');
         this.isFullscreenToggle = false;
     }
 }
