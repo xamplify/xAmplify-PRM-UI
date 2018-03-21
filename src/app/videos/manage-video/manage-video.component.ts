@@ -81,6 +81,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     ngOnInit() {
+        this.pagination.maxResults = 12;
         this.isListView = this.referenceService.isListView;
         QuickSidebar.init();
         let roleNames =  this.authenticationService.user.roles.map(function (a) { return a.roleName; });
@@ -128,7 +129,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
     }
     loadVideos(pagination: Pagination) {
-        this.pagination.maxResults = 12;
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoFiles(pagination)
@@ -159,6 +159,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = event.page;
         this.loadVideos(this.pagination);
         this.defaultBannerMessageValues();
+    }
+    paginationDropdown(pagination:Pagination){
+      this.loadVideos(pagination);
     }
     getCategoryNumber() {
         this.defaultBannerMessageValues();

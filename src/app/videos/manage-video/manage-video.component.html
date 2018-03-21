@@ -228,7 +228,8 @@
 							</div>
 						</div>
 						<div *ngIf="pagination.pagedItems.length !== 0">
-						<app-pagination [pagination]="pagination" [type]="'managaVideos'" (notifyParent)="setPage($event)"></app-pagination>
+						<app-pagination [pagination]="pagination" [type]="'managaVideos'"
+						 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 						</div>
 					</div>
 				</div>

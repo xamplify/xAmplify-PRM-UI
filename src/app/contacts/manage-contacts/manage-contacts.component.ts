@@ -227,7 +227,7 @@ export class ManageContactsComponent implements OnInit {
 
     loadContactLists( pagination: Pagination ) {
         this.referenceService.loading( this.httpRequestLoader, true );
-        this.pagination.maxResults = 12;
+        //this.pagination.maxResults = 12;
         this.pagination.filterKey = 'isPartnerUserList';
         this.pagination.filterValue = this.isPartner;
         this.contactService.loadContactLists( pagination )
@@ -289,6 +289,9 @@ export class ManageContactsComponent implements OnInit {
         }
     }
 
+    paginationDropdown(pagination:Pagination){
+        this.loadContactLists(pagination);
+    }
 
     deleteContactList( contactListId: number ) {
         this.resetResponse();
@@ -1288,6 +1291,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.pagination.maxResults = 12;
         try {
             this.isListView = this.referenceService.isListView;
             this.loadContactLists( this.pagination );
