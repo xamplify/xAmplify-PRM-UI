@@ -336,7 +336,9 @@ export class ManageContactsComponent implements OnInit {
         }).then( function( myData: any ) {
             console.log( "ManageContacts showAlert then()" + myData );
             self.deleteContactList( contactListId );
-        })
+         }, function(dismiss:any) {
+                console.log('you clicked on option'+dismiss);
+         });
     }
 
     downloadContactList( contactListId: number ) {

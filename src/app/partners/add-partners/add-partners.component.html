@@ -490,12 +490,12 @@ img:hover {
 													</div> 
 													<div class="portlet-input input-inline input-small">
 														<div class="input-icon right" style="width:106%">
+															<!-- (input)="searchKeyValue('contactList')" -->
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
 																(click)="search()"> </i> <input type="text"
 																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}"
-																(input)="searchKeyValue('contactList')"
+																[ngModelOptions]="{standalone: true}" 
 																class="form-control" placeholder="Search for a List">
 														</div>
 													</div>

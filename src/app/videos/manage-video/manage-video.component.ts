@@ -309,6 +309,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }).then(function (myData: any) {
             console.log('ManageVidoes showAlert then()' + myData);
             self.deleteVideoFile(alias, position, videoName);
+        }, function(dismiss:any) {
+            console.log('you clicked on option'+dismiss);
         });
     }
     closeBannerPopup() {

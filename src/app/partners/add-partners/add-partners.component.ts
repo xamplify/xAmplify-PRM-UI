@@ -642,9 +642,9 @@ export class AddPartnersComponent implements OnInit {
         }).then( function( myData: any ) {
             console.log( "ManagePartner showAlert then()" + myData );
             self.removeContactListUsers1( contactId );
-        })
-        //}
-
+        }, function(dismiss:any) {
+            console.log( "you clicked showAlert cancel" + dismiss );
+        });
     }
 
     removeContactListUsers1( contactId: number ) {

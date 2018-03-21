@@ -137,7 +137,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isDisable = false;
     brandLogoUrl: any; 
     logoDescriptionUrl: string;
-    isLogoThere: boolean;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -219,18 +218,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
-            this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
+          //  this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             console.log(this.brandLogoUrl);
             this.fileLogoSelected(fileItem._file);
             this.videoLogoUploader.queue[0].upload();
         };
         this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             if(JSON.parse(response).message === null){
-              this.isLogoThere = false;
             } else {
             this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
             console.log(response);
-            if(this.logoDescriptionUrl) { this.isLogoThere = true; } else { this.isLogoThere = false; }
             }
         }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
@@ -291,7 +288,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // clear videojs logo
     clearLogo(){
       this.brandLogoUrl = undefined;
-      this.isLogoThere = false;
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
@@ -645,9 +641,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
                 if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
                 this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
-                if(this.brandLogoUrl && this.logoDescriptionUrl) {this.isLogoThere = true; } else {
-                    this.isLogoThere = false;
-                }
             } else {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
@@ -659,9 +652,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.changeTransperancyControllBar(this.tempVideoFile.transparency, this.compControllerColor);
                 if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
                 this.defaultPlayerSettingsCondition(this.tempVideoFile);
-                if(this.brandLogoUrl && this.logoDescriptionUrl) {this.isLogoThere = true; } else {
-                    this.isLogoThere = false;
-                }
             }
             this.loadNgOninit = false;
         } catch (error) { console.log(error); }
@@ -906,8 +896,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     logoDescription(event: string){
         this.logoDescriptionUrl = event;
-        if(this.logoDescriptionUrl) { this.isLogoThere = true; }
-        else { this.isLogoThere = false; }
     }
     ngOnInit() {
         QuickSidebar.init();
@@ -1139,7 +1127,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'views': [this.saveVideoFile.views],
             'watchedFully': [this.saveVideoFile.watchedFully],
             'brandingLogoUri': [this.saveVideoFile.brandingLogoUri],
-            'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri]
+            'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri],
+            'companyName': [this.saveVideoFile.companyName]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
         this.onValueChanged();
@@ -1185,7 +1174,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
             if(this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null){
             this.saveVideoFile.brandingLogoDescUri = null;
-            } else {  this.saveVideoFile.brandingLogoDescUri = this.logoDescriptionUrl; }
+            } else { this.saveVideoFile.brandingLogoDescUri = this.videoUtilService.isStartsWith(this.logoDescriptionUrl); }
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {

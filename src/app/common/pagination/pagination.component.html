@@ -20,3 +20,10 @@
     <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
   </li>
 </ul>
+
+
+<div style="float: right;">
+  	<select style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+      <option *ngFor="let pageNo of numberPerPage" [ngValue]="pageNo"> {{pageNo.name}} </option>
+    </select>
+</div>

@@ -1,23 +1,24 @@
 export class ContactList {
-    name :string="";
-    createdDate:string;
+    name = "";
+    createdDate: string;
     noOfContacts: number;
     activeUsersCount: number;
     noInvalidContacts: number;
     inActiveUsersCount: number;
     noUnsubscribedContacts: number;
-    invlidContactsCount:number;
+    invlidContactsCount: number;
     id: number;
-    socialNetwork:string;
+    socialNetwork: string;
     uploadedBy: string;
     contactType: string;
     alias: string;
-    isChecked : boolean;
-    listOfUsers : string;
-    totalRecords : string;
-    userListIds : number[];
-    emailId : string;
-    firstName : string;
-    lastName : string;
+    isChecked: boolean;
+    listOfUsers: string;
+    totalRecords: string;
+    userListIds: number[];
+    emailId: string;
+    firstName: string;
+    lastName: string;
     isPartnerUserList: boolean;
+    companyName: string;
 }
