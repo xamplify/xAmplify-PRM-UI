@@ -28,6 +28,7 @@ export class PaginationComponent implements OnInit {
     this.pageNumber.value = event;
   }
   ngOnInit() {
+    console.log(this.type);
   }
 
 }
