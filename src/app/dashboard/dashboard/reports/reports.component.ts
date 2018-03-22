@@ -152,7 +152,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
   getVideoViewsLevelTwo(daysInterval, dateValue, videoId, pagination) {
-    this.pagination.maxResults = 5;
+  //  this.pagination.maxResults = 5;
     this.daysInterval = daysInterval;
     this.dateValue = dateValue;
     this.videoId = videoId;
@@ -207,7 +207,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.daysInterval = daysInterval;
     this.dateValue = dateValue;
     this.videoId =  videoId;
-    this.pagination.maxResults = 5;
+   // this.pagination.maxResults = 5;
     this.dashboardService.getVideoMinutesWatchedLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
         console.log(result);
@@ -299,6 +299,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   
   ngOnInit() {
+    this.pagination.maxResults = 5;
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
     if (this.viewsDate === undefined || this.viewsDate === null) { this.viewsDate = this.resultSparkline.dates[0]; }
