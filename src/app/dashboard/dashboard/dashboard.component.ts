@@ -62,18 +62,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     paginationType: string;
     isLoadingList = true;
     worldMapUserData: any;
-    countryCode:any;
+    countryCode: any;
     isFullscreenToggle = false;
-    heatMap:any;
+    heatMap: any;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-    { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
+    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 }];
     daySort: any;
     sortHeatMapValues = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 },{'name':'Year',value:'year'}];
+    { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 }, { 'name': 'Year', value: 'year' }];
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount = 0;
     heatMapTooltip = 'last 7 days';
+    videoStatesTooltip = 'last 7 days';
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -92,14 +93,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     genderDemographics(userId: number) {
         this.socialService.genderDemographics(userId)
             .subscribe(
-            data => {
-                this.dashboardReport.genderDemographicsMale = data['M'];
-                this.dashboardReport.genderDemographicsFemale = data['F'];
-                this.dashboardReport.genderDemographicsTotal =
-                    this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    this.dashboardReport.genderDemographicsMale = data['M'];
+                    this.dashboardReport.genderDemographicsFemale = data['F'];
+                    this.dashboardReport.genderDemographicsTotal =
+                        this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
+                },
+                error => console.log(error),
+                () => { }
             );
 
     }
@@ -107,13 +108,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getGenderDemographics(socialConnection: SocialConnection) {
         this.dashboardService.getGenderDemographics(socialConnection)
             .subscribe(
-            data => {
-                this.xtremandLogger.info(data);
-                this.dashboardReport.genderDemographicsMale = data['male'];
-                this.dashboardReport.genderDemographicsFemale = data['female'];
-            },
-            error => console.log(error),
-            () => console.log('finished')
+                data => {
+                    this.xtremandLogger.info(data);
+                    this.dashboardReport.genderDemographicsMale = data['male'];
+                    this.dashboardReport.genderDemographicsFemale = data['female'];
+                },
+                error => console.log(error),
+                () => console.log('finished')
             );
     }
 
@@ -202,8 +203,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' + 
-                    '<br> Interaction : <b>'+ this.point.interactionPercentage+ '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
+                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
+                        '<br> Interaction : <b>' + this.point.interactionPercentage + '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
                 }
             },
             plotOptions: {
@@ -240,9 +241,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],
             $containers = $('#trellis td'),
-            datasets = [  {  name: 'Opened',data: opened },  { name: 'Clicked',data: clicked },
-                { name: 'Watched', data: watched },
-               ];
+            datasets = [{ name: 'Opened', data: opened }, { name: 'Clicked', data: clicked },
+            { name: 'Watched', data: watched },
+            ];
         $.each(datasets, function (i, dataset) {
             charts.push(new Highcharts.Chart({
                 chart: {
@@ -313,143 +314,143 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started.');
         this.twitterService.getTotalCountOfTFFF(socialConnection)
             .subscribe(
-            data => {
-                this.xtremandLogger.log(data);
-                socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
-                socialConnection.twitterTotalFollowersCount = data['followersCount'];
-                socialConnection.twitterTotalFriendsCount = data['friendsCount'];
-            },
-            error => console.log(error),
-            () => console.log('getTotalCountOfTFFF() method invoke started finished.')
+                data => {
+                    this.xtremandLogger.log(data);
+                    socialConnection.twitterTotalTweetsCount = data['tweetsCount'];
+                    socialConnection.twitterTotalFollowersCount = data['followersCount'];
+                    socialConnection.twitterTotalFriendsCount = data['friendsCount'];
+                },
+                error => console.log(error),
+                () => console.log('getTotalCountOfTFFF() method invoke started finished.')
             );
     }
 
     getPage(socialConnection: SocialConnection, pageId: string) {
         this.facebookService.getPage(socialConnection, pageId)
             .subscribe(
-            data => {
-                socialConnection.facebookFanCount = data.extraData.fan_count;
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    socialConnection.facebookFanCount = data.extraData.fan_count;
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
     getFriends(socialConnection: SocialConnection) {
         this.facebookService.getFriends(socialConnection)
             .subscribe(
-            data => {
-                console.log(data);
-                // socialConnection.facebookFriendsCount = data.extraData.fan_count;
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    console.log(data);
+                    // socialConnection.facebookFriendsCount = data.extraData.fan_count;
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
     getPosts(socialConnection: SocialConnection) {
         this.facebookService.getPosts(socialConnection)
             .subscribe(
-            data => {
-                console.log(data);
-            },
-            error => console.log(error),
-            () => console.log('getPosts() Finished.')
+                data => {
+                    console.log(data);
+                },
+                error => console.log(error),
+                () => console.log('getPosts() Finished.')
             );
     }
 
     getWeeklyPosts(socialConnection: SocialConnection) {
         this.facebookService.getWeeklyPosts(socialConnection)
             .subscribe(
-            data => {
-                const dates = [];
-                const values = [];
-                for (const i of Object.keys(data)) {
-                    dates.push(i);
-                    values.push(data[i]);
-                }
+                data => {
+                    const dates = [];
+                    const values = [];
+                    for (const i of Object.keys(data)) {
+                        dates.push(i);
+                        values.push(data[i]);
+                    }
 
-                $('#sparkline_' + socialConnection.profileId).sparkline(values, {
-                    type: 'bar',
-                    padding: '5px',
-                    barWidth: '4',
-                    height: '20',
-                    barColor: '#00ACED',
-                    barSpacing: '3',
-                    negBarColor: '#e02222',
-                    tooltipFormat: '<span>Posts:{{value}}<br>{{offset:offset}}</span>',
-                    tooltipValueLookups: { 'offset': dates }
+                    $('#sparkline_' + socialConnection.profileId).sparkline(values, {
+                        type: 'bar',
+                        padding: '5px',
+                        barWidth: '4',
+                        height: '20',
+                        barColor: '#00ACED',
+                        barSpacing: '3',
+                        negBarColor: '#e02222',
+                        tooltipFormat: '<span>Posts:{{value}}<br>{{offset:offset}}</span>',
+                        tooltipValueLookups: { 'offset': dates }
 
-                });
+                    });
 
-                var sum = values.reduce((a, b) => a + b, 0);
-                socialConnection.weeklyPostsCount = sum;
-            },
-            error => console.log(error),
-            () => console.log('getWeeklyTweets() method invoke started finished.')
+                    var sum = values.reduce((a, b) => a + b, 0);
+                    socialConnection.weeklyPostsCount = sum;
+                },
+                error => console.log(error),
+                () => console.log('getWeeklyTweets() method invoke started finished.')
             );
     }
 
     getWeeklyTweets(socialConnection: SocialConnection) {
         this.twitterService.getWeeklyTweets(socialConnection)
             .subscribe(
-            data => {
-                const dates = [];
-                const values = [];
-                for (const i of Object.keys(data)) {
-                    dates.push(i);
-                    values.push(data[i]);
-                }
-                $('#sparkline_' + socialConnection.profileId).sparkline(values, {
-                    type: 'bar',
-                    padding: '5px',
-                    barWidth: '4',
-                    height: '20',
-                    barColor: '#00ACED',
-                    barSpacing: '3',
-                    negBarColor: '#e02222',
-                    tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
-                    tooltipValueLookups: { 'offset': dates }
-                });
+                data => {
+                    const dates = [];
+                    const values = [];
+                    for (const i of Object.keys(data)) {
+                        dates.push(i);
+                        values.push(data[i]);
+                    }
+                    $('#sparkline_' + socialConnection.profileId).sparkline(values, {
+                        type: 'bar',
+                        padding: '5px',
+                        barWidth: '4',
+                        height: '20',
+                        barColor: '#00ACED',
+                        barSpacing: '3',
+                        negBarColor: '#e02222',
+                        tooltipFormat: '<span>Tweets:{{value}}<br>{{offset:offset}}</span>',
+                        tooltipValueLookups: { 'offset': dates }
+                    });
 
-                var sum = values.reduce((a, b) => a + b, 0);
-                socialConnection.weeklyPostsCount = sum;
-            },
-            error => console.log(error),
-            () => console.log('getWeeklyTweets() method invoke started finished.')
+                    var sum = values.reduce((a, b) => a + b, 0);
+                    socialConnection.weeklyPostsCount = sum;
+                },
+                error => console.log(error),
+                () => console.log('getWeeklyTweets() method invoke started finished.')
             );
     }
 
     listActiveSocialAccounts(userId: number) {
         this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
             .subscribe(
-            data => {
-                this.socialConnections = data;
-                this.socialService.socialConnections = data;
-                this.socialService.setDefaultAvatar(this.socialConnections);
-            },
-            error => console.log(error),
-            () => {
-                if (this.socialConnections.length > 0) {
-                    for (const i in this.socialConnections) {
-                        if (this.socialConnections[i].source === 'TWITTER') {
-                            this.getTotalCountOfTFFF(this.socialConnections[i]);
-                            this.getGenderDemographics(this.socialConnections[i]);
-                            this.getWeeklyTweets(this.socialConnections[i]);
-                        } else if (this.socialConnections[i].source === 'FACEBOOK') {
-                            this.getWeeklyPosts(this.socialConnections[i]);
-                            this.getPosts(this.socialConnections[i]);
-                            if (this.socialConnections[i].emailId === null) {
-                                this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
-                            } else {
-                                this.getFriends(this.socialConnections[i]);
-                            }
+                data => {
+                    this.socialConnections = data;
+                    this.socialService.socialConnections = data;
+                    this.socialService.setDefaultAvatar(this.socialConnections);
+                },
+                error => console.log(error),
+                () => {
+                    if (this.socialConnections.length > 0) {
+                        for (const i in this.socialConnections) {
+                            if (this.socialConnections[i].source === 'TWITTER') {
+                                this.getTotalCountOfTFFF(this.socialConnections[i]);
+                                this.getGenderDemographics(this.socialConnections[i]);
+                                this.getWeeklyTweets(this.socialConnections[i]);
+                            } else if (this.socialConnections[i].source === 'FACEBOOK') {
+                                this.getWeeklyPosts(this.socialConnections[i]);
+                                this.getPosts(this.socialConnections[i]);
+                                if (this.socialConnections[i].emailId === null) {
+                                    this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                                } else {
+                                    this.getFriends(this.socialConnections[i]);
+                                }
 
+                            }
                         }
                     }
+                    console.log('getFacebookAccounts() Finished.');
                 }
-                console.log('getFacebookAccounts() Finished.');
-            }
             );
 
     }
@@ -457,14 +458,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getDefaultPage(userId: number) {
         this.userService.getUserDefaultPage(userId)
             .subscribe(
-            data => {
-                if (data.includes('dashboard')) {
-                    this.userDefaultPage.isCurrentPageDefaultPage = true;
-                    this.referenceService.userDefaultPage = 'DASHBOARD';
-                }
-            },
-            error => console.log(error),
-            () => { }
+                data => {
+                    if (data.includes('dashboard')) {
+                        this.userDefaultPage.isCurrentPageDefaultPage = true;
+                        this.referenceService.userDefaultPage = 'DASHBOARD';
+                    }
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
@@ -472,37 +473,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.referenceService.userDefaultPage = event ? 'DASHBOARD' : 'WELCOME';
         this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
-            data => {
-                this.userDefaultPage.isCurrentPageDefaultPage = event;
-                this.userDefaultPage.responseType = 'SUCCESS';
-                this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_SUCCESS;
-            },
-            error => {
-                this.userDefaultPage.responseType = 'ERROR';
-                this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_ERROR;
-            },
-            () => { }
+                data => {
+                    this.userDefaultPage.isCurrentPageDefaultPage = event;
+                    this.userDefaultPage.responseType = 'SUCCESS';
+                    this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_SUCCESS;
+                },
+                error => {
+                    this.userDefaultPage.responseType = 'ERROR';
+                    this.userDefaultPage.responseMessage = this.properties.PROCESS_REQUEST_ERROR;
+                },
+                () => { }
             );
     }
 
     listCampaignInteractionsData(userId: number, reportType: string) {
         this.campaignService.listCampaignInteractionsData(userId, reportType)
             .subscribe(
-            data => {
-                this.xtremandLogger.info(data);
-                this.campaigns = data;
-                console.log(data);
-                const campaignIdArray = data.map(function (a) { return a[0]; });
-                console.log(campaignIdArray);
-                console.log(this.campaigns.length);
-                console.log(data[data.length - 1]);
-                this.totalCampaignsCount = this.campaigns.length;
-                if (this.totalCampaignsCount >= 1) {
-                    this.getCampaignsEamailBarChartReports(campaignIdArray);
-                }
-            },
-            error => { },
-            () => this.xtremandLogger.info('Finished listCampaign()')
+                data => {
+                    this.xtremandLogger.info(data);
+                    this.campaigns = data;
+                    console.log(data);
+                    const campaignIdArray = data.map(function (a) { return a[0]; });
+                    console.log(campaignIdArray);
+                    console.log(this.campaigns.length);
+                    console.log(data[data.length - 1]);
+                    this.totalCampaignsCount = this.campaigns.length;
+                    if (this.totalCampaignsCount >= 1) {
+                        this.getCampaignsEamailBarChartReports(campaignIdArray);
+                    }
+                },
+                error => { },
+                () => this.xtremandLogger.info('Finished listCampaign()')
             );
     }
 
@@ -514,23 +515,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getUserCampaignReport(userId: number) {
         this.campaignService.getUserCampaignReport(userId)
             .subscribe(
-            data => {
-                this.userCampaignReport = data['userCampaignReport'];
-                this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
-            },
-            error => { },
-            () => {
-                this.xtremandLogger.info('Finished getUserCampaignReport()');
-                if (this.userCampaignReport == null) {
-                    this.userCampaignReport = new CampaignReport();
-                    this.userCampaignReport.userId = userId;
-                    this.userCampaignReport.campaignReportOption = 'RECENT';
+                data => {
+                    this.userCampaignReport = data['userCampaignReport'];
+                    this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
+                },
+                error => { },
+                () => {
+                    this.xtremandLogger.info('Finished getUserCampaignReport()');
+                    if (this.userCampaignReport == null) {
+                        this.userCampaignReport = new CampaignReport();
+                        this.userCampaignReport.userId = userId;
+                        this.userCampaignReport.campaignReportOption = 'RECENT';
+                    }
+
+                    this.setLaunchedCampaignsChild(this.userCampaignReport);
+                    this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
+
                 }
-
-                this.setLaunchedCampaignsChild(this.userCampaignReport);
-                this.listCampaignInteractionsData(userId, this.userCampaignReport.campaignReportOption);
-
-            }
             );
     }
 
@@ -581,15 +582,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
         this.campaignService.saveUserCampaignReport(userCampaignReport)
             .subscribe(
-            data => {
-                this.userCampaignReport = data;
-                this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
-                this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
-            },
-            error => {
-                this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
-            },
-            () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
+                data => {
+                    this.userCampaignReport = data;
+                    this.setCampaignReportResponse('SUCCESS', 'Campaign Report Option saved successfully.');
+                    this.listCampaignInteractionsData(userCampaignReport.userId, userCampaignReport.campaignReportOption);
+                },
+                error => {
+                    this.setCampaignReportResponse('ERROR', 'An Error occurred while saving the details.');
+                },
+                () => this.xtremandLogger.info('Finished saveUserCampaignReport()')
             );
     }
 
@@ -607,42 +608,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
             .subscribe(
-            data => {
-                this.dashboardReport.totalViews = data.totalVideoViewsCount;
-                this.dashboardReport.totalContacts = data.totalcontactsCount;
-                this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
-                this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
-                this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
-                this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
-            },
-            error => console.log(error),
-            () => console.log('dashboard reports counts completed')
+                data => {
+                    this.dashboardReport.totalViews = data.totalVideoViewsCount;
+                    this.dashboardReport.totalContacts = data.totalcontactsCount;
+                    this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
+                    this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
+                    this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
+                    this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+                },
+                error => console.log(error),
+                () => console.log('dashboard reports counts completed')
             );
     }
 
     getEmailActionCount(userId: number) {
         this.dashboardService.getEmailActionCount(userId)
             .subscribe(
-            data => {
-                this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
-                this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
-                this.listOfAllEmailClickedLogs();
-                this.listOfAllEmailOpenLogs();
-            },
-            error => console.log(error),
-            () => console.log('emailOpenedCount completed')
+                data => {
+                    this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
+                    this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
+                    this.listOfAllEmailClickedLogs();
+                    this.listOfAllEmailOpenLogs();
+                },
+                error => console.log(error),
+                () => console.log('emailOpenedCount completed')
             );
     }
 
     emailWatchedCount(userId: number) {
         this.dashboardService.loadEmailWatchedCount(userId)
             .subscribe(
-            data => {
-                this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
-                this.listOfAllWatchedLogs();
-            },
-            error => console.log(error),
-            () => console.log('emailWatchedCount completed')
+                data => {
+                    this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
+                    this.listOfAllWatchedLogs();
+                },
+                error => console.log(error),
+                () => console.log('emailWatchedCount completed')
             );
     }
 
@@ -654,7 +655,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listOfEmailClickedLogs();
         } else if (this.paginationType === 'watched') {
             this.listOfWatchedLogs();
-        } else if(this.paginationType === 'countryWiseUsers'){
+        } else if (this.paginationType === 'countryWiseUsers') {
             this.getCampaignUsersWatchedInfo(this.countryCode);
         }
 
@@ -665,14 +666,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = 10;
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
-            (result: any) => {
-                this.dashboardReport.emailLogList = result;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                this.isLoadingList = false;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
-            },
-            error => console.log(error),
-            () => { }
+                (result: any) => {
+                    this.dashboardReport.emailLogList = result;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                    this.isLoadingList = false;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
@@ -681,14 +682,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = 10;
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
-            result => {
-                this.dashboardReport.emailLogList = result;
-                this.isLoadingList = false;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
-            },
-            error => console.log(error),
-            () => { }
+                result => {
+                    this.dashboardReport.emailLogList = result;
+                    this.isLoadingList = false;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
@@ -698,29 +699,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = 10;
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
-            (data: any) => {
-                this.dashboardReport.emailLogList = data;
-                this.isLoadingList = false;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
-            },
-            error => console.log(error),
-            () => console.log('finished')
+                (data: any) => {
+                    this.dashboardReport.emailLogList = data;
+                    this.isLoadingList = false;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
+                },
+                error => console.log(error),
+                () => console.log('finished')
             );
     }
 
     getCountriesTotalViewsData() {
-        try{
-        this.dashboardService.getCountryViewsDetails().
-            subscribe(result => {
-                this.countryViewsData = result.countrywiseusers;
-                this.xtremandLogger.log(this.countryViewsData);
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            });
-        }catch(error){
+        try {
+            this.dashboardService.getCountryViewsDetails().
+                subscribe(result => {
+                    this.countryViewsData = result.countrywiseusers;
+                    this.xtremandLogger.log(this.countryViewsData);
+                },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    });
+        } catch (error) {
             this.xtremandLogger.error(error);
         }
     }
@@ -728,97 +729,96 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.getCampaignUsersWatchedInfo(event);
     }
     getCampaignsHeatMapData() {
-        try{
-        this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
-            subscribe(result => {
-                this.xtremandLogger.log(result.heatMapData);
-                this.heatMapData = result.heatMapData;
-                if (result.heatMapData.length > 0) {
-                    if(!this.isFullscreenToggle){
-                    this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');}
-                    else { this.generatHeatMap(this.heatMapData,'heat-map-data'); }
-                }
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            });
-        }catch(error){
+        try {
+            this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
+                subscribe(result => {
+                    this.xtremandLogger.log(result.heatMapData);
+                    this.heatMapData = result.heatMapData;
+                    if (result.heatMapData.length > 0) {
+                        if (!this.isFullscreenToggle) {
+                            this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
+                        }
+                        else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
+                    }
+                },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    });
+        } catch (error) {
             this.xtremandLogger.error(error);
         }
     }
     getCampaignsEamailBarChartReports(campaignIdArray) {
-        try{
-        this.dashboardService.getCampaignsEmailReports(campaignIdArray).
-            subscribe(result => {
-                console.log(result);
-                this.categories = result.campaignNames;
-                console.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
-                this.maxBarChartNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
-                console.log("max number is " + this.maxBarChartNumber);
-                if (this.maxBarChartNumber > 0) {
-                    this.isMaxBarChartNumber = true;
-                   this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
-                }  else {  this.isMaxBarChartNumber = false; }
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            });
-        }catch(error){
+        try {
+            this.dashboardService.getCampaignsEmailReports(campaignIdArray).
+                subscribe(result => {
+                    console.log(result);
+                    this.categories = result.campaignNames;
+                    console.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
+                    this.maxBarChartNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
+                    console.log("max number is " + this.maxBarChartNumber);
+                    if (this.maxBarChartNumber > 0) {
+                        this.isMaxBarChartNumber = true;
+                        this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
+                    } else { this.isMaxBarChartNumber = false; }
+                },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    });
+        } catch (error) {
             this.xtremandLogger.error(error);
         }
     }
-  clickedTrellisChart(event){
-    console.log(event);
-  }
     getVideoStatesSparklineChartsInfo(daysCount) {
-        try{
-        this.dashboardService.getVideoStatesInformation(daysCount).
-            subscribe(result => {
-                console.log(result);
-                this.referenceService.viewsSparklineValues = result;
-                this.viewsSparklineData(result.views, result.dates);
-                this.minutesSparklineData(result.minutesWatched, result.dates);
-                this.averageSparklineData(result.averageDuration, result.dates);
-                console.log(this.referenceService.viewsSparklineValues);
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.xtremandLogger.errorPage(error);
-            });
-        }catch(error){
-            this.xtremandLogger.error('error in world map dashboard '+error);
+        try {
+            this.dashboardService.getVideoStatesInformation(daysCount).
+                subscribe(result => {
+                    console.log(result);
+                    this.referenceService.viewsSparklineValues = result;
+                    this.viewsSparklineData(result.views, result.dates);
+                    this.minutesSparklineData(result.minutesWatched, result.dates);
+                    this.averageSparklineData(result.averageDuration, result.dates);
+                    console.log(this.referenceService.viewsSparklineValues);
+                },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    });
+        } catch (error) {
+            this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
 
     selectedSortByValue(event: any) {
         console.log(event);
         this.referenceService.daySortValue = event;
+        this.videoStatesTooltip =  this.setTooltipMessage(event);
         this.getVideoStatesSparklineChartsInfo(event);
     }
-    selectedheatMapSortByValue(event: any){
-      this.heatMapSort.value = event;
-      if(event === 7){
-        this.heatMapTooltip = 'last 7 days';
-      } else if(event === 14){ 
-        this.heatMapTooltip = 'last 14 days';
-      } else if(event === 21){
-        this.heatMapTooltip = 'last 21 days';
-      } else if(event === 30){
-        this.heatMapTooltip = 'current month';
-      } else if(event.includes('year')) {
-        this.heatMapTooltip = 'current year';
-      }
-      this.getCampaignsHeatMapData();
+    selectedheatMapSortByValue(event: any) {
+        this.heatMapSort.value = event;
+        this.heatMapTooltip = this.setTooltipMessage(event);
+        this.getCampaignsHeatMapData();
     }
-
+    setTooltipMessage(event: any) {
+        let tooltipMessage: any
+        if (event === 7) {
+            tooltipMessage = 'last 7 days';
+        } else if (event === 14) {
+            tooltipMessage = 'last 14 days';
+        } else if (event === 21) {
+            tooltipMessage = 'last 21 days';
+        } else if (event === 30) {
+            tooltipMessage = 'current month';
+        } else if (event.includes('year')) {
+            tooltipMessage = 'current year';
+        }
+        return tooltipMessage;
+    }
     refreshCampaignBarcharts() {
         this.getUserCampaignReport(this.loggedInUserId);
-    }
-
-    refreshHeatMapCharts() {
-        this.getCampaignsHeatMapData();
     }
 
     cancelEmailStateModalPopUp() {
@@ -844,7 +844,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             logListName = 'Country_Wise_Views_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
         }
-        
+
         this.downloadDataList.length = 0;
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
@@ -863,7 +863,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 object["Platform"] = this.dashboardReport.downloadEmailLogList[i].os;
 
             }
-            
+
             if (this.paginationType == 'countryWiseUsers') {
                 object["Device"] = this.dashboardReport.downloadEmailLogList[i].os;
 
@@ -887,13 +887,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
             .subscribe(
-            (result: any) => {
-                this.dashboardReport.allEmailOpenLogList = result;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
-            },
-            error => console.log(error),
-            () => { }
+                (result: any) => {
+                    this.dashboardReport.allEmailOpenLogList = result;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
@@ -901,13 +901,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = this.dashboardReport.totalEmailClickedCount;
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
-            result => {
-                this.dashboardReport.allEmailClickedLogList = result;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
-            },
-            error => console.log(error),
-            () => { }
+                result => {
+                    this.dashboardReport.allEmailClickedLogList = result;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
+                },
+                error => console.log(error),
+                () => { }
             );
     }
 
@@ -915,42 +915,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
-            (data: any) => {
-                this.dashboardReport.allEmailWatchedLogList = data;
-                this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
-            },
-            error => console.log(error),
-            () => console.log('finished')
+                (data: any) => {
+                    this.dashboardReport.allEmailWatchedLogList = data;
+                    this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
+                },
+                error => console.log(error),
+                () => console.log('finished')
             );
     }
-    
+
     getCampaignUsersWatchedInfo(countryCode) {
-        try{
-        this.countryCode = countryCode.toUpperCase();
-        this.paginationType = "countryWiseUsers";
-        this.pagination.maxResults = 10;
-        this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
-            .subscribe(
-            (result: any) => {
-                console.log(result);
-                this.worldMapUserData = result.data;
-                this.pagination.totalRecords = result.totalRecords;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
-                $('#worldMapModal').modal('show');
-            },
-            (error:any) => {
-                console.log(error)
-                this.xtremandLogger.error('error in world map dashboard '+error);
-                this.xtremandLogger.errorPage(error);
-            },
-            () => console.log('finished')
-            );
-        } catch(error) {
-            this.xtremandLogger.error('error in world map dashboard '+error);
+        try {
+            this.countryCode = countryCode.toUpperCase();
+            this.paginationType = "countryWiseUsers";
+            this.pagination.maxResults = 10;
+            this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
+                .subscribe(
+                    (result: any) => {
+                        console.log(result);
+                        this.worldMapUserData = result.data;
+                        this.pagination.totalRecords = result.totalRecords;
+                        this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
+                        $('#worldMapModal').modal('show');
+                    },
+                    (error: any) => {
+                        console.log(error)
+                        this.xtremandLogger.error('error in world map dashboard ' + error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => console.log('finished')
+                );
+        } catch (error) {
+            this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
-    
+
     loadChannelVideos() {
         this.videosPagination.maxResults = 50;
         try {
@@ -959,38 +959,38 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.videosPagination.totalRecords = result.totalRecords;
                     this.videosPagination = this.pagerService.getPagedItems(this.videosPagination, result.listOfMobinars);
                 },
-                (error: any) => {
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => console.log('load videos completed:')
+                    (error: any) => {
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => console.log('load videos completed:')
                 );
         } catch (error) {
             this.xtremandLogger.error('erro in load videos :' + error);
         }
     };
-    
-    countPartnerEmailTemplate(){
+
+    countPartnerEmailTemplate() {
         try {
             this.emailTemplateService.countPartnerEmailtemplate(this.loggedInUserId)
                 .subscribe((result: any) => {
                     console.log(result);
                     this.partnerEmailTemplateCount = result.count;
                 },
-                (error: any) => {
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => console.log('countPartnerEmailTemplate completed:')
+                    (error: any) => {
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => console.log('countPartnerEmailTemplate completed:')
                 );
         } catch (error) {
             this.xtremandLogger.error('erro in countPartnerEmailTemplate :' + error);
         }
     }
-    isFullscreenHeatMap(){
+    isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;
-         if(this.isFullscreenToggle) {
-         this.generatHeatMap(this.heatMapData,'heat-map-data');    
-         }  else {  }
-      }
+        if (this.isFullscreenToggle) {
+            this.generatHeatMap(this.heatMapData, 'heat-map-data');
+        } else { }
+    }
     ngOnInit() {
         try {
             this.dashboardReportsCount();
@@ -1014,8 +1014,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             Tasks.initDashboardWidget();
             this.listActiveSocialAccounts(this.loggedInUserId);
             this.genderDemographics(this.loggedInUserId);
-            
-            if(this.authenticationService.isOnlyPartner()){
+
+            if (this.authenticationService.isOnlyPartner()) {
                 this.loadChannelVideos();
                 this.countPartnerEmailTemplate();
             }

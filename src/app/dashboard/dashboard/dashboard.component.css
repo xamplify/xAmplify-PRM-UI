@@ -412,4 +412,14 @@ a.social-stats{text-align: center;}
 	letter-spacing: 0.5px;
 	cursor: pointer;
 }
+.mg-tooltip{
+	position: absolute;
+    right: 98px;
+    cursor: pointer;
+    border-radius: 12px 13px 10px;
+    font-size: 17px;
+    background: #428bca;
+    width: 15px;
+    height: 23px;
+}
 

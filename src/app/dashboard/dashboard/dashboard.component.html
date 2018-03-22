@@ -1,19 +1,34 @@
 <style type="text/css">
-.notification-box{position: relative; text-align: center;    margin: 10px 0 15px 0;padding: 10px;cursor: pointer}
-.notification-box i{font-size: 24px;    padding: 20px 0 0 0;}
-.notification-box h4 {padding: 10px;}
-.notification-box h3{
-    position: absolute;
-    top: -35px;
-    right: -14px;
-    padding: 5px 10px;
-    border-radius: 50%;
-    background: #ffffff;
-    color: #468bca;
-    border-color: #fff;
-    border: 1px solid #cacaca;
-    font-weight: bold;
-}
+	.notification-box {
+		position: relative;
+		text-align: center;
+		margin: 10px 0 15px 0;
+		padding: 10px;
+		cursor: pointer
+	}
+
+	.notification-box i {
+		font-size: 24px;
+		padding: 20px 0 0 0;
+	}
+
+	.notification-box h4 {
+		padding: 10px;
+	}
+
+	.notification-box h3 {
+		position: absolute;
+		top: -35px;
+		right: -14px;
+		padding: 5px 10px;
+		border-radius: 50%;
+		background: #ffffff;
+		color: #468bca;
+		border-color: #fff;
+		border: 1px solid #cacaca;
+		font-weight: bold;
+	}
+
 	a {
 		text-decoration: none;
 	}
@@ -48,17 +63,19 @@
 		position: relative;
 		opacity: 1 !important;
 	}
+
 	td>h5 {
 		margin: 2px;
 	}
-
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 	<div class="page-bar" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
 		<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
 					   'alert-danger': userDefaultPage.responseType == 'ERROR'}">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null"><span aria-hidden="true">&times;</span></button>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null">
+				<span aria-hidden="true">&times;</span>
+			</button>
 			<h4 class="flex">
 				<i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
 					   'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true" style="padding-right: 7px;"></i>
@@ -86,7 +103,9 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button> -->
-					<a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null"><i class="fa fa-times"></i></a>
+					<a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null">
+						<i class="fa fa-times"></i>
+					</a>
 					<h4 class="modal-title" id="customizeCampaignModalLabel">Customize Campaign Report</h4>
 				</div>
 				<div class="modal-body">
@@ -95,7 +114,9 @@
 							<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
 											   'alert-danger': userCampaignReport.response == 'ERROR', 
 											   'alert-warning': userCampaignReport.response == 'WARNING'}">
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userCampaignReport.response = null">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h5 class="flex">
 									<i class="fa" [ngClass]="{'fa-check': userCampaignReport.response == 'SUCCESS',
 											   'fa-exclamation': userCampaignReport.response == 'ERROR', 
@@ -107,10 +128,9 @@
 						<div>
 							<div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
 								<label class="form-check-label">
-				    <input class="form-check-input" type="radio" name="campaignReportType" [value]="item"
-				    	[checked]="item === userCampaignReport.campaignReportOption" (change)="onSelectionChangeCampaignReportOption(item)">
-				    {{item}}
-				  </label>
+									<input class="form-check-input" type="radio" name="campaignReportType" [value]="item" [checked]="item === userCampaignReport.campaignReportOption"
+									 (change)="onSelectionChangeCampaignReportOption(item)"> {{item}}
+								</label>
 							</div>
 						</div>
 						<div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
@@ -131,7 +151,9 @@
 								<div class="col-xs-6" style="padding: 0">
 									<div class="portlet light border-radius-0">
 										<div class="portlet-title">
-											<h5>SELECTED CAMPAIGNS <b>(MAX 4)</b></h5>
+											<h5>SELECTED CAMPAIGNS
+												<b>(MAX 4)</b>
+											</h5>
 										</div>
 										<div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
 											<div class="gu-block" *ngFor="let item of launchedCampaignsChild">
@@ -223,58 +245,67 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-				<a class="dashboard-stat dashboard-stat-lighter red-soft" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
-					<div class="visual">
-						<i class="fa fa-eye"></i>
-					</div>
-					<div class="details">
-						<div class="number">0</div>
-						<div class="desc">Total Partners</div>
-					</div>
-				</a>
-			</div>
+			<a class="dashboard-stat dashboard-stat-lighter red-soft" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
+				<div class="visual">
+					<i class="fa fa-eye"></i>
+				</div>
+				<div class="details">
+					<div class="number">0</div>
+					<div class="desc">Total Partners</div>
+				</div>
+			</a>
+		</div>
 	</div>
 	<!-- END DASHBOARD STATS -->
-	
+
 	<ng-container *ngIf="authenticationService.isOnlyPartner()">
 		<div class="row">
-		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
-			<div class="portlet-title">
-				<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Notification (Partner)</h4>
-			</div>
-			<div class="portlet-body clearfix">
-			<div class="col-xs-12 col-sm-4">
-				<div class="btn-primary btn-block notification-box" [routerLink]="['../../videos/manage']">
-					<span><i class="fa fa-video-camera"></i></span>
-					<h4>Total Videos Shared</h4>
-					<h3>{{videosPagination.totalRecords}}</h3>
+			<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
+				<div class="portlet-title">
+					<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Notification (Partner)</h4>
+				</div>
+				<div class="portlet-body clearfix">
+					<div class="col-xs-12 col-sm-4">
+						<div class="btn-primary btn-block notification-box" [routerLink]="['../../videos/manage']">
+							<span>
+								<i class="fa fa-video-camera"></i>
+							</span>
+							<h4>Total Videos Shared</h4>
+							<h3>{{videosPagination.totalRecords}}</h3>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-4">
+						<div class="btn-success btn-block notification-box" [routerLink]="['../../emailtemplates']">
+							<span>
+								<i class="fa fa-envelope"></i>
+							</span>
+							<h4>Total Email Templates Shared</h4>
+							<h3>{{partnerEmailTemplateCount}}</h3>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-4">
+						<div class="btn-info btn-block notification-box">
+							<span>
+								<i class="fa fa-bullhorn"></i>
+							</span>
+							<h4>Total Social Campaigns Shared</h4>
+							<h3>-</h3>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-4">
-				<div class="btn-success btn-block notification-box" [routerLink]="['../../emailtemplates']">
-					<span><i class="fa fa-envelope"></i></span> 
-					<h4>Total Email Templates Shared</h4>
-					<h3>{{partnerEmailTemplateCount}}</h3>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-4">
-				<div class="btn-info btn-block notification-box">
-					<span><i class="fa fa-bullhorn"></i></span> 
-					<h4>Total Social Campaigns Shared</h4>
-					<h3>-</h3>
-				</div>
-			</div>
-			</div>
-				</div>
 		</div>
 	</ng-container>
-	
+
 	<div class="row">
 		<div class="clearfix"></div>
 		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
 			<div class="portlet-title">
 				<h4 class="pull-left m10 f-w-600" style="color: #00a6e8">Campaigns</h4>
-				<a><i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal" *ngIf="hasCampaignRole && authenticationService.user.hasCompany "></i></a>
+				<a>
+					<i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
+					 *ngIf="hasCampaignRole && authenticationService.user.hasCompany "></i>
+				</a>
 				<a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary color1 pull-right" style="margin: 5px 0;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
 			</div>
 			<div class="portlet-body clearfix">
@@ -284,10 +315,10 @@
 						 style="cursor: pointer">
 							<div class="bookmark-ribbon">
 								<span style="margin: 0px -7px; font-size: 17px; color: white;">
-											 <i *ngIf="campaign[7] ==='VIDEO'" class="fa fa-video-camera" aria-hidden="true"></i>
-											 <i *ngIf="campaign[7]==='REGULAR'"  class="fa fa-envelope" aria-hidden="true"></i> 
-										     <i *ngIf="campaign[7]==='SOCIAL'" class="fa fa-globe" aria-hidden="true"></i>
-									    </span>
+									<i *ngIf="campaign[7] ==='VIDEO'" class="fa fa-video-camera" aria-hidden="true"></i>
+									<i *ngIf="campaign[7]==='REGULAR'" class="fa fa-envelope" aria-hidden="true"></i>
+									<i *ngIf="campaign[7]==='SOCIAL'" class="fa fa-globe" aria-hidden="true"></i>
+								</span>
 							</div>
 							<div class="portlet-title">
 								<div class="caption">
@@ -329,7 +360,7 @@
 			<div class="clearfix">
 				<div class="col-xs-12 col-sm-6" style="padding: 0">
 					<div class="col-xs-12">
-						<div class="portlet light" >
+						<div class="portlet light">
 							<div class="portlet-title">
 								<div class="caption">
 									<span class="caption-subject">Campaign Statistics</span>
@@ -337,9 +368,11 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
-											<span class="label label-primary mytooltip" style="cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
+											<span class="label label-primary mytooltip" style="position: relative;left:-4px;cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}">
+												<i class="fa fa-question"></i>
+											</span>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
-											<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
+												<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
 										</span>
 										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
@@ -366,8 +399,10 @@
 									<span class="caption-subject">Email Statistics</span>
 								</div>
 								<div>
-									<div class="panel-title pull-right" *ngIf="categories?.length > 0" >
-										<span style="float:right"><i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i></span>
+									<div class="panel-title pull-right" *ngIf="categories?.length > 0">
+										<span style="float:right">
+											<i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i>
+										</span>
 									</div>
 								</div>
 							</div>
@@ -413,11 +448,14 @@
 								</div>
 								<div>
 									<div class="panel-title pull-right">
+										<span class="label label-primary mytooltip mg-tooltip" title="{{videoStatesTooltip}}">
+											<i class="fa fa-question" style="right: 3px;bottom: 4px; position: absolute;color: white;"></i>
+									    </span>
 										<span style="float:right; font-size: 13px;">
-									<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
-										<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
-									</select>
-								</span>
+											<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
+												<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
+											</select>
+										</span>
 									</div>
 								</div>
 							</div>
@@ -465,7 +503,8 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailOpenedCount}}</b>
 													<br>
-													<span class="email-action-desscription">Opened</span></h4>
+													<span class="email-action-desscription">Opened</span>
+												</h4>
 											</div>
 										</div>
 									</div>
@@ -479,7 +518,8 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailClickedCount}}</b>
 													<br>
-													<span class="email-action-desscription">Clicked</span></h4>
+													<span class="email-action-desscription">Clicked</span>
+												</h4>
 											</div>
 										</div>
 									</div>
@@ -493,7 +533,8 @@
 												<h4>
 													<b>{{dashboardReport.totalEmailWatchedCount}}</b>
 													<br>
-													<span class="email-action-desscription">Views</span></h4>
+													<span class="email-action-desscription">Views</span>
+												</h4>
 											</div>
 										</div>
 									</div>
@@ -509,156 +550,167 @@
 		</div>
 	</div>
 	<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
-	<div class="clearfix" *ngIf="socialConnections?.length > 0">
-		<div class="portlet light shadow">
-			<div class="portlet-title">
-				<h4 class="caption-subject font-red-sunglo f-w-600">Social Accounts</h4>
-			</div>
-			<div class="portlet-body clearfix">
-				<div class="clearfix">
-					<section *ngFor="let socialConnection of socialConnections">
-						<div class="col-xs-12 col-sm-6 col-md-4 p10" [class.disabled]="!hasSocialStatusRole?true:null">
-							<div class="dashboard-stat2 m0">
-								<div class="display">
-									<div class="col-xs-3 p0">
-										<div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
-											<ng-container *ngIf="socialConnection.source === 'TWITTER'">
-												<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
-											</ng-container>
-											<ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
-												<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
-											</ng-container>
-											<ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
-												<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
-											</ng-container>
-											<ng-container *ngIf="socialConnection.source === 'GOOGLE'">
-												<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
-											</ng-container>
+		<div class="clearfix" *ngIf="socialConnections?.length > 0">
+			<div class="portlet light shadow">
+				<div class="portlet-title">
+					<h4 class="caption-subject font-red-sunglo f-w-600">Social Accounts</h4>
+				</div>
+				<div class="portlet-body clearfix">
+					<div class="clearfix">
+						<section *ngFor="let socialConnection of socialConnections">
+							<div class="col-xs-12 col-sm-6 col-md-4 p10" [class.disabled]="!hasSocialStatusRole?true:null">
+								<div class="dashboard-stat2 m0">
+									<div class="display">
+										<div class="col-xs-3 p0">
+											<div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
+												<ng-container *ngIf="socialConnection.source === 'TWITTER'">
+													<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+												</ng-container>
+												<ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
+													<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+												</ng-container>
+												<ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
+													<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+												</ng-container>
+												<ng-container *ngIf="socialConnection.source === 'GOOGLE'">
+													<img class="img-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+												</ng-container>
+											</div>
 										</div>
-									</div>
-									<div class="col-xs-9 p0">
-										<h5 class="profile-name">
-											
-											<span *ngIf="socialConnection.source === 'TWITTER'">
-												<a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
-												@{{socialConnection.profileName}}</a>
-											</span>
-											<span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
-											<span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
-										</h5>
-										<section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
+										<div class="col-xs-9 p0">
+											<h5 class="profile-name">
+
+												<span *ngIf="socialConnection.source === 'TWITTER'">
+													<a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
+														@{{socialConnection.profileName}}</a>
+												</span>
+												<span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
+												<span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
+											</h5>
+											<section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
 													<b>Tweets</b>
 													<h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
 												</a>
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
 													<b>Followers</b>
 													<h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
 												</a>
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
 													<b>Friends</b>
 													<h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
 												</a>
-										</section>
-										<section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
-											<a class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+											</section>
+											<section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
+												<a class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Posts</b>
 													<h4>-</h4>
 												</a>
-											<a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+												<a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Fans</b>
 													<h4>{{socialConnection.facebookFanCount}}</h4>
 												</a>
-											<a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+												<a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
 													<b>Friends</b>
 													<h4>{{socialConnection.facebookFriendsCount}}</h4>
 												</a>
-										</section>
-										<section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
-											<a class="col-xs-4 social-stats">
+											</section>
+											<section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
+												<a class="col-xs-4 social-stats">
 													<b>Posts</b>
 													<h4>-</h4>
 												</a>
-											<a class="col-xs-4 social-stats">
+												<a class="col-xs-4 social-stats">
 													<b>Connections</b>
 													<h4>-</h4>
 												</a>
-										</section>
-										<section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
-											<a class="col-xs-4 social-stats">
+											</section>
+											<section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
+												<a class="col-xs-4 social-stats">
 													<b>Posts</b>
 													<h4>-</h4>
 												</a>
-											<a class="col-xs-4 social-stats">
+												<a class="col-xs-4 social-stats">
 													<b>Connections</b>
 													<h4>-</h4>
 												</a>
-										</section>
-									</div>
-									<div class="col-xs-12 m0 p0">
-										<hr style="background-color: #e5e5e5; height: 1px; border: 0; margin: 8px 0 0 0;">
-									</div>
+											</section>
+										</div>
+										<div class="col-xs-12 m0 p0">
+											<hr style="background-color: #e5e5e5; height: 1px; border: 0; margin: 8px 0 0 0;">
+										</div>
 
-									<div class="col-xs-8 text-left pl0 pr0">
-										<h5>
-											<span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span>											New
-											<span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
-											<span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
-											<br>(Past 7 days)
-										</h5>
-									</div>
-									<div class=" col-xs-4 text-right pt10 pb10">
-										<div id="sparkline_{{socialConnection.profileId}}">
-											<canvas width="46" height="20"></canvas>
+										<div class="col-xs-8 text-left pl0 pr0">
+											<h5>
+												<span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span> New
+												<span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
+												<span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
+												<br>(Past 7 days)
+											</h5>
+										</div>
+										<div class=" col-xs-4 text-right pt10 pb10">
+											<div id="sparkline_{{socialConnection.profileId}}">
+												<canvas width="46" height="20"></canvas>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</section>
-				</div>
-				<!--Gender Demographics-->
-				<div class="clearfix">
-					<h4 class="gd-title">Gender Demographics</h4>
-					<div class="col-xs-6 text-right p0">
-						<div class="facebook-color">
-							<div class="col-xs-12">
-								<span class="gd-male"><i class="fa fa-male fa1"></i></span>
-							</div>
-							<div class="col-xs-12">
-								<div class="number">
-									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-										<h4><b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+						</section>
+					</div>
+					<!--Gender Demographics-->
+					<div class="clearfix">
+						<h4 class="gd-title">Gender Demographics</h4>
+						<div class="col-xs-6 text-right p0">
+							<div class="facebook-color">
+								<div class="col-xs-12">
+									<span class="gd-male">
+										<i class="fa fa-male fa1"></i>
 									</span>
-									<ng-template #default_gender_demographics>
-										<h4><b>N/A</b></h4>
-									</ng-template>
+								</div>
+								<div class="col-xs-12">
+									<div class="number">
+										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+											<h4>
+												<b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+											</h4>
+										</span>
+										<ng-template #default_gender_demographics>
+											<h4>
+												<b>N/A</b>
+											</h4>
+										</ng-template>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-xs-6 p0">
-						<div class="google-color">
-							<div class="col-xs-12">
-								<span class="gd-female"><i class="fa fa-female fa1"></i></span>
-							</div>
-							<div class="col-xs-12">
-								<div class="number">
-									<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-										<h4><b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b></h4>
+						<div class="col-xs-6 p0">
+							<div class="google-color">
+								<div class="col-xs-12">
+									<span class="gd-female">
+										<i class="fa fa-female fa1"></i>
 									</span>
-									<ng-template #default_gender_demographics>
-										<h4><b>N/A</b></h4>
-									</ng-template>
+								</div>
+								<div class="col-xs-12">
+									<div class="number">
+										<span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+											<h4>
+												<b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+											</h4>
+										</span>
+										<ng-template #default_gender_demographics>
+											<h4>
+												<b>N/A</b>
+											</h4>
+										</ng-template>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</div>
-	</div>
 	</ng-container>
 </div>
 <!-- Modals -->
@@ -667,18 +719,23 @@
 	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()"><i class="fa fa-times"></i></a>
-				<h4 class="m0">People Who Have 
-					<span *ngIf="paginationType=='open'" >Opened</span>
-					<span *ngIf="paginationType=='clicked'" >Clicked</span>
-					<span *ngIf="paginationType=='watched'" >Watched</span>
-					 Your Emails</h4>
+				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+					<i class="fa fa-times"></i>
+				</a>
+				<h4 class="m0">People Who Have
+					<span *ngIf="paginationType=='open'">Opened</span>
+					<span *ngIf="paginationType=='clicked'">Clicked</span>
+					<span *ngIf="paginationType=='watched'">Watched</span>
+					Your Emails</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
+						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+						<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li>
+							<a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -704,7 +761,7 @@
 						<tbody>
 							<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
 								<td>
-									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
+									<app-user-info [userInfo]="emailClicked"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{emailClicked.campaignName}}</h5>
@@ -714,10 +771,10 @@
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
 								<td class="center" *ngIf="emailType != 'open'">
-									<app-location  [userLocation]="emailClicked"> </app-location>
+									<app-location [userLocation]="emailClicked"> </app-location>
 								</td>
-								<td class="center" *ngIf="emailType != 'open'"> 
-								<app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
+								<td class="center" *ngIf="emailType != 'open'">
+									<app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
 								</td>
 							</tr>
 						</tbody>
@@ -737,14 +794,19 @@
 	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()"><i class="fa fa-times"></i></a>
+				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+					<i class="fa fa-times"></i>
+				</a>
 				<h4 class="m0">Check out where your videos are being watched</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
+						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+						<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li>
+							<a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -762,22 +824,22 @@
 						<tbody>
 							<tr *ngFor="let item of worldMapUserData;let i = index">
 								<td>
-								<app-user-info  [userInfo]="item"> </app-user-info>
+									<app-user-info [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
 									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
 								<td style="text-align: center">
-								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
 								</td>
 								<td style="text-align: center">
-									<app-location  [userLocation]="item"> </app-location>
+									<app-location [userLocation]="item"> </app-location>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-			  <app-pagination [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)"></app-pagination>
+				<app-pagination [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)"></app-pagination>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
@@ -794,9 +856,11 @@
 		<div>
 			<div class="panel-title pull-right">
 				<span style="font-size: 13px;">
-					<span class="label label-primary mytooltip" style="cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}"><i class="fa fa-question"></i></span>
+					<span class="label label-primary mytooltip" style="position: relative;left:-4px;cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}">
+						<i class="fa fa-question"></i>
+					</span>
 					<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
-					<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
+						<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 					</select>
 				</span>
 				<span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
