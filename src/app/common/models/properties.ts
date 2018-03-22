@@ -56,6 +56,7 @@ export class Properties {
     FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail";
     
     SIGN_UP_SUCCESS = "Thank you for signing up with the platform! A verification link has been sent to your email account";
+    ACCOUNT_ACTIVATED_SUCESS = 'You have successfully activated your account';
     SIGN_UP_ERROR = "An error occured while sign up please try later";
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
     
