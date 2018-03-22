@@ -27,19 +27,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   videoViewsLevelSecond = [];
   isReport: boolean;
   selectedRowValue = false;
-  color: any;
   anotherViewDate: string;
   downloadDataList = [];
   downloadCsvList: any;
   daysInterval: any;
   dateValue: any;
   videoId: number;
-
-  sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-  { 'name': '21 Days', 'value': 21 }, { 'name': '30 Days', 'value': 30 }];
+  sortDates: any;
   daySort: any;
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
   public pagerService: PagerService, public pagination: Pagination) {
+    this.sortDates = this.dashboardService.sortDates;
     this.resultSparkline = this.referenceService.viewsSparklineValues;
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
       this.router.navigate(['/']);
@@ -171,13 +169,16 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   setPage(event:any){
     this.pagination.pageIndex =  event.page;
-    if(this.reportName === 'views') {
-    this.getVideoViewsLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination)
-    } else { 
-     this.getVideoMinutesWatchedLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination)
-    }
+    this.getVideoStatesLevels();
   }
-
+  paginationDropdown(pagination:Pagination){
+    this.pagination = pagination;
+    this.getVideoStatesLevels();
+  }
+ getVideoStatesLevels(){
+  if(this.reportName === 'views') { this.getVideoViewsLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination);}
+  else { this.getVideoMinutesWatchedLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination) }
+ }
   getVideoMinutesWatchedLevelOne(dateValue, isReport) {
     this.isReport = isReport;
     if (dateValue === undefined) {

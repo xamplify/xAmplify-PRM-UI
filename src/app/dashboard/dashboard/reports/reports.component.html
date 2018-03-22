@@ -116,9 +116,8 @@
 						</tr>
 					</ng-container>
 				</tbody>
-				<!-- <p  *ngIf="!videoViewsLevelSecond"> No Data Found</p>	 -->
 			</table>
-			<app-pagination [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)"></app-pagination>
+			<app-pagination [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 		</div>
 	</div>
 </div>

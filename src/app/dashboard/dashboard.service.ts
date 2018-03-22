@@ -16,6 +16,9 @@ export class DashboardService {
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
+    sortDates =  [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
+      { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 }];
+
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
