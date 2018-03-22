@@ -508,9 +508,9 @@ img:hover {
 						</div>
 						<div class="clearfix">
 							<div class="col-xs-12" style="padding: 10px 0;">
-							<div class="alert alert-info flex" *ngIf="isLoadingList">
-									<div class="loader" style="border: 1; width: 25px; height: 25px;"></div>
-									<h4>please wait while we process your request..!</h4>
+							<div class="alert alert-info flex" *ngIf="isLoadingList"> 
+									<div class="loader" style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
+									<h4>Please wait while we process your request</h4>
 								</div>
 								<div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
 									class="alert alert-info alert-dismissable">No Partners

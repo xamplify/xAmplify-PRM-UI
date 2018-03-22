@@ -216,6 +216,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             });
       }
     ngOnInit() {
+        this.pagination.maxResults = 13;
         if(this.videoFileService.videoType==='partnerVideos'){
             this.getVideoDefaultSettings();
         }
@@ -236,7 +237,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.checkCallToActionAvailable();
     }
     loadAllVideos(pagination: Pagination) {
-        this.pagination.maxResults = 13;
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoFiles(pagination)

@@ -780,10 +780,11 @@
 						</tbody>
 					</table>
 				</div>
-				<app-pagination [pagination]="pagination" [type]="'dashboard'" (notifyParent)="setPage($event)"></app-pagination>
+				<app-pagination [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
+				<button type="button" class="btn btn-defaullistOfEmailOpenLogs
+listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
 			</div>
 		</div>
 	</div>
@@ -839,7 +840,7 @@
 						</tbody>
 					</table>
 				</div>
-				<app-pagination [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)"></app-pagination>
+				<app-pagination [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>

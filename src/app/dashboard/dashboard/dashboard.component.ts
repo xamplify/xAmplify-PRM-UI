@@ -660,10 +660,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
 
     }
-
+    paginationDropdown(pagination:Pagination){
+        this.pagination =  pagination;
+        if (this.paginationType === 'open') {
+            this.listOfEmailOpenLogs(13);
+        } else if (this.paginationType === 'clicked') {
+            this.listOfEmailClickedLogs();
+        } else if (this.paginationType === 'watched') {
+            this.listOfWatchedLogs();
+        } else if (this.paginationType === 'countryWiseUsers') {
+            this.getCampaignUsersWatchedInfo(this.countryCode);
+        }
+    }
     listOfEmailOpenLogs(actionId: number) {
         this.paginationType = 'open';
-        this.pagination.maxResults = 10;
+       // this.pagination.maxResults = 10;
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
                 (result: any) => {
@@ -679,7 +690,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfEmailClickedLogs() {
         this.paginationType = 'clicked';
-        this.pagination.maxResults = 10;
+       // this.pagination.maxResults = 10;
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 result => {
@@ -696,7 +707,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
         this.paginationType = 'watched';
-        this.pagination.maxResults = 10;
+      //  this.pagination.maxResults = 10;
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 (data: any) => {
@@ -929,7 +940,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.countryCode = countryCode.toUpperCase();
             this.paginationType = "countryWiseUsers";
-            this.pagination.maxResults = 10;
+         //   this.pagination.maxResults = 10;
             this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
                 .subscribe(
                     (result: any) => {
@@ -992,6 +1003,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else { }
     }
     ngOnInit() {
+        this.pagination.maxResults = 10;
         try {
             this.dashboardReportsCount();
             this.loggedInUserId = this.authenticationService.getUserId();
