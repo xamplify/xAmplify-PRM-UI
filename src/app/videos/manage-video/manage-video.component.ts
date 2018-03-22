@@ -160,9 +160,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
         this.defaultBannerMessageValues();
     }
-    paginationDropdown(pagination:Pagination){
-      this.loadVideos(pagination);
-    }
     getCategoryNumber() {
         this.defaultBannerMessageValues();
         this.xtremandLogger.log(this.categoryNum);

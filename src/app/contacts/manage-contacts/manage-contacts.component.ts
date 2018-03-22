@@ -289,10 +289,6 @@ export class ManageContactsComponent implements OnInit {
         }
     }
 
-    paginationDropdown(pagination:Pagination){
-        this.loadContactLists(pagination);
-    }
-
     deleteContactList( contactListId: number ) {
         this.resetResponse();
         this.xtremandLogger.info( "MangeContacts deleteContactList : " + contactListId );
