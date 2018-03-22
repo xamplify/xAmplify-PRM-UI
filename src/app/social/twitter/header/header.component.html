@@ -8,7 +8,8 @@
       <li class="profilenav-item" *ngFor="let item of twitterNavs" [ngClass]="{'profilenav-item-active': item.isCurrent}">
         <a class="profilenav-stat" [routerLink]="['/home/twitter', socialConnection.profileId, item.name]">
           <span class="profilenav-label" aria-hidden="true">{{item.name | titlecase}}</span>
-          <span class="profilenav-value">{{item.count}}</span>
+          <span class="profilenav-value" *ngIf="item.name !== 'home'">{{item.count}}</span>
+          <i class="icon-home" style="padding: 5px 0;" *ngIf="item.name === 'home'"></i>
         </a>
       </li>
     </div>
